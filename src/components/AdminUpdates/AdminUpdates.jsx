@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import Select from '@material-ui/core'
+import Select from '@material-ui/core/Select'
 
 export default function AdminUpdates() {
 
