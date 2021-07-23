@@ -65,7 +65,11 @@ export default function AdminUpdates() {
           {/* need to add conditional render for super user for system admin */}
           <option value={5}>System Admin</option>
         </Select>
-        
+        {updateLicenseesRender ? <>Update Licensees Page</> : <></>}
+        {addFloorAndPlacementTypesRender ?<>Add Floor Types/Placement Types Page</> : <></>}
+        {updateShippingCostsRender ?<>Update Shipping Costs Page</> : <></> }
+        {updateMaterialCostsAndInventoryRender ?<>Update Material Costs/Inventory Page</> : <></> }
+        {systemAdminRender ?<>System Admin Page</> : <></> }
     </div>
   )
 }
