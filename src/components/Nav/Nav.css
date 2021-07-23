@@ -14,7 +14,7 @@
 }
 
 .GenocchioImage { 
-  max-height: 40px;
+  max-height: 5em;
   margin: 0 2.5em 0 12px;
 }
 
@@ -40,6 +40,8 @@
   justify-items: right;
   margin-left: auto; */
 }
+
+
 
 /* .NavDrawer-icon {
   display: flex;

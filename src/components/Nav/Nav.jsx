@@ -35,7 +35,7 @@ function Nav() {
       <Box className='GenocchioImage-wrapper'>
         <img
           className='GenocchioImage'
-          src="./images/PrimXLogo2.jpg"
+          src="./images/PrimXLogo-Spaced-White-01.svg"
           alt="PrimX Company Logo"
         />
       </Box>
@@ -61,8 +61,6 @@ function Nav() {
             />
           </Link>
         )} */}
-
-        PrīmX
       </div>
 
       {/* <div>
