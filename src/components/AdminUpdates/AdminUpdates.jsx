@@ -4,10 +4,14 @@ import Select from '@material-ui/core'
 
 export default function AdminUpdates() {
 
+  //holds value of selection to for page render conditionals
   let [selectedPage,setSelectedPage] = useState("")
 
+  //handles values of selected page change on event change
   const handleSelectPage = (event) => {
     setSelectedPage(event.target.value)
+
+
     
   }
 
