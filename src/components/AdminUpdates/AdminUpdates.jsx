@@ -1,52 +1,38 @@
 import React from 'react'
 import { useState } from 'react'
 import Select from '@material-ui/core/Select'
+import { FormControl, MenuItem } from '@material-ui/core';
+import InputLabel from '@material-ui/core/InputLabel';
+import AdminUpdateLicenses from './AdminUpdateLicenses'
+import AdminUpdateTypes  from './AdminUpdateTypes'
+import AdminUpdateShipping from './AdminUpdateShipping'
+import AdminUpdateMaterials from './AdminUpdateMaterials'
+import SystemAdmin from './SystemAdmin'
 
 export default function AdminUpdates() {
 
   //holds value of selection to for page render conditionals
   let [selectedPage,setSelectedPage] = useState("");
-
-  let [updateLicenseesRender,setUpdateLicenseesRender] = useState(false);
-  let [addFloorAndPlacementTypesRender,setAddFloorAndPlacementTypesRender] = useState(false);
-  let [updateShippingCostsRender,setUpdateShippingCostsRender] = useState(false);
-  let [updateMaterialCostsAndInventoryRender,setUpdateMaterialCostsAndInventoryRender] = useState(false);
-  let [systemAdminRender,setSystemAdminRender] = useState(false);
+  //holds values for conditional render boolean
+   let [conditionalRender,setConditionalRender] = useState();
+   let [conditionalBool,setConditionalBool] = useState(false);
 
   //handles values of selected page change on event change
   const handleSelectPage = (event) => {
     setSelectedPage(event.target.value);
-    // logic for activating render based on selected value
+    setConditionalBool(true);
+    console.log(selectedPage)
+
     if (selectedPage == 1) {
-      setUpdateLicenseesRender(true);
-      setAddFloorAndPlacementTypesRender(false);
-      setUpdateShippingCostsRender(false);
-      setUpdateMaterialCostsAndInventoryRender(false);
-      setSystemAdminRender(false);
+      setConditionalRender(AdminUpdateLicenses)
     } else if (selectedPage == 2) {
-      setUpdateLicenseesRender(false);
-      setAddFloorAndPlacementTypesRender(true);
-      setUpdateShippingCostsRender(false);
-      setUpdateMaterialCostsAndInventoryRender(false);
-      setSystemAdminRender(false);
+      setConditionalRender(AdminUpdateTypes)
     } else if (selectedPage == 3) {
-      setUpdateLicenseesRender(false);
-      setAddFloorAndPlacementTypesRender(false);
-      setUpdateShippingCostsRender(true);
-      setUpdateMaterialCostsAndInventoryRender(false);
-      setSystemAdminRender(false);
+      setConditionalRender(AdminUpdateShipping)
     } else if (selectedPage == 4) {
-      setUpdateLicenseesRender(false);
-      setAddFloorAndPlacementTypesRender(false);
-      setUpdateShippingCostsRender(false);
-      setUpdateMaterialCostsAndInventoryRender(true);
-      setSystemAdminRender(false);
+      setConditionalRender(AdminUpdateMaterials)
     } else if (selectedPage == 5) {
-      setUpdateLicenseesRender(false);
-      setAddFloorAndPlacementTypesRender(false);
-      setUpdateShippingCostsRender(false);
-      setUpdateMaterialCostsAndInventoryRender(false);
-      setSystemAdminRender(true);
+      setConditionalRender(SystemAdmin)
     }
     
   }
@@ -54,22 +40,25 @@ export default function AdminUpdates() {
 
   return (
     <div>
-        <H2>Select Update Field</H2>
+        <h2>Select Update Field</h2>
         {/* drop down for page selection */}
-        <Select value={""} onchange={handleSelectPage}>
-          <option>Select Page</option>
-          <option value={1}>Update Licensees</option>
-          <option value={2}>Add Floor Types/Placement Types</option>
-          <option value={3}>Update Shipping Costs</option>
-          <option value={4} >Update Material Costs/Inventory</option>
+        <FormControl>
+        <InputLabel> Select Page </InputLabel>
+        <Select value={selectedPage} onChange={handleSelectPage}>
+          <MenuItem value={1}>Update Licensees</MenuItem>
+          <MenuItem value={2}>Add Floor Types/Placement Types</MenuItem>
+          <MenuItem value={3}>Update Shipping Costs</MenuItem>
+          <MenuItem value={4} >Update Material Costs/Inventory</MenuItem>
           {/* need to add conditional render for super user for system admin */}
-          <option value={5}>System Admin</option>
+          <MenuItem value={5}>System Admin</MenuItem>
         </Select>
-        {updateLicenseesRender ? <>Update Licensees Page</> : <></>}
+        </FormControl>
+        {conditionalBool ? conditionalRender : <></>}
+        {/* {updateLicenseesRender ? <>Update Licensees Page</> : <></>}
         {addFloorAndPlacementTypesRender ?<>Add Floor Types/Placement Types Page</> : <></>}
         {updateShippingCostsRender ?<>Update Shipping Costs Page</> : <></> }
         {updateMaterialCostsAndInventoryRender ?<>Update Material Costs/Inventory Page</> : <></> }
-        {systemAdminRender ?<>System Admin Page</> : <></> }
+        {systemAdminRender ?<>System Admin Page</> : <></> } */}
     </div>
   )
 }
