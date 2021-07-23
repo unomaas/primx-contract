@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginForm from '../AdminLoginForm/AdminLoginForm';
+import AdminLoginForm from '../AdminLoginForm/AdminLoginForm';
 import { useHistory } from 'react-router-dom';
 
 function AdminLoginPage() {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useHistory } from 'react-router-dom';
-import RegisterForm from '../AdminRegisterForm/AdminRegisterForm';
+import AdminRegisterForm from '../AdminRegisterForm/AdminRegisterForm';
 
 function AdminRegisterPage() {
   const history = useHistory();
