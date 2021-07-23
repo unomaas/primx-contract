@@ -56,9 +56,9 @@ export default function NavDrawer() {
       >
         <div className={'NavDrawer-menu'}>
           <Box>
-            <img src="./images/PMUBlackIcon.svg" height="75"></img>
+            <img src="./images/PrimXLogo2.jpg" height="75"></img>
             <br />
-            Pack Me Up!
+            PrīmX
           </Box>
 
           <Divider />
@@ -116,21 +116,21 @@ export default function NavDrawer() {
             // If user is not logged in:
             <List>
 
-              <ListItem button onClick={() => history.push(`/about`)}>
+              {/* <ListItem button onClick={() => history.push(`/about`)}>
                 <HelpOutlineIcon /> &nbsp;
                 <ListItemText primary={"About Us"} />
-              </ListItem>
+              </ListItem> */}
 
               <Divider />
 
-              <ListItem button onClick={() => history.push(`/registration`)}>
+              {/* <ListItem button onClick={() => history.push(`/registration`)}>
                 <PersonOutlineOutlinedIcon /> &nbsp;
                 <ListItemText primary={"Register"} />
-              </ListItem>
+              </ListItem> */}
 
               <ListItem button onClick={() => history.push(`/login`)}>
                 <ExitToAppIcon /> &nbsp;
-                <ListItemText primary={"Log In"} />
+                <ListItemText primary={"Admin Login"} />
               </ListItem>
 
             </List>
