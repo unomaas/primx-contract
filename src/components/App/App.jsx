@@ -1,26 +1,28 @@
-import React, { useEffect } from 'react';
-import {
-  HashRouter as Router,
-  Route,
-  Redirect,
-  Switch,
-} from 'react-router-dom';
-
-import { useDispatch } from 'react-redux';
-
+//#region ⬇⬇ All document setup, below:
+// ⬇ File Imports: 
+import './App.css';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
-
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-
 import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage';
+import AdminLandingPage from '../AdminLandingPage/AdminLandingPage';
 import InfoPage from '../InfoPage/InfoPage';
-import LandingPage from '../LandingPage/LandingPage';
-import LoginPage from '../LoginPage/LoginPage';
-import RegisterPage from '../RegisterPage/RegisterPage';
+import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
+import AdminLoginPage from '../AdminLoginPage/AdminLoginPage';
+import AdminRegisterPage from '../AdminRegisterPage/AdminRegisterPage';
+import EstimateCreate from '../EstimateCreate/EstimateCreate';
+import EstimateLookup from '../EstimateLookup/EstimateLookup';
+import AdminOrders from '../AdminOrders/AdminOrders';
+import AdminUpdates from '../AdminUpdates/AdminUpdates';
 
-import './App.css';
+// ⬇ Dependent Functionality:
+import React, { useEffect } from 'react';
+import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import { useDispatch } from 'react-redux';
+import { ThemeProvider } from '@material-ui/core';
+import { theme } from '../MuiStyling/MuiStyling';
+//#endregion ⬆⬆ All document setup above.
+
 
 function App() {
   const dispatch = useDispatch();
@@ -47,15 +49,15 @@ function App() {
           </Route>
 
           {/* For protected routes, the view could show one of several things on the same route.
-            Visiting localhost:3000/user will show the UserPage if the user is logged in.
+            Visiting localhost:3000/user will show the AdminLandingPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
             Even though it seems like they are different pages, the user is always on localhost:3000/user */}
           <ProtectedRoute
-            // logged in shows UserPage else shows LoginPage
+            // logged in shows AdminLandingPage else shows LoginPage
             exact
             path="/user"
           >
-            <UserPage />
+            <AdminLandingPage />
           </ProtectedRoute>
 
           <ProtectedRoute
@@ -77,7 +79,7 @@ function App() {
             path="/login"
             authRedirect="/user"
           >
-            <LoginPage />
+            <AdminLoginPage />
           </ProtectedRoute>
 
           <ProtectedRoute
@@ -88,7 +90,7 @@ function App() {
             path="/registration"
             authRedirect="/user"
           >
-            <RegisterPage />
+            <AdminRegisterPage />
           </ProtectedRoute>
 
           <ProtectedRoute
@@ -99,7 +101,7 @@ function App() {
             path="/home"
             authRedirect="/user"
           >
-            <LandingPage />
+            <LicenseeHomePage />
           </ProtectedRoute>
 
           {/* If none of the other routes matched, we will show a 404. */}

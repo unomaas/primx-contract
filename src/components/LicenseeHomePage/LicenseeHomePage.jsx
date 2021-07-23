@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import './LandingPage.css';
+import './LicenseeHomePage.css';
 
 // CUSTOM COMPONENTS
-import RegisterForm from '../RegisterForm/RegisterForm';
+import RegisterForm from '../AdminRegisterForm/AdminRegisterForm';
 
-function LandingPage() {
+function LicenseeHomePage() {
   const [heading, setHeading] = useState('Welcome');
   const history = useHistory();
 
@@ -66,4 +66,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default LicenseeHomePage;

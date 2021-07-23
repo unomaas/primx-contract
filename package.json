@@ -8,6 +8,7 @@
     "@material-ui/data-grid": "^4.0.0-alpha.34",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
+    "@react-pdf/renderer": "^2.0.16",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "cookie-session": "^2.0.0-rc.1",

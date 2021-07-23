@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { useHistory } from 'react-router-dom';
-import RegisterForm from '../RegisterForm/RegisterForm';
+import RegisterForm from '../AdminRegisterForm/AdminRegisterForm';
 
-function RegisterPage() {
+function AdminRegisterPage() {
   const history = useHistory();
 
   return (
     <div>
-      <RegisterForm />
+      <AdminRegisterForm />
 
       <center>
         <button
@@ -25,4 +25,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
+export default AdminRegisterPage;
