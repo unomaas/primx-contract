@@ -48,27 +48,30 @@ function AdminRegisterForm() {
         </h3>
       )}
       <div>
-        <TextField id="outlined-basic" label="Username" variant="outlined" onChange={(event) => setUsername(event.target.value)} value={username} htmlFor="username">
+        <TextField 
+        required
+        id="outlined-basic" 
+        htmlFor="username"
+        name="username" 
+        label="Username" 
+        variant="outlined" 
+        onChange={(event) => setUsername(event.target.value)} 
+        value={username}>
           Username:
-          <input
-            type="text"
-            name="username"
-            
-            required
-            
-          />
         </TextField>
       </div>
       <div>
-        <TextField id="outlined-basic"  label="Password" variant="outlined" htmlFor="password" onChange={(event) => setPassword(event.target.value)} value={password}>
+        <TextField 
+        required
+        id="outlined-basic"
+        htmlFor="password" 
+        name="password"
+        label="Password"
+        variant="outlined"
+        type="password"
+        onChange={(event) => setPassword(event.target.value)} 
+        value={password}>
           Password:
-          <input
-            type="password"
-            name="password"
-            
-            required
-            
-          />
         </TextField>
       </div>
       <div>
