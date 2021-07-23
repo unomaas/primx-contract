@@ -1,10 +1,14 @@
 import React from 'react'
+import { useState } from 'react'
 import Select from '@material-ui/core'
 
 export default function AdminUpdates() {
 
-  const handleSelectPage = (event) => {
+  let [selectedPage,setSelectedPage] = useState("")
 
+  const handleSelectPage = (event) => {
+    setSelectedPage(event.target.value)
+    
   }
 
 
