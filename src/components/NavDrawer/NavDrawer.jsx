@@ -18,6 +18,12 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SearchIcon from '@material-ui/icons/Search';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import UpdateIcon from '@material-ui/icons/Update';
+import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 //#endregion ⬆⬆ Document setup above. 
 
 
@@ -44,7 +50,7 @@ export default function NavDrawer() {
         <MenuIcon
           className={classes.navBarIcon}
           onClick={() => setOpen(true)}
-
+          color="black"
         />
       </IconButton>
 
@@ -52,13 +58,11 @@ export default function NavDrawer() {
         anchor="right"
         open={open}
         onClose={() => setOpen(false)}
-        // onOpen={() => { }}
+      // onOpen={() => { }}
       >
         <div className={'NavDrawer-menu'}>
           <Box>
-            <img src="./images/PMUBlackIcon.svg" height="75"></img>
-            <br />
-            Pack Me Up!
+            <img src="./images/PrimXLogo-Spaced-Black-01.svg" height="75"></img>
           </Box>
 
           <Divider />
@@ -67,44 +71,58 @@ export default function NavDrawer() {
           {user.id ? (
             // If user is logged in:
             <List>
-              <ListItem button onClick={() => history.push(`/dashboard`)}>
-                <HomeOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Dashboard"} />
-              </ListItem>
 
-              <ListItem button onClick={() => history.push(`/createkit`)}>
+              <ListItem button onClick={() => history.push(`/home`)}>
                 <AddCircleOutlineOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Create Kits"} />
+                <ListItemText primary={"Create New Estimate"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/createevent`)}>
-                <AddBoxOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Create Events"} />
-              </ListItem>
-
-              <ListItem button onClick={() => history.push(`/packingfor`)}>
-                <WorkOutlineOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Start Packing!"} />
-              </ListItem>
-
-              <Divider />
-
-              <ListItem button onClick={() => history.push(`/info`)}>
-                <InfoOutlinedIcon /> &nbsp;
-                <ListItemText primary={"App Info"} />
-              </ListItem>
-
-              <ListItem button onClick={() => history.push(`/about`)}>
-                <HelpOutlineIcon /> &nbsp;
-                <ListItemText primary={"About Us"} />
+              <ListItem button onClick={() => history.push(`/lookup`)}>
+                <SearchIcon /> &nbsp;
+                <ListItemText primary={"Look Up Estimate"} />
               </ListItem>
 
               <Divider />
 
               <ListItem button onClick={() => history.push(`/user`)}>
-                <PersonOutlineOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Profile"} />
+                <HomeOutlinedIcon /> &nbsp;
+                <ListItemText primary={"Admin Dashboard"} />
               </ListItem>
+
+              <ListItem button onClick={() => history.push(`/createkit`)}>
+                <PersonAddOutlinedIcon /> &nbsp;
+                <ListItemText primary={"Create New Admin"} />
+              </ListItem>
+
+              <ListItem button onClick={() => history.push(`/createevent`)}>
+                <UpdateIcon /> &nbsp;
+                <ListItemText primary={"Update Items"} />
+              </ListItem>
+
+              <ListItem button onClick={() => history.push(`/packingfor`)}>
+                <ViewCarouselIcon /> &nbsp;
+                <ListItemText primary={"View Pipeline"} />
+              </ListItem>
+
+              {/* Conditional rendering to show system admin portal: */}
+              {user.id == '1' ? (
+                // If user is system admin (id is 1):
+                <>
+                  <Divider />
+
+                  <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
+                    <SupervisorAccountIcon /> &nbsp;
+                    <ListItemText primary={"System Admin View"} />
+                  </ListItem>
+                </>
+              ) : (
+                // If user is NOT system admin (id is anything else):
+                <>
+                </>
+              )}
+              {/* End System Admin conditional rendering. */}
+
+              <Divider />
 
               <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
                 <ExitToAppIcon /> &nbsp;
@@ -116,21 +134,21 @@ export default function NavDrawer() {
             // If user is not logged in:
             <List>
 
-              <ListItem button onClick={() => history.push(`/about`)}>
-                <HelpOutlineIcon /> &nbsp;
-                <ListItemText primary={"About Us"} />
+              <ListItem button onClick={() => history.push(`/home`)}>
+                <AddCircleOutlineOutlinedIcon /> &nbsp;
+                <ListItemText primary={"Create New Estimate"} />
+              </ListItem>
+
+              <ListItem button onClick={() => history.push(`/lookup`)}>
+                <SearchIcon /> &nbsp;
+                <ListItemText primary={"Look Up Estimate"} />
               </ListItem>
 
               <Divider />
 
-              <ListItem button onClick={() => history.push(`/registration`)}>
-                <PersonOutlineOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Register"} />
-              </ListItem>
-
               <ListItem button onClick={() => history.push(`/login`)}>
                 <ExitToAppIcon /> &nbsp;
-                <ListItemText primary={"Log In"} />
+                <ListItemText primary={"Admin Login"} />
               </ListItem>
 
             </List>
