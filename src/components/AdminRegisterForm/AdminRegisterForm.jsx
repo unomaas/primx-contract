@@ -1,11 +1,31 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+//MUI Imports
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+
+
 function AdminRegisterForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
+
+  //styles for MUI
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+        width: '25ch',
+      },
+    },
+  }));
+  //defining classes for MUI
+  const classes = useStyles();
+  
 
   const registerUser = (event) => {
     event.preventDefault();
@@ -20,39 +40,42 @@ function AdminRegisterForm() {
   }; // end registerUser
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
+    <form className={classes.root} onSubmit={registerUser}>
+      <h2>Register New Admin</h2>
       {errors.registrationMessage && (
         <h3 className="alert" role="alert">
           {errors.registrationMessage}
         </h3>
       )}
       <div>
-        <label htmlFor="username">
+        <TextField 
+        required
+        id="outlined-basic" 
+        htmlFor="username"
+        name="username" 
+        label="Username" 
+        variant="outlined" 
+        onChange={(event) => setUsername(event.target.value)} 
+        value={username}>
           Username:
-          <input
-            type="text"
-            name="username"
-            value={username}
-            required
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
+        </TextField>
       </div>
       <div>
-        <label htmlFor="password">
+        <TextField 
+        required
+        id="outlined-basic"
+        htmlFor="password" 
+        name="password"
+        label="Password"
+        variant="outlined"
+        type="password"
+        onChange={(event) => setPassword(event.target.value)} 
+        value={password}>
           Password:
-          <input
-            type="password"
-            name="password"
-            value={password}
-            required
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
+        </TextField>
       </div>
       <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
+        <Button onClick={registerUser} variant="contained" color="primary" className="btn" value="Register">Register</Button>
       </div>
     </form>
   );
