@@ -17,7 +17,6 @@ export default function AdminOrders() {
   }, [])
 
 
-  console.log('estimates array:', estimatesArray);
   return (
     <div>
       <Typography variant="h3" component="h2" align="center">
