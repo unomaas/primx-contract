@@ -30,6 +30,12 @@ export default function AdminEstimatesGrid({estimatesArray}) {
         {field: 'project_manager_phone', headerName: 'Project Manager Phone', width: 175},
         {field: 'project_name', headerName: 'Project Name', width: 175},
 
+        // technical job details
+        {field: 'measurement_units', headerName: 'Units', width: 100},
+        {field: 'floor_type', headerName: 'Floor Type', width: 175},
+        {field: 'placement_type', headerName: 'Placement Type', width: 175},
+        
+
         // {field: '', headerName: '', width: },
     ]
 
