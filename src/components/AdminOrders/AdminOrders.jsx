@@ -9,28 +9,49 @@ import AdminEstimatesGrid from '../AdminEstimatesGrid/AdminEstimatesGrid';
 export default function AdminOrders() {
   const dispatch = useDispatch();
   // useSelector looks at the array of estimate objects from adminEstimates reducer
-  const estimatesArray = useSelector(store => store.adminEstimates);
+  const allEstimates = useSelector(store => store.adminEstimates);
+
+  // create holding arrays to be filled with estimate objects, then passed as props to create the needed Data Grids
+  const [pendingOrders, processedOrders, openEstimates] = [ [], [], [] ];
+  
+  // break up all estimates into pending orders, processed orders, and open estimates
+  allEstimates.forEach(estimate => {
+    // sort the estimates into their individual array
+    // orders are considered processed if they've been marked_as_ordered by an admin and ordered_by_licensee by a licensee
+    if (estimate.marked_as_ordered && estimate.ordered_by_licensee) {
+      processedOrders.push(estimate);
+    } // orders are considered pending if they've been ordered_by_licensee by a licensee but not yet marked_as_ordered
+    else if (estimate.ordered_by_licensee) {
+      pendingOrders.push(estimate);
+    } // orders where neither of those are true are considered open
+    else {
+      openEstimates.push(estimate);
+    }
+  })
+
   
   useEffect(() => {
     // GET all estimates data on page load
     dispatch({type: 'FETCH_ALL_ESTIMATES' });
   }, [])
 
-
+  
   return (
     <div>
       <Typography variant="h3" component="h2" align="center">
         Pending Orders
       </Typography>
-      {/* Pending data grid here */}
+      <AdminEstimatesGrid estimatesArray={pendingOrders} />
+
       <Typography variant="h3" component="h2" align="center">
         Processed Orders
       </Typography>
-      {/* Processed data grid here */}
+      <AdminEstimatesGrid estimatesArray={processedOrders} />
+
       <Typography variant="h3" component="h2" align="center">
         Open Estimates
       </Typography>
-      <AdminEstimatesGrid estimatesArray={estimatesArray} />
+      <AdminEstimatesGrid estimatesArray={openEstimates} />
     </div>
   )
 }

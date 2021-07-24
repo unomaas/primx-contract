@@ -13,14 +13,7 @@ export default function AdminEstimatesGrid({estimatesArray}) {
     ]
 
     // const rows = estimatesArray;
-    let rows = [];
-
-    estimatesArray.forEach(estimate => {
-        rows.push({
-            id: estimate.id,
-            estimate_number: estimate.estimate_number
-        })
-    })
+    let rows = estimatesArray;
 
 
     console.log('estimates array, rows:', estimatesArray, rows);
