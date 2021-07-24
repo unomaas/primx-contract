@@ -41,12 +41,12 @@ export default function AdminOrders() {
       <Typography variant="h3" component="h2" align="center">
         Pending Orders
       </Typography>
-      <AdminEstimatesGrid estimatesArray={pendingOrders} />
+      {/* <AdminEstimatesGrid estimatesArray={pendingOrders} /> */}
 
       <Typography variant="h3" component="h2" align="center">
         Processed Orders
       </Typography>
-      <AdminEstimatesGrid estimatesArray={processedOrders} />
+      {/* <AdminEstimatesGrid estimatesArray={processedOrders} /> */}
 
       <Typography variant="h3" component="h2" align="center">
         Open Estimates
