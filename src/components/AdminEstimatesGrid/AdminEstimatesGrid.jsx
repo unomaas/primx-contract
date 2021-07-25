@@ -45,11 +45,47 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
         {field: 'thickened_edge_construction_joint_lineal_meters', headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, hide: true },
         {field: 'thickened_edge_perimeter_lineal_meters', headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, hide: true },
         
-        
-        // {field: '', headerName: '', width: 175, hide: true },
+        // material details ******** Change Shipping Estimate if math function is used based on the current shipping snapshot instead of a total cost ******
+        {field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175, hide: true },
+        {field: 'primx_dc_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175, hide: true },
+        {field: 'primx_flow_dosage_liters', headerName: 'Flow Dosage (liters)', width: 175, hide: true },
+        {field: 'primx_flow_total_materials_price', headerName: 'Flow Total Material Price', width: 175, hide: true },
+        {field: 'primx_flow_shipping_estimate', headerName: 'Flow Shipping Estimate', width: 175, hide: true },
+        {field: 'primx_steel_fibers_dosage_lbs', headerName: 'Steel Fiber Dosage (lbs)', width: 175, hide: true },
+        {field: 'primx_steel_fibers_dosage_kgs', headerName: 'Steel Fiber Dosage (kgs)', width: 175, hide: true },
+        {field: 'primx_steel_fibers_total_materials_price', headerName: 'Steel Fiber Total Material Price', width: 175, hide: true },
+        {field: 'primx_steel_fibers_shipping_estimate', headerName: 'Steel Fiber Shipping Estimate', width: 175, hide: true },
+        {field: 'primx_ultracure_blankets_total_materials_price', headerName: 'Ultracure Blankets Total Material Price', width: 175, hide: true },
+        {field: 'primx_cpea_dosage_liters', headerName: 'CPEA Dosage (liters)', width: 175, hide: true },
+        {field: 'primx_cpea_total_materials_price', headerName: 'CPEA Total Material Price', width: 175, hide: true },
+        {field: 'primx_cpea_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175, hide: true },
+        // need the math-created fields below
     ]
 
-    
+    // add additional columns based on the data source for the data grid
+    const addGridColumns = (table) => {
+        if (table == 'pending' || table == 'processed') {
+            columns.push(
+                {field: 'po_number', headerName: 'Purchase Order', width: 175, hide: true },
+                {field: 'order_number', headerName: 'Order Number', width: 175, hide: true }
+            )
+        }
+        if (table == 'pending') {
+            columns.unshift(
+                // ************** Need to make this into a button that clicks to process order **********************
+                {field: 'order_number', headerName: 'Process Order', width: 175}
+            )
+        } else if (table == 'processed') {
+            columns.push(
+                {field: 'processed_by', headerName: 'Processed By', width: 175, hide: true }
+            )
+        }
+    }
+    addGridColumns(table);
+
+
+
+    // rows for data grid come in as the estimatesArray prop
     let rows = estimatesArray;
 
 
