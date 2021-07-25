@@ -10,6 +10,7 @@ const router = express.Router();
   });
   
 // GET request to get all estimates data from the database
+// **************** NEED TO REJECT UNAUTHENTICATED ********************
 router.get('/all', (req, res) => {
   // SQL query to GET all estimates along the floor type names, licensee names, placement type names, and shipping state/province names
   const queryText = `SELECT "estimates".*, "floor_types".floor_type, "licensees".licensee_contractor_name, "placement_types".placement_type, "shipping_costs".ship_to_state_province FROM "estimates"
@@ -35,5 +36,23 @@ router.get('/all', (req, res) => {
   router.post('/', (req, res) => {
     // POST route code here
   });
+
+  // PUT request to edit a single piece of data on one row of the estimates table
+  // **************** NEED TO REJECT UNAUTHENTICATED ********************
+  router.put('/:id', (req, res) => {
+    console.log('got to PUT route! params id, req.body', req.params.id, req.body);
+    
+    // SQL query to update a specific piece of data
+    // THIS ISN"T WORKING RIGHT NOW: need to figure out how to sanitize the req.body.dbColumn that's being sent, can't be used with $ to be a value
+    const queryText = `UPDATE "estimates" SET $1 = $2 WHERE "id" = $3`
+    // DB request
+    pool.query(queryText, [req.body.dbColumn, req.body.newValue, req.params.id])
+      .then(result => {
+        res.sendStatus(200);
+      })
+      .catch(error => {
+        console.log(`Error with /api/estimates GET for id ${req.params.id}:`, error)
+      })
+  })
   
   module.exports = router;

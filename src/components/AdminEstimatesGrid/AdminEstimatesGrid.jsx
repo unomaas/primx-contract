@@ -14,7 +14,7 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
     const columns = [
         // estimate/contractor information
         {field: 'estimate_number', headerName: 'Estimate Number', width: 175},
-        {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 175, editable: true},
+        {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 175},
         {field: 'date_created', headerName: 'Date Created', width: 175},
         {
             field: 'Shipping_Address', 
@@ -27,7 +27,7 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
                 }`,
         },
         {field: 'anticipated_first_pour_date', headerName: 'Anticipated First Pour', width: 175},
-        {field: 'project_general_contractor', headerName: 'General Contractor', width: 175},
+        {field: 'project_general_contractor', headerName: 'General Contractor', width: 175, editable: true},
         {field: 'project_manager_name', headerName: 'Project Manager', width: 175},
         {field: 'project_manager_email', headerName: 'Project Manager Email', width: 175},
         {field: 'project_manager_phone', headerName: 'Project Manager Phone', width: 175},

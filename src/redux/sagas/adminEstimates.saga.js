@@ -20,7 +20,7 @@ function* fetchAllEstimates() {
 }
 
 // worker saga to make a PUT request to update that was changed in the AdminEstimatesGrid Data Grid
-function* editEstimateData() {
+function* editEstimateData(action) {
     try {
         // action.payload is an object with the id, a dbColumn that tells column to be edited, and a newValue that contains the requested change
         yield axios.put(`/api/estimates/${action.payload.id}`, action.payload);
