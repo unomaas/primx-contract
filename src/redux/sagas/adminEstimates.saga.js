@@ -43,6 +43,8 @@ function* editProcessOrder(action) {
     try {
         // action.payload is an object with various details about the data grid row, including the id of the estimate to be changed
         yield axios.put(`/api/estimates/process/${action.payload.id}`);
+        // update data grids now that data in DB has changed
+        yield put({type: 'FETCH_ALL_ESTIMATES'});
     }
     catch (error) {
         console.log('Error with editProcessOrder in the adminEstimates Saga', error);
