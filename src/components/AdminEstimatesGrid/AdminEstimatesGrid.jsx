@@ -5,9 +5,9 @@ import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button'
 
 
-// component that renders a Material UI Data Grid, needs an array of estimates as props. Table is a string that references which data grid is
+// component that renders a Material UI Data Grid, needs an array of estimates as props. gridSource is a string that references which data grid is
 // being created, the current strings are 'pending', 'processed', and 'open'
-export default function AdminEstimatesGrid({estimatesArray, table}) {
+export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
     const dispatch = useDispatch();
 
     // rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
@@ -82,15 +82,15 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
     ]
 
     // add additional columns based on the data source for the data grid
-    const addGridColumns = (gridSource) => {
-        if (gridSource == 'pending' || gridSource == 'processed') {
+    const addGridColumns = (dataSource) => {
+        if (dataSource == 'pending' || dataSource == 'processed') {
             // add the Purchase Order number and the order number to each of the pending and processed tables
             columns.push( 
                 {field: 'po_number', headerName: 'Purchase Order', width: 175, hide: true },
                 {field: 'order_number', headerName: 'Order Number', width: 175, hide: true }
             )
         }
-        if (gridSource == 'pending') {
+        if (dataSource == 'pending') {
             // add the process order button to the beginning of the pending table
             columns.unshift(
                 {
@@ -101,7 +101,7 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
                     renderCell: renderProcessButton // function declared above, creates a button in each row of the pending column
                 }
             )
-        } else if (gridSource == 'processed') {
+        } else if (dataSource == 'processed') {
             // ad the processed by name to the processed table
             columns.push(
                 {field: 'processed_by', headerName: 'Processed By', width: 175, hide: true }
@@ -109,7 +109,7 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
         }
     }
     // run the addGridColumns function using the props from table as an argument
-    addGridColumns(table);
+    addGridColumns(gridSource);
 
     // rows for data grid come in as the estimatesArray prop
     let rows = estimatesArray;
