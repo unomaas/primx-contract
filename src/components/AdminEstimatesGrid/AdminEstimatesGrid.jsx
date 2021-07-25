@@ -96,14 +96,14 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
     // submit handler for in-line cell edits on the data grid
     const handleEditSubmit = ( {id, field, props} ) => {
         // id argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
-        dispatch({ type: 'EDIT_GRID_ITEM', payload: {
+        dispatch({ type: 'EDIT_ESTIMATE_DATA', payload: {
             id: id,
             dbColumn: field,
             newValue: props.value
         }})
     }
 
-    
+
     return (
         <div style={{ height: 350, width: '100%'}}>
             <DataGrid
