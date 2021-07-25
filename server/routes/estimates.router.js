@@ -17,7 +17,8 @@ router.get('/all', (req, res) => {
                      JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
                      JOIN "licensees" ON "estimates".licensee_id = "licensees".id
                      JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
-                     JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id;`;
+                     JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
+                     ORDER BY "estimates".id DESC;`;
   // DB request
   pool.query(queryText)
     .then(result => {
@@ -37,6 +38,7 @@ router.get('/all', (req, res) => {
     // POST route code here
   });
 
+
   // PUT request to edit a single piece of data on one row of the estimates table
   // **************** NEED TO REJECT UNAUTHENTICATED ********************
   router.put('/edit/:id', (req, res) => {
@@ -54,7 +56,9 @@ router.get('/all', (req, res) => {
     //     console.log(`Error with /api/estimates GET for id ${req.params.id}:`, error)
     //   })
 
-      //
+      // ***************** THIS MAY NOT BE SECURE ***********************
+
+      // SQL query to update a specific piece of data
       const queryText = `UPDATE "estimates" SET ${req.body.dbColumn} = $1 WHERE "id" = $2`
       // DB request
       pool.query(queryText, [req.body.newValue, req.params.id])
@@ -62,9 +66,28 @@ router.get('/all', (req, res) => {
           res.sendStatus(200);
         })
         .catch(error => {
-          console.log(`Error with /api/estimates GET for id ${req.params.id}:`, error)
+          console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
         })
     
   })
   
+  // PUT request to mark an estimate flagged for order by licensee to be marked as ordered by an admin, and to add the name of the admin making the request
+  // **************** NEED TO REJECT UNAUTHENTICATED ********************
+  router.put('/process/:id', (req, res) => {
+
+    // SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
+    const queryText = `UPDATE "estimates" SET "marked_as_ordered" = TRUE, "processed_by" = $1 WHERE "id" = $2;`;
+    // DB request
+    pool.query(queryText, [req.user.username, req.params.id])
+      .then(result => {
+        res.sendStatus(200);
+      })
+      .catch(error => {
+        console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
+      })
+  })
+
+
+
+
   module.exports = router;

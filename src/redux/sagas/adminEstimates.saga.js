@@ -40,7 +40,13 @@ function* editEstimateData(action) {
 
 // worker saga to make a PUT request to mark a pending order as processed, and assign the estimate the name of the admin who clicked the button
 function* editProcessOrder(action) {
-    
+    try {
+        // action.payload is an object with various details about the data grid row, including the id of the estimate to be changed
+        yield axios.put(`/api/estimates/process/${action.payload.id}`);
+    }
+    catch (error) {
+        console.log('Error with editProcessOrder in the adminEstimates Saga', error);
+    }
 }
 
 
