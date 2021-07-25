@@ -1,18 +1,20 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 // Material-UI components
 import { DataGrid } from '@material-ui/data-grid';
+
 
 // component that renders a Material UI Data Grid, needs an array of estimates as props. Table is a string that references which data grid is
 // being created, the current strings are 'pending', 'processed', and 'open'
 export default function AdminEstimatesGrid({estimatesArray, table}) {
+    const dispatch = useDispatch();
 
-    
 
     // columns for Data Grid
     const columns = [
         // estimate/contractor information
         {field: 'estimate_number', headerName: 'Estimate Number', width: 175},
-        {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 175},
+        {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 175, editable: true},
         {field: 'date_created', headerName: 'Date Created', width: 175},
         {
             field: 'Shipping_Address', 
@@ -87,11 +89,21 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
     // run the addGridColumns function using the props from table as an argument
     addGridColumns(table);
 
-
     // rows for data grid come in as the estimatesArray prop
     let rows = estimatesArray;
 
 
+    // submit handler for in-line cell edits on the data grid
+    const handleEditSubmit = ( {id, field, props} ) => {
+        // id argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
+        dispatch({ type: 'EDIT_GRID_ITEM', payload: {
+            id: id,
+            dbColumn: field,
+            newValue: props.value
+        }})
+    }
+
+    
     return (
         <div style={{ height: 350, width: '100%'}}>
             <DataGrid
@@ -99,6 +111,7 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
                 columns={columns}
                 pageSize={5}
                 checkboxSelection
+                onEditCellChangeCommitted={handleEditSubmit}
             />
         </div>
     )
