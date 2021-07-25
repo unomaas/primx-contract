@@ -63,35 +63,37 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
     ]
 
     // add additional columns based on the data source for the data grid
-    const addGridColumns = (table) => {
-        if (table == 'pending' || table == 'processed') {
-            columns.push(
+    const addGridColumns = (gridSource) => {
+        if (gridSource == 'pending' || gridSource == 'processed') {
+            // add the Purchase Order number and the order number to each of the pending and processed tables
+            columns.push( 
                 {field: 'po_number', headerName: 'Purchase Order', width: 175, hide: true },
                 {field: 'order_number', headerName: 'Order Number', width: 175, hide: true }
             )
         }
-        if (table == 'pending') {
+        if (gridSource == 'pending') {
+            // add the process order button to the beginning of the pending table
             columns.unshift(
                 // ************** Need to make this into a button that clicks to process order **********************
-                {field: 'order_number', headerName: 'Process Order', width: 175}
+                // {field: 'ORDER-BUTTON-NAME', headerName: 'Process Order', width: 175}
             )
-        } else if (table == 'processed') {
+        } else if (gridSource == 'processed') {
+            // ad the processed by name to the processed table
             columns.push(
                 {field: 'processed_by', headerName: 'Processed By', width: 175, hide: true }
             )
         }
     }
+    // run the addGridColumns function using the props from table as an argument
     addGridColumns(table);
-
 
 
     // rows for data grid come in as the estimatesArray prop
     let rows = estimatesArray;
 
 
-    console.log('estimates array, rows:', estimatesArray);
     return (
-        <div style={{ height: 400, width: '100%'}}>
+        <div style={{ height: 350, width: '100%'}}>
             <DataGrid
                 rows={rows}
                 columns={columns}
