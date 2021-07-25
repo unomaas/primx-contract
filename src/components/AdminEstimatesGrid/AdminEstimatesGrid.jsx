@@ -2,8 +2,9 @@ import React from 'react';
 // Material-UI components
 import { DataGrid } from '@material-ui/data-grid';
 
-// component that renders a Material UI Data Grid, needs an array of estimates as props
-export default function AdminEstimatesGrid({estimatesArray}) {
+// component that renders a Material UI Data Grid, needs an array of estimates as props. Table is a string that references which data grid is
+// being created, the current strings are 'pending', 'processed', and 'open'
+export default function AdminEstimatesGrid({estimatesArray, table}) {
 
     
 
@@ -31,12 +32,21 @@ export default function AdminEstimatesGrid({estimatesArray}) {
         {field: 'project_name', headerName: 'Project Name', width: 175},
 
         // technical job details
-        {field: 'measurement_units', headerName: 'Units', width: 100},
-        {field: 'floor_type', headerName: 'Floor Type', width: 175},
-        {field: 'placement_type', headerName: 'Placement Type', width: 175},
+        {field: 'measurement_units', headerName: 'Units', width: 100, hide: true},
+        {field: 'floor_type', headerName: 'Floor Type', width: 175, hide: true},
+        {field: 'placement_type', headerName: 'Placement Type', width: 175, hide: true},
+        {field: 'square_feet', headerName: 'Square Feet', width: 175, hide: true },
+        {field: 'thickness_inches', headerName: 'Thickness(inches)', width: 175, hide: true },
+        {field: 'square_meters', headerName: 'Square Meters', width: 175, hide: true },
+        {field: 'thickness_millimeters', headerName: 'Thickness(mm)', width: 175, hide: true },
+        {field: 'waste_factor_percentage', headerName: 'Waste Factor (%)', width: 175, hide: true },
+        {field: 'thickened_edge_construction_joint_lineal_feet', headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, hide: true },
+        {field: 'thickened_edge_perimeter_lineal_feet', headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, hide: true },
+        {field: 'thickened_edge_construction_joint_lineal_meters', headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, hide: true },
+        {field: 'thickened_edge_perimeter_lineal_meters', headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, hide: true },
         
-
-        // {field: '', headerName: '', width: },
+        
+        // {field: '', headerName: '', width: 175, hide: true },
     ]
 
     
