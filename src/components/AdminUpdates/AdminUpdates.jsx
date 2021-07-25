@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Select from '@material-ui/core/Select'
 import { FormControl, MenuItem } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -20,6 +20,9 @@ export default function AdminUpdates() {
   //handles values of selected page change on event change
   const handleSelectPage = (event) => {
     setSelectedPage(event.target.value);
+  }
+
+  const renderComponent = () => {
     setConditionalBool(true);
     console.log(selectedPage)
 
@@ -34,8 +37,11 @@ export default function AdminUpdates() {
     } else if (selectedPage == 5) {
       setConditionalRender(SystemAdmin)
     }
-    
   }
+
+  useEffect(() => {
+    renderComponent();
+  },[selectedPage]);
 
 
   return (
