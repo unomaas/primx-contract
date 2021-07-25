@@ -17,7 +17,7 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
         {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 175},
         {field: 'date_created', headerName: 'Date Created', width: 175},
         {
-            field: 'Shipping_Address', 
+            field: 'Shipping_Address', // Editable + validation? Will be tricky since this is a value getter
             headerName: 'Ship To Address', 
             width: 250,
             valueGetter: (params) => 
@@ -26,39 +26,41 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
                 ${params.getValue(params.id, 'country') || ''
                 }`,
         },
-        {field: 'anticipated_first_pour_date', headerName: 'Anticipated First Pour', width: 175},
+        {field: 'anticipated_first_pour_date', headerName: 'Anticipated First Pour', width: 175, editable: true}, // Need edit validation?
         {field: 'project_general_contractor', headerName: 'General Contractor', width: 175, editable: true},
-        {field: 'project_manager_name', headerName: 'Project Manager', width: 175},
-        {field: 'project_manager_email', headerName: 'Project Manager Email', width: 175},
-        {field: 'project_manager_phone', headerName: 'Project Manager Phone', width: 175},
-        {field: 'project_name', headerName: 'Project Name', width: 175},
+        {field: 'project_manager_name', headerName: 'Project Manager', width: 175, editable: true},
+        {field: 'project_manager_email', headerName: 'Project Manager Email', width: 175, editable: true},
+        {field: 'project_manager_phone', headerName: 'Project Manager Phone', width: 175, editable: true},
+        {field: 'project_name', headerName: 'Project Name', width: 175, editable: true},
 
         // technical job details
-        {field: 'measurement_units', headerName: 'Units', width: 100, hide: true},
-        {field: 'floor_type', headerName: 'Floor Type', width: 175, hide: true},
-        {field: 'placement_type', headerName: 'Placement Type', width: 175, hide: true},
-        {field: 'square_feet', headerName: 'Square Feet', width: 175, hide: true },
-        {field: 'thickness_inches', headerName: 'Thickness(inches)', width: 175, hide: true },
-        {field: 'square_meters', headerName: 'Square Meters', width: 175, hide: true },
-        {field: 'thickness_millimeters', headerName: 'Thickness(mm)', width: 175, hide: true },
-        {field: 'waste_factor_percentage', headerName: 'Waste Factor (%)', width: 175, hide: true },
-        {field: 'thickened_edge_construction_joint_lineal_feet', headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, hide: true },
-        {field: 'thickened_edge_perimeter_lineal_feet', headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, hide: true },
-        {field: 'thickened_edge_construction_joint_lineal_meters', headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, hide: true },
-        {field: 'thickened_edge_perimeter_lineal_meters', headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, hide: true },
+        {field: 'measurement_units', headerName: 'Units', width: 100, hide: true}, // Editable + validation?
+        {field: 'floor_type', headerName: 'Floor Type', width: 175, hide: true}, // Editable + validation?
+        {field: 'placement_type', headerName: 'Placement Type', width: 175, hide: true}, // Editable + validation?
+        {field: 'square_feet', headerName: 'Square Feet', width: 175, hide: true }, // Editable + validation?
+        {field: 'thickness_inches', headerName: 'Thickness(inches)', width: 175, hide: true }, // Editable + validation?
+        {field: 'square_meters', headerName: 'Square Meters', width: 175, hide: true }, // Editable + validation?
+        {field: 'thickness_millimeters', headerName: 'Thickness(mm)', width: 175, hide: true }, // Editable + validation?
+        {field: 'waste_factor_percentage', headerName: 'Waste Factor (%)', width: 175, hide: true }, // Editable + validation?
+        {field: 'thickened_edge_construction_joint_lineal_feet', headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, hide: true }, // Editable + validation?
+        {field: 'thickened_edge_perimeter_lineal_feet', headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, hide: true }, // Editable + validation?
+        {field: 'thickened_edge_construction_joint_lineal_meters', headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, hide: true }, // Editable + validation?
+        {field: 'thickened_edge_perimeter_lineal_meters', headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, hide: true }, // Editable + validation?
         
         // material details ******** Change Shipping Estimate if math function is used based on the current shipping snapshot instead of a total cost ******
-        {field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175, hide: true },
+        // Prices and shipping estimates are calculated at the time of estimate creation, and will be able to be updated later. Probably shouldn't
+        // be editable columns
+        {field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175, hide: true }, 
         {field: 'primx_dc_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175, hide: true },
-        {field: 'primx_flow_dosage_liters', headerName: 'Flow Dosage (liters)', width: 175, hide: true },
+        {field: 'primx_flow_dosage_liters', headerName: 'Flow Dosage (liters)', width: 175, hide: true }, // Editable + validation?
         {field: 'primx_flow_total_materials_price', headerName: 'Flow Total Material Price', width: 175, hide: true },
         {field: 'primx_flow_shipping_estimate', headerName: 'Flow Shipping Estimate', width: 175, hide: true },
-        {field: 'primx_steel_fibers_dosage_lbs', headerName: 'Steel Fiber Dosage (lbs)', width: 175, hide: true },
-        {field: 'primx_steel_fibers_dosage_kgs', headerName: 'Steel Fiber Dosage (kgs)', width: 175, hide: true },
+        {field: 'primx_steel_fibers_dosage_lbs', headerName: 'Steel Fiber Dosage (lbs)', width: 175, hide: true }, // Editable + validation?
+        {field: 'primx_steel_fibers_dosage_kgs', headerName: 'Steel Fiber Dosage (kgs)', width: 175, hide: true }, // Editable + validation?
         {field: 'primx_steel_fibers_total_materials_price', headerName: 'Steel Fiber Total Material Price', width: 175, hide: true },
         {field: 'primx_steel_fibers_shipping_estimate', headerName: 'Steel Fiber Shipping Estimate', width: 175, hide: true },
         {field: 'primx_ultracure_blankets_total_materials_price', headerName: 'Ultracure Blankets Total Material Price', width: 175, hide: true },
-        {field: 'primx_cpea_dosage_liters', headerName: 'CPEA Dosage (liters)', width: 175, hide: true },
+        {field: 'primx_cpea_dosage_liters', headerName: 'CPEA Dosage (liters)', width: 175, hide: true }, // Editable + validation?
         {field: 'primx_cpea_total_materials_price', headerName: 'CPEA Total Material Price', width: 175, hide: true },
         {field: 'primx_cpea_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175, hide: true },
         // need the math-created fields below
@@ -95,6 +97,7 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
 
     // submit handler for in-line cell edits on the data grid
     const handleEditSubmit = ( {id, field, props} ) => {
+        console.log('in handle edit submit for id, field, props', id, field, props);
         // id argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
         dispatch({ type: 'EDIT_ESTIMATE_DATA', payload: {
             id: id,
