@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 // Material-UI components
 import { DataGrid } from '@material-ui/data-grid';
+import Button from '@material-ui/core/Button'
 
 
 // component that renders a Material UI Data Grid, needs an array of estimates as props. Table is a string that references which data grid is
@@ -9,6 +10,20 @@ import { DataGrid } from '@material-ui/data-grid';
 export default function AdminEstimatesGrid({estimatesArray, table}) {
     const dispatch = useDispatch();
 
+    // rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
+    const renderProcessButton = (params) => {
+        return (
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={
+                    () => handleProcessOrder(params)
+                }
+            >
+                Process Order
+            </Button>
+        )
+    }
 
     // columns for Data Grid
     const columns = [
@@ -78,8 +93,13 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
         if (gridSource == 'pending') {
             // add the process order button to the beginning of the pending table
             columns.unshift(
-                // ************** Need to make this into a button that clicks to process order **********************
-                // {field: 'ORDER-BUTTON-NAME', headerName: 'Process Order', width: 175}
+                {
+                    field: '', 
+                    headerName: 'Process Order', 
+                    width: 175,
+                    disableClickEventBubbling: true,
+                    renderCell: renderProcessButton // function declared above, creates a button in each row of the pending column
+                }
             )
         } else if (gridSource == 'processed') {
             // ad the processed by name to the processed table
@@ -104,6 +124,12 @@ export default function AdminEstimatesGrid({estimatesArray, table}) {
             dbColumn: field,
             newValue: props.value
         }})
+    }
+
+    // click listener for the process order buttons inside the pending order table
+    const handleProcessOrder = (params) => {
+        // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+        dispatch({ type:'EDIT_PROCESS_ORDER', payload: params})
     }
 
 

@@ -39,7 +39,7 @@ router.get('/all', (req, res) => {
 
   // PUT request to edit a single piece of data on one row of the estimates table
   // **************** NEED TO REJECT UNAUTHENTICATED ********************
-  router.put('/:id', (req, res) => {
+  router.put('/edit/:id', (req, res) => {
     console.log('got to PUT route! params id, req.body', req.params.id, req.body);
     
     // SQL query to update a specific piece of data

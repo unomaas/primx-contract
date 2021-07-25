@@ -30,12 +30,17 @@ function* fetchAllEstimates() {
 function* editEstimateData(action) {
     try {
         // action.payload is an object with the id, a dbColumn that tells column to be edited, and a newValue that contains the requested change
-        yield axios.put(`/api/estimates/${action.payload.id}`, action.payload);
+        yield axios.put(`/api/estimates/edit/${action.payload.id}`, action.payload);
 
     }
     catch (error) {
         console.log('Error with editEstimateData in the adminEstimates Saga', error);
     }
+}
+
+// worker saga to make a PUT request to mark a pending order as processed, and assign the estimate the name of the admin who clicked the button
+function* editProcessOrder(action) {
+    
 }
 
 
@@ -45,7 +50,9 @@ function* adminEstimatesSaga() {
     // request to GET all estimates
     yield takeLatest('FETCH_ALL_ESTIMATES', fetchAllEstimates);
     // request to edit a single piece of data in an estimate
-    yield takeLatest('EDIT_ESTIMATE_DATA', editEstimateData)
+    yield takeLatest('EDIT_ESTIMATE_DATA', editEstimateData);
+    // request to mark an order estimate that is pending as processed in the database
+    yield takeLatest('EDIT_PROCESS_ORDER', editProcessOrder);
 }
 
 export default adminEstimatesSaga;
