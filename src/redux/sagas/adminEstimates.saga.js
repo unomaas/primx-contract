@@ -6,6 +6,13 @@ function* fetchAllEstimates() {
     try {
         // GET all estimates
         const estimates = yield axios.get('/api/estimates/all');
+        console.log('estimates.data', estimates.data);
+        
+        // remove the timestamps from dates for all the estimates
+        estimates.data.forEach(estimate => {
+            estimate.date_created = estimate.date_created.split('T')[0];
+            estimate.anticipated_first_pour_date = estimate.anticipated_first_pour_date.split('T')[0];
+        })
         // OPTION: run the math function on the saved array of objects here to mutate them into more complete objects
 
         // send results to adminEstimates reducer
