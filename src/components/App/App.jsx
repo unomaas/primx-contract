@@ -60,6 +60,10 @@ function App() {
               <AdminLandingPage />
             </ProtectedRoute>
 
+            <ProtectedRoute exact path="/AdminUpdates" >
+              <AdminUpdates/>
+            </ProtectedRoute>
+
             {/* // logged in shows InfoPage else shows LoginPage */}
             <ProtectedRoute exact path="/info">
               <InfoPage />
