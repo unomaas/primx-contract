@@ -13,6 +13,7 @@ import EstimateCreate from '../EstimateCreate/EstimateCreate';
 import EstimateLookup from '../EstimateLookup/EstimateLookup';
 import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
+import SystemAdmin from '../SystemAdmin/SystemAdmin';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -66,6 +67,10 @@ function App() {
 
             <ProtectedRoute exact path="/AdminOrders" >
               <AdminOrders/>
+            </ProtectedRoute>
+
+            <ProtectedRoute exact path="/SystemAdmin" >
+              <SystemAdmin />
             </ProtectedRoute>
 
             <Route exact path="/home">

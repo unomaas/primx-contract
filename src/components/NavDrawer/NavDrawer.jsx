@@ -94,12 +94,12 @@ export default function NavDrawer() {
                 <ListItemText primary={"Create New Admin"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/AdminUpdates`)}>
+              <ListItem button onClick={() => history.push(`/adminupdates`)}>
                 <UpdateIcon /> &nbsp;
                 <ListItemText primary={"Update Items"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/AdminOrders`)}>
+              <ListItem button onClick={() => history.push(`/adminorders`)}>
                 <ViewCarouselIcon /> &nbsp;
                 <ListItemText primary={"View Pipeline"} />
               </ListItem>
@@ -110,7 +110,7 @@ export default function NavDrawer() {
                 <>
                   <Divider />
 
-                  <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
+                  <ListItem button onClick={() => history.push(`/systemadmin`)}>
                     <SupervisorAccountIcon /> &nbsp;
                     <ListItemText primary={"System Admin"} />
                   </ListItem>
