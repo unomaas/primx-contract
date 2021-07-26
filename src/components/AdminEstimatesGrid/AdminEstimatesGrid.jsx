@@ -31,16 +31,24 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
         {field: 'estimate_number', headerName: 'Estimate Number', width: 175},
         {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 175},
         {field: 'date_created', headerName: 'Date Created', width: 175},
-        {
-            field: 'Shipping_Address', // Editable + validation? Will be tricky since this is a value getter
-            headerName: 'Ship To Address', 
-            width: 250,
-            valueGetter: (params) => 
-                `${params.getValue(params.id, 'ship_to_address') || ''}, ${params.getValue(params.id, 'ship_to_city') || ''},
-                ${params.getValue(params.id, 'ship_to_state_province') || ''}, ${params.getValue(params.id, 'zip_postal_code') || ''}
-                ${params.getValue(params.id, 'country') || ''
-                }`,
-        },
+        
+        // this is a custom created address that contains the full address in one grid cell, it can't be edited so each component got split up
+        // {
+        //     field: 'Shipping_Address', // Editable + validation? Will be tricky since this is a value getter
+        //     headerName: 'Ship To Address', 
+        //     width: 250,
+        //     valueGetter: (params) => 
+        //         `${params.getValue(params.id, 'ship_to_address') || ''}, ${params.getValue(params.id, 'ship_to_city') || ''},
+        //         ${params.getValue(params.id, 'ship_to_state_province') || ''}, ${params.getValue(params.id, 'zip_postal_code') || ''}
+        //         ${params.getValue(params.id, 'country') || ''
+        //         }`,
+        // },
+
+        {field: 'ship_to_address', headerName: 'Ship To Address', width: 175, editable: true},
+        {field: 'ship_to_city', headerName: 'Ship To City', width: 175, editable: true},
+        {field: 'ship_to_state_province', headerName: 'State/Province', width: 175},
+        {field: 'zip_postal_code', headerName: 'Zip/Postal Code', width: 175, editable: true},
+        {field: 'country', headerName: 'Country', width: 175, editable: true},
         {field: 'anticipated_first_pour_date', headerName: 'Anticipated First Pour', width: 175, editable: true}, // Need edit validation?
         {field: 'project_general_contractor', headerName: 'General Contractor', width: 175, editable: true},
         {field: 'project_manager_name', headerName: 'Project Manager', width: 175, editable: true},

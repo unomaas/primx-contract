@@ -1,6 +1,9 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const {
+  rejectUnauthenticated,
+} = require('../modules/authentication-middleware');
 
 /**
  * GET route template
@@ -10,8 +13,7 @@ const router = express.Router();
   });
   
 // GET request to get all estimates data from the database
-// **************** NEED TO REJECT UNAUTHENTICATED ********************
-router.get('/all', (req, res) => {
+router.get('/all', rejectUnauthenticated, (req, res) => {
   // SQL query to GET all estimates along the floor type names, licensee names, placement type names, and shipping state/province names
   const queryText = `SELECT "estimates".*, "floor_types".floor_type, "licensees".licensee_contractor_name, "placement_types".placement_type, "shipping_costs".ship_to_state_province FROM "estimates"
                      JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
@@ -40,8 +42,7 @@ router.get('/all', (req, res) => {
 
 
   // PUT request to edit a single piece of data on one row of the estimates table
-  // **************** NEED TO REJECT UNAUTHENTICATED ********************
-  router.put('/edit/:id', (req, res) => {
+  router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     console.log('got to PUT route! params id, req.body', req.params.id, req.body);
     
     // SQL query to update a specific piece of data
@@ -72,8 +73,7 @@ router.get('/all', (req, res) => {
   })
   
   // PUT request to mark an estimate flagged for order by licensee to be marked as ordered by an admin, and to add the name of the admin making the request
-  // **************** NEED TO REJECT UNAUTHENTICATED ********************
-  router.put('/process/:id', (req, res) => {
+  router.put('/process/:id', rejectUnauthenticated, (req, res) => {
 
     // SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
     const queryText = `UPDATE "estimates" SET "marked_as_ordered" = TRUE, "processed_by" = $1 WHERE "id" = $2;`;
