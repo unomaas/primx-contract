@@ -37,7 +37,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <div>
+        <div className="App">
 
           <Nav />
 
