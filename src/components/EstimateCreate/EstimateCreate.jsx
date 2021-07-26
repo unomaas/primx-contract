@@ -38,7 +38,8 @@ export default function EstimateCreate() {
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
   const handleSubmit = event => {
-    console.log('In handleSubmit, newKit:', newKit);
+    event.preventDefault();
+    console.log('In handleSubmit');
     // ⬇ Don't refresh until submit:
     // event.preventDefault();
     // // ⬇ Sending newPlant to our reducer: 
@@ -81,7 +82,6 @@ export default function EstimateCreate() {
               // defaultValue="Licensee / Company Name?"
               // value="Licensee / Company Name?"
               labelId="companyNameLabel"
-
               required
             /> <br />
 
@@ -126,12 +126,21 @@ export default function EstimateCreate() {
               margin="dense"
             /> <br />
 
-            <FormControl>
+            <FormControl required>
               <FormLabel>
                 Units of Measurement?
               </FormLabel>
               <RadioGroup>
-
+                <FormControlLabel
+                  label="Imperial"
+                  value="imperial"
+                  control={<Radio />}
+                />
+                <FormControlLabel
+                  label="Metric"
+                  value="metric"
+                  control={<Radio />}
+                />
               </RadioGroup>
             </FormControl>
 
@@ -215,7 +224,11 @@ export default function EstimateCreate() {
             /> <br />
 
             <br />
-            <Button variant="outlined">
+            <Button
+              type="submit"
+              // onClick={event => handleSubmit(event)}
+              variant="outlined"
+            >
               Submit
             </Button>
           </div>
@@ -225,6 +238,9 @@ export default function EstimateCreate() {
 
       <div>
         <form>
+          <div>
+
+          </div>
 
 
         </form>
