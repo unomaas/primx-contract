@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import Button from '@material-ui/core/Button';
-import { DataGrid,} from '@material-ui/data-grid';
+import { DataGrid} from '@material-ui/data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 
 
