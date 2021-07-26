@@ -73,18 +73,22 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
         // material details ******** Change Shipping Estimate if math function is used based on the current shipping snapshot instead of a total cost ******
         // Prices and shipping estimates are calculated at the time of estimate creation, and will be able to be updated later. Probably shouldn't
         // be editable columns
-        {field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175, hide: true }, 
+
+        // fields commented out are deprecated, the database stores current unit prices for calculation instead of total materials price. The data
+        // grid doesn't need to have the unit price, we'll add back in the total materials prices once the math functions are finished
+        
+        // {field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175, hide: true }, 
         {field: 'primx_dc_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175, hide: true },
         {field: 'primx_flow_dosage_liters', headerName: 'Flow Dosage (liters)', width: 175, hide: true }, // Editable + validation?
-        {field: 'primx_flow_total_materials_price', headerName: 'Flow Total Material Price', width: 175, hide: true },
+        // {field: 'primx_flow_total_materials_price', headerName: 'Flow Total Material Price', width: 175, hide: true },
         {field: 'primx_flow_shipping_estimate', headerName: 'Flow Shipping Estimate', width: 175, hide: true },
         {field: 'primx_steel_fibers_dosage_lbs', headerName: 'Steel Fiber Dosage (lbs)', width: 175, hide: true }, // Editable + validation?
         {field: 'primx_steel_fibers_dosage_kgs', headerName: 'Steel Fiber Dosage (kgs)', width: 175, hide: true }, // Editable + validation?
-        {field: 'primx_steel_fibers_total_materials_price', headerName: 'Steel Fiber Total Material Price', width: 175, hide: true },
+        // {field: 'primx_steel_fibers_total_materials_price', headerName: 'Steel Fiber Total Material Price', width: 175, hide: true },
         {field: 'primx_steel_fibers_shipping_estimate', headerName: 'Steel Fiber Shipping Estimate', width: 175, hide: true },
-        {field: 'primx_ultracure_blankets_total_materials_price', headerName: 'Ultracure Blankets Total Material Price', width: 175, hide: true },
+        // {field: 'primx_ultracure_blankets_total_materials_price', headerName: 'Ultracure Blankets Total Material Price', width: 175, hide: true },
         {field: 'primx_cpea_dosage_liters', headerName: 'CPEA Dosage (liters)', width: 175, hide: true }, // Editable + validation?
-        {field: 'primx_cpea_total_materials_price', headerName: 'CPEA Total Material Price', width: 175, hide: true },
+        // {field: 'primx_cpea_total_materials_price', headerName: 'CPEA Total Material Price', width: 175, hide: true },
         {field: 'primx_cpea_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175, hide: true },
         // need the math-created fields below
     ]
