@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {useSelector} from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 
 //MUI Imports
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +14,7 @@ function AdminLoginForm() {
   const [password, setPassword] = useState('');
   const errors = useSelector(store => store.errors);
   const dispatch = useDispatch();
+  const history = useHistory();
 
     //styles for MUI
     const useStyles = makeStyles((theme) => ({
@@ -36,6 +39,7 @@ function AdminLoginForm() {
           password: password,
         },
       });
+      history.push('/user');
     } else {
       dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }

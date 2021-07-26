@@ -37,7 +37,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <div>
+        <div className="App">
 
           <Nav />
 
@@ -83,7 +83,7 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows LoginPage at /login */}
-            <ProtectedRoute exact path="/login" authRedirect="/user">
+            <ProtectedRoute exact path="/login" >
               <AdminLoginPage />
             </ProtectedRoute>
 
