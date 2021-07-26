@@ -6,7 +6,7 @@ import LogOutButton from '../LogOutButton/LogOutButton';
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams, Link } from 'react-router-dom';
-import { SwipeableDrawer, Drawer, Button, List, ListItem, ListItemText, Divider, IconButton, Box } from '@material-ui/core';
+import { Drawer, Button, List, ListItem, ListItemText, Divider, IconButton, Box } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
 // ⬇ Icons:
 import MenuIcon from '@material-ui/icons/Menu';
@@ -112,7 +112,7 @@ export default function NavDrawer() {
 
                   <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
                     <SupervisorAccountIcon /> &nbsp;
-                    <ListItemText primary={"System Admin View"} />
+                    <ListItemText primary={"System Admin"} />
                   </ListItem>
                 </>
               ) : (
