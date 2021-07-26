@@ -66,8 +66,8 @@ function LicenseeHomePage() {
         </ButtonGroup>
       </div>
       {/* Conditional Rendering */}
-      {selectedCreate && <EstimateCreate />}
-      {selectedLookup && <EstimateLookup />}
+        {selectedCreate && <EstimateCreate />}
+        {selectedLookup && <EstimateLookup />}
 
     </div>
 
