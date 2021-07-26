@@ -4,8 +4,9 @@ import AdminUpdates from './AdminUpdates';
 
 //imports for MUI
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import TextField from '@material-ui/core/TextField';
 
 
 export default function AdminUpdateTypes() {
@@ -27,13 +28,27 @@ export default function AdminUpdateTypes() {
       <AdminUpdates />
       <h4>Update Floor Types</h4>
 
-      <div className={classes.root}>
-      <Button variant="contained">Default</Button>
+      <div>
+        <form  className={classes.root} noValidate autoComplete="off">
+          <TextField id="outlined-basic" label="Add New Floor Type" variant="outlined" />
+          <Fab className={classes.root} color="primary" aria-label="add">
+            <AddIcon />
+          </Fab>
+        </form>
       </div>
 
       <p>Table</p>
 
       <h4>Update Placement Types</h4>
+
+      <div>
+        <form  className={classes.root} noValidate autoComplete="off">
+          <TextField id="outlined-basic" label="Add New Placement Type" variant="outlined" />
+          <Fab className={classes.root} color="primary" aria-label="add">
+            <AddIcon />
+          </Fab>
+        </form>
+      </div>
 
       <p>Table</p>
     </div>
