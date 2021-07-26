@@ -1,14 +1,19 @@
+import './AdminEstimatesGrid.css';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // Material-UI components
 import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button'
+import { useStyles } from '../MuiStyling/MuiStyling';
+
 
 
 // component that renders a Material UI Data Grid, needs an array of estimates as props. gridSource is a string that references which data grid is
 // being created, the current strings are 'pending', 'processed', and 'open'
 export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
     const dispatch = useDispatch();
+    const classes = useStyles();
+
 
     // rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
     const renderProcessButton = (params) => {
@@ -146,8 +151,13 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
 
 
     return (
-        <div style={{ height: 350, width: '100%'}}>
-            <DataGrid
+        <div
+          style={{ height: 350, width: '95%'}}
+          className="AdminEstimatesGrid-wrapper"
+        >
+            <DataGrid 
+                // className={classes.dataGridTables}
+                style={{fontFamily: 'Times New Roman', fontSize: '1em'}}
                 rows={rows}
                 columns={columns}
                 pageSize={5}
