@@ -3,6 +3,7 @@ import { makeStyles, createMuiTheme, withStyles, TableCell, TableRow } from '@ma
 
 // ⬇ Material-ui Theme: 
 const theme = createMuiTheme({
+  // Changes the font default of MUI Components to be on-brand font: 
   typography: {
     fontFamily: 'Lexend Tera',
     fontSize: 11
@@ -29,10 +30,19 @@ const StyledTableRow = withStyles((theme) => ({
 
 // ⬇ Material-ui Classes: 
 const useStyles = makeStyles({
-
+  // ⬇ Makes the Hamburger Icon White and Large:
   navBarIcon: {
     color: 'white',
     fontSize: '1.75em'
+  },
+  // ⬇ Makes the Data Grid Tables in a normal font: 
+  dataGridTables: {
+    fontFamily: 'Times New Roman',
+    fontSize: 14,
+    typography: {
+      fontFamily: 'Times New Roman',
+      fontSize: 14,
+    }
   },
 }); // End useStyles
 

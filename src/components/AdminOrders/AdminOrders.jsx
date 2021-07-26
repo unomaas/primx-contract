@@ -5,9 +5,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import Typography from '@material-ui/core/Typography';
 // components
 import AdminEstimatesGrid from '../AdminEstimatesGrid/AdminEstimatesGrid';
+import { useStyles } from '../MuiStyling/MuiStyling';
+
 
 export default function AdminOrders() {
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   // useSelector looks at the array of estimate objects from adminEstimates reducer
   const allEstimates = useSelector(store => store.adminEstimates);
 
