@@ -1,7 +1,7 @@
 import React from 'react'
 import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
 import Button from '@material-ui/core/Button';
-import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid, useEnhancedEffect } from '@material-ui/data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -10,11 +10,22 @@ export default function AdminUpdateLicenses() {
     const dispatch = useDispatch();
     const companies = useSelector(store => store.companies);
 
+    useEnhancedEffect(() => {
+      dispatch({type: 'FETCH_COMPANIES'})
+    })
+
     const columns = [
     {field: 'licensee_contractor_name', headerName: 'Company Name', width: 90}
     ];
 
     let rows = [];
+
+    companies.forEach(company => {
+      rows.push({
+        id: company.id,
+        companyName: company.licensee_contractor_name
+      })
+    })
 
     const handleEditSubmit = ( {id, field, props} ) => {
       console.log('Got to Edit Submit', id, field, props);
