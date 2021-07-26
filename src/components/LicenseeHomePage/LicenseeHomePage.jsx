@@ -2,20 +2,48 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './LicenseeHomePage.css';
 
+//imports for MUI
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { makeStyles } from '@material-ui/core/styles';
+
+
 // CUSTOM COMPONENTS
 import RegisterForm from '../AdminRegisterForm/AdminRegisterForm';
 
 function LicenseeHomePage() {
-  const [heading, setHeading] = useState('Welcome');
+
   const history = useHistory();
 
-  const onLogin = (event) => {
-    history.push('/login');
-  };
+    //styles for MUI
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+  //defining classes for MUI
+  const classes = useStyles();
+
+  
 
   return (
     <div className="container">
-      <h2>{heading}</h2>
+      <center>
+      <h1>LICENSEE HOME PAGE?</h1>
+      </center>
+
+      <div className={classes.root}>
+        <ButtonGroup color="primary" aria-label="outlined primary button group">
+          <Button>Create New Estimate</Button>
+          <Button>Look-up Existing Estimate</Button>
+        </ButtonGroup>
+      </div>  
+
 
       <div className="grid">
         <div className="grid-col grid-col_8">
@@ -51,7 +79,7 @@ function LicenseeHomePage() {
             amet nisi.
           </p>
         </div>
-        <div className="grid-col grid-col_4">
+        {/* <div className="grid-col grid-col_4">
           <RegisterForm />
 
           <center>
@@ -60,7 +88,7 @@ function LicenseeHomePage() {
               Login
             </button>
           </center>
-        </div>
+        </div> */}
       </div>
     </div>
   );

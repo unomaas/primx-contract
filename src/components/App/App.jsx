@@ -68,6 +68,10 @@ function App() {
               <AdminOrders/>
             </ProtectedRoute>
 
+            <Route exact path="/home">
+              <LicenseeHomePage />
+            </Route>
+
             {/* // logged in shows InfoPage else shows LoginPage */}
             <ProtectedRoute exact path="/info">
               <InfoPage />
@@ -93,9 +97,9 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows LandingPage at "/home" */}
-            <ProtectedRoute exact path="/home" authRedirect="/user">
+            {/* <ProtectedRoute exact path="/home" authRedirect="/user">
               <LicenseeHomePage />
-            </ProtectedRoute>
+            </ProtectedRoute> */}
 
             {/* If none of the other routes matched, we will show a 404. */}
             <Route>
