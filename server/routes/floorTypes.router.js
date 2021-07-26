@@ -17,6 +17,19 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   })
 });
 
-
+//Post Route - adds floor type to DB
+router.post('/', rejectUnauthenticated, (req, res) => {
+  // endpoint functionality
+  queryText = `INSERT INTO "floor_types" ("floor_type")
+            VALUES ($1);`;
+    pool.query(queryText, [req.body.floor_type])
+    .then(result => {
+      res.sendStatus(201)
+    })
+    .catch(error => {
+      console.log('error in floor type POST route', error);
+      res.sendStatus(500);
+    })
+});
 
 module.exports = router;
