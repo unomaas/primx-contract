@@ -7,6 +7,14 @@ const router = express.Router();
  */
  router.get('/', (req, res) => {
     // GET route code here
+    const queryText = `SELECT * FROM "licensees" ORDER BY id ASC`;
+
+    pool.query(queryText)
+        .then((results) => res.send(results.rows))
+        .catch((error) => {
+            console.log('Error getting company names', error);
+            res.sendStatus(500);
+        });
   });
   
   /**
