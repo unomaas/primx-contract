@@ -1,3 +1,4 @@
+import './AdminEstimatesGrid.css';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // Material-UI components
@@ -150,9 +151,13 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
 
 
     return (
-        <div style={{ height: 350, width: '100%'}}>
+        <div
+          style={{ height: 350, width: '95%'}}
+          className="AdminEstimatesGrid-wrapper"
+        >
             <DataGrid 
-                className={classes.dataGridTables}
+                // className={classes.dataGridTables}
+                style={{fontFamily: 'Times New Roman', fontSize: '1em'}}
                 rows={rows}
                 columns={columns}
                 pageSize={5}

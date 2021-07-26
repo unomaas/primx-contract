@@ -11,21 +11,21 @@ const theme = createMuiTheme({
 }) // End theme
 
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  }
-}))(TableCell);
+// const StyledTableCell = withStyles((theme) => ({
+//   head: {
+//     backgroundColor: theme.palette.common.black,
+//     color: theme.palette.common.white,
+//   }
+// }))(TableCell);
 
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
+// const StyledTableRow = withStyles((theme) => ({
+//   root: {
+//     '&:nth-of-type(odd)': {
+//       backgroundColor: theme.palette.action.hover,
+//     },
+//   },
+// }))(TableRow);
 
 
 // ⬇ Material-ui Classes: 
@@ -38,13 +38,9 @@ const useStyles = makeStyles({
   // ⬇ Makes the Data Grid Tables in a normal font: 
   dataGridTables: {
     fontFamily: 'Times New Roman',
-    fontSize: 14,
-    typography: {
-      fontFamily: 'Times New Roman',
-      fontSize: 14,
-    }
+    fontSize: '1em',
   },
 }); // End useStyles
 
 
-export { useStyles, theme, StyledTableCell, StyledTableRow };
+export { useStyles, theme };

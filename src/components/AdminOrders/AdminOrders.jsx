@@ -42,17 +42,20 @@ export default function AdminOrders() {
   
   return (
     <div>
-      <Typography variant="h3" component="h2" align="center">
+      <br />
+      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
         Pending Orders
       </Typography>
       <AdminEstimatesGrid estimatesArray={pendingOrders} gridSource={'pending'}/>
 
-      <Typography variant="h3" component="h2" align="center">
+      <br />
+      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
         Processed Orders
       </Typography>
       <AdminEstimatesGrid estimatesArray={processedOrders} gridSource={'processed'}/>
 
-      <Typography variant="h3" component="h2" align="center">
+      <br />
+      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
         Open Estimates
       </Typography>
       <AdminEstimatesGrid estimatesArray={openEstimates} gridSource={'open'}/>
