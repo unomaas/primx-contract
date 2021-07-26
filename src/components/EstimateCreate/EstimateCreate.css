@@ -1,0 +1,25 @@
+.EstimateCreate-wrapper {
+  max-width: 70em;
+  margin: 0 auto;
+  display: inline-block;
+}
+
+/* .EstimateCreate-details-wrapper {
+  display: inline-block;
+  max-width: 300px;
+  width: 30em;
+} */
+
+.EstimateCreate-shipping-info {
+  display: block;
+  float: left;
+  max-width: 34em;
+  width: 34em;
+}
+
+.EstimateCreate-project-info {
+  display: block;
+  float: right;
+  max-width: 34em;
+  width: 34em;
+}
