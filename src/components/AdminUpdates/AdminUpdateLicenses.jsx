@@ -6,28 +6,27 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function AdminUpdateLicenses() {
-
+    
+  
     const dispatch = useDispatch();
-    const companies = useSelector((store => store.companies));
+    const companies = useSelector(store => store.companies);
 
-    useEffect(() => {
-      dispatch({type: 'FETCH_COMPANIES'})
-    })
+    
 
 
 
     const columns = [
-    {field: 'licensee_contractor_name', headerName: 'Company Name', width: 90}
+    {field: 'licensee_contractor_name', headerName: 'Company Name', width: 300}
     ];
 
     let rows = [];
 
-    companies.forEach(company => {
-      rows.push({
-        id: company.id,
-        companyName: company.licensee_contractor_name
-      })
-    })
+    // companies.forEach(company => {
+    //   rows.push({
+    //     id: company.id,
+    //     companyName: company.licensee_contractor_name
+    //   })
+    // })
 
     // const handleEditSubmit = ( {id, field, props} ) => {
     //   console.log('Got to Edit Submit', id, field, props);
@@ -63,7 +62,7 @@ export default function AdminUpdateLicenses() {
             onSelectionModelChange={(e) => 
                 setValueChange(e.selectionModel)
             }
-            // disablesSelectionOnClick
+             // disablesSelectionOnClick
             // editRowsModel={editRowsModel}
             // onEditRowModelChange={handleEditRowModelChange}
             // onEditCellChange={handleEditCellChange}

@@ -8,9 +8,13 @@ import AdminUpdateTypes  from './AdminUpdateTypes'
 import AdminUpdateShipping from './AdminUpdateShipping'
 import AdminUpdateMaterials from './AdminUpdateMaterials'
 import SystemAdmin from './SystemAdmin'
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function AdminUpdates() {
 
+  const dispatch = useDispatch();
+
+  
   //holds value of selection to for page render conditionals
   let [selectedPage,setSelectedPage] = useState("");
   //holds values for conditional render boolean
@@ -40,7 +44,7 @@ export default function AdminUpdates() {
   }
 
   useEffect(() => {
-    renderComponent();
+    renderComponent(),dispatch({type: 'FETCH_COMPANIES' });
   },[selectedPage]);
 
 
