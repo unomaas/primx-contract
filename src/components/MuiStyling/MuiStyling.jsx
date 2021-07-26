@@ -29,37 +29,7 @@ const StyledTableRow = withStyles((theme) => ({
 
 // ⬇ Material-ui Classes: 
 const useStyles = makeStyles({
-  input: {
-    width: 225
-  },
-  select: {
-    width: 175
-  }, 
-  tableHeader: {
-    fontSize: '1.2em'
-  },
-  tableRows: {
-    fontSize: '.9em',
-  },
-  tableCells: {
-    width: '40px',
-    minWidth: '40px',
-    maxWidth: '40px'
-  },
-  buttons: {
-    width: '40px',
-    maxWidth: '40px', 
-    maxHeight: '40px', 
-    minWidth: '40px', 
-    minHeight: '40px'
-  },
-  navBarIcon: {
-    color: 'white',
-    fontSize: '1.75em'
-  },
-  navDrawer: {
-    backgroundColor: "blue"
-  }
+
 }); // End useStyles
 
 
