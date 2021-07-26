@@ -4,8 +4,8 @@ import { makeStyles, createMuiTheme, withStyles, TableCell, TableRow } from '@ma
 // ⬇ Material-ui Theme: 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: 'opendyslexicregular',
-    fontSize: 12.5
+    fontFamily: 'Lexend Tera',
+    fontSize: 11
   },
 }) // End theme
 

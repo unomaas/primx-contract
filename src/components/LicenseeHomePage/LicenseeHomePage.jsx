@@ -3,12 +3,18 @@ import { useHistory } from 'react-router-dom';
 import './LicenseeHomePage.css';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 
+//imports for MUI
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { makeStyles } from '@material-ui/core/styles';
+
+
 // CUSTOM COMPONENTS
 import EstimateCreate from '../EstimateCreate/EstimateCreate';
 import EstimateLookup from '../EstimateLookup/EstimateLookup';
 
 function LicenseeHomePage() {
-  const [heading, setHeading] = useState('Welcome');
+
   const history = useHistory();
 
   // toggle button states
@@ -20,13 +26,14 @@ function LicenseeHomePage() {
   };
 
 
-
   return (
     <div className="container">
-      <h2>{heading}</h2>
+      <center>
+        <h1>LICENSEE HOME PAGE?</h1>
+      </center>
 
-      <div className="grid">
-        <div className="grid-col grid-col_8">
+      <div>
+        <ButtonGroup color="primary" aria-label="outlined primary button group">
 
           <ToggleButton
             value="check"
@@ -56,14 +63,14 @@ function LicenseeHomePage() {
             }}
           > Look-Up Existing Estimate
           </ToggleButton>
-        </div>
-
-        {/* Conditional Rendering */}
-        {selectedCreate && <EstimateCreate />}
-        {selectedLookup && <EstimateLookup />}
-
+        </ButtonGroup>
       </div>
+      {/* Conditional Rendering */}
+      {selectedCreate && <EstimateCreate />}
+      {selectedLookup && <EstimateLookup />}
+
     </div>
+
   );
 }
 

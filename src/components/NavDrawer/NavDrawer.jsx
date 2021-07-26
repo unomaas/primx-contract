@@ -6,7 +6,7 @@ import LogOutButton from '../LogOutButton/LogOutButton';
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, useParams, Link } from 'react-router-dom';
-import { SwipeableDrawer, Drawer, Button, List, ListItem, ListItemText, Divider, IconButton, Box } from '@material-ui/core';
+import { Drawer, Button, List, ListItem, ListItemText, Divider, IconButton, Box } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
 // ⬇ Icons:
 import MenuIcon from '@material-ui/icons/Menu';
@@ -79,7 +79,7 @@ export default function NavDrawer() {
 
               <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
-                <ListItemText primary={"Look Up Estimate"} />
+                <ListItemText primary={"Look-Up Estimate"} />
               </ListItem>
 
               <Divider />
@@ -89,17 +89,17 @@ export default function NavDrawer() {
                 <ListItemText primary={"Admin Dashboard"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/createkit`)}>
+              <ListItem button onClick={() => history.push(`/registration`)}>
                 <PersonAddOutlinedIcon /> &nbsp;
                 <ListItemText primary={"Create New Admin"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/createevent`)}>
+              <ListItem button onClick={() => history.push(`/AdminUpdates`)}>
                 <UpdateIcon /> &nbsp;
                 <ListItemText primary={"Update Items"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/packingfor`)}>
+              <ListItem button onClick={() => history.push(`/AdminOrders`)}>
                 <ViewCarouselIcon /> &nbsp;
                 <ListItemText primary={"View Pipeline"} />
               </ListItem>
@@ -112,7 +112,7 @@ export default function NavDrawer() {
 
                   <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
                     <SupervisorAccountIcon /> &nbsp;
-                    <ListItemText primary={"System Admin View"} />
+                    <ListItemText primary={"System Admin"} />
                   </ListItem>
                 </>
               ) : (
