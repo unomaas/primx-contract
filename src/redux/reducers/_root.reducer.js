@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import errors from './errors.reducer';
 import user from './user.reducer';
+import companies from './companies.reducer';
 import adminEstimates from './adminEstimates.reducer';
 import floorTypes from './floorTypes.reducer';
 import placementTypes from './placementTypes.reducer';
@@ -14,6 +15,7 @@ import placementTypes from './placementTypes.reducer';
 const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
+  companies, // contains companies
   adminEstimates, // will contain an array of estimate objects
   placementTypes, //contains placement types
   floorTypes, //contains floor types
