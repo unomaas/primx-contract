@@ -30,6 +30,10 @@ const StyledTableRow = withStyles((theme) => ({
 // ⬇ Material-ui Classes: 
 const useStyles = makeStyles({
 
+  navBarIcon: {
+    color: 'white',
+    fontSize: '1.75em'
+  },
 }); // End useStyles
 
 
