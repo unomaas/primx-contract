@@ -60,6 +60,18 @@ function App() {
               <AdminLandingPage />
             </ProtectedRoute>
 
+            <ProtectedRoute exact path="/AdminUpdates" >
+              <AdminUpdates/>
+            </ProtectedRoute>
+
+            <ProtectedRoute exact path="/AdminOrders" >
+              <AdminOrders/>
+            </ProtectedRoute>
+
+            <Route exact path="/home">
+              <LicenseeHomePage />
+            </Route>
+
             {/* // logged in shows InfoPage else shows LoginPage */}
             <ProtectedRoute exact path="/info">
               <InfoPage />
@@ -78,16 +90,16 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows RegisterPage at "/registration" */}
-            <ProtectedRoute exact path="/registration" authRedirect="/user">
+            <ProtectedRoute exact path="/registration" >
               <AdminRegisterPage />
             </ProtectedRoute>
 
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows LandingPage at "/home" */}
-            <ProtectedRoute exact path="/home" authRedirect="/user">
+            {/* <ProtectedRoute exact path="/home" authRedirect="/user">
               <LicenseeHomePage />
-            </ProtectedRoute>
+            </ProtectedRoute> */}
 
             {/* If none of the other routes matched, we will show a 404. */}
             <Route>

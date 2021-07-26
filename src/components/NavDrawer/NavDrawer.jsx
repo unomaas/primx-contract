@@ -89,17 +89,17 @@ export default function NavDrawer() {
                 <ListItemText primary={"Admin Dashboard"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/createkit`)}>
+              <ListItem button onClick={() => history.push(`/registration`)}>
                 <PersonAddOutlinedIcon /> &nbsp;
                 <ListItemText primary={"Create New Admin"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/createevent`)}>
+              <ListItem button onClick={() => history.push(`/AdminUpdates`)}>
                 <UpdateIcon /> &nbsp;
                 <ListItemText primary={"Update Items"} />
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/packingfor`)}>
+              <ListItem button onClick={() => history.push(`/AdminOrders`)}>
                 <ViewCarouselIcon /> &nbsp;
                 <ListItemText primary={"View Pipeline"} />
               </ListItem>

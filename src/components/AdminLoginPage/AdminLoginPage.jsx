@@ -26,7 +26,7 @@ function AdminLoginPage() {
       <center>
       <AdminLoginForm />
       </center>
-
+{/* 
       <center>
         <Button
           color="primary"
@@ -38,7 +38,7 @@ function AdminLoginPage() {
         >
           Register
         </Button>
-      </center>
+      </center> */}
     </div>
   );
 }
