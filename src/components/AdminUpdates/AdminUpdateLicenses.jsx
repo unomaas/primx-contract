@@ -16,15 +16,14 @@ export default function AdminUpdateLicenses() {
 
 
     const columns = [
-      {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300},
+      {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, editable: true},
     ];
 
     const handleEditSubmit = ( {id, field, props} ) => {
       console.log('in handle edit submit for id, field, props', id, field, props);
-      // id argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
-      dispatch({ type: 'EDIT_COMPANY_NAME', payload: {
+      // id argument is the db id of the row being edited and props.value is the new value after submitting the edit
+      dispatch({ type: 'UPDATE_COMPANY', payload: {
           id: id,
-          dbColumn: field,
           newValue: props.value
       }})
   }
@@ -35,7 +34,7 @@ export default function AdminUpdateLicenses() {
         <input type='text'></input>
         <Button><AddCircleOutlineRoundedIcon/></Button>
         <div style={{ height: 350, width: '95%'}}
-    className="AdminEstimatesGrid-wrapper">
+        className="AdminEstimatesGrid-wrapper">
         <DataGrid 
                 style={{fontFamily: 'Times New Roman', fontSize: '1em'}}
                 rows={rows}

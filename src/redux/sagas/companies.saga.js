@@ -9,12 +9,25 @@ function* fetchCompanies() {
         // set companies used in reducer
       yield put({ type: 'SET_COMPANIES', payload: response.data });
     } catch (error) {
-      console.log('User get request failed', error);
+      console.log('company get request failed', error);
     }
   }
+
+  function* updateCompany(action) {
+    try {
+        // takes payload to database to update company
+        yield axios.put(`/api/companies/${action.payload.id}`, action.payload);
+        // fetches companies
+        yield put({ type: 'FETCH_COMPANIES'});
+    } catch (error) {
+        console.log('Error in update company saga: ', error);
+    }
+    }
+
   // companies saga to fetch companies
   function* companiesSaga() {
     yield takeLatest('FETCH_COMPANIES', fetchCompanies);
+    yield takeLatest('UPDATE_COMPANY', updateCompany);
   }
   
   export default companiesSaga;
