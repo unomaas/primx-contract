@@ -5,7 +5,7 @@ import './EstimateCreate.css';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, InputLabel, Select } from '@material-ui/core';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useStyles } from '../MuiStyling/MuiStyling';
@@ -125,6 +125,16 @@ export default function EstimateCreate() {
               type="search"
               margin="dense"
             /> <br />
+
+            <FormControl>
+              <FormLabel>
+                Units of Measurement?
+              </FormLabel>
+              <RadioGroup>
+
+              </RadioGroup>
+            </FormControl>
+
           </div>
 
           <div className="EstimateCreate-project-info">
@@ -186,7 +196,7 @@ export default function EstimateCreate() {
               margin="dense"
             /> <br />
 
-<InputLabel id="companyNameLabel">Floor Type?</InputLabel>
+            <InputLabel id="companyNameLabel">Floor Type?</InputLabel>
             <Select
               label="Shipping State/Province?"
               onChange={event => handleChange('kit_description', event.target.value)}
@@ -195,7 +205,7 @@ export default function EstimateCreate() {
               margin="dense"
             /> <br />
 
-<InputLabel id="companyNameLabel">Placement Type?</InputLabel>
+            <InputLabel id="companyNameLabel">Placement Type?</InputLabel>
             <Select
               label="Shipping State/Province?"
               onChange={event => handleChange('kit_description', event.target.value)}
@@ -204,9 +214,20 @@ export default function EstimateCreate() {
               margin="dense"
             /> <br />
 
+            <br />
+            <Button variant="outlined">
+              Submit
+            </Button>
           </div>
         </form>
 
+      </div>
+
+      <div>
+        <form>
+
+
+        </form>
       </div>
 
     </div>
