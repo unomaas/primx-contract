@@ -1,12 +1,15 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
+import { useImperialEstimateCalculations } from '../../hooks/useImperialEstimateCalculations';
+
 // Material-UI components
 import Typography from '@material-ui/core/Typography';
 // components
 import AdminEstimatesGrid from '../AdminEstimatesGrid/AdminEstimatesGrid';
 
 export default function AdminOrders() {
+  const calculateImperial = useImperialEstimateCalculations();
   const dispatch = useDispatch();
   // useSelector looks at the array of estimate objects from adminEstimates reducer
   const allEstimates = useSelector(store => store.adminEstimates);
