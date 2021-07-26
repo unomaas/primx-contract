@@ -10,8 +10,8 @@ import Button from '@material-ui/core/Button';
 function AdminLoginPage() {
   const history = useHistory();
 
-   //Styles for MUI
-   const useStyles = makeStyles((theme) => ({
+  //Styles for MUI
+  const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
         margin: theme.spacing(1),
@@ -24,9 +24,9 @@ function AdminLoginPage() {
   return (
     <div>
       <center>
-      <AdminLoginForm />
+        <AdminLoginForm />
       </center>
-{/* 
+      {/* 
       <center>
         <Button
           color="primary"
