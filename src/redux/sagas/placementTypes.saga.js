@@ -29,7 +29,7 @@ function* postPlacementType(action) {
 
 function* placementTypesSaga() {
     yield takeLatest('FETCH_PLACEMENT_TYPES', fetchAllPlacementTypes);
-    // yield takeLatest(('ADD_PLACEMENT_TYPE', postPlacementType));
+    yield takeLatest('ADD_PLACEMENT_TYPE', postPlacementType);
 }
 
 export default placementTypesSaga;
