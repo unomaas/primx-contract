@@ -60,11 +60,6 @@ export default function AdminUpdates() {
         </Select>
         </FormControl>
         {conditionalBool ? conditionalRender : <></>}
-        {/* {updateLicenseesRender ? <>Update Licensees Page</> : <></>}
-        {addFloorAndPlacementTypesRender ?<>Add Floor Types/Placement Types Page</> : <></>}
-        {updateShippingCostsRender ?<>Update Shipping Costs Page</> : <></> }
-        {updateMaterialCostsAndInventoryRender ?<>Update Material Costs/Inventory Page</> : <></> }
-        {systemAdminRender ?<>System Admin Page</> : <></> } */}
     </div>
   )
 }
