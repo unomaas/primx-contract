@@ -13,7 +13,7 @@ const router = express.Router();
 
 // GET Request to grab all Liscensee/Company Name from DB for View 1.0
 router.get('/company', (req, res) => {
-  const queryText= `SELECT * FROM "licensees";`;
+  const queryText= `SELECT * FROM "licensees" ORDER By id ASC;`;
    
   // DB request
    pool.query(queryText)
@@ -28,7 +28,7 @@ router.get('/company', (req, res) => {
 
 // GET Request to grab all States/Province from DB for View 1.0
 router.get('/state', (req, res) => {
-  const queryText= `SELECT 'ship_to_state_province' FROM "shipping_costs";`;
+  const queryText= `SELECT "ship_to_state_province" FROM "shipping_costs" ORDER By id ASC;`;
    
   // DB request
    pool.query(queryText)
@@ -43,7 +43,7 @@ router.get('/state', (req, res) => {
 
 // GET Request to grab all floor types from DB for View 1.0
 router.get('/floor', (req, res) => {
-  const queryText= `SELECT * FROM "floor_types";`;
+  const queryText= `SELECT * FROM "floor_types" ORDER By id ASC;`;
    
   // DB request
    pool.query(queryText)
@@ -58,7 +58,7 @@ router.get('/floor', (req, res) => {
 
 // GET Request to grab all placement types from DB for View 1.0
 router.get('/placement', (req, res) => {
-  const queryText= `SELECT * FROM "placement_types";`;
+  const queryText= `SELECT * FROM "placement_types" ORDER By id ASC;`;
    
   // DB request
    pool.query(queryText)
