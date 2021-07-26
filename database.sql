@@ -32,14 +32,14 @@ CREATE TABLE "estimates" (
 	"primx_steel_fibers_dosage_kgs" DECIMAL DEFAULT NULL,
 	"primx_cpea_dosage_liters" DECIMAL NOT NULL,
 	"waste_factor_percentage" int NOT NULL DEFAULT '5',
-	"primx_dc_total_materials_price" money NOT NULL,
+	"primx_dc_unit_price" money NOT NULL,
 	"primx_dc_shipping_estimate" money NOT NULL,
-	"primx_flow_total_materials_price" money NOT NULL,
+	"primx_flow_unit_price" money NOT NULL,
 	"primx_flow_shipping_estimate" money NOT NULL,
-	"primx_steel_fibers_total_materials_price" money NOT NULL,
+	"primx_steel_fibers_unit_price" money NOT NULL,
 	"primx_steel_fibers_shipping_estimate" money NOT NULL,
-	"primx_ultracure_blankets_total_materials_price" money NOT NULL,
-	"primx_cpea_total_materials_price" money NOT NULL,
+	"primx_ultracure_blankets_unit_price" money NOT NULL,
+	"primx_cpea_unit_price" money NOT NULL,
 	"primx_cpea_shipping_estimate" money NOT NULL,
 	"estimate_number" varchar(50) NOT NULL UNIQUE,
 	"ordered_by_licensee" bool NOT NULL DEFAULT 'false',
@@ -147,27 +147,25 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 
 
 
--- Imperial dummy data starter : This will be usable for our imperial POST route with some modifications.
--- For STRETCH: input waste number, database will need to be updated, as will this SQL query.
+-- Imperial dummy data starter
 INSERT INTO "estimates" 
 	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_types_id","placement_types_id","square_feet",
 	"thickness_inches","thickened_edge_perimeter_lineal_feet","thickened_edge_construction_joint_lineal_feet",
 	"primx_flow_dosage_liters","primx_steel_fibers_dosage_lbs","primx_cpea_dosage_liters",
-	"primx_dc_total_materials_price","primx_dc_shipping_estimate","primx_flow_total_materials_price","primx_flow_shipping_estimate","primx_steel_fibers_total_materials_price",
-	"primx_steel_fibers_shipping_estimate","primx_ultracure_blankets_total_materials_price","primx_cpea_total_materials_price","primx_cpea_shipping_estimate","estimate_number")
+	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",
+	"primx_steel_fibers_shipping_estimate","primx_ultracure_blankets_unit_price","primx_cpea_unit_price","primx_cpea_shipping_estimate","estimate_number")
 VALUES ('imperial', 'United States', '2021-07-23', 'Imperial Test Project', 1, 'Tucknology Industries', '500 Main St', 'Minneapolis', 22, 55454, '2021-10-31', 'Chris Klemz', 'chris@prime.io',
-	1234567890, 2, 1, 10000, 5, 1000, 1000, 3, 68, 4, 5512, 16000, 2000, 15000, 29207.01, 15000, 1033.28, 3550, 15000, 1234);
+	1234567890, 2, 1, 10000, 5, 1000, 1000, 3, 68, 4, .40, 16000, 2.00, 15000, .69, 15000, .08, 3.55, 15000, 1234);
 
--- Metric dummy data starter : This will be usable for our imperial POST route with some modifications.
--- For STRETCH: input waste number, database will need to be updated, as will this SQL query.
+-- Metric dummy data starter
 INSERT INTO "estimates" 
 	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_types_id","placement_types_id","square_meters",
 	"thickness_millimeters","thickened_edge_perimeter_lineal_meters","thickened_edge_construction_joint_lineal_meters",
 	"primx_flow_dosage_liters","primx_steel_fibers_dosage_kgs","primx_cpea_dosage_liters",
-	"primx_dc_total_materials_price","primx_dc_shipping_estimate","primx_flow_total_materials_price","primx_flow_shipping_estimate","primx_steel_fibers_total_materials_price",
-	"primx_steel_fibers_shipping_estimate","primx_ultracure_blankets_total_materials_price","primx_cpea_total_materials_price","primx_cpea_shipping_estimate","estimate_number")
+	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",
+	"primx_steel_fibers_shipping_estimate","primx_ultracure_blankets_unit_price","primx_cpea_unit_price","primx_cpea_shipping_estimate","estimate_number")
 VALUES ('metric', 'Canada', '2021-07-23', 'Metric Test Project', 3, 'Genocchio Productions', '700 First Ave', 'Vancouver', 5, 'a52bc1', '2021-11-07', 'Alex Kim', 'alex@prime.io',
-	9876543210, 1, 3, 4000, 120, 200, 200, 3.92, 40, 1, 18700, 30000, 6000, 14000, 58368, 28000, 4128, 3550, 15000, 5678);
+	9876543210, 1, 3, 4000, 120, 200, 200, 3.92, 40, 1, .88, 15000, 2.00, 14000, 1.52, 14000, .86, 3.55, 15000, 5678);
 
