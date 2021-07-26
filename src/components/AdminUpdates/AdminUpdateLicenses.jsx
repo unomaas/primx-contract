@@ -5,6 +5,8 @@ import { DataGrid} from '@material-ui/data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 
 
+import AdminUpdates from './AdminUpdates';
+
 export default function AdminUpdateLicenses() {
     
   
