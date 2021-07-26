@@ -64,6 +64,10 @@ function App() {
               <AdminUpdates/>
             </ProtectedRoute>
 
+            <ProtectedRoute exact path="/AdminOrders" >
+              <AdminOrders/>
+            </ProtectedRoute>
+
             {/* // logged in shows InfoPage else shows LoginPage */}
             <ProtectedRoute exact path="/info">
               <InfoPage />
@@ -82,7 +86,7 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows RegisterPage at "/registration" */}
-            <ProtectedRoute exact path="/registration" authRedirect="/user">
+            <ProtectedRoute exact path="/registration" >
               <AdminRegisterPage />
             </ProtectedRoute>
 
