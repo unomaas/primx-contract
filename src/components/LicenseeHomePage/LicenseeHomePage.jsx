@@ -4,7 +4,8 @@ import './LicenseeHomePage.css';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 
 // CUSTOM COMPONENTS
-import RegisterForm from '../AdminRegisterForm/AdminRegisterForm';
+import EstimateCreate from '../EstimateCreate/EstimateCreate';
+import EstimateLookup from '../EstimateLookup/EstimateLookup';
 
 function LicenseeHomePage() {
   const [heading, setHeading] = useState('Welcome');
@@ -12,7 +13,7 @@ function LicenseeHomePage() {
 
   // toggle button states
   const [selectedCreate, setSelectedCreate] = React.useState(true);
-  const [selectedLook, setSelectedLook] = React.useState(false);
+  const [selectedLookup, setSelectedLookup] = React.useState(false);
 
   const onLogin = (event) => {
     history.push('/login');
@@ -31,11 +32,11 @@ function LicenseeHomePage() {
             value="check"
             selected={selectedCreate}
             onChange={() => {
-              if (selectedCreate){
-              return
-              } else if (!selectedCreate){
-              setSelectedCreate(!selectedCreate);
-              setSelectedLook(!selectedLook);
+              if (selectedCreate) {
+                return
+              } else if (!selectedCreate) {
+                setSelectedCreate(!selectedCreate);
+                setSelectedLookup(!selectedLookup);
               }
             }}
           > Create New Estimate
@@ -44,18 +45,22 @@ function LicenseeHomePage() {
 
           <ToggleButton
             value="check"
-            selected={selectedLook}
+            selected={selectedLookup}
             onChange={() => {
-              if (selectedLook){
+              if (selectedLookup) {
                 return
-                } else if (!selectedLook){
+              } else if (!selectedLookup) {
                 setSelectedCreate(!selectedCreate);
-                setSelectedLook(!selectedLook);
-                }
+                setSelectedLookup(!selectedLookup);
+              }
             }}
           > Look-Up Existing Estimate
           </ToggleButton>
         </div>
+
+        {/* Conditional Rendering */}
+        {selectedCreate && <EstimateCreate />}
+        {selectedLookup && <EstimateLookup />}
 
       </div>
     </div>
