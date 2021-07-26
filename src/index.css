@@ -1,0 +1,17 @@
+.App, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Times New Roman', sans-serif;
+  text-align: center;
+}
+
+@font-face {
+  font-family: 'Lexend Tera';
+  src: url('./fonts/Lexend_Tera/LexendTera-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.lexendFont {
+  font-family: 'Lexend Tera';
+}

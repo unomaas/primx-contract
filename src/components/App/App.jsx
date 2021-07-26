@@ -13,6 +13,7 @@ import EstimateCreate from '../EstimateCreate/EstimateCreate';
 import EstimateLookup from '../EstimateLookup/EstimateLookup';
 import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
+import SystemAdmin from '../SystemAdmin/SystemAdmin';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -37,7 +38,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <div>
+        <div className="App">
 
           <Nav />
 
@@ -68,6 +69,10 @@ function App() {
               <AdminOrders/>
             </ProtectedRoute>
 
+            <ProtectedRoute exact path="/SystemAdmin" >
+              <SystemAdmin />
+            </ProtectedRoute>
+
             <Route exact path="/home">
               <LicenseeHomePage />
             </Route>
@@ -83,7 +88,7 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows LoginPage at /login */}
-            <ProtectedRoute exact path="/login" authRedirect="/user">
+            <ProtectedRoute exact path="/login" >
               <AdminLoginPage />
             </ProtectedRoute>
 
@@ -101,6 +106,9 @@ function App() {
               <LicenseeHomePage />
             </ProtectedRoute> */}
 
+            <ProtectedRoute exact path="/adminorders">
+              <AdminOrders />
+            </ProtectedRoute>
             {/* If none of the other routes matched, we will show a 404. */}
             <Route>
               <h1>404</h1>

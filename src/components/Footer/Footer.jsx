@@ -7,7 +7,11 @@ import './Footer.css';
 // or even care what the redux state is, so it doesn't need 'connect()'
 
 function Footer() {
-  return <footer>&copy; Prime Digital Academy</footer>;
+  return (
+    <footer className="lexendFont" style={{fontSize: 12}}>
+      &copy; 2021 PrīmX NA. All rights reserved.
+    </footer>
+  )
 }
 
 export default Footer;
