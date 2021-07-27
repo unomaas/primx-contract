@@ -48,12 +48,12 @@ export default function AdminUpdateShipping() {
   }
 
   //handle the submit of the form
-  const handleSubmit = (event) => {
-    event.preventDefault
+  const handleSubmit = () => {
+
     console.log('in handleSubmit, adding newShippingCost -->', newShippingCost);
 
     // dispatch sent to shippingCost saga, payload as below
-    dispatch({ type: 'ADD_SHIPPING_COST', payload: newShippingCost });
+    dispatch({ type: 'ADD_SHIPPING_COSTS', payload: newShippingCost });
     swal("Success!", "New Admin Created", "success", {
       button: "OK",
     });
@@ -80,7 +80,7 @@ export default function AdminUpdateShipping() {
 
       <div>
 
-        <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
+        <form className={classes.root} noValidate autoComplete="off">
           <div>
             <TextField id="outlined-basic" className={classes.root} label="Add New Shipping Location" variant="outlined" value={newShippingCost.ship_to_state_province} onChange={handleShipToChange} />
             <TextField id="outlined-basic" className={classes.root} label="Add New DC Price" variant="outlined" value={newShippingCost.dc_price} onChange={handleDCChange} />
@@ -89,7 +89,7 @@ export default function AdminUpdateShipping() {
             <TextField id="outlined-basic" className={classes.root} label="Add New Flow/CPEA Price" variant="outlined" value={newShippingCost.flow_cpea_price} onChange={handleFlowCPEAChange} />
             <TextField id="outlined-basic" className={classes.root} label="Add New Fibers Shipping Price" variant="outlined" value={newShippingCost.fibers_price} onChange={handleFibersChange} />
           </div>
-          <Fab className={classes.root} type="submit" color="primary" aria-label="add">
+          <Fab className={classes.root} onClick={handleSubmit} color="primary" aria-label="add">
             <AddIcon />
           </Fab>
         </form>

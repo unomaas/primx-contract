@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest, takeEvery } from 'redux-saga/effects';
 
 //worker saga to GET all shipping costs
 function* fetchShippingCosts() {
@@ -44,7 +44,7 @@ function* updateShippingCosts(action) {
 
 function* shippingCostsSaga() {
     yield takeLatest('FETCH_SHIPPING_COSTS', fetchShippingCosts);
-    yield takeLatest('ADD_SHIPPING_COSTS', postShippingCosts);
+    yield takeEvery('ADD_SHIPPING_COSTS', postShippingCosts);
     yield takeLatest('UPDATE_SHIPPING_COSTS', updateShippingCosts);
 }
 
