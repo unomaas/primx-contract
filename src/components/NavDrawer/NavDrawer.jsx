@@ -70,38 +70,48 @@ export default function NavDrawer() {
           {/* Conditioning rendering for what menu options are: */}
           {user.id ? (
             // If user is logged in:
-            <List>
+            <List className={classes.LexendTeraFont} style={{fontSize: '13px'}}>
 
               <ListItem button onClick={() => history.push(`/home`)}>
                 <AddCircleOutlineOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Create New Estimate"} />
+                {/* <ListItemText 
+                  primary={"Create New Estimate"} 
+                  className={classes.LexendTeraFont}
+                  style={{fontFamily: 'Lexend Tera'}}
+                /> */}
+                <p>Create New Estimate</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
-                <ListItemText primary={"Look-Up Estimate"} />
+                {/* <ListItemText primary={"Look-Up Estimate"} /> */}
+                <p>Look-Up Estimate</p>
               </ListItem>
 
               <Divider />
 
               <ListItem button onClick={() => history.push(`/user`)}>
                 <HomeOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Admin Dashboard"} />
+                {/* <ListItemText primary={"Admin Dashboard"} /> */}
+                <p>Admin Dashboard</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/registration`)}>
                 <PersonAddOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Create New Admin"} />
+                {/* <ListItemText primary={"Create New Admin"} /> */}
+                <p>Create New Admin</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/adminupdates`)}>
                 <UpdateIcon /> &nbsp;
-                <ListItemText primary={"Update Items"} />
+                {/* <ListItemText primary={"Update Items"} /> */}
+                <p>Update Items</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/adminorders`)}>
                 <ViewCarouselIcon /> &nbsp;
-                <ListItemText primary={"View Pipeline"} />
+                {/* <ListItemText primary={"View Pipeline"} /> */}
+                <p>View Pipeline</p>
               </ListItem>
 
               {/* Conditional rendering to show system admin portal: */}
@@ -112,7 +122,8 @@ export default function NavDrawer() {
 
                   <ListItem button onClick={() => history.push(`/systemadmin`)}>
                     <SupervisorAccountIcon /> &nbsp;
-                    <ListItemText primary={"System Admin"} />
+                    {/* <ListItemText primary={"System Admin"} /> */}
+                    <p>System Admin</p>
                   </ListItem>
                 </>
               ) : (
@@ -126,29 +137,33 @@ export default function NavDrawer() {
 
               <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
                 <ExitToAppIcon /> &nbsp;
-                <ListItemText primary={"Log Out"} />
+                {/* <ListItemText primary={"Log Out"} /> */}
+                <p>Log Out</p>
               </ListItem>
 
             </List>
           ) : (
             // If user is not logged in:
-            <List>
+            <List className={classes.LexendTeraFont} style={{fontSize: '13px'}}>
 
               <ListItem button onClick={() => history.push(`/home`)}>
                 <AddCircleOutlineOutlinedIcon /> &nbsp;
-                <ListItemText primary={"Create New Estimate"} />
+                {/* <ListItemText primary={"Create New Estimate"} /> */}
+                <p>Create New Estimate</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
-                <ListItemText primary={"Look Up Estimate"} />
+                {/* <ListItemText primary={"Look Up Estimate"} /> */}
+                <p>Look-Up Estimate</p>
               </ListItem>
 
               <Divider />
 
               <ListItem button onClick={() => history.push(`/login`)}>
                 <ExitToAppIcon /> &nbsp;
-                <ListItemText primary={"Admin Login"} />
+                {/* <ListItemText primary={"Admin Login"} /> */}
+                <p>Admin Login</p>
               </ListItem>
 
             </List>

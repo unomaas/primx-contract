@@ -156,8 +156,7 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
           className="AdminEstimatesGrid-wrapper"
         >
             <DataGrid 
-                // className={classes.dataGridTables}
-                style={{fontFamily: 'Times New Roman', fontSize: '1em'}}
+                style={{fontFamily: 'Times New Roman', fontSize: '14px'}}
                 rows={rows}
                 columns={columns}
                 pageSize={5}

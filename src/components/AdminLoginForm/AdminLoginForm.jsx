@@ -56,7 +56,7 @@ function AdminLoginForm() {
             {errors.loginMessage}
           </h3>
         )}
-        
+
         <div>
           <TextField
             required
@@ -85,9 +85,18 @@ function AdminLoginForm() {
             Password:
           </TextField>
         </div>
-        
+
         <div>
-          <Button onClick={login} variant="contained" color="primary" className="btn" value="Log In">Log in</Button>
+          <Button
+            onClick={login}
+            variant="contained"
+            color="primary"
+            className="btn"
+            value="Log In"
+            style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+          >
+            Log in
+          </Button>
         </div>
       </form>
     </div>

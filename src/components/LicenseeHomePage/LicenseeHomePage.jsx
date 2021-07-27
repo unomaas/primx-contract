@@ -7,6 +7,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
+import { useStyles } from '../MuiStyling/MuiStyling';
 
 
 // CUSTOM COMPONENTS
@@ -20,6 +21,7 @@ function LicenseeHomePage() {
   // toggle button states
   const [selectedCreate, setSelectedCreate] = React.useState(true);
   const [selectedLookup, setSelectedLookup] = React.useState(false);
+  const classes = useStyles();
 
   const onLogin = (event) => {
     history.push('/login');
@@ -38,6 +40,8 @@ function LicenseeHomePage() {
           <ToggleButton
             value="check"
             selected={selectedCreate}
+            style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+
             onChange={() => {
               if (selectedCreate) {
                 return
@@ -53,6 +57,7 @@ function LicenseeHomePage() {
           <ToggleButton
             value="check"
             selected={selectedLookup}
+            style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
             onChange={() => {
               if (selectedLookup) {
                 return
@@ -65,6 +70,7 @@ function LicenseeHomePage() {
           </ToggleButton>
         </ButtonGroup>
       </div>
+
       {/* Conditional Rendering */}
         {selectedCreate && <EstimateCreate />}
         {selectedLookup && <EstimateLookup />}
