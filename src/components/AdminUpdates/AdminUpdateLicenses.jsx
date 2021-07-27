@@ -15,14 +15,15 @@ export default function AdminUpdateLicenses() {
   let [companyNameInput,setCompanyNameInput] = useState('');
 
 
-
+  //establish rows with campanies array for datagrid
   let rows = companies;
 
-
+  //estabish columns for datagrid
   const columns = [
     { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, editable: true },
   ];
 
+  //handles edit of datagrid cells
   const handleEditSubmit = ({ id, field, props }) => {
     console.log('in handle edit submit for id, field, props', id, field, props);
     // id argument is the db id of the row being edited and props.value is the new value after submitting the edit
@@ -54,7 +55,7 @@ return (
   <div >
     <AdminUpdates />
     <h2>Update Licensee</h2>
-    <input onChange={handleCompanyInputChange} type='text'></input>
+    <input onChange={handleCompanyInputChange} type='text'>Add New Licensee</input>
     <Button onClick={handleAddCompany}><AddCircleOutlineRoundedIcon /></Button>
     <div style={{ height: 350, width: '95%' }}
       className="AdminEstimatesGrid-wrapper">
