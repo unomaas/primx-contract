@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
+import { Block } from '@material-ui/icons';
 
 export default function AdminUpdateShipping() {
 
@@ -79,30 +80,25 @@ export default function AdminUpdateShipping() {
       </div>
 
       <div>
-
         <form className={classes.root} noValidate autoComplete="off">
           <div>
-            <TextField id="outlined-basic" className={classes.root} label="Add New Shipping Location" variant="outlined" value={newShippingCost.ship_to_state_province} onChange={handleShipToChange} />
-            <TextField id="outlined-basic" className={classes.root} label="Add New DC Price" variant="outlined" value={newShippingCost.dc_price} onChange={handleDCChange} />
+            <div >
+              <TextField id="outlined-basic" className={classes.root} label="Add New Shipping Location" variant="outlined" value={newShippingCost.ship_to_state_province} onChange={handleShipToChange} />
+              <TextField id="outlined-basic" className={classes.root} label="Add New DC Price" variant="outlined" value={newShippingCost.dc_price} onChange={handleDCChange} />
+            </div>
+
+            <div >
+              <TextField id="outlined-basic" className={classes.root} label="Add New Flow/CPEA Price" variant="outlined" value={newShippingCost.flow_cpea_price} onChange={handleFlowCPEAChange} />
+              <TextField id="outlined-basic" className={classes.root} label="Add New Fibers Shipping Price" variant="outlined" value={newShippingCost.fibers_price} onChange={handleFibersChange} />
+              <br></br>
+              <Fab className={classes.root} onClick={handleSubmit} color="primary" aria-label="add">
+                <AddIcon />
+              </Fab>
+            </div>
           </div>
-          <div>
-            <TextField id="outlined-basic" className={classes.root} label="Add New Flow/CPEA Price" variant="outlined" value={newShippingCost.flow_cpea_price} onChange={handleFlowCPEAChange} />
-            <TextField id="outlined-basic" className={classes.root} label="Add New Fibers Shipping Price" variant="outlined" value={newShippingCost.fibers_price} onChange={handleFibersChange} />
-          </div>
-          <Fab className={classes.root} onClick={handleSubmit} color="primary" aria-label="add">
-            <AddIcon />
-          </Fab>
         </form>
-
       </div>
-
-
-
-
-
       <UpdateShippingCostsGrid />
-
-
     </div>
   )
 }

@@ -18,10 +18,10 @@ export default function UpdateShippingCostsGrid() {
     // columns for Data Grid
     const columns = [
 
-        {field: 'ship_to_state_province', headerName: 'Ship To', width: 300}, // Editable + validation?
-        {field: 'dc_price', headerName: 'DC', width: 300}, // Editable + validation?
-        {field: 'flow_cpea_price', headerName: 'Flow/CPEA', width: 300}, // Editable + validation?
-        {field: 'fibers_price', headerName: 'Fibers', width: 300} // Editable + validation?
+        {field: 'ship_to_state_province', headerName: 'Ship To', width: 200}, // Editable + validation?
+        {field: 'dc_price', headerName: 'DC', width: 200}, // Editable + validation?
+        {field: 'flow_cpea_price', headerName: 'Flow/CPEA', width: 200}, // Editable + validation?
+        {field: 'fibers_price', headerName: 'Fibers', width: 200} // Editable + validation?
 
     ]
 
@@ -36,7 +36,7 @@ export default function UpdateShippingCostsGrid() {
 
     return (
         <div
-          style={{ height: 650, width: '50%'}}
+          style={{ height: 650, width: '90%'}}
           className="AdminEstimatesGrid-wrapper"
         >
             <DataGrid 
