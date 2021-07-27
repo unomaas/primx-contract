@@ -61,6 +61,7 @@ export default function AdminUpdateTypes() {
     dispatch({type: 'FETCH_PLACEMENT_TYPES'});
   }, [])
 
+  console.log('floorTypes -->', floorTypes);
 
   return (
     <div>

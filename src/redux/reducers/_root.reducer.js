@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   adminEstimates, // will contain an array of estimate objects
   placementTypes, //contains placement types
   floorTypes, //contains floor types
-  shippingCosts,//contins the shipping costs
+  shippingCosts//contins the shipping costs
 });
 
 export default rootReducer;

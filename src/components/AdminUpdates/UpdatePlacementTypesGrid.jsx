@@ -12,7 +12,7 @@ export default function UpdatePlacementTypesGrid({placementTypes}) {
     // columns for Data Grid
     const placementColumns = [
 
-        {field: 'placement_type', headerName: 'Placement Type', width: 1000}, // Editable + validation?
+        {field: 'placement_type', headerName: 'Placement Type', width: 1000} // Editable + validation?
     ]
 
     let placementRows = placementTypes

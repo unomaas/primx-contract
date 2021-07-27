@@ -1,11 +1,20 @@
 
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react';
+
+
 // Material-UI components
 import { DataGrid } from '@material-ui/data-grid';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
-export default function UpdateShippingCostsGrid({shippingCosts}) {
+export default function UpdateShippingCostsGrid() {
+
+    const dispatch = useDispatch();
+
  
+    const shippingCosts = useSelector(store => store.shippingCosts);
+
     // columns for Data Grid
     const columns = [
 
@@ -18,9 +27,16 @@ export default function UpdateShippingCostsGrid({shippingCosts}) {
 
     let rows = shippingCosts
 
+    console.log('shipping costs in grid component -->', shippingCosts);
+
+    useEffect(() => {
+        // GET shipping cost data on page load
+        dispatch({type: 'FETCH_SHIPPING_COSTS'});
+      }, [])
+
     return (
         <div
-          style={{ height: 350, width: '50%'}}
+          style={{ height: 650, width: '50%'}}
           className="AdminEstimatesGrid-wrapper"
         >
             <DataGrid 
@@ -28,7 +44,7 @@ export default function UpdateShippingCostsGrid({shippingCosts}) {
                 style={{fontFamily: 'Times New Roman', fontSize: '1em'}}
                 rows={rows}
                 columns={columns}
-                pageSize={5}
+                pageSize={10}
             />
         </div>
     )
