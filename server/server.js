@@ -16,7 +16,6 @@ const floorTypesRouter = require('./routes/floorTypes.router');
 const placementTypesRouter = require('./routes/placementTypes.router');
 
 const companiesRouter = require('./routes/companies.router');
-const liscenseesRouter = require('./routes/liscensees.router')
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -37,7 +36,6 @@ app.use('/api/floortypes', floorTypesRouter);
 app.use('/api/placementtypes', placementTypesRouter);
 
 app.use('/api/companies', companiesRouter);
-app.use('/api/liscensees', liscenseesRouter);
 
 // Serve static files
 app.use(express.static('build'));

@@ -45,7 +45,9 @@ router.post('/', (req, res) => {
 router.post('/', (req, res) => {
   console.log('In /api/estimates/ POST route with incoming data:', req.body);
 
-  const queryText = `INSERT INTO "estimates" (
+  const queryText = `
+                    INSERT INTO "estimates" (
+
                     "measurement_units",
                     "country",
                     "date_created",
@@ -84,7 +86,9 @@ router.post('/', (req, res) => {
                     $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,
                     $11,$12,$13,$14,$15,$16,$17,$18,$19,$20,
                     $21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32
-                    );`
+                    );
+                    
+                    `
   
   // ROUTE IS INCOMPLETE
   // req.body NEEDS to be updated for all 32 values
@@ -93,7 +97,8 @@ router.post('/', (req, res) => {
       res.sendStatus(200);
       })
       .catch(error => {
-      console.log(`Error with /api/estimates/ POSTT for id ${req.params.id}:`, error)
+      console.log(`Error with /api/estimates/ POST for id ${req.params.id}:`, error)
+      res.sendStatus(500);
       })
 });
 
