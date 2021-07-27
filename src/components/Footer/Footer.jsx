@@ -8,7 +8,7 @@ import './Footer.css';
 
 function Footer() {
   return (
-    <footer className="lexendFont" style={{fontSize: 12}}>
+    <footer className="lexendFont">
       &copy; 2021 PrīmX NA. All rights reserved.
     </footer>
   )
