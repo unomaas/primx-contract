@@ -68,25 +68,27 @@ export default function AdminUpdateTypes() {
       <h4>Update Floor Types</h4>
 
         {/* input nd add button for adding new floor types */}
-        <form  className={classes.root} noValidate autoComplete="off">
-          <TextField id="outlined-basic" label="Add New Floor Type" variant="outlined" value={newFloorType} onChange={handleFloorChange}/>
-          <Fab className={classes.root} onClick={addFloorType} color="primary" aria-label="add">
-            <AddIcon />
-          </Fab>
-        </form>
-
+        <div style={{margin: '0 auto'}}>
+          <form  className={classes.root} noValidate autoComplete="off">
+            <TextField id="outlined-basic" label="Add New Floor Type" variant="outlined" value={newFloorType} onChange={handleFloorChange}/>
+            <Fab className={classes.root} onClick={addFloorType} color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
+          </form>
+        </div>
       {/* showing floor types */}
       <UpdateFloorTypesGrid floorTypes={floorTypes}/>
 
       <h4>Update Placement Types</h4>
         {/* input and add button for adding new placement types */}
-        <form  className={classes.root} noValidate autoComplete="off">
-          <TextField id="outlined-basic" label="Add New Placement Type" variant="outlined" value={newPlacementType} onChange={handlePlacementChange}/>
-            <Fab className={classes.root} onClick={addPlacementType} color="primary" aria-label="add">
-              <AddIcon />
-            </Fab>
-        </form>
-
+        <div style={{margin: '0 auto'}}>
+          <form  className={classes.root} noValidate autoComplete="off">
+            <TextField id="outlined-basic" label="Add New Placement Type" variant="outlined" value={newPlacementType} onChange={handlePlacementChange}/>
+              <Fab className={classes.root} onClick={addPlacementType} color="primary" aria-label="add">
+                <AddIcon />
+              </Fab>
+          </form>
+        </div>
       {/* showing placement types */}
       <UpdatePlacementTypesGrid placementTypes={placementTypes}/>
 

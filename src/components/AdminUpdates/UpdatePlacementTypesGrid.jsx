@@ -12,14 +12,14 @@ export default function UpdatePlacementTypesGrid({placementTypes}) {
     // columns for Data Grid
     const placementColumns = [
 
-        {field: 'placement_type', headerName: 'Placement Type', width: 400}, // Editable + validation?
+        {field: 'placement_type', headerName: 'Placement Type', width: 1000}, // Editable + validation?
     ]
 
     let placementRows = placementTypes
 
     return (
         <div
-          style={{ height: 350, width: '95%'}}
+          style={{ height: 350, width: '50%'}}
           className="AdminEstimatesGrid-wrapper"
         >
             <DataGrid 
