@@ -1,6 +1,6 @@
 import React from 'react';
 import LogOutButton from '../LogOutButton/LogOutButton';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
 import { useHistory } from "react-router-dom";
 
@@ -33,19 +33,35 @@ function AdminLandingPage() {
   const goToAdminUpdates = () => {
     history.push('./AdminUpdates');
   }
-  
+
 
   return (
     <div className="container">
       <center>
-      <h2>Welcome, {user.username}!</h2>
+        <h2>Welcome, {user.username}!</h2>
       </center>
 
       <h3>View Orders and Estimates</h3>
-      <Button onClick={goToOrdersAndEstimates} variant="contained" color="primary" className="btn">Go</Button>
+      <Button
+        onClick={goToOrdersAndEstimates}
+        variant="contained"
+        color="primary"
+        className="btn"
+        style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+      >
+        Go
+      </Button>
 
       <h3>Update Licensee/Costs/Inventory</h3>
-      <Button onClick={goToAdminUpdates} variant="contained" color="primary" className="btn">Go</Button>
+      <Button
+        onClick={goToAdminUpdates}
+        variant="contained"
+        color="primary"
+        className="btn"
+        style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+      >
+        Go
+      </Button>
 
     </div>
   );

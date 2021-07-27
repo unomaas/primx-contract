@@ -4,10 +4,10 @@ import { makeStyles, createMuiTheme, withStyles, TableCell, TableRow } from '@ma
 // ⬇ Material-ui Theme: 
 const theme = createMuiTheme({
   // Changes the font default of MUI Components to be on-brand font: 
-  typography: {
-    fontFamily: 'Lexend Tera',
-    fontSize: 11
-  },
+  // typography: {
+  //   fontFamily: 'Lexend Tera',
+  //   fontSize: 11
+  // },
 }) // End theme
 
 
@@ -36,10 +36,16 @@ const useStyles = makeStyles({
     fontSize: '1.75em'
   },
   // ⬇ Makes the Data Grid Tables in a normal font: 
-  dataGridTables: {
-    fontFamily: 'Times New Roman',
-    fontSize: '1em',
+  LexendTeraFont: {
+    fontFamily: 'Lexend Tera',
+    // fontSize: '14px',
+    // typography: {
+    //   fontFamily: 'Lexend Tera',
+    //   fontSize: '11px',
+    // }
   },
+
+
 }); // End useStyles
 
 
