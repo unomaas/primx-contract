@@ -28,7 +28,18 @@
   border: 1px solid black;
 } */
 
-.testTable {
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 1em;
+.EstimateCreate-table-wrappers {
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-one {
+  /* width: 36em; */
+  max-width: 32em;
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-two {
+  /* width: 70em; */
+  max-width: 70em;
+  margin: 0 auto;
 }

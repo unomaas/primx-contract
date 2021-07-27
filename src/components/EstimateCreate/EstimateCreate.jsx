@@ -226,7 +226,7 @@ export default function EstimateCreate() {
             type="submit"
             // onClick={event => handleSubmit(event)}
             variant="outlined"
-            style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+            style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
           >
             Submit
           </Button>
@@ -263,41 +263,132 @@ export default function EstimateCreate() {
 
         </div>
 
-        <div>
-          <h3>Thickened Edge Calculator</h3>
-          <TableContainer style={{maxWidth: "36em", fontFamily: 'Times New Roman', fontSize: '1em'}}>
-            <Table className={classes.dataGridTables} size="small">
-              <TableHead className={classes.dataGridTables}>
-                <TableRow className={classes.dataGridTables}>
-                  <TableCell></TableCell>
-                  <TableCell className={classes.dataGridTables}>Lineal<br />Feet</TableCell>
-                  <TableCell className="testTable">Width</TableCell>
-                  <TableCell>Additional<br />Thickness</TableCell>
-                  <TableCell>Cubic<br />Yards</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody className="testTable">
-                <TableRow>
-                  <TableCell>Perimeter</TableCell>
-                  <TableCell>INPUT</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Construction Joint</TableCell>
-                  <TableCell>INPUT</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+        <div className="EstimateCreate-table-wrappers">
+          <div className="EstimateCreate-table-one">
+            <h3>Thickened Edge Calculator</h3>
+            <TableContainer >
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>Lineal<br />Feet</b></TableCell>
+                    <TableCell><b>Width</b></TableCell>
+                    <TableCell><b>Additional<br />Thickness</b></TableCell>
+                    <TableCell><b>Cubic<br />Yards</b></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className="testTable">
+                  <TableRow>
+                    <TableCell><b>Perimeter</b></TableCell>
+                    <TableCell>INPUT</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Construction Joint</b></TableCell>
+                    <TableCell>INPUT</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
 
-        <div>
-          <h3>Materials Table</h3>
+          <div className="EstimateCreate-table-two">
+            <h3>Materials Table</h3>
+            <TableContainer style={{ maxWidth: "72em" }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>Dosage<br />Rate</b></TableCell>
+                    <TableCell><b>Total<br />Amount</b></TableCell>
+                    <TableCell><b>Packaging<br />Capacity</b></TableCell>
+                    <TableCell><b>Packages<br />Needed</b></TableCell>
+                    <TableCell><b>Total<br />Order<br />Quantity</b></TableCell>
+                    <TableCell><b>Materials<br />Price</b></TableCell>
+                    <TableCell><b>Total<br />Materials<br />Price</b></TableCell>
+                    <TableCell><b>Containers</b></TableCell>
+                    <TableCell><b>Shipping<br />Estimate</b></TableCell>
+                    <TableCell><b>Total<br />Cost</b></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>PrīmX DC</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>PrīmX Flow</b></TableCell>
+                    <TableCell>INPUT</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>PrīmX Steel<br />Fibers</b></TableCell>
+                    <TableCell>INPUT</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>PrīmX UltraCure Blankets</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>PrīmX CPEA</b></TableCell>
+                    <TableCell>INPUT</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+
+
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
         </div>
 
 
