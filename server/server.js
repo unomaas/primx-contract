@@ -13,6 +13,7 @@ const userRouter = require('./routes/user.router');
 const adminRouter = require('./routes/admin.router');
 const estimatesRouter = require('./routes/estimates.router');
 const companiesRouter = require('./routes/companies.router');
+const liscenseesRouter = require('./routes/liscensees.router')
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -30,6 +31,7 @@ app.use('/api/user', userRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/estimates', estimatesRouter);
 app.use('/api/companies', companiesRouter);
+app.use('/api/liscensees', liscenseesRouter);
 
 // Serve static files
 app.use(express.static('build'));
