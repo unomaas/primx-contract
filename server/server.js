@@ -12,6 +12,9 @@ const passport = require('./strategies/user.strategy');
 const userRouter = require('./routes/user.router');
 const adminRouter = require('./routes/admin.router');
 const estimatesRouter = require('./routes/estimates.router');
+const floorTypesRouter = require('./routes/floorTypes.router');
+const placementTypesRouter = require('./routes/placementTypes.router');
+
 const companiesRouter = require('./routes/companies.router');
 
 // Body parser middleware
@@ -29,6 +32,9 @@ app.use(passport.session());
 app.use('/api/user', userRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/estimates', estimatesRouter);
+app.use('/api/floortypes', floorTypesRouter);
+app.use('/api/placementtypes', placementTypesRouter);
+
 app.use('/api/companies', companiesRouter);
 
 // Serve static files
