@@ -63,7 +63,6 @@ return (
         rows={rows}
         columns={columns}
         pageSize={10}
-        checkboxSelection
         onEditCellChangeCommitted={handleEditSubmit}
       />
     </div>
