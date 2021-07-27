@@ -148,8 +148,7 @@ export default function useEstimateCalculations(estimate) {
         estimate.primx_cpea_total_cost_estimate = estimate.primx_cpea_calculated_shipping_estimate + estimate.primx_cpea_total_materials_price;
     }
 
-    // add in the last few shared calculated values between both types of units
-    // total price and 
+    // add in the last few shared calculated values between both types of units for pricing totals
     estimate.design_total_materials_price = estimate.primx_dc_total_materials_price + estimate.primx_flow_total_materials_price +
         estimate.primx_steel_fibers_total_materials_price + estimate.primx_ultracure_blankets_total_materials_price + estimate.primx_cpea_total_materials_price;
 
