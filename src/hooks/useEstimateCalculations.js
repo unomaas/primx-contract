@@ -18,15 +18,65 @@ export default function useEstimateCalculations(estimate) {
     if (estimate.measurement_units == 'imperial') {
         
         // cubic yards base: original formula for cubic yards divided quantity first by 12, then by 27
-        estimate.cubic_yards = (estimate.square_feet * estimate.thickness_inches / 324) ; // round up on cubic yardages
+        estimate.cubic_yards = (estimate.square_feet * estimate.thickness_inches / 324);
         // additional thickness for thickened edges
         if (estimate.thickness_inches >= 6) { // if greater than 6 inches, no need for thickened edges
             estimate.additional_thickness_inches = 0;
         } else { 
-            estimate.additional_thickness_inches = ( (6 - estimate.thickness_inches) * .5); // round to 2 decimals for additional thickness
+            estimate.additional_thickness_inches = ( (6 - estimate.thickness_inches) * .5);
         }
-        // calculate perimeter thickening and construction joint thickening based on calculated additional thickness inches, the 5 and 10 values below are provided by PrimX
+        // calculate perimeter thickening and construction joint thickening based on calculated additional thickness, the 5 and 10 values below are provided by PrimX
         estimate.perimeter_thickening_cubic_yards = (estimate.thickened_edge_perimeter_lineal_feet * 5) * (estimate.additional_thickness_inches / 324);
+        estimate.construction_joint_thickening_cubic_yards = (estimate.thickened_edge_construction_joint_lineal_feet * 10) * (estimate.additional_thickness_inches / 324);
+        // calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic yards
+        estimate.cubic_yards_subtotal = estimate.cubic_yards + estimate.perimeter_thickening_cubic_yards + estimate.construction_joint_thickening_cubic_yards;
+        estimate.waste_factor_cubic_yards = estimate.cubic_yards_subtotal * .05;
+        estimate.design_cubic_yards_total = estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards;
+        
+        // calculate amounts and prices of materials that are measured in pounds and square feet, start with DC
+        estimate.primx_dc_total_amount_needed = estimate.design_cubic_yards_total * 67; // 67 is the factor provided by PrimX
+        estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_amount_needed / 2756); // dc comes in packages of 2756 lbs, need to round up
+        estimate.primx_dc_total_order_quantity = estimate.primx_dc_packages_needed * 2756;
+        estimate.primx_dc_total_materials_price = estimate.primx_dc_total_order_quantity * estimate.primx_dc_unit_price;
+        // Every shipping container can hold 14 packages of DC, need to round up
+        estimate.primx_dc_containers_needed = Math.ceil(estimate.primx_dc_packages_needed / 14);
+        estimate.primx_dc_calculated_shipping_estimate = estimate.primx_dc_containers_needed * estimate.primx_dc_shipping_estimate;
+        estimate.primx_dc_total_cost_estimate = estimate.primx_dc_calculated_shipping_estimate + estimate.primx_dc_total_materials_price;
+        
+        // calculate values for PrimX steel fibers
+        estimate.primx_steel_fibers_total_amount_needed = estimate.design_cubic_yards_total * estimate.primx_steel_fibers_dosage_lbs;
+        // steel fibers comes in packages of 42329 lbs, need to round up
+        estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_amount_needed / 42329);
+        estimate.primx_steel_fibers_total_order_quantity = estimate.primx_steel_fibers_packages_needed * 42329;
+        estimate.primx_steel_fibers_total_materials_price = estimate.primx_steel_fibers_total_order_quantity * estimate.primx_steel_fibers_unit_price;
+        // Every shipping container can only hold 1 package of steel fibers
+        estimate.primx_steel_fibers_containers_needed = estimate.primx_steel_fibers_packages_needed;
+        estimate.primx_steel_fibers_calculated_shipping_estimate = estimate.primx_steel_fibers_containers_needed * estimate.primx_steel_fibers_shipping_estimate;
+        estimate.primx_steel_fibers_total_cost_estimate = estimate.primx_steel_fibers_calculated_shipping_estimate + estimate.primx_steel_fibers_total_materials_price;
+        
+        // calculate values for PrimX Ultracure Blankets
+        estimate.primx_ultracure_blankets_total_amount_needed = estimate.square_feet * 1.2; // 1.2 is the factor provided by PrimX
+        // blankets come in rolls of 6458 sq feet, need to round up
+        estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_amount_needed / 6458); 
+        estimate.primx_ultracure_blankets_total_order_quantity = estimate.primx_ultracure_blankets_packages_needed * 6458;
+        estimate.primx_ultracure_blankets_total_materials_price = estimate.primx_ultracure_blankets_total_order_quantity * estimate.primx_ultracure_blankets_unit_price;
+        // Blankets don't get charged shipping and don't have container limitations
+        estimate.primx_ultracure_blankets_total_cost_estimate = estimate.primx_ultracure_blankets_total_materials_price;
+    }
+
+    // metric calculalations
+    else if (estimate.measurement_units == 'metric') {
+    
+        // cubic meters base
+        estimate.cubic_meters = (estimate.square_meters * estimate.thickness_millimeters / 1000); 
+        // additional thickness for thickened edges
+        if (estimate.thickness_millimeters >= 152.4) { // if greater than 152.4 mm, no need for thickened edges
+            estimate.additional_thickness_millimeters = 0;
+        } else { 
+            estimate.additional_thickness_millimeters = ( (152.4 - estimate.thickness_millimeters) * .5);
+        }
+        // calculate perimeter thickening and construction joint thickening based on calculated additional thickness, the .0015 and 10 values below are provided by PrimX
+        estimate.perimeter_thickening_cubic_meters = estimate.thickened_edge_perimeter_lineal_meters * estimate.additional_thickness_millimeters * .0015;
         estimate.construction_joint_thickening_cubic_yards = (estimate.thickened_edge_construction_joint_lineal_feet * 10) * (estimate.additional_thickness_inches / 324);
         // calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic yards
         estimate.cubic_yards_subtotal = estimate.cubic_yards + estimate.perimeter_thickening_cubic_yards + estimate.construction_joint_thickening_cubic_yards;
