@@ -234,11 +234,7 @@ export default function EstimateCreate() {
 
       </div>
 
-      <div>
-        <div>
-          <h3>Project Quantity Calculations</h3>
-
-          <TextField
+      {/* <TextField
             label="Square Feet?"
             onChange={event => handleChange('kit_description', event.target.value)}
             required
@@ -259,32 +255,85 @@ export default function EstimateCreate() {
           <p>Thickening @ Construction Joint (CY): CALC#</p>
           <p>Subtotal: CALC#</p>
           <p>Waste Factor @ 5%: CALC#</p>
-          <p>Total Cubic Yards: CALC#</p>
-
-          <TableContainer>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell><b>Square<br />Feet</b></TableCell>
-                  <TableCell><b>Thickess<br />(Inches)</b></TableCell>
-                  <TableCell><b>Cubic<br />Yards</b></TableCell>
-                  <TableCell><b>Thickening @<br />Perimeter (CY)</b></TableCell>
-                  <TableCell><b>Thickening @<br />Construction<br />Joints (CY)</b></TableCell>
-                  <TableCell><b>Subtotal</b></TableCell>
-                  <TableCell><b>Waste<br />Factor<br />@ 5%</b></TableCell>
-                  <TableCell><b>Total<br />Cubic<br />Yards</b></TableCell>
-                </TableRow>
-              </TableHead>
-            </Table>
-          </TableContainer>
-
-        </div>
+          <p>Total Cubic Yards: CALC#</p> */}
+      <div>
 
         <div className="EstimateCreate-table-wrappers">
+
+          <div className="EstimateCreate-table-three">
+            <h3>Project Quantity Calculations</h3>
+            <TableContainer>
+              <Table size="small">
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>Square Feet</b></TableCell>
+                    <TableCell>_____</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Thickness (Inches)</b></TableCell>
+                    <TableCell>_____</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Cubic Yards</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Thickening @<br />Perimeter (CY)</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Thickening @<br />Construction Joints (CY)</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Subtotal</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Waste Factor @<br />5%</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+
           <div className="EstimateCreate-table-one">
             <h3>Thickened Edge Calculator</h3>
             <TableContainer >
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>Perimeter</b></TableCell>
+                    <TableCell><b>Construction<br />Joint</b></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className="testTable">
+                  <TableRow>
+                    <TableCell><b>Lineal Feet</b></TableCell>
+                    <TableCell>_____</TableCell>
+                    <TableCell>_____</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Width</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Additional<br />Thickness<br />(Inches)</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Cubic<br />Thickness<br />(Inches)</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {/* <TableContainer >
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -312,7 +361,7 @@ export default function EstimateCreate() {
                   </TableRow>
                 </TableBody>
               </Table>
-            </TableContainer>
+            </TableContainer> */}
           </div>
 
           <div className="EstimateCreate-table-two">

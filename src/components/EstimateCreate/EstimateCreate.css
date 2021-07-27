@@ -34,12 +34,17 @@
 
 .EstimateCreate-table-one {
   /* width: 36em; */
-  max-width: 32em;
+  max-width: 24em;
   margin: 0 auto;
 }
 
 .EstimateCreate-table-two {
   /* width: 70em; */
   max-width: 70em;
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-three {
+  max-width: 20em;
   margin: 0 auto;
 }
