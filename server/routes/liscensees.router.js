@@ -21,7 +21,7 @@ router.get('/company', (req, res) => {
      res.send(result.rows);
    })
    .catch(error => {
-     console.log('Error with /api/admin/company GET: ', error);
+     console.log('Error with /api/liscensees/company GET: ', error);
      res.sendStatus(500);
    })
 });
@@ -36,7 +36,7 @@ router.get('/state', (req, res) => {
      res.send(result.rows);
    })
    .catch(error => {
-     console.log('Error with /api/admin/state GET: ', error);
+     console.log('Error with /api/liscensees/state GET: ', error);
      res.sendStatus(500);
    })
 });
@@ -51,7 +51,7 @@ router.get('/floor', (req, res) => {
      res.send(result.rows);
    })
    .catch(error => {
-     console.log('Error with /api/admin/floor GET: ', error);
+     console.log('Error with /api/liscensees/floor GET: ', error);
      res.sendStatus(500);
    })
 });
@@ -66,7 +66,7 @@ router.get('/placement', (req, res) => {
      res.send(result.rows);
    })
    .catch(error => {
-     console.log('Error with /api/admin/placement GET: ', error);
+     console.log('Error with /api/liscensees/placement GET: ', error);
      res.sendStatus(500);
    })
 });
