@@ -261,6 +261,24 @@ export default function EstimateCreate() {
           <p>Waste Factor @ 5%: CALC#</p>
           <p>Total Cubic Yards: CALC#</p>
 
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell><b>Square<br />Feet</b></TableCell>
+                  <TableCell><b>Thickess<br />(Inches)</b></TableCell>
+                  <TableCell><b>Cubic<br />Yards</b></TableCell>
+                  <TableCell><b>Thickening @<br />Perimeter (CY)</b></TableCell>
+                  <TableCell><b>Thickening @<br />Construction<br />Joints (CY)</b></TableCell>
+                  <TableCell><b>Subtotal</b></TableCell>
+                  <TableCell><b>Waste<br />Factor<br />@ 5%</b></TableCell>
+                  <TableCell><b>Total<br />Cubic<br />Yards</b></TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          </TableContainer>
+
         </div>
 
         <div className="EstimateCreate-table-wrappers">
@@ -280,14 +298,14 @@ export default function EstimateCreate() {
                 <TableBody className="testTable">
                   <TableRow>
                     <TableCell><b>Perimeter</b></TableCell>
-                    <TableCell>INPUT</TableCell>
+                    <TableCell>_____</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell><b>Construction Joint</b></TableCell>
-                    <TableCell>INPUT</TableCell>
+                    <TableCell>_____</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
@@ -332,7 +350,7 @@ export default function EstimateCreate() {
                   </TableRow>
                   <TableRow>
                     <TableCell><b>PrīmX Flow</b></TableCell>
-                    <TableCell>INPUT</TableCell>
+                    <TableCell>_____</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
@@ -346,7 +364,7 @@ export default function EstimateCreate() {
                   </TableRow>
                   <TableRow>
                     <TableCell><b>PrīmX Steel<br />Fibers</b></TableCell>
-                    <TableCell>INPUT</TableCell>
+                    <TableCell>_____</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
@@ -372,7 +390,7 @@ export default function EstimateCreate() {
                   </TableRow>
                   <TableRow>
                     <TableCell><b>PrīmX CPEA</b></TableCell>
-                    <TableCell>INPUT</TableCell>
+                    <TableCell>_____</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
