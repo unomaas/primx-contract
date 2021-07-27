@@ -1,0 +1,35 @@
+import axios from 'axios';
+import { put, takeLatest } from 'redux-saga/effects';
+
+//worker saga to GET all floor types
+function* fetchAllFloorTypes() {
+    try {
+        //GET all floor types
+        const floorTypes = yield axios.get('/api/floortypes');
+        console.log('floorTypes.data', floorTypes.data);
+
+        //send results to floorTypes reducer
+        yield put({type: 'SET_FLOOR_TYPES', payload: floorTypes.data});
+    } catch (error) {
+        console.log('error with fetchAllFloorTypes in floorTypes saga', error);
+        
+    }
+}
+
+function* postFloorType(action) {
+    console.log('in postFloorType, action.payload is -->', action.payload);
+    
+    try {
+      yield axios.post(`/api/floortypes`, action.payload);
+      yield put({type: 'FETCH_FLOOR_TYPES'});
+    } catch (error) {
+      console.log('error in post floor type SAGA -->', error);
+    }
+  }
+
+function* floorTypesSaga() {
+    yield takeLatest('FETCH_FLOOR_TYPES', fetchAllFloorTypes);
+    yield takeLatest('ADD_FLOOR_TYPE', postFloorType);
+}
+
+export default floorTypesSaga;
