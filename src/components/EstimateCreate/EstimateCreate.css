@@ -2,8 +2,8 @@
   max-width: 95%;
   width: 95%;
   margin: 0 auto;
-  display: inline-block;
-  border: 1px solid black;
+  /* display: inline-block;
+  border: 1px solid black; */
 }
 
 /* .EstimateCreate-details-wrapper {
@@ -12,13 +12,12 @@
   width: 30em;
 } */
 
-.EstimateCreate-shipping-info {
+/* .EstimateCreate-shipping-info {
   display: block;
   float: left;
   max-width: 49%;
   width: 49%;
   border: 1px solid black;
-
 }
 
 .EstimateCreate-project-info {
@@ -27,7 +26,9 @@
   max-width: 49%;
   width: 49%;
   border: 1px solid black;
+} */
 
+.testTable {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 1em;
 }
-
-
