@@ -43,8 +43,6 @@ export default function useEstimateCalculations(estimate) {
         estimate.primx_dc_calculated_shipping_estimate = estimate.primx_dc_containers_needed * estimate.primx_dc_shipping_estimate;
         estimate.primx_dc_total_cost_estimate = estimate.primx_dc_calculated_shipping_estimate + estimate.primx_dc_total_materials_price;
         
-
-        
         // calculate values for PrimX steel fibers
         estimate.primx_steel_fibers_total_amount_needed = estimate.design_cubic_yards_total * estimate.primx_steel_fibers_dosage_lbs;
         // steel fibers comes in packages of 42329 lbs, need to round up
