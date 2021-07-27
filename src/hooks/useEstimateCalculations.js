@@ -53,7 +53,15 @@ export default function useEstimateCalculations(estimate) {
         estimate.primx_steel_fibers_containers_needed = estimate.primx_steel_fibers_packages_needed;
         estimate.primx_steel_fibers_calculated_shipping_estimate = estimate.primx_steel_fibers_containers_needed * estimate.primx_steel_fibers_shipping_estimate;
         estimate.primx_steel_fibers_total_cost_estimate = estimate.primx_steel_fibers_calculated_shipping_estimate + estimate.primx_steel_fibers_total_materials_price;
-
+        
+        // calculate values for PrimX Ultracure Blankets
+        estimate.primx_ultracure_blankets_total_amount_needed = estimate.square_feet * 1.2; // 1.2 is the factor provided by PrimX
+        // blankets come in rolls of 6458 sq feet, need to round up
+        estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_amount_needed / 6458); 
+        estimate.primx_ultracure_blankets_total_order_quantity = estimate.primx_ultracure_blankets_packages_needed * 6458;
+        estimate.primx_ultracure_blankets_total_materials_price = estimate.primx_ultracure_blankets_total_order_quantity * estimate.primx_ultracure_blankets_unit_price;
+        // Blankets don't get charged shipping and don't have container limitations
+        estimate.primx_ultracure_blankets_total_cost_estimate = estimate.primx_ultracure_blankets_total_materials_price;
     }
 
 
