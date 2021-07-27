@@ -18,10 +18,10 @@ export default function UpdateShippingCostsGrid() {
     // columns for Data Grid
     const columns = [
 
-        {field: 'ship_to_state_province', headerName: 'Ship To', width: 200}, // Editable + validation?
-        {field: 'dc_price', headerName: 'DC', width: 200}, // Editable + validation?
-        {field: 'flow_cpea_price', headerName: 'Flow/CPEA', width: 200}, // Editable + validation?
-        {field: 'fibers_price', headerName: 'Fibers', width: 200} // Editable + validation?
+        {field: 'ship_to_state_province', headerName: 'Ship To', width: 200, editable: true}, // Editable + validation?
+        {field: 'dc_price', headerName: 'DC', width: 200, editable: true}, // Editable + validation?
+        {field: 'flow_cpea_price', headerName: 'Flow/CPEA', width: 200, editable: true}, // Editable + validation?
+        {field: 'fibers_price', headerName: 'Fibers', width: 200, editable: true} // Editable + validation?
 
     ]
 
@@ -34,6 +34,18 @@ export default function UpdateShippingCostsGrid() {
         dispatch({type: 'FETCH_SHIPPING_COSTS'});
       }, [])
 
+
+    // submit handler for in-line cell edits on the data grid
+    // const handleEditSubmit = ( {id, field, event} ) => {
+    //     console.log('in handle edit submit for id, field, props', id, field, event);
+    //     // id argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
+    //     dispatch({ type: 'UPDATE_SHIPPING_COSTS', payload: {
+    //         id: id,
+    //         dbColumn: field,
+    //         newValue: event.target.value
+    //     }})
+    // }
+
     return (
         <div
           style={{ height: 650, width: '90%'}}
@@ -45,6 +57,7 @@ export default function UpdateShippingCostsGrid() {
                 rows={rows}
                 columns={columns}
                 pageSize={10}
+                // onEditCellChangeCommitted={handleEditSubmit}
             />
         </div>
     )
