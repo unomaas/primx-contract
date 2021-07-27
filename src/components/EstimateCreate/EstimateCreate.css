@@ -2,8 +2,8 @@
   max-width: 95%;
   width: 95%;
   margin: 0 auto;
-  display: inline-block;
-  border: 1px solid black;
+  /* display: inline-block;
+  border: 1px solid black; */
 }
 
 /* .EstimateCreate-details-wrapper {
@@ -12,13 +12,12 @@
   width: 30em;
 } */
 
-.EstimateCreate-shipping-info {
+/* .EstimateCreate-shipping-info {
   display: block;
   float: left;
   max-width: 49%;
   width: 49%;
   border: 1px solid black;
-
 }
 
 .EstimateCreate-project-info {
@@ -27,7 +26,25 @@
   max-width: 49%;
   width: 49%;
   border: 1px solid black;
+} */
 
+.EstimateCreate-table-wrappers {
+  margin: 0 auto;
 }
 
+.EstimateCreate-table-one {
+  /* width: 36em; */
+  max-width: 24em;
+  margin: 0 auto;
+}
 
+.EstimateCreate-table-two {
+  /* width: 70em; */
+  max-width: 70em;
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-three {
+  max-width: 20em;
+  margin: 0 auto;
+}
