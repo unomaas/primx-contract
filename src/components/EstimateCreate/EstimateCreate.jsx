@@ -256,7 +256,6 @@ export default function EstimateCreate() {
           <p>Subtotal: CALC#</p>
           <p>Waste Factor @ 5%: CALC#</p>
           <p>Total Cubic Yards: CALC#</p> */}
-      <div>
 
         <div className="EstimateCreate-table-wrappers">
 
@@ -458,9 +457,6 @@ export default function EstimateCreate() {
           </div>
         </div>
 
-
       </div>
-
-    </div>
   )
 }
