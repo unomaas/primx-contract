@@ -31,5 +31,16 @@ const router = express.Router();
         console.log('Error completeing UPDATE Companies query', err)
       })
   });
-  
+
+  router.post('/'),(req, res) => {
+    const queryText = `INSERT INTO "licensees" (licensee_contractor_name)
+    VALUES ($1)`;
+    pool.query(queryText, [req.body])
+    .then(() => res.sendStatus(201))
+    .catch((error) => {
+      console.log('Company ServerSide Post failed:', error);
+      res.sendStatus(500);
+    });
+  }
+   
   module.exports = router;
