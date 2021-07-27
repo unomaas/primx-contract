@@ -149,15 +149,14 @@ export default function useEstimateCalculations(estimate) {
     }
 
     // add in the last few shared calculated values between both types of units
-    function totalValues() {
-        ['dc', 'flow', 'steel_fibers', 'ultracure_blankets', 'cpea']
+    // total price and 
+    estimate.design_total_materials_price = estimate.primx_dc_total_materials_price + estimate.primx_flow_total_materials_price +
+        estimate.primx_steel_fibers_total_materials_price + estimate.primx_ultracure_blankets_total_materials_price + estimate.primx_cpea_total_materials_price;
 
+    estimate.design_total_shipping_estimate = estimate.primx_dc_calculated_shipping_estimate + estimate.primx_flow_calculated_shipping_estimate +
+        estimate.primx_steel_fibers_calculated_shipping_estimate + estimate.primx_cpea_calculated_shipping_estimate;
 
-    }
-     estimate.design_total_materials_price = estimate.primx_dc_total_materials_price + estimate.primx_flow_total_materials_price +
-        estimate.primx_steel_fibers_total_materials_price + estimate.primx_cpea_total_materials_price + estimate.primx_cpea_total_materials_price;
-
-
+    estimate.design_total_price_estimate = estimate.design_total_shipping_estimate + estimate.design_total_materials_price;
 
     return estimate;
 }
