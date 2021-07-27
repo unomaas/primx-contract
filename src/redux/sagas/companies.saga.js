@@ -30,9 +30,10 @@ function* updateCompany(action) {
 }
 
 function* addCompany(action) {
+
   try {
     // takes company name input payload and posts to database
-    yield axios.post(`/api/companies/`, action.payload);
+    yield axios.post('/api/companies', {value:action.payload});
     // refresh companies with new company post
     yield put({ type: 'FETCH_COMPANIES'});
   } catch (error) {
