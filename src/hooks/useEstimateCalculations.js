@@ -30,7 +30,7 @@ export default function useEstimateCalculations(estimate) {
         estimate.construction_joint_thickening_cubic_yards = (estimate.thickened_edge_construction_joint_lineal_feet * 10) * (estimate.additional_thickness_inches / 324);
         // calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic yards
         estimate.cubic_yards_subtotal = estimate.cubic_yards + estimate.perimeter_thickening_cubic_yards + estimate.construction_joint_thickening_cubic_yards;
-        estimate.waste_factor_cubic_yards = estimate.cubic_yards_subtotal * .05;
+        estimate.waste_factor_cubic_yards = estimate.cubic_yards_subtotal * (estimate.waste_factor_percentage / 100);
         estimate.design_cubic_yards_total = estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards;
         
         // calculate amounts and prices of materials that are measured in pounds and square feet, start with DC
@@ -75,17 +75,17 @@ export default function useEstimateCalculations(estimate) {
         } else { 
             estimate.additional_thickness_millimeters = ( (152.4 - estimate.thickness_millimeters) * .5);
         }
-        // calculate perimeter thickening and construction joint thickening based on calculated additional thickness, the .0015 and 10 values below are provided by PrimX
+        // calculate perimeter thickening and construction joint thickening based on calculated additional thickness, the .0015 and .003 values below are provided by PrimX
         estimate.perimeter_thickening_cubic_meters = estimate.thickened_edge_perimeter_lineal_meters * estimate.additional_thickness_millimeters * .0015;
-        estimate.construction_joint_thickening_cubic_yards = (estimate.thickened_edge_construction_joint_lineal_feet * 10) * (estimate.additional_thickness_inches / 324);
-        // calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic yards
-        estimate.cubic_yards_subtotal = estimate.cubic_yards + estimate.perimeter_thickening_cubic_yards + estimate.construction_joint_thickening_cubic_yards;
-        estimate.waste_factor_cubic_yards = estimate.cubic_yards_subtotal * .05;
-        estimate.design_cubic_yards_total = estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards;
+        estimate.construction_joint_thickening_cubic_meters = estimate.thickened_edge_construction_joint_lineal_meters * estimate.additional_thickness_millimeters * .003;
+        // calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic meters
+        estimate.cubic_meters_subtotal = estimate.cubic_meters + estimate.perimeter_thickening_cubic_meters + estimate.construction_joint_thickening_cubic_meters;
+        estimate.waste_factor_cubic_meters = estimate.cubic_meters_subtotal * (estimate.waste_factor_percentage / 100);
+        estimate.design_cubic_meters_total = estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters;
         
-        // calculate amounts and prices of materials that are measured in pounds and square feet, start with DC
-        estimate.primx_dc_total_amount_needed = estimate.design_cubic_yards_total * 67; // 67 is the factor provided by PrimX
-        estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_amount_needed / 2756); // dc comes in packages of 2756 lbs, need to round up
+        // calculate amounts and prices of materials that are measured in kgs and square meters, start with DC
+        estimate.primx_dc_total_amount_needed = estimate.design_cubic_meters_total * 40; // 40 is the factor provided by PrimX
+        estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_amount_needed / 1250); // dc comes in packages of 1250 kg, need to round up
         estimate.primx_dc_total_order_quantity = estimate.primx_dc_packages_needed * 2756;
         estimate.primx_dc_total_materials_price = estimate.primx_dc_total_order_quantity * estimate.primx_dc_unit_price;
         // Every shipping container can hold 14 packages of DC, need to round up
