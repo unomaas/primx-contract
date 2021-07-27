@@ -54,13 +54,19 @@ export default function EstimateCreate() {
 
   return (
     <div className="EstimateCreate-wrapper">
-      {/* <p>In Estimate Create</p> */}
 
-      {/* Project Details (Contactor & Shipping Info) */}
-      <div className="EstimateCreate-details-wrapper">
+      <Grid 
+        container 
+        spacing={3}
+        justify="center"
+        // alignItems="center"
+      >
+
+        {/* Project Details (Contactor & Shipping Info) */}
+        <div className="EstimateCreate-details-wrapper">
 
         <div className="EstimateCreate-shipping-info">
-          <h3>Project Shipping Info</h3>
+          <h3 className="lexendFont">Project Shipping Info</h3>
 
           <TextField
             label="Project Name?"
@@ -141,11 +147,10 @@ export default function EstimateCreate() {
               />
             </RadioGroup>
           </FormControl>
-
         </div>
 
         <div className="EstimateCreate-project-info">
-          <h3>Project Contactor Info</h3>
+          <h3 className="lexendFont">Project Contactor Info</h3>
 
           <InputLabel id="companyNameLabel">Today's Date:</InputLabel>
           <TextField
@@ -231,179 +236,184 @@ export default function EstimateCreate() {
             Submit
           </Button>
         </div>
-
       </div>
 
 
-      <div className="EstimateCreate-table-wrappers">
+        {/* <div className="EstimateCreate-table-wrappers"> */}
+          <Grid item xs={6}>
+            {/* <div className="EstimateCreate-table-1"> */}
+            <TableContainer component={Paper}>
+              <h3 className="lexendFont">Project Quantity Calculations</h3>
+              <Table size="small">
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>Square Feet</b></TableCell>
+                    <TableCell>_____</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Thickness (Inches)</b></TableCell>
+                    <TableCell>_____</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Cubic Yards</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Thickening @ Perimeter (CY)</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Thickening @ Construction Joints (CY)</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Subtotal</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Waste Factor @ 5%</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {/* </div> */}
+          </Grid>
 
-        <div className="EstimateCreate-table-1">
-          <TableContainer component={Paper}>
-            <h3>Project Quantity Calculations</h3>
-            <Table size="small">
-              <TableBody>
-                <TableRow>
-                  <TableCell><b>Square Feet</b></TableCell>
-                  <TableCell>_____</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Thickness (Inches)</b></TableCell>
-                  <TableCell>_____</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Cubic Yards</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Thickening @<br />Perimeter (CY)</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Thickening @<br />Construction Joints (CY)</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Subtotal</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Waste Factor @<br />5%</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+          <Grid item xs={6}>
+            {/* <div className="EstimateCreate-table-2"> */}
 
-        <div className="EstimateCreate-table-2">
-          <TableContainer component={Paper}>
-            <h3>Thickened Edge Calculator</h3>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell><b>Perimeter</b></TableCell>
-                  <TableCell><b>Construction<br />Joint</b></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody className="testTable">
-                <TableRow>
-                  <TableCell><b>Lineal Feet</b></TableCell>
-                  <TableCell>_____</TableCell>
-                  <TableCell>_____</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Width</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Additional<br />Thickness<br />(Inches)</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>Cubic<br />Thickness<br />(Inches)</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+            <TableContainer component={Paper}>
+              <h3 className="lexendFont">Thickened Edge Calculator</h3>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>Perimeter</b></TableCell>
+                    <TableCell><b>Construction Joint</b></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody className="testTable">
+                  <TableRow>
+                    <TableCell><b>Lineal Feet</b></TableCell>
+                    <TableCell>_____</TableCell>
+                    <TableCell>_____</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Width</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Additional Thickness (Inches)</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>Cubic Thickness (Inches)</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {/* </div> */}
+          </Grid>
 
-        <div className="EstimateCreate-table-3">
-          <TableContainer component={Paper}>
-            <h3>Materials Table</h3>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell><b>Dosage<br />Rate</b></TableCell>
-                  <TableCell><b>Total<br />Amount</b></TableCell>
-                  <TableCell><b>Packaging<br />Capacity</b></TableCell>
-                  <TableCell><b>Packages<br />Needed</b></TableCell>
-                  <TableCell><b>Total<br />Order<br />Quantity</b></TableCell>
-                  <TableCell><b>Materials<br />Price</b></TableCell>
-                  <TableCell><b>Total<br />Materials<br />Price</b></TableCell>
-                  <TableCell><b>Containers</b></TableCell>
-                  <TableCell><b>Shipping<br />Estimate</b></TableCell>
-                  <TableCell><b>Total<br />Cost</b></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell><b>PrīmX DC</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>PrīmX Flow</b></TableCell>
-                  <TableCell>_____</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
+          {/* <div className="EstimateCreate-table-3"> */}
+          <Grid item xs={12}>
+            <TableContainer component={Paper}>
+              <h3 className="lexendFont">Materials Table</h3>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>Dosage<br />Rate</b></TableCell>
+                    <TableCell><b>Total<br />Amount</b></TableCell>
+                    <TableCell><b>Packaging<br />Capacity</b></TableCell>
+                    <TableCell><b>Packages<br />Needed</b></TableCell>
+                    <TableCell><b>Total<br />Order<br />Quantity</b></TableCell>
+                    <TableCell><b>Materials<br />Price</b></TableCell>
+                    <TableCell><b>Total<br />Materials<br />Price</b></TableCell>
+                    <TableCell><b>Containers</b></TableCell>
+                    <TableCell><b>Shipping<br />Estimate</b></TableCell>
+                    <TableCell><b>Total<br />Cost</b></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>PrīmX DC</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>PrīmX Flow</b></TableCell>
+                    <TableCell>_____</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>PrīmX Steel Fibers</b></TableCell>
+                    <TableCell>_____</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>PrīmX UltraCure Blankets</b></TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><b>PrīmX CPEA</b></TableCell>
+                    <TableCell>_____</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                    <TableCell>CALC#</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+          {/* </div> */}
 
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>PrīmX Steel<br />Fibers</b></TableCell>
-                  <TableCell>_____</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>PrīmX UltraCure Blankets</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell><b>PrīmX CPEA</b></TableCell>
-                  <TableCell>_____</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
-
-      </div>
+        {/* </div> */}
+      </Grid>
     </div>
   )
 }

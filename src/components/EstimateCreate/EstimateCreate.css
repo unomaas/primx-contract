@@ -49,3 +49,7 @@
   margin: 0 auto;
 }
 
+h3, .lexendFont {
+  font-size: 14px;
+  color: black;
+}
