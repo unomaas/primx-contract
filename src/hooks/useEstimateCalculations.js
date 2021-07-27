@@ -86,7 +86,7 @@ export default function useEstimateCalculations(estimate) {
         // calculate amounts and prices of materials that are measured in kgs and square meters, start with DC
         estimate.primx_dc_total_amount_needed = estimate.design_cubic_meters_total * 40; // 40 is the factor provided by PrimX
         estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_amount_needed / 1250); // dc comes in packages of 1250 kg, need to round up
-        estimate.primx_dc_total_order_quantity = estimate.primx_dc_packages_needed * 2756;
+        estimate.primx_dc_total_order_quantity = estimate.primx_dc_packages_needed * 1250;
         estimate.primx_dc_total_materials_price = estimate.primx_dc_total_order_quantity * estimate.primx_dc_unit_price;
         // Every shipping container can hold 14 packages of DC, need to round up
         estimate.primx_dc_containers_needed = Math.ceil(estimate.primx_dc_packages_needed / 14);
@@ -94,10 +94,10 @@ export default function useEstimateCalculations(estimate) {
         estimate.primx_dc_total_cost_estimate = estimate.primx_dc_calculated_shipping_estimate + estimate.primx_dc_total_materials_price;
         
         // calculate values for PrimX steel fibers
-        estimate.primx_steel_fibers_total_amount_needed = estimate.design_cubic_yards_total * estimate.primx_steel_fibers_dosage_lbs;
-        // steel fibers comes in packages of 42329 lbs, need to round up
-        estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_amount_needed / 42329);
-        estimate.primx_steel_fibers_total_order_quantity = estimate.primx_steel_fibers_packages_needed * 42329;
+        estimate.primx_steel_fibers_total_amount_needed = estimate.design_cubic_meters_total * estimate.primx_steel_fibers_dosage_kgs;
+        // steel fibers comes in packages of 19200 kg, need to round up
+        estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_amount_needed / 19200);
+        estimate.primx_steel_fibers_total_order_quantity = estimate.primx_steel_fibers_packages_needed * 19200;
         estimate.primx_steel_fibers_total_materials_price = estimate.primx_steel_fibers_total_order_quantity * estimate.primx_steel_fibers_unit_price;
         // Every shipping container can only hold 1 package of steel fibers
         estimate.primx_steel_fibers_containers_needed = estimate.primx_steel_fibers_packages_needed;
@@ -105,14 +105,16 @@ export default function useEstimateCalculations(estimate) {
         estimate.primx_steel_fibers_total_cost_estimate = estimate.primx_steel_fibers_calculated_shipping_estimate + estimate.primx_steel_fibers_total_materials_price;
         
         // calculate values for PrimX Ultracure Blankets
-        estimate.primx_ultracure_blankets_total_amount_needed = estimate.square_feet * 1.2; // 1.2 is the factor provided by PrimX
-        // blankets come in rolls of 6458 sq feet, need to round up
-        estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_amount_needed / 6458); 
-        estimate.primx_ultracure_blankets_total_order_quantity = estimate.primx_ultracure_blankets_packages_needed * 6458;
+        estimate.primx_ultracure_blankets_total_amount_needed = estimate.square_meters * 1.2; // 1.2 is the factor provided by PrimX
+        // blankets come in rolls of 600 square meters, need to round up
+        estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_amount_needed / 600); 
+        estimate.primx_ultracure_blankets_total_order_quantity = estimate.primx_ultracure_blankets_packages_needed * 600;
         estimate.primx_ultracure_blankets_total_materials_price = estimate.primx_ultracure_blankets_total_order_quantity * estimate.primx_ultracure_blankets_unit_price;
         // Blankets don't get charged shipping and don't have container limitations
         estimate.primx_ultracure_blankets_total_cost_estimate = estimate.primx_ultracure_blankets_total_materials_price;
     }
+
+    // now that the imperial and metric specific values have been calculated, calculate and add in PrimX flow and CPEA which are always measured in liters
 
 
     
