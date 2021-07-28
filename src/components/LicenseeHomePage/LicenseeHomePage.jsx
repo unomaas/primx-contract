@@ -30,10 +30,6 @@ function LicenseeHomePage() {
 
   return (
     <div className="container">
-      <center>
-        <h1>LICENSEE HOME PAGE?</h1>
-      </center>
-
       <div>
         <ButtonGroup color="primary" aria-label="outlined primary button group">
 
@@ -41,7 +37,6 @@ function LicenseeHomePage() {
             value="check"
             selected={selectedCreate}
             style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
-
             onChange={() => {
               if (selectedCreate) {
                 return
@@ -50,9 +45,8 @@ function LicenseeHomePage() {
                 setSelectedLookup(!selectedLookup);
               }
             }}
-          > Create New Estimate
+          > Create a New Estimate
           </ToggleButton>
-
 
           <ToggleButton
             value="check"
@@ -70,6 +64,8 @@ function LicenseeHomePage() {
           </ToggleButton>
         </ButtonGroup>
       </div>
+
+      <br/>
 
       {/* Conditional Rendering */}
         {selectedCreate && <EstimateCreate />}

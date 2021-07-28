@@ -16,11 +16,14 @@ function* fetchAllFloorTypes() {
     }
 }
 
+//worker saga for adding new floor type
 function* postFloorType(action) {
     console.log('in postFloorType, action.payload is -->', action.payload);
     
     try {
+      //send new floor type
       yield axios.post(`/api/floortypes`, action.payload);
+      //send results to floorTypes reducer
       yield put({type: 'FETCH_FLOOR_TYPES'});
     } catch (error) {
       console.log('error in post floor type SAGA -->', error);
