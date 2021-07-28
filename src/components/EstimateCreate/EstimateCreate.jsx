@@ -9,6 +9,7 @@ import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, For
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useStyles } from '../MuiStyling/MuiStyling';
+import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
 
 //#endregion ⬆⬆ All document setup above.
 
@@ -73,6 +74,8 @@ export default function EstimateCreate() {
   console.log('newEstimate is currently:', newEstimate);
   return (
     <div className="EstimateCreate-wrapper">
+
+    <LicenseeHomePage />
 
       <Grid container
         spacing={2}

@@ -50,7 +50,16 @@ function App() {
 
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
-            <Redirect exact from="/" to="/home" />
+            <Redirect exact from="/" to="/create" />
+
+            {/* Home/Landing Page with Create New or Lookup Estimate: */}
+            <Route exact path="/create">
+              <EstimateCreate />
+            </Route>
+
+            <Route exact path="/lookup">
+              <EstimateLookup />
+            </Route>
 
             {/* Home/Landing Page with Create New or Lookup Estimate: */}
             <Route exact path="/home">
