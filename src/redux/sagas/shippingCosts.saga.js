@@ -35,7 +35,7 @@ function* updateShippingCosts(action) {
     try {
         //update shipping cost
         yield axios.put(`/api/shippingcosts/edit/${action.payload.id}`, action.payload);
-        //send results to shippingCosts reducer
+
     } catch (error) {
         console.log('error in updateShippingCosts saga', error); 
     }
