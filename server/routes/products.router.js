@@ -34,10 +34,10 @@ const router = express.Router();
 
   router.post('/', (req, res) => {
       console.log(req.body)
-    const queryText = `INSERT INTO "products" (product_name, product_price)
-    VALUES ($1, $2)`;
+    const queryText = `INSERT INTO "products" (product_name, product_price, on_hand)
+    VALUES ($1, $2, $3)`;
     console.log(req.body.value)
-    pool.query(queryText, [req.body.product_name, req.body.product_price])
+    pool.query(queryText, [req.body.product_name, req.body.product_price, req.body.on_hand])
     .then(() => res.sendStatus(201))
     .catch((error) => {
       console.log('Product ServerSide Post failed:', error);

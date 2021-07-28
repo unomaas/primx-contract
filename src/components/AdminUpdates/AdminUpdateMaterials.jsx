@@ -22,7 +22,8 @@ export default function AdminUpdateMaterials() {
 
   let productInfo = {
     product_name: productInput,
-    product_price: productPriceInput
+    product_price: productPriceInput,
+    on_hand: 0
   }
 
        //styles for MUI
