@@ -110,7 +110,12 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
         {field: 'primx_cpea_calculated_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175, hide: true }, 
         {field: 'primx_cpea_total_cost_estimate', headerName: 'CPEA Total Cost', width: 175, hide: true },
 
-        
+        // totals and design size
+        {field: 'design_cubic_yards_total', headerName: 'Design Volume (cubic yards)', width: 175, hide: true },
+        {field: 'design_cubic_meters_total', headerName: 'Design Volume (cubic meters)', width: 175, hide: true },
+        {field: 'design_total_materials_price', headerName: 'Total Materials Sum', width: 175, hide: true },
+        {field: 'design_total_shipping_estimate', headerName: 'Total Shipping Estimate Sum', width: 175, hide: true },
+        {field: 'design_total_price_estimate', headerName: 'Total Cost', width: 175, hide: true },
     ]
 
     // add additional columns based on the data source for the data grid
