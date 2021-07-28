@@ -16,7 +16,7 @@ router.get('/', /*rejectUnauthenticated,*/ (req, res) => {
 
 //Post Route - adds shipping cost
 router.post('/', rejectUnauthenticated, (req, res) => {
-  queryText = `INSERT INTO "shipping_costs" ("ship_to_state_province", "dc_price", "flow_cpea_price", "fibers_price")
+  const queryText = `INSERT INTO "shipping_costs" ("ship_to_state_province", "dc_price", "flow_cpea_price", "fibers_price")
             VALUES ($1, $2, $3, $4);`;
     pool.query(queryText, [req.body.ship_to_state_province, req.body.dc_price, req.body.flow_cpea_price, req.body.fibers_price])
     .then(result => {
@@ -28,9 +28,9 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 });
 
 //PUT route - updates shipping costs
-router.put('/', rejectUnauthenticated, (req, res) => {
-    queryText = `UPDATE "shipping_costs" SET "ship_to_state_province"=$1, "dc_price"=$2, "flow_cpea_price"=$3, "fibers_price"=$4, WHERE .id=$5;`;
-    pool.query(queryText, [req.body.ship_to_state_province, req.body.dc_price, req.body.flow_cpea_price, req.body.fibers_price, req.body.id])
+router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
+    const queryText = `UPDATE "shipping_costs" SET ${req.body.dbColumn} = $1 WHERE "id" = $2;`;
+    pool.query(queryText, [req.body.newValue, req.params.id])
     .then(result => {
     res.sendStatus(202);
     }).catch ((error) => {
