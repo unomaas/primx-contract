@@ -173,7 +173,7 @@ export default function EstimateCreate() {
                         return (<MenuItem value={types.id}>{types.floor_type}</MenuItem>)
                       }
                       )}
-
+                      <MenuItem value="0">Select</MenuItem>
                       {/* <MenuItem value="1">Slab on Grade - Interior</MenuItem>
                       <MenuItem value="2">Slab on Grade - Exterior</MenuItem>
                       <MenuItem value="3">Slab on Insulation</MenuItem>
@@ -197,6 +197,7 @@ export default function EstimateCreate() {
                         return (<MenuItem value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
                       }
                       )}
+                      <MenuItem value="0">Select</MenuItem>
                       {/* <MenuItem value="1">Truck Discharge</MenuItem>
                       <MenuItem value="2">Pump</MenuItem>
                       <MenuItem value="3">Buggy</MenuItem>
