@@ -1,11 +1,15 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const {
+    rejectUnauthenticated,
+  } = require('../modules/authentication-middleware');
+  const format = require('pg-format');
 
 /**
  * GET route template
  */
- router.get('/', (req, res) => {
+ router.get('/',rejectUnauthenticated, (req, res) => {
     // GET route code here
     const queryText = `SELECT * FROM "products" ORDER BY id ASC`;
 
@@ -20,11 +24,11 @@ const router = express.Router();
   /**
    * EDIT route template
    */
-  router.put('/:id', (req, res) => {
+  router.put('/:id',rejectUnauthenticated, (req, res) => {
     // EDIT route code here
     console.log(req.body)
     
-    const queryText = `UPDATE "products" SET ${req.body.dbColumn}=$1 WHERE "id"=$2`;
+    const queryText = format(`UPDATE "products" SET %I =$1 WHERE "id" = $2;`, req.body.dbColumn);
     pool.query(queryText, [req.body.newValue, req.params.id])
       .then(() => { res.sendStatus(200); })
       .catch((error) => {
@@ -32,7 +36,7 @@ const router = express.Router();
       })
   });
 
-  router.post('/', (req, res) => {
+  router.post('/', rejectUnauthenticated, (req, res) => {
       console.log(req.body)
     const queryText = `INSERT INTO "products" (product_name, product_price, on_hand)
     VALUES ($1, $2, $3)`;
