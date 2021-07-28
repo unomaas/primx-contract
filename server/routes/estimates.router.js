@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   rejectUnauthenticated,
 } = require('../modules/authentication-middleware');
+const format = require('pg-format');
 
 /**
  * GET route template
@@ -43,32 +44,16 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 
   // PUT request to edit a single piece of data on one row of the estimates table
   router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-    console.log('got to PUT route! params id, req.body', req.params.id, req.body);
-    
     // SQL query to update a specific piece of data
-    // THIS ISN"T WORKING RIGHT NOW: need to figure out how to sanitize the req.body.dbColumn that's being sent, can't be used with $ to be a value
-    // const queryText = `UPDATE "estimates" SET "$1" = $2 WHERE "id" = $3`
-    // // DB request
-    // pool.query(queryText, [req.body.dbColumn, req.body.newValue, req.params.id])
-    //   .then(result => {
-    //     res.sendStatus(200);
-    //   })
-    //   .catch(error => {
-    //     console.log(`Error with /api/estimates GET for id ${req.params.id}:`, error)
-    //   })
-
-      // ***************** THIS MAY NOT BE SECURE ***********************
-
-      // SQL query to update a specific piece of data
-      const queryText = `UPDATE "estimates" SET ${req.body.dbColumn} = $1 WHERE "id" = $2`
-      // DB request
-      pool.query(queryText, [req.body.newValue, req.params.id])
-        .then(result => {
-          res.sendStatus(200);
-        })
-        .catch(error => {
-          console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
-        })
+    const queryText = format(`UPDATE "estimates" SET %I = $1 WHERE "id" = $2;`, req.body.dbColumn);
+    // DB request
+    pool.query(queryText, [req.body.newValue, req.params.id])
+      .then(result => {
+        res.sendStatus(200);
+      })
+      .catch(error => {
+        console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
+      })
     
   })
   
