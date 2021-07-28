@@ -60,6 +60,7 @@ export default function EstimateCreate() {
       <Grid container
         spacing={2}
         justify="center"
+        component={Paper}
       >
 
         {/* Grid Table #1: Display the Licensee/Project Info Form */}
@@ -72,13 +73,15 @@ export default function EstimateCreate() {
                 <TableRow>
                   <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                   <TableCell>
-                    <TextField
+                    <Select
                       onChange={event => handleChange('kit_description', event.target.value)}
                       required
-                      type="search"
                       size="small"
                       fullWidth
-                    />
+                      defaultValue="0"
+                    >
+                      <MenuItem value="0">Please Select</MenuItem>
+                    </Select>
                   </TableCell>
                 </TableRow>
 
@@ -155,13 +158,14 @@ export default function EstimateCreate() {
                       required
                       size="small"
                       fullWidth
-                      defaultValue="1"
+                      defaultValue="0"
                     >
-                      <MenuItem value="1">Slab on Grade - Interior</MenuItem>
+                      <MenuItem value="0">Please Select</MenuItem>
+                      {/* <MenuItem value="1">Slab on Grade - Interior</MenuItem>
                       <MenuItem value="2">Slab on Grade - Exterior</MenuItem>
                       <MenuItem value="3">Slab on Insulation</MenuItem>
                       <MenuItem value="4">Slab on Piles - Interior</MenuItem>
-                      <MenuItem value="5">Slab on Grade - Exterior</MenuItem>
+                      <MenuItem value="5">Slab on Grade - Exterior</MenuItem> */}
                     </Select>
                   </TableCell>
                 </TableRow>
@@ -174,12 +178,13 @@ export default function EstimateCreate() {
                       required
                       size="small"
                       fullWidth
-                      defaultValue="1"
+                      defaultValue="0"
                     >
-                      <MenuItem value="1">Truck Discharge</MenuItem>
+                      <MenuItem value="0">Please Select</MenuItem>
+                      {/* <MenuItem value="1">Truck Discharge</MenuItem>
                       <MenuItem value="2">Pump</MenuItem>
                       <MenuItem value="3">Buggy</MenuItem>
-                      <MenuItem value="4">Conveyor</MenuItem>
+                      <MenuItem value="4">Conveyor</MenuItem> */}
                     </Select>
                   </TableCell>
                 </TableRow>
@@ -294,7 +299,7 @@ export default function EstimateCreate() {
                       fullWidth
                       defaultValue="0"
                     >
-                      <MenuItem value="0">Select</MenuItem>
+                      <MenuItem value="0">Please Select</MenuItem>
                     </Select>
                   </TableCell>
                 </TableRow>
