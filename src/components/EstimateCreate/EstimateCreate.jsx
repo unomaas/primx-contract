@@ -20,7 +20,8 @@ export default function EstimateCreate() {
   const classes = useStyles();
   const today = new Date().toISOString().substring(0, 10);
   const [newEstimate, setNewEstimate] = useState({
-
+    measurement_units: 'imperial',
+    country: 'United States'
   });
 
   // ⬇ GET on page load:
@@ -63,7 +64,7 @@ export default function EstimateCreate() {
       <Grid container
         spacing={2}
         justify="center"
-        // component={Paper}
+      // component={Paper}
       >
 
         {/* Grid Table #1: Display the Licensee/Project Info Form */}
@@ -196,7 +197,11 @@ export default function EstimateCreate() {
                   <TableCell><b>Unit of Measurement:</b></TableCell>
                   <TableCell>
                     <FormControl required>
-                      <RadioGroup defaultValue="imperial" style={{ display: 'inline' }}>
+                      <RadioGroup
+                        defaultValue="imperial"
+                        style={{ display: 'inline' }}
+                        onChange={event => handleChange('measurement_units', event.target.value)}
+                      >
                         <FormControlLabel
                           label="Imperial"
                           value="imperial"
@@ -236,7 +241,7 @@ export default function EstimateCreate() {
                       size="small"
                       fullWidth
                       value={today}
-                      // helperText="fdsafdlj;ksafjdsa;lfjdsafjlkdsafjdsfkdlsafjdsajkflsdfjsdkafj;dsal;kfadkjsa;"
+                    // helperText="fdsafdlj;ksafjdsa;lfjdsafjlkdsafjdsfkdlsafjdsajkflsdfjsdkafj;dsal;kfadkjsa;"
                     />
                   </TableCell>
                 </TableRow>
@@ -325,14 +330,14 @@ export default function EstimateCreate() {
                   <TableCell><b>Shipping Country:</b></TableCell>
                   <TableCell>
                     <Select
-                      onChange={event => handleChange('kit_description', event.target.value)}
+                      onChange={event => handleChange('country', event.target.value)}
                       required
                       size="small"
                       fullWidth
-                      defaultValue="usa"
+                      defaultValue="United States"
                     >
-                      <MenuItem value="usa">United States</MenuItem>
-                      <MenuItem value="canada">Canada</MenuItem>
+                      <MenuItem value="United States">United States</MenuItem>
+                      <MenuItem value="Canada">Canada</MenuItem>
                     </Select>
                   </TableCell>
                 </TableRow>
