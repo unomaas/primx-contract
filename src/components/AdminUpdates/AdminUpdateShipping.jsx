@@ -83,13 +83,13 @@ export default function AdminUpdateShipping() {
         <form className={classes.root} noValidate autoComplete="off">
           <div>
             <div >
-              <TextField id="outlined-basic" className={classes.root} label="Add New Shipping Location" variant="outlined" value={newShippingCost.ship_to_state_province} onChange={handleShipToChange} />
-              <TextField id="outlined-basic" className={classes.root} label="Add New DC Price" variant="outlined" value={newShippingCost.dc_price} onChange={handleDCChange} />
+              <TextField id="ship-to" className={classes.root} label="Add New Shipping Location" variant="outlined" value={newShippingCost.ship_to_state_province} onChange={handleShipToChange} />
+              <TextField id="dc-price" className={classes.root} label="Add New DC Price" variant="outlined" value={newShippingCost.dc_price} onChange={handleDCChange} />
             </div>
 
             <div >
-              <TextField id="outlined-basic" className={classes.root} label="Add New Flow/CPEA Price" variant="outlined" value={newShippingCost.flow_cpea_price} onChange={handleFlowCPEAChange} />
-              <TextField id="outlined-basic" className={classes.root} label="Add New Fibers Shipping Price" variant="outlined" value={newShippingCost.fibers_price} onChange={handleFibersChange} />
+              <TextField id="flow-cpea" className={classes.root} label="Add New Flow/CPEA Price" variant="outlined" value={newShippingCost.flow_cpea_price} onChange={handleFlowCPEAChange} />
+              <TextField id="fiber-ship-price" className={classes.root} label="Add New Fibers Shipping Price" variant="outlined" value={newShippingCost.fibers_price} onChange={handleFibersChange} />
               <br></br>
               <Fab className={classes.root} onClick={handleSubmit} color="primary" aria-label="add">
                 <AddIcon />
