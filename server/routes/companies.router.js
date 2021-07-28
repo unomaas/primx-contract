@@ -1,11 +1,14 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const {
+  rejectUnauthenticated,
+} = require('../modules/authentication-middleware');
 
 /**
  * GET route template
  */
- router.get('/', (req, res) => {
+ router.get('/',rejectUnauthenticated, (req, res) => {
     // GET route code here
     const queryText = `SELECT * FROM "licensees" ORDER BY id ASC`;
 
@@ -20,7 +23,7 @@ const router = express.Router();
   /**
    * EDIT route template
    */
-  router.put('/:id', (req, res) => {
+  router.put('/:id', rejectUnauthenticated, (req, res) => {
     // EDIT route code here
     console.log(req.body)
     const company = req.body.newValue;
@@ -32,7 +35,7 @@ const router = express.Router();
       })
   });
 
-  router.post('/', (req, res) => {
+  router.post('/', rejectUnauthenticated, (req, res) => {
     const queryText = `INSERT INTO "licensees" (licensee_contractor_name)
     VALUES ($1)`;
     console.log(req.body.value)
