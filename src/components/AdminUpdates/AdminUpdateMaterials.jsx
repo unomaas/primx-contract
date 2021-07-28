@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import AdminUpdates from './AdminUpdates';
 
@@ -78,6 +78,11 @@ export default function AdminUpdateMaterials() {
     }
 
   }
+
+  useEffect(() => {
+    // GET products and prices
+    dispatch({type: 'FETCH_PRODUCTS'});
+  }, [])
 
   return (
     <div>
