@@ -6,12 +6,24 @@ const {
 } = require('../modules/authentication-middleware');
 const format = require('pg-format');
 
-/**
- * GET route template
- */
-router.get('/', (req, res) => {
-  // GET route code here
-});
+
+// GET request to grab estimate at ID/Estimate number for Lookup view
+router.get('/:eNumber', (req, res) => {
+  const estimateNumber = req.params.estimateNumber
+
+  const queryText = 
+  `SELECT * FROM "estimates" WHERE 'estimate_number' = $1;`
+  
+  pool.query(queryText, [estimateNumber])
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log(`Error with /api/estimates/eNumber POST:`, error);
+      res.sendStatus(500)
+    })
+})
+
 
 // GET request to get all estimates data from the database
 router.get('/all', rejectUnauthenticated, (req, res) => {
