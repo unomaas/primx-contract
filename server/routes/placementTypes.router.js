@@ -6,7 +6,7 @@ const router = express.Router();
 /**
  * GET route template
  */
-router.get('/', rejectUnauthenticated, (req, res) => {
+router.get('/', /*rejectUnauthenticated,*/ (req, res) => {
   // GET route code here
   const queryText = `SELECT * FROM "placement_types";`;
   pool.query(queryText).then((result) => {
