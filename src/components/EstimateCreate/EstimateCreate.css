@@ -1,0 +1,31 @@
+.EstimateCreate-wrapper {
+  max-width: 98%;
+  width: 98%;
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-wrappers {
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-1 {
+  max-width: 20em;
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-2 {
+  /* width: 36em; */
+  max-width: 22em;
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-3 {
+  /* width: 70em; */
+  max-width: 70em;
+  margin: 0 auto;
+}
+
+h3, .lexendFont {
+  font-size: 14px;
+  color: black;
+}

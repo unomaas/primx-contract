@@ -1,13 +1,21 @@
 import React from 'react'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
+import useEstimateCalculations from '../../hooks/useEstimateCalculations.js';
+
 // Material-UI components
 import Typography from '@material-ui/core/Typography';
 // components
 import AdminEstimatesGrid from '../AdminEstimatesGrid/AdminEstimatesGrid';
+import { useStyles } from '../MuiStyling/MuiStyling';
+
 
 export default function AdminOrders() {
+  // bring in custom calculation hook
+  const calculateEstimate = useEstimateCalculations;
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   // useSelector looks at the array of estimate objects from adminEstimates reducer
   const allEstimates = useSelector(store => store.adminEstimates);
 
@@ -16,6 +24,10 @@ export default function AdminOrders() {
   
   // break up all estimates into pending orders, processed orders, and open estimates
   allEstimates.forEach(estimate => {
+    
+    const updatedEstimate = calculateEstimate(estimate);
+    console.log('updated estimate:', updatedEstimate);
+
     // sort the estimates into their individual array
     // orders are considered processed if they've been marked_as_ordered by an admin and ordered_by_licensee by a licensee
     if (estimate.marked_as_ordered && estimate.ordered_by_licensee) {
@@ -38,17 +50,20 @@ export default function AdminOrders() {
   
   return (
     <div>
-      <Typography variant="h3" component="h2" align="center">
+      <br />
+      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
         Pending Orders
       </Typography>
       <AdminEstimatesGrid estimatesArray={pendingOrders} gridSource={'pending'}/>
 
-      <Typography variant="h3" component="h2" align="center">
+      <br />
+      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
         Processed Orders
       </Typography>
       <AdminEstimatesGrid estimatesArray={processedOrders} gridSource={'processed'}/>
 
-      <Typography variant="h3" component="h2" align="center">
+      <br />
+      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
         Open Estimates
       </Typography>
       <AdminEstimatesGrid estimatesArray={openEstimates} gridSource={'open'}/>

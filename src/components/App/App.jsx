@@ -13,6 +13,12 @@ import EstimateCreate from '../EstimateCreate/EstimateCreate';
 import EstimateLookup from '../EstimateLookup/EstimateLookup';
 import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
+import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
+import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
+import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
+import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
+import SystemAdmin from '../AdminUpdates/SystemAdmin';
+
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -20,6 +26,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
+
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -68,6 +75,26 @@ function App() {
               <AdminOrders/>
             </ProtectedRoute>
 
+            <ProtectedRoute exact path="/AdminUpdateTypes" >
+              <AdminUpdateTypes/>
+            </ProtectedRoute>
+
+            <ProtectedRoute exact path="/AdminUpdateLicenses" >
+              <AdminUpdateLicenses/>
+            </ProtectedRoute>
+
+            <ProtectedRoute exact path="/AdminUpdateMaterials" >
+              <AdminUpdateMaterials/>
+            </ProtectedRoute>
+
+            <ProtectedRoute exact path="/AdminUpdateShipping" >
+              <AdminUpdateShipping/>
+            </ProtectedRoute>
+
+            <ProtectedRoute exact path="/SystemAdmin" >
+              <SystemAdmin/>
+            </ProtectedRoute>
+
             <Route exact path="/home">
               <LicenseeHomePage />
             </Route>
@@ -90,9 +117,9 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows RegisterPage at "/registration" */}
-            <ProtectedRoute exact path="/registration" >
+            <Route exact path="/registration" >
               <AdminRegisterPage />
-            </ProtectedRoute>
+            </Route>
 
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"

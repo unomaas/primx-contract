@@ -8,14 +8,25 @@ import AdminUpdateTypes  from './AdminUpdateTypes'
 import AdminUpdateShipping from './AdminUpdateShipping'
 import AdminUpdateMaterials from './AdminUpdateMaterials'
 import SystemAdmin from './SystemAdmin'
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 
+
+  
+
+  
 export default function AdminUpdates() {
-
+  // defines dispatch
+  const dispatch = useDispatch();
+  // defines usehistory
+  const history = useHistory();
   //holds value of selection to for page render conditionals
   let [selectedPage,setSelectedPage] = useState("");
   //holds values for conditional render boolean
    let [conditionalRender,setConditionalRender] = useState();
    let [conditionalBool,setConditionalBool] = useState(false);
+
+  
 
   //handles values of selected page change on event change
   const handleSelectPage = (event) => {
@@ -27,20 +38,28 @@ export default function AdminUpdates() {
     console.log(selectedPage)
 
     if (selectedPage == 1) {
-      setConditionalRender(AdminUpdateLicenses)
+      // setConditionalRender(AdminUpdateLicenses)
+      history.push('/AdminUpdateLicenses')
     } else if (selectedPage == 2) {
-      setConditionalRender(AdminUpdateTypes)
+      // setConditionalRender(AdminUpdateTypes)
+      history.push('/AdminUpdateTypes')
     } else if (selectedPage == 3) {
-      setConditionalRender(AdminUpdateShipping)
+      // setConditionalRender(AdminUpdateShipping)
+      history.push('/AdminUpdateShipping')
+
     } else if (selectedPage == 4) {
-      setConditionalRender(AdminUpdateMaterials)
+      // setConditionalRender(AdminUpdateMaterials)
+      history.push('/AdminUpdateMaterials')
+
     } else if (selectedPage == 5) {
-      setConditionalRender(SystemAdmin)
+      // setConditionalRender(SystemAdmin)
+      history.push('/SystemAdmin')
     }
   }
 
+  // fetches companies on page load for update licenses page
   useEffect(() => {
-    renderComponent();
+    renderComponent(),dispatch({type: 'FETCH_COMPANIES' });
   },[selectedPage]);
 
 
@@ -60,11 +79,6 @@ export default function AdminUpdates() {
         </Select>
         </FormControl>
         {conditionalBool ? conditionalRender : <></>}
-        {/* {updateLicenseesRender ? <>Update Licensees Page</> : <></>}
-        {addFloorAndPlacementTypesRender ?<>Add Floor Types/Placement Types Page</> : <></>}
-        {updateShippingCostsRender ?<>Update Shipping Costs Page</> : <></> }
-        {updateMaterialCostsAndInventoryRender ?<>Update Material Costs/Inventory Page</> : <></> }
-        {systemAdminRender ?<>System Admin Page</> : <></> } */}
     </div>
   )
 }

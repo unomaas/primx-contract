@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import swal from 'sweetalert';
 
 
 
@@ -28,7 +29,7 @@ function AdminRegisterForm() {
   }));
   //defining classes for MUI
   const classes = useStyles();
-  
+
 
   const registerUser = (event) => {
     event.preventDefault();
@@ -40,7 +41,10 @@ function AdminRegisterForm() {
         password: password,
       },
     });
-    history.push('/user')
+    swal("Success!", "New Admin Created", "success", {
+      button: "OK",
+    });
+    history.push('/user');
   }; // end registerUser
 
   return (
@@ -52,34 +56,43 @@ function AdminRegisterForm() {
         </h3>
       )}
       <div>
-        <TextField 
-        required
-        id="outlined-basic" 
-        htmlFor="username"
-        name="username" 
-        label="Username" 
-        variant="outlined" 
-        onChange={(event) => setUsername(event.target.value)} 
-        value={username}>
+        <TextField
+          required
+          id="outlined-basic"
+          htmlFor="username"
+          name="username"
+          label="Username"
+          variant="outlined"
+          onChange={(event) => setUsername(event.target.value)}
+          value={username}>
           Username:
         </TextField>
       </div>
       <div>
-        <TextField 
-        required
-        id="outlined-basic"
-        htmlFor="password" 
-        name="password"
-        label="Password"
-        variant="outlined"
-        type="password"
-        onChange={(event) => setPassword(event.target.value)} 
-        value={password}>
+        <TextField
+          required
+          id="outlined-basic"
+          htmlFor="password"
+          name="password"
+          label="Password"
+          variant="outlined"
+          type="password"
+          onChange={(event) => setPassword(event.target.value)}
+          value={password}>
           Password:
         </TextField>
       </div>
       <div>
-        <Button onClick={registerUser} variant="contained" color="primary" className="btn" value="Register">Register</Button>
+        <Button
+          onClick={registerUser}
+          variant="contained"
+          color="primary"
+          className="btn"
+          value="Register"
+          style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+        >
+          Register
+        </Button>
       </div>
     </form>
   );
