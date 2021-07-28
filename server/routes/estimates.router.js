@@ -8,18 +8,21 @@ const format = require('pg-format');
 
 
 // GET request to grab estimate at ID/Estimate number for Lookup view
-router.get('/:eNumber', (req, res) => {
+router.get('/:lookup', (req, res) => {
   const estimateNumber = req.params.estimateNumber
+  const licenseeId = req.params.licenseeId
 
-  const queryText = 
-  `SELECT * FROM "estimates" WHERE 'estimate_number' = $1;`
+  const queryText =
+                  `SELECT * FROM estimates 
+                   WHERE "estimate_number" = '$1'
+                   AND "licensee_id" = '$2';`
   
-  pool.query(queryText, [estimateNumber])
+  pool.query(queryText, [estimateNumber, licenseeId])
     .then( result => {
       res.send(result.rows);
     })
     .catch(err => {
-      console.log(`Error with /api/estimates/eNumber POST:`, error);
+      console.log(`Error with /api/estimates/lookup POST:`, error);
       res.sendStatus(500)
     })
 })
