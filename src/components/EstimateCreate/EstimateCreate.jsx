@@ -20,6 +20,11 @@ export default function EstimateCreate() {
   const classes = useStyles();
   const today = new Date().toISOString().substring(0, 10);
 
+  const companies = useSelector(store => store.companies);
+  const shippingCosts = useSelector(store => store.shippingCosts);
+  const floorTypes = useSelector(store => store.floorTypes);
+  const placementTypes = useSelector(store => store.placementTypes);
+
   // ⬇ GET on page load:
   useEffect(() => {
     // Liscensee/Company Name Call
