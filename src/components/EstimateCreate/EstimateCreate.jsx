@@ -21,7 +21,8 @@ export default function EstimateCreate() {
   const today = new Date().toISOString().substring(0, 10);
   const [newEstimate, setNewEstimate] = useState({
     measurement_units: 'imperial',
-    country: 'United States'
+    country: 'United States',
+    date_created: today,
   });
 
   const companies = useSelector(store => store.companies);
@@ -49,7 +50,7 @@ export default function EstimateCreate() {
    */
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
-    // setNewKit({ ...newKit, [key]: value });
+    setNewEstimate({ ...newEstimate, [key]: value });
   } // End handleChange
 
   /** ⬇ handleSubmit:
@@ -69,7 +70,7 @@ export default function EstimateCreate() {
 
 
 
-
+  console.log('newEstimate is currently:', newEstimate);
   return (
     <div className="EstimateCreate-wrapper">
 
@@ -87,29 +88,10 @@ export default function EstimateCreate() {
               <TableBody>
 
                 <TableRow>
-                  <TableCell><b>Licensee/Contractor Name:</b></TableCell>
-                  <TableCell>
-                    <Select
-                      onChange={event => handleChange('kit_description', event.target.value)}
-                      required
-                      size="small"
-                      fullWidth
-                      defaultValue="0"
-                    >
-                      {companies.map(companies => {
-                        return (<MenuItem value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
-                      }
-                      )}
-                      <MenuItem value="0">Please Select</MenuItem>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-
-                <TableRow>
-                  <TableCell><b>Project General Contractor:</b></TableCell>
+                  <TableCell><b>Project Name:</b></TableCell>
                   <TableCell>
                     <TextField
-                      onChange={event => handleChange('kit_description', event.target.value)}
+                      onChange={event => handleChange('project_name', event.target.value)}
                       required
                       type="search"
                       size="small"
@@ -119,10 +101,29 @@ export default function EstimateCreate() {
                 </TableRow>
 
                 <TableRow>
-                  <TableCell><b>Project Name:</b></TableCell>
+                  <TableCell><b>Licensee/Contractor Name:</b></TableCell>
+                  <TableCell>
+                    <Select
+                      onChange={event => handleChange('licensee_id', event.target.value)}
+                      required
+                      size="small"
+                      fullWidth
+                      defaultValue="0"
+                    >
+                      <MenuItem value="0">Please Select</MenuItem>
+                      {companies.map(companies => {
+                        return (<MenuItem value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                      }
+                      )}
+                    </Select>
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Project General Contractor:</b></TableCell>
                   <TableCell>
                     <TextField
-                      onChange={event => handleChange('kit_description', event.target.value)}
+                      onChange={event => handleChange('project_general_contractor', event.target.value)}
                       required
                       type="search"
                       size="small"
@@ -135,7 +136,7 @@ export default function EstimateCreate() {
                   <TableCell><b>Project Manager Email:</b></TableCell>
                   <TableCell>
                     <TextField
-                      onChange={event => handleChange('kit_description', event.target.value)}
+                      onChange={event => handleChange('project_manager_email', event.target.value)}
                       required
                       type="search"
                       size="small"
@@ -148,7 +149,7 @@ export default function EstimateCreate() {
                   <TableCell><b>Project Manager Cell:</b></TableCell>
                   <TableCell>
                     <TextField
-                      onChange={event => handleChange('kit_description', event.target.value)}
+                      onChange={event => handleChange('project_manager_phone', event.target.value)}
                       required
                       type="search"
                       size="small"
