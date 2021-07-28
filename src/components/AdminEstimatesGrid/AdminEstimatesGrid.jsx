@@ -110,7 +110,7 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
         {field: 'primx_cpea_calculated_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175, hide: true }, 
         {field: 'primx_cpea_total_cost_estimate', headerName: 'CPEA Total Cost', width: 175, hide: true },
 
-        // need the math-created fields below
+        
     ]
 
     // add additional columns based on the data source for the data grid
