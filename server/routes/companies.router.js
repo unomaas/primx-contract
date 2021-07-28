@@ -28,7 +28,7 @@ const router = express.Router();
     pool.query(queryText, [company , req.params.id])
       .then(() => { res.sendStatus(200); })
       .catch((error) => {
-        console.log('Error completeing UPDATE Companies query', err)
+        console.log('Error completeing UPDATE Companies query', error)
       })
   });
 

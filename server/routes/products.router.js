@@ -23,12 +23,12 @@ const router = express.Router();
   router.put('/:id', (req, res) => {
     // EDIT route code here
     console.log(req.body)
-    const company = req.body.newValue;
-    const queryText = `UPDATE "licensees" SET "licensee_contractor_name"=$1 WHERE "id"=$2`;
-    pool.query(queryText, [company , req.params.id])
+    
+    const queryText = `UPDATE "products" SET ${req.body.dbColumn}=$1 WHERE "id"=$2`;
+    pool.query(queryText, [req.body.newValue, req.params.id])
       .then(() => { res.sendStatus(200); })
       .catch((error) => {
-        console.log('Error completeing UPDATE Companies query', err)
+        console.log('Error completeing UPDATE Companies query', error)
       })
   });
 
