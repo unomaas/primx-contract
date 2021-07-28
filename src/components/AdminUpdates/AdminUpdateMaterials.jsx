@@ -22,7 +22,7 @@ export default function AdminUpdateMaterials() {
 
   let productInfo = {
     product_name: productInput,
-    prodcut_price: productPriceInput
+    product_price: productPriceInput
   }
 
        //styles for MUI

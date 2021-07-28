@@ -28,18 +28,19 @@ const router = express.Router();
     pool.query(queryText, [req.body.newValue, req.params.id])
       .then(() => { res.sendStatus(200); })
       .catch((error) => {
-        console.log('Error completeing UPDATE Companies query', error)
+        console.log('Error completeing UPDATE Product query', error)
       })
   });
 
   router.post('/', (req, res) => {
-    const queryText = `INSERT INTO "licensees" (licensee_contractor_name)
-    VALUES ($1)`;
+      console.log(req.body)
+    const queryText = `INSERT INTO "products" (product_name, product_price)
+    VALUES ($1, $2)`;
     console.log(req.body.value)
-    pool.query(queryText, [req.body.value])
+    pool.query(queryText, [req.body.product_name, req.body.product_price])
     .then(() => res.sendStatus(201))
     .catch((error) => {
-      console.log('Company ServerSide Post failed:', error);
+      console.log('Product ServerSide Post failed:', error);
       res.sendStatus(500);
     });
   })
