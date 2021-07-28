@@ -30,6 +30,7 @@ export default function EstimateCreate() {
   const shippingCosts = useSelector(store => store.shippingCosts);
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
+  const estimateData = useSelector(store => store.estimatesReducer);
 
   // ⬇ GET on page load:
   useEffect(() => {
@@ -51,7 +52,12 @@ export default function EstimateCreate() {
    */
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
-    setNewEstimate({ ...newEstimate, [key]: value });
+    // setNewEstimate({ ...newEstimate, [key]: value });
+
+    dispatch({
+      type: 'SET_ESTIMATE',
+      payload: { key: key, value: value }
+    });
   } // End handleChange
 
   /** ⬇ handleSubmit:
@@ -71,7 +77,7 @@ export default function EstimateCreate() {
 
 
 
-  console.log('newEstimate is currently:', newEstimate);
+  console.log('estimateData is currently:', estimateData);
   return (
     <div className="EstimateCreate-wrapper">
 
