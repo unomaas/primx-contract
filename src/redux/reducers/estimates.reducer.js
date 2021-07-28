@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 const today = new Date().toISOString().substring(0, 10);
 
-
 // ⬇ estimatesReducer:
 export const estimatesReducer = (state = {
   measurement_units: 'imperial',
@@ -15,6 +14,12 @@ export const estimatesReducer = (state = {
       return {
         ...state,
         [action.payload.key]: action.payload.value
+      };
+    case 'CLEAR_ESTIMATE':
+      return {
+        measurement_units: 'imperial',
+        country: 'United States',
+        date_created: today,
       };
     default:
       return state;
