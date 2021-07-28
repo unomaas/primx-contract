@@ -82,7 +82,7 @@ export default function NavDrawer() {
                 <p>Create New Estimate</p>
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`#EstimatmergeLookup`)}>
+              <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
                 {/* <ListItemText primary={"Look-Up Estimate"} /> */}
                 <p>Look-Up Estimate</p>

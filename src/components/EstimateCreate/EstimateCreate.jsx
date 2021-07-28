@@ -75,7 +75,7 @@ export default function EstimateCreate() {
   return (
     <div className="EstimateCreate-wrapper">
 
-    <LicenseeHomePage />
+      <LicenseeHomePage />
 
       <Grid container
         spacing={2}
@@ -154,7 +154,7 @@ export default function EstimateCreate() {
                       <TextField
                         onChange={event => handleChange('project_manager_phone', event.target.value)}
                         required
-                        type="search"
+                        type="number"
                         size="small"
                         fullWidth
                       />
@@ -393,11 +393,12 @@ export default function EstimateCreate() {
               <h3 className="lexendFont">Project Quantity Calculations</h3>
               <Table size="small">
                 <TableBody>
+
                   <TableRow>
                     <TableCell><b>Square Feet</b></TableCell>
                     <TableCell>
                       <TextField
-                        onChange={event => handleChange('kit_description', event.target.value)}
+                        onChange={event => handleChange('square_feet', event.target.value)}
                         required
                         type="number"
                         size="small"
@@ -408,11 +409,12 @@ export default function EstimateCreate() {
                       />
                     </TableCell>
                   </TableRow>
+
                   <TableRow>
                     <TableCell><b>Thickness (Inches)</b></TableCell>
                     <TableCell>
                       <TextField
-                        onChange={event => handleChange('kit_description', event.target.value)}
+                        onChange={event => handleChange('thickness_inches', event.target.value)}
                         required
                         type="number"
                         size="small"
@@ -430,12 +432,12 @@ export default function EstimateCreate() {
                   </TableRow>
 
                   <TableRow>
-                    <TableCell><b>Thickening @ Perimeter (CY):</b></TableCell>
+                    <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                     <TableCell>CALC#</TableCell>
                   </TableRow>
 
                   <TableRow>
-                    <TableCell><b>Thickening @ Construction Joints (CY):</b></TableCell>
+                    <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                     <TableCell>CALC#</TableCell>
                   </TableRow>
 
@@ -468,6 +470,7 @@ export default function EstimateCreate() {
             <TableContainer>
               <h3 className="lexendFont">Thickened Edge Calculator</h3>
               <Table size="small">
+
                 <TableHead>
                   <TableRow>
                     <TableCell></TableCell>
@@ -475,12 +478,13 @@ export default function EstimateCreate() {
                     <TableCell><b>Construction Joint</b></TableCell>
                   </TableRow>
                 </TableHead>
+
                 <TableBody className="testTable">
                   <TableRow>
                     <TableCell><b>Lineal Feet:</b></TableCell>
                     <TableCell>
                       <TextField
-                        onChange={event => handleChange('kit_description', event.target.value)}
+                        onChange={event => handleChange('thickened_edge_perimeter_lineal_feet', event.target.value)}
                         required
                         type="number"
                         size="small"
@@ -492,7 +496,7 @@ export default function EstimateCreate() {
                     </TableCell>
                     <TableCell>
                       <TextField
-                        onChange={event => handleChange('kit_description', event.target.value)}
+                        onChange={event => handleChange('thickened_edge_construction_joint_lineal_feet', event.target.value)}
                         required
                         type="number"
                         size="small"
@@ -503,21 +507,25 @@ export default function EstimateCreate() {
                       />
                     </TableCell>
                   </TableRow>
+
                   <TableRow>
                     <TableCell><b>Width:</b></TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                   </TableRow>
+
                   <TableRow>
                     <TableCell><b>Additional Thickness (Inches):</b></TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                   </TableRow>
+
                   <TableRow>
                     <TableCell><b>Cubic Thickness (Inches):</b></TableCell>
                     <TableCell>CALC#</TableCell>
                     <TableCell>CALC#</TableCell>
                   </TableRow>
+
                 </TableBody>
               </Table>
             </TableContainer>
@@ -535,7 +543,7 @@ export default function EstimateCreate() {
                 <TableHead>
                   <TableRow>
                     <TableCell></TableCell>
-                    <TableCell><b>Dosage<br />Rate</b></TableCell>
+                    <TableCell><b>Dosage<br />Rate<br/>(yd³)</b></TableCell>
                     <TableCell><b>Total<br />Amount</b></TableCell>
                     <TableCell><b>Packaging<br />Capacity</b></TableCell>
                     <TableCell><b>Packages<br />Needed</b></TableCell>
@@ -567,7 +575,7 @@ export default function EstimateCreate() {
                     <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
                     <TableCell style={{ width: '1em' }}>
                       <TextField
-                        onChange={event => handleChange('kit_description', event.target.value)}
+                        onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
                         required
                         type="number"
                         size="small"
@@ -589,7 +597,7 @@ export default function EstimateCreate() {
                     <TableCell><b>PrīmX Steel Fibers (lbs)</b></TableCell>
                     <TableCell style={{ width: '1em' }}>
                       <TextField
-                        onChange={event => handleChange('kit_description', event.target.value)}
+                        onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
                         required
                         type="number"
                         size="small"
@@ -625,7 +633,7 @@ export default function EstimateCreate() {
                     <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
                     <TableCell style={{ width: '1em' }}>
                       <TextField
-                        onChange={event => handleChange('kit_description', event.target.value)}
+                        onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
                         required
                         type="number"
                         size="small"
