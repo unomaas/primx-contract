@@ -13,8 +13,8 @@ export default function AdminUpdateMaterials() {
   // establish usedispatch as dispatch
   const dispatch = useDispatch();
 
-  // // establish products and prices with a use selector from the companies reducer
-  // const products = useSelector(store => store.products);
+  // establish products and prices with a use selector from the companies reducer
+  const products = useSelector(store => store.products);
 
   // establish add product and product price input state with use state
   let [productInput, setProductInput] = useState('');
@@ -38,7 +38,7 @@ export default function AdminUpdateMaterials() {
   
 
   //establish rows with products array for datagrid
-  let rows = [];
+  let rows = products;
 
   //estabish columns for datagrid
   const columns = [

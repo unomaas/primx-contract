@@ -42,10 +42,10 @@ function* addProduct(action) {
 }
 
 // companies saga to fetch companies
-function* companiesSaga() {
+function* productsSaga() {
   yield takeLatest('FETCH_PRODUCTS', fetchProducts);
   yield takeLatest('UPDATE_PRODUCT', updateProduct);
   yield takeLatest('ADD_PRODUCT', addProduct);
 }
 
-export default companiesSaga;
+export default productsSaga;
