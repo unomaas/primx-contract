@@ -76,16 +76,40 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
         {field: 'primx_dc_calculated_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175, hide: true }, 
         {field: 'primx_dc_total_cost_estimate', headerName: 'DC Total Cost', width: 175, hide: true }, 
 
+        // PrimX Flow calculated values
+        {field: 'primx_flow_total_amount_needed', headerName: 'Flow Total Amount Needed', width: 175, hide: true }, 
+        {field: 'primx_flow_packages_needed', headerName: 'Flow Packages Needed', width: 175, hide: true }, 
+        {field: 'primx_flow_total_order_quantity', headerName: 'Flow Total Order Quantity', width: 175, hide: true }, 
+        {field: 'primx_flow_total_materials_price', headerName: 'Flow Total Material Price', width: 175, hide: true }, 
+        {field: 'primx_flow_containers_needed', headerName: 'Flow Containers Needed', width: 175, hide: true }, 
+        {field: 'primx_flow_calculated_shipping_estimate', headerName: 'Flow Shipping Estimate', width: 175, hide: true }, 
+        {field: 'primx_flow_total_cost_estimate', headerName: 'Flow Total Cost', width: 175, hide: true },
         
-        {field: 'primx_flow_total_materials_price', headerName: 'Flow Total Material Price', width: 175, hide: true },
-        {field: 'primx_flow_shipping_estimate', headerName: 'Flow Shipping Estimate', width: 175, hide: true },
+        // PrimX Steel Fibers calculated values
+        {field: 'primx_steel_fibers_total_amount_needed', headerName: 'Steel Fibers Total Amount Needed', width: 175, hide: true }, 
+        {field: 'primx_steel_fibers_packages_needed', headerName: 'Steel Fibers Packages Needed', width: 175, hide: true }, 
+        {field: 'primx_steel_fibers_total_order_quantity', headerName: 'Steel Fibers Total Order Quantity', width: 175, hide: true }, 
+        {field: 'primx_steel_fibers_total_materials_price', headerName: 'Steel Fibers Total Material Price', width: 175, hide: true }, 
+        {field: 'primx_steel_fibers_containers_needed', headerName: 'Steel Fibers Containers Needed', width: 175, hide: true }, 
+        {field: 'primx_steel_fibers_calculated_shipping_estimate', headerName: 'Steel Fibers Shipping Estimate', width: 175, hide: true }, 
+        {field: 'primx_steel_fibers_total_cost_estimate', headerName: 'Steel Fibers Total Cost', width: 175, hide: true },
 
-        {field: 'primx_steel_fibers_total_materials_price', headerName: 'Steel Fiber Total Material Price', width: 175, hide: true },
-        {field: 'primx_steel_fibers_shipping_estimate', headerName: 'Steel Fiber Shipping Estimate', width: 175, hide: true },
-        {field: 'primx_ultracure_blankets_total_materials_price', headerName: 'Ultracure Blankets Total Material Price', width: 175, hide: true },
+        // PrimX Ultracure Blankets calculated values
+        {field: 'primx_ultracure_blankets_total_amount_needed', headerName: 'Ultracure Blankets Total Amount Needed', width: 175, hide: true }, 
+        {field: 'primx_ultracure_blankets_packages_needed', headerName: 'Ultracure Blankets Packages Needed', width: 175, hide: true }, 
+        {field: 'primx_ultracure_blankets_total_order_quantity', headerName: 'Ultracure Blankets Total Order Quantity', width: 175, hide: true }, 
+        {field: 'primx_ultracure_blankets_total_materials_price', headerName: 'Ultracure Blankets Total Material Price', width: 175, hide: true }, 
+        {field: 'primx_ultracure_blankets_total_cost_estimate', headerName: 'Ultracure Blankets Total Cost', width: 175, hide: true },
 
-        {field: 'primx_cpea_total_materials_price', headerName: 'CPEA Total Material Price', width: 175, hide: true },
-        {field: 'primx_cpea_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175, hide: true },
+        // PrimX CPEA calculated values
+        {field: 'primx_cpea_total_amount_needed', headerName: 'CPEA Total Amount Needed', width: 175, hide: true }, 
+        {field: 'primx_cpea_packages_needed', headerName: 'CPEA Packages Needed', width: 175, hide: true }, 
+        {field: 'primx_cpea_total_order_quantity', headerName: 'CPEA Total Order Quantity', width: 175, hide: true }, 
+        {field: 'primx_cpea_total_materials_price', headerName: 'CPEA Total Material Price', width: 175, hide: true }, 
+        {field: 'primx_cpea_containers_needed', headerName: 'CPEA Containers Needed', width: 175, hide: true }, 
+        {field: 'primx_cpea_calculated_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175, hide: true }, 
+        {field: 'primx_cpea_total_cost_estimate', headerName: 'CPEA Total Cost', width: 175, hide: true },
+
         // need the math-created fields below
     ]
 
