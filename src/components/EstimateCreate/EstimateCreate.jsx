@@ -61,9 +61,10 @@ export default function EstimateCreate() {
         justify="center"
         alignItems="center"
         component={Paper}
-        style={{ margin: '0' }}
+        // style={{ margin: '0' }}
       >
 
+        {/* Grid Table #1: Display the Licensee/Project Info Form */}
         <Grid item xs={12} >
           <h3 className="lexendFont">Project Info</h3>
         </Grid>
@@ -278,7 +279,6 @@ export default function EstimateCreate() {
             />
           </Grid>
         
-
         </Grid>
         {/* 
         <InputLabel id="companyNameLabel">Licensee/Company Name?</InputLabel>
@@ -441,7 +441,6 @@ export default function EstimateCreate() {
       </Grid>
 
       <br /> <br />
-
 
       <Grid container
         spacing={3}
