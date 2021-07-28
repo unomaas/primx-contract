@@ -136,37 +136,6 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
 })
 
 
-// PUT request to edit a single piece of data on one row of the estimates table
-router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-  console.log('got to PUT route! params id, req.body', req.params.id, req.body);
-
-  // SQL query to update a specific piece of data
-  // THIS ISN"T WORKING RIGHT NOW: need to figure out how to sanitize the req.body.dbColumn that's being sent, can't be used with $ to be a value
-  // const queryText = `UPDATE "estimates" SET "$1" = $2 WHERE "id" = $3`
-  // // DB request
-  // pool.query(queryText, [req.body.dbColumn, req.body.newValue, req.params.id])
-  //   .then(result => {
-  //     res.sendStatus(200);
-  //   })
-  //   .catch(error => {
-  //     console.log(`Error with /api/estimates GET for id ${req.params.id}:`, error)
-  //   })
-
-  // ***************** THIS MAY NOT BE SECURE ***********************
-
-  // SQL query to update a specific piece of data
-  const queryText = `UPDATE "estimates" SET ${req.body.dbColumn} = $1 WHERE "id" = $2`
-  // DB request
-  pool.query(queryText, [req.body.newValue, req.params.id])
-    .then(result => {
-      res.sendStatus(200);
-    })
-    .catch(error => {
-      console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
-    })
-
-})
-
 // PUT request to mark an estimate flagged for order by licensee to be marked as ordered by an admin, and to add the name of the admin making the request
 router.put('/process/:id', rejectUnauthenticated, (req, res) => {
 
