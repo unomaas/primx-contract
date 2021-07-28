@@ -402,10 +402,20 @@ export default function EstimateCreate() {
         </Grid>
         {/* End Grid Table #2 */}
 
-
-        <ImperialTable />
-        <MetricTable />
-        
+        {/* Conditional rendering to show or hide tables based off submit button: */}
+        {showTables ? (
+          <>
+            {/* Conditional rendering to show Imperial or Metric Table: */}
+            {estimateData.measurement_units == "imperial" ? (
+              // If they select Imperial, show Imperial Table: 
+              <ImperialTable />
+            ) : (
+              // If they select Metric, show Metric Table: 
+              <MetricTable />
+            )}
+          </>
+        ) : (<></>)}
+        {/* End conditional rendering. */}
 
       </Grid>
     </div>
