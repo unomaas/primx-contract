@@ -8,7 +8,7 @@ import floorTypesSaga from './floorTypes.saga';
 import placementTypesSaga from './placementTypes.saga';
 import productsSaga from './products.saga';
 import shippingCostsSaga from './shippingCosts.saga';
-import liscenseeFormSaga from './liscenseeForm.saga';
+import licenseeFormSaga from './licenseeForm.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -28,6 +28,6 @@ export default function* rootSaga() {
     placementTypesSaga(),
     productsSaga(),
     shippingCostsSaga(),
-    liscenseeFormSaga(),
+    licenseeFormSaga(),
   ]);
 }

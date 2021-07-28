@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
 });
 
 
-// POST Route for Liscensee Information -> Includes both Metric and Imperial Inputs
+// POST Route for Licensee Information -> Includes both Metric and Imperial Inputs
 router.post('/', (req, res) => {
   console.log('In /api/estimates/ POST route with incoming data:', req.body);
 

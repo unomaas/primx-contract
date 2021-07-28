@@ -16,8 +16,8 @@ function* AddEstimate(action) {
 }
 
 // companies saga to fetch companies
-function* liscenseeFormSaga() {
+function* licenseeFormSaga() {
     yield takeLatest('ADD_ESTIMATE', AddEstimate);
 }
 
-export default liscenseeFormSaga;
+export default licenseeFormSaga;
