@@ -36,15 +36,15 @@ export default function UpdateShippingCostsGrid() {
 
 
     // submit handler for in-line cell edits on the data grid
-    // const handleEditSubmit = ( {id, field, event} ) => {
-    //     console.log('in handle edit submit for id, field, props', id, field, event);
-    //     // id argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
-    //     dispatch({ type: 'UPDATE_SHIPPING_COSTS', payload: {
-    //         id: id,
-    //         dbColumn: field,
-    //         newValue: event.target.value
-    //     }})
-    // }
+    const handleEditSubmit = ( {id, field, props} ) => {
+        console.log('in handle edit submit for id, field, props', id, field, props);
+        // id argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
+        dispatch({ type: 'UPDATE_SHIPPING_COSTS', payload: {
+            id: id,
+            dbColumn: field,
+            newValue: props.value
+        }})
+    }
 
     return (
         <div
@@ -57,7 +57,7 @@ export default function UpdateShippingCostsGrid() {
                 rows={rows}
                 columns={columns}
                 pageSize={10}
-                // onEditCellChangeCommitted={handleEditSubmit}
+                onEditCellChangeCommitted={handleEditSubmit}
             />
         </div>
     )
