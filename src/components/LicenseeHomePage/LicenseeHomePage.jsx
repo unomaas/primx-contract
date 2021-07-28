@@ -69,7 +69,7 @@ function LicenseeHomePage() {
 
       {/* Conditional Rendering */}
         {selectedCreate && <EstimateCreate />}
-        {selectedLookup && <EstimateLookup />}
+        {selectedLookup && <EstimateLookup id="EstimateLookup" />}
 
     </div>
 
