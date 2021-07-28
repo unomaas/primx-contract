@@ -21,7 +21,6 @@ export default function EstimateCreate() {
   const history = useHistory();
   const classes = useStyles();
   const today = new Date().toISOString().substring(0, 10);
-
   const companies = useSelector(store => store.companies);
   const shippingCosts = useSelector(store => store.shippingCosts);
   const floorTypes = useSelector(store => store.floorTypes);
