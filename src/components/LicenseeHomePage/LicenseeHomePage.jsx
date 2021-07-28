@@ -37,14 +37,15 @@ function LicenseeHomePage() {
             value="check"
             selected={selectedCreate}
             style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
-            onChange={() => {
-              if (selectedCreate) {
-                return
-              } else if (!selectedCreate) {
-                setSelectedCreate(!selectedCreate);
-                setSelectedLookup(!selectedLookup);
-              }
-            }}
+            onClick={() => history.push(`/create`)}
+            // onChange={() => {
+            //   if (selectedCreate) {
+            //     return
+            //   } else if (!selectedCreate) {
+            //     setSelectedCreate(!selectedCreate);
+            //     setSelectedLookup(!selectedLookup);
+            //   }
+            // }}
           > Create a New Estimate
           </ToggleButton>
 
@@ -52,14 +53,15 @@ function LicenseeHomePage() {
             value="check"
             selected={selectedLookup}
             style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
-            onChange={() => {
-              if (selectedLookup) {
-                return
-              } else if (!selectedLookup) {
-                setSelectedCreate(!selectedCreate);
-                setSelectedLookup(!selectedLookup);
-              }
-            }}
+            onClick={() => history.push(`/lookup`)}
+            // onChange={() => {
+            //   if (selectedLookup) {
+            //     return
+            //   } else if (!selectedLookup) {
+            //     setSelectedCreate(!selectedCreate);
+            //     setSelectedLookup(!selectedLookup);
+            //   }
+            // }}
           > Look-Up Existing Estimate
           </ToggleButton>
         </ButtonGroup>
@@ -68,8 +70,8 @@ function LicenseeHomePage() {
       <br/>
 
       {/* Conditional Rendering */}
-        {selectedCreate && <EstimateCreate />}
-        {selectedLookup && <EstimateLookup />}
+        {/* {selectedCreate && <EstimateCreate />}
+        {selectedLookup && <EstimateLookup />} */}
 
     </div>
 
