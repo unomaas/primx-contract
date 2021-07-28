@@ -319,7 +319,7 @@ export default function EstimateCreate() {
                         return (<MenuItem value={state.id}>{state.ship_to_state_province}</MenuItem>)
                       }
                       )}
-                      {/* <MenuItem value="0">Select</MenuItem> */}
+                      <MenuItem value="0">Select</MenuItem>
                     </Select>
                   </TableCell>
                 </TableRow>
