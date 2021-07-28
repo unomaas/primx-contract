@@ -34,88 +34,106 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 
 })
 
-/**
- * POST route template
- */
-router.post('/', (req, res) => {
-  // POST route code here
-});
 
 // POST Route for Licensee Information -> Includes both Metric and Imperial Inputs
 router.post('/', (req, res) => {
   console.log('In /api/estimates/ POST route with incoming data:', req.body);
+  // start the query text with shared values
+  let queryText = `
+    INSERT INTO "estimates" (
+    "measurement_units",
+    "country",
+    "date_created",
+    "project_name",
+    "licensee_id",
+    "project_general_contractor",
+    "ship_to_address",
+    "ship_to_city",
+    "shipping_costs_id",
+    "zip_postal_code",
+    "anticipated_first_pour_date",
+    "project_manager_name",
+    "project_manager_email",
+    "project_manager_phone",
+    "floor_types_id",
+    "placement_types_id",
+    "primx_flow_dosage_liters",
+    "primx_cpea_dosage_liters",
+    "primx_dc_unit_price",
+    "primx_dc_shipping_estimate",
+    "primx_flow_unit_price",
+    "primx_flow_shipping_estimate",
+    "primx_steel_fibers_unit_price",
+    "primx_steel_fibers_shipping_estimate",
+    "primx_ultracure_blankets_unit_price",
+    "primx_cpea_unit_price",
+    "primx_cpea_shipping_estimate",
+    "estimate_number",
+  `
+  // Add in the imperial or metric specific values based on unit choice
+  if (req.body.measurement_units == 'imperial') {
+    queryText += `
+      "square_feet",
+      "thickness_inches",
+      "thickened_edge_perimeter_lineal_feet",
+      "thickened_edge_construction_joint_lineal_feet",
+      "primx_steel_fibers_dosage_lbs"
+      )
+    `
+  }
+  else if (req.body.measurement_units == 'metric') {
+    queryText += `
+      "square_meters",
+      "thickness_millimeters",
+      "thickened_edge_perimeter_lineal_meters",
+      "thickened_edge_construction_joint_lineal_meters",
+      "primx_steel_fibers_dosage_kgs"
+      )
+    `
+  }
 
-  const queryText = `
-                    INSERT INTO "estimates" (
+  // add the values clause to the SQL query 
+  queryText += `
+    VALUES (
+      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33
+      );
+  `
 
-                    "measurement_units",
-                    "country",
-                    "date_created",
-                    "project_name",
-                    "licensee_id",
-                    "project_general_contractor",
-                    "ship_to_address",
-                    "ship_to_city",
-                    "shipping_costs_id",
-                    "zip_postal_code",
-                    "anticipated_first_pour_date",
-                    "project_manager_name",
-                    "project_manager_email",
-                    "project_manager_phone","floor_types_id",
-                    "placement_types_id",
-                    "square_meters",
-                    "thickness_millimeters",
-                    "thickened_edge_perimeter_lineal_meters",
-                    "thickened_edge_construction_joint_lineal_meters",
-                    "primx_flow_dosage_liters",
-                    "primx_steel_fibers_dosage_kgs",
-                    "primx_cpea_dosage_liters",
-                    "primx_dc_unit_price",
-                    "primx_dc_shipping_estimate",
-                    "primx_flow_unit_price",
-                    "primx_flow_shipping_estimate",
-                    "primx_steel_fibers_unit_price",
-                    "primx_steel_fibers_shipping_estimate",
-                    "primx_ultracure_blankets_unit_price",
-                    "primx_cpea_unit_price",
-                    "primx_cpea_shipping_estimate",
-                    "estimate_number"
-                    )
+  console.log('query Text', queryText);
+  res.sendStatus(200);
 
-                    VALUES (
-                    $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,
-                    $11,$12,$13,$14,$15,$16,$17,$18,$19,$20,
-                    $21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32
-                    );
-                    
-                    `;
-// ROUTE IS INCOMPLETE
-// req.body NEEDS to be updated for all 32 values
-pool.query(queryText, [req.body])
-  .then(result => {
-    res.sendStatus(200);
-  })
-  .catch(error => {
-    console.log(`Error with /api/estimates/ POST:`, error)
-    res.sendStatus(500);
-  })
+  // ROUTE IS INCOMPLETE
+  // req.body NEEDS to be updated for all 32 values
+
+
+  // pool.query(queryText, [req.body])
+  //   .then(result => {
+  //     res.sendStatus(200);
+  //   })
+  //   .catch(error => {
+  //     console.log(`Error with /api/estimates/ POST:`, error)
+  //     res.sendStatus(500);
+  //   })
+
 });
 
 
-  // PUT request to edit a single piece of data on one row of the estimates table
-  router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-    // SQL query to update a specific piece of data
-    const queryText = format(`UPDATE "estimates" SET %I = $1 WHERE "id" = $2;`, req.body.dbColumn);
-    // DB request
-    pool.query(queryText, [req.body.newValue, req.params.id])
-      .then(result => {
-        res.sendStatus(200);
-      })
-      .catch(error => {
-        console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
-      })
 
-  })
+
+// PUT request to edit a single piece of data on one row of the estimates table
+router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
+  // SQL query to update a specific piece of data
+  const queryText = format(`UPDATE "estimates" SET %I = $1 WHERE "id" = $2;`, req.body.dbColumn);
+  // DB request
+  pool.query(queryText, [req.body.newValue, req.params.id])
+    .then(result => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
+    })
+
+})
 
 
 // PUT request to edit a single piece of data on one row of the estimates table
