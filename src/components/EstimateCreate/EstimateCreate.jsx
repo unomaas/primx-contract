@@ -60,7 +60,7 @@ export default function EstimateCreate() {
       <Grid container
         spacing={2}
         justify="center"
-        component={Paper}
+        // component={Paper}
       >
 
         {/* Grid Table #1: Display the Licensee/Project Info Form */}
