@@ -16,6 +16,7 @@ const floorTypesRouter = require('./routes/floorTypes.router');
 const placementTypesRouter = require('./routes/placementTypes.router');
 const productsRouter = require('./routes/products.router');
 
+const shippingCostsRouter = require('./routes/shippingCosts.router');
 const companiesRouter = require('./routes/companies.router');
 
 // Body parser middleware
@@ -36,7 +37,7 @@ app.use('/api/estimates', estimatesRouter);
 app.use('/api/floortypes', floorTypesRouter);
 app.use('/api/placementtypes', placementTypesRouter);
 app.use('/api/products', productsRouter);
-
+app.use('/api/shippingcosts', shippingCostsRouter);
 app.use('/api/companies', companiesRouter);
 
 // Serve static files

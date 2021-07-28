@@ -1,50 +1,31 @@
 .EstimateCreate-wrapper {
-  max-width: 95%;
-  width: 95%;
+  max-width: 98%;
+  width: 98%;
   margin: 0 auto;
-  /* display: inline-block;
-  border: 1px solid black; */
 }
-
-/* .EstimateCreate-details-wrapper {
-  display: inline-block;
-  max-width: 300px;
-  width: 30em;
-} */
-
-/* .EstimateCreate-shipping-info {
-  display: block;
-  float: left;
-  max-width: 49%;
-  width: 49%;
-  border: 1px solid black;
-}
-
-.EstimateCreate-project-info {
-  display: block;
-  float: right;
-  max-width: 49%;
-  width: 49%;
-  border: 1px solid black;
-} */
 
 .EstimateCreate-table-wrappers {
   margin: 0 auto;
 }
 
-.EstimateCreate-table-one {
-  /* width: 36em; */
-  max-width: 24em;
+.EstimateCreate-table-1 {
+  max-width: 20em;
   margin: 0 auto;
 }
 
-.EstimateCreate-table-two {
+.EstimateCreate-table-2 {
+  /* width: 36em; */
+  max-width: 22em;
+  margin: 0 auto;
+}
+
+.EstimateCreate-table-3 {
   /* width: 70em; */
   max-width: 70em;
   margin: 0 auto;
 }
 
-.EstimateCreate-table-three {
-  max-width: 20em;
-  margin: 0 auto;
+h3, .lexendFont {
+  font-size: 14px;
+  color: black;
 }
