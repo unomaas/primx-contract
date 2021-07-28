@@ -19,6 +19,9 @@ export default function EstimateCreate() {
   const history = useHistory();
   const classes = useStyles();
   const today = new Date().toISOString().substring(0, 10);
+  const [newEstimate, setNewEstimate] = useState({
+
+  });
 
   // ⬇ GET on page load:
   // useEffect(() => {
@@ -233,6 +236,7 @@ export default function EstimateCreate() {
                       size="small"
                       fullWidth
                       value={today}
+                      // helperText="fdsafdlj;ksafjdsa;lfjdsafjlkdsafjdsfkdlsafjdsajkflsdfjsdkafj;dsal;kfadkjsa;"
                     />
                   </TableCell>
                 </TableRow>
