@@ -11,7 +11,6 @@ export default function useEstimateCalculations(estimate) {
             estimate[property] = Number(value.replace(/[^0-9\.-]+/g, ""));
         }
     }
-
     // begin adding keys to the estimate, first by adding in keys specific to the unit of measurement that's being worked with
 
     // imperial calculalations
@@ -156,6 +155,20 @@ export default function useEstimateCalculations(estimate) {
         estimate.primx_steel_fibers_calculated_shipping_estimate + estimate.primx_cpea_calculated_shipping_estimate;
 
     estimate.design_total_price_estimate = estimate.design_total_shipping_estimate + estimate.design_total_materials_price;
+
+
+    // before returning the estimate object, do any necessary rounding on given numbers to match the needs of the various grid displays
+    // loop over all key/value pairs in the mutated estimate object, doing rounding based on shared key names
+    for (let property in estimate) {
+        let value = estimate[property];
+        // cubic volumes and total amounts of physical materials are always rounded up if they're decimals after being calculated
+        if (property.includes('cubic_yards') || property.includes('cubic_meters') || property.includes('total_amount') || property.includes('fibers_dosage')) {    
+            estimate[property] = Math.ceil(value)
+        // price of materials, shipping estimates (all share _estimate in their key name), dosages of liquid ingredients, and additional thickness need rounding to 2 decimals
+        } else if (property.includes('materials_price') || property.includes('_estimate') || property.includes('dosage_liters') || property.includes('additional_thickness')) {
+            estimate[property] = Number(value).toFixed(2);
+        }
+    }
 
     return estimate;
 }

@@ -2,7 +2,7 @@ import './AdminEstimatesGrid.css';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 // Material-UI components
-import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button'
 import { useStyles } from '../MuiStyling/MuiStyling';
 
@@ -170,6 +170,14 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
     }
 
 
+    const CustomToolbar = () => {
+        return(
+            <GridToolbarContainer>
+                <GridToolbarExport />
+            </GridToolbarContainer>
+        )
+    }
+
     return (
         <div
           style={{ height: 350, width: '95%'}}
@@ -182,6 +190,9 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
                 pageSize={5}
                 checkboxSelection
                 onEditCellChangeCommitted={handleEditSubmit}
+                components={{
+                    Toolbar: CustomToolbar
+                }}
             />
         </div>
     )
