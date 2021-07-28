@@ -6,12 +6,9 @@ import userSaga from './user.saga';
 import adminEstimatesSaga from './adminEstimates.saga';
 import floorTypesSaga from './floorTypes.saga';
 import placementTypesSaga from './placementTypes.saga';
-<<<<<<< HEAD
-import liscenseeFormSaga from './liscenseeForm.saga';
-=======
 import productsSaga from './products.saga';
 import shippingCostsSaga from './shippingCosts.saga';
->>>>>>> a46261ba0be41620edcb3702bf002c86af6706b3
+import liscenseeFormSaga from './liscenseeForm.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -29,11 +26,8 @@ export default function* rootSaga() {
     adminEstimatesSaga(),
     floorTypesSaga(),
     placementTypesSaga(),
-<<<<<<< HEAD
-    lisceneeFormSaga(),
-=======
     productsSaga(),
     shippingCostsSaga(),
->>>>>>> a46261ba0be41620edcb3702bf002c86af6706b3
+    liscenseeFormSaga(),
   ]);
 }
