@@ -1,9 +1,13 @@
 import React, {useState} from 'react'
-import AddCircleOutlineRoundedIcon from '@material-ui/icons/AddCircleOutlineRounded';
-import Button from '@material-ui/core/Button';
-import { DataGrid } from '@material-ui/data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import AdminUpdates from './AdminUpdates';
+
+//material ui imports
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import { DataGrid } from '@material-ui/data-grid';
 
 export default function AdminUpdateLicenses() {
 
@@ -14,15 +18,27 @@ export default function AdminUpdateLicenses() {
   // establish add company input state with use state
   let [companyNameInput,setCompanyNameInput] = useState('');
 
+     //styles for MUI
+     const useStyles = makeStyles((theme) => ({
+      root: {
+        '& > *': {
+          margin: theme.spacing(1),
+        },
+      },
+    }));
+    //defining classes for MUI
+    const classes = useStyles();
 
 
+  //establish rows with campanies array for datagrid
   let rows = companies;
 
-
+  //estabish columns for datagrid
   const columns = [
     { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, editable: true },
   ];
 
+  //handles edit of datagrid cells
   const handleEditSubmit = ({ id, field, props }) => {
     console.log('in handle edit submit for id, field, props', id, field, props);
     // id argument is the db id of the row being edited and props.value is the new value after submitting the edit
@@ -54,16 +70,17 @@ return (
   <div >
     <AdminUpdates />
     <h2>Update Licensee</h2>
-    <input onChange={handleCompanyInputChange} type='text'></input>
-    <Button onClick={handleAddCompany}><AddCircleOutlineRoundedIcon /></Button>
-    <div style={{ height: 350, width: '95%' }}
+    <TextField id="outlined-basic" label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange}/>
+    <Fab className={classes.root} onClick={handleAddCompany} color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
+    <div style={{ height: 350, width: '28%' }}
       className="AdminEstimatesGrid-wrapper">
       <DataGrid
         style={{ fontFamily: 'Times New Roman', fontSize: '1em' }}
         rows={rows}
         columns={columns}
         pageSize={10}
-        checkboxSelection
         onEditCellChangeCommitted={handleEditSubmit}
       />
     </div>

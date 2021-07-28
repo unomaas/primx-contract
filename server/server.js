@@ -14,6 +14,8 @@ const adminRouter = require('./routes/admin.router');
 const estimatesRouter = require('./routes/estimates.router');
 const floorTypesRouter = require('./routes/floorTypes.router');
 const placementTypesRouter = require('./routes/placementTypes.router');
+const productsRouter = require('./routes/products.router');
+
 const shippingCostsRouter = require('./routes/shippingCosts.router');
 const companiesRouter = require('./routes/companies.router');
 
@@ -34,6 +36,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/estimates', estimatesRouter);
 app.use('/api/floortypes', floorTypesRouter);
 app.use('/api/placementtypes', placementTypesRouter);
+app.use('/api/products', productsRouter);
 app.use('/api/shippingcosts', shippingCostsRouter);
 app.use('/api/companies', companiesRouter);
 

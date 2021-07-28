@@ -6,6 +6,7 @@ import userSaga from './user.saga';
 import adminEstimatesSaga from './adminEstimates.saga';
 import floorTypesSaga from './floorTypes.saga';
 import placementTypesSaga from './placementTypes.saga';
+import productsSaga from './products.saga';
 import shippingCostsSaga from './shippingCosts.saga';
 
 // rootSaga is the primary saga.
@@ -24,6 +25,7 @@ export default function* rootSaga() {
     adminEstimatesSaga(),
     floorTypesSaga(),
     placementTypesSaga(),
+    productsSaga(),
     shippingCostsSaga(),
   ]);
 }
