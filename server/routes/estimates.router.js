@@ -38,6 +38,7 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 // POST Route for Licensee Information -> Includes both Metric and Imperial Inputs
 router.post('/', (req, res) => {
   console.log('In /api/estimates/ POST route with incoming data:', req.body);
+
   // start the query text with shared values
   let queryText = `
     INSERT INTO "estimates" (
@@ -98,6 +99,71 @@ router.post('/', (req, res) => {
       $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33
       );
   `
+  // set the values sent from licensee
+  // destructure the req.body values shared between metric and imperial units
+  let {
+    measurement_units,
+    country,
+    date_created,
+    project_name,
+    licensee_id,
+    project_general_contractor,
+    ship_to_address,
+    ship_to_city,
+    shipping_costs_id,
+    zip_postal_code,
+    anticipated_first_pour_date,
+    project_manager_name,
+    project_manager_email,
+    project_manager_phone,
+    floor_types_id,
+    placement_types_id,
+    primx_flow_dosage_liters,
+    primx_cpea_dosage_liters,
+    primx_dc_unit_price,
+    primx_dc_shipping_estimate,
+    primx_flow_unit_price,
+    primx_flow_shipping_estimate,
+    primx_steel_fibers_unit_price,
+    primx_steel_fibers_shipping_estimate,
+    primx_ultracure_blankets_unit_price,
+    primx_cpea_unit_price,
+    primx_cpea_shipping_estimate
+  } = req.body
+
+  // set the destructured object values as the values to send with the POST request
+  const values = [    
+    measurement_units,
+    country,
+    date_created,
+    project_name,
+    licensee_id,
+    project_general_contractor,
+    ship_to_address,
+    ship_to_city,
+    shipping_costs_id,
+    zip_postal_code,
+    anticipated_first_pour_date,
+    project_manager_name,
+    project_manager_email,
+    project_manager_phone,
+    floor_types_id,
+    placement_types_id,
+    primx_flow_dosage_liters,
+    primx_cpea_dosage_liters,
+    primx_dc_unit_price,
+    primx_dc_shipping_estimate,
+    primx_flow_unit_price,
+    primx_flow_shipping_estimate,
+    primx_steel_fibers_unit_price,
+    primx_steel_fibers_shipping_estimate,
+    primx_ultracure_blankets_unit_price,
+    primx_cpea_unit_price,
+    primx_cpea_shipping_estimate
+  ]
+
+  console.log('values:', values);
+  
 
   console.log('query Text', queryText);
   res.sendStatus(200);
