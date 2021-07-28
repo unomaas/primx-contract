@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   rejectUnauthenticated,
 } = require('../modules/authentication-middleware');
+const format = require('pg-format');
 
 /**
  * GET route template
@@ -39,7 +40,6 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 router.post('/', (req, res) => {
   // POST route code here
 });
-
 
 // POST Route for Licensee Information -> Includes both Metric and Imperial Inputs
 router.post('/', (req, res) => {
@@ -88,19 +88,34 @@ router.post('/', (req, res) => {
                     $21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32
                     );
                     
-                    `
-  
-  // ROUTE IS INCOMPLETE
-  // req.body NEEDS to be updated for all 32 values
-  pool.query(queryText, [req.body])
-    .then(result => {
-      res.sendStatus(200);
+                    `;
+// ROUTE IS INCOMPLETE
+// req.body NEEDS to be updated for all 32 values
+pool.query(queryText, [req.body])
+  .then(result => {
+    res.sendStatus(200);
+  })
+  .catch(error => {
+    console.log(`Error with /api/estimates/ POST:`, error)
+    res.sendStatus(500);
+  })
+});
+
+
+  // PUT request to edit a single piece of data on one row of the estimates table
+  router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
+    // SQL query to update a specific piece of data
+    const queryText = format(`UPDATE "estimates" SET %I = $1 WHERE "id" = $2;`, req.body.dbColumn);
+    // DB request
+    pool.query(queryText, [req.body.newValue, req.params.id])
+      .then(result => {
+        res.sendStatus(200);
       })
       .catch(error => {
-      console.log(`Error with /api/estimates/ POST for id ${req.params.id}:`, error)
-      res.sendStatus(500);
+        console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
       })
-});
+
+  })
 
 
 // PUT request to edit a single piece of data on one row of the estimates table
