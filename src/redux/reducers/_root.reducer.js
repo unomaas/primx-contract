@@ -5,6 +5,7 @@ import companies from './companies.reducer';
 import adminEstimates from './adminEstimates.reducer';
 import floorTypes from './floorTypes.reducer';
 import placementTypes from './placementTypes.reducer';
+import products from './products.reducer';
 import shippingCosts from './shippingCosts.reducer';
 
 // rootReducer is the primary reducer for our entire project
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   adminEstimates, // will contain an array of estimate objects
   placementTypes, //contains placement types
   floorTypes, //contains floor types
+  products, // contains products, prices of products and products available
   shippingCosts//contins the shipping costs
 });
 

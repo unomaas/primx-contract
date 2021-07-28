@@ -5,7 +5,7 @@ import './EstimateCreate.css';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useStyles } from '../MuiStyling/MuiStyling';
@@ -18,6 +18,8 @@ export default function EstimateCreate() {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
+  const today = new Date().toISOString().substring(0, 10);
+
   // ⬇ GET on page load:
   // useEffect(() => {
   //   dispatch({ type: 'FETCH_KIT_CATEGORIES' })
@@ -54,409 +56,587 @@ export default function EstimateCreate() {
 
   return (
     <div className="EstimateCreate-wrapper">
-      {/* <p>In Estimate Create</p> */}
 
-      {/* Project Details (Contactor & Shipping Info) */}
-      <div className="EstimateCreate-details-wrapper">
+      <Grid container
+        spacing={2}
+        justify="center"
+      >
 
-        <div className="EstimateCreate-shipping-info">
-          <h3>Project Shipping Info</h3>
+        {/* Grid Table #1: Display the Licensee/Project Info Form */}
+        <Grid item xs={6}>
+          <TableContainer component={Paper}>
+            <h3 className="lexendFont">Licensee & Project Information</h3>
+            <Table size="small">
+              <TableBody>
 
-          <TextField
-            label="Project Name?"
-            // helperText="Project Name?"
-            // labelId="projectName"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          // inputProps={{ maxLength: 255 }}
-          // size="small"
-          /> <br />
+                <TableRow>
+                  <TableCell><b>Licensee/Contractor Name:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
 
-          <InputLabel id="companyNameLabel">Licensee/Company Name?</InputLabel>
-          <Select
-            // label="Licensee / Company Name?"
-            // defaultValue="Licensee / Company Name?"
-            // value="Licensee / Company Name?"
-            labelId="companyNameLabel"
-            required
-          /> <br />
+                <TableRow>
+                  <TableCell><b>Project General Contractor:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
 
-          <TextField
-            label="General Contractor?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
+                <TableRow>
+                  <TableCell><b>Project Name:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
 
-          <TextField
-            label="Shipping Address?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
+                <TableRow>
+                  <TableCell><b>Project Manager Email:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
 
-          <TextField
-            label="Shipping City?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
+                <TableRow>
+                  <TableCell><b>Project Manager Cell:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
 
-          <InputLabel id="companyNameLabel">Shipping State/Province?</InputLabel>
-          <Select
-            label="Shipping State/Province?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
+                <TableRow>
+                  <TableCell><b>Tour Purchase Order #:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
 
-          <TextField
-            label="Shipping Postal Code?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
+                <TableRow>
+                  <TableCell><b>Floor Type:</b></TableCell>
+                  <TableCell>
+                    <Select
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      size="small"
+                      fullWidth
+                      defaultValue="1"
+                    >
+                      <MenuItem value="1">Slab on Grade - Interior</MenuItem>
+                      <MenuItem value="2">Slab on Grade - Exterior</MenuItem>
+                      <MenuItem value="3">Slab on Insulation</MenuItem>
+                      <MenuItem value="4">Slab on Piles - Interior</MenuItem>
+                      <MenuItem value="5">Slab on Grade - Exterior</MenuItem>
+                    </Select>
+                  </TableCell>
+                </TableRow>
 
-          <FormControl required>
-            <FormLabel>
-              Units of Measurement?
-            </FormLabel>
-            <RadioGroup>
-              <FormControlLabel
-                label="Imperial"
-                value="imperial"
-                control={<Radio />}
-              />
-              <FormControlLabel
-                label="Metric"
-                value="metric"
-                control={<Radio />}
-              />
-            </RadioGroup>
-          </FormControl>
+                <TableRow>
+                  <TableCell><b>Placement Type:</b></TableCell>
+                  <TableCell>
+                    <Select
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      size="small"
+                      fullWidth
+                      defaultValue="1"
+                    >
+                      <MenuItem value="1">Truck Discharge</MenuItem>
+                      <MenuItem value="2">Pump</MenuItem>
+                      <MenuItem value="3">Buggy</MenuItem>
+                      <MenuItem value="4">Conveyor</MenuItem>
+                    </Select>
+                  </TableCell>
+                </TableRow>
 
-        </div>
+                <TableRow>
+                  <TableCell><b>Unit of Measurement:</b></TableCell>
+                  <TableCell>
+                    <FormControl required>
+                      <RadioGroup defaultValue="imperial" style={{ display: 'inline' }}>
+                        <FormControlLabel
+                          label="Imperial"
+                          value="imperial"
+                          control={<Radio />}
+                        />
+                        <FormControlLabel
+                          label="Metric"
+                          value="metric"
+                          control={<Radio />}
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </TableCell>
+                </TableRow>
 
-        <div className="EstimateCreate-project-info">
-          <h3>Project Contactor Info</h3>
-
-          <InputLabel id="companyNameLabel">Today's Date:</InputLabel>
-          <TextField
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="date"
-            margin="dense"
-          /> <br />
-
-          <InputLabel id="companyNameLabel">Anticipated Pour Date:</InputLabel>
-          <TextField
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="date"
-            margin="dense"
-          /> <br />
-
-          <TextField
-            label="Lead Time (In Weeks)?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <TextField
-            label="Project Manager Name?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <TextField
-            label="Project Manager Email?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <TextField
-            label="Project Manager Cell?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <TextField
-            label="Your Purchase Order Number?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <InputLabel id="companyNameLabel">Floor Type?</InputLabel>
-          <Select
-            label="Shipping State/Province?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <InputLabel id="companyNameLabel">Placement Type?</InputLabel>
-          <Select
-            label="Shipping State/Province?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <br />
-          <Button
-            type="submit"
-            // onClick={event => handleSubmit(event)}
-            variant="outlined"
-            style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-          >
-            Submit
-          </Button>
-        </div>
-
-      </div>
-
-      {/* <TextField
-            label="Square Feet?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <TextField
-            label="Thickness (in Yards)?"
-            onChange={event => handleChange('kit_description', event.target.value)}
-            required
-            type="search"
-            margin="dense"
-          /> <br />
-
-          <p>Cubic Yards: CALC#</p>
-          <p>Thickening @ Perimeter (CY): CALC#</p>
-          <p>Thickening @ Construction Joint (CY): CALC#</p>
-          <p>Subtotal: CALC#</p>
-          <p>Waste Factor @ 5%: CALC#</p>
-          <p>Total Cubic Yards: CALC#</p> */}
-
-        <div className="EstimateCreate-table-wrappers">
-
-          <div className="EstimateCreate-table-three">
-            <h3>Project Quantity Calculations</h3>
-            <TableContainer>
-              <Table size="small">
-                <TableBody>
-                  <TableRow>
-                    <TableCell><b>Square Feet</b></TableCell>
-                    <TableCell>_____</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Thickness (Inches)</b></TableCell>
-                    <TableCell>_____</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Cubic Yards</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Thickening @<br />Perimeter (CY)</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Thickening @<br />Construction Joints (CY)</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Subtotal</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Waste Factor @<br />5%</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-
-          <div className="EstimateCreate-table-one">
-            <h3>Thickened Edge Calculator</h3>
-            <TableContainer >
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell><b>Perimeter</b></TableCell>
-                    <TableCell><b>Construction<br />Joint</b></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody className="testTable">
-                  <TableRow>
-                    <TableCell><b>Lineal Feet</b></TableCell>
-                    <TableCell>_____</TableCell>
-                    <TableCell>_____</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Width</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Additional<br />Thickness<br />(Inches)</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Cubic<br />Thickness<br />(Inches)</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-            {/* <TableContainer >
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell><b>Lineal<br />Feet</b></TableCell>
-                    <TableCell><b>Width</b></TableCell>
-                    <TableCell><b>Additional<br />Thickness</b></TableCell>
-                    <TableCell><b>Cubic<br />Yards</b></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody className="testTable">
-                  <TableRow>
-                    <TableCell><b>Perimeter</b></TableCell>
-                    <TableCell>_____</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>Construction Joint</b></TableCell>
-                    <TableCell>_____</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer> */}
-          </div>
-
-          <div className="EstimateCreate-table-two">
-            <h3>Materials Table</h3>
-            <TableContainer style={{ maxWidth: "72em" }}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell><b>Dosage<br />Rate</b></TableCell>
-                    <TableCell><b>Total<br />Amount</b></TableCell>
-                    <TableCell><b>Packaging<br />Capacity</b></TableCell>
-                    <TableCell><b>Packages<br />Needed</b></TableCell>
-                    <TableCell><b>Total<br />Order<br />Quantity</b></TableCell>
-                    <TableCell><b>Materials<br />Price</b></TableCell>
-                    <TableCell><b>Total<br />Materials<br />Price</b></TableCell>
-                    <TableCell><b>Containers</b></TableCell>
-                    <TableCell><b>Shipping<br />Estimate</b></TableCell>
-                    <TableCell><b>Total<br />Cost</b></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell><b>PrīmX DC</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>PrīmX Flow</b></TableCell>
-                    <TableCell>_____</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>PrīmX Steel<br />Fibers</b></TableCell>
-                    <TableCell>_____</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>PrīmX UltraCure Blankets</b></TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell><b>PrīmX CPEA</b></TableCell>
-                    <TableCell>_____</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                    <TableCell>CALC#</TableCell>
-                  </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        {/* End Grid Table #1 */}
 
 
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        </div>
+        {/* Grid Table #2: Display the Shipping Info Form */}
+        <Grid item xs={6}>
+          <TableContainer component={Paper}>
+            <h3 className="lexendFont">Lead Time & Shipping Information</h3>
+            <Table size="small">
+              <TableBody>
 
-      </div>
+                <TableRow>
+                  <TableCell><b>Today's Date:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="date"
+                      size="small"
+                      fullWidth
+                      value={today}
+                    />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Anticipated First Pour Date:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="date"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Lead Time (In Weeks):</b></TableCell>
+                  <TableCell>
+                    CALC#
+                    {/* <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                    /> */}
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Shipping Street Address:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Shipping City:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="search"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Shipping State/Province:</b></TableCell>
+                  <TableCell>
+                    <Select
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      size="small"
+                      fullWidth
+                      defaultValue="0"
+                    >
+                      <MenuItem value="0">Select</MenuItem>
+                    </Select>
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Shipping Zip/Postal Code:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="number"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Shipping Country:</b></TableCell>
+                  <TableCell>
+                    <Select
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      size="small"
+                      fullWidth
+                      defaultValue="usa"
+                    >
+                      <MenuItem value="usa">United States</MenuItem>
+                      <MenuItem value="canada">Canada</MenuItem>
+                    </Select>
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell align="right">
+                    <Button
+                      type="submit"
+                      // onClick={event => handleSubmit(event)}
+                      variant="contained"
+                      style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                      color="primary"
+                    >
+                      Submit
+                    </Button>
+                  </TableCell>
+                </TableRow>
+
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        {/* End Grid Table #2 */}
+
+
+        {/* Grid Table #3A (IMPERIAL): Display the Project Quantity Calc Form */}
+        <Grid item xs={6}>
+          <TableContainer component={Paper}>
+            <h3 className="lexendFont">Project Quantity Calculations</h3>
+            <Table size="small">
+              <TableBody>
+                <TableRow>
+                  <TableCell><b>Square Feet</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="number"
+                      size="small"
+                      fullWidth
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">ft</InputAdornment>,
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><b>Thickness (Inches)</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="number"
+                      size="small"
+                      fullWidth
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">in</InputAdornment>,
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Cubic Yards:</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Thickening @ Perimeter (CY):</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Thickening @ Construction Joints (CY):</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Subtotal:</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>Total Cubic Yards:</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        {/* End Grid Table #3A (IMPERIAL) */}
+
+
+        {/* Grid Table #4A (IMPERIAL): Display the Thickened Edge Calc Form */}
+        <Grid item xs={6}>
+          <TableContainer component={Paper}>
+            <h3 className="lexendFont">Thickened Edge Calculator</h3>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell><b>Perimeter</b></TableCell>
+                  <TableCell><b>Construction Joint</b></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody className="testTable">
+                <TableRow>
+                  <TableCell><b>Lineal Feet:</b></TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="number"
+                      size="small"
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">ft</InputAdornment>,
+                      }}
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="number"
+                      size="small"
+                      fullWidth
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">ft</InputAdornment>,
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><b>Width:</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><b>Additional Thickness (Inches):</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell><b>Cubic Thickness (Inches):</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        {/* End Grid Table #4A (IMPERIAL) */}
+
+
+        {/* Grid Table #5A (IMPERIAL): Display the Project Quantity Calc Form */}
+        <Grid item xs={12}>
+          <TableContainer component={Paper}>
+            <h3 className="lexendFont">Materials Table</h3>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell><b>Dosage<br />Rate</b></TableCell>
+                  <TableCell><b>Total<br />Amount</b></TableCell>
+                  <TableCell><b>Packaging<br />Capacity</b></TableCell>
+                  <TableCell><b>Packages<br />Needed</b></TableCell>
+                  <TableCell><b>Total<br />Order<br />Quantity</b></TableCell>
+                  <TableCell><b>Materials<br />Price</b></TableCell>
+                  <TableCell><b>Total<br />Materials<br />Price</b></TableCell>
+                  <TableCell><b>Containers</b></TableCell>
+                  <TableCell><b>Shipping<br />Estimate</b></TableCell>
+                  <TableCell><b>Total<br />Cost</b></TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                <TableRow>
+                  <TableCell><b>PrīmX DC (lbs)</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
+                  <TableCell style={{ width: '1em' }}>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="number"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>PrīmX Steel Fibers (lbs)</b></TableCell>
+                  <TableCell style={{ width: '1em' }}>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="number"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>PrīmX UltraCure Blankets (sq/f)</b></TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
+                  <TableCell style={{ width: '1em' }}>
+                    <TextField
+                      onChange={event => handleChange('kit_description', event.target.value)}
+                      required
+                      type="number"
+                      size="small"
+                      fullWidth
+                    />
+                  </TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                  <TableCell>CALC#</TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell><b>TOTALS:</b></TableCell>
+                  <TableCell>CALC</TableCell>
+                  <TableCell>CALC</TableCell>
+                  <TableCell>CALC</TableCell>
+                  <TableCell>CALC</TableCell>
+                </TableRow>
+
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+        {/* End Grid Table #5A (IMPERIAL) */}
+
+      </Grid>
+    </div>
   )
 }
