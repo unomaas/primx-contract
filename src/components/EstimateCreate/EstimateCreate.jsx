@@ -29,12 +29,12 @@ export default function EstimateCreate() {
   useEffect(() => {
     // Liscensee/Company Name Call
     dispatch({ type: 'FETCH_COMPANIES' }),
-    // State/Province Call
-    dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
-    // Floor Type Call
-    dispatch({ type: 'FETCH_FLOOR_TYPES' }),
-    // Placement Type Call
-    dispatch({ type: 'FETCH_PLACEMENT_TYPES' })
+      // State/Province Call
+      dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
+      // Floor Type Call
+      dispatch({ type: 'FETCH_FLOOR_TYPES' }),
+      // Placement Type Call
+      dispatch({ type: 'FETCH_PLACEMENT_TYPES' })
   }, []);
   //#endregion ⬆⬆ All state variables above. 
 
@@ -169,11 +169,16 @@ export default function EstimateCreate() {
                       fullWidth
                       defaultValue="1"
                     >
-                      <MenuItem value="1">Slab on Grade - Interior</MenuItem>
+                      {floorTypes.map(types => {
+                        return (<MenuItem value={types.id}>{types.floor_type}</MenuItem>)
+                      }
+                      )}
+
+                      {/* <MenuItem value="1">Slab on Grade - Interior</MenuItem>
                       <MenuItem value="2">Slab on Grade - Exterior</MenuItem>
                       <MenuItem value="3">Slab on Insulation</MenuItem>
                       <MenuItem value="4">Slab on Piles - Interior</MenuItem>
-                      <MenuItem value="5">Slab on Grade - Exterior</MenuItem>
+                      <MenuItem value="5">Slab on Grade - Exterior</MenuItem> */}
                     </Select>
                   </TableCell>
                 </TableRow>
@@ -188,10 +193,14 @@ export default function EstimateCreate() {
                       fullWidth
                       defaultValue="1"
                     >
-                      <MenuItem value="1">Truck Discharge</MenuItem>
+                      {placementTypes.map(placementTypes => {
+                        return (<MenuItem value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
+                      }
+                      )}
+                      {/* <MenuItem value="1">Truck Discharge</MenuItem>
                       <MenuItem value="2">Pump</MenuItem>
                       <MenuItem value="3">Buggy</MenuItem>
-                      <MenuItem value="4">Conveyor</MenuItem>
+                      <MenuItem value="4">Conveyor</MenuItem> */}
                     </Select>
                   </TableCell>
                 </TableRow>
@@ -306,7 +315,11 @@ export default function EstimateCreate() {
                       fullWidth
                       defaultValue="0"
                     >
-                      <MenuItem value="0">Select</MenuItem>
+                      {shippingCosts.map(state => {
+                        return (<MenuItem value={state.id}>{state.ship_to_state_province}</MenuItem>)
+                      }
+                      )}
+                      {/* <MenuItem value="0">Select</MenuItem> */}
                     </Select>
                   </TableCell>
                 </TableRow>
