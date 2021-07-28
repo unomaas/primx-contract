@@ -61,6 +61,15 @@ function App() {
               <EstimateLookup />
             </Route>
 
+            {/* Home/Landing Page with Create New or Lookup Estimate: */}
+            <Route exact path="/home">
+              <LicenseeHomePage />
+            </Route>
+
+            {/* <Route exact path="/lookup">
+              <EstimateLookup />
+            </Route> */}
+
             {/* Visiting localhost:3000/about will show the about page. */}
             {/* // shows AboutPage at all times (logged in or not) */}
             <Route exact path="/about">
