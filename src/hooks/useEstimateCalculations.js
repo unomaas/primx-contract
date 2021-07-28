@@ -11,7 +11,6 @@ export default function useEstimateCalculations(estimate) {
             estimate[property] = Number(value.replace(/[^0-9\.-]+/g, ""));
         }
     }
-
     // begin adding keys to the estimate, first by adding in keys specific to the unit of measurement that's being worked with
 
     // imperial calculalations
