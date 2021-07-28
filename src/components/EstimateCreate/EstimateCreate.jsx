@@ -19,9 +19,16 @@ export default function EstimateCreate() {
   const history = useHistory();
   const classes = useStyles();
   // ⬇ GET on page load:
-  // useEffect(() => {
-  //   dispatch({ type: 'FETCH_KIT_CATEGORIES' })
-  // }, []);
+  useEffect(() => {
+    // Liscensee/Company Name Call
+    dispatch({ type: 'FETCH_COMPANIES' }),
+    // State/Province Call
+    dispatch({ type: 'FETCH_STATE' }),
+    // Floor Type Call
+    dispatch({ type: 'FETCH_FLOOR_TYPES' }),
+    // Placement Type Call
+    dispatch({ type: 'FETCH_PLACEMENT_TYPES' })
+  }, []);
   //#endregion ⬆⬆ All state variables above. 
 
 
@@ -79,6 +86,7 @@ export default function EstimateCreate() {
             // label="Licensee / Company Name?"
             // defaultValue="Licensee / Company Name?"
             // value="Licensee / Company Name?"
+            // {}
             labelId="companyNameLabel"
             required
           /> <br />
