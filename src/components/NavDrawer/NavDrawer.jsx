@@ -146,7 +146,7 @@ export default function NavDrawer() {
             // If user is not logged in:
             <List className={classes.LexendTeraFont} style={{fontSize: '13px'}}>
 
-              <ListItem button onClick={() => history.push(`/home`)}>
+              <ListItem button onClick={() => history.push(`/create`)}>
                 <AddCircleOutlineOutlinedIcon /> &nbsp;
                 {/* <ListItemText primary={"Create New Estimate"} /> */}
                 <p>Create New Estimate</p>
