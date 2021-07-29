@@ -484,10 +484,6 @@ export default function EstimateCreate() {
 
       <br />
 
-      <Grid container
-        spacing={2}
-        justify="center"
-      >
         {/* Conditional rendering to show or hide tables based off submit button: */}
         {showTables ? (
           <>
@@ -503,7 +499,6 @@ export default function EstimateCreate() {
         ) : (<></>)}
         {/* End conditional rendering. */}
 
-      </Grid>
     </div >
   )
 }
