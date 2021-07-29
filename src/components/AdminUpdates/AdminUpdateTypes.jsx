@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 
 export default function AdminUpdateTypes() {
@@ -19,8 +21,10 @@ export default function AdminUpdateTypes() {
   const dispatch = useDispatch();
 
   //defining states for sending data to server
-  let [newFloorType, setNewFloorType] = useState();
-  let [newPlacementType, setNewPlacementType] = useState();
+  let [newFloorType, setNewFloorType] = useState('');
+  let [newPlacementType, setNewPlacementType] = useState('');
+  // establish open for snackbar notification
+  const [open, setOpen] = useState(false);
 
 
   //useSelector for array of floor types
@@ -48,12 +52,37 @@ export default function AdminUpdateTypes() {
   }
 
   const addFloorType = () => {
+    if (newFloorType == '') {
+      swal("Error", "You need to input new floor type", "error");
+    } else {
     dispatch({type: "ADD_FLOOR_TYPE", payload: {floor_type: newFloorType}})
+    swal("Success!", "New Floor Type Added", "success", {
+      button: "OK",
+    });
+    setOpen(true);
+    }
   }
 
   const addPlacementType = () => {
+    if (newPlacementType == '') {
+      swal("Error", "You need to input new placement type", "error");
+    } else {
     dispatch({type: "ADD_PLACEMENT_TYPE", payload: {placement_type: newPlacementType}})
+    swal("Success!", "New Placement Type Added", "success", {
+      button: "OK",
+    });
+    setOpen(true);
+    }
   }
+  //sets snack bar notification to closed after appearing
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
 
   useEffect(() => {
     // GET floor and placement types data on page load
@@ -92,6 +121,11 @@ export default function AdminUpdateTypes() {
         </div>
       {/* showing placement types */}
       <UpdatePlacementTypesGrid placementTypes={placementTypes}/>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          A placement or floor Type has been added!
+        </Alert>
+      </Snackbar>
 
 
 

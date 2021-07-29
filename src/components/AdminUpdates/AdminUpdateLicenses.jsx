@@ -1,6 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AdminUpdates from './AdminUpdates';
+
+//import sweet alert
+import swal from 'sweetalert';
 
 //material ui imports
 import TextField from '@material-ui/core/TextField';
@@ -8,6 +11,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { DataGrid } from '@material-ui/data-grid';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 export default function AdminUpdateLicenses() {
 
@@ -17,6 +22,8 @@ export default function AdminUpdateLicenses() {
   const companies = useSelector(store => store.companies);
   // establish add company input state with use state
   let [companyNameInput,setCompanyNameInput] = useState('');
+  // establish open for snackbar notification
+  const [open, setOpen] = useState(false);
 
      //styles for MUI
      const useStyles = makeStyles((theme) => ({
@@ -57,13 +64,23 @@ export default function AdminUpdateLicenses() {
   //handles add company button click that sends payload of company name input to saga for posting to database
   const handleAddCompany = (event) => {
     if(companyNameInput == '') {
-      alert('Fill out company name');
+      swal("Error", "You need to input the company name to add", "error");
     } else {
       dispatch({type: 'ADD_COMPANY', payload: companyNameInput});
       setCompanyNameInput('');
+      setOpen(true);
+      
     }
 
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
 
 return (
@@ -83,6 +100,11 @@ return (
         pageSize={10}
         onEditCellChangeCommitted={handleEditSubmit}
       />
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          A Licensee has been added!
+        </Alert>
+      </Snackbar>
     </div>
   </div>
 

@@ -68,17 +68,20 @@ export default function AdminUpdateMaterials() {
     setProductPriceInput(event.target.value)
   }
 
-  //handles add company button click that sends payload of company name input to saga for posting to database
-  const handleAddProduct = (event) => {
-    if (productInput == '' || productPriceInput == '') {
-      alert('Fill out product name and price');
-    } else {
-      dispatch({ type: 'ADD_PRODUCT', payload: productInfo });
-      setProductPriceInput('');
-      setProductInput('');
-    }
+  // //handles add company button click that sends payload of company name input to saga for posting to database
+  // const handleAddProduct = (event) => {
+  //   if(productInput == '' || productPriceInput == '') {
+  //     swal("Error", "You need to input the product name and product price to add", "error");
+  //   } else {
+  //     dispatch({type: 'ADD_PRODUCT', payload: productInfo});
+  //     setProductPriceInput('');
+  //     setProductInput('');
+  //     swal("Success!", "New Product Added", "success", {
+  //       button: "OK",
+  //     });
+  //   }
 
-  }
+  // }
 
   useEffect(() => {
     // GET products and prices
@@ -89,14 +92,12 @@ export default function AdminUpdateMaterials() {
     <div>
       <AdminUpdates />
       <h2>Update Material Costs and Inventory</h2>
-
       {/* Commenting out the add New Material and Price.  If future developers want this functionality, just comment this code back in.  We commented it out due to the math generator looking for specific values from our table, and adding new content could break that. */}
-      {/* <TextField id="outlined-basic" label="Add New Material" variant="outlined" value={productInput} onChange={handleProductInputChange} />
-      <TextField id="outlined-basic" label="Add New Price" variant="outlined" value={productPriceInput} onChange={handlePriceInputChange} />
+      {/* <TextField id="outlined-basic" label="Add New Material" variant="outlined" value={productInput} onChange={handleProductInputChange}/>
+      <TextField id="outlined-basic" label="Add New Price" variant="outlined" value={productPriceInput} onChange={handlePriceInputChange}/>
       <Fab className={classes.root} onClick={handleAddProduct} color="primary" aria-label="add">
-        <AddIcon />
-      </Fab> */}
-
+              <AddIcon />
+            </Fab> */}
       <div style={{ height: 350, width: '65%' }}
         className="AdminEstimatesGrid-wrapper">
         <DataGrid
