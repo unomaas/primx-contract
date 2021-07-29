@@ -5,6 +5,7 @@ const {
   rejectUnauthenticated,
 } = require('../modules/authentication-middleware');
 const format = require('pg-format');
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * GET route template
@@ -83,6 +84,9 @@ router.post('/', (req, res) => {
     primx_steel_fibers_dosage_kgs
   } = req.body
 
+  // create a unique UUID estimate number to use for the estimate being sent
+  estimate_number = uuidv4();
+  
   // set the destructured object values as the values to send with the POST request
   const values = [
     // starting values don't include metric or imperial specific units
@@ -112,7 +116,8 @@ router.post('/', (req, res) => {
     primx_steel_fibers_shipping_estimate,
     primx_ultracure_blankets_unit_price,
     primx_cpea_unit_price,
-    primx_cpea_shipping_estimate
+    primx_cpea_shipping_estimate,
+    estimate_number
   ]
 
   // start the query text with shared values
@@ -159,6 +164,9 @@ router.post('/', (req, res) => {
       )
     `
     // add the imperial values to values array
+    values.push(
+      square_feet, thickness_inches, thickened_edge_perimeter_lineal_feet, thickened_edge_construction_joint_lineal_feet, primx_steel_fibers_dosage_lbs
+    )
   
   }
   else if (req.body.measurement_units == 'metric') {
@@ -172,7 +180,9 @@ router.post('/', (req, res) => {
       )
     `
     // add the metric values to the values array
-    
+    values.push(
+      square_meters, thickness_millimeters, thickened_edge_perimeter_lineal_meters, thickened_edge_construction_joint_lineal_meters, primx_steel_fibers_dosage_kgs
+    )
   }
 
   // add the values clause to the SQL query 
@@ -181,26 +191,15 @@ router.post('/', (req, res) => {
       $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33
       );
   `
-
-
-  console.log('values:', values);
   
-
-  console.log('query Text', queryText);
-  res.sendStatus(200);
-
-  // ROUTE IS INCOMPLETE
-  // req.body NEEDS to be updated for all 32 values
-
-
-  // pool.query(queryText, [req.body])
-  //   .then(result => {
-  //     res.sendStatus(200);
-  //   })
-  //   .catch(error => {
-  //     console.log(`Error with /api/estimates/ POST:`, error)
-  //     res.sendStatus(500);
-  //   })
+  pool.query(queryText, values)
+    .then(result => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.log(`Error with /api/estimates/ POST:`, error)
+      res.sendStatus(500);
+    })
 
 });
 
