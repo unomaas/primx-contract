@@ -19,8 +19,8 @@ export default function AdminUpdateTypes() {
   const dispatch = useDispatch();
 
   //defining states for sending data to server
-  let [newFloorType, setNewFloorType] = useState();
-  let [newPlacementType, setNewPlacementType] = useState();
+  let [newFloorType, setNewFloorType] = useState('');
+  let [newPlacementType, setNewPlacementType] = useState('');
 
 
   //useSelector for array of floor types
@@ -48,12 +48,21 @@ export default function AdminUpdateTypes() {
   }
 
   const addFloorType = () => {
+    if (newFloorType == '') {
+      swal("Error", "You need to input new floor type", "error");
+    } else {
     dispatch({type: "ADD_FLOOR_TYPE", payload: {floor_type: newFloorType}})
+    }
   }
 
   const addPlacementType = () => {
+    if (newPlacementType == '') {
+      swal("Error", "You need to input new placement type", "error");
+    } else {
     dispatch({type: "ADD_PLACEMENT_TYPE", payload: {placement_type: newPlacementType}})
+    }
   }
+
 
   useEffect(() => {
     // GET floor and placement types data on page load
