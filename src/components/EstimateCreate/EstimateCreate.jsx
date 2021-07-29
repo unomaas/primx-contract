@@ -92,8 +92,6 @@ export default function EstimateCreate() {
   //#endregion ⬆⬆ Event handles above. 
 
 
-
-
   console.log('estimateData is currently:', estimateData);
   return (
     <div className="EstimateCreate-wrapper">

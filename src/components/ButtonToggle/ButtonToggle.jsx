@@ -30,7 +30,6 @@ export default function ButtonToggle() {
 
   return (
     <div className="">
-
       <ToggleButtonGroup
         exclusive
         onChange={handleButtonState}
@@ -50,8 +49,6 @@ export default function ButtonToggle() {
           Search For Estimate
         </ToggleButton>
       </ToggleButtonGroup>
-
-
     </div>
   );
 };
