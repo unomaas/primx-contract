@@ -33,7 +33,9 @@ export default function ImperialTable() {
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const productsReducer = useSelector(store => store.products);
+  const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
 
+  
   // ⬇ GET on page load:
   // useEffect(() => {
   //   // Product Call
@@ -83,15 +85,16 @@ export default function ImperialTable() {
     // // ⬇ Send the user back:
     // history.push('/dashboard');
   } // End handleSubmit
+
+  const handleCalculateCosts = () => {
+    console.log('In Imperial handleCalculateCosts');
+    const calculatedObject = calculateEstimate(estimateData)
+    setCalculatedDisplayObject(calculatedObject)
+    // console.log('***CALCULATED OBJECT****', calculatedObject);
+    // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
+  }
   //#endregion ⬆⬆ Event handles above. 
 
-  // look to see if the form is filled out enough to calculate values
-  if (estimateData.square_feet && estimateData.thickness_inches && estimateData.primx_flow_dosage_liters &&
-    estimateData.primx_steel_fibers_dosage_lbs && estimateData.primx_cpea_dosage_liters) {
-    // Before we call calculateEstimate, we need a total package to run:
-    const calculatedObject = calculateEstimate(estimateData)
-    console.log('new object', calculatedObject);
-  }
 
 
   return (
@@ -142,7 +145,9 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell><b>Cubic Yards:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.cubic_yards}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -396,12 +401,21 @@ export default function ImperialTable() {
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
+
                       <TableCell colspan={3} align="right">
                         <Button
                           type="submit"
+                          onClick={event => handleCalculateCosts(event)}
+                          variant="contained"
+                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          color="primary"
+                        >
+                          Calculate Costs
+                        </Button>
+                      </TableCell>
+                      <TableCell colspan={3} align="right">
+                        <Button
+                          // type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
                           // onClick={event => handleSave(event)}
                           variant="contained"

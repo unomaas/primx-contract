@@ -162,6 +162,9 @@ export default function EstimateCreate() {
     // // ⬇ Send the user back:
     // history.push('/dashboard');
   } // End handleSubmit
+
+
+
   //#endregion ⬆⬆ Event handles above. 
 
 
@@ -462,7 +465,7 @@ export default function EstimateCreate() {
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+                          onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
                           variant="contained"
                           style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                           color="primary"

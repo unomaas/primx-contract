@@ -4,6 +4,8 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import useEstimateCalculations from '../../hooks/useEstimateCalculations';
+
 import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -19,6 +21,8 @@ export default function MetricTable() {
   const history = useHistory();
   const classes = useStyles();
   const today = new Date().toISOString().substring(0, 10);
+  const calculateEstimate = useEstimateCalculations;
+
   // const [newEstimate, setNewEstimate] = useState({
   //   measurement_units: 'imperial',
   //   country: 'United States',
@@ -30,6 +34,7 @@ export default function MetricTable() {
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer);
+  const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
 
   //   // ⬇ GET on page load:
   //   useEffect(() => {
@@ -84,6 +89,15 @@ export default function MetricTable() {
     // // ⬇ Send the user back:
     // history.push('/dashboard');
   } // End handleSubmit
+
+  const handleCalculateCosts = () => {
+    console.log('In Metric handleCalculateCosts');
+    const calculatedObject = calculateEstimate(estimateData)
+    setCalculatedDisplayObject(calculatedObject)
+    console.log('***CALCULATED OBJECT****', calculatedObject);
+    console.log('DISPLAY OBJECT', calculatedDisplayObject);
+    // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
+  }
   //#endregion ⬆⬆ Event handles above. 
 
 
@@ -135,7 +149,9 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Cubic Meters:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.cubic_meters}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -301,7 +317,7 @@ export default function MetricTable() {
                       <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
                       <TableCell style={{ width: '1em' }}>
                         <TextField
-                          onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
+                          onChange={event => handleChange('primx_steel_fibers_dosage_kgs', event.target.value)}
                           required
                           type="number"
                           size="small"
@@ -389,9 +405,18 @@ export default function MetricTable() {
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
+
+                      <TableCell colspan={3} align="right">
+                        <Button
+                          type="submit"
+                          onClick={event => handleCalculateCosts(event)}
+                          variant="contained"
+                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          color="primary"
+                        >
+                          Calculate Costs
+                        </Button>
+                      </TableCell>
                       <TableCell colspan={3} align="right">
                         <Button
                           type="submit"
