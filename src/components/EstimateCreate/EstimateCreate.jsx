@@ -32,7 +32,6 @@ export default function EstimateCreate() {
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const productsReducer = useSelector(store => store.products);
   const showTables = useSelector(store => store.estimatesReducer.tableState);
-
   // ⬇ GET on page load:
   useEffect(() => {
     // Licensee/Company Name Call
@@ -55,40 +54,76 @@ export default function EstimateCreate() {
    */
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
-    // setNewEstimate({ ...newEstimate, [key]: value });
-
+    // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
       type: 'SET_ESTIMATE',
       payload: { key: key, value: value }
     });
   } // End handleChange
 
-  // change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
+  // ⬇ Change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
   const handleShipping = (id) => {
-
-    // Adding in the state id:
+    // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
       type: 'SET_ESTIMATE',
       payload: { key: 'shipping_costs_id', value: id }
     });
-    
-    // Add in state shipping costs based off of state id in object:
+
+    // ⬇ Add in state shipping costs based off of state id in object:
     shippingCosts.forEach(shippingState => {
       if (shippingState.id == id) {
         console.log('Shipping Data:', shippingState);
-        // loop over shippingState object and add all values to the estimate object in the estimateReducer
+        // ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
         for (let keyName in shippingState) {
           dispatch({
             type: 'SET_ESTIMATE',
             payload: {
               key: keyName,
               value: shippingState[keyName]
-            }
-          })
-        };
-      }
+            } // End payload.
+          }) // End dispatch.
+        }; // End for loop.
+      } // End if statement
     }) // end shippingCosts forEach
-  }
+  } // End handleShipping
+
+  const handleMeasurementUnits = (units) => {
+    console.log('In handleChange, units:', units);
+    // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
+    const pricingArray = [
+      { key: 'primx_flow_unit_price', value: productsReducer[2].product_price },
+      { key: 'primx_cpea_unit_price', value: productsReducer[7].product_price },
+    ]
+    if (units == 'imperial') {
+      pricingArray.push(
+        { key: 'primx_dc_unit_price', value: productsReducer[0].product_price },
+        { key: 'primx_steel_fibers_unit_price', value: productsReducer[3].product_price },
+        { key: 'primx_ultracure_blankets_unit_price', value: productsReducer[5].product_price }
+      )
+    } else if (units == 'metric') {
+      pricingArray.push(
+        { key: 'primx_dc_unit_price', value: productsReducer[1].product_price },
+        { key: 'primx_steel_fibers_unit_price', value: productsReducer[4].product_price },
+        { key: 'primx_ultracure_blankets_unit_price', value: productsReducer[6].product_price }
+      )
+    } // End if/else statement. 
+
+    // ⬇ :oop through pricingArray to dispatch values to be stored in the estimates reducer:
+    pricingArray.forEach(product => {
+      dispatch({
+        type: 'SET_ESTIMATE',
+        payload: { key: product.key, value: product.value }
+      });
+    })
+
+    // set units in the estimate reducer
+    dispatch({
+      type: 'SET_ESTIMATE',
+      payload: { key: 'measurement_units', value: units }
+    });
+
+  } // End handleMeasurementUnits
+
   /** ⬇ handleSubmit:
     * When clicked, this will post the object to the DB and send the user back to the dashboard. 
     */
@@ -267,14 +302,14 @@ export default function EstimateCreate() {
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  {/* <TableRow>
                     <TableCell><b>Unit of Measurement:</b></TableCell>
                     <TableCell>
                       <FormControl required>
                         <RadioGroup
-                          defaultValue="imperial"
+                          // defaultValue="imperial"
                           style={{ display: 'inline' }}
-                          onChange={event => handleChange('measurement_units', event.target.value)}
+                          onChange={event => handleMeasurementUnits(event.target.value)}
                         >
                           <FormControlLabel
                             label="Imperial"
@@ -289,7 +324,7 @@ export default function EstimateCreate() {
                         </RadioGroup>
                       </FormControl>
                     </TableCell>
-                  </TableRow>
+                  </TableRow> */}
 
                 </TableBody>
               </Table>
@@ -421,10 +456,34 @@ export default function EstimateCreate() {
                   </TableRow>
 
                   <TableRow>
+                    <TableCell><b>Unit of Measurement:</b></TableCell>
+                    <TableCell>
+                      <FormControl required>
+                        <RadioGroup
+                          // defaultValue="imperial"
+                          style={{ display: 'inline' }}
+                          onChange={event => handleMeasurementUnits(event.target.value)}
+                        >
+                          <FormControlLabel
+                            label="Imperial"
+                            value="imperial"
+                            control={<Radio />}
+                          />
+                          <FormControlLabel
+                            label="Metric"
+                            value="metric"
+                            control={<Radio />}
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
                     <TableCell colspan={2} align="right">
                       <Button
                         type="submit"
-                        onClick={event => handleSubmit(event)}
+                        // onClick={event => handleSubmit(event)}
                         variant="contained"
                         style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                         color="primary"
@@ -433,6 +492,7 @@ export default function EstimateCreate() {
                       </Button>
                     </TableCell>
                   </TableRow>
+
 
                 </TableBody>
               </Table>

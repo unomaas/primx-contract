@@ -91,12 +91,34 @@ export default function ImperialTable() {
 
 
 
+    // dispatch({
+    //   type: 'SET_ESTIMATE',
+    //   payload: { key: 'primx_dc_unit_price', value: productsReducer[0].product_price}
+    // });
+    
+
+    // console.log('In estimate data if for pricing:', pricingArray)
     // Add in product costs:
 
     // Before we call calculateEstimate, we need a total package to run:
     const calculatedObject = calculateEstimate(estimateData)
     console.log('new object', calculatedObject);
   }
+
+  // imperial:
+  // ID 1: PrimX DC Lbs
+  // ID 3: PrimX flow Liters
+  // ID 4: PrimX steel fibers Lbs
+  // ID 6: PrimX UltraCure Blankets Sq/Ft
+  // ID 8: PrimX CPEA Liters
+
+  // metric: 
+  // ID 2: PrimX DC Kgs
+  // ID 3: PrimX flow Liters
+  // ID 5: PrimX steel fibers Kgs
+  // ID 7: PrimX UltraCure Blankets Sq/M
+  // ID 8: PrimX CPEA Liters
+
 
 
   return (
