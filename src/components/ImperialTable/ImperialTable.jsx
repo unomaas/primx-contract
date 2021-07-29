@@ -4,6 +4,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -19,6 +20,7 @@ export default function ImperialTable() {
   const history = useHistory();
   const classes = useStyles();
   const today = new Date().toISOString().substring(0, 10);
+  const calculateEstimate = useEstimateCalculations;
   // const [newEstimate, setNewEstimate] = useState({
   //   measurement_units: 'imperial',
   //   country: 'United States',
@@ -29,7 +31,7 @@ export default function ImperialTable() {
   const shippingCosts = useSelector(store => store.shippingCosts);
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
-  const estimateData = useSelector(store => store.estimatesReducer);
+  const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
 
   //   // ⬇ GET on page load:
   //   useEffect(() => {
@@ -86,7 +88,12 @@ export default function ImperialTable() {
     } // End handleSubmit
     //#endregion ⬆⬆ Event handles above. 
 
-
+    // look to see if the form is filled out enough to calculate values
+    if (estimateData.square_feet && estimateData.thickness_inches && estimateData.primx_flow_dosage_liters && 
+      estimateData.primx_steel_fibers_dosage_lbs && estimateData.primx_cpea_dosage_liters) {
+      const calculatedObject = calculateEstimate(estimateData)
+      console.log('new object', calculatedObject);
+    }
 
 
   return (

@@ -1,5 +1,11 @@
 // custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays
 export default function useEstimateCalculations(estimate) {
+    console.log('estimate:', estimate);
+    // set a default value for waste factor percentage if one wasn't entered
+    if (!estimate.waste_factor_percentage) {
+        estimate.waste_factor_percentage = 5;
+    }
+    
     // start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database
     for (let property in estimate) {
         // save the value of property being looped over
@@ -169,6 +175,9 @@ export default function useEstimateCalculations(estimate) {
             estimate[property] = Number(value).toFixed(2);
         }
     }
+
+    console.log('After math estimate:', estimate);
+    
 
     return estimate;
 }
