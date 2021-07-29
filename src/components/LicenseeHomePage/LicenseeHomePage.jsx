@@ -31,7 +31,7 @@ function LicenseeHomePage() {
   return (
     <div className="container">
       <div>
-        <ButtonGroup color="primary" aria-label="outlined primary button group">
+        {/* <ButtonGroup color="primary" aria-label="outlined primary button group">
 
           <ToggleButton
             value="check"
@@ -64,7 +64,7 @@ function LicenseeHomePage() {
             // }}
           > Look-Up Existing Estimate
           </ToggleButton>
-        </ButtonGroup>
+        </ButtonGroup> */}
       </div>
 
       <br/>
