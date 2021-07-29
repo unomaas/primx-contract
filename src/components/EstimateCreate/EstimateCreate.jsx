@@ -387,7 +387,6 @@ export default function EstimateCreate() {
                   </TableRow>
 
                   <TableRow>
-                    {/* <TableCell></TableCell> */}
                     <TableCell colspan={2} align="right">
                       <Button
                         type="submit"
