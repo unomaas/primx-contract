@@ -9,10 +9,15 @@ import { DataGrid } from '@material-ui/data-grid';
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function SystemAdminUpdateUserGrid() {
 
+    useEffect(() => {
+        // GET all user data on page load
+        dispatch({type: 'FETCH_USERINFO'});
+      }, [])
+
     const dispatch = useDispatch();
 
  
-    const userInfo = useSelector(store => store.userInfo);
+    const userInfo = useSelector(store => store.userInfoReducer);
 
     // columns for Data Grid
     const columns = [
@@ -26,10 +31,9 @@ export default function SystemAdminUpdateUserGrid() {
 
     console.log('user info in grid component -->', userInfo);
 
-    useEffect(() => {
-        // GET all user data on page load
-        dispatch({type: 'FETCH_USERINFO'});
-      }, [])
+    
+
+      console.log('user info in grid component -->', userInfo);
 
     return (
         <div

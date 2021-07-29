@@ -11,7 +11,13 @@ export default function SystemAdmin() {
   return (
     <div>
 
-      <AdminUpdates />
+      <div>
+        <AdminUpdates />
+      </div>
+      
+      <br></br>
+      <br></br>
+
 
       <div>
         <SystemAdminUpdateUsersGrid />
