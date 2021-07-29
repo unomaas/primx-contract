@@ -71,7 +71,7 @@ export default function AdminUpdateMaterials() {
   //handles add company button click that sends payload of company name input to saga for posting to database
   const handleAddProduct = (event) => {
     if(productInput == '' || productPriceInput == '') {
-      alert('Fill out product name and price');
+      swal("Error", "You need to input the product name and product price to add", "error");
     } else {
       dispatch({type: 'ADD_PRODUCT', payload: productInfo});
       setProductPriceInput('');
