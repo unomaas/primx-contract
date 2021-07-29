@@ -1,7 +1,8 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const {rejectUnauthenticated} = require('../modules/authentication-middleware')
+const {rejectUnauthenticated} = require('../modules/authentication-middleware');
+const { useRadioGroup } = require('@material-ui/core');
 
 //Get Route
 router.get('/', rejectUnauthenticated, (req, res) => {
@@ -17,7 +18,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   //Delete Route - Delete an admin user
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
   console.log('in userInfo.router req.params.id -->', req.params.id);
-  
+  if (req.user.id == '1') {
   const queryText = `DELETE FROM "user" WHERE "id" = $1;`;
   pool.query(queryText, [req.params.id])
   .then(result => {
@@ -26,6 +27,10 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
   .catch((error) => {
     console.log('error in admin DELETE in server', error);
   });
+} else {
+  console.log('unable to delete unless you are superuser');
+  res.sendStatus(500);
+}
 });
 
   module.exports = router;

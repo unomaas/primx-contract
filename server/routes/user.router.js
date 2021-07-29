@@ -18,6 +18,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
 router.post('/register', (req, res, next) => {
+  if (req.user.id == '1') {
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
 
@@ -30,6 +31,10 @@ router.post('/register', (req, res, next) => {
       console.log('User registration failed: ', err);
       res.sendStatus(500);
     });
+  } else {
+    console.log('unable to register unless you are superuser');
+  res.sendStatus(500);
+  }
 });
 
 // Handles login form authenticate/login POST

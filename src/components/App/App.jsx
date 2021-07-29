@@ -23,7 +23,7 @@ import SystemAdmin from '../AdminUpdates/SystemAdmin';
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import { useDispatch } from 'react-redux';
+import {useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
 
@@ -32,6 +32,9 @@ import { theme } from '../MuiStyling/MuiStyling';
 
 function App() {
   //#region ⬇⬇ All state variables below:
+  
+  const user = useSelector((store) => store.user);
+
   const dispatch = useDispatch();
   // ⬇ Runs on page load:
   useEffect(() => {
@@ -108,11 +111,11 @@ function App() {
             <ProtectedRoute exact path="/AdminUpdateShipping" >
               <AdminUpdateShipping/>
             </ProtectedRoute>
-
+            {user.id == '1' ? 
             <ProtectedRoute exact path="/SystemAdmin" >
               <SystemAdmin/>
             </ProtectedRoute>
-
+            : <> </> }
 
             {/* // logged in shows InfoPage else shows LoginPage */}
             <ProtectedRoute exact path="/info">
@@ -132,9 +135,11 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows RegisterPage at "/registration" */}
+            {user.id == '1' ? 
             <Route exact path="/registration" >
               <AdminRegisterPage />
             </Route>
+            : <> </> }
 
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
