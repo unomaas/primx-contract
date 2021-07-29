@@ -26,4 +26,28 @@ export const estimatesReducer = (state = {
   } // End switch
 }; // End estimatesReducer
 
-export default estimatesReducer;
+export const buttonState = (state = `create`, action) => {
+  switch (action.type) {
+    case 'SET_BUTTON_STATE':
+      return action.payload;
+    default:
+      return state;
+  } // End switch
+}; // End kitsReducer
+
+export const tableState = (state = false, action) => {
+  switch (action.type) {
+    case 'SET_TABLE_STATE':
+      return action.payload;
+    default:
+      return state;
+  } // End switch
+}; // End kitsReducer
+
+export default combineReducers({
+  estimatesReducer,
+  buttonState,
+  tableState
+});
+
+// export default estimatesReducer;
