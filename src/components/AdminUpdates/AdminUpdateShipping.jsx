@@ -12,6 +12,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import { Block } from '@material-ui/icons';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 export default function AdminUpdateShipping() {
 
@@ -105,6 +107,11 @@ export default function AdminUpdateShipping() {
         </form>
       </div>
       <UpdateShippingCostsGrid />
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          A Licensee has been added!
+        </Alert>
+      </Snackbar>
     </div>
   )
 }
