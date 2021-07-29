@@ -52,12 +52,18 @@ export default function AdminUpdateShipping() {
   const handleSubmit = () => {
 
     console.log('in handleSubmit, adding newShippingCost -->', newShippingCost);
+    if (newShippingCost.dc_price == '' || newShippingCost.ship_to_state_province == '' || newShippingCost.flow_cpea_price == '' ||
+    newShippingCost.fibers_price == '') {
+      swal("Error", "You need to input all shipping fields", "error");
 
+    } else {
     // dispatch sent to shippingCost saga, payload as below
     dispatch({ type: 'ADD_SHIPPING_COSTS', payload: newShippingCost });
-    swal("Success!", "New Admin Created", "success", {
+    swal("Success!", "New Shipping Cost Added", "success", {
       button: "OK",
     });
+  
+    }
   }
 
   // useEffect(() => {
