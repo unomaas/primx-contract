@@ -33,7 +33,7 @@ export default function MetricTable() {
   const shippingCosts = useSelector(store => store.shippingCosts);
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
-  const estimateData = useSelector(store => store.estimatesReducer);
+  const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
 
   //   // ⬇ GET on page load:
@@ -91,11 +91,11 @@ export default function MetricTable() {
   } // End handleSubmit
 
   const handleCalculateCosts = () => {
-    console.log('In Metric handleCalculateCosts');
+    console.log('In Metric handleCalculateCosts, estimateData:', estimateData);
     const calculatedObject = calculateEstimate(estimateData)
     setCalculatedDisplayObject(calculatedObject)
     console.log('***CALCULATED OBJECT****', calculatedObject);
-    console.log('DISPLAY OBJECT', calculatedDisplayObject);
+    // console.log('DISPLAY OBJECT', calculatedDisplayObject);
     // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
   }
   //#endregion ⬆⬆ Event handles above. 
@@ -103,7 +103,7 @@ export default function MetricTable() {
 
   return (
     <>
-      <form onSubmit={handleSave}>
+      <form>
         <Grid container
           spacing={2}
           justify="center"
@@ -421,7 +421,7 @@ export default function MetricTable() {
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => handleSave(event)}
+                          onClick={event => handleSave(event)}
                           variant="contained"
                           style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                           color="secondary"

@@ -35,7 +35,7 @@ export default function ImperialTable() {
   const productsReducer = useSelector(store => store.products);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
 
-  
+
   // ⬇ GET on page load:
   // useEffect(() => {
   //   // Product Call
@@ -100,6 +100,7 @@ export default function ImperialTable() {
   return (
     <>
       <form onSubmit={handleSave}>
+        
         <Grid container
           spacing={2}
           justify="center"
