@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 
 export default function AdminUpdateTypes() {
@@ -21,6 +23,8 @@ export default function AdminUpdateTypes() {
   //defining states for sending data to server
   let [newFloorType, setNewFloorType] = useState('');
   let [newPlacementType, setNewPlacementType] = useState('');
+  // establish open for snackbar notification
+  const [open, setOpen] = useState(false);
 
 
   //useSelector for array of floor types
@@ -55,6 +59,7 @@ export default function AdminUpdateTypes() {
     swal("Success!", "New Floor Type Added", "success", {
       button: "OK",
     });
+    setOpen(true);
     }
   }
 
@@ -66,8 +71,17 @@ export default function AdminUpdateTypes() {
     swal("Success!", "New Placement Type Added", "success", {
       button: "OK",
     });
+    setOpen(true);
     }
   }
+  //sets snack bar notification to closed after appearing
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
 
   useEffect(() => {
@@ -107,6 +121,11 @@ export default function AdminUpdateTypes() {
         </div>
       {/* showing placement types */}
       <UpdatePlacementTypesGrid placementTypes={placementTypes}/>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          A placement or floor Type has been added!
+        </Alert>
+      </Snackbar>
 
 
 

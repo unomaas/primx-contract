@@ -45,366 +45,374 @@ export default function MetricTable() {
   //   //#endregion ⬆⬆ All state variables above. 
 
 
-    //#region ⬇⬇ Event handlers below:
-    /** ⬇ handleChange:
-     * When the user types, this will set their input to the kit object with keys for each field. 
-     */
-    const handleChange = (key, value) => {
-      console.log('In handleChange, key/value:', key, '/', value);
-      // setNewEstimate({ ...newEstimate, [key]: value });
+  //#region ⬇⬇ Event handlers below:
+  /** ⬇ handleChange:
+   * When the user types, this will set their input to the kit object with keys for each field. 
+   */
+  const handleChange = (key, value) => {
+    console.log('In handleChange, key/value:', key, '/', value);
+    // setNewEstimate({ ...newEstimate, [key]: value });
 
-      dispatch({
-        type: 'SET_ESTIMATE',
-        payload: { key: key, value: value }
-      });
-    } // End handleChange
+    dispatch({
+      type: 'SET_ESTIMATE',
+      payload: { key: key, value: value }
+    });
+  } // End handleChange
 
-    /** ⬇ handleSubmit:
-     * When clicked, this will post the object to the DB and send the user back to the dashboard. 
-     */
-    const handleSubmit = event => {
-      console.log('In handleSubmit');
-      // ⬇ Don't refresh until submit:
-      event.preventDefault();
-      // // ⬇ Sending newPlant to our reducer: 
-      // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-      // // ⬇ Send the user back:
-      // history.push('/dashboard');
-    } // End handleSubmit
-
-    /** ⬇ handleSubmit:
+  /** ⬇ handleSubmit:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
-    const handleSave = event => {
-      console.log('In handleSave');
-      // ⬇ Don't refresh until submit:
-      event.preventDefault();
-      // // ⬇ Sending newPlant to our reducer: 
-      // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-      // // ⬇ Send the user back:
-      // history.push('/dashboard');
-    } // End handleSubmit
-    //#endregion ⬆⬆ Event handles above. 
+  const handleSubmit = event => {
+    console.log('In handleSubmit');
+    // ⬇ Don't refresh until submit:
+    event.preventDefault();
+    // // ⬇ Sending newPlant to our reducer: 
+    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
+    // // ⬇ Send the user back:
+    // history.push('/dashboard');
+  } // End handleSubmit
 
-
+  /** ⬇ handleSubmit:
+ * When clicked, this will post the object to the DB and send the user back to the dashboard. 
+ */
+  const handleSave = event => {
+    console.log('In Metric handleSave');
+    // ⬇ Don't refresh until submit:
+    event.preventDefault();
+    // // ⬇ Sending newPlant to our reducer: 
+    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
+    // // ⬇ Send the user back:
+    // history.push('/dashboard');
+  } // End handleSubmit
+  //#endregion ⬆⬆ Event handles above. 
 
 
   return (
     <>
-      <Grid item xs={6}>
-        <Paper elevation={3}>
-          <TableContainer>
-            <h3 className="lexendFont">Project Quantity Calculations</h3>
-            <Table size="small">
-              <TableBody>
+      <form onSubmit={handleSave}>
+        <Grid container
+          spacing={2}
+          justify="center"
+        >
+          <Grid item xs={6}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <h3 className="lexendFont">Project Quantity Calculations</h3>
+                <Table size="small">
+                  <TableBody>
 
-                <TableRow>
-                  <TableCell><b>Square Meters</b></TableCell>
-                  <TableCell>
-                    <TextField
-                      onChange={event => handleChange('square_meters', event.target.value)}
-                      required
-                      type="number"
-                      size="small"
-                      fullWidth
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">m²</InputAdornment>,
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Square Meters</b></TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('square_meters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            startAdornment: <InputAdornment position="start">m²</InputAdornment>,
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Thickness (mm)</b></TableCell>
-                  <TableCell>
-                    <TextField
-                      onChange={event => handleChange('thickness_millimeters', event.target.value)}
-                      required
-                      type="number"
-                      size="small"
-                      fullWidth
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">mm</InputAdornment>,
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Thickness (mm)</b></TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickness_millimeters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            startAdornment: <InputAdornment position="start">mm</InputAdornment>,
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Cubic Meters:</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Cubic Meters:</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Subtotal:</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Subtotal:</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Waste Factor @ 5%:</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Total Cubic Meters:</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Total Cubic Meters:</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Grid>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
 
-      <Grid item xs={6}>
-        <Paper elevation={3}>
-          <TableContainer>
-            <h3 className="lexendFont">Thickened Edge Calculator</h3>
-            <p>If applicable, for slabs under 150mm.<br/>Note: For 'Slab on Insulation', enter "0" for both.</p>
-            <Table size="small">
+          <Grid item xs={6}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <h3 className="lexendFont">Thickened Edge Calculator</h3>
+                <p>If applicable, for slabs under 150mm.<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
+                <Table size="small">
 
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell><b>Perimeter</b></TableCell>
-                  <TableCell><b>Construction Joint</b></TableCell>
-                </TableRow>
-              </TableHead>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell><b>Perimeter</b></TableCell>
+                      <TableCell><b>Construction Joint</b></TableCell>
+                    </TableRow>
+                  </TableHead>
 
-              <TableBody className="testTable">
-                <TableRow>
-                  <TableCell><b>Lineal Meters:</b></TableCell>
-                  <TableCell>
-                    <TextField
-                      onChange={event => handleChange('thickened_edge_perimeter_lineal_meters', event.target.value)}
-                      required
-                      type="number"
-                      size="small"
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">m</InputAdornment>,
-                      }}
-                      fullWidth
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      onChange={event => handleChange('thickened_edge_construction_joint_lineal_meters', event.target.value)}
-                      required
-                      type="number"
-                      size="small"
-                      fullWidth
-                      InputProps={{
-                        startAdornment: <InputAdornment position="start">m</InputAdornment>,
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell><b>Lineal Meters:</b></TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickened_edge_perimeter_lineal_meters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            startAdornment: <InputAdornment position="start">m</InputAdornment>,
+                          }}
+                          fullWidth
+                        // defaultValue="0"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickened_edge_construction_joint_lineal_meters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            startAdornment: <InputAdornment position="start">m</InputAdornment>,
+                          }}
+                        // defaultValue="0"
+                        />
+                      </TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Width (m³):</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Width (m³):</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Additional Thickness (mm):</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Additional Thickness (mm):</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>Cubic Meters:</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>Cubic Meters:</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Grid>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
 
-      <Grid item xs={12}>
-        <Paper elevation={3}>
-          <TableContainer>
-            <h3 className="lexendFont">Materials Table</h3>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell><b>Dosage<br />Rate<br />(m³)</b></TableCell>
-                  <TableCell><b>Total<br />Amount</b></TableCell>
-                  <TableCell><b>Packaging<br />Capacity</b></TableCell>
-                  <TableCell><b>Packages<br />Needed</b></TableCell>
-                  <TableCell><b>Total<br />Order<br />Quantity</b></TableCell>
-                  <TableCell><b>Materials<br />Price</b></TableCell>
-                  <TableCell><b>Total<br />Materials<br />Price</b></TableCell>
-                  <TableCell><b>Containers</b></TableCell>
-                  <TableCell><b>Shipping<br />Estimate</b></TableCell>
-                  <TableCell><b>Total<br />Cost</b></TableCell>
-                </TableRow>
-              </TableHead>
+          <Grid item xs={12}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <h3 className="lexendFont">Materials Table</h3>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell><b>Dosage<br />Rate<br />(m³)</b></TableCell>
+                      <TableCell><b>Total<br />Amount</b></TableCell>
+                      <TableCell><b>Packaging<br />Capacity</b></TableCell>
+                      <TableCell><b>Packages<br />Needed</b></TableCell>
+                      <TableCell><b>Total<br />Order<br />Quantity</b></TableCell>
+                      <TableCell><b>Materials<br />Price</b></TableCell>
+                      <TableCell><b>Total<br />Materials<br />Price</b></TableCell>
+                      <TableCell><b>Containers</b></TableCell>
+                      <TableCell><b>Shipping<br />Estimate</b></TableCell>
+                      <TableCell><b>Total<br />Cost</b></TableCell>
+                    </TableRow>
+                  </TableHead>
 
-              <TableBody>
-                <TableRow>
-                  <TableCell><b>PrīmX DC (kgs)</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell><b>PrīmX DC (kgs)</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
-                  <TableCell style={{ width: '1em' }}>
-                    <TextField
-                      onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
-                      required
-                      type="number"
-                      size="small"
-                      fullWidth
-                    />
-                  </TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
+                      <TableCell style={{ width: '1em' }}>
+                        <TextField
+                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                        />
+                      </TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
-                  <TableCell style={{ width: '1em' }}>
-                    <TextField
-                      onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
-                      required
-                      type="number"
-                      size="small"
-                      fullWidth
-                    />
-                  </TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
+                      <TableCell style={{ width: '1em' }}>
+                        <TextField
+                          onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                        />
+                      </TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
-                  <TableCell style={{ width: '1em' }}>
-                    <TextField
-                      onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
-                      required
-                      type="number"
-                      size="small"
-                      fullWidth
-                    />
-                  </TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                  <TableCell>CALC#</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
+                      <TableCell style={{ width: '1em' }}>
+                        <TextField
+                          onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                        />
+                      </TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC#</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell><b>TOTALS:</b></TableCell>
-                  <TableCell>CALC</TableCell>
-                  <TableCell>CALC</TableCell>
-                  <TableCell>CALC</TableCell>
-                  <TableCell>CALC</TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell><b>TOTALS:</b></TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                    </TableRow>
 
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell colspan={3} align="right">
-                    <Button
-                      type="submit"
-                      onClick={event => handleSave(event)}
-                      variant="contained"
-                      style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-                      color="secondary"
-                    >
-                      Save Estimate
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell colspan={3} align="right">
+                        <Button
+                          type="submit"
+                          // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+                          // onClick={event => handleSave(event)}
+                          variant="contained"
+                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          color="secondary"
+                        >
+                          Save Estimate
+                        </Button>
+                      </TableCell>
+                    </TableRow>
 
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Grid>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+        </Grid>
+      </form>
     </>
   )
 }
