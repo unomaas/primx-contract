@@ -12,17 +12,21 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
 import { Block } from '@material-ui/icons';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 export default function AdminUpdateShipping() {
-
+  // grab shipping costs value via store reducer
   const shippingCosts = useSelector(store => store.shippingCosts);
-
+  // establish dispatch for calls to reducers and sagas
   const dispatch = useDispatch();
 
 
-
+  // establish shipping cost prices for specific states locally
   let [newShippingCost, setNewShippingCost] = useState({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
 
+  // establish open for snackbar notification
+  const [open, setOpen] = useState(false);
 
   //styles for MUI
   const useStyles = makeStyles((theme) => ({
@@ -59,12 +63,18 @@ export default function AdminUpdateShipping() {
     } else {
     // dispatch sent to shippingCost saga, payload as below
     dispatch({ type: 'ADD_SHIPPING_COSTS', payload: newShippingCost });
-    swal("Success!", "New Shipping Cost Added", "success", {
-      button: "OK",
-    });
+    setOpen(true);
   
     }
   }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   // useEffect(() => {
   //   // GET shipping cost data on page load
@@ -105,6 +115,11 @@ export default function AdminUpdateShipping() {
         </form>
       </div>
       <UpdateShippingCostsGrid />
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+        New Shipping Cost Added!
+        </Alert>
+      </Snackbar>
     </div>
   )
 }
