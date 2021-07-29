@@ -204,6 +204,7 @@ export default function ImperialTable() {
                         startAdornment: <InputAdornment position="start">ft</InputAdornment>,
                       }}
                       fullWidth
+                      defaultValue="0"
                     />
                   </TableCell>
                   <TableCell>
@@ -216,6 +217,7 @@ export default function ImperialTable() {
                       InputProps={{
                         startAdornment: <InputAdornment position="start">ft</InputAdornment>,
                       }}
+                      defaultValue="0"
                     />
                   </TableCell>
                 </TableRow>

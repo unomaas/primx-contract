@@ -69,12 +69,14 @@ export default function EstimateCreate() {
     // Adding in the state id:
     dispatch({
       type: 'SET_ESTIMATE',
-      payload: { key: 'shipping_costs_id' , value: id }
+      payload: { key: 'shipping_costs_id', value: id }
     });
+    
     // Add in state shipping costs based off of state id in object:
     shippingCosts.forEach(shippingState => {
       if (shippingState.id == id) {
         console.log('Shipping Data:', shippingState);
+        // loop over shippingState object and add all values to the estimate object in the estimateReducer
         for (let keyName in shippingState) {
           dispatch({
             type: 'SET_ESTIMATE',
@@ -85,12 +87,11 @@ export default function EstimateCreate() {
           })
         };
       }
-    })
+    }) // end shippingCosts forEach
   }
-
   /** ⬇ handleSubmit:
-   * When clicked, this will post the object to the DB and send the user back to the dashboard. 
-   */
+    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
+    */
   const handleSubmit = event => {
     console.log('In handleSubmit');
     // ⬇ Don't refresh until submit:
@@ -124,6 +125,8 @@ export default function EstimateCreate() {
 
 
   console.log('estimateData is currently:', estimateData);
+  console.log('productsReducer is currently:', productsReducer);
+
   return (
     <div className="EstimateCreate-wrapper">
 

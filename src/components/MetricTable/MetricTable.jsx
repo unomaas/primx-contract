@@ -45,46 +45,46 @@ export default function MetricTable() {
   //   //#endregion ⬆⬆ All state variables above. 
 
 
-    //#region ⬇⬇ Event handlers below:
-    /** ⬇ handleChange:
-     * When the user types, this will set their input to the kit object with keys for each field. 
-     */
-    const handleChange = (key, value) => {
-      console.log('In handleChange, key/value:', key, '/', value);
-      // setNewEstimate({ ...newEstimate, [key]: value });
+  //#region ⬇⬇ Event handlers below:
+  /** ⬇ handleChange:
+   * When the user types, this will set their input to the kit object with keys for each field. 
+   */
+  const handleChange = (key, value) => {
+    console.log('In handleChange, key/value:', key, '/', value);
+    // setNewEstimate({ ...newEstimate, [key]: value });
 
-      dispatch({
-        type: 'SET_ESTIMATE',
-        payload: { key: key, value: value }
-      });
-    } // End handleChange
+    dispatch({
+      type: 'SET_ESTIMATE',
+      payload: { key: key, value: value }
+    });
+  } // End handleChange
 
-    /** ⬇ handleSubmit:
-     * When clicked, this will post the object to the DB and send the user back to the dashboard. 
-     */
-    const handleSubmit = event => {
-      console.log('In handleSubmit');
-      // ⬇ Don't refresh until submit:
-      event.preventDefault();
-      // // ⬇ Sending newPlant to our reducer: 
-      // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-      // // ⬇ Send the user back:
-      // history.push('/dashboard');
-    } // End handleSubmit
-
-    /** ⬇ handleSubmit:
+  /** ⬇ handleSubmit:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
-    const handleSave = event => {
-      console.log('In handleSave');
-      // ⬇ Don't refresh until submit:
-      event.preventDefault();
-      // // ⬇ Sending newPlant to our reducer: 
-      // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-      // // ⬇ Send the user back:
-      // history.push('/dashboard');
-    } // End handleSubmit
-    //#endregion ⬆⬆ Event handles above. 
+  const handleSubmit = event => {
+    console.log('In handleSubmit');
+    // ⬇ Don't refresh until submit:
+    event.preventDefault();
+    // // ⬇ Sending newPlant to our reducer: 
+    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
+    // // ⬇ Send the user back:
+    // history.push('/dashboard');
+  } // End handleSubmit
+
+  /** ⬇ handleSubmit:
+ * When clicked, this will post the object to the DB and send the user back to the dashboard. 
+ */
+  const handleSave = event => {
+    console.log('In handleSave');
+    // ⬇ Don't refresh until submit:
+    event.preventDefault();
+    // // ⬇ Sending newPlant to our reducer: 
+    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
+    // // ⬇ Send the user back:
+    // history.push('/dashboard');
+  } // End handleSubmit
+  //#endregion ⬆⬆ Event handles above. 
 
 
 
@@ -170,7 +170,7 @@ export default function MetricTable() {
         <Paper elevation={3}>
           <TableContainer>
             <h3 className="lexendFont">Thickened Edge Calculator</h3>
-            <p>If applicable, for slabs under 150mm.<br/>Note: For 'Slab on Insulation', enter "0" for both.</p>
+            <p>If applicable, for slabs under 150mm.<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
             <Table size="small">
 
               <TableHead>
@@ -194,6 +194,7 @@ export default function MetricTable() {
                         startAdornment: <InputAdornment position="start">m</InputAdornment>,
                       }}
                       fullWidth
+                      defaultValue="0"
                     />
                   </TableCell>
                   <TableCell>
@@ -206,6 +207,7 @@ export default function MetricTable() {
                       InputProps={{
                         startAdornment: <InputAdornment position="start">m</InputAdornment>,
                       }}
+                      defaultValue="0"
                     />
                   </TableCell>
                 </TableRow>
