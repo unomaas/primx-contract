@@ -6,7 +6,7 @@ import './EstimateCreate.css';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText } from '@material-ui/core';
 import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -32,6 +32,7 @@ export default function EstimateCreate() {
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const productsReducer = useSelector(store => store.products);
   const showTables = useSelector(store => store.estimatesReducer.tableState);
+  const [error, setError] = useState(false);
   // ⬇ GET on page load:
   useEffect(() => {
     // Licensee/Company Name Call
@@ -88,7 +89,9 @@ export default function EstimateCreate() {
   } // End handleShipping
 
   const handleMeasurementUnits = (units) => {
-    console.log('In handleChange, units:', units);
+    console.log('In handleMeasurementUnits, units:', units);
+    // ⬇ Making sure validation doesn't trigger:
+    setError(false);
     // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
     const pricingArray = [
       { key: 'primx_flow_unit_price', value: productsReducer[2].product_price },
@@ -127,12 +130,18 @@ export default function EstimateCreate() {
     */
   const handleSubmit = (event) => {
     console.log('In handleSubmit');
-    // ⬇ Don't refresh until submit:
     event.preventDefault();
-    dispatch({
-      type: 'SET_TABLE_STATE',
-      payload: true
-    })
+    // ⬇ Radio button validation:
+    if (!estimateData.measurement_units) {
+      setError(true);
+    } else (
+      dispatch({
+        type: 'SET_TABLE_STATE',
+        payload: true
+      })
+    )
+    // ⬇ Don't refresh until submit:
+
     // // ⬇ Sending newPlant to our reducer: 
     // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
     // // ⬇ Send the user back:
@@ -161,6 +170,7 @@ export default function EstimateCreate() {
       <ButtonToggle />
 
       <br />
+
       <form onSubmit={handleSubmit}>
 
         <Grid container
@@ -170,7 +180,6 @@ export default function EstimateCreate() {
 
           {/* Grid Table #1: Display the Licensee/Project Info Form */}
           <Grid item xs={6}>
-
             <Paper elevation={3}>
               <TableContainer >
                 <h3 className="lexendFont">Licensee & Project Information</h3>
@@ -300,7 +309,7 @@ export default function EstimateCreate() {
                     <TableRow>
                       <TableCell><b>Unit of Measurement:</b></TableCell>
                       <TableCell>
-                        <FormControl error="Please select an option.">
+                        <FormControl error={error}>
                           <RadioGroup
                             // defaultValue="imperial"
                             style={{ display: 'inline' }}
@@ -317,6 +326,7 @@ export default function EstimateCreate() {
                               control={<Radio />}
                             />
                           </RadioGroup>
+                          <FormHelperText>Please select a value.</FormHelperText>
                         </FormControl>
                       </TableCell>
                     </TableRow>
@@ -328,13 +338,9 @@ export default function EstimateCreate() {
           </Grid>
           {/* End Grid Table #1 */}
 
-
           {/* Grid Table #2: Display the Shipping Info Form */}
-
           <Grid item xs={6}>
             <Paper elevation={3}>
-              {/* <form onSubmit={handleSubmit}> */}
-
               <TableContainer>
                 <h3 className="lexendFont">Lead Time & Shipping Information</h3>
                 <Table size="small">
@@ -344,7 +350,8 @@ export default function EstimateCreate() {
                       <TableCell><b>Today's Date:</b></TableCell>
                       <TableCell>
                         <TextField
-                          // onChange={event => handleChange('date_created', event.target.value)} // Won't work with value=today. 
+                          // Won't work with value=today. 
+                          // onChange={event => handleChange('date_created', event.target.value)} 
                           required
                           type="date"
                           size="small"
@@ -452,7 +459,8 @@ export default function EstimateCreate() {
                       <TableCell colspan={2} align="right">
                         <Button
                           type="submit"
-                          onClick={event => handleSubmit(event)}
+                          // COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+                          onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
                           variant="contained"
                           style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                           color="primary"
@@ -462,40 +470,36 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-
-
                   </TableBody>
                 </Table>
               </TableContainer>
-              {/* </form>  */}
-
             </Paper>
-
           </Grid>
-
           {/* End Grid Table #2 */}
+
         </Grid>
       </form>
-      <br/>
+
+      <br />
 
       <Grid container
         spacing={2}
         justify="center"
       >
-      {/* Conditional rendering to show or hide tables based off submit button: */}
-      {showTables ? (
-        <>
-          {/* Conditional rendering to show Imperial or Metric Table: */}
-          {estimateData.measurement_units == "imperial" ? (
-            // If they select Imperial, show Imperial Table: 
-            <ImperialTable />
-          ) : (
-            // If they select Metric, show Metric Table: 
-            <MetricTable />
-          )}
-        </>
-      ) : (<></>)}
-      {/* End conditional rendering. */}
+        {/* Conditional rendering to show or hide tables based off submit button: */}
+        {showTables ? (
+          <>
+            {/* Conditional rendering to show Imperial or Metric Table: */}
+            {estimateData.measurement_units == "imperial" ? (
+              // If they select Imperial, show Imperial Table: 
+              <ImperialTable />
+            ) : (
+              // If they select Metric, show Metric Table: 
+              <MetricTable />
+            )}
+          </>
+        ) : (<></>)}
+        {/* End conditional rendering. */}
 
       </Grid>
     </div >
