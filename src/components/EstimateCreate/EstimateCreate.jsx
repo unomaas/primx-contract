@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
+import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
 import ImperialTable from './ImperialTable';
 import MetricTable from './MetricTable';
+import { eventNames } from 'commander';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -27,6 +29,7 @@ export default function EstimateCreate() {
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer);
   const [showTables, setShowTables] = useState(false);
+  const [buttonState, setButtonState] = useState(`create`);
 
   // ⬇ GET on page load:
   useEffect(() => {
@@ -82,16 +85,44 @@ export default function EstimateCreate() {
     // // ⬇ Send the user back:
     // history.push('/dashboard');
   } // End handleSubmit
+
+  const handleButtonState = (event, selection) => {
+    console.log('In handleButtonState, selection:', selection);
+    setButtonState(selection);
+    console.log('In handleButtonState, buttonState:', buttonState);
+    history.push(`/${selection}`);
+  }
   //#endregion ⬆⬆ Event handles above. 
 
 
 
 
   console.log('estimateData is currently:', estimateData);
+  console.log('buttonSTate is:', buttonState);
   return (
     <div className="EstimateCreate-wrapper">
 
-      <LicenseeHomePage />
+      {/* <LicenseeHomePage /> */}
+      <ToggleButtonGroup
+        exclusive
+        onChange={handleButtonState}
+        value={buttonState}
+      >
+        <ToggleButton
+          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+          value="create"
+        >
+          Create New Estimate
+        </ToggleButton>
+        <ToggleButton
+          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+          value="lookup"
+        >
+          Search For Estimate
+        </ToggleButton>
+      </ToggleButtonGroup>
+
+      <br /><br />
 
       <Grid container
         spacing={2}
