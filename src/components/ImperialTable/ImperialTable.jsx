@@ -35,6 +35,7 @@ export default function ImperialTable() {
   const productsReducer = useSelector(store => store.products);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
 
+  
   // ⬇ GET on page load:
   // useEffect(() => {
   //   // Product Call
