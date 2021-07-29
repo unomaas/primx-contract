@@ -55,8 +55,9 @@ export default function SystemAdminUpdateUserGrid() {
     
     // click listener for the process order buttons inside the pending order table
     const handleDeleteAdmin = (params) => {
+        console.log('in handleDeleteAdmin in grid component, params is -->', params);
         // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
-        dispatch({ type:'DELETE_USER', payload: params})
+        dispatch({ type:'DELETE_ADMIN', payload: params})
     }
 
     return (
