@@ -1,5 +1,6 @@
 //#region ⬇⬇ All document setup, below:
 // ⬇ File Imports: 
+
 import './EstimateCreate.css';
 // ⬇ Dependent Functionality:
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,8 +30,8 @@ export default function EstimateCreate() {
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
+  const productsReducer = useSelector(store => store.products);
   const showTables = useSelector(store => store.estimatesReducer.tableState);
-
   // ⬇ GET on page load:
   useEffect(() => {
     // Licensee/Company Name Call
@@ -40,7 +41,9 @@ export default function EstimateCreate() {
       // Floor Type Call
       dispatch({ type: 'FETCH_FLOOR_TYPES' }),
       // Placement Type Call
-      dispatch({ type: 'FETCH_PLACEMENT_TYPES' })
+      dispatch({ type: 'FETCH_PLACEMENT_TYPES' }),
+      // Products Call
+      dispatch({ type: 'FETCH_PRODUCTS' })
   }, []);
   //#endregion ⬆⬆ All state variables above. 
 
@@ -51,17 +54,79 @@ export default function EstimateCreate() {
    */
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
-    // setNewEstimate({ ...newEstimate, [key]: value });
-
+    // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
       type: 'SET_ESTIMATE',
       payload: { key: key, value: value }
     });
   } // End handleChange
 
+  // ⬇ Change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
+  const handleShipping = (id) => {
+    // ⬇ Sends the keys/values to the estimate reducer object: 
+    dispatch({
+      type: 'SET_ESTIMATE',
+      payload: { key: 'shipping_costs_id', value: id }
+    });
+
+    // ⬇ Add in state shipping costs based off of state id in object:
+    shippingCosts.forEach(shippingState => {
+      if (shippingState.id == id) {
+        console.log('Shipping Data:', shippingState);
+        // ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
+        for (let keyName in shippingState) {
+          dispatch({
+            type: 'SET_ESTIMATE',
+            payload: {
+              key: keyName,
+              value: shippingState[keyName]
+            } // End payload.
+          }) // End dispatch.
+        }; // End for loop.
+      } // End if statement
+    }) // end shippingCosts forEach
+  } // End handleShipping
+
+  const handleMeasurementUnits = (units) => {
+    console.log('In handleChange, units:', units);
+    // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
+    const pricingArray = [
+      { key: 'primx_flow_unit_price', value: productsReducer[2].product_price },
+      { key: 'primx_cpea_unit_price', value: productsReducer[7].product_price },
+    ]
+    if (units == 'imperial') {
+      pricingArray.push(
+        { key: 'primx_dc_unit_price', value: productsReducer[0].product_price },
+        { key: 'primx_steel_fibers_unit_price', value: productsReducer[3].product_price },
+        { key: 'primx_ultracure_blankets_unit_price', value: productsReducer[5].product_price }
+      )
+    } else if (units == 'metric') {
+      pricingArray.push(
+        { key: 'primx_dc_unit_price', value: productsReducer[1].product_price },
+        { key: 'primx_steel_fibers_unit_price', value: productsReducer[4].product_price },
+        { key: 'primx_ultracure_blankets_unit_price', value: productsReducer[6].product_price }
+      )
+    } // End if/else statement. 
+
+    // ⬇ :oop through pricingArray to dispatch values to be stored in the estimates reducer:
+    pricingArray.forEach(product => {
+      dispatch({
+        type: 'SET_ESTIMATE',
+        payload: { key: product.key, value: product.value }
+      });
+    })
+
+    // set units in the estimate reducer
+    dispatch({
+      type: 'SET_ESTIMATE',
+      payload: { key: 'measurement_units', value: units }
+    });
+
+  } // End handleMeasurementUnits
+
   /** ⬇ handleSubmit:
-   * When clicked, this will post the object to the DB and send the user back to the dashboard. 
-   */
+    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
+    */
   const handleSubmit = event => {
     console.log('In handleSubmit');
     // ⬇ Don't refresh until submit:
@@ -89,10 +154,14 @@ export default function EstimateCreate() {
     // history.push('/dashboard');
   } // End handleSubmit
 
+
+
   //#endregion ⬆⬆ Event handles above. 
 
 
   console.log('estimateData is currently:', estimateData);
+  console.log('productsReducer is currently:', productsReducer);
+
   return (
     <div className="EstimateCreate-wrapper">
 
@@ -233,14 +302,14 @@ export default function EstimateCreate() {
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  {/* <TableRow>
                     <TableCell><b>Unit of Measurement:</b></TableCell>
                     <TableCell>
                       <FormControl required>
                         <RadioGroup
-                          defaultValue="imperial"
+                          // defaultValue="imperial"
                           style={{ display: 'inline' }}
-                          onChange={event => handleChange('measurement_units', event.target.value)}
+                          onChange={event => handleMeasurementUnits(event.target.value)}
                         >
                           <FormControlLabel
                             label="Imperial"
@@ -255,7 +324,7 @@ export default function EstimateCreate() {
                         </RadioGroup>
                       </FormControl>
                     </TableCell>
-                  </TableRow>
+                  </TableRow> */}
 
                 </TableBody>
               </Table>
@@ -343,7 +412,7 @@ export default function EstimateCreate() {
                     <TableCell><b>Shipping State/Province:</b></TableCell>
                     <TableCell>
                       <Select
-                        onChange={event => handleChange('shipping_costs_id', event.target.value)}
+                        onChange={event => handleShipping(event.target.value)}
                         required
                         size="small"
                         fullWidth
@@ -387,18 +456,43 @@ export default function EstimateCreate() {
                   </TableRow>
 
                   <TableRow>
+                    <TableCell><b>Unit of Measurement:</b></TableCell>
+                    <TableCell>
+                      <FormControl required>
+                        <RadioGroup
+                          // defaultValue="imperial"
+                          style={{ display: 'inline' }}
+                          onChange={event => handleMeasurementUnits(event.target.value)}
+                        >
+                          <FormControlLabel
+                            label="Imperial"
+                            value="imperial"
+                            control={<Radio />}
+                          />
+                          <FormControlLabel
+                            label="Metric"
+                            value="metric"
+                            control={<Radio />}
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
                     <TableCell colspan={2} align="right">
                       <Button
                         type="submit"
-                        onClick={event => handleSubmit(event)}
+                        // onClick={event => handleSubmit(event)}
                         variant="contained"
                         style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                         color="primary"
                       >
-                        Submit Project
+                        Next
                       </Button>
                     </TableCell>
                   </TableRow>
+
 
                 </TableBody>
               </Table>

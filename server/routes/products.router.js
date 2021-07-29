@@ -9,7 +9,7 @@ const {
 /**
  * GET route template
  */
- router.get('/',rejectUnauthenticated, (req, res) => {
+ router.get('/', (req, res) => {
     // GET route code here
     const queryText = `SELECT * FROM "products" ORDER BY id ASC`;
 

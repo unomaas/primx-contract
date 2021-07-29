@@ -26,17 +26,17 @@ export default function AdminUpdateMaterials() {
     on_hand: 0
   }
 
-       //styles for MUI
-       const useStyles = makeStyles((theme) => ({
-        root: {
-          '& > *': {
-            margin: theme.spacing(1),
-          },
-        },
-      }));
-      //defining classes for MUI
-      const classes = useStyles();
-  
+  //styles for MUI
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+  //defining classes for MUI
+  const classes = useStyles();
+
 
   //establish rows with products array for datagrid
   let rows = products;
@@ -85,13 +85,14 @@ export default function AdminUpdateMaterials() {
 
   useEffect(() => {
     // GET products and prices
-    dispatch({type: 'FETCH_PRODUCTS'});
+    dispatch({ type: 'FETCH_PRODUCTS' });
   }, [])
 
   return (
     <div>
       <AdminUpdates />
       <h2>Update Material Costs and Inventory</h2>
+      {/* Commenting out the add New Material and Price.  If future developers want this functionality, just comment this code back in.  We commented it out due to the math generator looking for specific values from our table, and adding new content could break that. */}
       {/* <TextField id="outlined-basic" label="Add New Material" variant="outlined" value={productInput} onChange={handleProductInputChange}/>
       <TextField id="outlined-basic" label="Add New Price" variant="outlined" value={productPriceInput} onChange={handlePriceInputChange}/>
       <Fab className={classes.root} onClick={handleAddProduct} color="primary" aria-label="add">
