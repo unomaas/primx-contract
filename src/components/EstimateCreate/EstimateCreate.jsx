@@ -33,6 +33,7 @@ export default function EstimateCreate() {
   const productsReducer = useSelector(store => store.products);
   const showTables = useSelector(store => store.estimatesReducer.tableState);
   const [error, setError] = useState(false);
+  const [radioError, setRadioError] = useState("");
   // ⬇ GET on page load:
   useEffect(() => {
     // Licensee/Company Name Call
@@ -92,6 +93,7 @@ export default function EstimateCreate() {
     console.log('In handleMeasurementUnits, units:', units);
     // ⬇ Making sure validation doesn't trigger:
     setError(false);
+    setRadioError("");
     // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
     const pricingArray = [
       { key: 'primx_flow_unit_price', value: productsReducer[2].product_price },
@@ -130,18 +132,18 @@ export default function EstimateCreate() {
     */
   const handleSubmit = (event) => {
     console.log('In handleSubmit');
+    //  Don't refresh until submit:
     event.preventDefault();
     // ⬇ Radio button validation:
     if (!estimateData.measurement_units) {
       setError(true);
+      setRadioError("Please select a value.");
     } else (
       dispatch({
         type: 'SET_TABLE_STATE',
         payload: true
       })
     )
-    // ⬇ Don't refresh until submit:
-
     // // ⬇ Sending newPlant to our reducer: 
     // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
     // // ⬇ Send the user back:
@@ -326,7 +328,7 @@ export default function EstimateCreate() {
                               control={<Radio />}
                             />
                           </RadioGroup>
-                          <FormHelperText>Please select a value.</FormHelperText>
+                          <FormHelperText>{radioError}</FormHelperText>
                         </FormControl>
                       </TableCell>
                     </TableRow>
@@ -350,7 +352,7 @@ export default function EstimateCreate() {
                       <TableCell><b>Today's Date:</b></TableCell>
                       <TableCell>
                         <TextField
-                          // Won't work with value=today. 
+                          // ⬇ Won't work with value=today. 
                           // onChange={event => handleChange('date_created', event.target.value)} 
                           required
                           type="date"
@@ -459,8 +461,8 @@ export default function EstimateCreate() {
                       <TableCell colspan={2} align="right">
                         <Button
                           type="submit"
-                          // COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+                          // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+                          // onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
                           variant="contained"
                           style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                           color="primary"
