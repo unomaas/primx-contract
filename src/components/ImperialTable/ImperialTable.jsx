@@ -419,7 +419,6 @@ export default function ImperialTable() {
             </Paper>
           </Grid>
         </Grid>
-
       </form>
     </>
   )
