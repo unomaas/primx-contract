@@ -11,9 +11,10 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
-import ImperialTable from './ImperialTable';
-import MetricTable from './MetricTable';
+import ImperialTable from '../ImperialTable/ImperialTable';
+import MetricTable from '../MetricTable/MetricTable';
 import { eventNames } from 'commander';
+import ButtonToggle from '../ButtonToggle/ButtonToggle';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -27,9 +28,8 @@ export default function EstimateCreate() {
   const shippingCosts = useSelector(store => store.shippingCosts);
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
-  const estimateData = useSelector(store => store.estimatesReducer);
-  const [showTables, setShowTables] = useState(false);
-  const [buttonState, setButtonState] = useState(`create`);
+  const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
+  const showTables = useSelector(store => store.estimatesReducer.tableState);
 
   // ⬇ GET on page load:
   useEffect(() => {
@@ -66,7 +66,10 @@ export default function EstimateCreate() {
     console.log('In handleSubmit');
     // ⬇ Don't refresh until submit:
     event.preventDefault();
-    setShowTables(true);
+    dispatch({
+      type: 'SET_TABLE_STATE',
+      payload: true
+    })
     // // ⬇ Sending newPlant to our reducer: 
     // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
     // // ⬇ Send the user back:
@@ -86,43 +89,18 @@ export default function EstimateCreate() {
     // history.push('/dashboard');
   } // End handleSubmit
 
-  const handleButtonState = (event, selection) => {
-    console.log('In handleButtonState, selection:', selection);
-    setButtonState(selection);
-    console.log('In handleButtonState, buttonState:', buttonState);
-    history.push(`/${selection}`);
-  }
   //#endregion ⬆⬆ Event handles above. 
 
 
 
 
   console.log('estimateData is currently:', estimateData);
-  console.log('buttonSTate is:', buttonState);
   return (
     <div className="EstimateCreate-wrapper">
 
-      {/* <LicenseeHomePage /> */}
-      <ToggleButtonGroup
-        exclusive
-        onChange={handleButtonState}
-        value={buttonState}
-      >
-        <ToggleButton
-          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-          value="create"
-        >
-          Create New Estimate
-        </ToggleButton>
-        <ToggleButton
-          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-          value="lookup"
-        >
-          Search For Estimate
-        </ToggleButton>
-      </ToggleButtonGroup>
+      <ButtonToggle />
 
-      <br /><br />
+      <br />
 
       <Grid container
         spacing={2}

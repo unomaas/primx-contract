@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './LicenseeHomePage.css';
-import ToggleButton from '@material-ui/lab/ToggleButton';
 
 //imports for MUI
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
 import { useStyles } from '../MuiStyling/MuiStyling';
+import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab';
 
 
 // CUSTOM COMPONENTS
 import EstimateCreate from '../EstimateCreate/EstimateCreate';
 import EstimateLookup from '../EstimateLookup/EstimateLookup';
+
+const handleButtonState = (event, selection) => {
+  console.log('In handleButtonState, selection:', selection);
+  setButtonState(selection);
+  console.log('In handleButtonState, buttonState:', buttonState);
+  history.push(`/${selection}`);
+}
 
 function LicenseeHomePage() {
 
@@ -21,6 +28,7 @@ function LicenseeHomePage() {
   // toggle button states
   const [selectedCreate, setSelectedCreate] = React.useState(true);
   const [selectedLookup, setSelectedLookup] = React.useState(false);
+  const [buttonState, setButtonState] = useState(`create`);
   const classes = useStyles();
 
   const onLogin = (event) => {
@@ -30,51 +38,30 @@ function LicenseeHomePage() {
 
   return (
     <div className="container">
-      <div>
-        {/* <ButtonGroup color="primary" aria-label="outlined primary button group">
 
-          <ToggleButton
-            value="check"
-            selected={selectedCreate}
-            style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
-            onClick={() => history.push(`/create`)}
-            // onChange={() => {
-            //   if (selectedCreate) {
-            //     return
-            //   } else if (!selectedCreate) {
-            //     setSelectedCreate(!selectedCreate);
-            //     setSelectedLookup(!selectedLookup);
-            //   }
-            // }}
-          > Create a New Estimate
-          </ToggleButton>
+      <ToggleButtonGroup
+        exclusive
+        onChange={handleButtonState}
+        value={buttonState}
+      >
+        <ToggleButton
+          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+          value="create"
+        >
+          Create New Estimate
+        </ToggleButton>
+        <ToggleButton
+          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+          value="lookup"
+        >
+          Search For Estimate
+        </ToggleButton>
+      </ToggleButtonGroup>
 
-          <ToggleButton
-            value="check"
-            selected={selectedLookup}
-            style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
-            onClick={() => history.push(`/lookup`)}
-            // onChange={() => {
-            //   if (selectedLookup) {
-            //     return
-            //   } else if (!selectedLookup) {
-            //     setSelectedCreate(!selectedCreate);
-            //     setSelectedLookup(!selectedLookup);
-            //   }
-            // }}
-          > Look-Up Existing Estimate
-          </ToggleButton>
-        </ButtonGroup> */}
-      </div>
-
-      <br/>
-
-      {/* Conditional Rendering */}
-        {/* {selectedCreate && <EstimateCreate />}
-        {selectedLookup && <EstimateLookup />} */}
+      <EstimateCreate /> 
+      <EstimateLookup />     
 
     </div>
-
   );
 }
 
