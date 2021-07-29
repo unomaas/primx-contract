@@ -30,10 +30,10 @@ export default function EstimateLookup() {
         spacing={2}
         justify="center"
       >
-        <Grid item xs={7}>
+        <Grid item xs={8}>
           <Paper elevation={3}>
             <TableContainer >
-              <h3 className="lexendFont">Search for an Estimate</h3>
+              {/* <h3 className="lexendFont">Search for an Estimate</h3> */}
               <Table size="small">
                 <TableBody>
 
