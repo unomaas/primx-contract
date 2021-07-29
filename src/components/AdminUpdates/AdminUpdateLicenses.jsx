@@ -1,6 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AdminUpdates from './AdminUpdates';
+
+//import sweet alert
+import swal from 'sweetalert';
 
 //material ui imports
 import TextField from '@material-ui/core/TextField';
@@ -57,7 +60,7 @@ export default function AdminUpdateLicenses() {
   //handles add company button click that sends payload of company name input to saga for posting to database
   const handleAddCompany = (event) => {
     if(companyNameInput == '') {
-      alert('Fill out company name');
+      swal("Error", "You need to input the company name to add", "error");
     } else {
       dispatch({type: 'ADD_COMPANY', payload: companyNameInput});
       setCompanyNameInput('');
