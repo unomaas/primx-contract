@@ -32,68 +32,71 @@ export default function ImperialTable() {
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
+  const productsReducer = useSelector(store => store.products);
 
-  //   // ⬇ GET on page load:
-  //   useEffect(() => {
-  //     // Licensee/Company Name Call
-  //     dispatch({ type: 'FETCH_COMPANIES' }),
-  //       // State/Province Call
-  //       dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
-  //       // Floor Type Call
-  //       dispatch({ type: 'FETCH_FLOOR_TYPES' }),
-  //       // Placement Type Call
-  //       dispatch({ type: 'FETCH_PLACEMENT_TYPES' })
-  //   }, []);
-  //   //#endregion ⬆⬆ All state variables above. 
+  // ⬇ GET on page load:
+  // useEffect(() => {
+  //   // Product Call
+  //   dispatch({ type: 'FETCH_PRODUCTS' }),
+  //     // State/Province Call
+  //     dispatch({ type: 'FETCH_SHIPPING_COSTS' })
+  // }, []);
+  //#endregion ⬆⬆ All state variables above. 
 
 
-    //#region ⬇⬇ Event handlers below:
-    /** ⬇ handleChange:
-     * When the user types, this will set their input to the kit object with keys for each field. 
-     */
-    const handleChange = (key, value) => {
-      console.log('In handleChange, key/value:', key, '/', value);
-      // setNewEstimate({ ...newEstimate, [key]: value });
+  //#region ⬇⬇ Event handlers below:
+  /** ⬇ handleChange:
+   * When the user types, this will set their input to the kit object with keys for each field. 
+   */
+  const handleChange = (key, value) => {
+    console.log('In handleChange, key/value:', key, '/', value);
+    // setNewEstimate({ ...newEstimate, [key]: value });
 
-      dispatch({
-        type: 'SET_ESTIMATE',
-        payload: { key: key, value: value }
-      });
-    } // End handleChange
+    dispatch({
+      type: 'SET_ESTIMATE',
+      payload: { key: key, value: value }
+    });
+  } // End handleChange
 
-    /** ⬇ handleSubmit:
-     * When clicked, this will post the object to the DB and send the user back to the dashboard. 
-     */
-    const handleSubmit = event => {
-      console.log('In handleSubmit');
-      // ⬇ Don't refresh until submit:
-      event.preventDefault();
-      // // ⬇ Sending newPlant to our reducer: 
-      // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-      // // ⬇ Send the user back:
-      // history.push('/dashboard');
-    } // End handleSubmit
-
-    /** ⬇ handleSubmit:
+  /** ⬇ handleSubmit:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
-    const handleSave = event => {
-      console.log('In handleSave');
-      // ⬇ Don't refresh until submit:
-      event.preventDefault();
-      // // ⬇ Sending newPlant to our reducer: 
-      // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-      // // ⬇ Send the user back:
-      // history.push('/dashboard');
-    } // End handleSubmit
-    //#endregion ⬆⬆ Event handles above. 
+  const handleSubmit = event => {
+    console.log('In handleSubmit');
+    // ⬇ Don't refresh until submit:
+    event.preventDefault();
+    // // ⬇ Sending newPlant to our reducer: 
+    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
+    // // ⬇ Send the user back:
+    // history.push('/dashboard');
+  } // End handleSubmit
 
-    // look to see if the form is filled out enough to calculate values
-    if (estimateData.square_feet && estimateData.thickness_inches && estimateData.primx_flow_dosage_liters && 
-      estimateData.primx_steel_fibers_dosage_lbs && estimateData.primx_cpea_dosage_liters) {
-      const calculatedObject = calculateEstimate(estimateData)
-      console.log('new object', calculatedObject);
-    }
+  /** ⬇ handleSubmit:
+ * When clicked, this will post the object to the DB and send the user back to the dashboard. 
+ */
+  const handleSave = event => {
+    console.log('In handleSave');
+    // ⬇ Don't refresh until submit:
+    event.preventDefault();
+    // // ⬇ Sending newPlant to our reducer: 
+    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
+    // // ⬇ Send the user back:
+    // history.push('/dashboard');
+  } // End handleSubmit
+  //#endregion ⬆⬆ Event handles above. 
+
+  // look to see if the form is filled out enough to calculate values
+  if (estimateData.square_feet && estimateData.thickness_inches && estimateData.primx_flow_dosage_liters &&
+    estimateData.primx_steel_fibers_dosage_lbs && estimateData.primx_cpea_dosage_liters) {
+
+
+
+    // Add in product costs:
+
+    // Before we call calculateEstimate, we need a total package to run:
+    const calculatedObject = calculateEstimate(estimateData)
+    console.log('new object', calculatedObject);
+  }
 
 
   return (
@@ -177,7 +180,7 @@ export default function ImperialTable() {
         <Paper elevation={3}>
           <TableContainer>
             <h3 className="lexendFont">Thickened Edge Calculator</h3>
-            <p>If applicable, for slabs under 6".<br/>Note: For 'Slab on Insulation', enter "0" for both.</p>
+            <p>If applicable, for slabs under 6".<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
             <Table size="small">
 
               <TableHead>

@@ -30,8 +30,9 @@ export default function EstimateCreate() {
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
+  const productsReducer = useSelector(store => store.products);
   const showTables = useSelector(store => store.estimatesReducer.tableState);
-  
+
   // ⬇ GET on page load:
   useEffect(() => {
     // Licensee/Company Name Call
@@ -41,7 +42,9 @@ export default function EstimateCreate() {
       // Floor Type Call
       dispatch({ type: 'FETCH_FLOOR_TYPES' }),
       // Placement Type Call
-      dispatch({ type: 'FETCH_PLACEMENT_TYPES' })
+      dispatch({ type: 'FETCH_PLACEMENT_TYPES' }),
+      // Products Call
+      dispatch({ type: 'FETCH_PRODUCTS' })
   }, []);
   //#endregion ⬆⬆ All state variables above. 
 
@@ -60,6 +63,30 @@ export default function EstimateCreate() {
     });
   } // End handleChange
 
+  // change handler for the Shipping State/Province dropdown: the key being passed is 
+  const handleShipping = (key, value) => {
+    console.log('In handleShipping, key/value:', key, '/', value);
+    // Adding in the state id:
+    dispatch({
+      type: 'SET_ESTIMATE',
+      payload: { key: key, value: value }
+    });
+    // Add in state shipping costs based off of state id in object:
+    shippingCosts.forEach(shippingState => {
+      if (shippingState.id == value) {
+        console.log('Shipping Data:', shippingState);
+        for (let keyName in shippingState) {
+          dispatch({
+            type: 'SET_ESTIMATE',
+            payload: {
+              key: keyName,
+              value: shippingState[keyName]
+            }
+          })
+        };
+      }
+    })
+  }
   /** ⬇ handleSubmit:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
@@ -90,7 +117,7 @@ export default function EstimateCreate() {
     // history.push('/dashboard');
   } // End handleSubmit
 
-  
+
 
   //#endregion ⬆⬆ Event handles above. 
 
@@ -346,7 +373,7 @@ export default function EstimateCreate() {
                     <TableCell><b>Shipping State/Province:</b></TableCell>
                     <TableCell>
                       <Select
-                        onChange={event => handleChange('shipping_costs_id', event.target.value)}
+                        onChange={event => handleShipping('shipping_costs_id', event.target.value)}
                         required
                         size="small"
                         fullWidth
