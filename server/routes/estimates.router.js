@@ -7,12 +7,27 @@ const {
 const format = require('pg-format');
 const { v4: uuidv4 } = require('uuid');
 
-/**
- * GET route template
- */
-router.get('/', (req, res) => {
-  // GET route code here
-});
+
+// GET request to grab estimate at ID/Estimate number for Lookup view
+router.get('/:lookup', (req, res) => {
+  const estimateNumber = req.query.estimateNumber
+  const licenseeId = req.query.licenseeId
+
+  const queryText =
+                  `SELECT * FROM estimates 
+                   WHERE "estimate_number" = '$1'
+                   AND "licensee_id" = '$2';`
+  
+  pool.query(queryText, [estimateNumber, licenseeId])
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log(`Error with /api/estimates/lookup POST:`, error);
+      res.sendStatus(500)
+    })
+})
+
 
 // GET request to get all estimates data from the database
 router.get('/all', rejectUnauthenticated, (req, res) => {
