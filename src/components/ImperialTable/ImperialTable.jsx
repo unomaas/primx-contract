@@ -88,37 +88,10 @@ export default function ImperialTable() {
   // look to see if the form is filled out enough to calculate values
   if (estimateData.square_feet && estimateData.thickness_inches && estimateData.primx_flow_dosage_liters &&
     estimateData.primx_steel_fibers_dosage_lbs && estimateData.primx_cpea_dosage_liters) {
-
-
-
-    // dispatch({
-    //   type: 'SET_ESTIMATE',
-    //   payload: { key: 'primx_dc_unit_price', value: productsReducer[0].product_price}
-    // });
-    
-
-    // console.log('In estimate data if for pricing:', pricingArray)
-    // Add in product costs:
-
     // Before we call calculateEstimate, we need a total package to run:
     const calculatedObject = calculateEstimate(estimateData)
     console.log('new object', calculatedObject);
   }
-
-  // imperial:
-  // ID 1: PrimX DC Lbs
-  // ID 3: PrimX flow Liters
-  // ID 4: PrimX steel fibers Lbs
-  // ID 6: PrimX UltraCure Blankets Sq/Ft
-  // ID 8: PrimX CPEA Liters
-
-  // metric: 
-  // ID 2: PrimX DC Kgs
-  // ID 3: PrimX flow Liters
-  // ID 5: PrimX steel fibers Kgs
-  // ID 7: PrimX UltraCure Blankets Sq/M
-  // ID 8: PrimX CPEA Liters
-
 
 
   return (
@@ -202,7 +175,7 @@ export default function ImperialTable() {
         <Paper elevation={3}>
           <TableContainer>
             <h3 className="lexendFont">Thickened Edge Calculator</h3>
-            <p>If applicable, for slabs under 6".<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
+            <p>If applicable, for slabs under 6in.<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
             <Table size="small">
 
               <TableHead>
@@ -213,7 +186,7 @@ export default function ImperialTable() {
                 </TableRow>
               </TableHead>
 
-              <TableBody className="testTable">
+              <TableBody>
                 <TableRow>
                   <TableCell><b>Lineal Feet:</b></TableCell>
                   <TableCell>
@@ -226,7 +199,7 @@ export default function ImperialTable() {
                         startAdornment: <InputAdornment position="start">ft</InputAdornment>,
                       }}
                       fullWidth
-                      defaultValue="0"
+                      // defaultValue="0"
                     />
                   </TableCell>
                   <TableCell>
@@ -239,7 +212,7 @@ export default function ImperialTable() {
                       InputProps={{
                         startAdornment: <InputAdornment position="start">ft</InputAdornment>,
                       }}
-                      defaultValue="0"
+                      // defaultValue="0"
                     />
                   </TableCell>
                 </TableRow>

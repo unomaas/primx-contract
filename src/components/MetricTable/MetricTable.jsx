@@ -181,7 +181,7 @@ export default function MetricTable() {
                 </TableRow>
               </TableHead>
 
-              <TableBody className="testTable">
+              <TableBody>
                 <TableRow>
                   <TableCell><b>Lineal Meters:</b></TableCell>
                   <TableCell>
@@ -194,7 +194,7 @@ export default function MetricTable() {
                         startAdornment: <InputAdornment position="start">m</InputAdornment>,
                       }}
                       fullWidth
-                      defaultValue="0"
+                      // defaultValue="0"
                     />
                   </TableCell>
                   <TableCell>
@@ -207,7 +207,7 @@ export default function MetricTable() {
                       InputProps={{
                         startAdornment: <InputAdornment position="start">m</InputAdornment>,
                       }}
-                      defaultValue="0"
+                      // defaultValue="0"
                     />
                   </TableCell>
                 </TableRow>
