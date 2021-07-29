@@ -22,6 +22,7 @@ export default function SystemAdminUpdateUserGrid() {
     const userInfo = useSelector(store => store.userInfoReducer);
 
     const renderDeleteButton = (params) => {
+        if(params.id > 1) {
         return (
             <Button
                 variant="contained"
@@ -33,6 +34,7 @@ export default function SystemAdminUpdateUserGrid() {
                 Delete
             </Button>
         )
+            }
     }
 
     // columns for Data Grid
@@ -56,6 +58,7 @@ export default function SystemAdminUpdateUserGrid() {
     // click listener for the process order buttons inside the pending order table
     const handleDeleteAdmin = (params) => {
         console.log('in handleDeleteAdmin in grid component, params is -->', params);
+        if(params.id > 1) 
         // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
         dispatch({ type:'DELETE_ADMIN', payload: params})
     }

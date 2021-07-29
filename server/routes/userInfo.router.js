@@ -5,7 +5,7 @@ const {rejectUnauthenticated} = require('../modules/authentication-middleware')
 
 //Get Route
 router.get('/', rejectUnauthenticated, (req, res) => {
-    const queryText = `SELECT * FROM "user";`;
+    const queryText = `SELECT * FROM "user" ORDER BY username ASC;`;
     pool.query(queryText).then((result) => {
       res.send(result.rows);
     }).catch((error) => {
