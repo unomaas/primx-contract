@@ -63,17 +63,17 @@ export default function EstimateCreate() {
     });
   } // End handleChange
 
-  // change handler for the Shipping State/Province dropdown: the key being passed is 
-  const handleShipping = (key, value) => {
-    console.log('In handleShipping, key/value:', key, '/', value);
+  // change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
+  const handleShipping = (id) => {
+
     // Adding in the state id:
     dispatch({
       type: 'SET_ESTIMATE',
-      payload: { key: key, value: value }
+      payload: { key: 'shipping_costs_id' , value: id }
     });
     // Add in state shipping costs based off of state id in object:
     shippingCosts.forEach(shippingState => {
-      if (shippingState.id == value) {
+      if (shippingState.id == id) {
         console.log('Shipping Data:', shippingState);
         for (let keyName in shippingState) {
           dispatch({
@@ -87,6 +87,7 @@ export default function EstimateCreate() {
       }
     })
   }
+
   /** ⬇ handleSubmit:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
@@ -373,7 +374,7 @@ export default function EstimateCreate() {
                     <TableCell><b>Shipping State/Province:</b></TableCell>
                     <TableCell>
                       <Select
-                        onChange={event => handleShipping('shipping_costs_id', event.target.value)}
+                        onChange={event => handleShipping(event.target.value)}
                         required
                         size="small"
                         fullWidth
