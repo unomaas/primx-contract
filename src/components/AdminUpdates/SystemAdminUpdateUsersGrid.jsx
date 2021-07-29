@@ -38,10 +38,10 @@ export default function SystemAdminUpdateUserGrid() {
     // columns for Data Grid
     const columns = [
 
-        {field: 'username', headerName: 'Username', width: 200}, // Editable + validation?
+        {field: 'username', headerName: 'Username', width: 385}, // Editable + validation?
         {   field: '', 
             headerName: 'Delete Admin', 
-            width: 175,
+            width: 1000,
             disableClickEventBubbling: true,
             renderCell: renderDeleteButton // function declared above, creates a button in each row of the pending column
         }
@@ -62,7 +62,7 @@ export default function SystemAdminUpdateUserGrid() {
 
     return (
         <div
-          style={{ height: 650, width: '90%'}}
+          style={{ height: 650, width: '40%'}}
           className="AdminEstimatesGrid-wrapper"
         >
             <DataGrid 
