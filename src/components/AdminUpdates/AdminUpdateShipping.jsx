@@ -59,7 +59,7 @@ export default function AdminUpdateShipping() {
     } else {
     // dispatch sent to shippingCost saga, payload as below
     dispatch({ type: 'ADD_SHIPPING_COSTS', payload: newShippingCost });
-    swal("Success!", "New Admin Created", "success", {
+    swal("Success!", "New Shipping Cost Added", "success", {
       button: "OK",
     });
   

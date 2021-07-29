@@ -64,6 +64,9 @@ export default function AdminUpdateLicenses() {
     } else {
       dispatch({type: 'ADD_COMPANY', payload: companyNameInput});
       setCompanyNameInput('');
+      swal("Success!", "New Company Added", "success", {
+        button: "OK",
+      });
     }
 
   }

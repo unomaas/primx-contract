@@ -76,6 +76,9 @@ export default function AdminUpdateMaterials() {
       dispatch({type: 'ADD_PRODUCT', payload: productInfo});
       setProductPriceInput('');
       setProductInput('');
+      swal("Success!", "New Product Added", "success", {
+        button: "OK",
+      });
     }
 
   }
