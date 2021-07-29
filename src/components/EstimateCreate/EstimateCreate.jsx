@@ -395,7 +395,7 @@ export default function EstimateCreate() {
                         style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                         color="primary"
                       >
-                        Submit Project
+                        Next
                       </Button>
                     </TableCell>
                   </TableRow>
