@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 
 // Material-UI components
 import { DataGrid } from '@material-ui/data-grid';
+import Button from '@material-ui/core/Button';
+
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function SystemAdminUpdateUserGrid() {
@@ -19,11 +21,30 @@ export default function SystemAdminUpdateUserGrid() {
  
     const userInfo = useSelector(store => store.userInfoReducer);
 
+    const renderDeleteButton = (params) => {
+        return (
+            <Button
+                variant="contained"
+                color="secondary"
+                onClick={
+                    () => handleDeleteAdmin(params)
+                }
+            >
+                Delete
+            </Button>
+        )
+    }
+
     // columns for Data Grid
     const columns = [
 
         {field: 'username', headerName: 'Username', width: 200}, // Editable + validation?
-        //{field: '', headerName: 'DELETE BUTTON?', width: 200}, // Editable + validation?
+        {   field: '', 
+            headerName: 'Delete Admin', 
+            width: 175,
+            disableClickEventBubbling: true,
+            renderCell: renderDeleteButton // function declared above, creates a button in each row of the pending column
+        }
         
     ]
 
@@ -32,8 +53,11 @@ export default function SystemAdminUpdateUserGrid() {
     console.log('user info in grid component -->', userInfo);
 
     
-
-      console.log('user info in grid component -->', userInfo);
+    // click listener for the process order buttons inside the pending order table
+    const handleDeleteAdmin = (params) => {
+        // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+        dispatch({ type:'DELETE_USER', payload: params})
+    }
 
     return (
         <div
