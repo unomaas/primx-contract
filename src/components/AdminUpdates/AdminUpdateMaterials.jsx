@@ -43,7 +43,7 @@ export default function AdminUpdateMaterials() {
 
   //estabish columns for datagrid
   const columns = [
-    { field: 'product_name', headerName: 'Product', width: 300, editable: true },
+    { field: 'product_name', headerName: 'Product', width: 300, editable: false },
     { field: 'product_price', headerName: 'Price', width: 175, editable: true },
     { field: 'on_hand', headerName: 'On Hand', width: 200, editable: true },
   ];
@@ -68,17 +68,20 @@ export default function AdminUpdateMaterials() {
     setProductPriceInput(event.target.value)
   }
 
-  //handles add company button click that sends payload of company name input to saga for posting to database
-  const handleAddProduct = (event) => {
-    if(productInput == '' || productPriceInput == '') {
-      alert('Fill out product name and price');
-    } else {
-      dispatch({type: 'ADD_PRODUCT', payload: productInfo});
-      setProductPriceInput('');
-      setProductInput('');
-    }
+  // //handles add company button click that sends payload of company name input to saga for posting to database
+  // const handleAddProduct = (event) => {
+  //   if(productInput == '' || productPriceInput == '') {
+  //     swal("Error", "You need to input the product name and product price to add", "error");
+  //   } else {
+  //     dispatch({type: 'ADD_PRODUCT', payload: productInfo});
+  //     setProductPriceInput('');
+  //     setProductInput('');
+  //     swal("Success!", "New Product Added", "success", {
+  //       button: "OK",
+  //     });
+  //   }
 
-  }
+  // }
 
   useEffect(() => {
     // GET products and prices
@@ -89,11 +92,11 @@ export default function AdminUpdateMaterials() {
     <div>
       <AdminUpdates />
       <h2>Update Material Costs and Inventory</h2>
-      <TextField id="outlined-basic" label="Add New Material" variant="outlined" value={productInput} onChange={handleProductInputChange}/>
+      {/* <TextField id="outlined-basic" label="Add New Material" variant="outlined" value={productInput} onChange={handleProductInputChange}/>
       <TextField id="outlined-basic" label="Add New Price" variant="outlined" value={productPriceInput} onChange={handlePriceInputChange}/>
       <Fab className={classes.root} onClick={handleAddProduct} color="primary" aria-label="add">
               <AddIcon />
-            </Fab>
+            </Fab> */}
       <div style={{ height: 350, width: '65%' }}
         className="AdminEstimatesGrid-wrapper">
         <DataGrid
