@@ -23,6 +23,7 @@ function AdminLoginPage() {
 
   return (
     <div>
+      TEST TEST TEST 
       <center>
         <AdminLoginForm />
       </center>

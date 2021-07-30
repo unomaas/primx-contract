@@ -47,6 +47,7 @@ function AdminLoginForm() {
 
   return (
     <div>
+      TEST TEST TEST
       <form className={classes.root} onSubmit={login}>
 
         <h2>Welcome, Admin</h2>
