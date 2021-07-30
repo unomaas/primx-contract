@@ -30,7 +30,7 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
   });
 } else {
   console.log('unable to delete unless you are superuser');
-  res.sendStatus(500);
+  res.sendStatus(403);
 }
 });
 

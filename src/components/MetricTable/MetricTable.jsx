@@ -242,8 +242,8 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Width (m³):</b></TableCell>
-                      <TableCell>5</TableCell>
-                      <TableCell>10</TableCell>
+                      <TableCell>1.5</TableCell>
+                      <TableCell>3.0</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -272,7 +272,7 @@ export default function MetricTable() {
                   <TableHead>
                     <TableRow>
                       <TableCell></TableCell>
-                      <TableCell><b>Dosage<br />Rate<br />(m³)</b></TableCell>
+                      <TableCell><b>Dosage<br />Rate<br />(per m³)</b></TableCell>
                       <TableCell><b>Total<br />Amount</b></TableCell>
                       <TableCell><b>Packaging<br />Capacity</b></TableCell>
                       <TableCell><b>Packages<br />Needed</b></TableCell>
