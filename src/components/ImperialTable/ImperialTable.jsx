@@ -299,15 +299,15 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>PrīmX DC (lbs)</b></TableCell>
                       <TableCell>CALC</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed}</TableCell>
                       <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -321,15 +321,15 @@ export default function ImperialTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_cost_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_cost_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
