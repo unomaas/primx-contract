@@ -26,7 +26,6 @@ export default function EstimateLookup() {
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
 
-
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
     setSearchQuery({ ...searchQuery, [key]: value })
@@ -34,17 +33,20 @@ export default function EstimateLookup() {
 
   const handleSubmit = () => {
     console.log('In handleSubmit')
-        // ⬇ Radio button validation:
-        // if (licensee_id == "0" || "") {
-        //   setError(true);
-        // } else (
-        //   // dispatch({ type: 'SET_TABLE_STATE', payload: true })
-          
-        // );
+    // ⬇ Select dropdown validation:
+    if (searchQuery.licensee_id == "0" || "") {
+      // If they selected a company name from dropdown:
+      setError(false);
+      setSelectError("");
+      console.log("Validation works.");
+    } else {
+      // If they haven't, pop up warning and prevent them:
+      setError(true);
+      setSelectError("Please select a value.");
+    }
   };
 
 
-  console.log('SeachQuery is:', searchQuery);
   return (
     <div className="EstimateCreate-wrapper">
       {/* <LicenseeHomePage /> */}
