@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText } from '@material-ui/core';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText, Box } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
 
@@ -260,9 +260,13 @@ export default function EstimateLookup() {
           </Paper>
         </Grid>
 
-        {/* Table #2 Metric: */}
 
-        <Grid item xs={6}>
+
+
+
+        {/* Table #2 Imperial: */}
+
+        {/* <Grid item xs={6}>
           <Paper elevation={3}>
             <TableContainer>
               <h3>Project Quantity Calculations</h3>
@@ -406,7 +410,7 @@ export default function EstimateLookup() {
 
                 <TableBody>
                   <TableRow>
-                    <TableCell><b>Dosage Rate (yd³):</b></TableCell>
+                    <TableCell><b>Dosage Rate (per yd³):</b></TableCell>
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
@@ -505,33 +509,258 @@ export default function EstimateLookup() {
                     <TableCell><b>CALC</b></TableCell>
                     <TableCell><b>CALC</b></TableCell>
                     <TableCell><b>CALC</b></TableCell>
+                  </TableRow> */}
+        {/* End Imperial Tables */}
+
+
+
+        {/* Table #3: Metric */}
+        <Grid item xs={6}>
+          <Paper elevation={3}>
+            <TableContainer>
+              <h3>Project Quantity Calculations</h3>
+              <Table size="small">
+                <TableBody>
+
+                  <TableRow>
+                    <TableCell><b>Square Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickness (mm):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Cubic Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Subtotal:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Cubic Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                </TableBody>
+              </Table>
+
+              <h3>Thickened Edge Calculator</h3>
+              <p>If applicable, for slabs under 150mm.</p>
+              <Table size="small">
+
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>Perimeter</b></TableCell>
+                    <TableCell><b>Construction Joint</b></TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>Lineal Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Width (m³):</b></TableCell>
+                    <TableCell>
+                      5
+                    </TableCell>
+                    <TableCell>
+                      10
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Additional Thickness (mm):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Cubic Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Paper elevation={3}>
+            <TableContainer>
+              <h3>Materials Table</h3>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>PrīmX DC (kgs)</b></TableCell>
+                    <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
+                    <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
+                    <TableCell><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
+                    <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>Dosage Rate (per m³):</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Amount:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Packaging Capacity:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Packages Needed:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Order Quantity:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Materials Price:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell><b>Totals:</b></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Materials Price:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Containers:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
 
                   </TableRow>
 
-                  {/* <TableRow>
-                    <TableCell colSpan={7} align="right">
-                      <Button
-                          type="submit"
-                          onClick={event => handleCalculateCosts(event)}
-                          variant="contained"
-                          className={classes.LexendTeraFont11}
-                          color="primary"
-                        >
-                          Calculate Costs
-                        </Button>
-                        &nbsp; &nbsp;
-                        <Button
-                          // type="submit"
-                          // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => handleSave(event)}
-                          variant="contained"
-                          className={classes.LexendTeraFont11}
-                          color="secondary"
-                        >
-                          Save Estimate
-                        </Button>
-                    </TableCell>
-                  </TableRow> */}
+                  <TableRow>
+                    <TableCell><b>Shipping Estimate:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Cost:</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                  </TableRow>
+                  {/* End Metric Table */}
+
 
                 </TableBody>
               </Table>
