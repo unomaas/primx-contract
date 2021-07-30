@@ -106,7 +106,7 @@ export default function MetricTable() {
       <form>
         <Grid container
           spacing={2}
-          justify="center"
+          justifyContent="center"
         >
           <Grid item xs={6}>
             <Paper elevation={3}>
@@ -434,7 +434,7 @@ export default function MetricTable() {
                           type="submit"
                           onClick={event => handleCalculateCosts(event)}
                           variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          className={classes.LexendTeraFont11}
                           color="primary"
                         >
                           Calculate Costs
@@ -445,7 +445,7 @@ export default function MetricTable() {
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
                           // onClick={event => handleSave(event)}
                           variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          className={classes.LexendTeraFont11}
                           color="secondary"
                         >
                           Save Estimate
