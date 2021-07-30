@@ -19,7 +19,7 @@ function* fetchEstimateQuery(action) {
             })
 
         //take response from DB and insert into Admin Reducer
-        yield put({ type: 'SET_ADMIN_ESTIMATES', payload: response.data });
+        yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: response.data });
     }
 
     catch (error) {

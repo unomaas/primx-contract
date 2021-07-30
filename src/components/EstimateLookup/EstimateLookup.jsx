@@ -11,6 +11,7 @@ import ButtonToggle from '../ButtonToggle/ButtonToggle';
 
 export default function EstimateLookup() {
   const companies = useSelector(store => store.companies);
+  const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
   const [searchQuery, setSearchQuery] = useState({
     licensee_id: "0",
     id: ""
@@ -69,6 +70,7 @@ export default function EstimateLookup() {
     }
   };
 
+  console.log('search estimate:', searchResult)
 
   return (
     <div className="EstimateCreate-wrapper">
@@ -76,6 +78,7 @@ export default function EstimateLookup() {
       <ButtonToggle />
 
       <br />
+
 
       <form onSubmit={handleSubmit}>
         <Grid container
