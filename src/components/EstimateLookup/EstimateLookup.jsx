@@ -10,6 +10,10 @@ import ButtonToggle from '../ButtonToggle/ButtonToggle';
 export default function EstimateLookup() {
   const companies = useSelector(store => store.companies);
 
+  //State Variables
+  const [licenseeId, setLicenseeId] = useState('');
+  const [estimateNumber, setEstimateNumber] = useState('');
+
   const dispatch = useDispatch();
   const history = useHistory();
   useEffect(() => {
@@ -18,6 +22,32 @@ export default function EstimateLookup() {
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
 
+  const handleLicenseeChange = (event) => {
+    event.preventDefault();
+    setLicenseeId(event.target.value)
+  }
+  const handleEstimateChange = (event) => {
+    event.preventDefault();
+    setEstimateNumber(event.target.value)
+  }
+
+  const handleSubmit = event => {
+    event.preventDefault()
+
+    const lookupEstimate = {
+        licenseeId: licenseeId,
+        estimateNumber: estimateNumber,
+    }
+    console.log('lookup estimate number and licensee', lookupEstimate);
+
+    dispatch({
+        type: 'LOOKUP_ESTIMATE',
+        payload: lookupEstimate
+    })
+    //clear inputs
+    setLicenseeId('');
+    setEstimateNumber('');
+}
 
   return (
     <div className="EstimateCreate-wrapper">
@@ -42,6 +72,7 @@ export default function EstimateLookup() {
                     <TableCell>
                       <Select
                         // onChange={event => handleChange('licensee_id', event.target.value)}
+                        onChange={handleLicenseeChange}
                         required
                         size="small"
                         fullWidth
@@ -49,7 +80,7 @@ export default function EstimateLookup() {
                       >
                         <MenuItem value="0">Please Select</MenuItem>
                         {companies.map(companies => {
-                          return (<MenuItem value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                          return (<MenuItem value={companies.id} key ={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
                         }
                         )}
                       </Select>
@@ -60,7 +91,7 @@ export default function EstimateLookup() {
                     <TableCell><b>Estimate Number:</b></TableCell>
                     <TableCell>
                       <TextField
-                        onChange={event => handleChange('project_name', event.target.value)}
+                        onChange={handleEstimateChange}
                         required
                         type="search"
                         size="small"
@@ -74,6 +105,7 @@ export default function EstimateLookup() {
                       <Button
                         type="submit"
                         // onClick={event => handleSubmit(event)}
+                        onClick={handleSubmit}
                         variant="contained"
                         style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                         color="primary"
