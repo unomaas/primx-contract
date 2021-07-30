@@ -116,7 +116,7 @@ export default function MetricTable() {
                   <TableBody>
 
                     <TableRow>
-                      <TableCell><b>Square Meters</b></TableCell>
+                      <TableCell><b>Square Meters:</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('square_meters', event.target.value)}
@@ -132,7 +132,7 @@ export default function MetricTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Thickness (mm)</b></TableCell>
+                      <TableCell><b>Thickness (mm):</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('thickness_millimeters', event.target.value)}

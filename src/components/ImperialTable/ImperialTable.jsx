@@ -110,7 +110,7 @@ export default function ImperialTable() {
                   <TableBody>
 
                     <TableRow>
-                      <TableCell><b>Square Feet</b></TableCell>
+                      <TableCell><b>Square Feet:</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('square_feet', event.target.value)}
@@ -126,7 +126,7 @@ export default function ImperialTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Thickness (in)</b></TableCell>
+                      <TableCell><b>Thickness (in):</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('thickness_inches', event.target.value)}
