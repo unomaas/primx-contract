@@ -30,9 +30,13 @@ function* LookupEstimate(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
     try {
-        yield axios.post('/api/estimates', action.payload);
-        // reset state to update estimates from dom with adminEstimate reducer
-        yield put({ type: "SET_ESTIMATE" });
+        const response = yield axios.post('/api/estimates', action.payload);
+
+        // need to send the user to the search estimates results page using the newly created estimate number
+        console.log('response from DB:', response.data);
+        // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
+        
+        // yield put({ type: "SET_ESTIMATE" });
     }
 
     catch (error) {

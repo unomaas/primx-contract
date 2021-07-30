@@ -25,8 +25,8 @@ export default function AdminUpdateShipping() {
   // establish shipping cost prices for specific states locally
   let [newShippingCost, setNewShippingCost] = useState({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
 
-  // establish open for snackbar notification
-  const [open, setOpen] = useState(false);
+// establish snackbar variables for notifications
+const snack = useSelector(store => store.snackBar);
 
   //styles for MUI
   const useStyles = makeStyles((theme) => ({
@@ -58,13 +58,12 @@ export default function AdminUpdateShipping() {
     console.log('in handleSubmit, adding newShippingCost -->', newShippingCost);
     if (newShippingCost.dc_price == '' || newShippingCost.ship_to_state_province == '' || newShippingCost.flow_cpea_price == '' ||
     newShippingCost.fibers_price == '') {
-      swal("Error", "You need to input all shipping fields", "error");
+      dispatch({type: 'SET_EMPTY_ERROR'})
 
     } else {
     // dispatch sent to shippingCost saga, payload as below
     dispatch({ type: 'ADD_SHIPPING_COSTS', payload: newShippingCost });
-    setOpen(true);
-  
+    setNewShippingCost({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
     }
   }
 
@@ -73,7 +72,7 @@ export default function AdminUpdateShipping() {
       return;
     }
 
-    setOpen(false);
+    dispatch({type: 'SET_CLOSE'})
   };
 
   // useEffect(() => {
@@ -115,9 +114,9 @@ export default function AdminUpdateShipping() {
         </form>
       </div>
       <UpdateShippingCostsGrid />
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-        New Shipping Cost Added!
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snack.severity}>
+          {snack.message}
         </Alert>
       </Snackbar>
     </div>

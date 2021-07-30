@@ -29,7 +29,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 
 //PUT route - updates shipping costs
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-    const queryText = `UPDATE "shipping_costs" SET ${req.body.dbColumn} = $1 WHERE "id" = $2;`;
+    const queryText = `UPDATE "shipping_costs" SET ${req.body.dbColumn} = $1 WHERE "id" = $2;`; //!!!fix sanitize
     pool.query(queryText, [req.body.newValue, req.params.id])
     .then(result => {
     res.sendStatus(202);
