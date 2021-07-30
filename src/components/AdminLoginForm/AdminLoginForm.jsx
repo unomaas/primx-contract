@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { useStyles } from '../MuiStyling/MuiStyling';
 
 function AdminLoginForm() {
   const [username, setUsername] = useState('');
@@ -16,15 +17,7 @@ function AdminLoginForm() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  //styles for MUI
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-        width: '25ch',
-      },
-    },
-  }));
+
   //defining classes for MUI
   const classes = useStyles();
 
@@ -47,20 +40,20 @@ function AdminLoginForm() {
 
   return (
     <div>
-      <form className={classes.root} onSubmit={login}>
 
-        <h2>Welcome, Admin</h2>
+      <h2>Welcome, Admin</h2>
 
-        {errors.loginMessage && (
-          <h3 className="alert" role="alert">
-            {errors.loginMessage}
-          </h3>
-        )}
+      {errors.loginMessage && (
+        <h3 className="alert" role="alert">
+          {errors.loginMessage}
+        </h3>
+      )}
+
+      <form onSubmit={login}>
 
         <div>
           <TextField
             required
-            id="outlined-basic"
             htmlFor="username"
             name="username"
             label="Username"
@@ -69,12 +62,11 @@ function AdminLoginForm() {
             value={username}>
             Username:
           </TextField>
-        </div>
+        </div> <br />
 
         <div>
           <TextField
             required
-            id="outlined-basic"
             htmlFor="password"
             name="password"
             label="Password"
@@ -84,20 +76,22 @@ function AdminLoginForm() {
             value={password}>
             Password:
           </TextField>
-        </div>
+        </div> <br />
 
         <div>
           <Button
-            onClick={login}
+            type="submit"
             variant="contained"
             color="primary"
             className="btn"
             value="Log In"
-            style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+            // style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+            className={classes.LexendTeraFont11}
           >
             Log in
           </Button>
         </div>
+
       </form>
     </div>
   );

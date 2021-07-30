@@ -10,7 +10,6 @@ const theme = createTheme({
   // },
 }) // End theme
 
-
 // const StyledTableCell = withStyles((theme) => ({
 //   head: {
 //     backgroundColor: theme.palette.common.black,
@@ -26,7 +25,6 @@ const theme = createTheme({
 //     },
 //   },
 // }))(TableRow);
-
 
 // ⬇ Material-ui Classes: 
 const useStyles = makeStyles({
@@ -44,7 +42,14 @@ const useStyles = makeStyles({
     //   fontSize: '11px',
     // }
   },
-
+  LexendTeraFont11: {
+    fontFamily: 'Lexend Tera',
+    fontSize: '11px',
+  },
+  OrdersHeaders: {
+    fontFamily: 'Lexend Tera',
+    marginBottom: '.3em',
+  }
 
 }); // End useStyles
 
