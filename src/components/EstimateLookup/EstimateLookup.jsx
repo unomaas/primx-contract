@@ -400,8 +400,6 @@ export default function EstimateLookup() {
                     <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
                     <TableCell></TableCell>
                   </TableRow>
-
-
                 </TableHead>
 
                 <TableBody>
