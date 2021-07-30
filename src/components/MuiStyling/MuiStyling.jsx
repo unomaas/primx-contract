@@ -10,7 +10,6 @@ const theme = createTheme({
   // },
 }) // End theme
 
-
 // const StyledTableCell = withStyles((theme) => ({
 //   head: {
 //     backgroundColor: theme.palette.common.black,
@@ -26,7 +25,6 @@ const theme = createTheme({
 //     },
 //   },
 // }))(TableRow);
-
 
 // ⬇ Material-ui Classes: 
 const useStyles = makeStyles({
