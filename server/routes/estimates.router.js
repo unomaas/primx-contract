@@ -209,7 +209,11 @@ router.post('/', (req, res) => {
   
   pool.query(queryText, values)
     .then(result => {
-      res.sendStatus(200);
+      // send back the object created to allow navagiation from the saga to the view of the new estimate
+      res.send({
+        estimate_number: estimate_number,
+        licensee_id: licensee_id
+      });
     })
     .catch(error => {
       console.log(`Error with /api/estimates/ POST:`, error)
