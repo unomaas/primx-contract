@@ -28,7 +28,7 @@ export default function EstimateLookup() {
 
       <Grid container
         spacing={2}
-        justify="center"
+        justifyContent="center"
       >
 
         <Grid item xs={10}>
@@ -48,9 +48,9 @@ export default function EstimateLookup() {
                         fullWidth
                         defaultValue="0"
                       >
-                        <MenuItem value="0">Please Select</MenuItem>
+                        <MenuItem key="0" value="0">Please Select</MenuItem>
                         {companies.map(companies => {
-                          return (<MenuItem value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                          return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
                         }
                         )}
                       </Select>
@@ -71,7 +71,7 @@ export default function EstimateLookup() {
                     {/* </TableRow>
 
                   <TableRow> */}
-                    <TableCell colspan={2} align="right">
+                    <TableCell colSpan={2} align="right">
                       <Button
                         type="submit"
                         // onClick={event => handleSubmit(event)}
@@ -384,7 +384,7 @@ export default function EstimateLookup() {
                   </TableRow>
 
                   {/* <TableRow>
-                      <TableCell colspan={2} align="right">
+                      <TableCell colSpan={2} align="right">
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:

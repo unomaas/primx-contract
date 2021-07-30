@@ -193,7 +193,7 @@ export default function EstimateCreate() {
 
         <Grid container
           spacing={2}
-          justify="center"
+          justifyContent="center"
         >
 
           {/* Grid Table #1: Display the Licensee/Project Info Form */}
@@ -480,7 +480,7 @@ export default function EstimateCreate() {
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
                           onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
                           variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          className={classes.LexendTeraFont11}
                           color="primary"
                         >
                           Next
