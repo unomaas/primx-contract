@@ -63,7 +63,7 @@ const snack = useSelector(store => store.snackBar);
     } else {
     // dispatch sent to shippingCost saga, payload as below
     dispatch({ type: 'ADD_SHIPPING_COSTS', payload: newShippingCost });
-  
+    setNewShippingCost({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
     }
   }
 

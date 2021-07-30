@@ -3,7 +3,11 @@ const snackReducer = (state ={open: false, message: '', severity: "success"}, ac
       case 'SET_SUCCESS_COMPANY':
         return {open: true, message: 'A Licensee Has Been Added!', severity: "success"}
       case 'SET_SUCCESS_SHIPPING':
-        return {open: true, message: 'Shipping Details Have Been Added!', severity: "success"};
+        return {open: true, message: 'Shipping Details Have Been Added!', severity: "success"}
+      case 'SET_SUCCESS_FLOOR_TYPES':
+        return {open: true, message: 'Floor Type has Been Added!', severity: "success"}
+      case 'SET_SUCCESS_PLACEMENT_TYPES':
+        return {open: true, message: 'Placement Type has Been Added!', severity: "success"}
       case 'SET_CLOSE':
         return {...state,open: false}
       case 'SET_EMPTY_ERROR' :
