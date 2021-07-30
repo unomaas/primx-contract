@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText } from '@material-ui/core';
-
+import { useParams } from 'react-router';
 
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
@@ -16,7 +16,7 @@ export default function EstimateLookup() {
   const [error, setError] = useState(false);
 
   const [selectError, setSelectError] = useState("");
-
+  const { licensee_id_estimate_number } = useParams();
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -47,7 +47,7 @@ export default function EstimateLookup() {
   };
 
   
-
+  console.log('Search params: licensee id / estimate number', licensee_id_estimate_number);
   return (
     <div className="EstimateCreate-wrapper">
       {/* <LicenseeHomePage /> */}
