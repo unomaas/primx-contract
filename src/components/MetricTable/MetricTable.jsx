@@ -156,27 +156,33 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.perimeter_thickening_cubic_meters}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.construction_joint_thickening_cubic_meters}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Subtotal:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.cubic_meters_subtotal}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Waste Factor @ 5%:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>{calculatedDisplayObject?.waste_factor_cubic_meters}</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Total Cubic Meters:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_cubic_meters_total}</TableCell>
                     </TableRow>
 
                   </TableBody>
@@ -233,20 +239,20 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Width (m³):</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>5</TableCell>
+                      <TableCell>10</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Additional Thickness (mm):</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>{calculatedDisplayObject?.additional_thickness_millimeters}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.additional_thickness_millimeters}</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Cubic Meters:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>{calculatedDisplayObject?.perimeter_thickening_cubic_meters}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.construction_joint_thickening_cubic_meters}</TableCell>
                     </TableRow>
 
                   </TableBody>
@@ -279,16 +285,16 @@ export default function MetricTable() {
                   <TableBody>
                     <TableRow>
                       <TableCell><b>PrīmX DC (kgs)</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>40</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed}</TableCell>
+                      <TableCell>1250</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_dc_unit_price}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_dc_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_dc_calculated_shipping_estimate}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_dc_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -302,15 +308,15 @@ export default function MetricTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
+                      <TableCell>1000</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_flow_unit_price}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_flow_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_flow_calculated_shipping_estimate}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_flow_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -324,29 +330,29 @@ export default function MetricTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
+                      <TableCell>19200</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_order_quantity}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_steel_fibers_unit_price}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_steel_fibers_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_steel_fibers_calculated_shipping_estimate}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>N/A</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed}</TableCell>
+                      <TableCell>600</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_order_quantity}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_ultracure_blankets_unit_price}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_ultracure_blankets_total_materials_price}</TableCell>
+                      <TableCell>0</TableCell>
+                      <TableCell>0</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -360,15 +366,15 @@ export default function MetricTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>
+                      <TableCell>1000</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_order_quantity}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_cpea_unit_price}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_cpea_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_cpea_calculated_shipping_estimate}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.primx_cpea_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -393,10 +399,16 @@ export default function MetricTable() {
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell><b>TOTALS:</b></TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>${calculatedDisplayObject?.design_total_materials_price}</TableCell>
+                      <TableCell>
+                        {/* Total number of containers go into this cell */}
+                        {
+                          calculatedDisplayObject?.primx_dc_containers_needed + calculatedDisplayObject?.primx_flow_containers_needed +
+                          calculatedDisplayObject?.primx_steel_fibers_containers_needed + calculatedDisplayObject?.primx_cpea_containers_needed
+                        }
+                      </TableCell>
+                      <TableCell>${calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
+                      <TableCell>${calculatedDisplayObject?.design_total_price_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
