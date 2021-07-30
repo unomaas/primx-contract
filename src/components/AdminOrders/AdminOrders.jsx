@@ -20,11 +20,11 @@ export default function AdminOrders() {
   const allEstimates = useSelector(store => store.adminEstimates);
 
   // create holding arrays to be filled with estimate objects, then passed as props to create the needed Data Grids
-  const [pendingOrders, processedOrders, openEstimates] = [ [], [], [] ];
-  
+  const [pendingOrders, processedOrders, openEstimates] = [[], [], []];
+
   // break up all estimates into pending orders, processed orders, and open estimates
   allEstimates.forEach(estimate => {
-    
+
     const updatedEstimate = calculateEstimate(estimate);
     console.log('updated estimate:', updatedEstimate);
 
@@ -41,32 +41,47 @@ export default function AdminOrders() {
     }
   })
 
-  
+
   useEffect(() => {
     // GET all estimates data on page load
-    dispatch({type: 'FETCH_ALL_ESTIMATES' });
+    dispatch({ type: 'FETCH_ALL_ESTIMATES' });
   }, [])
 
-  
+
   return (
     <div>
       <br />
-      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
+      <Typography
+        variant="h5"
+        component="h2"
+        align="center"
+        className={classes.OrdersHeaders}
+      >
         Pending Orders
       </Typography>
-      <AdminEstimatesGrid estimatesArray={pendingOrders} gridSource={'pending'}/>
+      <AdminEstimatesGrid estimatesArray={pendingOrders} gridSource={'pending'} />
 
       <br />
-      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
+      <Typography
+        variant="h5"
+        component="h2"
+        align="center"
+        className={classes.OrdersHeaders}
+      >
         Processed Orders
       </Typography>
-      <AdminEstimatesGrid estimatesArray={processedOrders} gridSource={'processed'}/>
+      <AdminEstimatesGrid estimatesArray={processedOrders} gridSource={'processed'} />
 
       <br />
-      <Typography variant="h3" component="h2" align="center" style={{marginBottom: '.2em'}}>
+      <Typography
+        variant="h5"
+        component="h2"
+        align="center"
+        className={classes.OrdersHeaders}
+      >
         Open Estimates
       </Typography>
-      <AdminEstimatesGrid estimatesArray={openEstimates} gridSource={'open'}/>
+      <AdminEstimatesGrid estimatesArray={openEstimates} gridSource={'open'} />
     </div>
   )
 }

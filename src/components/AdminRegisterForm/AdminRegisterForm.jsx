@@ -48,17 +48,18 @@ function AdminRegisterForm() {
   }; // end registerUser
 
   return (
-    <form className={classes.root} onSubmit={registerUser}>
+    <form  onSubmit={registerUser}>
       <h2>Register New Admin</h2>
+      <p>Use this page to create a new Admin account for another user.</p>
       {errors.registrationMessage && (
         <h3 className="alert" role="alert">
           {errors.registrationMessage}
         </h3>
       )}
+
       <div>
         <TextField
           required
-          id="outlined-basic"
           htmlFor="username"
           name="username"
           label="Username"
@@ -67,11 +68,11 @@ function AdminRegisterForm() {
           value={username}>
           Username:
         </TextField>
-      </div>
+      </div> <br/>
+
       <div>
         <TextField
           required
-          id="outlined-basic"
           htmlFor="password"
           name="password"
           label="Password"
@@ -81,16 +82,18 @@ function AdminRegisterForm() {
           value={password}>
           Password:
         </TextField>
-      </div>
+      </div> <br/>
+
       <div>
         <Button
-          onClick={registerUser}
+          type="submit"
+          // onClick={registerUser}
           variant="contained"
           color="primary"
           className="btn"
           value="Register"
-          style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
-        >
+          className={classes.LexendTeraFont11}
+          >
           Register
         </Button>
       </div>
