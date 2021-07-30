@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css';
+import { Box } from '@material-ui/core';
 
 // This is one of our simplest components
 // It doesn't have local state, so it can be a function component.
@@ -9,7 +10,10 @@ import './Footer.css';
 function Footer() {
   return (
     <footer className="lexendFont">
-      &copy; 2021 PrīmX NA. All rights reserved.
+      <Box>
+        <img src="./images/PrimXLogo-Spaced-01.svg" height="60"></img>
+      </Box>
+      <p>&copy; 2021 PrīmX NA. All rights reserved.</p>
     </footer>
   )
 }

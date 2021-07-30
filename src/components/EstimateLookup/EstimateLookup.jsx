@@ -607,10 +607,10 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Width (m³):</b></TableCell>
                     <TableCell>
-                      5
+                      1.5
                     </TableCell>
                     <TableCell>
-                      10
+                      3.0
                     </TableCell>
                   </TableRow>
 
