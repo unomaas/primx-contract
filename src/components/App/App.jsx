@@ -59,8 +59,15 @@ function App() {
               <EstimateCreate />
             </Route>
 
+            {/* /lookup leads to the search estimate view for finding individual estimates */}
             <Route exact path="/lookup">
               <EstimateLookup />
+            </Route>
+
+            <Route 
+              path="/lookup/:licensee_id_searched/:estimate_number_searched"
+              children={<EstimateLookup />}
+            >
             </Route>
 
             {/* When a value is supplied for the authRedirect prop the user will
