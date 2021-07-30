@@ -161,7 +161,7 @@ export default function NavDrawer() {
 
               <Divider />
 
-              <ListItem button onClick={() => history.push(`/user`)}>
+              <ListItem button onClick={() => history.push(`/login`)}>
                 <ExitToAppIcon /> &nbsp;
                 {/* <ListItemText primary={"Admin Login"} /> */}
                 <p>Admin Login</p>
