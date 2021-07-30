@@ -63,6 +63,16 @@ function App() {
               <EstimateLookup />
             </Route>
 
+            {/* When a value is supplied for the authRedirect prop the user will
+            be redirected to the path supplied when logged in, otherwise they will
+            be taken to the component and path supplied. */}
+            {/* // with authRedirect:
+            // - if logged in, redirects to "/user"
+            // - else shows LoginPage at /login */}
+            <Route exact path="/login" >
+              <AdminLoginPage />
+            </Route>
+
             {/* Home/Landing Page with Create New or Lookup Estimate: */}
             {/* <Route exact path="/home">
               <LicenseeHomePage />
@@ -122,15 +132,7 @@ function App() {
               <InfoPage />
             </ProtectedRoute>
 
-            {/* When a value is supplied for the authRedirect prop the user will
-            be redirected to the path supplied when logged in, otherwise they will
-            be taken to the component and path supplied. */}
-            {/* // with authRedirect:
-            // - if logged in, redirects to "/user"
-            // - else shows LoginPage at /login */}
-            <Route exact path="/login" >
-              <AdminLoginPage />
-            </Route>
+
 
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
