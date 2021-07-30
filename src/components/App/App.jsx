@@ -128,9 +128,9 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows LoginPage at /login */}
-            <ProtectedRoute exact path="/login" >
+            <Route exact path="/login" >
               <AdminLoginPage />
-            </ProtectedRoute>
+            </Route>
 
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
