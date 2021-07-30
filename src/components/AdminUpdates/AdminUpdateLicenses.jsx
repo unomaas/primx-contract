@@ -22,8 +22,7 @@ export default function AdminUpdateLicenses() {
   const companies = useSelector(store => store.companies);
   // establish add company input state with use state
   let [companyNameInput,setCompanyNameInput] = useState('');
-  // establish open for snackbar notification
-  const [open, setOpen] = useState(false);
+  // establish snackbar variables for notifications
   const snack = useSelector(store => store.snackBar);
   
 

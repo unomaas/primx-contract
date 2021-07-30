@@ -1,7 +1,9 @@
 const snackReducer = (state ={open: false, message: '', severity: "success"}, action) => {
     switch (action.type) {
-      case 'SET_SUCCESSSNACK':
-        return {open: true, message: 'A Licensee has been added!', severity: "success"};
+      case 'SET_SUCCESS_COMPANY':
+        return {open: true, message: 'A Licensee Has Been Added!', severity: "success"}
+      case 'SET_SUCCESS_SHIPPING':
+        return {open: true, message: 'Shipping Details Have Been Added!', severity: "success"};
       case 'SET_CLOSE':
         return {...state,open: false}
       case 'SET_EMPTY_ERROR' :
