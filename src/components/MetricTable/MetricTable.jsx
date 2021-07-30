@@ -84,6 +84,9 @@ export default function MetricTable() {
     console.log('In Metric handleSave');
     // ⬇ Don't refresh until submit:
     event.preventDefault();
+    // send the estimate object to be POSTed
+    dispatch({type: 'ADD_ESTIMATE', payload: estimateData})
+
     // // ⬇ Sending newPlant to our reducer: 
     // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
     // // ⬇ Send the user back:
@@ -443,7 +446,7 @@ export default function MetricTable() {
                         <Button
                           // type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => handleSave(event)}
+                          onClick={event => handleSave(event)}
                           variant="contained"
                           className={classes.LexendTeraFont11}
                           color="secondary"
