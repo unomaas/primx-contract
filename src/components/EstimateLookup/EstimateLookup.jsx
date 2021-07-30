@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText } from '@material-ui/core';
 
 
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
@@ -13,6 +13,10 @@ export default function EstimateLookup() {
     licensee_id: "",
     id: ""
   });
+  const [error, setError] = useState(false);
+
+  const [selectError, setSelectError] = useState("");
+
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -22,18 +26,28 @@ export default function EstimateLookup() {
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
 
-
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
     setSearchQuery({ ...searchQuery, [key]: value })
   };
 
   const handleSubmit = () => {
-    console.log('In handleSubmit, key/value:')
+    console.log('In handleSubmit')
+    // ⬇ Select dropdown validation:
+    if (searchQuery.licensee_id == "0" || "") {
+      // If they selected a company name from dropdown:
+      setError(false);
+      setSelectError("");
+      console.log("Validation works.");
+    } else {
+      // If they haven't, pop up warning and prevent them:
+      setError(true);
+      setSelectError("Please select a value.");
+    }
   };
 
+  
 
-  console.log('SeachQuery is:', searchQuery);
   return (
     <div className="EstimateCreate-wrapper">
       {/* <LicenseeHomePage /> */}
@@ -56,19 +70,22 @@ export default function EstimateLookup() {
                     <TableRow>
                       <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                       <TableCell>
-                        <Select
-                          onChange={event => handleChange('licensee_id', event.target.value)}
-                          required
-                          size="small"
-                          fullWidth
-                          defaultValue="0"
-                        >
-                          <MenuItem key="0" value="0">Please Select</MenuItem>
-                          {companies.map(companies => {
-                            return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
-                          }
-                          )}
-                        </Select>
+                        <FormControl error={error}>
+                          <Select
+                            onChange={event => handleChange('licensee_id', event.target.value)}
+                            required
+                            size="small"
+                            fullWidth
+                            defaultValue="0"
+                          >
+                            <MenuItem key="0" value="0">Please Select</MenuItem>
+                            {companies.map(companies => {
+                              return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                            }
+                            )}
+                          </Select>
+                          <FormHelperText>{selectError}</FormHelperText>
+                        </FormControl>
                       </TableCell>
 
                       <TableCell><b>Estimate Number:</b></TableCell>
@@ -102,13 +119,12 @@ export default function EstimateLookup() {
           </Grid>
         </Grid>
       </form>
+      <br />
 
       <Grid container
         spacing={2}
         justifyContent="center"
       >
-
-
         {/* Grid Table #1: Display the Licensee/Project Info Form */}
         <Grid item xs={6}>
           <Paper elevation={3}>
