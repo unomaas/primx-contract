@@ -11,7 +11,7 @@ export default function EstimateLookup() {
   const companies = useSelector(store => store.companies);
   const [searchQuery, setSearchQuery] = useState({
     licensee_id: "",
-    id: ""
+    estimate_number: ""
   });
 
   const dispatch = useDispatch();
@@ -22,32 +22,30 @@ export default function EstimateLookup() {
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
 
-  // DRY, but functional state changes for licensee inputs
-  const handleLicenseeChange = (event) => {
-    event.preventDefault();
-    setLicenseeId(event.target.value)
-  }
-  const handleEstimateChange = (event) => {
-    event.preventDefault();
-    setEstimateNumber(event.target.value)
-  }
+  // const handleLicenseeChange = (event) => {
+  //   event.preventDefault();
+  //   setLicenseeId(event.target.value)
+  // }
+  // const handleEstimateChange = (event) => {
+  //   event.preventDefault();
+  //   setEstimateNumber(event.target.value)
+  // }
 
   const handleSubmit = event => {
     event.preventDefault()
-
-    const lookupEstimate = {
-        licenseeId: licenseeId,
-        estimateNumber: estimateNumber,
-    }
-    console.log('lookup estimate number and licensee', lookupEstimate);
+    
+    console.log('lookup estimate number and licensee', searchQuery);
     dispatch({
         type: 'LOOKUP_ESTIMATE',
-        payload: lookupEstimate
+        payload: searchQuery
     })
     //clear inputs
-    setLicenseeId('');
-    setEstimateNumber('');
-}
+    setSearchQuery({
+      licensee_id: "",
+      estimate_number: ""
+    });
+
+  }
 
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
@@ -96,7 +94,7 @@ export default function EstimateLookup() {
                       <TableCell><b>Estimate Number:</b></TableCell>
                       <TableCell>
                         <TextField
-                          onChange={event => handleChange('id', event.target.value)}
+                          onChange={event => handleChange('estimate_number', event.target.value)}
                           required
                           type="search"
                           size="small"
@@ -130,10 +128,11 @@ export default function EstimateLookup() {
         justifyContent="center"
       >
 
-        <Grid item xs={10}>
+        {/* <Grid item xs={10}>
           <Paper elevation={3}>
             <TableContainer >
               {/* <h3 className="lexendFont">Search for an Estimate</h3> */}
+              {/*
               <Table size="small">
                 <TableBody>
 
@@ -154,10 +153,8 @@ export default function EstimateLookup() {
                         }
                         )}
                       </Select>
-                    </TableCell>
-                    {/* </TableRow>
+                    </TableCell> *}
 
-                  <TableRow> */}
                     <TableCell><b>Estimate Number:</b></TableCell>
                     <TableCell>
                       <TextField
@@ -168,9 +165,7 @@ export default function EstimateLookup() {
                         fullWidth
                       />
                     </TableCell>
-                    {/* </TableRow>
 
-                  <TableRow> */}
                     <TableCell colSpan={2} align="right">
                       <Button
                         type="submit"
@@ -189,7 +184,7 @@ export default function EstimateLookup() {
               </Table>
             </TableContainer>
           </Paper>
-        </Grid>
+        </Grid> */}
 
         {/* Grid Table #1: Display the Licensee/Project Info Form */}
         <Grid item xs={6}>
