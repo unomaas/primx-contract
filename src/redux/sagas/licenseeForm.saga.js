@@ -4,8 +4,8 @@ import axios from 'axios';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* LookupEstimate(action) {
-    const estimateNumber = action.payload.estimateNumber
-    const licenseeId = action.payload.licenseeId
+    const estimateNumber = action.payload.estimate_number
+    const licenseeId = action.payload.licensee_id
 
     console.log('IN SAGA -->Estimate Order For Lookup:', estimateNumber, ' Licensee ID:', licenseeId);
 
