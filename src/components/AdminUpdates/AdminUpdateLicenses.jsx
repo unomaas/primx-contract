@@ -24,6 +24,8 @@ export default function AdminUpdateLicenses() {
   let [companyNameInput,setCompanyNameInput] = useState('');
   // establish open for snackbar notification
   const [open, setOpen] = useState(false);
+  const snack = useSelector(store => store.snackBar);
+  
 
      //styles for MUI
      const useStyles = makeStyles((theme) => ({
@@ -64,11 +66,10 @@ export default function AdminUpdateLicenses() {
   //handles add company button click that sends payload of company name input to saga for posting to database
   const handleAddCompany = (event) => {
     if(companyNameInput == '') {
-      swal("Error", "You need to input the company name to add", "error");
+      dispatch({type: 'SET_EMPTY_ERROR'})
     } else {
       dispatch({type: 'ADD_COMPANY', payload: companyNameInput});
       setCompanyNameInput('');
-      setOpen(true);
       
     }
 
@@ -79,7 +80,7 @@ export default function AdminUpdateLicenses() {
       return;
     }
 
-    setOpen(false);
+    dispatch({type: 'SET_CLOSE'})
   };
 
 
@@ -100,9 +101,9 @@ return (
         pageSize={10}
         onEditCellChangeCommitted={handleEditSubmit}
       />
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          A Licensee has been added!
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snack.severity}>
+          {snack.message}
         </Alert>
       </Snackbar>
     </div>
