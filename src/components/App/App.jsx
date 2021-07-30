@@ -65,11 +65,10 @@ function App() {
             </Route>
 
             <Route 
-              path="/lookup/:licensee_id_estimate_number"
+              path="/lookup/:licensee_id_searched/:estimate_number_searched"
               children={<EstimateLookup />}
             >
             </Route>
-
 
             {/* When a value is supplied for the authRedirect prop the user will
             be redirected to the path supplied when logged in, otherwise they will

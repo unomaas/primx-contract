@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
-function* LookupEstimate(action) {
+function* fetchEstimateQuery(action) {
     const estimateNumber = action.payload.estimate_number
     const licenseeId = action.payload.licensee_id
 
@@ -47,7 +47,7 @@ function* AddEstimate(action) {
 // companies saga to fetch companies
 function* licenseeFormSaga() {
     yield takeLatest('ADD_ESTIMATE', AddEstimate);
-    yield takeLatest('LOOKUP_ESTIMATE', LookupEstimate)
+    yield takeLatest('FETCH_ESTIMATE_QUERY', fetchEstimateQuery)
 }
 
 export default licenseeFormSaga;

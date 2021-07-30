@@ -18,7 +18,8 @@ export default function EstimateLookup() {
   const [selectError, setSelectError] = useState("");
 
   // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
-  const { licensee_id_estimate_number } = useParams();
+  // const { licensee_id_estimate_number } = useParams();
+  const {estimate_number_searched, licensee_id_searched} = useParams();
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -29,6 +30,17 @@ export default function EstimateLookup() {
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
 
+  useEffect(() => {
+    // if the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view,
+    // dispatch the data in the url params to run a GET request to the DB
+    if(estimate_number_searched && licensee_id_searched) {
+
+      dispatch({type: 'FETCH_ESTIMATE_QUERY', payload: {
+        licensee_id: licensee_id_searched,
+        estimate_number: estimate_number_searched
+      }})
+    }
+  }, [estimate_number_searched])
 
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
@@ -39,7 +51,7 @@ export default function EstimateLookup() {
     console.log('In handleSubmit')
     // ⬇ Select dropdown validation:
     // use history to send user to the details subview of their search query
-    history.push(`/lookup/${searchQuery.licensee_id}${searchQuery.estimate_number}`)
+    history.push(`/lookup/${searchQuery.licensee_id}/${searchQuery.estimate_number}`)
 
     if (searchQuery.licensee_id !== "0" || "") {
       // If they selected a company name from dropdown:
@@ -55,8 +67,7 @@ export default function EstimateLookup() {
     }
   };
 
-  
-  console.log('Search params: licensee id / estimate number', licensee_id_estimate_number);
+
   return (
     <div className="EstimateCreate-wrapper">
       {/* <LicenseeHomePage /> */}
