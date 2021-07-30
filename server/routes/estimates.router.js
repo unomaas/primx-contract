@@ -9,9 +9,9 @@ const { v4: uuidv4 } = require('uuid');
 
 
 // GET request to grab estimate at ID/Estimate number for Lookup view
-router.get('/:lookup', (req, res) => {
-  const estimateNumber = req.params.estimateNumber
-  const licenseeId = req.params.licenseeId
+router.get('/lookup/:estimate', (req, res) => {
+  const estimateNumber = req.query.estimateNumber
+  const licenseeId = req.query.licenseeId
 
   const queryText =
                   `SELECT * FROM estimates 

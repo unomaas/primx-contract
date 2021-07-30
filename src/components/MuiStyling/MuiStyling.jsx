@@ -1,8 +1,8 @@
-import { makeStyles, createMuiTheme, withStyles, TableCell, TableRow } from '@material-ui/core';
+import { makeStyles, createTheme, withStyles, TableCell, TableRow } from '@material-ui/core';
 
 
 // ⬇ Material-ui Theme: 
-const theme = createMuiTheme({
+const theme = createTheme({
   // Changes the font default of MUI Components to be on-brand font: 
   // typography: {
   //   fontFamily: 'Lexend Tera',

@@ -34,6 +34,8 @@ export default function EstimateCreate() {
   const showTables = useSelector(store => store.estimatesReducer.tableState);
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");
+  const {leadtime, setLeadTime} = useState("");
+
   // ⬇ GET on page load:
   useEffect(() => {
     // Licensee/Company Name Call
@@ -51,11 +53,22 @@ export default function EstimateCreate() {
 
 
   //#region ⬇⬇ Event handlers below:
+
+  const timeDifference = (date2, date) => {
+    let diff = (date2.getTime() - date1.getTime()) / 1000;
+    diff /= (60 * 60 * 24 * 7);
+    return Math.abs(Math.round(diff));
+  }
+
   /** ⬇ handleChange:
     * When the user types, this will set their input to the kit object with keys for each field. 
     */
   const handleChange = (key, value) => {
-    console.log('In handleChange, key/value:', key, '/', value);
+    console.log('In EstimateCreate handleChange, key/value:', key, '/', value);
+    if (key == "anticipated_first_pour_date") {
+      // console.log('*** Time diff is:', timeDifference(value - today))
+    }
+
     // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
       type: 'SET_ESTIMATE',
@@ -162,6 +175,9 @@ export default function EstimateCreate() {
     // // ⬇ Send the user back:
     // history.push('/dashboard');
   } // End handleSubmit
+
+
+
   //#endregion ⬆⬆ Event handles above. 
 
 
@@ -211,9 +227,9 @@ export default function EstimateCreate() {
                           fullWidth
                           defaultValue="0"
                         >
-                          <MenuItem value="0">Please Select</MenuItem>
+                          <MenuItem key="0" value="0">Please Select</MenuItem>
                           {companies.map(companies => {
-                            return (<MenuItem value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                            return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
                           }
                           )}
                         </Select>
@@ -282,9 +298,9 @@ export default function EstimateCreate() {
                           fullWidth
                           defaultValue="0"
                         >
-                          <MenuItem value="0">Please Select</MenuItem>
+                          <MenuItem key="0" value="0">Please Select</MenuItem>
                           {floorTypes.map(types => {
-                            return (<MenuItem value={types.id}>{types.floor_type}</MenuItem>)
+                            return (<MenuItem key={types.id} value={types.id}>{types.floor_type}</MenuItem>)
                           })}
                         </Select>
                       </TableCell>
@@ -302,7 +318,7 @@ export default function EstimateCreate() {
                         >
                           <MenuItem value="0">Please Select</MenuItem>
                           {placementTypes.map(placementTypes => {
-                            return (<MenuItem value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
+                            return (<MenuItem key={placementTypes.id} value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
                           })}
                         </Select>
                       </TableCell>
@@ -419,9 +435,9 @@ export default function EstimateCreate() {
                           fullWidth
                           defaultValue="0"
                         >
-                          <MenuItem value="0">Please Select</MenuItem>
+                          <MenuItem key="0" value="0">Please Select</MenuItem>
                           {shippingCosts.map(state => {
-                            return (<MenuItem value={state.id}>{state.ship_to_state_province}</MenuItem>)
+                            return (<MenuItem key={state.id} value={state.id}>{state.ship_to_state_province}</MenuItem>)
                           })}
                         </Select>
                       </TableCell>
@@ -450,19 +466,19 @@ export default function EstimateCreate() {
                           fullWidth
                           defaultValue="0"
                         >
-                          <MenuItem value="0">Please Select</MenuItem>
-                          <MenuItem value="United States">United States</MenuItem>
-                          <MenuItem value="Canada">Canada</MenuItem>
+                          <MenuItem key="0" value="0">Please Select</MenuItem>
+                          <MenuItem key="United States" value="United States">United States</MenuItem>
+                          <MenuItem key="Canada" value="Canada">Canada</MenuItem>
                         </Select>
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
-                      <TableCell colspan={2} align="right">
+                      <TableCell colSpan={2} align="right">
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+                          onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
                           variant="contained"
                           style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                           color="primary"
@@ -484,20 +500,20 @@ export default function EstimateCreate() {
 
       <br />
 
-        {/* Conditional rendering to show or hide tables based off submit button: */}
-        {showTables ? (
-          <>
-            {/* Conditional rendering to show Imperial or Metric Table: */}
-            {estimateData.measurement_units == "imperial" ? (
-              // If they select Imperial, show Imperial Table: 
-              <ImperialTable />
-            ) : (
-              // If they select Metric, show Metric Table: 
-              <MetricTable />
-            )}
-          </>
-        ) : (<></>)}
-        {/* End conditional rendering. */}
+      {/* Conditional rendering to show or hide tables based off submit button: */}
+      {showTables ? (
+        <>
+          {/* Conditional rendering to show Imperial or Metric Table: */}
+          {estimateData.measurement_units == "imperial" ? (
+            // If they select Imperial, show Imperial Table: 
+            <ImperialTable />
+          ) : (
+            // If they select Metric, show Metric Table: 
+            <MetricTable />
+          )}
+        </>
+      ) : (<></>)}
+      {/* End conditional rendering. */}
 
     </div >
   )

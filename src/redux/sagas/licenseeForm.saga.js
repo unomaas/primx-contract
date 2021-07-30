@@ -10,13 +10,14 @@ function* LookupEstimate(action) {
     console.log('IN SAGA -->Estimate Order For Lookup:', estimateNumber, ' Licensee ID:', licenseeId);
 
     try {
-        const response = yield axios.get('/api/estimates/lookup',
-        {params:{
-            estimateNumber: estimateNumber,
-            licenseeId: licenseeId
-         }
-        })
-       
+        const response = yield axios.get('/api/estimates/lookup/:estimates',
+            {
+                params: {
+                    estimateNumber: estimateNumber,
+                    licenseeId: licenseeId
+                }
+            })
+
         //take response from DB and insert into Admin Reducer
         yield put({ type: 'SET_ADMIN_ESTIMATES', payload: response.data });
     }

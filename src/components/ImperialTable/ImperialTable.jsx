@@ -33,6 +33,7 @@ export default function ImperialTable() {
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const productsReducer = useSelector(store => store.products);
+  const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
 
   // ⬇ GET on page load:
   // useEffect(() => {
@@ -83,20 +84,20 @@ export default function ImperialTable() {
     // // ⬇ Send the user back:
     // history.push('/dashboard');
   } // End handleSubmit
-  //#endregion ⬆⬆ Event handles above. 
 
-  // look to see if the form is filled out enough to calculate values
-  if (estimateData.square_feet && estimateData.thickness_inches && estimateData.primx_flow_dosage_liters &&
-    estimateData.primx_steel_fibers_dosage_lbs && estimateData.primx_cpea_dosage_liters) {
-    // Before we call calculateEstimate, we need a total package to run:
+  const handleCalculateCosts = () => {
+    console.log('In Imperial handleCalculateCosts');
     const calculatedObject = calculateEstimate(estimateData)
-    console.log('new object', calculatedObject);
+    setCalculatedDisplayObject(calculatedObject)
+    console.log('***CALCULATED OBJECT****', calculatedObject);
+    // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
   }
-
+  //#endregion ⬆⬆ Event handles above. 
 
   return (
     <>
       <form onSubmit={handleSave}>
+
         <Grid container
           spacing={2}
           justify="center"
@@ -142,32 +143,47 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell><b>Cubic Yards:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.cubic_yards}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {/* This rounds down in the spreadsheet, and rounds up here: */}
+                        {calculatedDisplayObject?.perimeter_thickening_cubic_yards}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {/* This rounds down in the spreadsheet, and rounds up here: */}
+                        {calculatedDisplayObject?.construction_joint_thickening_cubic_yards}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Subtotal:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {/* This rounds down in the spreadsheet, and rounds up here: */}
+                        {calculatedDisplayObject?.cubic_yards_subtotal}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Waste Factor @ 5%:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.waste_factor_cubic_yards}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Total Cubic Yards:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.design_cubic_yards_total}
+                      </TableCell>
                     </TableRow>
 
                   </TableBody>
@@ -224,20 +240,32 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell><b>Width (yd³):</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        5
+                      </TableCell>
+                      <TableCell>
+                        10
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Additional Thickness (in):</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.additional_thickness_inches}
+                      </TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.additional_thickness_inches}
+                      </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Cubic Yards:</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.perimeter_thickening_cubic_yards}
+                      </TableCell>
+                      <TableCell>
+                        {calculatedDisplayObject?.construction_joint_thickening_cubic_yards}
+                      </TableCell>
                     </TableRow>
 
                   </TableBody>
@@ -270,16 +298,16 @@ export default function ImperialTable() {
                   <TableBody>
                     <TableRow>
                       <TableCell><b>PrīmX DC (lbs)</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -293,15 +321,15 @@ export default function ImperialTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -315,29 +343,29 @@ export default function ImperialTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -351,15 +379,15 @@ export default function ImperialTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
-                      <TableCell>CALC#</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
+                      <TableCell>CALC</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -391,17 +419,36 @@ export default function ImperialTable() {
                     </TableRow>
 
                     <TableRow>
+                      {/* <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell colspan={3} align="right">
+
+                      <TableCell colSpan={3} align="right">
                         <Button
                           type="submit"
+                          onClick={event => handleCalculateCosts(event)}
+                          variant="contained"
+                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          color="primary"
+                        >
+                          Calculate Costs
+                        </Button>
+                      </TableCell> */}
+                      <TableCell colSpan={11} align="right">
+                        <Button
+                          type="submit"
+                          onClick={event => handleCalculateCosts(event)}
+                          variant="contained"
+                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          color="primary"
+                        >
+                          Calculate Costs
+                        </Button>
+                        &nbsp; &nbsp;
+                        <Button
+                          // type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
                           // onClick={event => handleSave(event)}
                           variant="contained"
