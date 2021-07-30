@@ -29,7 +29,6 @@ export default function EstimateLookup() {
   };
 
 
-
   console.log('SeachQuery is:', searchQuery);
   return (
     <div className="EstimateCreate-wrapper">
