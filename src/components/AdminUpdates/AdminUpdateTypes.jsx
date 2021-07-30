@@ -56,9 +56,6 @@ export default function AdminUpdateTypes() {
       swal("Error", "You need to input new floor type", "error");
     } else {
     dispatch({type: "ADD_FLOOR_TYPE", payload: {floor_type: newFloorType}})
-    swal("Success!", "New Floor Type Added", "success", {
-      button: "OK",
-    });
     setOpen(true);
     }
   }
@@ -68,9 +65,6 @@ export default function AdminUpdateTypes() {
       swal("Error", "You need to input new placement type", "error");
     } else {
     dispatch({type: "ADD_PLACEMENT_TYPE", payload: {placement_type: newPlacementType}})
-    swal("Success!", "New Placement Type Added", "success", {
-      button: "OK",
-    });
     setOpen(true);
     }
   }
