@@ -24,7 +24,7 @@ export default function UpdateShippingCostsGrid() {
         {field: 'fibers_price', headerName: 'Fibers', width: 200, editable: true} // Editable + validation?
 
     ]
-
+    //rows are from the shipping costs reducer
     let rows = shippingCosts
 
     console.log('shipping costs in grid component -->', shippingCosts);

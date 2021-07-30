@@ -42,29 +42,34 @@ export default function AdminUpdateTypes() {
   //defining classes for MUI
   const classes = useStyles();
 
+  //the following handle...change functions set the floor type and placement type useStates
   const handleFloorChange = (event) => {
     setNewFloorType(event.target.value);
   }
-
   const handlePlacementChange = (event) => {
     setNewPlacementType(event.target.value);
   }
 
   const addFloorType = () => {
     if (newFloorType == '') {
+      //error shows if a field is empty
       dispatch({type: 'SET_EMPTY_ERROR'})
     } else {
+      //sends newFloorType to reducer to add floor type to DB
     dispatch({type: "ADD_FLOOR_TYPE", payload: {floor_type: newFloorType}})
+    //empty input field after it is submitted
     setNewFloorType('')
-    
     }
   }
 
   const addPlacementType = () => {
     if (newPlacementType == '') {
+            //error shows if a field is empty
       dispatch({type: 'SET_EMPTY_ERROR'})
     } else {
+            //sends newPlacementType to reducer to add floor type to DB
     dispatch({type: "ADD_PLACEMENT_TYPE", payload: {placement_type: newPlacementType}})
+        //empty input field after it is submitted
     setNewPlacementType('')
     }
   }
@@ -115,16 +120,12 @@ export default function AdminUpdateTypes() {
         </div>
       {/* showing placement types */}
       <UpdatePlacementTypesGrid placementTypes={placementTypes}/>
+      {/* snackbar to confirm when a floor or placement type has been added */}
       <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={snack.severity}>
           {snack.message}
         </Alert>
       </Snackbar>
-
-
-
-
-      {/* <AdminUpdateTypesGrid floorAndPlacementTypes={placementTypes}/> */}
     </div>
   )
 }

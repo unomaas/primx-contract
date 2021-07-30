@@ -4,7 +4,8 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 // GET route - gets shipping costs
-router.get('/', /*rejectUnauthenticated,*/ (req, res) => {
+router.get('/', (req, res) => {
+  //query to grab al info from the shipping_costs table
   const queryText = `SELECT * FROM "shipping_costs" ORDER BY ship_to_state_province ASC;`;
   pool.query(queryText).then((result) => {
       res.send(result.rows);
@@ -16,6 +17,7 @@ router.get('/', /*rejectUnauthenticated,*/ (req, res) => {
 
 //Post Route - adds shipping cost
 router.post('/', rejectUnauthenticated, (req, res) => {
+  //query to add a new lane to the shipping costs table
   const queryText = `INSERT INTO "shipping_costs" ("ship_to_state_province", "dc_price", "flow_cpea_price", "fibers_price")
             VALUES ($1, $2, $3, $4);`;
     pool.query(queryText, [req.body.ship_to_state_province, req.body.dc_price, req.body.flow_cpea_price, req.body.fibers_price])

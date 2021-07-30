@@ -26,10 +26,10 @@ function AdminLandingPage() {
   //defining classes for MUI
   const classes = useStyles();
 
+  // functions for navigating with the two main buttons
   const goToOrdersAndEstimates = () => {
     history.push('./AdminOrders');
   }
-
   const goToAdminUpdates = () => {
     history.push('./AdminUpdates');
   }
@@ -41,6 +41,7 @@ function AdminLandingPage() {
         <h2>Welcome, {user.username}!</h2>
       </center>
 
+      {/* navigate to orders and estimates page */}
       <h3>View Orders and Estimates</h3>
       <Button
         onClick={goToOrdersAndEstimates}
@@ -52,6 +53,7 @@ function AdminLandingPage() {
         Go
       </Button>
 
+      {/* navigate to the admin updates page */}
       <h3>Update Licensee/Costs/Inventory</h3>
       <Button
         onClick={goToAdminUpdates}
