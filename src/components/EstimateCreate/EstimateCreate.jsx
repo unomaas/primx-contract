@@ -227,9 +227,9 @@ export default function EstimateCreate() {
                           fullWidth
                           defaultValue="0"
                         >
-                          <MenuItem value="0">Please Select</MenuItem>
+                          <MenuItem key="0" value="0">Please Select</MenuItem>
                           {companies.map(companies => {
-                            return (<MenuItem value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                            return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
                           }
                           )}
                         </Select>
@@ -298,9 +298,9 @@ export default function EstimateCreate() {
                           fullWidth
                           defaultValue="0"
                         >
-                          <MenuItem value="0">Please Select</MenuItem>
+                          <MenuItem key="0" value="0">Please Select</MenuItem>
                           {floorTypes.map(types => {
-                            return (<MenuItem value={types.id}>{types.floor_type}</MenuItem>)
+                            return (<MenuItem key={types.id} value={types.id}>{types.floor_type}</MenuItem>)
                           })}
                         </Select>
                       </TableCell>
@@ -318,7 +318,7 @@ export default function EstimateCreate() {
                         >
                           <MenuItem value="0">Please Select</MenuItem>
                           {placementTypes.map(placementTypes => {
-                            return (<MenuItem value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
+                            return (<MenuItem key={placementTypes.id} value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
                           })}
                         </Select>
                       </TableCell>
@@ -435,9 +435,9 @@ export default function EstimateCreate() {
                           fullWidth
                           defaultValue="0"
                         >
-                          <MenuItem value="0">Please Select</MenuItem>
+                          <MenuItem key="0" value="0">Please Select</MenuItem>
                           {shippingCosts.map(state => {
-                            return (<MenuItem value={state.id}>{state.ship_to_state_province}</MenuItem>)
+                            return (<MenuItem key={state.id} value={state.id}>{state.ship_to_state_province}</MenuItem>)
                           })}
                         </Select>
                       </TableCell>
@@ -466,15 +466,15 @@ export default function EstimateCreate() {
                           fullWidth
                           defaultValue="0"
                         >
-                          <MenuItem value="0">Please Select</MenuItem>
-                          <MenuItem value="United States">United States</MenuItem>
-                          <MenuItem value="Canada">Canada</MenuItem>
+                          <MenuItem key="0" value="0">Please Select</MenuItem>
+                          <MenuItem key="United States" value="United States">United States</MenuItem>
+                          <MenuItem key="Canada" value="Canada">Canada</MenuItem>
                         </Select>
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
-                      <TableCell colspan={2} align="right">
+                      <TableCell colSpan={2} align="right">
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:

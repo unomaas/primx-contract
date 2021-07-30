@@ -425,7 +425,7 @@ export default function ImperialTable() {
                       <TableCell></TableCell>
                       <TableCell></TableCell>
 
-                      <TableCell colspan={3} align="right">
+                      <TableCell colSpan={3} align="right">
                         <Button
                           type="submit"
                           onClick={event => handleCalculateCosts(event)}
@@ -436,7 +436,7 @@ export default function ImperialTable() {
                           Calculate Costs
                         </Button>
                       </TableCell> */}
-                      <TableCell colspan={11} align="right">
+                      <TableCell colSpan={11} align="right">
                         <Button
                           type="submit"
                           onClick={event => handleCalculateCosts(event)}
