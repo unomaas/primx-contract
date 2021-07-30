@@ -6,6 +6,7 @@ const { useRadioGroup } = require('@material-ui/core');
 
 //Get Route
 router.get('/', rejectUnauthenticated, (req, res) => {
+  //query to 
     const queryText = `SELECT * FROM "user" ORDER BY username ASC;`;
     pool.query(queryText).then((result) => {
       res.send(result.rows);

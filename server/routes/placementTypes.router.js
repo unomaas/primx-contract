@@ -6,8 +6,8 @@ const router = express.Router();
 /**
  * GET route template
  */
-router.get('/', /*rejectUnauthenticated,*/ (req, res) => {
-  // GET route code here
+router.get('/', (req, res) => {
+  // query text to grab all info from placement types table
   const queryText = `SELECT * FROM "placement_types";`;
   pool.query(queryText).then((result) => {
       res.send(result.rows);
@@ -19,7 +19,7 @@ router.get('/', /*rejectUnauthenticated,*/ (req, res) => {
 
 //Post Route - adds placement type to DB
 router.post('/', rejectUnauthenticated, (req, res) => {
-  // endpoint functionality
+  // query text to add a new placement type to the table
   queryText = `INSERT INTO "placement_types" ("placement_type")
             VALUES ($1);`;
     pool.query(queryText, [req.body.placement_type])

@@ -39,6 +39,7 @@ const snack = useSelector(store => store.snackBar);
   //defining classes for MUI
   const classes = useStyles();
 
+  //the following handle...change functions set the values for newShippingCost object
   const handleShipToChange = (event) => {
     setNewShippingCost({ ...newShippingCost, ship_to_state_province: event.target.value });
   }
@@ -56,6 +57,7 @@ const snack = useSelector(store => store.snackBar);
   const handleSubmit = () => {
 
     console.log('in handleSubmit, adding newShippingCost -->', newShippingCost);
+    //shows an error is one of the fields is empty
     if (newShippingCost.dc_price == '' || newShippingCost.ship_to_state_province == '' || newShippingCost.flow_cpea_price == '' ||
     newShippingCost.fibers_price == '') {
       dispatch({type: 'SET_EMPTY_ERROR'})
@@ -87,6 +89,7 @@ const snack = useSelector(store => store.snackBar);
   return (
     <div>
       <div>
+        {/* shows the dropdown menu to navigate to specific updates */}
         <AdminUpdates />
       </div>
 
@@ -95,6 +98,7 @@ const snack = useSelector(store => store.snackBar);
       </div>
 
       <div>
+        {/* form to take in info and create a new shipping lane with costs */}
         <form className={classes.root} noValidate autoComplete="off">
           <div>
             <div >
@@ -113,7 +117,9 @@ const snack = useSelector(store => store.snackBar);
           </div>
         </form>
       </div>
+      {/* the grid below is being imported in - this grid shows the current shipping lanes and their pricing info */}
       <UpdateShippingCostsGrid />
+      {/* snackbar set to confirm a new lane has been successfully added */}
       <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={snack.severity}>
           {snack.message}
