@@ -250,6 +250,19 @@ export default function EstimateCreate() {
                     </TableRow>
 
                     <TableRow>
+                      <TableCell><b>Project Manager Name:</b></TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('project_manager_name', event.target.value)}
+                          required
+                          type="search"
+                          size="small"
+                          fullWidth
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
                       <TableCell><b>Project Manager Email:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -275,18 +288,6 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
-                      <TableCell><b>Your Purchase Order #:</b></TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('po_number', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                        />
-                      </TableCell>
-                    </TableRow>
 
                     <TableRow>
                       <TableCell><b>Floor Type:</b></TableCell>
