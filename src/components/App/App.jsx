@@ -136,11 +136,11 @@ function App() {
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows RegisterPage at "/registration" */}
-            {user.id == '1' ?
+            {/* {user.id == '1' ?
               <Route exact path="/registration" >
                 <AdminRegisterPage />
               </Route>
-              : <></>}
+              : <></>} */}
 
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
