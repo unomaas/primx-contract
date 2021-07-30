@@ -28,6 +28,10 @@ export default function EstimateLookup() {
     setSearchQuery({ ...searchQuery, [key]: value })
   };
 
+  const handleSubmit = () => {
+    console.log('In handleSubmit, key/value:')
+  };
+
 
   console.log('SeachQuery is:', searchQuery);
   return (
@@ -36,8 +40,8 @@ export default function EstimateLookup() {
       <ButtonToggle />
 
       <br />
-      <form onSubmit={handleSubmit}>
 
+      <form onSubmit={handleSubmit}>
         <Grid container
           spacing={2}
           justifyContent="center"
@@ -96,7 +100,14 @@ export default function EstimateLookup() {
               </TableContainer>
             </Paper>
           </Grid>
-        </form>
+        </Grid>
+      </form>
+
+      <Grid container
+        spacing={2}
+        justifyContent="center"
+      >
+
 
         {/* Grid Table #1: Display the Licensee/Project Info Form */}
         <Grid item xs={6}>
