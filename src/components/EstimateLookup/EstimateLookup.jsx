@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText } from '@material-ui/core';
 
 
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
@@ -13,6 +13,10 @@ export default function EstimateLookup() {
     licensee_id: "",
     estimate_number: ""
   });
+  const [error, setError] = useState(false);
+
+  const [selectError, setSelectError] = useState("");
+
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -22,38 +26,28 @@ export default function EstimateLookup() {
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
 
-  // const handleLicenseeChange = (event) => {
-  //   event.preventDefault();
-  //   setLicenseeId(event.target.value)
-  // }
-  // const handleEstimateChange = (event) => {
-  //   event.preventDefault();
-  //   setEstimateNumber(event.target.value)
-  // }
-
-  const handleSubmit = event => {
-    event.preventDefault()
-    
-    console.log('lookup estimate number and licensee', searchQuery);
-    dispatch({
-        type: 'LOOKUP_ESTIMATE',
-        payload: searchQuery
-    })
-    //clear inputs
-    setSearchQuery({
-      licensee_id: "",
-      estimate_number: ""
-    });
-
-  }
-
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
     setSearchQuery({ ...searchQuery, [key]: value })
   };
 
+  const handleSubmit = () => {
+    console.log('In handleSubmit')
+    // ⬇ Select dropdown validation:
+    if (searchQuery.licensee_id == "0" || "") {
+      // If they selected a company name from dropdown:
+      setError(false);
+      setSelectError("");
+      console.log("Validation works.");
+    } else {
+      // If they haven't, pop up warning and prevent them:
+      setError(true);
+      setSelectError("Please select a value.");
+    }
+  };
 
-  console.log('SeachQuery is:', searchQuery);
+  
+
   return (
     <div className="EstimateCreate-wrapper">
       {/* <LicenseeHomePage /> */}
@@ -76,19 +70,22 @@ export default function EstimateLookup() {
                     <TableRow>
                       <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                       <TableCell>
-                        <Select
-                          onChange={event => handleChange('licensee_id', event.target.value)}
-                          required
-                          size="small"
-                          fullWidth
-                          defaultValue="0"
-                        >
-                          <MenuItem key="0" value="0">Please Select</MenuItem>
-                          {companies.map(companies => {
-                            return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
-                          }
-                          )}
-                        </Select>
+                        <FormControl error={error}>
+                          <Select
+                            onChange={event => handleChange('licensee_id', event.target.value)}
+                            required
+                            size="small"
+                            fullWidth
+                            defaultValue="0"
+                          >
+                            <MenuItem key="0" value="0">Please Select</MenuItem>
+                            {companies.map(companies => {
+                              return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                            }
+                            )}
+                          </Select>
+                          <FormHelperText>{selectError}</FormHelperText>
+                        </FormControl>
                       </TableCell>
 
                       <TableCell><b>Estimate Number:</b></TableCell>
@@ -122,70 +119,12 @@ export default function EstimateLookup() {
           </Grid>
         </Grid>
       </form>
+      <br />
 
       <Grid container
         spacing={2}
         justifyContent="center"
       >
-
-        {/* <Grid item xs={10}>
-          <Paper elevation={3}>
-            <TableContainer >
-              {/* <h3 className="lexendFont">Search for an Estimate</h3> */}
-              {/*
-              <Table size="small">
-                <TableBody>
-
-                  <TableRow>
-                    <TableCell><b>Licensee/Contractor Name:</b></TableCell>
-                    <TableCell>
-                      <Select
-                        // onChange={event => handleChange('licensee_id', event.target.value)}
-                        onChange={handleLicenseeChange}
-                        required
-                        size="small"
-                        fullWidth
-                        defaultValue="0"
-                      >
-                        <MenuItem key="0" value="0">Please Select</MenuItem>
-                        {companies.map(companies => {
-                          return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
-                        }
-                        )}
-                      </Select>
-                    </TableCell> *}
-
-                    <TableCell><b>Estimate Number:</b></TableCell>
-                    <TableCell>
-                      <TextField
-                        onChange={handleEstimateChange}
-                        required
-                        type="search"
-                        size="small"
-                        fullWidth
-                      />
-                    </TableCell>
-
-                    <TableCell colSpan={2} align="right">
-                      <Button
-                        type="submit"
-                        // onClick={event => handleSubmit(event)}
-                        onClick={handleSubmit}
-                        variant="contained"
-                        style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-                        color="primary"
-                      >
-                        Search
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Grid> */}
-
         {/* Grid Table #1: Display the Licensee/Project Info Form */}
         <Grid item xs={6}>
           <Paper elevation={3}>
