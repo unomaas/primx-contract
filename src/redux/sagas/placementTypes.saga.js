@@ -16,11 +16,14 @@ function* fetchAllPlacementTypes() {
     }
 }
 
+//worker saga to add placement types
 function* postPlacementType(action) {
     console.log('in postPlacementType, action.payload is -->', action.payload);
     
     try {
+      //tells placement types router to add placement type to DB
       yield axios.post(`/api/placementtypes`, action.payload);
+      //fecthes placement types again so the DOM shows the current placement types as well as the one just added to DB
       yield put({type: 'FETCH_PLACEMENT_TYPES'});
       yield put({type: 'SET_SUCCESS_PLACEMENT_TYPES'});
     } catch (error) {
