@@ -9,8 +9,11 @@ import ButtonToggle from '../ButtonToggle/ButtonToggle';
 
 export default function EstimateLookup() {
   const companies = useSelector(store => store.companies);
+  const selectedEstimate = useSelector(store => store.adminEstimates)
 
-  //State Variables
+  console.log('Selected Estimate', selectedEstimate)
+
+  //State Variables for licensee inputs
   const [licenseeId, setLicenseeId] = useState('');
   const [estimateNumber, setEstimateNumber] = useState('');
 
@@ -22,6 +25,7 @@ export default function EstimateLookup() {
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
 
+  // DRY, but functional state changes for licensee inputs
   const handleLicenseeChange = (event) => {
     event.preventDefault();
     setLicenseeId(event.target.value)
@@ -39,7 +43,6 @@ export default function EstimateLookup() {
         estimateNumber: estimateNumber,
     }
     console.log('lookup estimate number and licensee', lookupEstimate);
-
     dispatch({
         type: 'LOOKUP_ESTIMATE',
         payload: lookupEstimate

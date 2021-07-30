@@ -13,17 +13,19 @@ router.get('/lookup/:estimate', (req, res) => {
   const estimateNumber = req.query.estimateNumber
   const licenseeId = req.query.licenseeId
 
+  console.log('Estimate number', estimateNumber, 'licensee ID', licenseeId)
+
   const queryText =
                   `SELECT * FROM estimates 
-                   WHERE "estimate_number" = '$1'
-                   AND "licensee_id" = '$2';`
+                   WHERE "estimate_number" = $1
+                   AND "licensee_id" = $2;`
   
   pool.query(queryText, [estimateNumber, licenseeId])
     .then( result => {
       res.send(result.rows);
     })
-    .catch(err => {
-      console.log(`Error with /api/estimates/lookup POST:`, error);
+    .catch(error => {
+      console.log(`Error with /api/estimates/lookup/:estimates GET`, error);
       res.sendStatus(500)
     })
 })
