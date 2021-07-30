@@ -417,25 +417,8 @@ export default function ImperialTable() {
                       <TableCell>{calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
                       <TableCell>{calculatedDisplayObject?.design_total_price_estimate}</TableCell>
                     </TableRow>
-                    design_total_container_price
+                    
                     <TableRow>
-                      {/* <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-
-                      <TableCell colSpan={3} align="right">
-                        <Button
-                          type="submit"
-                          onClick={event => handleCalculateCosts(event)}
-                          variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-                          color="primary"
-                        >
-                          Calculate Costs
-                        </Button>
-                      </TableCell> */}
                       <TableCell colSpan={11} align="right">
                         <Button
                           type="submit"
