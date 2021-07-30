@@ -275,8 +275,8 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
-                      <TableCell><b>Project Manager Cell:</b></TableCell>
+                    {/* <TableRow>
+                      <TableCell><b>Your Purchase Order #:</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('project_manager_phone', event.target.value)}
@@ -286,7 +286,7 @@ export default function EstimateCreate() {
                           fullWidth
                         />
                       </TableCell>
-                    </TableRow>
+                    </TableRow> */}
 
 
                     <TableRow>

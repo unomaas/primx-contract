@@ -22,6 +22,7 @@ function* postPlacementType(action) {
     try {
       yield axios.post(`/api/placementtypes`, action.payload);
       yield put({type: 'FETCH_PLACEMENT_TYPES'});
+      yield put({type: 'SET_SUCCESS_PLACEMENT_TYPES'});
     } catch (error) {
       console.log('error in post placement type SAGA -->', error);
     }

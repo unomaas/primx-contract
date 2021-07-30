@@ -25,6 +25,7 @@ function* postShippingCosts(action) {
       yield axios.post(`/api/shippingcosts`, action.payload);
       //send results to shippingCosts reducer
       yield put({type: 'FETCH_SHIPPING_COSTS'});
+      yield put({type: 'SET_SUCCESS_SHIPPING'})
     } catch (error) {
       console.log('error in postShippingCosts SAGA -->', error);
     }

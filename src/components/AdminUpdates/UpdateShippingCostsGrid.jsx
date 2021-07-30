@@ -48,7 +48,7 @@ export default function UpdateShippingCostsGrid() {
 
     return (
         <div
-          style={{ height: 650, width: '90%'}}
+          style={{ height: 650, width: '90%'}} //put style into class
           className="AdminEstimatesGrid-wrapper"
         >
             <DataGrid 

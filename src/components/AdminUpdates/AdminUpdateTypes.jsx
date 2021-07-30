@@ -23,9 +23,8 @@ export default function AdminUpdateTypes() {
   //defining states for sending data to server
   let [newFloorType, setNewFloorType] = useState('');
   let [newPlacementType, setNewPlacementType] = useState('');
-  // establish open for snackbar notification
-  const [open, setOpen] = useState(false);
-
+  // establish snackbar variables for notifications
+  const snack = useSelector(store => store.snackBar);
 
   //useSelector for array of floor types
   const floorTypes = useSelector(store => store.floorTypes);
@@ -53,19 +52,20 @@ export default function AdminUpdateTypes() {
 
   const addFloorType = () => {
     if (newFloorType == '') {
-      swal("Error", "You need to input new floor type", "error");
+      dispatch({type: 'SET_EMPTY_ERROR'})
     } else {
     dispatch({type: "ADD_FLOOR_TYPE", payload: {floor_type: newFloorType}})
-    setOpen(true);
+    setNewFloorType('')
+    
     }
   }
 
   const addPlacementType = () => {
     if (newPlacementType == '') {
-      swal("Error", "You need to input new placement type", "error");
+      dispatch({type: 'SET_EMPTY_ERROR'})
     } else {
     dispatch({type: "ADD_PLACEMENT_TYPE", payload: {placement_type: newPlacementType}})
-    setOpen(true);
+    setNewPlacementType('')
     }
   }
   //sets snack bar notification to closed after appearing
@@ -74,7 +74,7 @@ export default function AdminUpdateTypes() {
       return;
     }
 
-    setOpen(false);
+    dispatch({type: 'SET_CLOSE'})
   };
 
 
@@ -115,9 +115,9 @@ export default function AdminUpdateTypes() {
         </div>
       {/* showing placement types */}
       <UpdatePlacementTypesGrid placementTypes={placementTypes}/>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          A placement or floor Type has been added!
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snack.severity}>
+          {snack.message}
         </Alert>
       </Snackbar>
 
