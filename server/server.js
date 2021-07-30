@@ -18,6 +18,8 @@ const productsRouter = require('./routes/products.router');
 
 const shippingCostsRouter = require('./routes/shippingCosts.router');
 const companiesRouter = require('./routes/companies.router');
+const userInfoRouter = require('./routes/userInfo.router');
+
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -39,6 +41,7 @@ app.use('/api/placementtypes', placementTypesRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/shippingcosts', shippingCostsRouter);
 app.use('/api/companies', companiesRouter);
+app.use('/api/userinfo', userInfoRouter);
 
 // Serve static files
 app.use(express.static('build'));

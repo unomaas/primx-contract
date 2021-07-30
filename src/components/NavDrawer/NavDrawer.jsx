@@ -30,6 +30,7 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 export default function NavDrawer() {
   //#region ⬇⬇ All state variables below:
   const [open, setOpen] = useState(false);
+
   const classes = useStyles();
   const history = useHistory();
   const user = useSelector((store) => store.user);
@@ -46,11 +47,10 @@ export default function NavDrawer() {
     <div className="NavDrawer-wrapper">
 
       <IconButton
+        onClick={() => setOpen(true)}
       >
         <MenuIcon
           className={classes.navBarIcon}
-          onClick={() => setOpen(true)}
-          color="black"
         />
       </IconButton>
 
@@ -70,7 +70,7 @@ export default function NavDrawer() {
           {/* Conditioning rendering for what menu options are: */}
           {user.id ? (
             // If user is logged in:
-            <List className={classes.LexendTeraFont} style={{fontSize: '13px'}}>
+            <List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
 
               <ListItem button onClick={() => history.push(`/create`)}>
                 <AddCircleOutlineOutlinedIcon /> &nbsp;
@@ -96,12 +96,6 @@ export default function NavDrawer() {
                 <p>Admin Dashboard</p>
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/registration`)}>
-                <PersonAddOutlinedIcon /> &nbsp;
-                {/* <ListItemText primary={"Create New Admin"} /> */}
-                <p>Create New Admin</p>
-              </ListItem>
-
               <ListItem button onClick={() => history.push(`/adminupdates`)}>
                 <UpdateIcon /> &nbsp;
                 {/* <ListItemText primary={"Update Items"} /> */}
@@ -119,6 +113,13 @@ export default function NavDrawer() {
                 // If user is system admin (id is 1):
                 <>
                   <Divider />
+
+
+                <ListItem button onClick={() => history.push(`/registration`)}>
+                  <PersonAddOutlinedIcon /> &nbsp;
+                  {/* <ListItemText primary={"Create New Admin"} /> */}
+                  <p>Create New Admin</p>
+                </ListItem>
 
                   <ListItem button onClick={() => history.push(`/systemadmin`)}>
                     <SupervisorAccountIcon /> &nbsp;
@@ -144,9 +145,9 @@ export default function NavDrawer() {
             </List>
           ) : (
             // If user is not logged in:
-            <List className={classes.LexendTeraFont} style={{fontSize: '13px'}}>
+            <List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
 
-              <ListItem button onClick={() => history.push(`/home`)}>
+              <ListItem button onClick={() => history.push(`/create`)}>
                 <AddCircleOutlineOutlinedIcon /> &nbsp;
                 {/* <ListItemText primary={"Create New Estimate"} /> */}
                 <p>Create New Estimate</p>

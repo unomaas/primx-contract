@@ -1,15 +1,14 @@
-import { makeStyles, createMuiTheme, withStyles, TableCell, TableRow } from '@material-ui/core';
+import { makeStyles, createTheme, withStyles, TableCell, TableRow } from '@material-ui/core';
 
 
 // ⬇ Material-ui Theme: 
-const theme = createMuiTheme({
+const theme = createTheme({
   // Changes the font default of MUI Components to be on-brand font: 
   // typography: {
   //   fontFamily: 'Lexend Tera',
   //   fontSize: 11
   // },
 }) // End theme
-
 
 // const StyledTableCell = withStyles((theme) => ({
 //   head: {
@@ -27,7 +26,6 @@ const theme = createMuiTheme({
 //   },
 // }))(TableRow);
 
-
 // ⬇ Material-ui Classes: 
 const useStyles = makeStyles({
   // ⬇ Makes the Hamburger Icon White and Large:
@@ -44,7 +42,14 @@ const useStyles = makeStyles({
     //   fontSize: '11px',
     // }
   },
-
+  LexendTeraFont11: {
+    fontFamily: 'Lexend Tera',
+    fontSize: '11px',
+  },
+  OrdersHeaders: {
+    fontFamily: 'Lexend Tera',
+    marginBottom: '.3em',
+  }
 
 }); // End useStyles
 
