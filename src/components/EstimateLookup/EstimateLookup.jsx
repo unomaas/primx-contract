@@ -16,15 +16,19 @@ export default function EstimateLookup() {
   const [error, setError] = useState(false);
 
   const [selectError, setSelectError] = useState("");
+
+  // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
   const { licensee_id_estimate_number } = useParams();
 
   const dispatch = useDispatch();
   const history = useHistory();
+  
   useEffect(() => {
     // Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
+
 
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
@@ -34,11 +38,16 @@ export default function EstimateLookup() {
   const handleSubmit = () => {
     console.log('In handleSubmit')
     // ⬇ Select dropdown validation:
-    if (searchQuery.licensee_id == "0" || "") {
+    // use history to send user to the details subview of their search query
+    history.push(`/lookup/${searchQuery.licensee_id}${searchQuery.estimate_number}`)
+
+    if (searchQuery.licensee_id !== "0" || "") {
       // If they selected a company name from dropdown:
       setError(false);
       setSelectError("");
       console.log("Validation works.");
+      
+  
     } else {
       // If they haven't, pop up warning and prevent them:
       setError(true);
