@@ -31,7 +31,7 @@ export default function EstimateLookup() {
         justify="center"
       >
 
-        <Grid item xs={8}>
+        <Grid item xs={10}>
           <Paper elevation={3}>
             <TableContainer >
               {/* <h3 className="lexendFont">Search for an Estimate</h3> */}
@@ -407,7 +407,7 @@ export default function EstimateLookup() {
 
       </Grid>
       {/* End Master Grid */}
-      
+
     </div>
   )
 }
