@@ -400,7 +400,7 @@ export default function MetricTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell></TableCell>
+                      {/* <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
@@ -416,12 +416,22 @@ export default function MetricTable() {
                         >
                           Calculate Costs
                         </Button>
-                      </TableCell>
-                      <TableCell colspan={3} align="right">
+                      </TableCell> */}
+                      <TableCell colspan={11} align="right">
                         <Button
                           type="submit"
+                          onClick={event => handleCalculateCosts(event)}
+                          variant="contained"
+                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          color="primary"
+                        >
+                          Calculate Costs
+                        </Button>
+                        &nbsp; &nbsp; 
+                        <Button
+                          // type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          onClick={event => handleSave(event)}
+                          // onClick={event => handleSave(event)}
                           variant="contained"
                           style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                           color="secondary"
