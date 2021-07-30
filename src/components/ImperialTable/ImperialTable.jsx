@@ -100,7 +100,7 @@ export default function ImperialTable() {
 
         <Grid container
           spacing={2}
-          justify="center"
+          justifyContent="center"
         >
           <Grid item xs={6}>
             <Paper elevation={3}>
@@ -441,7 +441,7 @@ export default function ImperialTable() {
                           type="submit"
                           onClick={event => handleCalculateCosts(event)}
                           variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          className={classes.LexendTeraFont11}
                           color="primary"
                         >
                           Calculate Costs
@@ -452,7 +452,7 @@ export default function ImperialTable() {
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
                           // onClick={event => handleSave(event)}
                           variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          className={classes.LexendTeraFont11}
                           color="secondary"
                         >
                           Save Estimate
