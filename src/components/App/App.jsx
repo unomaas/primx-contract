@@ -133,7 +133,6 @@ function App() {
             </ProtectedRoute>
 
 
-
             {/* // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows RegisterPage at "/registration" */}
