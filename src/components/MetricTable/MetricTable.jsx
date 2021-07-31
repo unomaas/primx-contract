@@ -82,20 +82,15 @@ export default function MetricTable() {
  */
   const handleSave = event => {
     console.log('In Metric handleSave');
-    // send history along with the estimateData
+    // attach history from useHistory to the estimate object to allow navigation from inside the saga
     estimateData.history = history;
-
 
     // ⬇ Don't refresh until submit:
     event.preventDefault();
     // send the estimate object to be POSTed
     dispatch({type: 'ADD_ESTIMATE', payload: estimateData})
+  } // End handleSave
 
-    // // ⬇ Sending newPlant to our reducer: 
-    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-    // // ⬇ Send the user back:
-    // history.push('/dashboard');
-  } // End handleSubmit
 
   const handleCalculateCosts = () => {
     console.log('In Metric handleCalculateCosts, estimateData:', estimateData);
