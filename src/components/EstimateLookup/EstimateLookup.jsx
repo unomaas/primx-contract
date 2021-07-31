@@ -22,11 +22,11 @@ export default function EstimateLookup() {
 
   // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
   // const { licensee_id_estimate_number } = useParams();
-  const {estimate_number_searched, licensee_id_searched} = useParams();
+  const { estimate_number_searched, licensee_id_searched } = useParams();
 
   const dispatch = useDispatch();
   const history = useHistory();
-  
+
   useEffect(() => {
     // Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
@@ -36,12 +36,14 @@ export default function EstimateLookup() {
   useEffect(() => {
     // if the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view,
     // dispatch the data in the url params to run a GET request to the DB
-    if(estimate_number_searched && licensee_id_searched) {
+    if (estimate_number_searched && licensee_id_searched) {
 
-      dispatch({type: 'FETCH_ESTIMATE_QUERY', payload: {
-        licensee_id: licensee_id_searched,
-        estimate_number: estimate_number_searched
-      }})
+      dispatch({
+        type: 'FETCH_ESTIMATE_QUERY', payload: {
+          licensee_id: licensee_id_searched,
+          estimate_number: estimate_number_searched
+        }
+      })
     }
   }, [estimate_number_searched])
 
@@ -53,10 +55,10 @@ export default function EstimateLookup() {
   const handleSubmit = () => {
     console.log('In handleSubmit')
     // ⬇ Select dropdown validation:
- 
-    
-      
-  
+
+
+
+
     if (searchQuery.licensee_id !== "0") {
       // If they selected a company name from dropdown:
       console.log("Submitting.");
@@ -74,7 +76,7 @@ export default function EstimateLookup() {
 
   return (
     <div className="EstimateCreate-wrapper">
-      {/* <LicenseeHomePage /> */}
+
       <ButtonToggle />
 
       <br />
@@ -86,6 +88,7 @@ export default function EstimateLookup() {
           justifyContent="center"
         >
 
+          {/* Grid #1: The Search Bar for Estimate Lookup */}
           <Grid item xs={12}>
             <Paper elevation={3}>
               <TableContainer >
@@ -145,6 +148,8 @@ export default function EstimateLookup() {
         </Grid>
       </form>
       <br />
+      {/* End Search Bar for Estimate Lookup */}
+
 
       <Grid container
         spacing={2}
