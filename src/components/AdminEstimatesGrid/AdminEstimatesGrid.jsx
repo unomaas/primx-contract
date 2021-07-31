@@ -1,6 +1,7 @@
 import './AdminEstimatesGrid.css';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom'
 // Material-UI components
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button'
@@ -13,6 +14,7 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
     const dispatch = useDispatch();
     const classes = useStyles();
+    const history = useHistory();
 
 
     // rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
@@ -30,10 +32,31 @@ export default function AdminEstimatesGrid({estimatesArray, gridSource}) {
         )
     }
 
+    // rendering function to display the row's estimate number in a clickable div that will navigate admin to the estimate lookup view for the
+    // clicked estimate
+    const renderEstimateNumber = (params) => {
+        return (
+            // on click sends the admin user to the estimate lookup for the clicked estimate number
+            <div onClick={
+                () => history.push(`/lookup/${params.row.licensee_id}/${params.row.estimate_number}`)
+                }
+                className="estimate-nav"
+            >
+                {params.row.estimate_number}
+            </div>
+        )
+    }
+
     // columns for Data Grid
     const columns = [
         // estimate and contractor details input by licensee
-        {field: 'estimate_number', headerName: 'Estimate Number', width: 175},
+        {
+            field: 'estimate_number', 
+            headerName: 'Estimate Number', 
+            width: 175,
+            disableClickEventBubbling: true,
+            renderCell: renderEstimateNumber // function declared above, creates a div with navigation in each of the estimate number cells
+        },
         {field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 175},
         {field: 'date_created', headerName: 'Date Created', width: 175},
         {field: 'ship_to_address', headerName: 'Ship To Address', width: 175, editable: true},
