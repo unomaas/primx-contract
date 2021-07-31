@@ -151,12 +151,12 @@ export default function EstimateCreate() {
     if (!estimateData.measurement_units) {
       setError(true);
       setRadioError("Please select a value.");
-    } else (
+    } else {
       dispatch({
         type: 'SET_TABLE_STATE',
         payload: true
       })
-    )
+    }
     // // ⬇ Sending newPlant to our reducer: 
     // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
     // // ⬇ Send the user back:

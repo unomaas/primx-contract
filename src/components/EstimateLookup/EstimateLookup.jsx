@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText, Box } from '@material-ui/core';
+import { useParams } from 'react-router';
+import { useStyles } from '../MuiStyling/MuiStyling';
 
 
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
@@ -9,15 +11,66 @@ import ButtonToggle from '../ButtonToggle/ButtonToggle';
 
 export default function EstimateLookup() {
   const companies = useSelector(store => store.companies);
+  const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
+  const [searchQuery, setSearchQuery] = useState({
+    licensee_id: "0",
+    id: ""
+  });
+  const [error, setError] = useState(false);
+  const classes = useStyles();
+  const [selectError, setSelectError] = useState("");
+
+  // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
+  // const { licensee_id_estimate_number } = useParams();
+  const {estimate_number_searched, licensee_id_searched} = useParams();
 
   const dispatch = useDispatch();
   const history = useHistory();
+  
   useEffect(() => {
     // Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
       dispatch({ type: 'FETCH_COMPANIES' })
   }, []);
 
+  useEffect(() => {
+    // if the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view,
+    // dispatch the data in the url params to run a GET request to the DB
+    if(estimate_number_searched && licensee_id_searched) {
+
+      dispatch({type: 'FETCH_ESTIMATE_QUERY', payload: {
+        licensee_id: licensee_id_searched,
+        estimate_number: estimate_number_searched
+      }})
+    }
+  }, [estimate_number_searched])
+
+  const handleChange = (key, value) => {
+    console.log('In handleChange, key/value:', key, '/', value);
+    setSearchQuery({ ...searchQuery, [key]: value })
+  };
+
+  const handleSubmit = () => {
+    console.log('In handleSubmit')
+    // ⬇ Select dropdown validation:
+ 
+    
+      
+  
+    if (searchQuery.licensee_id !== "0") {
+      // If they selected a company name from dropdown:
+      console.log("Submitting.");
+      // use history to send user to the details subview of their search query
+      history.push(`/lookup/${searchQuery.licensee_id}/${searchQuery.estimate_number}`)
+    } else {
+      // If they haven't, pop up warning and prevent them:
+      console.log(("Not submitting."));
+      setError(true);
+      setSelectError("Please select a value.");
+    }
+  };
+
+  console.log('search estimate:', searchResult)
 
   return (
     <div className="EstimateCreate-wrapper">
@@ -26,89 +79,90 @@ export default function EstimateLookup() {
 
       <br />
 
+
+      <form onSubmit={handleSubmit}>
+        <Grid container
+          spacing={2}
+          justifyContent="center"
+        >
+
+          <Grid item xs={12}>
+            <Paper elevation={3}>
+              <TableContainer >
+                <Table size="small">
+                  <TableBody>
+
+                    <TableRow>
+                      <TableCell><b>Licensee/Contractor Name:</b></TableCell>
+                      <TableCell>
+                        <FormControl error={error}>
+                          <Select
+                            onChange={event => handleChange('licensee_id', event.target.value)}
+                            required
+                            size="small"
+                            fullWidth
+                            defaultValue="0"
+                          >
+                            <MenuItem key="0" value="0">Please Select</MenuItem>
+                            {companies.map(companies => {
+                              return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                            }
+                            )}
+                          </Select>
+                          <FormHelperText>{selectError}</FormHelperText>
+                        </FormControl>
+                      </TableCell>
+
+                      <TableCell><b>Estimate Number:</b></TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('estimate_number', event.target.value)}
+                          required
+                          type="search"
+                          size="small"
+                          fullWidth
+                        />
+                      </TableCell>
+
+                      <TableCell colSpan={2} align="right">
+                        <Button
+                          type="submit"
+                          // onClick={event => handleSubmit(event)}
+                          variant="contained"
+                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                          color="primary"
+                        >
+                          Search
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+        </Grid>
+      </form>
+      <br />
+
       <Grid container
         spacing={2}
         justifyContent="center"
       >
-
-        <Grid item xs={10}>
-          <Paper elevation={3}>
-            <TableContainer >
-              {/* <h3 className="lexendFont">Search for an Estimate</h3> */}
-              <Table size="small">
-                <TableBody>
-
-                  <TableRow>
-                    <TableCell><b>Licensee/Contractor Name:</b></TableCell>
-                    <TableCell>
-                      <Select
-                        // onChange={event => handleChange('licensee_id', event.target.value)}
-                        required
-                        size="small"
-                        fullWidth
-                        defaultValue="0"
-                      >
-                        <MenuItem key="0" value="0">Please Select</MenuItem>
-                        {companies.map(companies => {
-                          return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
-                        }
-                        )}
-                      </Select>
-                    </TableCell>
-                    {/* </TableRow>
-
-                  <TableRow> */}
-                    <TableCell><b>Estimate Number:</b></TableCell>
-                    <TableCell>
-                      <TextField
-                        onChange={event => handleChange('project_name', event.target.value)}
-                        required
-                        type="search"
-                        size="small"
-                        fullWidth
-                      />
-                    </TableCell>
-                    {/* </TableRow>
-
-                  <TableRow> */}
-                    <TableCell colSpan={2} align="right">
-                      <Button
-                        type="submit"
-                        // onClick={event => handleSubmit(event)}
-                        variant="contained"
-                        style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-                        color="primary"
-                      >
-                        Search
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Grid>
-
         {/* Grid Table #1: Display the Licensee/Project Info Form */}
         <Grid item xs={6}>
           <Paper elevation={3}>
             <TableContainer >
-              <h3 className="lexendFont">Licensee & Project Information</h3>
+              <h3>Licensee & Project Information</h3>
               <Table size="small">
                 <TableBody>
 
                   <TableRow>
                     <TableCell><b>Project Name:</b></TableCell>
                     <TableCell>
-                      CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('project_name', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                        /> */}
+                      All Phase Construction Concrete
+
                     </TableCell>
                   </TableRow>
 
@@ -116,19 +170,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <Select
-                          onChange={event => handleChange('licensee_id', event.target.value)}
-                          required
-                          size="small"
-                          fullWidth
-                          defaultValue="0"
-                        >
-                          <MenuItem value="0">Please Select</MenuItem>
-                          {companies.map(companies => {
-                            return (<MenuItem value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
-                          }
-                          )}
-                        </Select> */}
                     </TableCell>
                   </TableRow>
 
@@ -136,13 +177,13 @@ export default function EstimateLookup() {
                     <TableCell><b>Project General Contractor:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('project_general_contractor', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                        /> */}
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Project Manager Name:</b></TableCell>
+                    <TableCell>
+                      CONTENT
                     </TableCell>
                   </TableRow>
 
@@ -150,13 +191,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Project Manager Email:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('project_manager_email', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                        /> */}
                     </TableCell>
                   </TableRow>
 
@@ -164,27 +198,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Project Manager Cell:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('project_manager_phone', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                        /> */}
-                    </TableCell>
-                  </TableRow>
-
-                  <TableRow>
-                    <TableCell><b>Your Purchase Order #:</b></TableCell>
-                    <TableCell>
-                      CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('po_number', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                        /> */}
                     </TableCell>
                   </TableRow>
 
@@ -192,18 +205,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Floor Type:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <Select
-                          onChange={event => handleChange('floor_types_id', event.target.value)}
-                          required
-                          size="small"
-                          fullWidth
-                          defaultValue="0"
-                        >
-                          <MenuItem value="0">Please Select</MenuItem>
-                          {floorTypes.map(types => {
-                            return (<MenuItem value={types.id}>{types.floor_type}</MenuItem>)
-                          })}
-                        </Select> */}
                     </TableCell>
                   </TableRow>
 
@@ -211,18 +212,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Placement Type:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <Select
-                          onChange={event => handleChange('placement_types_id', event.target.value)}
-                          required
-                          size="small"
-                          fullWidth
-                          defaultValue="0"
-                        >
-                          <MenuItem value="0">Please Select</MenuItem>
-                          {placementTypes.map(placementTypes => {
-                            return (<MenuItem value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
-                          })}
-                        </Select> */}
                     </TableCell>
                   </TableRow>
 
@@ -230,56 +219,14 @@ export default function EstimateLookup() {
                     <TableCell><b>Unit of Measurement:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <FormControl error={error}>
-                          <RadioGroup
-                            // defaultValue="imperial"
-                            style={{ display: 'inline' }}
-                            onChange={event => handleMeasurementUnits(event.target.value)}
-                          >
-                            <FormControlLabel
-                              label="Imperial"
-                              value="imperial"
-                              control={<Radio />}
-                            />
-                            <FormControlLabel
-                              label="Metric"
-                              value="metric"
-                              control={<Radio />}
-                            />
-                          </RadioGroup>
-                          <FormHelperText>{radioError}</FormHelperText>
-                        </FormControl> */}
                     </TableCell>
                   </TableRow>
-
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Grid>
-        {/* End Grid Table #1 */}
-
-        {/* Grid Table #2: Display the Shipping Info Form */}
-        <Grid item xs={6}>
-          <Paper elevation={3}>
-            <TableContainer>
-              <h3 className="lexendFont">Lead Time & Shipping Information</h3>
-              <Table size="small">
-                <TableBody>
 
                   <TableRow>
                     <TableCell><b>Today's Date:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <TextField
-                          // ⬇ Won't work with value=today. 
-                          // onChange={event => handleChange('date_created', event.target.value)} 
-                          required
-                          type="date"
-                          size="small"
-                          fullWidth
-                          value={today}
-                        /> */}
+
                     </TableCell>
                   </TableRow>
 
@@ -287,13 +234,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Anticipated First Pour Date:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('anticipated_first_pour_date', event.target.value)}
-                          required
-                          type="date"
-                          size="small"
-                          fullWidth
-                        /> */}
                     </TableCell>
                   </TableRow>
 
@@ -308,13 +248,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Shipping Street Address:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('ship_to_address', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                        /> */}
                     </TableCell>
                   </TableRow>
 
@@ -322,13 +255,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Shipping City:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('ship_to_city', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                        /> */}
                     </TableCell>
                   </TableRow>
 
@@ -336,18 +262,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Shipping State/Province:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <Select
-                          onChange={event => handleShipping(event.target.value)}
-                          required
-                          size="small"
-                          fullWidth
-                          defaultValue="0"
-                        >
-                          <MenuItem value="0">Please Select</MenuItem>
-                          {shippingCosts.map(state => {
-                            return (<MenuItem value={state.id}>{state.ship_to_state_province}</MenuItem>)
-                          })}
-                        </Select> */}
                     </TableCell>
                   </TableRow>
 
@@ -355,13 +269,6 @@ export default function EstimateLookup() {
                     <TableCell><b>Shipping Zip/Postal Code:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <TextField
-                          onChange={event => handleChange('zip_postal_code', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                        /> */}
                     </TableCell>
                   </TableRow>
 
@@ -369,44 +276,523 @@ export default function EstimateLookup() {
                     <TableCell><b>Shipping Country:</b></TableCell>
                     <TableCell>
                       CONTENT
-                      {/* <Select
-                          onChange={event => handleChange('country', event.target.value)}
-                          required
-                          size="small"
-                          fullWidth
-                          defaultValue="0"
-                        >
-                          <MenuItem value="0">Please Select</MenuItem>
-                          <MenuItem value="United States">United States</MenuItem>
-                          <MenuItem value="Canada">Canada</MenuItem>
-                        </Select> */}
                     </TableCell>
                   </TableRow>
-
-                  {/* <TableRow>
-                      <TableCell colSpan={2} align="right">
-                        <Button
-                          type="submit"
-                          // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
-                          variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-                          color="primary"
-                        >
-                          Next
-                        </Button>
-                      </TableCell>
-                    </TableRow> */}
 
                 </TableBody>
               </Table>
             </TableContainer>
           </Paper>
         </Grid>
-        {/* End Grid Table #2 */}
 
+
+
+
+
+        {/* Table #2 Imperial: */}
+
+        {/* <Grid item xs={6}>
+          <Paper elevation={3}>
+            <TableContainer>
+              <h3>Project Quantity Calculations</h3>
+              <Table size="small">
+                <TableBody>
+
+                  <TableRow>
+                    <TableCell><b>Square Feet:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickness (in):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Cubic Yards:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Subtotal:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Cubic Yards:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                </TableBody>
+              </Table>
+
+              <h3>Thickened Edge Calculator</h3>
+              <p>If applicable, for slabs under 6in.</p>
+              <Table size="small">
+
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>Perimeter</b></TableCell>
+                    <TableCell><b>Construction Joint</b></TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>Lineal Feet:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Width (yd³):</b></TableCell>
+                    <TableCell>
+                      5
+                    </TableCell>
+                    <TableCell>
+                      10
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Additional Thickness (in):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Cubic Yards:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Paper elevation={3}>
+            <TableContainer>
+              <h3>Materials Table</h3>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>PrīmX DC (lbs)</b></TableCell>
+                    <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
+                    <TableCell><b>PrīmX Steel Fibers (lbs)</b></TableCell>
+                    <TableCell><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
+                    <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>Dosage Rate (per yd³):</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Amount:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Packaging Capacity:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Packages Needed:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Order Quantity:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Materials Price:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell><b>Totals:</b></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Materials Price:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Containers:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Shipping Estimate:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Cost:</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                  </TableRow> */}
+        {/* End Imperial Tables */}
+
+
+
+        {/* Table #3: Metric */}
+        <Grid item xs={6}>
+          <Paper elevation={3}>
+            <TableContainer>
+              <h3>Project Quantity Calculations</h3>
+              <Table size="small">
+                <TableBody>
+
+                  <TableRow>
+                    <TableCell><b>Square Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickness (mm):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Cubic Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Subtotal:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Cubic Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                </TableBody>
+              </Table>
+
+              <h3>Thickened Edge Calculator</h3>
+              <p>If applicable, for slabs under 150mm.</p>
+              <Table size="small">
+
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>Perimeter</b></TableCell>
+                    <TableCell><b>Construction Joint</b></TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>Lineal Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Width (m³):</b></TableCell>
+                    <TableCell>
+                      1.5
+                    </TableCell>
+                    <TableCell>
+                      3.0
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Additional Thickness (mm):</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Cubic Meters:</b></TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                    <TableCell>
+                      CONTENT
+                    </TableCell>
+                  </TableRow>
+
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Paper elevation={3}>
+            <TableContainer>
+              <h3>Materials Table</h3>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell><b>PrīmX DC (kgs)</b></TableCell>
+                    <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
+                    <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
+                    <TableCell><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
+                    <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  <TableRow>
+                    <TableCell><b>Dosage Rate (per m³):</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Amount:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Packaging Capacity:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Packages Needed:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Order Quantity:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Materials Price:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell><b>Totals:</b></TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Materials Price:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Containers:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Shipping Estimate:</b></TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+                    <TableCell>CALC</TableCell>
+
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Total Cost:</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                    <TableCell><b>CALC</b></TableCell>
+                  </TableRow>
+                  {/* End Metric Table */}
+
+
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Grid>
       </Grid>
-      {/* End Master Grid */}
 
     </div>
   )

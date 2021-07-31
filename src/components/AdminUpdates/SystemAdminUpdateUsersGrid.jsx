@@ -18,10 +18,11 @@ export default function SystemAdminUpdateUserGrid() {
 
     const dispatch = useDispatch();
 
- 
     const userInfo = useSelector(store => store.userInfoReducer);
-
+    
+    //function to render the delete button in the datagrid
     const renderDeleteButton = (params) => {
+        //we only want the delete btton to show if the user has an id greater than 1 - user with id === 1 is the super admin and we don't want the super admin to be deleted
         if(params.id > 1) {
         return (
             <Button
@@ -50,6 +51,7 @@ export default function SystemAdminUpdateUserGrid() {
         
     ]
 
+    //datagrid rows are the information from userInfo reducer
     let rows = userInfo
 
     console.log('user info in grid component -->', userInfo);

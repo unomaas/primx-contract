@@ -9,8 +9,9 @@ export const estimatesReducer = (state = {
   date_created: today,
 }, action) => {
   switch (action.type) {
-    case 'FETCH_ESTIMATE':
-      return action.payload;
+    // Commented out deprecated action that's not being used
+    // case 'FETCH_ESTIMATE':
+    //   return action.payload;
     case 'SET_ESTIMATE':
       return {
         ...state,
@@ -45,10 +46,20 @@ export const tableState = (state = false, action) => {
   } // End switch
 }; // End kitsReducer
 
+export const searchedEstimate = (state = [], action) => {
+  switch (action.type) {
+    case 'SET_ESTIMATE_QUERY_RESULT':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   estimatesReducer,
   buttonState,
-  tableState
+  tableState,
+  searchedEstimate
 });
 
 // export default estimatesReducer;
