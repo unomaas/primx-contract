@@ -24,7 +24,7 @@ export default function UpdateShippingCostsGrid() {
         {field: 'fibers_price', headerName: 'Fibers', width: 200, editable: true} // Editable + validation?
 
     ]
-
+    //rows are from the shipping costs reducer
     let rows = shippingCosts
 
     console.log('shipping costs in grid component -->', shippingCosts);
@@ -48,7 +48,7 @@ export default function UpdateShippingCostsGrid() {
 
     return (
         <div
-          style={{ height: 650, width: '90%'}}
+          style={{ height: 650, width: '90%'}} //put style into class
           className="AdminEstimatesGrid-wrapper"
         >
             <DataGrid 

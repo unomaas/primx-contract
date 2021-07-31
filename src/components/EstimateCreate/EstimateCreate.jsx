@@ -151,12 +151,12 @@ export default function EstimateCreate() {
     if (!estimateData.measurement_units) {
       setError(true);
       setRadioError("Please select a value.");
-    } else (
+    } else {
       dispatch({
         type: 'SET_TABLE_STATE',
         payload: true
       })
-    )
+    }
     // // ⬇ Sending newPlant to our reducer: 
     // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
     // // ⬇ Send the user back:
@@ -276,7 +276,7 @@ export default function EstimateCreate() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Project Manager Cell:</b></TableCell>
+                      <TableCell><b>Project Manager Phone:</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('project_manager_phone', event.target.value)}
@@ -288,18 +288,6 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
-                      <TableCell><b>Your Purchase Order #:</b></TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('po_number', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                        />
-                      </TableCell>
-                    </TableRow> */}
 
                     <TableRow>
                       <TableCell><b>Floor Type:</b></TableCell>

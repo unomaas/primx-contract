@@ -3,22 +3,23 @@ import axios from 'axios';
 
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
-function* LookupEstimate(action) {
-    const estimateNumber = action.payload.estimateNumber
-    const licenseeId = action.payload.licenseeId
+function* fetchEstimateQuery(action) {
+    const estimateNumber = action.payload.estimate_number
+    const licenseeId = action.payload.licensee_id
 
     console.log('IN SAGA -->Estimate Order For Lookup:', estimateNumber, ' Licensee ID:', licenseeId);
 
     try {
-        const response = yield axios.get('/api/estimates/lookup',
-        {params:{
-            estimateNumber: estimateNumber,
-            licenseeId: licenseeId
-         }
-        })
-       
+        const response = yield axios.get('/api/estimates/lookup/:estimates',
+            {
+                params: {
+                    estimateNumber: estimateNumber,
+                    licenseeId: licenseeId
+                }
+            })
+
         //take response from DB and insert into Admin Reducer
-        yield put({ type: 'SET_ADMIN_ESTIMATES', payload: response.data });
+        yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: response.data });
     }
 
     catch (error) {
@@ -29,9 +30,13 @@ function* LookupEstimate(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
     try {
-        yield axios.post('/api/estimates', action.payload);
-        // reset state to update estimates from dom with adminEstimate reducer
-        yield put({ type: "SET_ESTIMATE" });
+        const response = yield axios.post('/api/estimates', action.payload);
+
+        // need to send the user to the search estimates results page using the newly created estimate number
+        console.log('response from DB:', response.data);
+        // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
+        
+        // yield put({ type: "SET_ESTIMATE" });
     }
 
     catch (error) {
@@ -42,7 +47,7 @@ function* AddEstimate(action) {
 // companies saga to fetch companies
 function* licenseeFormSaga() {
     yield takeLatest('ADD_ESTIMATE', AddEstimate);
-    yield takeLatest('LOOKUP_ESTIMATE', LookupEstimate)
+    yield takeLatest('FETCH_ESTIMATE_QUERY', fetchEstimateQuery)
 }
 
 export default licenseeFormSaga;

@@ -23,9 +23,8 @@ export default function AdminUpdateTypes() {
   //defining states for sending data to server
   let [newFloorType, setNewFloorType] = useState('');
   let [newPlacementType, setNewPlacementType] = useState('');
-  // establish open for snackbar notification
-  const [open, setOpen] = useState(false);
-
+  // establish snackbar variables for notifications
+  const snack = useSelector(store => store.snackBar);
 
   //useSelector for array of floor types
   const floorTypes = useSelector(store => store.floorTypes);
@@ -43,29 +42,35 @@ export default function AdminUpdateTypes() {
   //defining classes for MUI
   const classes = useStyles();
 
+  //the following handle...change functions set the floor type and placement type useStates
   const handleFloorChange = (event) => {
     setNewFloorType(event.target.value);
   }
-
   const handlePlacementChange = (event) => {
     setNewPlacementType(event.target.value);
   }
 
   const addFloorType = () => {
     if (newFloorType == '') {
-      swal("Error", "You need to input new floor type", "error");
+      //error shows if a field is empty
+      dispatch({type: 'SET_EMPTY_ERROR'})
     } else {
+      //sends newFloorType to reducer to add floor type to DB
     dispatch({type: "ADD_FLOOR_TYPE", payload: {floor_type: newFloorType}})
-    setOpen(true);
+    //empty input field after it is submitted
+    setNewFloorType('')
     }
   }
 
   const addPlacementType = () => {
     if (newPlacementType == '') {
-      swal("Error", "You need to input new placement type", "error");
+            //error shows if a field is empty
+      dispatch({type: 'SET_EMPTY_ERROR'})
     } else {
+            //sends newPlacementType to reducer to add floor type to DB
     dispatch({type: "ADD_PLACEMENT_TYPE", payload: {placement_type: newPlacementType}})
-    setOpen(true);
+        //empty input field after it is submitted
+    setNewPlacementType('')
     }
   }
   //sets snack bar notification to closed after appearing
@@ -74,7 +79,7 @@ export default function AdminUpdateTypes() {
       return;
     }
 
-    setOpen(false);
+    dispatch({type: 'SET_CLOSE'})
   };
 
 
@@ -115,16 +120,12 @@ export default function AdminUpdateTypes() {
         </div>
       {/* showing placement types */}
       <UpdatePlacementTypesGrid placementTypes={placementTypes}/>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          A placement or floor Type has been added!
+      {/* snackbar to confirm when a floor or placement type has been added */}
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snack.severity}>
+          {snack.message}
         </Alert>
       </Snackbar>
-
-
-
-
-      {/* <AdminUpdateTypesGrid floorAndPlacementTypes={placementTypes}/> */}
     </div>
   )
 }

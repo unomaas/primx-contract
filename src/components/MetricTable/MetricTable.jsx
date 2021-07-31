@@ -84,6 +84,9 @@ export default function MetricTable() {
     console.log('In Metric handleSave');
     // ⬇ Don't refresh until submit:
     event.preventDefault();
+    // send the estimate object to be POSTed
+    dispatch({type: 'ADD_ESTIMATE', payload: estimateData})
+
     // // ⬇ Sending newPlant to our reducer: 
     // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
     // // ⬇ Send the user back:
@@ -116,7 +119,7 @@ export default function MetricTable() {
                   <TableBody>
 
                     <TableRow>
-                      <TableCell><b>Square Meters</b></TableCell>
+                      <TableCell><b>Square Meters:</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('square_meters', event.target.value)}
@@ -132,7 +135,7 @@ export default function MetricTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Thickness (mm)</b></TableCell>
+                      <TableCell><b>Thickness (mm):</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('thickness_millimeters', event.target.value)}
@@ -239,8 +242,8 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Width (m³):</b></TableCell>
-                      <TableCell>5</TableCell>
-                      <TableCell>10</TableCell>
+                      <TableCell>1.5</TableCell>
+                      <TableCell>3.0</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -269,7 +272,7 @@ export default function MetricTable() {
                   <TableHead>
                     <TableRow>
                       <TableCell></TableCell>
-                      <TableCell><b>Dosage<br />Rate<br />(m³)</b></TableCell>
+                      <TableCell><b>Dosage<br />Rate<br />(per m³)</b></TableCell>
                       <TableCell><b>Total<br />Amount</b></TableCell>
                       <TableCell><b>Packaging<br />Capacity</b></TableCell>
                       <TableCell><b>Packages<br />Needed</b></TableCell>
@@ -443,7 +446,7 @@ export default function MetricTable() {
                         <Button
                           // type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => handleSave(event)}
+                          onClick={event => handleSave(event)}
                           variant="contained"
                           className={classes.LexendTeraFont11}
                           color="secondary"

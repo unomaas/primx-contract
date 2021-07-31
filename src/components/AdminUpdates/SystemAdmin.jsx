@@ -4,6 +4,8 @@ import React from 'react'
 //import components
 import AdminUpdates from './AdminUpdates';
 import SystemAdminUpdateUsersGrid from './SystemAdminUpdateUsersGrid';
+import AdminRegisterForm from '../AdminRegisterForm/AdminRegisterForm';
+
 
 export default function SystemAdmin() {
 
@@ -12,14 +14,19 @@ export default function SystemAdmin() {
     <div>
 
       <div>
+        {/* shows nav dropdown */}
         <AdminUpdates />
       </div>
       
-      <br></br>
-      <br></br>
+      <div>
+        <AdminRegisterForm />
+      </div>
 
+      <br></br>
+      <br></br>
 
       <div>
+        {/* grid component where all of the info and work is happening */}
         <SystemAdminUpdateUsersGrid />
       </div>
 

@@ -9,6 +9,7 @@ import products from './products.reducer';
 import shippingCosts from './shippingCosts.reducer';
 import estimatesReducer from './estimates.reducer';
 import userInfoReducer from './userInfo.reducer';
+import snackBar from './snack.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   shippingCosts, //contins the shipping costs
   estimatesReducer, // contains the create new estimate build
   userInfoReducer, //contains all users for system admin view
+  snackBar,
 });
 
 export default rootReducer;

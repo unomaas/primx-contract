@@ -110,7 +110,7 @@ export default function ImperialTable() {
                   <TableBody>
 
                     <TableRow>
-                      <TableCell><b>Square Feet</b></TableCell>
+                      <TableCell><b>Square Feet:</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('square_feet', event.target.value)}
@@ -126,7 +126,7 @@ export default function ImperialTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Thickness (in)</b></TableCell>
+                      <TableCell><b>Thickness (in):</b></TableCell>
                       <TableCell>
                         <TextField
                           onChange={event => handleChange('thickness_inches', event.target.value)}
@@ -282,7 +282,7 @@ export default function ImperialTable() {
                   <TableHead>
                     <TableRow>
                       <TableCell></TableCell>
-                      <TableCell><b>Dosage<br />Rate<br />(yd³)</b></TableCell>
+                      <TableCell><b>Dosage<br />Rate<br />(per yd³)</b></TableCell>
                       <TableCell><b>Total<br />Amount</b></TableCell>
                       <TableCell><b>Packaging<br />Capacity</b></TableCell>
                       <TableCell><b>Packages<br />Needed</b></TableCell>
@@ -298,16 +298,16 @@ export default function ImperialTable() {
                   <TableBody>
                     <TableRow>
                       <TableCell><b>PrīmX DC (lbs)</b></TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>67</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed}</TableCell>
+                      <TableCell>2,756</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -321,15 +321,15 @@ export default function ImperialTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
+                      <TableCell>1,000</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -343,29 +343,29 @@ export default function ImperialTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
+                      <TableCell>42,329</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>N/A</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed}</TableCell>
+                      <TableCell>6,458</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_materials_price}</TableCell>
+                      <TableCell>0</TableCell>
+                      <TableCell>N/A</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -379,15 +379,15 @@ export default function ImperialTable() {
                           fullWidth
                         />
                       </TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>
+                      <TableCell>1,000</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_cost_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -412,30 +412,13 @@ export default function ImperialTable() {
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell><b>TOTALS:</b></TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
-                      <TableCell>CALC</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_total_container_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_total_price_estimate}</TableCell>
                     </TableRow>
-
+                    
                     <TableRow>
-                      {/* <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-
-                      <TableCell colSpan={3} align="right">
-                        <Button
-                          type="submit"
-                          onClick={event => handleCalculateCosts(event)}
-                          variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-                          color="primary"
-                        >
-                          Calculate Costs
-                        </Button>
-                      </TableCell> */}
                       <TableCell colSpan={11} align="right">
                         <Button
                           type="submit"
