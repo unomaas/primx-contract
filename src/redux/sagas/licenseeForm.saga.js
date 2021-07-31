@@ -31,11 +31,13 @@ function* fetchEstimateQuery(action) {
 function* AddEstimate(action) {
     try {
         const response = yield axios.post('/api/estimates', action.payload);
+        console.log('action payload:', action.payload);
+        
 
         // need to send the user to the search estimates results page using the newly created estimate number
         console.log('response from DB:', response.data);
         // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
-        
+        yield action.payload.history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
         // yield put({ type: "SET_ESTIMATE" });
     }
 

@@ -82,6 +82,10 @@ export default function MetricTable() {
  */
   const handleSave = event => {
     console.log('In Metric handleSave');
+    // send history along with the estimateData
+    estimateData.history = history;
+
+
     // ⬇ Don't refresh until submit:
     event.preventDefault();
     // send the estimate object to be POSTed
