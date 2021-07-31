@@ -105,7 +105,7 @@ export default function MetricTable() {
 
   return (
     <>
-      <form>
+      <form onSubmit={handleSave}>
         <Grid container
           spacing={2}
           justifyContent="center"
@@ -433,7 +433,7 @@ export default function MetricTable() {
                       </TableCell> */}
                       <TableCell colSpan={11} align="right">
                         <Button
-                          type="submit"
+                          // type="submit"
                           onClick={event => handleCalculateCosts(event)}
                           variant="contained"
                           className={classes.LexendTeraFont11}
@@ -443,9 +443,9 @@ export default function MetricTable() {
                         </Button>
                         &nbsp; &nbsp; 
                         <Button
-                          // type="submit"
+                          type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          onClick={event => handleSave(event)}
+                          // onClick={event => handleSave(event)}
                           variant="contained"
                           className={classes.LexendTeraFont11}
                           color="secondary"

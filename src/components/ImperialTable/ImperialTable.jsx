@@ -75,15 +75,16 @@ export default function ImperialTable() {
   /** ⬇ handleSubmit:
  * When clicked, this will post the object to the DB and send the user back to the dashboard. 
  */
-  const handleSave = event => {
+   const handleSave = event => {
     console.log('In Imperial handleSave');
+    // attach history from useHistory to the estimate object to allow navigation from inside the saga
+    estimateData.history = history;
+
     // ⬇ Don't refresh until submit:
     event.preventDefault();
-    // // ⬇ Sending newPlant to our reducer: 
-    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-    // // ⬇ Send the user back:
-    // history.push('/dashboard');
-  } // End handleSubmit
+    // send the estimate object to be POSTed
+    dispatch({type: 'ADD_ESTIMATE', payload: estimateData})
+  } // End handleSave
 
   const handleCalculateCosts = () => {
     console.log('In Imperial handleCalculateCosts');
@@ -421,7 +422,6 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell colSpan={11} align="right">
                         <Button
-                          type="submit"
                           onClick={event => handleCalculateCosts(event)}
                           variant="contained"
                           className={classes.LexendTeraFont11}
@@ -431,7 +431,7 @@ export default function ImperialTable() {
                         </Button>
                         &nbsp; &nbsp;
                         <Button
-                          // type="submit"
+                          type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
                           // onClick={event => handleSave(event)}
                           variant="contained"
