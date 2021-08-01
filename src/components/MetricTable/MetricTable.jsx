@@ -130,6 +130,7 @@ export default function MetricTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">m²</InputAdornment>,
                           }}
+                          defaultValue={estimateData.square_meters}
                         />
                       </TableCell>
                     </TableRow>
@@ -146,6 +147,7 @@ export default function MetricTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">mm</InputAdornment>,
                           }}
+                          defaultValue={estimateData.thickness_millimeters}
                         />
                       </TableCell>
                     </TableRow>
@@ -222,6 +224,7 @@ export default function MetricTable() {
                             startAdornment: <InputAdornment position="start">m</InputAdornment>,
                           }}
                           fullWidth
+                          defaultValue={estimateData.thickened_edge_perimeter_lineal_meters}
                         // defaultValue="0"
                         />
                       </TableCell>
@@ -235,6 +238,7 @@ export default function MetricTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">m</InputAdornment>,
                           }}
+                          defaultValue={estimateData.thickened_edge_construction_joint_lineal_meters}
                         // defaultValue="0"
                         />
                       </TableCell>
@@ -309,6 +313,7 @@ export default function MetricTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_flow_dosage_liters}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
@@ -331,6 +336,7 @@ export default function MetricTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_steel_fibers_dosage_kgs}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
@@ -367,6 +373,7 @@ export default function MetricTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_cpea_dosage_liters}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>

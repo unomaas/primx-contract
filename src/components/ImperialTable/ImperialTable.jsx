@@ -102,6 +102,7 @@ export default function ImperialTable() {
           spacing={2}
           justifyContent="center"
         >
+          
           <Grid item xs={6}>
             <Paper elevation={3}>
               <TableContainer>
@@ -121,6 +122,7 @@ export default function ImperialTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">ft²</InputAdornment>,
                           }}
+                          defaultValue={estimateData.square_feet}
                         />
                       </TableCell>
                     </TableRow>
@@ -137,6 +139,7 @@ export default function ImperialTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">in</InputAdornment>,
                           }}
+                          defaultValue={estimateData.thickness_inches}
                         />
                       </TableCell>
                     </TableRow>
@@ -195,6 +198,7 @@ export default function ImperialTable() {
           <Grid item xs={6}>
             <Paper elevation={3}>
               <TableContainer>
+
                 <h3 className="lexendFont">Thickened Edge Calculator</h3>
                 <p>If applicable, for slabs under 6in.<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
                 <Table size="small">
@@ -220,6 +224,7 @@ export default function ImperialTable() {
                             startAdornment: <InputAdornment position="start">ft</InputAdornment>,
                           }}
                           fullWidth
+                          defaultValue={estimateData.thickened_edge_perimeter_lineal_feet}
                         // defaultValue="0"
                         />
                       </TableCell>
@@ -233,6 +238,7 @@ export default function ImperialTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">ft</InputAdornment>,
                           }}
+                          defaultValue={estimateData.thickened_edge_construction_joint_lineal_feet}
                         // defaultValue="0"
                         />
                       </TableCell>
@@ -319,6 +325,7 @@ export default function ImperialTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_flow_dosage_liters}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
@@ -341,6 +348,7 @@ export default function ImperialTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_steel_fibers_dosage_lbs}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
@@ -377,6 +385,7 @@ export default function ImperialTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_cpea_dosage_liters}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>
@@ -417,7 +426,7 @@ export default function ImperialTable() {
                       <TableCell>{calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
                       <TableCell>{calculatedDisplayObject?.design_total_price_estimate}</TableCell>
                     </TableRow>
-                    
+
                     <TableRow>
                       <TableCell colSpan={11} align="right">
                         <Button
