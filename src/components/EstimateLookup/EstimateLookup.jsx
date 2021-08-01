@@ -677,7 +677,7 @@ export default function EstimateLookup() {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell></TableCell>
+                    <TableCell></TableCell> 
                     <TableCell><b>PrīmX DC (kgs)</b></TableCell>
                     <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
                     <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
