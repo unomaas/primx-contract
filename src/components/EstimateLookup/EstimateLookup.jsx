@@ -440,7 +440,7 @@ export default function EstimateLookup() {
 
                 <TableBody>
                   <TableRow>
-                    <TableCell><b>Dosage Rate (per yd³):</b></TableCell>
+                    <TableCell><b>Dosage Rate per yd³:</b></TableCell>
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
@@ -670,6 +670,7 @@ export default function EstimateLookup() {
           </Paper>
         </Grid>
 
+
         <Grid item xs={12}>
           <Paper elevation={3}>
             <TableContainer>
@@ -689,7 +690,7 @@ export default function EstimateLookup() {
 
                 <TableBody>
                   <TableRow>
-                    <TableCell><b>Dosage Rate (per m³):</b></TableCell>
+                    <TableCell><b>Dosage Rate per m³:</b></TableCell>
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
@@ -766,7 +767,6 @@ export default function EstimateLookup() {
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
-
                   </TableRow>
 
                   <TableRow>
@@ -777,7 +777,6 @@ export default function EstimateLookup() {
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
                     <TableCell>CALC</TableCell>
-
                   </TableRow>
 
                   <TableRow>

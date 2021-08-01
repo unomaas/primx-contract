@@ -288,7 +288,7 @@ export default function ImperialTable() {
                   <TableHead>
                     <TableRow>
                       <TableCell></TableCell>
-                      <TableCell><b>Dosage<br />Rate<br />(per yd³)</b></TableCell>
+                      <TableCell><b>Dosage<br />Rate<br />per yd³</b></TableCell>
                       <TableCell><b>Total<br />Amount</b></TableCell>
                       <TableCell><b>Packaging<br />Capacity</b></TableCell>
                       <TableCell><b>Packages<br />Needed</b></TableCell>
