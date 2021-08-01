@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import useEstimateCalculations from '../../hooks/useEstimateCalculations';
+
 import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText, Box } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
@@ -11,6 +13,9 @@ import ButtonToggle from '../ButtonToggle/ButtonToggle';
 
 export default function EstimateLookup() {
   const companies = useSelector(store => store.companies);
+  const calculateEstimate = useEstimateCalculations;
+  // the searched estimate reducer only holds one estimate stored in an array, run the calculation on it as soon as it comes back from the reducer
+  
   const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
   const [searchQuery, setSearchQuery] = useState({
     licensee_id: "0",
@@ -161,121 +166,119 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Project Name:</b></TableCell>
                     <TableCell>
-                      All Phase Construction Concrete
-
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      NEED TO PULL NAME IN USING LICENSEE TABLE HERE
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Project General Contractor:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_general_contractor}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Project Manager Name:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_manager_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Project Manager Email:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_manager_email}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Project Manager Cell:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_manager_phone}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Floor Type:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      NEED TO GET FLOOR TYPE NAME FROM DB
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Placement Type:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      NEED TO GET PLACEMENT TYPE NAME FROM DB
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Unit of Measurement:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.measurement_units}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
-                    <TableCell><b>Today's Date:</b></TableCell>
+                    <TableCell><b>Today's Date: Should be Date created?</b></TableCell>
                     <TableCell>
-                      CONTENT
-
+                      {searchResult?.date_created}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Anticipated First Pour Date:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.anticipated_first_pour_date}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Lead Time (In Weeks):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      BRING IN CALCULATE FUNCTION SOMEHOW
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Shipping Street Address:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.ship_to_address}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Shipping City:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.ship_to_city}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Shipping State/Province:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      NEED TO GET SHIPPING STATE/PROVINCE WITH DATA
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Shipping Zip/Postal Code:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.zip_postal_code}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Shipping Country:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.country}
                     </TableCell>
                   </TableRow>
 
@@ -301,56 +304,56 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Square Feet:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickness (in):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Cubic Yards:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Subtotal:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Waste Factor @ 5%:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Total Cubic Yards:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
@@ -373,10 +376,10 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Lineal Feet:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
@@ -393,20 +396,20 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Additional Thickness (in):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Cubic Yards:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
@@ -550,56 +553,56 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Square Meters:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickness (mm):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Cubic Meters:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Subtotal:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Waste Factor @ 5%:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Total Cubic Meters:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
@@ -622,10 +625,10 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Lineal Meters:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
@@ -642,20 +645,20 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Additional Thickness (mm):</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Cubic Meters:</b></TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                     <TableCell>
-                      CONTENT
+                      {searchResult?.project_name}
                     </TableCell>
                   </TableRow>
 

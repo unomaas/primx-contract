@@ -5,14 +5,16 @@ export default function useEstimateCalculations(estimate) {
     if (!estimate.waste_factor_percentage) {
         estimate.waste_factor_percentage = 5;
     }
-    // shipping prices come in with keys linked to the shipping_costs table, need to change them to match what's listed on the estimates table
-    estimate.primx_dc_shipping_estimate = estimate.dc_price;
-    estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
-    estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
-    estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
-    
+    // shipping prices come in with keys linked to the shipping_costs table if they're being calculated from the estimate creation view,
+    // need to change them to match the keys on the estimate table. If estimates are being calculated from DB data, these keys already exist
+    if (!estimate.primx_dc_shipping_estimate) {
+        estimate.primx_dc_shipping_estimate = estimate.dc_price;
+        estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
+        estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
+        estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
 
-    
+    }
+
     // start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database
     for (let property in estimate) {
         // save the value of property being looped over
