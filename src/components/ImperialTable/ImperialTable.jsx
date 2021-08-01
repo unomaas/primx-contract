@@ -44,6 +44,19 @@ export default function ImperialTable() {
   // }, []);
   //#endregion ⬆⬆ All state variables above. 
 
+  // have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data,
+  // run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes
+  // values
+  useEffect(() => {
+    if (estimateData.square_feet && estimateData.thickness_inches && estimateData.thickened_edge_construction_joint_lineal_feet &&
+        estimateData.thickened_edge_perimeter_lineal_feet && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_lbs &&
+        estimateData.primx_cpea_dosage_liters) {
+          // once all the keys exist, run the calculate estimate function and set the table display state for the calculated values
+          const calculatedObject = calculateEstimate(estimateData)
+          setCalculatedDisplayObject(calculatedObject)
+      }
+  }, [estimateData])
+
 
   //#region ⬇⬇ Event handlers below:
   /** ⬇ handleChange:
@@ -75,15 +88,16 @@ export default function ImperialTable() {
   /** ⬇ handleSubmit:
  * When clicked, this will post the object to the DB and send the user back to the dashboard. 
  */
-  const handleSave = event => {
+   const handleSave = event => {
     console.log('In Imperial handleSave');
+    // attach history from useHistory to the estimate object to allow navigation from inside the saga
+    estimateData.history = history;
+
     // ⬇ Don't refresh until submit:
     event.preventDefault();
-    // // ⬇ Sending newPlant to our reducer: 
-    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-    // // ⬇ Send the user back:
-    // history.push('/dashboard');
-  } // End handleSubmit
+    // send the estimate object to be POSTed
+    dispatch({type: 'ADD_ESTIMATE', payload: estimateData})
+  } // End handleSave
 
   const handleCalculateCosts = () => {
     console.log('In Imperial handleCalculateCosts');
@@ -421,7 +435,6 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell colSpan={11} align="right">
                         <Button
-                          type="submit"
                           onClick={event => handleCalculateCosts(event)}
                           variant="contained"
                           className={classes.LexendTeraFont11}
@@ -431,7 +444,7 @@ export default function ImperialTable() {
                         </Button>
                         &nbsp; &nbsp;
                         <Button
-                          // type="submit"
+                          type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
                           // onClick={event => handleSave(event)}
                           variant="contained"
