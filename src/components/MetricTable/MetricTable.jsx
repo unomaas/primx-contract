@@ -416,10 +416,7 @@ export default function MetricTable() {
                       <TableCell>${calculatedDisplayObject?.design_total_materials_price}</TableCell>
                       <TableCell>
                         {/* Total number of containers go into this cell */}
-                        {
-                          calculatedDisplayObject?.primx_dc_containers_needed + calculatedDisplayObject?.primx_flow_containers_needed +
-                          calculatedDisplayObject?.primx_steel_fibers_containers_needed + calculatedDisplayObject?.primx_cpea_containers_needed
-                        }
+                        {calculatedDisplayObject?.design_total_containers}
                       </TableCell>
                       <TableCell>${calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
                       <TableCell>${calculatedDisplayObject?.design_total_price_estimate}</TableCell>

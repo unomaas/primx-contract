@@ -166,7 +166,7 @@ export default function useEstimateCalculations(estimate) {
     estimate.design_total_materials_price = estimate.primx_dc_total_materials_price + estimate.primx_flow_total_materials_price +
         estimate.primx_steel_fibers_total_materials_price + estimate.primx_ultracure_blankets_total_materials_price + estimate.primx_cpea_total_materials_price;
 
-    estimate.design_total_container_price = estimate.primx_dc_containers_needed + estimate.primx_steel_fibers_containers_needed +
+    estimate.design_total_containers = estimate.primx_dc_containers_needed + estimate.primx_steel_fibers_containers_needed +
         estimate.primx_flow_containers_needed + estimate.primx_cpea_containers_needed;
 
     estimate.design_total_shipping_estimate = estimate.primx_dc_calculated_shipping_estimate + estimate.primx_flow_calculated_shipping_estimate +
