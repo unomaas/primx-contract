@@ -25,8 +25,8 @@ export default function AdminUpdateShipping() {
   // establish shipping cost prices for specific states locally
   let [newShippingCost, setNewShippingCost] = useState({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
 
-// establish snackbar variables for notifications
-const snack = useSelector(store => store.snackBar);
+  // establish snackbar variables for notifications
+  const snack = useSelector(store => store.snackBar);
 
   //styles for MUI
   const useStyles = makeStyles((theme) => ({
@@ -34,6 +34,9 @@ const snack = useSelector(store => store.snackBar);
       '& > *': {
         margin: theme.spacing(1),
       },
+    },
+    updateShippingSubmit: {
+      margin: '-50% 0% -50% 800px',
     },
   }));
   //defining classes for MUI
@@ -59,13 +62,13 @@ const snack = useSelector(store => store.snackBar);
     console.log('in handleSubmit, adding newShippingCost -->', newShippingCost);
     //shows an error is one of the fields is empty
     if (newShippingCost.dc_price == '' || newShippingCost.ship_to_state_province == '' || newShippingCost.flow_cpea_price == '' ||
-    newShippingCost.fibers_price == '') {
-      dispatch({type: 'SET_EMPTY_ERROR'})
+      newShippingCost.fibers_price == '') {
+      dispatch({ type: 'SET_EMPTY_ERROR' })
 
     } else {
-    // dispatch sent to shippingCost saga, payload as below
-    dispatch({ type: 'ADD_SHIPPING_COSTS', payload: newShippingCost });
-    setNewShippingCost({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
+      // dispatch sent to shippingCost saga, payload as below
+      dispatch({ type: 'ADD_SHIPPING_COSTS', payload: newShippingCost });
+      setNewShippingCost({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
     }
   }
 
@@ -74,7 +77,7 @@ const snack = useSelector(store => store.snackBar);
       return;
     }
 
-    dispatch({type: 'SET_CLOSE'})
+    dispatch({ type: 'SET_CLOSE' })
   };
 
   // useEffect(() => {
@@ -102,17 +105,55 @@ const snack = useSelector(store => store.snackBar);
         <form className={classes.root} noValidate autoComplete="off">
           <div>
             <div >
-              <TextField id="ship-to" className={classes.root} label="Add New Shipping Location" variant="outlined" value={newShippingCost.ship_to_state_province} onChange={handleShipToChange} />
-              <TextField id="dc-price" className={classes.root} label="Add New DC Price" variant="outlined" value={newShippingCost.dc_price} onChange={handleDCChange} />
+              <TextField
+                id="ship-to"
+                className={classes.root}
+                inputProps={{
+                  style: { fontSize: 30, height: 15 }
+                }}
+                label="Add New Shipping Location"
+                variant="outlined" value={newShippingCost.ship_to_state_province}
+                onChange={handleShipToChange} />
+
+              <TextField
+                id="dc-price"
+                className={classes.root}
+                inputProps={{
+                  style: { fontSize: 30, height: 15 }
+                }}
+                label="Add New DC Price"
+                variant="outlined"
+                value={newShippingCost.dc_price}
+                onChange={handleDCChange} />
             </div>
 
-            <div >
-              <TextField id="flow-cpea" className={classes.root} label="Add New Flow/CPEA Price" variant="outlined" value={newShippingCost.flow_cpea_price} onChange={handleFlowCPEAChange} />
-              <TextField id="fiber-ship-price" className={classes.root} label="Add New Fibers Shipping Price" variant="outlined" value={newShippingCost.fibers_price} onChange={handleFibersChange} />
-              <br></br>
-              <Fab className={classes.root} onClick={handleSubmit} color="primary" aria-label="add">
+            <Fab className={classes.updateShippingSubmit} onClick={handleSubmit} color="primary" aria-label="add">
                 <AddIcon />
               </Fab>
+
+            <div >
+              <TextField
+                id="flow-cpea"
+                className={classes.root}
+                inputProps={{
+                  style: { fontSize: 30, height: 15 }
+                }}
+                label="Add New Flow/CPEA Price"
+                variant="outlined"
+                value={newShippingCost.flow_cpea_price}
+                onChange={handleFlowCPEAChange} />
+
+              <TextField
+                id="fiber-ship-price"
+                className={classes.root}
+                inputProps={{
+                  style: { fontSize: 30, height: 15 }
+                }}
+                label="Add New Fibers Shipping Price"
+                variant="outlined"
+                value={newShippingCost.fibers_price}
+                onChange={handleFibersChange} />
+
             </div>
           </div>
         </form>
