@@ -1,12 +1,72 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
-// NEED SHIPPINGCOSTS
 
-// NEED FLOOR TYPE
+function* fetchFieldSelect() {
 
-// NEED PLACEMENT TYPYE
+    // Fetching company/licensee name and id
+    try {
+      const response = yield axios.get('/api/companies');
+      // set companies used in reducer
+      yield put({
+        type: 'SET_COMPANIES',
+        payload: response.data
+      });
+    } catch (error) {
+      console.log('company get request failed', error);
+    }
 
-// NEED COMPANY NAME
+    // Fetching placement type
+    try {
+        const placementTypes = yield axios.get('/api/placementtypes');
+        console.log('placementTypes.data', placementTypes.data);
 
-// NEED STATE
+        //send results to placementTypes reducer
+        yield put({type: 'SET_PLACEMENT_TYPES', payload: placementTypes.data});
+    } catch (error) {
+        console.log('error with fetchAllPlacementTypes in placementTypes saga', error);
+        
+    }
+
+    // Fetching products
+    try {
+        const response = yield axios.get('/api/products');
+        // set products used in reducer
+        yield put({
+          type: 'SET_PRODUCTS',
+          payload: response.data
+        });
+      } catch (error) {
+        console.log('product get request failed', error);
+      }
+
+      // Fetching shipping costs/state
+      try {
+        //GET all shipping costs
+        const shippingCosts = yield axios.get('/api/shippingcosts');
+        console.log('shippingCosts.data -->', shippingCosts.data);
+
+        //send results to shippingCosts reducer
+        yield put({type: 'SET_SHIPPING_COSTS', payload: shippingCosts.data});
+    } catch (error) {
+        console.log('error with fetchShippingCosts in shippingCosts saga', error);   
+    }
+
+    // Fetching floor types
+    try {
+        //GET all floor types
+        const floorTypes = yield axios.get('/api/floortypes');
+        console.log('floorTypes.data', floorTypes.data);
+
+        //send results to floorTypes reducer
+        yield put({type: 'SET_FLOOR_TYPES', payload: floorTypes.data});
+    } catch (error) {
+        console.log('error with fetchAllFloorTypes in floorTypes saga', error);    
+    }
+
+  }
+
+
+function* fieldSelectSaga() {
+    yield takeLatest('FETCH_FIELD_SELECT', fetchFieldSelect);
+}

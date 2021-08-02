@@ -10,6 +10,7 @@ import productsSaga from './products.saga';
 import shippingCostsSaga from './shippingCosts.saga';
 import licenseeFormSaga from './licenseeForm.saga';
 import userInfoSaga from './userInfo.saga';
+import fieldSelectSaga from './fieldSelect.saga'
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -31,5 +32,6 @@ export default function* rootSaga() {
     shippingCostsSaga(),
     licenseeFormSaga(),
     userInfoSaga(),
+    fieldSelectSaga(),
   ]);
 }
