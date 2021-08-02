@@ -22,10 +22,10 @@ export default function AdminUpdateLicenses() {
   let [companyNameInput, setCompanyNameInput] = useState('');
   // establish snackbar variables for notifications
   const snack = useSelector(store => store.snackBar);
-  
-  
-    //defining classes for MUI
-    const classes = useStyles();
+
+
+  //defining classes for MUI
+  const classes = useStyles();
 
 
   //establish rows with campanies array for datagrid
@@ -46,8 +46,8 @@ export default function AdminUpdateLicenses() {
         newValue: props.value
       }
     })
-
   }
+
   // tracks the state of the company name input in companynameinput variable
   const handleCompanyInputChange = (event) => {
     setCompanyNameInput(event.target.value);
@@ -59,44 +59,40 @@ export default function AdminUpdateLicenses() {
     } else {
       dispatch({ type: 'ADD_COMPANY', payload: companyNameInput });
       setCompanyNameInput('');
-
     }
-
   }
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-
     dispatch({ type: 'SET_CLOSE' })
   };
 
 
-return (
-  <div >
-    <AdminUpdates />
-    <h2>Update Licensee</h2>
-    <TextField id="outlined-basic" className={classes.AddLicenseeInput} label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange}/>
-    <Fab className={classes.AddLicenseeInput} onClick={handleAddCompany} color="primary" aria-label="add">
-              <AddIcon />
-            </Fab>
-    <div className={classes.licenseeGrid}>
-      <DataGrid
-        className={classes.dataGridTables}
-        autoHeight
-        rows={rows}
-        columns={columns}
-        pageSize={10}
-        onEditCellChangeCommitted={handleEditSubmit}
-      />
-      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={snack.severity}>
-          {snack.message}
-        </Alert>
-      </Snackbar>
+  return (
+    <div >
+      <AdminUpdates />
+      <h2>Update Licensee</h2>
+      <TextField id="outlined-basic" className={classes.AddLicenseeInput} label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange} />
+      <Fab className={classes.AddLicenseeInput} onClick={handleAddCompany} color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
+      <div className={classes.licenseeGrid}>
+        <DataGrid
+          className={classes.dataGridTables}
+          autoHeight
+          rows={rows}
+          columns={columns}
+          pageSize={10}
+          onEditCellChangeCommitted={handleEditSubmit}
+        />
+        <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity={snack.severity}>
+            {snack.message}
+          </Alert>
+        </Snackbar>
+      </div>
     </div>
-
-
   )
 }
