@@ -208,7 +208,7 @@ export default function EstimateCreate() {
 
       <br />
 
-      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
         <Alert onClose={handleClose} severity={snack.severity}>
           {snack.message}
         </Alert>
