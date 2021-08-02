@@ -16,7 +16,11 @@ import ImperialTable from '../ImperialTable/ImperialTable';
 import MetricTable from '../MetricTable/MetricTable';
 import { eventNames } from 'commander';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
+
 //#endregion ⬆⬆ All document setup above.
+
+
+
 
 
 export default function EstimateCreate() {
@@ -57,6 +61,7 @@ export default function EstimateCreate() {
     const differenceInWeeks = differenceInSeconds / (60 * 60 * 24 * 7);
     // set lead time state with a rounded number in weeks
     setLeadTime(Math.abs(Math.round(differenceInWeeks)));
+
   }
 
   /** ⬇ handleChange:
@@ -401,7 +406,7 @@ export default function EstimateCreate() {
 
                     <TableRow>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
-                      <TableCell>
+                      <TableCell style={{backgroundColor: leadTime <= 1 ? "rgba(255, 0, 0, 0.7)" : ""}}>
                         {leadTime}
                       </TableCell>
                     </TableRow>

@@ -10,7 +10,7 @@ const snackReducer = (state ={open: false, message: '', severity: "success"}, ac
         return {open: true, message: 'Placement Type has Been Added!', severity: "success"}
       case 'SET_SUCCESS_REGISTER_ADMIN':
         return {open: true, message: 'New Admin has Been Added!', severity: "success"}
-      case 'SET_CLOSE':
+        case 'SET_CLOSE':
         return {...state,open: false}
       case 'SET_EMPTY_ERROR' :
         return {open: true, message: 'Must Fill All Input Fields To Add', severity: "error"}

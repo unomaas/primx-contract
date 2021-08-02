@@ -29,3 +29,7 @@ h3, .lexendFont {
   font-size: 14px;
   color: black;
 }
+
+.leadTimeRed {
+  color: red;
+}
