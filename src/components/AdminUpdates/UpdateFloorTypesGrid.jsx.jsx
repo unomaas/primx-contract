@@ -21,7 +21,7 @@ export default function UpdateFloorTypesGrid({floorTypes}) {
 
     return (
         <div
-          className={classes.SystemAdminGrid}
+          className={classes.TypesGrid}
         >
             <DataGrid 
                 className={classes.dataGridTables}

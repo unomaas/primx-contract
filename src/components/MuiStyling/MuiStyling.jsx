@@ -52,12 +52,12 @@ const useStyles = makeStyles({
   },
 
   SystemAdminGrid: {
-    width: '40%',
+    width: 510,
     margin: 'auto',
   },
 
   TypesGrid: {
-    width: '50%',
+    width: 400,
     margin: 'auto',
   },
 
@@ -67,13 +67,19 @@ const useStyles = makeStyles({
   },
 
   shippingGrid: {
-    width: '50%',
+    width: 800,
     margin: 'auto',
   },
 
   productsGrid: {
-    width: '40%',
+    width: 600,
     margin: 'auto',
+  },
+
+  licenseeGrid: {
+    width: 300,
+    margin: 'auto',
+
   }
 
 }); // End useStyles

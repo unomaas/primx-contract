@@ -22,7 +22,7 @@ export default function UpdatePlacementTypesGrid({placementTypes}) {
     return (
         <div
           
-        className={classes.SystemAdminGrid}
+        className={classes.TypesGrid}
         >
             <DataGrid 
                 className={classes.dataGridTables}
