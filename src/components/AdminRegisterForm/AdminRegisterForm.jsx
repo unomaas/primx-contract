@@ -7,14 +7,20 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import swal from 'sweetalert';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 
 
 function AdminRegisterForm() {
+
+  const errors = useSelector((store) => store.errors);
+  const snack = useSelector(store => store.snackBar);
+
+  //defining states for sending data to server
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const errors = useSelector((store) => store.errors);
+
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -40,67 +46,86 @@ function AdminRegisterForm() {
         password: password,
       },
     });
-    dispatch({type: 'FETCH_USERINFO'});
+    dispatch({ type: 'FETCH_USERINFO' });
     setUsername('');
     setPassword('');
   }; // end registerUser
 
+  //sets snack bar notification to closed after appearing
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    dispatch({type: 'SET_CLOSE'})
+  };
+
   useEffect(() => {
     // GET all users on page load
-    dispatch({type: 'FETCH_USERINFO'});
+    dispatch({ type: 'FETCH_USERINFO' });
   }, [])
 
   return (
-    <form  onSubmit={registerUser}>
-      <h2>Register New Admin</h2>
-      <p>Use this page to create a new Admin account for another user.</p>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
+    <div>
+      <form onSubmit={registerUser}>
+        <h2>Register New Admin</h2>
+        <p>Use this page to create a new Admin account for another user.</p>
+        {errors.registrationMessage && (
+          <h3 className="alert" role="alert">
+            {errors.registrationMessage}
+          </h3>
+        )}
 
-      <div>
-        <TextField
-          required
-          htmlFor="username"
-          name="username"
-          label="Username"
-          variant="outlined"
-          onChange={(event) => setUsername(event.target.value)}
-          value={username}>
-          Username:
+        <div>
+          <TextField
+            required
+            htmlFor="username"
+            name="username"
+            label="Username"
+            variant="outlined"
+            onChange={(event) => setUsername(event.target.value)}
+            value={username}>
+            Username:
         </TextField>
-      </div> <br/>
+        </div> <br />
 
-      <div>
-        <TextField
-          required
-          htmlFor="password"
-          name="password"
-          label="Password"
-          variant="outlined"
-          type="password"
-          onChange={(event) => setPassword(event.target.value)}
-          value={password}>
-          Password:
+        <div>
+          <TextField
+            required
+            htmlFor="password"
+            name="password"
+            label="Password"
+            variant="outlined"
+            type="password"
+            onChange={(event) => setPassword(event.target.value)}
+            value={password}>
+            Password:
         </TextField>
-      </div> <br/>
+        </div> <br />
 
-      <div>
-        <Button
-          type="submit"
-          // onClick={registerUser}
-          variant="contained"
-          color="primary"
-          className="btn"
-          value="Register"
-          className={classes.LexendTeraFont11}
+        <div>
+          <Button
+            type="submit"
+            // onClick={registerUser}
+            variant="contained"
+            color="primary"
+            className="btn"
+            value="Register"
+            className={classes.LexendTeraFont11}
           >
-          Register
+            Register
         </Button>
-      </div>
-    </form>
+        </div>
+      </form>
+
+      {/* snackbar to confirm when a new admin has been registered */}
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snack.severity}>
+          {snack.message}
+        </Alert>
+      </Snackbar>
+    </div>
+
   );
 }
 

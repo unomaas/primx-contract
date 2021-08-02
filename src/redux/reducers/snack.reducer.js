@@ -8,6 +8,8 @@ const snackReducer = (state ={open: false, message: '', severity: "success"}, ac
         return {open: true, message: 'Floor Type has Been Added!', severity: "success"}
       case 'SET_SUCCESS_PLACEMENT_TYPES':
         return {open: true, message: 'Placement Type has Been Added!', severity: "success"}
+      case 'SET_SUCCESS_REGISTER_ADMIN':
+        return {open: true, message: 'New Admin has Been Added!', severity: "success"}
       case 'SET_CLOSE':
         return {...state,open: false}
       case 'SET_EMPTY_ERROR' :
