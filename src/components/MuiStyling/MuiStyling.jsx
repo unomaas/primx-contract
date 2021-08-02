@@ -79,7 +79,10 @@ const useStyles = makeStyles({
   licenseeGrid: {
     width: 300,
     margin: 'auto',
-
+  },
+  AdminEstimatesGridwrapper: {
+    width: '95%',
+    margin: 'auto',
   }
 
 }); // End useStyles
