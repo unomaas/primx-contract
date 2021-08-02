@@ -28,6 +28,7 @@ export default function EstimateLookup() {
   const [error, setError] = useState(false);
   const classes = useStyles();
   const [selectError, setSelectError] = useState("");
+  const [poNumber, setPoNumber] = useState('');
 
   // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
   // const { licensee_id_estimate_number } = useParams();
@@ -80,7 +81,7 @@ export default function EstimateLookup() {
   };
 
 
-  // Function tied to the recalculate costs button below. When clicked, runs the caluclateEstimate function to get updated cost numbers with current
+  // Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current
   // shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to 
   // click the submit order button
   const handleRecalculateCosts = () => {
@@ -91,8 +92,15 @@ export default function EstimateLookup() {
     dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult })
   }
 
-  console.log('search estimate:', searchResult)
 
+  // Click handler for the Place Order button. 
+  const handlePlaceOrder = () => {
+    // handle data validation here
+
+  }
+
+  console.log('search estimate:', searchResult)
+  console.log('PO number', poNumber);
   return (
     <div className="EstimateCreate-wrapper">
 
@@ -736,48 +744,58 @@ export default function EstimateLookup() {
                       </TableRow>
 
                       <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell>
-                          {/* Recalculate costs and submit buttons */}
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleRecalculateCosts}
-                          >
-                            Recalculate Costs
-                          </Button>
-                        </TableCell>
-                        <TableCell>
-                          {!hasRecalculated &&
-                            <>Please recalculate costs before submitting an order</>
-                          }
-                          
-                        </TableCell>
-                        <TableCell>
-                          {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
-                          {hasRecalculated ? 
-                          <>
+                          <TableCell></TableCell>
+                          <TableCell></TableCell>
+                          <TableCell></TableCell>
+                          <TableCell></TableCell>
+                          <TableCell>
+                            {/* Recalculate costs  button */}
                             <Button
                               variant="contained"
-                              color="secondary"
+                              color="primary"
+                              onClick={handleRecalculateCosts}
                             >
-                              Submit Order
+                              Recalculate Costs
                             </Button>
-                          </> :
-                          <>
-                            <Button
-                              variant="contained"
-                              disabled
-                            >
-                              Submit Order
-                            </Button>
-                          </>
-                          }
+                          </TableCell>
+                          <TableCell>
+                            
+                            {hasRecalculated ?
+                              <>
+                                <TextField
+                                  onChange={(event) => setPoNumber(event.target.value)}
+                                  size="small"
+                                  label="PO Number"
+                                >
+                                </TextField>
+                              </> :
+                              <>Please recalculate costs before placing an order</>
+                            }
+                            
+                          </TableCell>
+                          <TableCell>
+                            {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
+                            {hasRecalculated ? 
+                            <>
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={handlePlaceOrder}
+                              >
+                                Place Order
+                              </Button>
+                            </> :
+                            <>
+                              <Button
+                                variant="contained"
+                                disabled
+                              >
+                                Place Order
+                              </Button>
+                            </>
+                            }
 
-                        </TableCell>
+                          </TableCell>
                       </TableRow>
 
                       {/* End Materials Table */}
