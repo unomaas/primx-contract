@@ -56,7 +56,6 @@ function AdminRegisterForm() {
     if (reason === 'clickaway') {
       return;
     }
-
     dispatch({type: 'SET_CLOSE'})
   };
 

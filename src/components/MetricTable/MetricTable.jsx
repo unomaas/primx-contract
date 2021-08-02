@@ -165,6 +165,8 @@ export default function MetricTable() {
                           }}
                           fullWidth
                           defaultValue={estimateData.thickened_edge_perimeter_lineal_meters}
+                          onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
+
                         />
                       </TableCell>
 
@@ -181,6 +183,8 @@ export default function MetricTable() {
                           }}
                           fullWidth
                           defaultValue={estimateData.primx_flow_dosage_liters}
+                          onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
+
                         />
                       </TableCell>
                     </TableRow>
@@ -215,6 +219,8 @@ export default function MetricTable() {
                             endAdornment: <InputAdornment position="end">m</InputAdornment>,
                           }}
                           defaultValue={estimateData.thickened_edge_construction_joint_lineal_meters}
+                          onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
+
                         />
                       </TableCell>
 
@@ -231,6 +237,8 @@ export default function MetricTable() {
                           }}
                           fullWidth
                           defaultValue={estimateData.primx_steel_fibers_dosage_kgs}
+                          onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_KGS' })}
+
                         />
                       </TableCell>
                     </TableRow>
