@@ -46,7 +46,9 @@ export const tableState = (state = false, action) => {
   } // End switch
 }; // End kitsReducer
 
-export const searchedEstimate = (state = [], action) => {
+// searchedEstimate comes from the licenseeForm saga, which sends back a single estimate object from the DB after running the useEstimateCalculations
+// function on it
+export const searchedEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_QUERY_RESULT':
       return action.payload;
