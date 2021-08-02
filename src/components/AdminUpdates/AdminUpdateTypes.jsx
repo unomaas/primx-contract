@@ -7,7 +7,7 @@ import UpdateFloorTypesGrid from './UpdateFloorTypesGrid.jsx';
 import UpdatePlacementTypesGrid from './UpdatePlacementTypesGrid'; 
 
 //imports for MUI
-import { makeStyles } from '@material-ui/core/styles';
+import { useStyles } from '../MuiStyling/MuiStyling';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
@@ -30,14 +30,6 @@ export default function AdminUpdateTypes() {
   const placementTypes = useSelector(store => store.placementTypes);
 
 
-   //styles for MUI
-   const useStyles = makeStyles((theme) => ({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-      },
-    },
-  }));
   //defining classes for MUI
   const classes = useStyles();
 
@@ -96,23 +88,45 @@ export default function AdminUpdateTypes() {
       <h4>Update Floor Types</h4>
 
         {/* input nd add button for adding new floor types */}
-        <div style={{margin: '0 auto'}}>
-          <form  className={classes.root} noValidate autoComplete="off">
-            <TextField id="outlined-basic" label="Add New Floor Type" variant="outlined" value={newFloorType} onChange={handleFloorChange}/>
-            <Fab className={classes.root} onClick={addFloorType} color="primary" aria-label="add">
+
+          <form   noValidate autoComplete="off">
+            <TextField className={classes.AddTypesInput} 
+            inputProps={{
+                style: {fontSize: 25, height: 15} 
+              }} 
+              id="outlined-basic" 
+              label="Add New Floor Type" 
+              variant="outlined" 
+              value={newFloorType} 
+              onChange={handleFloorChange}/>
+
+            <Fab className={classes.AddTypesInput} onClick={addFloorType} color="primary" aria-label="add">
               <AddIcon />
             </Fab>
           </form>
-        </div>
+
       {/* showing floor types */}
       <UpdateFloorTypesGrid floorTypes={floorTypes}/>
 
       <h4>Update Placement Types</h4>
         {/* input and add button for adding new placement types */}
         <div style={{margin: '0 auto'}}>
-          <form  className={classes.root} noValidate autoComplete="off">
-            <TextField id="outlined-basic" label="Add New Placement Type" variant="outlined" value={newPlacementType} onChange={handlePlacementChange}/>
-              <Fab className={classes.root} onClick={addPlacementType} color="primary" aria-label="add">
+          <form noValidate autoComplete="off">
+            <TextField 
+            className={classes.AddTypesInput} 
+            inputProps={{
+                style: {fontSize: 25, height: 15} 
+              }} 
+              id="outlined-basic" 
+              label="Add New Placement Type" 
+              variant="outlined" value={newPlacementType} 
+              onChange={handlePlacementChange}/>
+              
+              <Fab 
+              className={classes.AddTypesInput} 
+              onClick={addPlacementType} 
+              color="primary" 
+              aria-label="add">
                 <AddIcon />
               </Fab>
           </form>
