@@ -110,6 +110,8 @@ function* recalculateEstimate(action) {
 function* markEstimateAsOrdered(action) {
     try {
         yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
+        // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
+        yield put({type: 'FETCH_ESTIMATE_QUERY', payload: action.payload});
 
     }
     catch (error) {

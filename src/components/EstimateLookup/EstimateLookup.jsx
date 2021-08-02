@@ -101,6 +101,8 @@ export default function EstimateLookup() {
     dispatch({type: 'EDIT_PLACE_ORDER', payload: {
       id: searchResult.id,
       po_number: poNumber,
+      licensee_id: searchResult.licensee_id,
+      estimate_number: searchResult.estimate_number
     }})
 
   }

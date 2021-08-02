@@ -266,7 +266,7 @@ router.put('/process/:id', rejectUnauthenticated, (req, res) => {
 router.put('/order/:id', (req, res) => {
   console.log('req.body:', req.body);
   
-  // SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
+  // SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
   const queryText = `UPDATE "estimates" SET "ordered_by_licensee" = TRUE, "po_number" = $1 WHERE "id" = $2;`;
   // DB request
   pool.query(queryText, [req.body.po_number, req.params.id])
