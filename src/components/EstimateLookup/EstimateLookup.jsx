@@ -553,56 +553,56 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Square Meters:</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.square_meters}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickness (mm):</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.thickness_millimeters}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Cubic Meters:</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.cubic_meters}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.perimeter_thickening_cubic_meters}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.construction_joint_thickening_cubic_meters}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Subtotal:</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.cubic_meters_subtotal}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Waste Factor @ 5%:</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.waste_factor_cubic_meters}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Total Cubic Meters:</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.design_cubic_meters_total}
                     </TableCell>
                   </TableRow>
 
@@ -625,10 +625,10 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Lineal Meters:</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.thickened_edge_perimeter_lineal_meters}
                     </TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.thickened_edge_construction_joint_lineal_meters}
                     </TableCell>
                   </TableRow>
 
@@ -645,20 +645,20 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Additional Thickness (mm):</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.additional_thickness_millimeters}
                     </TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.additional_thickness_millimeters}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Cubic Meters:</b></TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.perimeter_thickening_cubic_meters}
                     </TableCell>
                     <TableCell>
-                      {searchResult?.project_name}
+                      {searchResult?.construction_joint_thickening_cubic_meters}
                     </TableCell>
                   </TableRow>
 
@@ -688,104 +688,104 @@ export default function EstimateLookup() {
                 <TableBody>
                   <TableRow>
                     <TableCell><b>Dosage Rate (per m³):</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>40</TableCell>
+                    <TableCell>{searchResult?.primx_flow_dosage_liters}</TableCell>
+                    <TableCell>{searchResult?.primx_steel_fibers_dosage_kgs}</TableCell>
+                    <TableCell>N/A</TableCell>
+                    <TableCell>{searchResult?.primx_cpea_dosage_liters}</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Total Amount:</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>{searchResult?.primx_dc_total_amount_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_flow_total_amount_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_steel_fibers_total_amount_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_ultracure_blankets_total_amount_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_cpea_total_amount_needed}</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Packaging Capacity:</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>1250</TableCell>
+                    <TableCell>1000</TableCell>
+                    <TableCell>19200</TableCell>
+                    <TableCell>600</TableCell>
+                    <TableCell>1000</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Packages Needed:</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>{searchResult?.primx_dc_packages_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_flow_packages_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_steel_fibers_packages_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_ultracure_blankets_packages_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_cpea_packages_needed}</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Total Order Quantity:</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>{searchResult?.primx_dc_total_order_quantity}</TableCell>
+                    <TableCell>{searchResult?.primx_flow_total_order_quantity}</TableCell>
+                    <TableCell>{searchResult?.primx_steel_fibers_total_order_quantity}</TableCell>
+                    <TableCell>{searchResult?.primx_ultracure_blankets_total_order_quantity}</TableCell>
+                    <TableCell>{searchResult?.primx_cpea_total_order_quantity}</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Materials Price:</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>{searchResult?.primx_dc_unit_price}</TableCell>
+                    <TableCell>{searchResult?.primx_flow_unit_price}</TableCell>
+                    <TableCell>{searchResult?.primx_steel_fibers_unit_price}</TableCell>
+                    <TableCell>{searchResult?.primx_ultracure_blankets_unit_price}</TableCell>
+                    <TableCell>{searchResult?.primx_cpea_unit_price}</TableCell>
                     <TableCell><b>Totals:</b></TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Total Materials Price:</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>{searchResult?.primx_dc_total_materials_price}</TableCell>
+                    <TableCell>{searchResult?.primx_flow_total_materials_price}</TableCell>
+                    <TableCell>{searchResult?.primx_steel_fibers_total_materials_price}</TableCell>
+                    <TableCell>{searchResult?.primx_ultracure_blankets_total_materials_price}</TableCell>
+                    <TableCell>{searchResult?.primx_cpea_total_materials_price}</TableCell>
+                    <TableCell>{searchResult?.design_total_materials_price}</TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Containers:</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>{searchResult?.primx_dc_containers_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_flow_containers_needed}</TableCell>
+                    <TableCell>{searchResult?.primx_steel_fibers_containers_needed}</TableCell>
+                    <TableCell>0</TableCell>
+                    <TableCell>{searchResult?.primx_cpea_containers_needed}</TableCell>
+                    <TableCell>{searchResult?.design_total_containers}</TableCell>
 
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Shipping Estimate:</b></TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
-                    <TableCell>{searchResult?.square_feet}</TableCell>
+                    <TableCell>{searchResult?.primx_dc_calculated_shipping_estimate}</TableCell>
+                    <TableCell>{searchResult?.primx_flow_calculated_shipping_estimate}</TableCell>
+                    <TableCell>{searchResult?.primx_steel_fibers_calculated_shipping_estimate}</TableCell>
+                    <TableCell>0</TableCell>
+                    <TableCell>{searchResult?.primx_cpea_calculated_shipping_estimate}</TableCell>
+                    <TableCell>{searchResult?.design_total_shipping_estimate}</TableCell>
 
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Total Cost:</b></TableCell>
-                    <TableCell><b>{searchResult?.square_feet}</b></TableCell>
-                    <TableCell><b>{searchResult?.square_feet}</b></TableCell>
-                    <TableCell><b>{searchResult?.square_feet}</b></TableCell>
-                    <TableCell><b>{searchResult?.square_feet}</b></TableCell>
-                    <TableCell><b>{searchResult?.square_feet}</b></TableCell>
-                    <TableCell><b>{searchResult?.square_feet}</b></TableCell>
+                    <TableCell><b>{searchResult?.primx_dc_total_cost_estimate}</b></TableCell>
+                    <TableCell><b>{searchResult?.primx_flow_total_cost_estimate}</b></TableCell>
+                    <TableCell><b>{searchResult?.primx_steel_fibers_total_cost_estimate}</b></TableCell>
+                    <TableCell><b>{searchResult?.primx_ultracure_blankets_total_cost_estimate}</b></TableCell>
+                    <TableCell><b>{searchResult?.primx_cpea_total_cost_estimate}</b></TableCell>
+                    <TableCell><b>{searchResult?.design_total_price_estimate}</b></TableCell>
                   </TableRow>
                   {/* End Metric Table */}
 
