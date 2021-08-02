@@ -291,7 +291,7 @@ export default function EstimateLookup() {
 
 
 
-
+        
         {/* Table #2 Imperial: */}
 
         {/* <Grid item xs={6}>
@@ -540,133 +540,266 @@ export default function EstimateLookup() {
                   </TableRow> */}
         {/* End Imperial Tables */}
 
+        {/* Table #2 Imperial: conditionally render the imperial needs*/}          
+        {searchResult.measurement_units == 'imperial' &&
+        <>
+          <Grid item xs={6}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <h3>Project Quantity Calculations</h3>
+                <Table size="small">
+                  <TableBody>
+
+                    <TableRow>
+                      <TableCell><b>Square Feet:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.square_feet}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Thickness (in):</b></TableCell>
+                      <TableCell>
+                        {searchResult?.thickness_inches}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Cubic Yards:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.cubic_yards}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
+                      <TableCell>
+                        {searchResult?.perimeter_thickening_cubic_yards}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
+                      <TableCell>
+                        {searchResult?.construction_joint_thickening_cubic_yards}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Subtotal:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.cubic_yards_subtotal}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.waste_factor_cubic_yards}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Total Cubic Yards:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.design_cubic_yards_total}
+                      </TableCell>
+                    </TableRow>
+
+                  </TableBody>
+                </Table>
+
+                <h3>Thickened Edge Calculator</h3>
+                <p>If applicable, for slabs under 6in.</p>
+                <Table size="small">
+
+                  <TableHead>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell><b>Perimeter</b></TableCell>
+                      <TableCell><b>Construction Joint</b></TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    <TableRow>
+                      <TableCell><b>Lineal Feet:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.thickened_edge_perimeter_lineal_feet}
+                      </TableCell>
+                      <TableCell>
+                        {searchResult?.thickened_edge_construction_joint_lineal_feet}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Width (yd³):</b></TableCell>
+                      <TableCell>
+                        5
+                      </TableCell>
+                      <TableCell>
+                        10
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Additional Thickness (in):</b></TableCell>
+                      <TableCell>
+                        {searchResult?.additional_thickness_inches}
+                      </TableCell>
+                      <TableCell>
+                        {searchResult?.additional_thickness_inches}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Cubic Yards:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.perimeter_thickening_cubic_yards}
+                      </TableCell>
+                      <TableCell>
+                        {searchResult?.construction_joint_thickening_cubic_yards}
+                      </TableCell>
+                    </TableRow>
+
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+        </>
+        } {/* End imperial conditional rendering*/}
 
 
-        {/* Table #3: Metric */}
-        <Grid item xs={6}>
-          <Paper elevation={3}>
-            <TableContainer>
-              <h3>Project Quantity Calculations</h3>
-              <Table size="small">
-                <TableBody>
+        {/* Table #3: Metric - conditionally render the metric needs */}
+        {searchResult.measurement_units == 'metric' && 
+        <>
+          <Grid item xs={6}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <h3>Project Quantity Calculations</h3>
+                <Table size="small">
+                  <TableBody>
 
-                  <TableRow>
-                    <TableCell><b>Square Meters:</b></TableCell>
-                    <TableCell>
-                      {searchResult?.square_meters}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Square Meters:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.square_meters}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Thickness (mm):</b></TableCell>
-                    <TableCell>
-                      {searchResult?.thickness_millimeters}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Thickness (mm):</b></TableCell>
+                      <TableCell>
+                        {searchResult?.thickness_millimeters}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Cubic Meters:</b></TableCell>
-                    <TableCell>
-                      {searchResult?.cubic_meters}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Cubic Meters:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.cubic_meters}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-                    <TableCell>
-                      {searchResult?.perimeter_thickening_cubic_meters}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
+                      <TableCell>
+                        {searchResult?.perimeter_thickening_cubic_meters}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-                    <TableCell>
-                      {searchResult?.construction_joint_thickening_cubic_meters}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
+                      <TableCell>
+                        {searchResult?.construction_joint_thickening_cubic_meters}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Subtotal:</b></TableCell>
-                    <TableCell>
-                      {searchResult?.cubic_meters_subtotal}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Subtotal:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.cubic_meters_subtotal}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Waste Factor @ 5%:</b></TableCell>
-                    <TableCell>
-                      {searchResult?.waste_factor_cubic_meters}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.waste_factor_cubic_meters}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Total Cubic Meters:</b></TableCell>
-                    <TableCell>
-                      {searchResult?.design_cubic_meters_total}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Total Cubic Meters:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.design_cubic_meters_total}
+                      </TableCell>
+                    </TableRow>
 
-                </TableBody>
-              </Table>
+                  </TableBody>
+                </Table>
 
-              <h3>Thickened Edge Calculator</h3>
-              <p>If applicable, for slabs under 150mm.</p>
-              <Table size="small">
+                <h3>Thickened Edge Calculator</h3>
+                <p>If applicable, for slabs under 150mm.</p>
+                <Table size="small">
 
-                <TableHead>
-                  <TableRow>
-                    <TableCell></TableCell>
-                    <TableCell><b>Perimeter</b></TableCell>
-                    <TableCell><b>Construction Joint</b></TableCell>
-                  </TableRow>
-                </TableHead>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell><b>Perimeter</b></TableCell>
+                      <TableCell><b>Construction Joint</b></TableCell>
+                    </TableRow>
+                  </TableHead>
 
-                <TableBody>
-                  <TableRow>
-                    <TableCell><b>Lineal Meters:</b></TableCell>
-                    <TableCell>
-                      {searchResult?.thickened_edge_perimeter_lineal_meters}
-                    </TableCell>
-                    <TableCell>
-                      {searchResult?.thickened_edge_construction_joint_lineal_meters}
-                    </TableCell>
-                  </TableRow>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell><b>Lineal Meters:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.thickened_edge_perimeter_lineal_meters}
+                      </TableCell>
+                      <TableCell>
+                        {searchResult?.thickened_edge_construction_joint_lineal_meters}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Width (m³):</b></TableCell>
-                    <TableCell>
-                      1.5
-                    </TableCell>
-                    <TableCell>
-                      3.0
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Width (m³):</b></TableCell>
+                      <TableCell>
+                        1.5
+                      </TableCell>
+                      <TableCell>
+                        3.0
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Additional Thickness (mm):</b></TableCell>
-                    <TableCell>
-                      {searchResult?.additional_thickness_millimeters}
-                    </TableCell>
-                    <TableCell>
-                      {searchResult?.additional_thickness_millimeters}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Additional Thickness (mm):</b></TableCell>
+                      <TableCell>
+                        {searchResult?.additional_thickness_millimeters}
+                      </TableCell>
+                      <TableCell>
+                        {searchResult?.additional_thickness_millimeters}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell><b>Cubic Meters:</b></TableCell>
-                    <TableCell>
-                      {searchResult?.perimeter_thickening_cubic_meters}
-                    </TableCell>
-                    <TableCell>
-                      {searchResult?.construction_joint_thickening_cubic_meters}
-                    </TableCell>
-                  </TableRow>
+                    <TableRow>
+                      <TableCell><b>Cubic Meters:</b></TableCell>
+                      <TableCell>
+                        {searchResult?.perimeter_thickening_cubic_meters}
+                      </TableCell>
+                      <TableCell>
+                        {searchResult?.construction_joint_thickening_cubic_meters}
+                      </TableCell>
+                    </TableRow>
 
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Grid>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+        </>
+      } {/* End Metric Conditional Render */}
 
         <Grid item xs={12}>
           <Paper elevation={3}>
