@@ -77,7 +77,9 @@ export default function EstimateLookup() {
   // Function tied to the recalculate costs button below. When clicked, runs the caluclateEstimate function to get updated cost numbers with current
   // shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to 
   // click the submit order button
-  const recalculateCosts = () => {
+  const handleRecalculateCosts = () => {
+    // attach history from useHistory to the searchResult object to allow navigation from inside the saga
+    searchResult.history = history;
     // needs to GET shipping information and pricing information before recalculating
     console.log('searchResult before sending:', searchResult);
     dispatch({type: 'RECALCULATE_ESTIMATE', payload: searchResult })
@@ -738,7 +740,7 @@ export default function EstimateLookup() {
         <Button
           variant="contained"
           color="primary"
-          onClick={recalculateCosts}
+          onClick={handleRecalculateCosts}
         >
           Recalculate Costs
         </Button>
