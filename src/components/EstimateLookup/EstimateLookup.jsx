@@ -226,7 +226,7 @@ export default function EstimateLookup() {
                   </TableRow>
 
                   <TableRow>
-                    <TableCell><b>Today's Date: Should be called Date created?</b></TableCell>
+                    <TableCell><b>Estimate Creation Date</b></TableCell>
                     <TableCell>
                       {searchResult?.date_created}
                     </TableCell>
