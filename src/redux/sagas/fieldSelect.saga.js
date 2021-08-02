@@ -13,7 +13,7 @@ function* fetchFieldSelect() {
         payload: response.data
       });
     } catch (error) {
-      console.log('company get request failed', error);
+      console.log('error with fetchCompanies in field select saga', error);
     }
 
     // Fetching placement type
@@ -24,7 +24,7 @@ function* fetchFieldSelect() {
         //send results to placementTypes reducer
         yield put({type: 'SET_PLACEMENT_TYPES', payload: placementTypes.data});
     } catch (error) {
-        console.log('error with fetchAllPlacementTypes in placementTypes saga', error);
+        console.log('error with fetchAllPlacementTypes in field select saga', error);
         
     }
 
@@ -37,7 +37,7 @@ function* fetchFieldSelect() {
           payload: response.data
         });
       } catch (error) {
-        console.log('product get request failed', error);
+        console.log('error with fetchProducts in field select saga', error);
       }
 
       // Fetching shipping costs/state
@@ -49,7 +49,7 @@ function* fetchFieldSelect() {
         //send results to shippingCosts reducer
         yield put({type: 'SET_SHIPPING_COSTS', payload: shippingCosts.data});
     } catch (error) {
-        console.log('error with fetchShippingCosts in shippingCosts saga', error);   
+        console.log('error with fetchShippingCosts in field select saga', error);   
     }
 
     // Fetching floor types
@@ -61,7 +61,7 @@ function* fetchFieldSelect() {
         //send results to floorTypes reducer
         yield put({type: 'SET_FLOOR_TYPES', payload: floorTypes.data});
     } catch (error) {
-        console.log('error with fetchAllFloorTypes in floorTypes saga', error);    
+        console.log('error with fetchAllFloorTypes in field select saga', error);    
     }
 
   }
@@ -70,3 +70,5 @@ function* fetchFieldSelect() {
 function* fieldSelectSaga() {
     yield takeLatest('FETCH_FIELD_SELECT', fetchFieldSelect);
 }
+
+export default fieldSelectSaga;
