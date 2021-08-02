@@ -1,6 +1,6 @@
-## Primx - App
+# Primx - App
 
-# Description
+## Description
 Duration: 2 Week Sprint
 This app was created as a solution to Primx's estimate and order placement process. Their process used excel worksheets and there was no pipeline for the administrators to reference. This app is being used by 3 different user types: Contractor, Admin, and SuperAdmin, each with different levels of authorization. Contractors are able to enter in information regarding the project they want an estimate for, which will then provide an estimate to the contractor and add the estimate to the Admin's "open estimates" table on the "view pipeline" page. The contractor can the go back and reference their estimate via order number and company name and make any adjustments/updates to the estimate. Once they have won their project, they can push through their estimate as an order, which will notify the Admins by being added to the "pending orders" table on the "view pipeline" page. Once the order is processed, the Admin can confirm in the app that the order has been processed by clicking the "order processed" button that is located on the order on the far right of the line item. The SuperAdmin is the only admin that is able to create another administrator account. Other than that, all admins have the ability to create and update the shipping costs, create and update materials and inventory, create placement and floor types, and create new licensees. 
 
@@ -60,14 +60,14 @@ note: Admins can do everything that licensees can do and more
       - add new admin by entering the username and password into the inputs and clicking the blue register button
       - delete and admin by clicking the delete button next to the admin you want to delete
 
-### Accessibility: 
+## Accessibility: 
 
 
-### Built With
+## Built With
 JavaScript/HTML/CSS, React, Redux, Redux Saga, React Router, Node.js, Express, SQL, Material-ui, Axios, PostgreSQL, Snackbar. 
 
-### Acknowledgement
+## Acknowledgement
 
 
-### Support
+## Support
 
