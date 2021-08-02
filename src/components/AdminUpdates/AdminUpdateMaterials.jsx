@@ -98,7 +98,7 @@ export default function AdminUpdateMaterials() {
       <Fab className={classes.root} onClick={handleAddProduct} color="primary" aria-label="add">
               <AddIcon />
             </Fab> */}
-      <div style={{ height: 350, width: '65%' }}
+      <div style={{ height: 550, width: '65%' }}
         className="AdminEstimatesGrid-wrapper">
         <DataGrid
           style={{ fontFamily: 'Times New Roman', fontSize: '1em' }}
