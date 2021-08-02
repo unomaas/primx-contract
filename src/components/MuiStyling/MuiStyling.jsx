@@ -85,10 +85,6 @@ const useStyles = makeStyles({
     margin: 'auto',
   },
 
-  updateShippingSubmit: {
-    margin: '-20% 80% -20% 0%',
-    display: 'in-line'
-  },
   AddLicenseeInput: {
     margin: 10
   },
