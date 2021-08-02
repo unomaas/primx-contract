@@ -299,8 +299,8 @@ export default function MetricTable() {
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
-                  {/* 
-                  <TableBody>
+
+                  {/* <TableBody>
                     <TableRow>
                       <TableCell><b>PrīmX DC (kgs)</b></TableCell>
                       <TableCell>40</TableCell>
