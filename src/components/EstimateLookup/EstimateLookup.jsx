@@ -172,7 +172,7 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                     <TableCell>
-                      NEED TO PULL NAME IN USING LICENSEE TABLE HERE
+                      {searchResult?.licensee_contractor_name}
                     </TableCell>
                   </TableRow>
 
@@ -207,14 +207,14 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Floor Type:</b></TableCell>
                     <TableCell>
-                      NEED TO GET FLOOR TYPE NAME FROM DB
+                      {searchResult?.floor_type}
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableCell><b>Placement Type:</b></TableCell>
                     <TableCell>
-                      NEED TO GET PLACEMENT TYPE NAME FROM DB
+                      {searchResult?.placement_type}
                     </TableCell>
                   </TableRow>
 
@@ -226,7 +226,7 @@ export default function EstimateLookup() {
                   </TableRow>
 
                   <TableRow>
-                    <TableCell><b>Today's Date: Should be Date created?</b></TableCell>
+                    <TableCell><b>Today's Date: Should be called Date created?</b></TableCell>
                     <TableCell>
                       {searchResult?.date_created}
                     </TableCell>
@@ -263,7 +263,7 @@ export default function EstimateLookup() {
                   <TableRow>
                     <TableCell><b>Shipping State/Province:</b></TableCell>
                     <TableCell>
-                      NEED TO GET SHIPPING STATE/PROVINCE WITH DATA
+                      {searchResult?.ship_to_state_province}
                     </TableCell>
                   </TableRow>
 
