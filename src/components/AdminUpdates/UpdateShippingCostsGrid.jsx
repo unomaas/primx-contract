@@ -2,6 +2,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react';
+import { useStyles } from '../MuiStyling/MuiStyling';
 
 
 // Material-UI components
@@ -9,6 +10,8 @@ import { DataGrid } from '@material-ui/data-grid';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function UpdateShippingCostsGrid() {
+    //classes for data grid
+    const classes = useStyles();
 
     const dispatch = useDispatch();
 
@@ -48,12 +51,11 @@ export default function UpdateShippingCostsGrid() {
 
     return (
         <div
-          style={{ height: 650, width: '90%'}} //put style into class
-          className="AdminEstimatesGrid-wrapper"
+          className={classes.shippingGrid}
         >
             <DataGrid 
-                // className={classes.dataGridTables}
-                style={{fontFamily: 'Times New Roman', fontSize: '1em'}}
+                className={classes.dataGridTables}
+                autoHeight
                 rows={rows}
                 columns={columns}
                 pageSize={10}

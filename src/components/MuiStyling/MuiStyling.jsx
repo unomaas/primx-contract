@@ -63,7 +63,12 @@ const useStyles = makeStyles({
 
   dataGridTables: {
     fontFamily: 'Times New Roman',
-    fontSize: '1em'
+    fontSize: '1em',
+  },
+
+  shippingGrid: {
+    width: '50%',
+    margin: 'auto',
   }
 
 }); // End useStyles
