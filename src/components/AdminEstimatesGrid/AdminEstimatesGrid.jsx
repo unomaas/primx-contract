@@ -225,11 +225,11 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
     return (
         <div
-            style={{ height: 350, width: '95%' }}
-            className="AdminEstimatesGrid-wrapper"
+            className={classes.AdminEstimatesGridwrapper}
         >
             <DataGrid
-                style={{ fontFamily: 'Times New Roman', fontSize: '14px' }}
+                className={classes.dataGridTables}
+                autoHeight
                 rows={rows}
                 columns={columns}
                 pageSize={5}

@@ -2,14 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import AdminUpdates from './AdminUpdates';
 
+import { useStyles } from '../MuiStyling/MuiStyling';
+
 //material ui imports
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { DataGrid } from '@material-ui/data-grid';
+//material ui classes
+
 
 export default function AdminUpdateMaterials() {
+
+   //defining classes for MUI
+   const classes = useStyles();
+
   // establish usedispatch as dispatch
   const dispatch = useDispatch();
 
@@ -25,17 +32,7 @@ export default function AdminUpdateMaterials() {
     product_price: productPriceInput,
     on_hand: 0
   }
-
-  //styles for MUI
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-      },
-    },
-  }));
-  //defining classes for MUI
-  const classes = useStyles();
+ 
 
 
   //establish rows with products array for datagrid
@@ -98,10 +95,10 @@ export default function AdminUpdateMaterials() {
       <Fab className={classes.root} onClick={handleAddProduct} color="primary" aria-label="add">
               <AddIcon />
             </Fab> */}
-      <div style={{ height: 550, width: '65%' }}
-        className="AdminEstimatesGrid-wrapper">
+      <div className={classes.productsGrid}>
         <DataGrid
-          style={{ fontFamily: 'Times New Roman', fontSize: '1em' }}
+          className={classes.dataGridTables}
+          autoHeight
           rows={rows}
           columns={columns}
           pageSize={10}
