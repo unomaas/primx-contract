@@ -32,9 +32,12 @@ const snack = useSelector(store => store.snackBar);
   const useStyles = makeStyles((theme) => ({
     root: {
       '& > *': {
-        margin: theme.spacing(1),
+        margin: theme.spacing(1.5),
       },
     },
+    button: {
+      margin: '-12.5% 0 0 35%',
+    }
   }));
   //defining classes for MUI
   const classes = useStyles();
@@ -106,13 +109,15 @@ const snack = useSelector(store => store.snackBar);
               <TextField id="dc-price" className={classes.root} label="Add New DC Price" variant="outlined" value={newShippingCost.dc_price} onChange={handleDCChange} />
             </div>
 
-            <div >
+            <div>
               <TextField id="flow-cpea" className={classes.root} label="Add New Flow/CPEA Price" variant="outlined" value={newShippingCost.flow_cpea_price} onChange={handleFlowCPEAChange} />
               <TextField id="fiber-ship-price" className={classes.root} label="Add New Fibers Shipping Price" variant="outlined" value={newShippingCost.fibers_price} onChange={handleFibersChange} />
-              <br></br>
-              <Fab className={classes.root} onClick={handleSubmit} color="primary" aria-label="add">
+            <div>
+              <Fab className={classes.button} onClick={handleSubmit} color="primary" aria-label="add">
                 <AddIcon />
               </Fab>
+            </div>
+
             </div>
           </div>
         </form>
