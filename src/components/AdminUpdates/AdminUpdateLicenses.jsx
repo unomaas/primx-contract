@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AdminUpdates from './AdminUpdates';
 
-//import sweet alert
-import swal from 'sweetalert';
-
 //material ui imports
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { DataGrid } from '@material-ui/data-grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+
+import { useStyles } from '../MuiStyling/MuiStyling';
 
 export default function AdminUpdateLicenses() {
 
@@ -24,18 +22,10 @@ export default function AdminUpdateLicenses() {
   let [companyNameInput, setCompanyNameInput] = useState('');
   // establish snackbar variables for notifications
   const snack = useSelector(store => store.snackBar);
-
-
-  //styles for MUI
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-      },
-    },
-  }));
-  //defining classes for MUI
-  const classes = useStyles();
+  
+  
+    //defining classes for MUI
+    const classes = useStyles();
 
 
   //establish rows with campanies array for datagrid
@@ -83,29 +73,28 @@ export default function AdminUpdateLicenses() {
   };
 
 
-  return (
-    <div >
-      <AdminUpdates />
-      <h2>Update Licensee</h2>
-      <TextField id="outlined-basic" label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange} />
-      <Fab className={classes.root} onClick={handleAddCompany} color="primary" aria-label="add">
-        <AddIcon />
-      </Fab>
-      <div style={{ height: 350, width: '28%' }}
-        className="AdminEstimatesGrid-wrapper">
-        <DataGrid
-          style={{ fontFamily: 'Times New Roman', fontSize: '1em' }}
-          rows={rows}
-          columns={columns}
-          pageSize={10}
-          onEditCellChangeCommitted={handleEditSubmit}
-        />
-        <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity={snack.severity}>
-            {snack.message}
-          </Alert>
-        </Snackbar>
-      </div>
+return (
+  <div >
+    <AdminUpdates />
+    <h2>Update Licensee</h2>
+    <TextField id="outlined-basic" className={classes.AddLicenseeInput} label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange}/>
+    <Fab className={classes.AddLicenseeInput} onClick={handleAddCompany} color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
+    <div className={classes.licenseeGrid}>
+      <DataGrid
+        className={classes.dataGridTables}
+        autoHeight
+        rows={rows}
+        columns={columns}
+        pageSize={10}
+        onEditCellChangeCommitted={handleEditSubmit}
+      />
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snack.severity}>
+          {snack.message}
+        </Alert>
+      </Snackbar>
     </div>
 
 

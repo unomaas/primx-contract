@@ -4,7 +4,7 @@ const router = express.Router();
 const {
     rejectUnauthenticated,
   } = require('../modules/authentication-middleware');
-  const format = require('pg-format');
+const format = require('pg-format');
 
 /**
  * GET route template
