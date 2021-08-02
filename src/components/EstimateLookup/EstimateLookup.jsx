@@ -27,11 +27,11 @@ export default function EstimateLookup() {
 
   // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
   // const { licensee_id_estimate_number } = useParams();
-  const {estimate_number_searched, licensee_id_searched} = useParams();
+  const { estimate_number_searched, licensee_id_searched } = useParams();
 
   const dispatch = useDispatch();
   const history = useHistory();
-  
+
   useEffect(() => {
     // Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
@@ -77,7 +77,7 @@ export default function EstimateLookup() {
 
   return (
     <div className="EstimateCreate-wrapper">
-      {/* <LicenseeHomePage /> */}
+
       <ButtonToggle />
 
       <br />
@@ -88,6 +88,7 @@ export default function EstimateLookup() {
           justifyContent="center"
         >
 
+          {/* Grid #1: The Search Bar for Estimate Lookup */}
           <Grid item xs={12}>
             <Paper elevation={3}>
               <TableContainer >
@@ -549,6 +550,7 @@ export default function EstimateLookup() {
           </Grid>
         </>
       } {/* End Metric Conditional Render */}
+
 
         <Grid item xs={12}>
           <Paper elevation={3}>
