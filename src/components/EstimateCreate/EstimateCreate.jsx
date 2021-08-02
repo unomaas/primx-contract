@@ -406,7 +406,7 @@ export default function EstimateCreate() {
 
                     <TableRow>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
-                      <TableCell style={{backgroundColor: leadTime <= 8 ? "rgba(255, 0, 0, 0.7)" : ""}}>
+                      <TableCell style={{backgroundColor: leadTime >= 8 || leadTime === '' ? "" : "rgba(255, 0, 0, 0.7)"}}>
                         {leadTime}
                       </TableCell>
                     </TableRow>
