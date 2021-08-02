@@ -95,7 +95,9 @@ function* recalculateEstimate(action) {
 
         // Now that the current estimate has updated pricing data, send an action to the estimates reducer that will set a recalculated boolean
         // from false to true, allowing the user to click the place order button on the estimate lookup view
-        console.log('Current estimate after mutation', currentEstimate);
+        yield put({type: 'SET_RECALCULATED_TRUE'})
+        // make a new POST request using the updated data
+        yield put({type: 'ADD_ESTIMATE', payload: currentEstimate})
         
     }
     catch (error) {

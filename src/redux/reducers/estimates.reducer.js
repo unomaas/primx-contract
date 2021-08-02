@@ -57,11 +57,21 @@ export const searchedEstimate = (state = {}, action) => {
   }
 };
 
+export const hasRecalculated = (state = false, action) => {
+  switch (action.type) {
+    case 'SET_RECALCULATED_TRUE':
+      return true;
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   estimatesReducer,
   buttonState,
   tableState,
-  searchedEstimate
+  searchedEstimate,
+  hasRecalculated
 });
 
 // export default estimatesReducer;
