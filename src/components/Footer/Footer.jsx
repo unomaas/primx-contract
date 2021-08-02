@@ -10,14 +10,11 @@ import { Box } from '@material-ui/core';
 function Footer() {
   return (
     <footer className="lexendFont">
-      <Box>
-        <img src="./images/PrimXLogo-Spaced-01.svg" height="60"></img>
-      </Box>
-      <p>&copy; 2021 PrīmX NA. All rights reserved.</p>
+      <img src="./images/PrimXLogo-Spaced-01.svg" height="60"></img>
+      <br/>
+      &copy; 2021 PrīmX NA. All rights reserved.
     </footer>
   )
 }
-
-
 
 export default Footer;

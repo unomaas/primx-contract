@@ -141,6 +141,7 @@ export default function MetricTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">m²</InputAdornment>,
                           }}
+                          defaultValue={estimateData.square_meters}
                         />
                       </TableCell>
                     </TableRow>
@@ -157,6 +158,7 @@ export default function MetricTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">mm</InputAdornment>,
                           }}
+                          defaultValue={estimateData.thickness_millimeters}
                         />
                       </TableCell>
                     </TableRow>
@@ -233,6 +235,7 @@ export default function MetricTable() {
                             startAdornment: <InputAdornment position="start">m</InputAdornment>,
                           }}
                           fullWidth
+                          defaultValue={estimateData.thickened_edge_perimeter_lineal_meters}
                         // defaultValue="0"
                         />
                       </TableCell>
@@ -246,6 +249,7 @@ export default function MetricTable() {
                           InputProps={{
                             startAdornment: <InputAdornment position="start">m</InputAdornment>,
                           }}
+                          defaultValue={estimateData.thickened_edge_construction_joint_lineal_meters}
                         // defaultValue="0"
                         />
                       </TableCell>
@@ -280,10 +284,10 @@ export default function MetricTable() {
               <TableContainer>
                 <h3 className="lexendFont">Materials Table</h3>
                 <Table size="small">
-                  <TableHead>
+                  {/* <TableHead>
                     <TableRow>
                       <TableCell></TableCell>
-                      <TableCell><b>Dosage<br />Rate<br />(per m³)</b></TableCell>
+                      <TableCell><b>Dosage<br />Rate<br />per m³</b></TableCell>
                       <TableCell><b>Total<br />Amount</b></TableCell>
                       <TableCell><b>Packaging<br />Capacity</b></TableCell>
                       <TableCell><b>Packages<br />Needed</b></TableCell>
@@ -294,9 +298,20 @@ export default function MetricTable() {
                       <TableCell><b>Shipping<br />Estimate</b></TableCell>
                       <TableCell><b>Total<br />Cost</b></TableCell>
                     </TableRow>
+                  </TableHead> */}
+                  <TableHead>
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell><b>PrīmX DC (kgs)</b></TableCell>
+                      <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
+                      <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
+                      <TableCell><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
+                      <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
                   </TableHead>
 
-                  <TableBody>
+                  {/* <TableBody>
                     <TableRow>
                       <TableCell><b>PrīmX DC (kgs)</b></TableCell>
                       <TableCell>40</TableCell>
@@ -309,9 +324,46 @@ export default function MetricTable() {
                       <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_dc_calculated_shipping_estimate}</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_dc_total_cost_estimate}</TableCell>
+                    </TableRow> */}
+                  <TableBody>
+                    <TableRow>
+                      <TableCell><b>Dosage Rate per m³:</b></TableCell>
+                      <TableCell>40</TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          defaultValue={estimateData.primx_flow_dosage_liters}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_steel_fibers_dosage_kgs', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          defaultValue={estimateData.primx_steel_fibers_dosage_kgs}
+                        />
+                      </TableCell>
+                      <TableCell>N/A</TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          defaultValue={estimateData.primx_cpea_dosage_liters}
+                        />
+                      </TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
                       <TableCell style={{ width: '1em' }}>
                         <TextField
@@ -320,6 +372,7 @@ export default function MetricTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_flow_dosage_liters}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
@@ -331,9 +384,18 @@ export default function MetricTable() {
                       <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed}</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_flow_calculated_shipping_estimate}</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_flow_total_cost_estimate}</TableCell>
+                    </TableRow> */}
+                    <TableRow>
+                      <TableCell><b>Total Amount:</b></TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
                       <TableCell style={{ width: '1em' }}>
                         <TextField
@@ -342,6 +404,7 @@ export default function MetricTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_steel_fibers_dosage_kgs}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
@@ -353,9 +416,18 @@ export default function MetricTable() {
                       <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed}</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_steel_fibers_calculated_shipping_estimate}</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate}</TableCell>
+                    </TableRow> */}
+                    <TableRow>
+                      <TableCell><b>Packaging Capacity:</b></TableCell>
+                      <TableCell>1,250</TableCell>
+                      <TableCell>1,000</TableCell>
+                      <TableCell>19,200</TableCell>
+                      <TableCell>600</TableCell>
+                      <TableCell>1,000</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
                       <TableCell>N/A</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed}</TableCell>
@@ -367,9 +439,18 @@ export default function MetricTable() {
                       <TableCell>0</TableCell>
                       <TableCell>0</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate}</TableCell>
+                    </TableRow> */}
+                    <TableRow>
+                      <TableCell><b>Packages Needed:</b></TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed}</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
                       <TableCell style={{ width: '1em' }}>
                         <TextField
@@ -378,6 +459,7 @@ export default function MetricTable() {
                           type="number"
                           size="small"
                           fullWidth
+                          defaultValue={estimateData.primx_cpea_dosage_liters}
                         />
                       </TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>
@@ -389,23 +471,32 @@ export default function MetricTable() {
                       <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_cpea_calculated_shipping_estimate}</TableCell>
                       <TableCell>${calculatedDisplayObject?.primx_cpea_total_cost_estimate}</TableCell>
-                    </TableRow>
-
+                    </TableRow> */}
                     <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
+                      <TableCell><b>Total Order Quantity:</b></TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_order_quantity}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_order_quantity}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    {/* <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow> */}
+
+                    {/* <TableRow>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
@@ -415,11 +506,66 @@ export default function MetricTable() {
                       <TableCell><b>TOTALS:</b></TableCell>
                       <TableCell>${calculatedDisplayObject?.design_total_materials_price}</TableCell>
                       <TableCell>
-                        {/* Total number of containers go into this cell */}
+                        Total number of containers go into this cell
                         {calculatedDisplayObject?.design_total_containers}
                       </TableCell>
                       <TableCell>${calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
                       <TableCell>${calculatedDisplayObject?.design_total_price_estimate}</TableCell>
+                    </TableRow>  */}
+                   
+                    <TableRow>
+                      <TableCell><b>Materials Price:</b></TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_unit_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_unit_price}</TableCell>
+                      <TableCell><b>Totals:</b></TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Total Materials Price:</b></TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_materials_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_total_materials_price}</TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Containers:</b></TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed}</TableCell>
+                      <TableCell>0</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
+                      <TableCell>
+                        {/* // Total number of containers go into this cell */}
+                        {/* {calculatedDisplayObject?.primx_dc_containers_needed + calculatedDisplayObject?.primx_flow_containers_needed +
+                          calculatedDisplayObject?.primx_steel_fibers_containers_needed + calculatedDisplayObject?.primx_cpea_containers_needed} */}
+                          {calculatedDisplayObject?.design_total_containers}
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Shipping Estimate:</b></TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_calculated_shipping_estimate}</TableCell>
+                      <TableCell>0</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Total Cost:</b></TableCell>
+                      <TableCell><b>{calculatedDisplayObject?.primx_dc_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{calculatedDisplayObject?.primx_flow_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{calculatedDisplayObject?.primx_cpea_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{calculatedDisplayObject?.design_total_price_estimate}</b></TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -450,7 +596,7 @@ export default function MetricTable() {
                         >
                           Calculate Costs
                         </Button>
-                        &nbsp; &nbsp; 
+                        &nbsp; &nbsp;
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
