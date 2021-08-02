@@ -33,7 +33,6 @@ function AdminRegisterForm() {
 
   const registerUser = (event) => {
     event.preventDefault();
-
     dispatch({
       type: 'REGISTER',
       payload: {
@@ -41,7 +40,9 @@ function AdminRegisterForm() {
         password: password,
       },
     });
-    
+    dispatch({type: 'FETCH_USERINFO'});
+    setUsername('');
+    setPassword('');
   }; // end registerUser
 
   useEffect(() => {
