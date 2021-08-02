@@ -1,3 +1,9 @@
 .AdminEstimatesGrid-wrapper {
   margin: 0 auto;
 }
+
+.estimate-nav {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}

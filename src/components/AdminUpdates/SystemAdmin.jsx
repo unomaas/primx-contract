@@ -14,6 +14,7 @@ export default function SystemAdmin() {
     <div>
 
       <div>
+        {/* shows nav dropdown */}
         <AdminUpdates />
       </div>
       
@@ -25,6 +26,7 @@ export default function SystemAdmin() {
       <br></br>
 
       <div>
+        {/* grid component where all of the info and work is happening */}
         <SystemAdminUpdateUsersGrid />
       </div>
 

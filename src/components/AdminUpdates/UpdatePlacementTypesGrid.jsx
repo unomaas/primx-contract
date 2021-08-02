@@ -14,7 +14,7 @@ export default function UpdatePlacementTypesGrid({placementTypes}) {
 
         {field: 'placement_type', headerName: 'Placement Type', width: 400} // Editable + validation?
     ]
-
+    //rows are the info from the placement type reducer
     let placementRows = placementTypes
 
     return (
