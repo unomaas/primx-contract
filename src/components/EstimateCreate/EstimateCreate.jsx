@@ -34,7 +34,7 @@ export default function EstimateCreate() {
   const showTables = useSelector(store => store.estimatesReducer.tableState);
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");
-  const { leadtime, setLeadTime } = useState("");
+  const [leadTime, setLeadTime] = useState("");
 
   // ⬇ GET on page load:
   useEffect(() => {
@@ -54,10 +54,17 @@ export default function EstimateCreate() {
 
   //#region ⬇⬇ Event handlers below:
 
-  const timeDifference = (date2, date) => {
-    let diff = (date2.getTime() - date1.getTime()) / 1000;
-    diff /= (60 * 60 * 24 * 7);
-    return Math.abs(Math.round(diff));
+  const timeDifference = (chosenDate) => {
+    // using the chosen date, run the change handler to set estimateData in the reducer for the chosen date
+    handleChange('anticipated_first_pour_date', chosenDate)
+
+    const chosenDateInMilliseconds = Date.parse(chosenDate);
+    const todayInMilliseconds = Date.now();
+    
+    const differenceInSeconds = (chosenDateInMilliseconds - todayInMilliseconds) / 1000;
+    const differenceInWeeks = differenceInSeconds / (60 * 60 * 24 * 7);
+    // set lead time state with a rounded number in weeks
+    setLeadTime(Math.abs(Math.round(differenceInWeeks)));
   }
 
   /** ⬇ handleChange:
@@ -389,7 +396,8 @@ export default function EstimateCreate() {
                       <TableCell><b>Anticipated First Pour Date:</b></TableCell>
                       <TableCell>
                         <TextField
-                          onChange={event => handleChange('anticipated_first_pour_date', event.target.value)}
+                          // run the time difference function with the chosen date when selecting
+                          onChange={event => timeDifference(event.target.value)}
                           required
                           type="date"
                           size="small"
@@ -402,7 +410,7 @@ export default function EstimateCreate() {
                     <TableRow>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
                       <TableCell>
-                        CALC#
+                        {leadTime}
                       </TableCell>
                     </TableRow>
 
