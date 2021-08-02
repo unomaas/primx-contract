@@ -83,6 +83,10 @@ const useStyles = makeStyles({
   AdminEstimatesGridwrapper: {
     width: '95%',
     margin: 'auto',
+  },
+
+  AddLicenseeInput: {
+    margin: 10
   }
 
 }); // End useStyles
