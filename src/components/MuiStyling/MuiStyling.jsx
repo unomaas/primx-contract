@@ -69,6 +69,11 @@ const useStyles = makeStyles({
   shippingGrid: {
     width: '50%',
     margin: 'auto',
+  },
+
+  productsGrid: {
+    width: '40%',
+    margin: 'auto',
   }
 
 }); // End useStyles
