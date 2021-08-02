@@ -100,12 +100,8 @@ export default function MetricTable() {
     // ⬇ Don't refresh until submit:
     event.preventDefault();
     // send the estimate object to be POSTed
-<<<<<<< HEAD
-    dispatch({ type: 'ADD_ESTIMATE', payload: estimateData })
-=======
     dispatch({type: 'ADD_ESTIMATE', payload: estimateData})
   } // End handleSave
->>>>>>> main
 
 
   const handleCalculateCosts = () => {

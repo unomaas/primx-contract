@@ -42,22 +42,11 @@ export default function EstimateLookup() {
   useEffect(() => {
     // if the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view,
     // dispatch the data in the url params to run a GET request to the DB
-<<<<<<< HEAD
-    if (estimate_number_searched && licensee_id_searched) {
-
-      dispatch({
-        type: 'FETCH_ESTIMATE_QUERY', payload: {
-          licensee_id: licensee_id_searched,
-          estimate_number: estimate_number_searched
-        }
-      })
-=======
     if(estimate_number_searched && licensee_id_searched) {
       dispatch({type: 'FETCH_ESTIMATE_QUERY', payload: {
         licensee_id: licensee_id_searched,
         estimate_number: estimate_number_searched
       }})
->>>>>>> main
     }
   }, [estimate_number_searched])
 
@@ -71,13 +60,6 @@ export default function EstimateLookup() {
     console.log('In handleSubmit')
 
     // ⬇ Select dropdown validation:
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> main
     if (searchQuery.licensee_id !== "0") {
       // If they selected a company name from dropdown:
       console.log("Submitting.");
