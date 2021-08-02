@@ -38,16 +38,8 @@ export default function EstimateCreate() {
 
   // ⬇ GET on page load:
   useEffect(() => {
-    // Licensee/Company Name Call
-    dispatch({ type: 'FETCH_COMPANIES' }),
-      // State/Province Call
-      dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
-      // Floor Type Call
-      dispatch({ type: 'FETCH_FLOOR_TYPES' }),
-      // Placement Type Call
-      dispatch({ type: 'FETCH_PLACEMENT_TYPES' }),
-      // Products Call
-      dispatch({ type: 'FETCH_PRODUCTS' })
+    // Fetches and set all fields for dropdown menus
+    dispatch({ type: 'FETCH_FIELD_SELECT' })
   }, []);
   //#endregion ⬆⬆ All state variables above. 
 
