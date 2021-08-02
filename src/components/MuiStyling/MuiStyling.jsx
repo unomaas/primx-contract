@@ -52,9 +52,18 @@ const useStyles = makeStyles({
   },
 
   SystemAdminGrid: {
-    height: 650,
     width: '40%',
     margin: 'auto',
+  },
+
+  TypesGrid: {
+    width: '50%',
+    margin: 'auto',
+  },
+
+  dataGridTables: {
+    fontFamily: 'Times New Roman',
+    fontSize: '1em'
   }
 
 }); // End useStyles

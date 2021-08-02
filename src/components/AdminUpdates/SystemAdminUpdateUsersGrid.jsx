@@ -72,8 +72,8 @@ export default function SystemAdminUpdateUserGrid() {
         className={classes.SystemAdminGrid}
         >
             <DataGrid 
-                // className={classes.dataGridTables}
-                style={{fontFamily: 'Times New Roman', fontSize: '1em'}}
+                className={classes.dataGridTables}
+                autoHeight
                 rows={rows}
                 columns={columns}
                 pageSize={10}

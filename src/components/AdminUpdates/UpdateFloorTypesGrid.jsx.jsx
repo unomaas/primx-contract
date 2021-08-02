@@ -8,6 +8,8 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 // component that renders a Material UI Data Grid, needs an array of floor types and placement types as props.
 export default function UpdateFloorTypesGrid({floorTypes}) {
+    //Material UI classes for data grid
+    const classes = useStyles();
  
     // columns for Data Grid
     const floorColumns = [
@@ -19,12 +21,11 @@ export default function UpdateFloorTypesGrid({floorTypes}) {
 
     return (
         <div
-          style={{ height: 350, width: '50%'}}
-          className="AdminEstimatesGrid-wrapper"
+          className={classes.SystemAdminGrid}
         >
             <DataGrid 
-                // className={classes.dataGridTables}
-                style={{fontFamily: 'Times New Roman', fontSize: '1em'}}
+                className={classes.dataGridTables}
+                autoHeight
                 rows={floorRows}
                 columns={floorColumns}
                 pageSize={5}
