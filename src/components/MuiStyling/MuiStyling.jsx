@@ -49,6 +49,48 @@ const useStyles = makeStyles({
   OrdersHeaders: {
     fontFamily: 'Lexend Tera',
     marginBottom: '.3em',
+  },
+
+  SystemAdminGrid: {
+    width: 510,
+    margin: 'auto',
+  },
+
+  TypesGrid: {
+    width: 400,
+    margin: 'auto',
+  },
+
+  dataGridTables: {
+    fontFamily: 'Times New Roman',
+    fontSize: '1em',
+  },
+
+  shippingGrid: {
+    width: 800,
+    margin: 'auto',
+  },
+
+  productsGrid: {
+    width: 600,
+    margin: 'auto',
+  },
+
+  licenseeGrid: {
+    width: 300,
+    margin: 'auto',
+  },
+  AdminEstimatesGridwrapper: {
+    width: '95%',
+    margin: 'auto',
+  },
+
+  AddLicenseeInput: {
+    margin: 10
+  },
+
+  AddTypesInput: {
+    margin: 10
   }
 
 }); // End useStyles

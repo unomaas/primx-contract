@@ -34,29 +34,30 @@ export default function EstimateCreate() {
   const showTables = useSelector(store => store.estimatesReducer.tableState);
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");
-  const [leadTime, setLeadTime] = useState("");
+  const { leadtime, setLeadTime } = useState("");
 
   // ⬇ GET on page load:
   useEffect(() => {
-    // Fetches and set all fields for dropdown menus
-    dispatch({ type: 'FETCH_FIELD_SELECT' })
+    // Licensee/Company Name Call
+    dispatch({ type: 'FETCH_COMPANIES' }),
+      // State/Province Call
+      dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
+      // Floor Type Call
+      dispatch({ type: 'FETCH_FLOOR_TYPES' }),
+      // Placement Type Call
+      dispatch({ type: 'FETCH_PLACEMENT_TYPES' }),
+      // Products Call
+      dispatch({ type: 'FETCH_PRODUCTS' })
   }, []);
   //#endregion ⬆⬆ All state variables above. 
 
 
   //#region ⬇⬇ Event handlers below:
 
-  const timeDifference = (chosenDate) => {
-    // using the chosen date, run the change handler to set estimateData in the reducer for the chosen date
-    handleChange('anticipated_first_pour_date', chosenDate)
-
-    const chosenDateInMilliseconds = Date.parse(chosenDate);
-    const todayInMilliseconds = Date.now();
-    
-    const differenceInSeconds = (chosenDateInMilliseconds - todayInMilliseconds) / 1000;
-    const differenceInWeeks = differenceInSeconds / (60 * 60 * 24 * 7);
-    // set lead time state with a rounded number in weeks
-    setLeadTime(Math.abs(Math.round(differenceInWeeks)));
+  const timeDifference = (date2, date) => {
+    let diff = (date2.getTime() - date1.getTime()) / 1000;
+    diff /= (60 * 60 * 24 * 7);
+    return Math.abs(Math.round(diff));
   }
 
   /** ⬇ handleChange:
@@ -186,8 +187,8 @@ export default function EstimateCreate() {
       <ButtonToggle />
 
       <br />
-      
       <form onSubmit={handleSubmit}>
+
 
         <Grid container
           spacing={2}
@@ -388,8 +389,7 @@ export default function EstimateCreate() {
                       <TableCell><b>Anticipated First Pour Date:</b></TableCell>
                       <TableCell>
                         <TextField
-                          // run the time difference function with the chosen date when selecting
-                          onChange={event => timeDifference(event.target.value)}
+                          onChange={event => handleChange('anticipated_first_pour_date', event.target.value)}
                           required
                           type="date"
                           size="small"
@@ -402,7 +402,7 @@ export default function EstimateCreate() {
                     <TableRow>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
                       <TableCell>
-                        {leadTime}
+                        CALC#
                       </TableCell>
                     </TableRow>
 
