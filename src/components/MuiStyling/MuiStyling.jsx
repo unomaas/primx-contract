@@ -83,7 +83,12 @@ const useStyles = makeStyles({
   AdminEstimatesGridwrapper: {
     width: '95%',
     margin: 'auto',
-  }
+  },
+
+  updateShippingSubmit: {
+    margin: '-20% 80% -20% 0%',
+    display: 'in-line'
+  },
 
 }); // End useStyles
 
