@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
@@ -33,7 +33,6 @@ function AdminRegisterForm() {
 
   const registerUser = (event) => {
     event.preventDefault();
-
     dispatch({
       type: 'REGISTER',
       payload: {
@@ -41,11 +40,15 @@ function AdminRegisterForm() {
         password: password,
       },
     });
-    swal("Success!", "New Admin Created", "success", {
-      button: "OK",
-    });
-    history.push('/user');
+    dispatch({type: 'FETCH_USERINFO'});
+    setUsername('');
+    setPassword('');
   }; // end registerUser
+
+  useEffect(() => {
+    // GET all users on page load
+    dispatch({type: 'FETCH_USERINFO'});
+  }, [])
 
   return (
     <form  onSubmit={registerUser}>
