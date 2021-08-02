@@ -87,6 +87,10 @@ const useStyles = makeStyles({
 
   AddLicenseeInput: {
     margin: 10
+  },
+
+  AddTypesInput: {
+    margin: 10
   }
 
 }); // End useStyles
