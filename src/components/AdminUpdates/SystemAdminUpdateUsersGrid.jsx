@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react';
-
+import { useStyles } from '../MuiStyling/MuiStyling';
 
 // Material-UI components
 import { DataGrid } from '@material-ui/data-grid';
@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function SystemAdminUpdateUserGrid() {
+
+    const classes = useStyles();
 
     useEffect(() => {
         // GET all user data on page load
@@ -67,8 +69,7 @@ export default function SystemAdminUpdateUserGrid() {
 
     return (
         <div
-          style={{ height: 650, width: '40%'}}
-          className="AdminEstimatesGrid-wrapper"
+        className={classes.SystemAdminGrid}
         >
             <DataGrid 
                 // className={classes.dataGridTables}

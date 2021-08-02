@@ -49,6 +49,12 @@ const useStyles = makeStyles({
   OrdersHeaders: {
     fontFamily: 'Lexend Tera',
     marginBottom: '.3em',
+  },
+
+  SystemAdminGrid: {
+    height: 650,
+    width: '40%',
+    margin: 'auto',
   }
 
 }); // End useStyles
