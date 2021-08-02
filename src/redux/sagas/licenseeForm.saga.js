@@ -103,7 +103,19 @@ function* recalculateEstimate(action) {
     catch (error) {
         console.log('recalculate estimate failed', error)
     }
-    
+}
+
+// Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then
+// be processed by an admin user
+function* markEstimateAsOrdered(action) {
+    try {
+        yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
+
+    }
+    catch (error) {
+        console.log('markEstimateAsOrdered failed', error)
+    }
+
 }
 
 // companies saga to fetch companies
@@ -114,6 +126,8 @@ function* licenseeFormSaga() {
     yield takeLatest('FETCH_ESTIMATE_QUERY', fetchEstimateQuery);
     // Runs a number of functions to recalculate an old estimate with updated pricing data before creating a new estimate in the DB
     yield takeLatest('RECALCULATE_ESTIMATE', recalculateEstimate);
+    // Marks an estimate as ordered in the DB and attaches a supplied P.O. number to it
+    yield takeLatest('EDIT_PLACE_ORDER', markEstimateAsOrdered);
 }
 
 export default licenseeFormSaga;

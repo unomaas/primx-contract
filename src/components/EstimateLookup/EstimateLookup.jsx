@@ -97,6 +97,12 @@ export default function EstimateLookup() {
   const handlePlaceOrder = () => {
     // handle data validation here
 
+    // send the estimate ID and input P.O. number to be updated
+    dispatch({type: 'EDIT_PLACE_ORDER', payload: {
+      id: searchResult.id,
+      po_number: poNumber,
+    }})
+
   }
 
   console.log('search estimate:', searchResult)
