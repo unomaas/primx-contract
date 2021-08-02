@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-import Alert from '@material-ui/lab/Alert';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -36,6 +36,8 @@ export default function ImperialTable() {
   const productsReducer = useSelector(store => store.products);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
   const snack = useSelector(store => store.snackBar);
+  const [saveButton, setSaveButton] = useState('disabled')
+
   // ⬇ GET on page load:
   // useEffect(() => {
   //   // Product Call
@@ -131,9 +133,10 @@ export default function ImperialTable() {
         autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        
+
       >
-        <Alert onClose={handleClose} severity={snack.severity}>
+        <Alert variant="filled" onClose={handleClose} severity={snack.severity}>
+          {/* <AlertTitle>Info</AlertTitle> */}
           {snack.message}
         </Alert>
       </Snackbar>
@@ -286,7 +289,7 @@ export default function ImperialTable() {
                       </TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
+                    <TableRow>
                       <TableCell colSpan={6} align="right">
                         <Button
                           type="submit"
@@ -299,7 +302,7 @@ export default function ImperialTable() {
                           Save Estimate
                         </Button>
                       </TableCell>
-                    </TableRow> */}
+                    </TableRow>
 
                   </TableBody>
                 </Table>
@@ -373,8 +376,7 @@ export default function ImperialTable() {
                   </TableBody>
                 </Table>
 
-                <h3>Thickened Edge Calculator</h3>
-                <p>If applicable, for slabs under 6in.<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
+                <h3>Thickened Edge Calculations</h3>
                 <Table size="small">
 
                   <TableHead>
@@ -435,7 +437,7 @@ export default function ImperialTable() {
           <Grid item xs={8}>
             <Paper elevation={3}>
               <TableContainer>
-                <h3>Materials Table</h3>
+                <h3>Materials Required Calculations</h3>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
@@ -559,7 +561,7 @@ export default function ImperialTable() {
                       <TableCell><b>{calculatedDisplayObject?.design_total_price_estimate}</b></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell colSpan={11} align="right">
                         <Button
                           type="submit"
@@ -572,7 +574,7 @@ export default function ImperialTable() {
                           Save Estimate
                         </Button>
                       </TableCell>
-                    </TableRow>
+                    </TableRow> */}
 
                   </TableBody>
                 </Table>

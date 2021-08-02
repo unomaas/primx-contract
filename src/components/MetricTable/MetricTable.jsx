@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -35,6 +35,8 @@ export default function MetricTable() {
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
+  const snack = useSelector(store => store.snackBar);
+  const [saveButton, setSaveButton] = useState('disabled')
 
   //   // ⬇ GET on page load:
   //   useEffect(() => {
@@ -112,11 +114,34 @@ export default function MetricTable() {
     // console.log('DISPLAY OBJECT', calculatedDisplayObject);
     // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
   }
+
+  //sets snack bar notification to closed after appearing
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    dispatch({ type: 'SET_CLOSE' })
+  };
   //#endregion ⬆⬆ Event handles above. 
 
 
   return (
     <>
+
+      {/* snackbar to confirm when a new admin has been registered */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+
+      >
+        <Alert variant="filled" onClose={handleClose} severity={snack.severity}>
+          {/* <AlertTitle>Info</AlertTitle> */}
+          {snack.message}
+        </Alert>
+      </Snackbar>
+
       <form onSubmit={handleSave}>
         <Grid container
           spacing={2}
@@ -265,7 +290,7 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
+                    <TableRow>
                       <TableCell colSpan={6} align="right">
                         <Button
                           type="submit"
@@ -278,7 +303,7 @@ export default function MetricTable() {
                           Save Estimate
                         </Button>
                       </TableCell>
-                    </TableRow> */}
+                    </TableRow>
 
                   </TableBody>
                 </Table>
@@ -349,8 +374,6 @@ export default function MetricTable() {
                 </Table>
 
                 <h3>Thickened Edge Calculations</h3>
-                <p>If applicable, for slabs under 150mm.<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
-
                 <Table size="small">
 
                   <TableHead>
@@ -526,35 +549,8 @@ export default function MetricTable() {
                       <TableCell><b>{calculatedDisplayObject?.design_total_price_estimate}</b></TableCell>
                     </TableRow>
 
-                    <TableRow>
-                      {/* <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-
-                      <TableCell colSpan={3} align="right">
-                        <Button
-                          type="submit"
-                          onClick={event => handleCalculateCosts(event)}
-                          variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-                          color="primary"
-                        >
-                          Calculate Costs
-                        </Button>
-                      </TableCell> */}
+                    {/* <TableRow>
                       <TableCell colSpan={11} align="right">
-                        {/* <Button
-                          // type="submit"
-                          onClick={event => handleCalculateCosts(event)}
-                          variant="contained"
-                          className={classes.LexendTeraFont11}
-                          color="primary"
-                        >
-                          Calculate Costs
-                        </Button>
-                        &nbsp; &nbsp; */}
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
@@ -566,7 +562,7 @@ export default function MetricTable() {
                           Save Estimate
                         </Button>
                       </TableCell>
-                    </TableRow>
+                    </TableRow> */}
 
                   </TableBody>
                 </Table>
