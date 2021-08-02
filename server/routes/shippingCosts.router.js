@@ -2,6 +2,7 @@ const express = require('express');
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const pool = require('../modules/pool');
 const router = express.Router();
+const format = require('pg-format');
 
 // GET route - gets shipping costs
 router.get('/', (req, res) => {
@@ -31,7 +32,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 
 //PUT route - updates shipping costs
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-    const queryText = `UPDATE "shipping_costs" SET ${req.body.dbColumn} = $1 WHERE "id" = $2;`; //!!!fix sanitize
+    const queryText =  format(`UPDATE "shipping_costs" SET %I = $1 WHERE "id" = $2;`, req.body.dbColumn);
     pool.query(queryText, [req.body.newValue, req.params.id])
     .then(result => {
     res.sendStatus(202);
