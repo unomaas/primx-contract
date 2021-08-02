@@ -10,13 +10,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
+
 function AdminLoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector(store => store.errors);
   const dispatch = useDispatch();
   const history = useHistory();
-
 
   //defining classes for MUI
   const classes = useStyles();
@@ -62,7 +62,9 @@ function AdminLoginForm() {
             value={username}>
             Username:
           </TextField>
-        </div> <br />
+        </div> 
+        
+        <br />
 
         <div>
           <TextField
