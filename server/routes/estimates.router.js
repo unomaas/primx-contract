@@ -14,11 +14,14 @@ router.get('/lookup/:estimate', (req, res) => {
   const licenseeId = req.query.licenseeId
 
   console.log('Estimate number', estimateNumber, 'licensee ID', licenseeId)
-
-  const queryText =
-                  `SELECT * FROM estimates 
-                   WHERE "estimate_number" = $1
-                   AND "licensee_id" = $2;`
+  // SQL query to GET a specific estimate along the floor type names, licensee names, placement type names, and shipping state/province names
+  const queryText = `SELECT "estimates".*, "floor_types".floor_type, "licensees".licensee_contractor_name, "placement_types".placement_type, "shipping_costs".ship_to_state_province FROM "estimates"
+                     JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
+                     JOIN "licensees" ON "estimates".licensee_id = "licensees".id
+                     JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
+                     JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
+                     WHERE "estimate_number" = $1 AND "licensee_id" = $2
+                     ORDER BY "estimates".id DESC;`;
   
   pool.query(queryText, [estimateNumber, licenseeId])
     .then( result => {

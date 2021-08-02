@@ -115,11 +115,11 @@ export default function NavDrawer() {
                   <Divider />
 
 
-                <ListItem button onClick={() => history.push(`/registration`)}>
-                  <PersonAddOutlinedIcon /> &nbsp;
+                {/* <ListItem button onClick={() => history.push(`/registration`)}> */}
+                  {/* <PersonAddOutlinedIcon /> &nbsp; */}
                   {/* <ListItemText primary={"Create New Admin"} /> */}
-                  <p>Create New Admin</p>
-                </ListItem>
+                  {/* <p>Create New Admin</p> */}
+                {/* </ListItem> */}
 
                   <ListItem button onClick={() => history.push(`/systemadmin`)}>
                     <SupervisorAccountIcon /> &nbsp;

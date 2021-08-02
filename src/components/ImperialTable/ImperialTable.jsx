@@ -427,7 +427,7 @@ export default function ImperialTable() {
                       <TableCell></TableCell>
                       <TableCell><b>TOTALS:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.design_total_materials_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.design_total_container_price}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_total_containers}</TableCell>
                       <TableCell>{calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
                       <TableCell>{calculatedDisplayObject?.design_total_price_estimate}</TableCell>
                     </TableRow>
