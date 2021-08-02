@@ -49,12 +49,12 @@ export default function ImperialTable() {
   // values
   useEffect(() => {
     if (estimateData.square_feet && estimateData.thickness_inches && estimateData.thickened_edge_construction_joint_lineal_feet &&
-        estimateData.thickened_edge_perimeter_lineal_feet && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_lbs &&
-        estimateData.primx_cpea_dosage_liters) {
-          // once all the keys exist, run the calculate estimate function and set the table display state for the calculated values
-          const calculatedObject = calculateEstimate(estimateData)
-          setCalculatedDisplayObject(calculatedObject)
-      }
+      estimateData.thickened_edge_perimeter_lineal_feet && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_lbs &&
+      estimateData.primx_cpea_dosage_liters) {
+      // once all the keys exist, run the calculate estimate function and set the table display state for the calculated values
+      const calculatedObject = calculateEstimate(estimateData)
+      setCalculatedDisplayObject(calculatedObject)
+    }
   }, [estimateData])
 
 
@@ -88,7 +88,7 @@ export default function ImperialTable() {
   /** ⬇ handleSubmit:
  * When clicked, this will post the object to the DB and send the user back to the dashboard. 
  */
-   const handleSave = event => {
+  const handleSave = event => {
     console.log('In Imperial handleSave');
     // attach history from useHistory to the estimate object to allow navigation from inside the saga
     estimateData.history = history;
@@ -96,7 +96,7 @@ export default function ImperialTable() {
     // ⬇ Don't refresh until submit:
     event.preventDefault();
     // send the estimate object to be POSTed
-    dispatch({type: 'ADD_ESTIMATE', payload: estimateData})
+    dispatch({ type: 'ADD_ESTIMATE', payload: estimateData })
   } // End handleSave
 
   const handleCalculateCosts = () => {
@@ -117,7 +117,162 @@ export default function ImperialTable() {
           justifyContent="center"
         >
 
-          <Grid item xs={6}>
+          <Grid item xs={12}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <Table size="small">
+
+                  <TableHead>
+                    <TableCell align="center" colSpan={2}><h3>Project Quantity Inputs</h3></TableCell>
+                    <TableCell align="center" colSpan={2}><h3>Thickened Edge Inputs</h3></TableCell>
+                    <TableCell align="center" colSpan={2}><h3>Materials Required Inputs</h3></TableCell>
+                  </TableHead>
+
+                  <TableBody>
+                    <TableRow>
+                      <TableCell><b>Square Feet:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('square_feet', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ft²</InputAdornment>,
+                          }}
+                          defaultValue={estimateData.square_feet}
+                        />
+                      </TableCell>
+
+                      <TableCell><b>Lineal Feet @ Perimeter:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickened_edge_perimeter_lineal_feet', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ft</InputAdornment>,
+                          }}
+                          fullWidth
+                          defaultValue={estimateData.thickened_edge_perimeter_lineal_feet}
+                        />
+                      </TableCell>
+
+                      <TableCell><b>PrīmX Flow @ Dosage Rate per yd³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
+                          }}
+                          fullWidth
+                          defaultValue={estimateData.primx_flow_dosage_liters}
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell><b>Thickness:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickness_inches', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">in</InputAdornment>,
+                          }}
+                          defaultValue={estimateData.thickness_inches}
+                        />
+                      </TableCell>
+
+                      <TableCell><b>Lineal Feet @ Construction Joint:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickened_edge_construction_joint_lineal_feet', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ft</InputAdornment>,
+                          }}
+                          defaultValue={estimateData.thickened_edge_construction_joint_lineal_feet}
+                        />
+                      </TableCell>
+
+                      <TableCell><b>PrīmX Steel Fibers @ Dosage Rate per yd³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+                          }}
+                          fullWidth
+                          defaultValue={estimateData.primx_steel_fibers_dosage_lbs}
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell><b>PrīmX CPEA @ Dosage Rate per yd³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
+                          }}
+                          fullWidth
+                          defaultValue={estimateData.primx_cpea_dosage_liters}
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    {/* <TableRow>
+                      <TableCell colSpan={6} align="right">
+                        <Button
+                          type="submit"
+                          // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+                          // onClick={event => handleSave(event)}
+                          variant="contained"
+                          className={classes.LexendTeraFont11}
+                          color="secondary"
+                        >
+                          Save Estimate
+                        </Button>
+                      </TableCell>
+                    </TableRow> */}
+
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={4}>
             <Paper elevation={3}>
               <TableContainer>
                 <h3 className="lexendFont">Project Quantity Calculations</h3>
@@ -127,34 +282,14 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Square Feet:</b></TableCell>
                       <TableCell>
-                        <TextField
-                          onChange={event => handleChange('square_feet', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start">ft²</InputAdornment>,
-                          }}
-                          defaultValue={estimateData.square_feet}
-                        />
+                        {calculatedDisplayObject?.square_feet}
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Thickness (in):</b></TableCell>
                       <TableCell>
-                        <TextField
-                          onChange={event => handleChange('thickness_inches', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start">in</InputAdornment>,
-                          }}
-                          defaultValue={estimateData.thickness_inches}
-                        />
+                        {calculatedDisplayObject?.thickness_inches}
                       </TableCell>
                     </TableRow>
 
@@ -168,7 +303,6 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                       <TableCell>
-                        {/* This rounds down in the spreadsheet, and rounds up here: */}
                         {calculatedDisplayObject?.perimeter_thickening_cubic_yards}
                       </TableCell>
                     </TableRow>
@@ -176,7 +310,6 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                       <TableCell>
-                        {/* This rounds down in the spreadsheet, and rounds up here: */}
                         {calculatedDisplayObject?.construction_joint_thickening_cubic_yards}
                       </TableCell>
                     </TableRow>
@@ -184,13 +317,12 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Subtotal:</b></TableCell>
                       <TableCell>
-                        {/* This rounds down in the spreadsheet, and rounds up here: */}
                         {calculatedDisplayObject?.cubic_yards_subtotal}
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                      <TableCell><b>Waste Factor @ 5% (yd³):</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.waste_factor_cubic_yards}
                       </TableCell>
@@ -205,15 +337,8 @@ export default function ImperialTable() {
 
                   </TableBody>
                 </Table>
-              </TableContainer>
-            </Paper>
-          </Grid>
 
-          <Grid item xs={6}>
-            <Paper elevation={3}>
-              <TableContainer>
-
-                <h3 className="lexendFont">Thickened Edge Calculator</h3>
+                <h3>Thickened Edge Calculator</h3>
                 <p>If applicable, for slabs under 6in.<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
                 <Table size="small">
 
@@ -229,32 +354,10 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Lineal Feet:</b></TableCell>
                       <TableCell>
-                        <TextField
-                          onChange={event => handleChange('thickened_edge_perimeter_lineal_feet', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start">ft</InputAdornment>,
-                          }}
-                          fullWidth
-                          defaultValue={estimateData.thickened_edge_perimeter_lineal_feet}
-                        // defaultValue="0"
-                        />
+                        {calculatedDisplayObject?.thickened_edge_perimeter_lineal_feet}
                       </TableCell>
                       <TableCell>
-                        <TextField
-                          onChange={event => handleChange('thickened_edge_construction_joint_lineal_feet', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start">ft</InputAdornment>,
-                          }}
-                          defaultValue={estimateData.thickened_edge_construction_joint_lineal_feet}
-                        // defaultValue="0"
-                        />
+                        {calculatedDisplayObject?.thickened_edge_construction_joint_lineal_feet}
                       </TableCell>
                     </TableRow>
 
@@ -294,26 +397,11 @@ export default function ImperialTable() {
             </Paper>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={8}>
             <Paper elevation={3}>
               <TableContainer>
-                <h3 className="lexendFont">Materials Table</h3>
+                <h3>Materials Table</h3>
                 <Table size="small">
-                  {/* <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell><b>Dosage<br />Rate<br />per yd³</b></TableCell>
-                      <TableCell><b>Total<br />Amount</b></TableCell>
-                      <TableCell><b>Packaging<br />Capacity</b></TableCell>
-                      <TableCell><b>Packages<br />Needed</b></TableCell>
-                      <TableCell><b>Total<br />Order<br />Quantity</b></TableCell>
-                      <TableCell><b>Materials<br />Price</b></TableCell>
-                      <TableCell><b>Total<br />Materials<br />Price</b></TableCell>
-                      <TableCell><b>Containers</b></TableCell>
-                      <TableCell><b>Shipping<br />Estimate</b></TableCell>
-                      <TableCell><b>Total<br />Cost</b></TableCell>
-                    </TableRow>
-                  </TableHead> */}
                   <TableHead>
                     <TableRow>
                       <TableCell></TableCell>
@@ -326,80 +414,24 @@ export default function ImperialTable() {
                     </TableRow>
                   </TableHead>
 
-                  {/* <TableBody>
-                    <TableRow>
-                      <TableCell><b>PrīmX DC (lbs)</b></TableCell>
-                      <TableCell>67</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed}</TableCell>
-                      <TableCell>2,756</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_unit_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_total_materials_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_calculated_shipping_estimate}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_total_cost_estimate}</TableCell>
-                    </TableRow> */}
                   <TableBody>
                     <TableRow>
                       <TableCell><b>Dosage Rate per yd³:</b></TableCell>
                       <TableCell>67</TableCell>
                       <TableCell>
-                        <TextField
-                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          defaultValue={estimateData.primx_flow_dosage_liters}
-                        />
+                        {calculatedDisplayObject?.primx_flow_dosage_liters}
                       </TableCell>
                       <TableCell>
-                        <TextField
-                          onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          defaultValue={estimateData.primx_steel_fibers_dosage_lbs}
-                        />
+                      {calculatedDisplayObject?.primx_steel_fibers_dosage_lbs}
+
                       </TableCell>
                       <TableCell>N/A</TableCell>
                       <TableCell>
-                        <TextField
-                          onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          defaultValue={estimateData.primx_cpea_dosage_liters}
-                        />
+                      {calculatedDisplayObject?.primx_cpea_dosage_liters}
                       </TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
-                      <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
-                      <TableCell style={{ width: '1em' }}>
-                        <TextField
-                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          defaultValue={estimateData.primx_flow_dosage_liters}
-                        />
-                      </TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
-                      <TableCell>1,000</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_unit_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_total_materials_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_calculated_shipping_estimate}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_total_cost_estimate}</TableCell>
-                    </TableRow> */}
                     <TableRow>
                       <TableCell><b>Total Amount:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed}</TableCell>
@@ -410,29 +442,6 @@ export default function ImperialTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-
-                    {/* <TableRow>
-                      <TableCell><b>PrīmX Steel Fibers (lbs)</b></TableCell>
-                      <TableCell style={{ width: '1em' }}>
-                        <TextField
-                          onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          defaultValue={estimateData.primx_steel_fibers_dosage_lbs}
-                        />
-                      </TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
-                      <TableCell>42,329</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_order_quantity}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_unit_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_materials_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_calculated_shipping_estimate}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate}</TableCell>
-                    </TableRow> */}
                     <TableRow>
                       <TableCell><b>Packaging Capacity:</b></TableCell>
                       <TableCell>2,756</TableCell>
@@ -443,19 +452,6 @@ export default function ImperialTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
-                      <TableCell><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
-                      <TableCell>N/A</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed}</TableCell>
-                      <TableCell>6,458</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_order_quantity}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_unit_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_materials_price}</TableCell>
-                      <TableCell>0</TableCell>
-                      <TableCell>N/A</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate}</TableCell>
-                    </TableRow> */}
                     <TableRow>
                       <TableCell><b>Packages Needed:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
@@ -466,28 +462,6 @@ export default function ImperialTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
-                      <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
-                      <TableCell style={{ width: '1em' }}>
-                        <TextField
-                          onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          defaultValue={estimateData.primx_cpea_dosage_liters}
-                        />
-                      </TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>
-                      <TableCell>1,000</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_order_quantity}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_unit_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_materials_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_calculated_shipping_estimate}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_cost_estimate}</TableCell>
-                    </TableRow> */}
                     <TableRow>
                       <TableCell><b>Total Order Quantity:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
@@ -498,33 +472,6 @@ export default function ImperialTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell><b>TOTALS:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.design_total_materials_price}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.design_total_containers}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.design_total_price_estimate}</TableCell>
-                    </TableRow> */}
                     <TableRow>
                       <TableCell><b>Materials Price:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_unit_price}</TableCell>
@@ -553,10 +500,7 @@ export default function ImperialTable() {
                       <TableCell>0</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
                       <TableCell>
-                        {/* // Total number of containers go into this cell */}
-                        {/* {calculatedDisplayObject?.primx_dc_containers_needed + calculatedDisplayObject?.primx_flow_containers_needed +
-                          calculatedDisplayObject?.primx_steel_fibers_containers_needed + calculatedDisplayObject?.primx_cpea_containers_needed} */}
-                          {calculatedDisplayObject?.design_total_containers}
+                        {calculatedDisplayObject?.design_total_containers}
                       </TableCell>
                     </TableRow>
 
@@ -582,15 +526,6 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell colSpan={11} align="right">
-                        <Button
-                          onClick={event => handleCalculateCosts(event)}
-                          variant="contained"
-                          className={classes.LexendTeraFont11}
-                          color="primary"
-                        >
-                          Calculate Costs
-                        </Button>
-                        &nbsp; &nbsp;
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
