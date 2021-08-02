@@ -23,6 +23,7 @@ export default function AdminUpdateLicenses() {
   // establish snackbar variables for notifications
   const snack = useSelector(store => store.snackBar);
   
+  
     //defining classes for MUI
     const classes = useStyles();
 
@@ -76,8 +77,8 @@ return (
   <div >
     <AdminUpdates />
     <h2>Update Licensee</h2>
-    <TextField id="outlined-basic" label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange}/>
-    <Fab className={classes.root} onClick={handleAddCompany} color="primary" aria-label="add">
+    <TextField id="outlined-basic" className={classes.AddLicenseeInput} label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange}/>
+    <Fab className={classes.AddLicenseeInput} onClick={handleAddCompany} color="primary" aria-label="add">
               <AddIcon />
             </Fab>
     <div className={classes.licenseeGrid}>

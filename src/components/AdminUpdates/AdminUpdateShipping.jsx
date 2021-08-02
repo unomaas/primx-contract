@@ -102,20 +102,56 @@ const snack = useSelector(store => store.snackBar);
         <form className={classes.root} noValidate autoComplete="off">
           <div>
             <div >
-              <TextField id="ship-to" className={classes.root} label="Add New Shipping Location" variant="outlined" value={newShippingCost.ship_to_state_province} onChange={handleShipToChange} />
-              <TextField id="dc-price" className={classes.root} label="Add New DC Price" variant="outlined" value={newShippingCost.dc_price} onChange={handleDCChange} />
+              <TextField 
+              id="ship-to" 
+              className={classes.root} 
+              inputProps={{
+                style: {fontSize: 30, height: 15} 
+              }}
+              label="Add New Shipping Location" 
+              variant="outlined" value={newShippingCost.ship_to_state_province} 
+              onChange={handleShipToChange} />
+
+              <TextField 
+              id="dc-price" 
+              className={classes.root} 
+              inputProps={{
+                style: {fontSize: 30, height: 15} 
+              }}
+              label="Add New DC Price" 
+              variant="outlined" 
+              value={newShippingCost.dc_price} 
+              onChange={handleDCChange} />
             </div>
 
-            <div>
-              <Fab className={classes.updateShippingSubmit} onClick={handleSubmit} color="primary" aria-label="add">
+            <div >
+              <TextField 
+              id="flow-cpea" 
+              className={classes.root} 
+              inputProps={{
+                style: {fontSize: 30, height: 15} 
+              }}
+              label="Add New Flow/CPEA Price" 
+              variant="outlined" 
+              value={newShippingCost.flow_cpea_price} 
+              onChange={handleFlowCPEAChange} />
+
+              <TextField 
+              id="fiber-ship-price" 
+              className={classes.root}
+              inputProps={{
+                style: {fontSize: 30, height: 15} 
+              }} 
+              label="Add New Fibers Shipping Price" 
+              variant="outlined" 
+              value={newShippingCost.fibers_price} 
+              onChange={handleFibersChange} />
+
+              <br></br>
+
+              <Fab className={classes.root} onClick={handleSubmit} color="primary" aria-label="add">
                 <AddIcon />
               </Fab>
-            </div>
-
-            <div>
-              <TextField id="flow-cpea" className={classes.root} label="Add New Flow/CPEA Price" variant="outlined" value={newShippingCost.flow_cpea_price} onChange={handleFlowCPEAChange} />
-              <TextField id="fiber-ship-price" className={classes.root} label="Add New Fibers Shipping Price" variant="outlined" value={newShippingCost.fibers_price} onChange={handleFibersChange} />
-
             </div>
           </div>
         </form>
