@@ -114,25 +114,26 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         { field: 'project_name', headerName: 'Project Name', width: 175, editable: true },
 
         // technical job details input by licensee
-        { field: 'measurement_units', headerName: 'Units', width: 100, hide: true }, // Editable + validation?
-        { field: 'floor_type', headerName: 'Floor Type', width: 175, hide: true }, // Editable + validation?
-        { field: 'placement_type', headerName: 'Placement Type', width: 175, hide: true }, // Editable + validation?
-        { field: 'square_feet', headerName: 'Square Feet', width: 175, hide: true }, // Editable + validation?
-        { field: 'thickness_inches', headerName: 'Thickness(inches)', width: 175, hide: true }, // Editable + validation?
-        { field: 'square_meters', headerName: 'Square Meters', width: 175, hide: true }, // Editable + validation?
-        { field: 'thickness_millimeters', headerName: 'Thickness(mm)', width: 175, hide: true }, // Editable + validation?
-        { field: 'waste_factor_percentage', headerName: 'Waste Factor (%)', width: 175, hide: true }, // Editable + validation?
-        { field: 'thickened_edge_construction_joint_lineal_feet', headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, hide: true }, // Editable + validation?
-        { field: 'thickened_edge_perimeter_lineal_feet', headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, hide: true }, // Editable + validation?
-        { field: 'thickened_edge_construction_joint_lineal_meters', headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, hide: true }, // Editable + validation?
-        { field: 'thickened_edge_perimeter_lineal_meters', headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, hide: true }, // Editable + validation?
-        { field: 'primx_flow_dosage_liters', headerName: 'Flow Dosage (liters)', width: 175, hide: true }, // Editable + validation?
-        { field: 'primx_steel_fibers_dosage_lbs', headerName: 'Steel Fiber Dosage (lbs)', width: 175, hide: true }, // Editable + validation?
-        { field: 'primx_steel_fibers_dosage_kgs', headerName: 'Steel Fiber Dosage (kgs)', width: 175, hide: true }, // Editable + validation?
-        { field: 'primx_cpea_dosage_liters', headerName: 'CPEA Dosage (liters)', width: 175, hide: true }, // Editable + validation?
+        { field: 'measurement_units', headerName: 'Units', width: 100 }, // Editable + validation?
+        { field: 'floor_type', headerName: 'Floor Type', width: 175 }, // Editable + validation?
+        { field: 'placement_type', headerName: 'Placement Type', width: 175 }, // Editable + validation?
+        { field: 'square_feet', headerName: 'Square Feet', width: 175 }, // Editable + validation?
+        { field: 'thickness_inches', headerName: 'Thickness(inches)', width: 175 }, // Editable + validation?
+        { field: 'square_meters', headerName: 'Square Meters', width: 175 }, // Editable + validation?
+        { field: 'thickness_millimeters', headerName: 'Thickness(mm)', width: 175 }, // Editable + validation?
+        { field: 'waste_factor_percentage', headerName: 'Waste Factor (%)', width: 175 }, // Editable + validation?
+        { field: 'thickened_edge_construction_joint_lineal_feet', headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175 }, // Editable + validation?
+        { field: 'thickened_edge_perimeter_lineal_feet', headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175 }, // Editable + validation?
+        { field: 'thickened_edge_construction_joint_lineal_meters', headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175 }, // Editable + validation?
+        { field: 'thickened_edge_perimeter_lineal_meters', headerName: 'Thickened Edge Perimeter (lineal m)', width: 175 }, // Editable + validation?
+        { field: 'primx_flow_dosage_liters', headerName: 'Flow Dosage (liters)', width: 175 }, // Editable + validation?
+        { field: 'primx_steel_fibers_dosage_lbs', headerName: 'Steel Fiber Dosage (lbs)', width: 175 }, // Editable + validation?
+        { field: 'primx_steel_fibers_dosage_kgs', headerName: 'Steel Fiber Dosage (kgs)', width: 175 }, // Editable + validation?
+        { field: 'primx_cpea_dosage_liters', headerName: 'CPEA Dosage (liters)', width: 175 }, // Editable + validation?
 
         // All calculated values are listed below
         // PrimX DC calculated values
+<<<<<<< HEAD
         { field: 'primx_dc_total_amount_needed', headerName: 'DC Total Amount Needed', width: 175, hide: true },
         { field: 'primx_dc_packages_needed', headerName: 'DC Packages Needed', width: 175, hide: true },
         { field: 'primx_dc_total_order_quantity', headerName: 'DC Total Order Quantity', width: 175, hide: true },
@@ -140,47 +141,56 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         { field: 'primx_dc_containers_needed', headerName: 'DC Containers Needed', width: 175, hide: true },
         { field: 'primx_dc_calculated_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175, hide: true, format: {type: "currency", currency: "USD"}},
         { field: 'primx_dc_total_cost_estimate', headerName: 'DC Total Cost', width: 175, hide: true, format: {type: "currency", currency: "USD"}},
+=======
+        { field: 'primx_dc_total_amount_needed', headerName: 'DC Total Amount Needed', width: 175 },
+        { field: 'primx_dc_packages_needed', headerName: 'DC Packages Needed', width: 175 },
+        { field: 'primx_dc_total_order_quantity', headerName: 'DC Total Order Quantity', width: 175 },
+        { field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175 },
+        { field: 'primx_dc_containers_needed', headerName: 'DC Containers Needed', width: 175 },
+        { field: 'primx_dc_calculated_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175 },
+        { field: 'primx_dc_total_cost_estimate', headerName: 'DC Total Cost', width: 175 },
+>>>>>>> main
 
         // PrimX Flow calculated values
-        { field: 'primx_flow_total_amount_needed', headerName: 'Flow Total Amount Needed', width: 175, hide: true },
-        { field: 'primx_flow_packages_needed', headerName: 'Flow Packages Needed', width: 175, hide: true },
-        { field: 'primx_flow_total_order_quantity', headerName: 'Flow Total Order Quantity', width: 175, hide: true },
-        { field: 'primx_flow_total_materials_price', headerName: 'Flow Total Material Price', width: 175, hide: true },
-        { field: 'primx_flow_containers_needed', headerName: 'Flow Containers Needed', width: 175, hide: true },
-        { field: 'primx_flow_calculated_shipping_estimate', headerName: 'Flow Shipping Estimate', width: 175, hide: true },
-        { field: 'primx_flow_total_cost_estimate', headerName: 'Flow Total Cost', width: 175, hide: true },
+        { field: 'primx_flow_total_amount_needed', headerName: 'Flow Total Amount Needed', width: 175 },
+        { field: 'primx_flow_packages_needed', headerName: 'Flow Packages Needed', width: 175 },
+        { field: 'primx_flow_total_order_quantity', headerName: 'Flow Total Order Quantity', width: 175 },
+        { field: 'primx_flow_total_materials_price', headerName: 'Flow Total Material Price', width: 175 },
+        { field: 'primx_flow_containers_needed', headerName: 'Flow Containers Needed', width: 175 },
+        { field: 'primx_flow_calculated_shipping_estimate', headerName: 'Flow Shipping Estimate', width: 175 },
+        { field: 'primx_flow_total_cost_estimate', headerName: 'Flow Total Cost', width: 175 },
 
         // PrimX Steel Fibers calculated values
-        { field: 'primx_steel_fibers_total_amount_needed', headerName: 'Steel Fibers Total Amount Needed', width: 175, hide: true },
-        { field: 'primx_steel_fibers_packages_needed', headerName: 'Steel Fibers Packages Needed', width: 175, hide: true },
-        { field: 'primx_steel_fibers_total_order_quantity', headerName: 'Steel Fibers Total Order Quantity', width: 175, hide: true },
-        { field: 'primx_steel_fibers_total_materials_price', headerName: 'Steel Fibers Total Material Price', width: 175, hide: true },
-        { field: 'primx_steel_fibers_containers_needed', headerName: 'Steel Fibers Containers Needed', width: 175, hide: true },
-        { field: 'primx_steel_fibers_calculated_shipping_estimate', headerName: 'Steel Fibers Shipping Estimate', width: 175, hide: true },
-        { field: 'primx_steel_fibers_total_cost_estimate', headerName: 'Steel Fibers Total Cost', width: 175, hide: true },
+        { field: 'primx_steel_fibers_total_amount_needed', headerName: 'Steel Fibers Total Amount Needed', width: 175 },
+        { field: 'primx_steel_fibers_packages_needed', headerName: 'Steel Fibers Packages Needed', width: 175 },
+        { field: 'primx_steel_fibers_total_order_quantity', headerName: 'Steel Fibers Total Order Quantity', width: 175 },
+        { field: 'primx_steel_fibers_total_materials_price', headerName: 'Steel Fibers Total Material Price', width: 175 },
+        { field: 'primx_steel_fibers_containers_needed', headerName: 'Steel Fibers Containers Needed', width: 175 },
+        { field: 'primx_steel_fibers_calculated_shipping_estimate', headerName: 'Steel Fibers Shipping Estimate', width: 175 },
+        { field: 'primx_steel_fibers_total_cost_estimate', headerName: 'Steel Fibers Total Cost', width: 175 },
 
         // PrimX Ultracure Blankets calculated values
-        { field: 'primx_ultracure_blankets_total_amount_needed', headerName: 'Ultracure Blankets Total Amount Needed', width: 175, hide: true },
-        { field: 'primx_ultracure_blankets_packages_needed', headerName: 'Ultracure Blankets Packages Needed', width: 175, hide: true },
-        { field: 'primx_ultracure_blankets_total_order_quantity', headerName: 'Ultracure Blankets Total Order Quantity', width: 175, hide: true },
-        { field: 'primx_ultracure_blankets_total_materials_price', headerName: 'Ultracure Blankets Total Material Price', width: 175, hide: true },
-        { field: 'primx_ultracure_blankets_total_cost_estimate', headerName: 'Ultracure Blankets Total Cost', width: 175, hide: true },
+        { field: 'primx_ultracure_blankets_total_amount_needed', headerName: 'Ultracure Blankets Total Amount Needed', width: 175 },
+        { field: 'primx_ultracure_blankets_packages_needed', headerName: 'Ultracure Blankets Packages Needed', width: 175 },
+        { field: 'primx_ultracure_blankets_total_order_quantity', headerName: 'Ultracure Blankets Total Order Quantity', width: 175 },
+        { field: 'primx_ultracure_blankets_total_materials_price', headerName: 'Ultracure Blankets Total Material Price', width: 175 },
+        { field: 'primx_ultracure_blankets_total_cost_estimate', headerName: 'Ultracure Blankets Total Cost', width: 175 },
 
         // PrimX CPEA calculated values
-        { field: 'primx_cpea_total_amount_needed', headerName: 'CPEA Total Amount Needed', width: 175, hide: true },
-        { field: 'primx_cpea_packages_needed', headerName: 'CPEA Packages Needed', width: 175, hide: true },
-        { field: 'primx_cpea_total_order_quantity', headerName: 'CPEA Total Order Quantity', width: 175, hide: true },
-        { field: 'primx_cpea_total_materials_price', headerName: 'CPEA Total Material Price', width: 175, hide: true },
-        { field: 'primx_cpea_containers_needed', headerName: 'CPEA Containers Needed', width: 175, hide: true },
-        { field: 'primx_cpea_calculated_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175, hide: true },
-        { field: 'primx_cpea_total_cost_estimate', headerName: 'CPEA Total Cost', width: 175, hide: true },
+        { field: 'primx_cpea_total_amount_needed', headerName: 'CPEA Total Amount Needed', width: 175 },
+        { field: 'primx_cpea_packages_needed', headerName: 'CPEA Packages Needed', width: 175 },
+        { field: 'primx_cpea_total_order_quantity', headerName: 'CPEA Total Order Quantity', width: 175 },
+        { field: 'primx_cpea_total_materials_price', headerName: 'CPEA Total Material Price', width: 175 },
+        { field: 'primx_cpea_containers_needed', headerName: 'CPEA Containers Needed', width: 175 },
+        { field: 'primx_cpea_calculated_shipping_estimate', headerName: 'CPEA Shipping Estimate', width: 175 },
+        { field: 'primx_cpea_total_cost_estimate', headerName: 'CPEA Total Cost', width: 175 },
 
         // totals and design size
-        { field: 'design_cubic_yards_total', headerName: 'Design Volume (cubic yards)', width: 175, hide: true },
-        { field: 'design_cubic_meters_total', headerName: 'Design Volume (cubic meters)', width: 175, hide: true },
-        { field: 'design_total_materials_price', headerName: 'Total Materials Sum', width: 175, hide: true },
-        { field: 'design_total_shipping_estimate', headerName: 'Total Shipping Estimate Sum', width: 175, hide: true },
-        { field: 'design_total_price_estimate', headerName: 'Total Cost', width: 175, hide: true },
+        { field: 'design_cubic_yards_total', headerName: 'Design Volume (cubic yards)', width: 175 },
+        { field: 'design_cubic_meters_total', headerName: 'Design Volume (cubic meters)', width: 175 },
+        { field: 'design_total_materials_price', headerName: 'Total Materials Sum', width: 175 },
+        { field: 'design_total_shipping_estimate', headerName: 'Total Shipping Estimate Sum', width: 175 },
+        { field: 'design_total_price_estimate', headerName: 'Total Cost', width: 175 },
     ]
 
     // add additional columns based on the data source for the data grid
@@ -188,8 +198,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         if (dataSource == 'pending' || dataSource == 'processed') {
             // add the Purchase Order number and the order number to each of the pending and processed tables
             columns.push(
-                { field: 'po_number', headerName: 'Purchase Order', width: 175, hide: true },
-                { field: 'order_number', headerName: 'Order Number', width: 175, hide: true }
+                { field: 'po_number', headerName: 'Purchase Order', width: 175 },
+                { field: 'order_number', headerName: 'Order Number', width: 175 }
             )
         }
         if (dataSource == 'pending') {
@@ -206,7 +216,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         } else if (dataSource == 'processed') {
             // ad the processed by name to the processed table
             columns.push(
-                { field: 'processed_by', headerName: 'Processed By', width: 175, hide: true }
+                { field: 'processed_by', headerName: 'Processed By', width: 175 }
             )
         }
     }
