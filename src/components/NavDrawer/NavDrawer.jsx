@@ -85,7 +85,7 @@ export default function NavDrawer() {
               <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
                 {/* <ListItemText primary={"Look-Up Estimate"} /> */}
-                <p>Look-Up Estimate</p>
+                <p>Search For Estimate</p>
               </ListItem>
 
               <Divider />
@@ -156,7 +156,7 @@ export default function NavDrawer() {
               <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
                 {/* <ListItemText primary={"Look Up Estimate"} /> */}
-                <p>Look-Up Estimate</p>
+                <p>Search For Estimate</p>
               </ListItem>
 
               <Divider />
