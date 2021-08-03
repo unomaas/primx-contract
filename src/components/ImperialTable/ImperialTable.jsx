@@ -33,7 +33,7 @@ export default function ImperialTable() {
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
-  const productsReducer = useSelector(store => store.products);
+  const productsReducer = useSelector(store => store.products.productArray);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
   const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
