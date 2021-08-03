@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText, Box } from '@material-ui/core';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText, Box, Typography } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
@@ -111,6 +111,7 @@ export default function EstimateLookup() {
 
   console.log('search estimate:', searchResult)
   console.log('PO number', poNumber);
+  console.log('estimate # is', estimate_number_searched);
   return (
     <div className="EstimateCreate-wrapper">
 
@@ -160,6 +161,8 @@ export default function EstimateLookup() {
                           type="search"
                           size="small"
                           fullWidth
+                          defaultValue={estimate_number_searched}
+                          // defaultValue="Test test test"
                         />
                       </TableCell>
 
@@ -186,6 +189,7 @@ export default function EstimateLookup() {
       <br />
       {/* End estimate search form */}
 
+
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
 
@@ -200,7 +204,7 @@ export default function EstimateLookup() {
             {/* Grid Table #1: Display the Licensee/Project Info Form : Shared between imperial and metric*/}
             <Grid item xs={6}>
               <Paper elevation={3}>
-                <TableContainer >
+                <TableContainer>
                   <h3>Licensee & Project Information</h3>
                   <Table size="small">
                     <TableBody>
@@ -753,60 +757,64 @@ export default function EstimateLookup() {
                         <TableCell><b>{searchResult?.design_total_price_estimate}</b></TableCell>
                       </TableRow>
 
-                      <TableRow>
-                        <TableCell colSpan={3} align="left" className={classes.estimateNumberLookup}>
-                          <b>This Estimate Number Is:<br />
-                            {searchResult?.estimate_number}</b>
-                        </TableCell>
-                        <TableCell colSpan={4} align="right">
 
-                          {/* Recalculate costs  button */}
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleRecalculateCosts}
-                          >
-                            Recalculate Costs
-                          </Button> &nbsp;&nbsp;
+                      {/* Render the following table row for any orders that haven't been placed yet */}
+                      {!searchResult.ordered_by_licensee &&
+                        <>
+                          <TableRow>
+                            <TableCell colSpan={3} align="left" className={classes.estimateNumberLookup}>
+                              <b>This Estimate Number Is:<br />
+                                {searchResult?.estimate_number}</b>
+                            </TableCell>
+                            <TableCell colSpan={4} align="right">
 
-                          {hasRecalculated ?
-                            <>
-                              <TextField
-                                onChange={(event) => setPoNumber(event.target.value)}
-                                size="small"
-                                label="Purchase Order #?"
-                              // helperText="Please enter your PO#."
-                              >
-                              </TextField>
-                            </> :
-                            <>
-                              Recalculate costs before placing order.
-                            </>
-                          } &nbsp;&nbsp;
-
-                          {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
-                          {hasRecalculated ?
-                            <>
+                              {/* Recalculate costs  button */}
                               <Button
                                 variant="contained"
-                                color="secondary"
-                                onClick={handlePlaceOrder}
+                                color="primary"
+                                onClick={handleRecalculateCosts}
                               >
-                                Place Order
-                              </Button>
-                            </> :
-                            <>
-                              <Button
-                                variant="contained"
-                                disabled
-                              >
-                                Place Order
-                              </Button>
-                            </>
-                          }
+                                Recalculate Costs
+                              </Button> &nbsp; &nbsp;
 
-                        </TableCell>
-                      </TableRow>
+                              {hasRecalculated ?
+                                <>
+                                  <TextField
+                                    onChange={(event) => setPoNumber(event.target.value)}
+                                    size="small"
+                                    label="PO Number"
+                                    // helperText="Enter a PO#"
+                                  >
+                                  </TextField>
+                                </> :
+                                <>Recalculate costs before placing order.</>
+                              } &nbsp; &nbsp;
+
+                              {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
+                              {hasRecalculated ?
+                                <>
+                                  <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handlePlaceOrder}
+                                  >
+                                    Place Order
+                                  </Button>
+                                </> :
+                                <>
+                                  <Button
+                                    variant="contained"
+                                    disabled
+                                  >
+                                    Place Order
+                                  </Button>
+                                </>
+                              }
+
+                            </TableCell>
+                          </TableRow>
+                        </>
+                      } {/* End conditional render on materials table displaying buttons*/}
 
                       {/* End Materials Table */}
 
@@ -816,11 +824,23 @@ export default function EstimateLookup() {
               </Paper>
             </Grid>
           </Grid>
-
-
+          {/* Render messages underneath the table if an estimate has been submitted as an order */}
+          {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
+          {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
+            <h3>This order is currently being processed. Please contact your PrīmX representative for more details.</h3>
+          }
+          {/* Display this message if an estimate has been processed by an admin */}
+          {searchResult.marked_as_ordered &&
+            <h3>This order has been processed. Please contact your PrīmX representative for more details.</h3>
+          }
         </>
       } {/* End full table conditional render*/}
 
+
+      {/* Conditonally render a failed search message if the search came back with nothing */}
+      {!searchResult.estimate_number && estimate_number_searched &&
+        <h2>No matching estimate was found, please try again. Contact your PrīmX representative if you need assistance</h2>
+      }
     </div>
   )
 }
