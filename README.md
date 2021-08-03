@@ -60,11 +60,8 @@ note: Admins can do everything that licensees can do and more
       - add new admin by entering the username and password into the inputs and clicking the blue register button
       - delete and admin by clicking the delete button next to the admin you want to delete
 
-## Accessibility: 
-
-
 ## Built With
-JavaScript/HTML/CSS, React, Redux, Redux Saga, React Router, Node.js, Express, SQL, Material-ui, Axios, PostgreSQL, Snackbar. 
+JavaScript/HTML/CSS, React, Redux, Redux Saga, React Router, Node.js, Express, SQL, Material-ui, Axios, PostgreSQL. 
 
 ## Acknowledgement
 

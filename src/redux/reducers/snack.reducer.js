@@ -10,6 +10,8 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
       return { open: true, message: 'Placement Type has Been Added!', severity: "success" }
     case 'SET_SUCCESS_REGISTER_ADMIN':
       return { open: true, message: 'New Admin has Been Added!', severity: "success" }
+    case 'SET_ERROR_LEADTIME':
+      return { open: true, message: 'Please choose a date of first pour at least 8 weeks out', severity: "error" }
     case 'SET_CLOSE':
       return { ...state, open: false }
     case 'SET_EMPTY_ERROR':
