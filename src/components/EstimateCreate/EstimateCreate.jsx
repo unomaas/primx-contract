@@ -486,7 +486,7 @@ export default function EstimateCreate() {
                         <TextField
                           onChange={event => handleChange('zip_postal_code', event.target.value)}
                           required
-                          type="number"
+                          type="text"
                           size="small"
                           fullWidth
                           defaultValue={estimateData.zip_postal_code}
