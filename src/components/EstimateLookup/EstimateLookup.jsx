@@ -838,7 +838,7 @@ export default function EstimateLookup() {
 
       {/* Conditonally render a failed search message if the search came back with nothing */}
       {!searchResult.estimate_number && estimate_number_searched &&
-      <h2>No matching estimate was found, please try again.</h2>
+      <h2>No matching estimate was found, please try again. Contact your PrīmX representative if you need assistance</h2>
       }
     </div>
   )
