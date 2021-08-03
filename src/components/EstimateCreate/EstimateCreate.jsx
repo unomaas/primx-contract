@@ -36,7 +36,7 @@ export default function EstimateCreate() {
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
-  const productsReducer = useSelector(store => store.products);
+  const products = useSelector(store => store.products.productsObject);
   const showTables = useSelector(store => store.estimatesReducer.tableState);
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");
@@ -127,23 +127,25 @@ export default function EstimateCreate() {
     setError(false);
     setRadioError("");
     // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
+    
     const pricingArray = [
-      { key: 'primx_flow_unit_price', value: productsReducer[2].product_price },
-      { key: 'primx_cpea_unit_price', value: productsReducer[7].product_price },
+      { key: 'primx_flow_unit_price', value: products.flow_liters},
+      { key: 'primx_cpea_unit_price', value: products.cpea_liters },
     ]
     if (units == 'imperial') {
       pricingArray.push(
-        { key: 'primx_dc_unit_price', value: productsReducer[0].product_price },
-        { key: 'primx_steel_fibers_unit_price', value: productsReducer[3].product_price },
-        { key: 'primx_ultracure_blankets_unit_price', value: productsReducer[5].product_price }
+        { key: 'primx_dc_unit_price', value: products.dc_lbs },
+        { key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_lbs },
+        { key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqft }
       )
     } else if (units == 'metric') {
       pricingArray.push(
-        { key: 'primx_dc_unit_price', value: productsReducer[1].product_price },
-        { key: 'primx_steel_fibers_unit_price', value: productsReducer[4].product_price },
-        { key: 'primx_ultracure_blankets_unit_price', value: productsReducer[6].product_price }
+        { key: 'primx_dc_unit_price', value: products.dc_kgs },
+        { key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_kgs },
+        { key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqmeters }
       )
     } // End if/else statement. 
+   
     // ⬇ Loop through pricingArray to dispatch values to be stored in the estimates reducer:
     pricingArray.forEach(product => {
       dispatch({

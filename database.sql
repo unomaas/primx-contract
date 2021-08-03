@@ -109,6 +109,7 @@ CREATE TABLE "products" (
 	"product_name" varchar(100) NOT NULL,
 	"product_price" money NOT NULL,
 	"on_hand" int NOT NULL,
+	"product_identifier" varchar(25) NOT NULL,
 	CONSTRAINT "products_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -124,8 +125,10 @@ ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk3" FOREIGN KEY ("placement_t
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk4" FOREIGN KEY ("processed_by") REFERENCES "user"("username");
 
 -- starting values for products table
-INSERT INTO "products" ("product_name", "product_price", "on_hand")
-VALUES ('PrīmX DC (lbs)', .40, 0), ('PrīmX DC (kgs)', .88, 0), ('PrīmX Flow (liters)', 2.00, 0), ('PrīmX Steel Fibers (lbs)', .69, 0), ('PrīmX Steel Fibers (kgs)', 1.52, 0), ('PrīmX UltraCure Blankets (sqft)', .08, 0), ('PrīmX UltraCure Blankets (metersq)', .86, 0), ('PrīmX CPEA (liters)', 3.55, 0);
+INSERT INTO "products" ("product_name", "product_price", "on_hand", "product_identifier")
+VALUES ('PrīmX DC (lbs)', .40, 0, 'dc_lbs'), ('PrīmX DC (kgs)', .88, 0, 'dc_kgs'), ('PrīmX Flow (liters)', 2.00, 0, 'flow_liters'), 
+('PrīmX Steel Fibers (lbs)', .69, 0, 'steel_fibers_lbs'), ('PrīmX Steel Fibers (kgs)', 1.52, 0, 'steel_fibers_kgs'), ('PrīmX UltraCure Blankets (sqft)', .08, 0, 'blankets_sqft'), 
+('PrīmX UltraCure Blankets (metersq)', .86, 0, 'blankets_sqmeters'), ('PrīmX CPEA (liters)', 3.55, 0, 'cpea_liters');
 
 -- starting test user for user table
 INSERT INTO "user" ("username", "password") VALUES ('test_user', 'test_password');

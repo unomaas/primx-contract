@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
+import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 
 function* fetchFieldSelect() {
@@ -31,10 +32,14 @@ function* fetchFieldSelect() {
     // Fetching products
     try {
         const response = yield axios.get('/api/products');
-        // set products used in reducer
+
+        // use the createProductPriceObject function to convert the returned product array into an object
+        const productObject = createProductPriceObject(response.data);
+        
+        // set product object in reducer
         yield put({
-          type: 'SET_PRODUCTS',
-          payload: response.data
+          type: 'SET_PRODUCTS_OBJECT',
+          payload: productObject
         });
       } catch (error) {
         console.log('error with fetchProducts in field select saga', error);
