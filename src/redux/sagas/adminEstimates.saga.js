@@ -13,7 +13,6 @@ function* fetchAllEstimates() {
             estimate.date_created = estimate.date_created.split('T')[0];
             estimate.anticipated_first_pour_date = estimate.anticipated_first_pour_date.split('T')[0];
         })
-        // OPTION: run the math function on the saved array of objects here to mutate them into more complete objects
 
         // send results to adminEstimates reducer
         yield put({ type: 'SET_ADMIN_ESTIMATES', payload: estimates.data });
