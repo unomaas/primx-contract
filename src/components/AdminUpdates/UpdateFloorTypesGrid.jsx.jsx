@@ -28,7 +28,7 @@ export default function UpdateFloorTypesGrid({floorTypes}) {
                 autoHeight
                 rows={floorRows}
                 columns={floorColumns}
-                pageSize={5}
+                pageSize={10}
             />
         </div>
     )

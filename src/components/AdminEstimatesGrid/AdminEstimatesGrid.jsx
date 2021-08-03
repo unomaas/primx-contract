@@ -232,7 +232,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
                 autoHeight
                 rows={rows}
                 columns={columns}
-                pageSize={5}
+                pageSize={10}
                 checkboxSelection
                 onEditCellChangeCommitted={handleEditSubmit}
                 components={{
