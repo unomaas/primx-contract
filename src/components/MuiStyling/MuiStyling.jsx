@@ -88,9 +88,12 @@ const useStyles = makeStyles({
   AddLicenseeInput: {
     margin: 10
   },
-
   AddTypesInput: {
     margin: 10
+  },
+  estimateNumberLookup: {
+    fontSize: '15px',
+    color: 'red'
   }
 
 }); // End useStyles
