@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
+import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 
 function* fetchFieldSelect() {
@@ -32,12 +33,10 @@ function* fetchFieldSelect() {
     try {
         const response = yield axios.get('/api/products');
 
-        const productObject = {};
-        response.data.forEach(product => {
-          productObject[product.product_identifier] = product.product_price
-        })
+        // use the createProductPriceObject function to convert the returned product array into an object
+        const productObject = createProductPriceObject(response.data);
         
-        // set products used in reducer
+        // set product object in reducer
         yield put({
           type: 'SET_PRODUCTS_OBJECT',
           payload: productObject

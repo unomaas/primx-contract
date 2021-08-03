@@ -2,6 +2,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import removeTimestamps from '../../hooks/removeTimestamps';
+import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
@@ -77,24 +78,27 @@ function* recalculateEstimate(action) {
                 })
             }
         }) // end forEach
+        // run the createProductPriceObject on the returned product costs to create the pricing object
+        const productObject = createProductPriceObject(productCosts.data);
+
         
         // Update product costs with whatever is current in the products DB table
         // Start with values shared between imperial and metric
         Object.assign(currentEstimate, {
-            primx_flow_unit_price: productCosts.data[2].product_price,
-            primx_cpea_unit_price: productCosts.data[7].product_price,
+            primx_flow_unit_price: productObject.flow_liters,
+            primx_cpea_unit_price: productObject.cpea_liters,
         }) // add in the imperial specific costs
         if (currentEstimate.measurement_units == 'imperial') {
             Object.assign(currentEstimate, {
-                primx_dc_unit_price: productCosts.data[0].product_price,
-                primx_steel_fibers_unit_price: productCosts.data[3].product_price,
-                primx_ultracure_blankets_unit_price: productCosts.data[5].product_price,
+                primx_dc_unit_price: productObject.dc_lbs,
+                primx_steel_fibers_unit_price: productObject.steel_fibers_lbs,
+                primx_ultracure_blankets_unit_price: productObject.blankets_sqft,
             }) // or add in the metric specific costs
         } else if (currentEstimate.measurment_units == 'metric') {
             Object.assign(currentEstimate, {
-                primx_dc_unit_price: productCosts.data[1].product_price,
-                primx_steel_fibers_unit_price: productCosts.data[4].product_price,
-                primx_ultracure_blankets_unit_price: productCosts.data[6].product_price,
+                primx_dc_unit_price: productObject.dc_kgs,
+                primx_steel_fibers_unit_price: productObject.steel_fibers_kgs,
+                primx_ultracure_blankets_unit_price: productObject.blankets_sqmeters,
             })
         }
 
