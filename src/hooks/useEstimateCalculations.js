@@ -1,5 +1,16 @@
 // custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays
 export default function useEstimateCalculations(estimate) {
+
+    // Create our number formatter.
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+  
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    });
+  
     console.log('estimate:', estimate);
     // set a default value for waste factor percentage if one wasn't entered
     if (!estimate.waste_factor_percentage) {
@@ -183,8 +194,11 @@ export default function useEstimateCalculations(estimate) {
         if (property.includes('cubic_yards') || property.includes('cubic_meters') || property.includes('total_amount') || property.includes('fibers_dosage')) {    
             estimate[property] = Math.ceil(value)
         // price of materials, shipping estimates (all share _estimate in their key name), dosages of liquid ingredients, and additional thickness need rounding to 2 decimals
-        } else if (property.includes('materials_price') || property.includes('_estimate') || property.includes('dosage_liters') || property.includes('additional_thickness')) {
+        } else if (property.includes('dosage_liters') || property.includes('additional_thickness')) {
             estimate[property] = Number(value).toFixed(2);
+        // price of materials and shipping estimates all share _estimate in their key name - they need to be converted to currency    
+        } else if (property.includes('materials_price') || property.includes('_estimate') || property.includes('unit_price')) {
+            estimate[property] = formatter.format(value);
         }
     }
 

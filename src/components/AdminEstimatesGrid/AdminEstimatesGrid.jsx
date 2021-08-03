@@ -17,6 +17,11 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     const classes = useStyles();
     const history = useHistory();
 
+    // Create number formatter.
+    const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 
     // rendering function to display the row's estimate number in a clickable div that will navigate admin to the estimate lookup view for the
     // clicked estimate
@@ -131,10 +136,10 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         { field: 'primx_dc_total_amount_needed', headerName: 'DC Total Amount Needed', width: 175, hide: true },
         { field: 'primx_dc_packages_needed', headerName: 'DC Packages Needed', width: 175, hide: true },
         { field: 'primx_dc_total_order_quantity', headerName: 'DC Total Order Quantity', width: 175, hide: true },
-        { field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175, hide: true },
+        { field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175, hide: true, format: {type: "currency", currency: "USD"}},
         { field: 'primx_dc_containers_needed', headerName: 'DC Containers Needed', width: 175, hide: true },
-        { field: 'primx_dc_calculated_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175, hide: true },
-        { field: 'primx_dc_total_cost_estimate', headerName: 'DC Total Cost', width: 175, hide: true },
+        { field: 'primx_dc_calculated_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175, hide: true, format: {type: "currency", currency: "USD"}},
+        { field: 'primx_dc_total_cost_estimate', headerName: 'DC Total Cost', width: 175, hide: true, format: {type: "currency", currency: "USD"}},
 
         // PrimX Flow calculated values
         { field: 'primx_flow_total_amount_needed', headerName: 'Flow Total Amount Needed', width: 175, hide: true },
