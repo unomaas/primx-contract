@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useStyles } from '../MuiStyling/MuiStyling';
@@ -34,6 +35,8 @@ export default function ImperialTable() {
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const productsReducer = useSelector(store => store.products);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
+  const snack = useSelector(store => store.snackBar);
+  const [saveButton, setSaveButton] = useState('disabled')
 
   // ⬇ GET on page load:
   // useEffect(() => {
@@ -106,10 +109,38 @@ export default function ImperialTable() {
     console.log('***CALCULATED OBJECT****', calculatedObject);
     // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
   }
+
+  const handleSnackbar = (event, type) => {
+    console.log('In handleSnackbar');
+    dispatch({ type: 'SET_LINEAL_FEET ' });
+  }
+
+  //sets snack bar notification to closed after appearing
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    dispatch({ type: 'SET_CLOSE' })
+  };
   //#endregion ⬆⬆ Event handles above. 
 
   return (
     <>
+
+      {/* snackbar to confirm when a new admin has been registered */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+
+      >
+        <Alert variant="filled" onClose={handleClose} severity={snack.severity}>
+          {/* <AlertTitle>Info</AlertTitle> */}
+          {snack.message}
+        </Alert>
+      </Snackbar>
+
       <form onSubmit={handleSave}>
 
         <Grid container
@@ -123,9 +154,11 @@ export default function ImperialTable() {
                 <Table size="small">
 
                   <TableHead>
-                    <TableCell align="center" colSpan={2}><h3>Project Quantity Inputs</h3></TableCell>
-                    <TableCell align="center" colSpan={2}><h3>Thickened Edge Inputs</h3></TableCell>
-                    <TableCell align="center" colSpan={2}><h3>Materials Required Inputs</h3></TableCell>
+                    <TableRow>
+                      <TableCell align="center" colSpan={2}><h3>Project Quantity Inputs</h3></TableCell>
+                      <TableCell align="center" colSpan={2}><h3>Thickened Edge Inputs</h3></TableCell>
+                      <TableCell align="center" colSpan={2}><h3>Materials Required Inputs</h3></TableCell>
+                    </TableRow>
                   </TableHead>
 
                   <TableBody>
@@ -159,6 +192,7 @@ export default function ImperialTable() {
                           }}
                           fullWidth
                           defaultValue={estimateData.thickened_edge_perimeter_lineal_feet}
+                          onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
                         />
                       </TableCell>
 
@@ -175,6 +209,8 @@ export default function ImperialTable() {
                           }}
                           fullWidth
                           defaultValue={estimateData.primx_flow_dosage_liters}
+                          onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
+
                         />
                       </TableCell>
                     </TableRow>
@@ -209,6 +245,7 @@ export default function ImperialTable() {
                             endAdornment: <InputAdornment position="end">ft</InputAdornment>,
                           }}
                           defaultValue={estimateData.thickened_edge_construction_joint_lineal_feet}
+                          onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
                         />
                       </TableCell>
 
@@ -225,6 +262,7 @@ export default function ImperialTable() {
                           }}
                           fullWidth
                           defaultValue={estimateData.primx_steel_fibers_dosage_lbs}
+                          onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_LBS' })}
                         />
                       </TableCell>
                     </TableRow>
@@ -251,7 +289,7 @@ export default function ImperialTable() {
                       </TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
+                    <TableRow>
                       <TableCell colSpan={6} align="right">
                         <Button
                           type="submit"
@@ -264,7 +302,7 @@ export default function ImperialTable() {
                           Save Estimate
                         </Button>
                       </TableCell>
-                    </TableRow> */}
+                    </TableRow>
 
                   </TableBody>
                 </Table>
@@ -275,7 +313,7 @@ export default function ImperialTable() {
           <Grid item xs={4}>
             <Paper elevation={3}>
               <TableContainer>
-                <h3 className="lexendFont">Project Quantity Calculations</h3>
+                <h3>Project Quantity Calculations</h3>
                 <Table size="small">
                   <TableBody>
 
@@ -338,8 +376,7 @@ export default function ImperialTable() {
                   </TableBody>
                 </Table>
 
-                <h3>Thickened Edge Calculator</h3>
-                <p>If applicable, for slabs under 6in.<br />Note: For 'Slab on Insulation', enter "0" for both.</p>
+                <h3>Thickened Edge Calculations</h3>
                 <Table size="small">
 
                   <TableHead>
@@ -400,7 +437,7 @@ export default function ImperialTable() {
           <Grid item xs={8}>
             <Paper elevation={3}>
               <TableContainer>
-                <h3>Materials Table</h3>
+                <h3>Materials Required Calculations</h3>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
@@ -422,12 +459,12 @@ export default function ImperialTable() {
                         {calculatedDisplayObject?.primx_flow_dosage_liters}
                       </TableCell>
                       <TableCell>
-                      {calculatedDisplayObject?.primx_steel_fibers_dosage_lbs}
+                        {calculatedDisplayObject?.primx_steel_fibers_dosage_lbs}
 
                       </TableCell>
                       <TableCell>N/A</TableCell>
                       <TableCell>
-                      {calculatedDisplayObject?.primx_cpea_dosage_liters}
+                        {calculatedDisplayObject?.primx_cpea_dosage_liters}
                       </TableCell>
                       <TableCell></TableCell>
                     </TableRow>
@@ -524,7 +561,7 @@ export default function ImperialTable() {
                       <TableCell><b>{calculatedDisplayObject?.design_total_price_estimate}</b></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    {/* <TableRow>
                       <TableCell colSpan={11} align="right">
                         <Button
                           type="submit"
@@ -537,7 +574,7 @@ export default function ImperialTable() {
                           Save Estimate
                         </Button>
                       </TableCell>
-                    </TableRow>
+                    </TableRow> */}
 
                   </TableBody>
                 </Table>
@@ -546,6 +583,8 @@ export default function ImperialTable() {
           </Grid>
         </Grid>
       </form>
+
+
     </>
   )
 }
