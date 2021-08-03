@@ -98,12 +98,14 @@ export default function EstimateLookup() {
     // handle data validation here
 
     // send the estimate ID and input P.O. number to be updated
-    dispatch({type: 'EDIT_PLACE_ORDER', payload: {
-      id: searchResult.id,
-      po_number: poNumber,
-      licensee_id: searchResult.licensee_id,
-      estimate_number: searchResult.estimate_number
-    }})
+    dispatch({
+      type: 'EDIT_PLACE_ORDER', payload: {
+        id: searchResult.id,
+        po_number: poNumber,
+        licensee_id: searchResult.licensee_id,
+        estimate_number: searchResult.estimate_number
+      }
+    })
 
   }
 
@@ -267,7 +269,7 @@ export default function EstimateLookup() {
                       </TableRow>
 
                       <TableRow>
-                        <TableCell><b>Estimate Creation Date</b></TableCell>
+                        <TableCell><b>Estimate Creation Date:</b></TableCell>
                         <TableCell>
                           {searchResult?.date_created}
                         </TableCell>
@@ -752,38 +754,38 @@ export default function EstimateLookup() {
                       </TableRow>
 
                       <TableRow>
-                          <TableCell></TableCell>
-                          <TableCell></TableCell>
-                          <TableCell></TableCell>
-                          <TableCell></TableCell>
-                          <TableCell>
-                            {/* Recalculate costs  button */}
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={handleRecalculateCosts}
-                            >
-                              Recalculate Costs
-                            </Button>
-                          </TableCell>
-                          <TableCell>
-                            
-                            {hasRecalculated ?
-                              <>
-                                <TextField
-                                  onChange={(event) => setPoNumber(event.target.value)}
-                                  size="small"
-                                  label="PO Number"
-                                >
-                                </TextField>
-                              </> :
-                              <>Please recalculate costs before placing an order</>
-                            }
-                            
-                          </TableCell>
-                          <TableCell>
-                            {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
-                            {hasRecalculated ? 
+                        <TableCell colSpan={3} align="left" className={classes.estimateNumberLookup}>
+                          <b>This Estimate Number Is:<br />
+                            {searchResult?.estimate_number}</b>
+                        </TableCell>
+                        <TableCell colSpan={4} align="right">
+
+                          {/* Recalculate costs  button */}
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleRecalculateCosts}
+                          >
+                            Recalculate Costs
+                          </Button> &nbsp;&nbsp;
+
+                          {hasRecalculated ?
+                            <>
+                              <TextField
+                                onChange={(event) => setPoNumber(event.target.value)}
+                                size="small"
+                                label="Purchase Order #?"
+                              // helperText="Please enter your PO#."
+                              >
+                              </TextField>
+                            </> :
+                            <>
+                              Recalculate costs before placing order.
+                            </>
+                          } &nbsp;&nbsp;
+
+                          {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
+                          {hasRecalculated ?
                             <>
                               <Button
                                 variant="contained"
@@ -801,9 +803,9 @@ export default function EstimateLookup() {
                                 Place Order
                               </Button>
                             </>
-                            }
+                          }
 
-                          </TableCell>
+                        </TableCell>
                       </TableRow>
 
                       {/* End Materials Table */}
