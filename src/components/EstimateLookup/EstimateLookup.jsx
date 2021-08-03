@@ -811,7 +811,7 @@ export default function EstimateLookup() {
 
                             </TableCell>
                           </TableRow>
-                        </> 
+                        </>
                       } {/* End conditional render on materials table displaying buttons*/}
 
                       {/* End Materials Table */}
@@ -822,8 +822,15 @@ export default function EstimateLookup() {
               </Paper>
             </Grid>
           </Grid>
-          <h2>This order is being processed. Contact your PrīmX representative for more details.</h2>
-
+          {/* Render messages underneath the table if an estimate has been submitted as an order */}
+          {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
+          {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
+            <h2>This order is being processed. Contact your PrīmX representative for more details.</h2>
+          }
+          {/* Display this message if an estimate has been processed by an admin */}
+          {searchResult.marked_as_ordered &&
+            <h2>This order has been processed. Contact your PrīmX representative for more details.</h2>
+          }
         </>
       } {/* End full table conditional render*/}
 
