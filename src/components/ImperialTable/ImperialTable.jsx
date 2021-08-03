@@ -11,7 +11,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
-
+import swal from 'sweetalert';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -36,7 +36,7 @@ export default function ImperialTable() {
   const productsReducer = useSelector(store => store.products.productArray);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
   const snack = useSelector(store => store.snackBar);
-  const [saveButton, setSaveButton] = useState('disabled')
+  const [saveButton, setSaveButton] = useState(false);
 
   // ⬇ GET on page load:
   // useEffect(() => {
@@ -55,8 +55,9 @@ export default function ImperialTable() {
       estimateData.thickened_edge_perimeter_lineal_feet && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_lbs &&
       estimateData.primx_cpea_dosage_liters) {
       // once all the keys exist, run the calculate estimate function and set the table display state for the calculated values
-      const calculatedObject = calculateEstimate(estimateData)
-      setCalculatedDisplayObject(calculatedObject)
+      const calculatedObject = calculateEstimate(estimateData);
+      setCalculatedDisplayObject(calculatedObject);
+      setSaveButton(true);
     }
   }, [estimateData])
 
@@ -95,11 +96,17 @@ export default function ImperialTable() {
     console.log('In Imperial handleSave');
     // attach history from useHistory to the estimate object to allow navigation from inside the saga
     estimateData.history = history;
-
     // ⬇ Don't refresh until submit:
     event.preventDefault();
     // send the estimate object to be POSTed
-    dispatch({ type: 'ADD_ESTIMATE', payload: estimateData })
+    dispatch({ type: 'ADD_ESTIMATE', payload: estimateData });
+    // ⬇ Sweet Alert to let them know to save the Estimate #:
+    swal({
+      title: "Estimate saved!",
+      text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+      icon: "info",
+      buttons: "Confirm",
+    }) // End Sweet Alert
   } // End handleSave
 
   const handleCalculateCosts = () => {
@@ -133,7 +140,6 @@ export default function ImperialTable() {
         autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-
       >
         <Alert variant="filled" onClose={handleClose} severity={snack.severity}>
           {/* <AlertTitle>Info</AlertTitle> */}
@@ -291,16 +297,29 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell colSpan={6} align="right">
-                        <Button
-                          type="submit"
-                          // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => handleSave(event)}
-                          variant="contained"
-                          className={classes.LexendTeraFont11}
-                          color="secondary"
-                        >
-                          Save Estimate
-                        </Button>
+                        {/* Conditional rendering for the save button: */}
+                        {saveButton ? (
+                          // If they have filled out all of the inputs, make it enabled:
+                          <Button
+                            type="submit"
+                            // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+                            // onClick={event => handleSave(event)}
+                            variant="contained"
+                            className={classes.LexendTeraFont11}
+                            color="secondary"
+                          >
+                            Save Estimate
+                          </Button>
+                        ) : (
+                          // If they haven't filled out the inputs, make it disabled:
+                          <Button
+                            variant="contained"
+                            className={classes.LexendTeraFont11}
+                            disabled
+                          >
+                            Save Estimate
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
 

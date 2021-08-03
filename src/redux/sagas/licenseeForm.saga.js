@@ -19,14 +19,14 @@ function* fetchEstimateQuery(action) {
                     licenseeId: licenseeId
                 }
             })
-   
-        // Timestamp removal takes in an array and returns that array with no timestamps on dates. In this case, the array only has one element.
-        const noTimestamps = removeTimestamps(response.data);
-        // run the estimate calculator function on 
-        const calculatedResponse = useEstimateCalculations(noTimestamps[0]);
-        // remove timestamps from the calculated data
         
+        // run the timestamp removal function on the returned array of estimates
+        const estimateWithoutTimestamps = removeTimestamps(response.data);
 
+        // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
+        // before sending it to the reducer
+        const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+        
         //take response from DB and insert into Admin Reducer
         yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedResponse });
     }

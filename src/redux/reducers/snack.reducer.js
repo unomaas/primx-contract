@@ -43,7 +43,7 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
       case 'GET_PRIMX_STEEL_KGS':
         return {
           open: true,
-          message: `If you have been given a design from Primekss, enter the fiber dosage here (usually 27kgs or 31kgs per cubic meter).`,
+          message: `If you have been given a design from Primekss, enter the fiber dosage here (usually 40kgs per cubic meter).`,
           severity: 'info',
         }
     default:
