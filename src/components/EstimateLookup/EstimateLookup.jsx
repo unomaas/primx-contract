@@ -186,6 +186,7 @@ export default function EstimateLookup() {
       <br />
       {/* End estimate search form */}
 
+      
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
 
@@ -834,6 +835,11 @@ export default function EstimateLookup() {
         </>
       } {/* End full table conditional render*/}
 
+
+      {/* Conditonally render a failed search message if the search came back with nothing */}
+      {searchResult == {} &&
+      <h2>No matching estimate was found, please try again.</h2>
+      }
     </div>
   )
 }
