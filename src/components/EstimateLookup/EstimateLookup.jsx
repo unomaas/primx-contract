@@ -28,6 +28,8 @@ export default function EstimateLookup() {
   const [error, setError] = useState(false);
   const classes = useStyles();
   const [selectError, setSelectError] = useState("");
+  const [poNumError, setPoNumError] = useState("");
+
   const [poNumber, setPoNumber] = useState('');
 
   // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
@@ -111,6 +113,7 @@ export default function EstimateLookup() {
 
   console.log('search estimate:', searchResult)
   console.log('PO number', poNumber);
+  console.log('estimate # is', estimate_number_searched);
   return (
     <div className="EstimateCreate-wrapper">
 
@@ -160,6 +163,8 @@ export default function EstimateLookup() {
                           type="search"
                           size="small"
                           fullWidth
+                          defaultValue={estimate_number_searched}
+                          // defaultValue="Test test test"
                         />
                       </TableCell>
 
@@ -186,7 +191,7 @@ export default function EstimateLookup() {
       <br />
       {/* End estimate search form */}
 
-      
+
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
 
@@ -201,7 +206,7 @@ export default function EstimateLookup() {
             {/* Grid Table #1: Display the Licensee/Project Info Form : Shared between imperial and metric*/}
             <Grid item xs={6}>
               <Paper elevation={3}>
-                <TableContainer >
+                <TableContainer>
                   <h3>Licensee & Project Information</h3>
                   <Table size="small">
                     <TableBody>
@@ -270,7 +275,7 @@ export default function EstimateLookup() {
                       </TableRow>
 
                       <TableRow>
-                        <TableCell><b>Estimate Creation Date</b></TableCell>
+                        <TableCell><b>Estimate Creation Date:</b></TableCell>
                         <TableCell>
                           {searchResult?.date_created}
                         </TableCell>
@@ -759,11 +764,12 @@ export default function EstimateLookup() {
                       {!searchResult.ordered_by_licensee &&
                         <>
                           <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                            <TableCell></TableCell>
-                            <TableCell>
+                            <TableCell colSpan={3} align="left" className={classes.estimateNumberLookup}>
+                              <b>This Estimate Number Is:<br />
+                                {searchResult?.estimate_number}</b>
+                            </TableCell>
+                            <TableCell colSpan={4} align="right">
+
                               {/* Recalculate costs  button */}
                               <Button
                                 variant="contained"
@@ -771,9 +777,7 @@ export default function EstimateLookup() {
                                 onClick={handleRecalculateCosts}
                               >
                                 Recalculate Costs
-                              </Button>
-                            </TableCell>
-                            <TableCell>
+                              </Button> &nbsp; &nbsp;
 
                               {hasRecalculated ?
                                 <>
@@ -781,14 +785,13 @@ export default function EstimateLookup() {
                                     onChange={(event) => setPoNumber(event.target.value)}
                                     size="small"
                                     label="PO Number"
+                                    // helperText="Enter a PO#"
                                   >
                                   </TextField>
                                 </> :
-                                <>Please recalculate costs before placing an order</>
-                              }
+                                <>Recalculate costs before placing order.</>
+                              } &nbsp; &nbsp;
 
-                            </TableCell>
-                            <TableCell>
                               {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
                               {hasRecalculated ?
                                 <>
@@ -826,11 +829,11 @@ export default function EstimateLookup() {
           {/* Render messages underneath the table if an estimate has been submitted as an order */}
           {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
           {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
-            <h2>This order is being processed. Contact your PrīmX representative for more details.</h2>
+            <h3>This order is currently being processed. Please contact your PrīmX representative for more details.</h3>
           }
           {/* Display this message if an estimate has been processed by an admin */}
           {searchResult.marked_as_ordered &&
-            <h2>This order has been processed. Contact your PrīmX representative for more details.</h2>
+            <h3>This order has been processed. Please contact your PrīmX representative for more details.</h3>
           }
         </>
       } {/* End full table conditional render*/}
@@ -838,7 +841,7 @@ export default function EstimateLookup() {
 
       {/* Conditonally render a failed search message if the search came back with nothing */}
       {!searchResult.estimate_number && estimate_number_searched &&
-      <h2>No matching estimate was found, please try again. Contact your PrīmX representative if you need assistance</h2>
+        <h2>No matching estimate was found, please try again. Contact your PrīmX representative if you need assistance</h2>
       }
     </div>
   )
