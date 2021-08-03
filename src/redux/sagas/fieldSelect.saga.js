@@ -31,10 +31,15 @@ function* fetchFieldSelect() {
     // Fetching products
     try {
         const response = yield axios.get('/api/products');
+        const productObject = {};
+        response.data.forEach(product => {
+          productObject[product.product_identifier] = product.product_price
+        })
+        
         // set products used in reducer
         yield put({
           type: 'SET_PRODUCTS',
-          payload: response.data
+          payload: productObject
         });
       } catch (error) {
         console.log('error with fetchProducts in field select saga', error);

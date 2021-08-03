@@ -6,6 +6,13 @@ function* fetchProducts() {
   try {
 
     const response = yield axios.get('/api/products');
+    // create an object to have keys indicating products with values of the price for that product
+    const productObject = {};
+    response.data.forEach(product => {
+      productObject[product.product_identifier] = product.product_price
+    })
+
+    console.log('product object:', productObject);
     // set products used in reducer
     yield put({
       type: 'SET_PRODUCTS',

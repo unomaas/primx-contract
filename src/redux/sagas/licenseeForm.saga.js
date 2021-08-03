@@ -1,6 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
+import removeTimestamps from '../../hooks/removeTimestamps';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
@@ -18,9 +19,13 @@ function* fetchEstimateQuery(action) {
                 }
             })
    
-        // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
-        // before sending it to the reducer
-        const calculatedResponse = yield useEstimateCalculations(response.data[0]);
+        // Timestamp removal takes in an array and returns that array with no timestamps on dates. In this case, the array only has one element.
+        const noTimestamps = removeTimestamps(response.data);
+        // run the estimate calculator function on 
+        const calculatedResponse = useEstimateCalculations(noTimestamps[0]);
+        // remove timestamps from the calculated data
+        
+
         //take response from DB and insert into Admin Reducer
         yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedResponse });
     }
