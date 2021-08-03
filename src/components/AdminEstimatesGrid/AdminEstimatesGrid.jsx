@@ -133,15 +133,6 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
         // All calculated values are listed below
         // PrimX DC calculated values
-<<<<<<< HEAD
-        { field: 'primx_dc_total_amount_needed', headerName: 'DC Total Amount Needed', width: 175, hide: true },
-        { field: 'primx_dc_packages_needed', headerName: 'DC Packages Needed', width: 175, hide: true },
-        { field: 'primx_dc_total_order_quantity', headerName: 'DC Total Order Quantity', width: 175, hide: true },
-        { field: 'primx_dc_total_materials_price', headerName: 'DC Total Material Price', width: 175, hide: true, format: {type: "currency", currency: "USD"}},
-        { field: 'primx_dc_containers_needed', headerName: 'DC Containers Needed', width: 175, hide: true },
-        { field: 'primx_dc_calculated_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175, hide: true, format: {type: "currency", currency: "USD"}},
-        { field: 'primx_dc_total_cost_estimate', headerName: 'DC Total Cost', width: 175, hide: true, format: {type: "currency", currency: "USD"}},
-=======
         { field: 'primx_dc_total_amount_needed', headerName: 'DC Total Amount Needed', width: 175 },
         { field: 'primx_dc_packages_needed', headerName: 'DC Packages Needed', width: 175 },
         { field: 'primx_dc_total_order_quantity', headerName: 'DC Total Order Quantity', width: 175 },
@@ -149,7 +140,6 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         { field: 'primx_dc_containers_needed', headerName: 'DC Containers Needed', width: 175 },
         { field: 'primx_dc_calculated_shipping_estimate', headerName: 'DC Shipping Estimate', width: 175 },
         { field: 'primx_dc_total_cost_estimate', headerName: 'DC Total Cost', width: 175 },
->>>>>>> main
 
         // PrimX Flow calculated values
         { field: 'primx_flow_total_amount_needed', headerName: 'Flow Total Amount Needed', width: 175 },
