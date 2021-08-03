@@ -134,15 +134,18 @@ export default function ImperialTable() {
   return (
     <>
 
-      {/* snackbar to confirm when a new admin has been registered */}
+      {/* Snackbar configures all of the info pop-ups required. */}
       <Snackbar
         open={snack.open}
         autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert variant="filled" onClose={handleClose} severity={snack.severity}>
-          {/* <AlertTitle>Info</AlertTitle> */}
+        <Alert
+          variant={snack.variant}
+          onClose={handleClose}
+          severity={snack.severity}
+        >
           {snack.message}
         </Alert>
       </Snackbar>

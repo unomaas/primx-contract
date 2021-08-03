@@ -32,7 +32,6 @@ export default function EstimateLookup() {
   // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
   // const { licensee_id_estimate_number } = useParams();
   const { estimate_number_searched, licensee_id_searched } = useParams();
-
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -64,7 +63,6 @@ export default function EstimateLookup() {
 
   const handleSubmit = () => {
     console.log('In handleSubmit')
-
     // ⬇ Select dropdown validation:
     if (searchQuery.licensee_id !== "0") {
       // If they selected a company name from dropdown:
@@ -105,12 +103,9 @@ export default function EstimateLookup() {
         estimate_number: searchResult.estimate_number
       }
     })
-
   }
 
-  console.log('search estimate:', searchResult)
-  console.log('PO number', poNumber);
-  console.log('estimate # is', estimate_number_searched);
+
   return (
     <div className="EstimateCreate-wrapper">
 

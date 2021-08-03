@@ -71,8 +71,8 @@ export default function EstimateCreate() {
     const differenceInWeeks = differenceInSeconds / (60 * 60 * 24 * 7);
     // set lead time state with a rounded number in weeks
     setLeadTime(Math.abs(Math.round(differenceInWeeks)));
-    if(leadTime < 8) {
-      dispatch({type: 'SET_ERROR_LEADTIME'});
+    if (leadTime < 8) {
+      dispatch({ type: 'SET_ERROR_LEADTIME' });
     }
   }
 
@@ -202,12 +202,22 @@ export default function EstimateCreate() {
 
       <br />
 
-      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-        <Alert onClose={handleClose} severity={snack.severity}>
+      {/* Snackbar configures all of the info pop-ups required. */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          variant={snack.variant}
+          onClose={handleClose}
+          severity={snack.severity}
+        >
           {snack.message}
         </Alert>
       </Snackbar>
-      
+
       <form onSubmit={handleSubmit}>
 
         <Grid container
@@ -420,7 +430,7 @@ export default function EstimateCreate() {
                     <TableRow>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
                       {/* This styling will trigger a background and snackbar if the leadtime is under 8 weeks: */}
-                      <TableCell style={{backgroundColor: leadTime >= 8 || leadTime === '' ? "" : "rgba(255, 0, 0, 0.7)"}}>
+                      <TableCell style={{ backgroundColor: leadTime >= 8 || leadTime === '' ? "" : "rgba(255, 0, 0, 0.7)" }}>
                         {leadTime}
                       </TableCell>
                     </TableRow>
