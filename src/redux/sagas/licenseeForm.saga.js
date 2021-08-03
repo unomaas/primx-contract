@@ -19,7 +19,7 @@ function* fetchEstimateQuery(action) {
                 }
             })
         
-        // run the timestamp removal function on the returned array of estimates, it should only have one index
+        // run the timestamp removal function on the returned array of estimates
         const estimateWithoutTimestamps = removeTimestamps(response.data);
 
         // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
