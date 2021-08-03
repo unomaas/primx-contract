@@ -277,14 +277,14 @@ export default function EstimateLookup() {
                       <TableRow>
                         <TableCell><b>Estimate Creation Date:</b></TableCell>
                         <TableCell>
-                          {searchResult?.date_created}
+                          {searchResult?.date_created.slice(0, -14)}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Anticipated First Pour Date:</b></TableCell>
                         <TableCell>
-                          {searchResult?.anticipated_first_pour_date}
+                          {searchResult?.anticipated_first_pour_date.slice(0, -14)}
                         </TableCell>
                       </TableRow>
 
