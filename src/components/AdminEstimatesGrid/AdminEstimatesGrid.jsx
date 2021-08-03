@@ -17,6 +17,11 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     const classes = useStyles();
     const history = useHistory();
 
+    // Create number formatter.
+    const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 
     // rendering function to display the row's estimate number in a clickable div that will navigate admin to the estimate lookup view for the
     // clicked estimate
