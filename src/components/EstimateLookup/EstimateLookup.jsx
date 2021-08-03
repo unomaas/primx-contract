@@ -20,7 +20,6 @@ export default function EstimateLookup() {
   // hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates
   // the Submit Order button
   const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
-
   const [searchQuery, setSearchQuery] = useState({
     licensee_id: "0",
     id: ""
@@ -29,13 +28,10 @@ export default function EstimateLookup() {
   const classes = useStyles();
   const [selectError, setSelectError] = useState("");
   const [poNumError, setPoNumError] = useState("");
-
   const [poNumber, setPoNumber] = useState('');
-
   // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
   // const { licensee_id_estimate_number } = useParams();
   const { estimate_number_searched, licensee_id_searched } = useParams();
-
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -67,7 +63,6 @@ export default function EstimateLookup() {
 
   const handleSubmit = () => {
     console.log('In handleSubmit')
-
     // ⬇ Select dropdown validation:
     if (searchQuery.licensee_id !== "0") {
       // If they selected a company name from dropdown:
@@ -108,12 +103,9 @@ export default function EstimateLookup() {
         estimate_number: searchResult.estimate_number
       }
     })
-
   }
 
-  console.log('search estimate:', searchResult)
-  console.log('PO number', poNumber);
-  console.log('estimate # is', estimate_number_searched);
+
   return (
     <div className="EstimateCreate-wrapper">
 
@@ -143,7 +135,7 @@ export default function EstimateLookup() {
                             required
                             size="small"
                             fullWidth
-                            defaultValue="0"
+                            value={searchResult.licensee_id}
                           >
                             <MenuItem key="0" value="0">Please Select</MenuItem>
                             {companies.map(companies => {
@@ -163,8 +155,7 @@ export default function EstimateLookup() {
                           type="search"
                           size="small"
                           fullWidth
-                          defaultValue={estimate_number_searched}
-                          // defaultValue="Test test test"
+                          value={searchResult.estimate_number}
                         />
                       </TableCell>
 
@@ -785,7 +776,7 @@ export default function EstimateLookup() {
                                     onChange={(event) => setPoNumber(event.target.value)}
                                     size="small"
                                     label="PO Number"
-                                    // helperText="Enter a PO#"
+                                  // helperText="Enter a PO#"
                                   >
                                   </TextField>
                                 </> :
@@ -838,10 +829,9 @@ export default function EstimateLookup() {
         </>
       } {/* End full table conditional render*/}
 
-
       {/* Conditonally render a failed search message if the search came back with nothing */}
       {!searchResult.estimate_number && estimate_number_searched &&
-        <h2>No matching estimate was found, please try again. Contact your PrīmX representative if you need assistance</h2>
+        <h3>No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.</h3>
       }
     </div>
   )
