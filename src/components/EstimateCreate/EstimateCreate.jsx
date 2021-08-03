@@ -36,7 +36,7 @@ export default function EstimateCreate() {
   const floorTypes = useSelector(store => store.floorTypes);
   const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
-  const productsReducer = useSelector(store => store.products);
+  const productsReducer = useSelector(store => store.products.productArray);
   const showTables = useSelector(store => store.estimatesReducer.tableState);
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");

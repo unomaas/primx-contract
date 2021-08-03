@@ -1,4 +1,6 @@
-const productsReducer = (state =[], action) => {
+import { combineReducers } from 'redux';
+
+const productsArray = (state =[], action) => {
     switch (action.type) {
       case 'SET_PRODUCTS':
         return action.payload;
@@ -9,4 +11,7 @@ const productsReducer = (state =[], action) => {
   
   // user will be on the redux state at:
   // state.user
-  export default productsReducer;
+  export default combineReducers({
+    productsArray
+  });
+  

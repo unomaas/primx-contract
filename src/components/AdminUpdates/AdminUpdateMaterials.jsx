@@ -21,7 +21,7 @@ export default function AdminUpdateMaterials() {
   const dispatch = useDispatch();
 
   // establish products and prices with a use selector from the companies reducer
-  const products = useSelector(store => store.products);
+  const products = useSelector(store => store.products.productsArray);
 
   // establish add product and product price input state with use state
   let [productInput, setProductInput] = useState('');
