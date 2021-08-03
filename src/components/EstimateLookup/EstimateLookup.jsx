@@ -28,6 +28,8 @@ export default function EstimateLookup() {
   const [error, setError] = useState(false);
   const classes = useStyles();
   const [selectError, setSelectError] = useState("");
+  const [poNumError, setPoNumError] = useState("");
+
   const [poNumber, setPoNumber] = useState('');
 
   // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
