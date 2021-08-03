@@ -36,7 +36,7 @@ export default function MetricTable() {
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
   const snack = useSelector(store => store.snackBar);
-  const [saveButton, setSaveButton] = useState('disabled')
+  const [saveButton, setSaveButton] = useState(false);
 
   //   // ⬇ GET on page load:
   //   useEffect(() => {
@@ -59,8 +59,9 @@ export default function MetricTable() {
       estimateData.thickened_edge_perimeter_lineal_meters && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_kgs &&
       estimateData.primx_cpea_dosage_liters) {
       // once all the keys exist, run the calculate estimate function and set the table display state for the calculated values
-      const calculatedObject = calculateEstimate(estimateData)
-      setCalculatedDisplayObject(calculatedObject)
+      const calculatedObject = calculateEstimate(estimateData);
+      setCalculatedDisplayObject(calculatedObject);
+      setSaveButton(true);
     }
   }, [estimateData])
 
@@ -292,16 +293,29 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell colSpan={6} align="right">
-                        <Button
-                          type="submit"
-                          // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => handleSave(event)}
-                          variant="contained"
-                          className={classes.LexendTeraFont11}
-                          color="secondary"
-                        >
-                          Save Estimate
-                        </Button>
+                        {/* Conditional rendering for the save button: */}
+                        {saveButton ? (
+                          // If they have filled out all of the inputs, make it enabled:
+                          <Button
+                            type="submit"
+                            // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+                            // onClick={event => handleSave(event)}
+                            variant="contained"
+                            className={classes.LexendTeraFont11}
+                            color="secondary"
+                          >
+                            Save Estimate
+                          </Button>
+                        ) : (
+                          // If they haven't filled out the inputs, make it disabled:
+                          <Button
+                            variant="contained"
+                            className={classes.LexendTeraFont11}
+                            disabled
+                          >
+                            Save Estimate
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
 
