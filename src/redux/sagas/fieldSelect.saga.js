@@ -31,6 +31,7 @@ function* fetchFieldSelect() {
     // Fetching products
     try {
         const response = yield axios.get('/api/products');
+
         const productObject = {};
         response.data.forEach(product => {
           productObject[product.product_identifier] = product.product_price
@@ -38,7 +39,7 @@ function* fetchFieldSelect() {
         
         // set products used in reducer
         yield put({
-          type: 'SET_PRODUCTS',
+          type: 'SET_PRODUCTS_OBJECT',
           payload: productObject
         });
       } catch (error) {
