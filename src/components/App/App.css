@@ -110,3 +110,16 @@ input {
   margin: 5px;
   margin-bottom: 10px;
 }
+
+@page {
+  size: portrait;
+}
+
+@media print {
+  h1,
+  h2,
+  h3 {
+    color: #000;
+  }
+
+}
