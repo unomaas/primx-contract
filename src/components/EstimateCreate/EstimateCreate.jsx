@@ -16,6 +16,8 @@ import ImperialTable from '../ImperialTable/ImperialTable';
 import MetricTable from '../MetricTable/MetricTable';
 import { eventNames } from 'commander';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 //#endregion ⬆⬆ All document setup above.
 
@@ -40,6 +42,16 @@ export default function EstimateCreate() {
   const [radioError, setRadioError] = useState("");
   const [leadTime, setLeadTime] = useState("");
 
+  const snack = useSelector(store => store.snackBar);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    dispatch({ type: 'SET_CLOSE' })
+  };
+
   // ⬇ GET on page load:
   useEffect(() => {
     // Fetches and set all fields for dropdown menus
@@ -61,6 +73,10 @@ export default function EstimateCreate() {
     const differenceInWeeks = differenceInSeconds / (60 * 60 * 24 * 7);
     // set lead time state with a rounded number in weeks
     setLeadTime(Math.abs(Math.round(differenceInWeeks)));
+
+    if(leadTime < 8) {
+      dispatch({type: 'SET_ERROR_LEADTIME'});
+    }
 
   }
 
@@ -191,6 +207,12 @@ export default function EstimateCreate() {
       <ButtonToggle />
 
       <br />
+
+      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert onClose={handleClose} severity={snack.severity}>
+          {snack.message}
+        </Alert>
+      </Snackbar>
       
       <form onSubmit={handleSubmit}>
 
@@ -406,7 +428,7 @@ export default function EstimateCreate() {
 
                     <TableRow>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
-                      <TableCell style={{backgroundColor: leadTime <= 8 ? "rgba(255, 0, 0, 0.7)" : ""}}>
+                      <TableCell style={{backgroundColor: leadTime >= 8 || leadTime === '' ? "" : "rgba(255, 0, 0, 0.7)"}}>
                         {leadTime}
                       </TableCell>
                     </TableRow>
