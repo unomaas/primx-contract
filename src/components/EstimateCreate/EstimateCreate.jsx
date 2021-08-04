@@ -177,10 +177,6 @@ export default function EstimateCreate() {
         payload: true
       })
     }
-    // // ⬇ Sending newPlant to our reducer: 
-    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-    // // ⬇ Send the user back:
-    // history.push('/dashboard');
   } // End handleSubmit
 
   /** ⬇ handleSubmit:
