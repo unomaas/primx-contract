@@ -47,7 +47,7 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
     case 'SET_EMPTY_ERROR':
       return {
         open: true,
-        message: 'Please fill out all of the input fields to proceed.',
+        message: 'Please complete all of the input fields to proceed.',
         severity: "error"
       }
     case 'GET_LINEAL_INCHES':
