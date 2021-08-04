@@ -69,6 +69,7 @@ CREATE TABLE "shipping_costs" (
 CREATE TABLE "licensees" (
 	"id" serial NOT NULL,
 	"licensee_contractor_name" varchar(150) NOT NULL,
+	"active" BOOLEAN DEFAULT TRUE,
 	CONSTRAINT "licensees_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
