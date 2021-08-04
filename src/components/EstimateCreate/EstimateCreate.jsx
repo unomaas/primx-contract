@@ -167,7 +167,11 @@ export default function EstimateCreate() {
     if (!estimateData.measurement_units) {
       setError(true);
       setRadioError("Please select a value.");
-    } else {
+    } // ⬇ Dropdown menu validation:
+    else if (!estimateData.licensee_id || !estimateData.floor_types_id || !estimateData.placement_types_id || !estimateData.shipping_costs_id || !estimateData.country) {
+      dispatch({ type: 'SET_EMPTY_ERROR' });
+    } // ⬇ Show table:
+    else {
       dispatch({
         type: 'SET_TABLE_STATE',
         payload: true
