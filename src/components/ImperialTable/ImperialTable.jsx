@@ -101,12 +101,12 @@ export default function ImperialTable() {
     // send the estimate object to be POSTed
     dispatch({ type: 'ADD_ESTIMATE', payload: estimateData });
     // ⬇ Sweet Alert to let them know to save the Estimate #:
-    swal({
-      title: "Estimate saved!",
-      text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
-      icon: "info",
-      buttons: "Confirm",
-    }) // End Sweet Alert
+    // swal({
+    //   title: "Estimate saved!",
+    //   text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+    //   icon: "info",
+    //   buttons: "Confirm",
+    // }) // End Sweet Alert
   } // End handleSave
 
   const handleCalculateCosts = () => {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import removeTimestamps from '../../hooks/removeTimestamps';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
+import swal from 'sweetalert';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
@@ -47,6 +48,13 @@ function* AddEstimate(action) {
         // need to send the user to the search estimates results page using the newly created estimate number
         // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
         yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
+        // SweetAlert popup for confirmation
+        swal({
+            title: "Estimate saved!",
+            text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+            icon: "info",
+            buttons: "Confirm",
+          }) // End Sweet Alert
     }
 
     catch (error) {
