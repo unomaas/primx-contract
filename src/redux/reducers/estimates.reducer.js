@@ -33,13 +33,19 @@ export const estimatesReducer = (state = {
   thickened_edge_perimeter_lineal_meters: "0",
   thickness_millimeters: "",
   thickened_edge_construction_joint_lineal_meters: "0",
-  primx_steel_fibers_dosage_kgs: "40"
+  primx_steel_fibers_dosage_kgs: "40",
+  waste_factor_percentage: 5
 }, action) => {
   switch (action.type) {
     // Commented out deprecated action that's not being used
     // case 'FETCH_ESTIMATE':
     //   return action.payload;
     case 'SET_ESTIMATE':
+      // validation for waste factor percentage: value can't go below 3
+      if (action.payload.key == 'waste_factor_percentage' && action.payload.value < 3) {
+        action.payload.value = 3;
+      }
+
       return {
         ...state,
         [action.payload.key]: action.payload.value

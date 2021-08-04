@@ -85,6 +85,13 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
         severity: 'info',
         variant: 'filled'
       }
+    case 'GET_WASTE_FACTOR':
+      return {
+        open: true,
+        message: `Enter a percentage to calculate waste factor volume. Default is 5, minimum is 3.`,
+        severity: 'info',
+        variant: 'filled'
+      }
     default:
       return state;
   }

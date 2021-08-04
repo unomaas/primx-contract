@@ -260,8 +260,23 @@ export default function ImperialTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
+                      <TableCell><b>Waste Factor Percentage</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('waste_factor_percentage', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.waste_factor_percentage}
+                          onClick={event => dispatch({ type: 'GET_WASTE_FACTOR' })}
+                        >
+                        </TextField>
+                      </TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell><b>PrīmX CPEA @ Dosage Rate per yd³:</b>

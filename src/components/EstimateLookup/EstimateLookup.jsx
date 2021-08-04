@@ -405,7 +405,7 @@ export default function EstimateLookup() {
                           </TableRow>
 
                           <TableRow>
-                            <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                            <TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
                               {searchResult?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
@@ -536,7 +536,7 @@ export default function EstimateLookup() {
                           </TableRow>
 
                           <TableRow>
-                            <TableCell><b>Waste Factor @ 5%:</b></TableCell>
+                            <TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
                               {searchResult?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
