@@ -101,7 +101,8 @@ router.post('/', (req, res) => {
     thickness_millimeters,
     thickened_edge_perimeter_lineal_meters,
     thickened_edge_construction_joint_lineal_meters,
-    primx_steel_fibers_dosage_kgs
+    primx_steel_fibers_dosage_kgs,
+    waste_factor_percentage
   } = req.body
 
   // create a unique UUID estimate number to use for the estimate being sent
@@ -137,7 +138,8 @@ router.post('/', (req, res) => {
     primx_ultracure_blankets_unit_price,
     primx_cpea_unit_price,
     primx_cpea_shipping_estimate,
-    estimate_number
+    estimate_number,
+    waste_factor_percentage
   ]
 
   // start the query text with shared values
@@ -171,6 +173,7 @@ router.post('/', (req, res) => {
     "primx_cpea_unit_price",
     "primx_cpea_shipping_estimate",
     "estimate_number",
+    "waste_factor_percentage",
   `
   // Add in the imperial or metric specific values based on unit choice
   if (req.body.measurement_units == 'imperial') {
@@ -208,7 +211,7 @@ router.post('/', (req, res) => {
   // add the values clause to the SQL query 
   queryText += `
     VALUES (
-      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33
+      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34
       );
   `
   
