@@ -11,7 +11,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
-import swal from 'sweetalert';
+// import swal from 'sweetalert';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -102,11 +102,17 @@ export default function ImperialTable() {
     dispatch({ type: 'ADD_ESTIMATE', payload: estimateData });
     // ⬇ Sweet Alert to let them know to save the Estimate #:
     swal({
-      title: "Estimate saved!",
+      title: "Estimate saved! Please print this page!",
       text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
       icon: "info",
-      buttons: "Confirm",
-    }) // End Sweet Alert
+      buttons: "I understand.",
+    }).then(() => {
+      window.print();
+    }); // End swal
+
+    // End Sweet Alert
+    // window.print();
+
   } // End handleSave
 
   const handleCalculateCosts = () => {
@@ -117,10 +123,6 @@ export default function ImperialTable() {
     // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
   }
 
-  const handleSnackbar = (event, type) => {
-    console.log('In handleSnackbar');
-    dispatch({ type: 'SET_LINEAL_FEET ' });
-  }
 
   //sets snack bar notification to closed after appearing
   const handleClose = (event, reason) => {
@@ -134,15 +136,18 @@ export default function ImperialTable() {
   return (
     <>
 
-      {/* snackbar to confirm when a new admin has been registered */}
+      {/* Snackbar configures all of the info pop-ups required. */}
       <Snackbar
         open={snack.open}
         autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert variant="filled" onClose={handleClose} severity={snack.severity}>
-          {/* <AlertTitle>Info</AlertTitle> */}
+        <Alert
+          variant={snack.variant}
+          onClose={handleClose}
+          severity={snack.severity}
+        >
           {snack.message}
         </Alert>
       </Snackbar>
@@ -181,7 +186,7 @@ export default function ImperialTable() {
                           InputProps={{
                             endAdornment: <InputAdornment position="end">ft²</InputAdornment>,
                           }}
-                          defaultValue={estimateData.square_feet}
+                          value={estimateData.square_feet}
                         />
                       </TableCell>
 
@@ -197,7 +202,7 @@ export default function ImperialTable() {
                             endAdornment: <InputAdornment position="end">ft</InputAdornment>,
                           }}
                           fullWidth
-                          defaultValue={estimateData.thickened_edge_perimeter_lineal_feet}
+                          value={estimateData.thickened_edge_perimeter_lineal_feet}
                           onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
                         />
                       </TableCell>
@@ -214,7 +219,7 @@ export default function ImperialTable() {
                             endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
                           }}
                           fullWidth
-                          defaultValue={estimateData.primx_flow_dosage_liters}
+                          value={estimateData.primx_flow_dosage_liters}
                           onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
 
                         />
@@ -234,7 +239,7 @@ export default function ImperialTable() {
                           InputProps={{
                             endAdornment: <InputAdornment position="end">in</InputAdornment>,
                           }}
-                          defaultValue={estimateData.thickness_inches}
+                          value={estimateData.thickness_inches}
                         />
                       </TableCell>
 
@@ -250,7 +255,7 @@ export default function ImperialTable() {
                           InputProps={{
                             endAdornment: <InputAdornment position="end">ft</InputAdornment>,
                           }}
-                          defaultValue={estimateData.thickened_edge_construction_joint_lineal_feet}
+                          value={estimateData.thickened_edge_construction_joint_lineal_feet}
                           onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
                         />
                       </TableCell>
@@ -267,7 +272,7 @@ export default function ImperialTable() {
                             endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
                           }}
                           fullWidth
-                          defaultValue={estimateData.primx_steel_fibers_dosage_lbs}
+                          value={estimateData.primx_steel_fibers_dosage_lbs}
                           onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_LBS' })}
                         />
                       </TableCell>
@@ -290,7 +295,7 @@ export default function ImperialTable() {
                             endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
                           }}
                           fullWidth
-                          defaultValue={estimateData.primx_cpea_dosage_liters}
+                          value={estimateData.primx_cpea_dosage_liters}
                         />
                       </TableCell>
                     </TableRow>

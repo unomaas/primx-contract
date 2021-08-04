@@ -54,8 +54,9 @@ export default function EstimateCreate() {
 
   // ⬇ GET on page load:
   useEffect(() => {
-    // Fetches and set all fields for dropdown menus
-    dispatch({ type: 'FETCH_FIELD_SELECT' })
+    dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
+      // Fetches and set all fields for dropdown menus
+      dispatch({ type: 'FETCH_FIELD_SELECT' })
   }, []);
   //#endregion ⬆⬆ All state variables above. 
 
@@ -65,19 +66,15 @@ export default function EstimateCreate() {
   const timeDifference = (chosenDate) => {
     // using the chosen date, run the change handler to set estimateData in the reducer for the chosen date
     handleChange('anticipated_first_pour_date', chosenDate)
-
     const chosenDateInMilliseconds = Date.parse(chosenDate);
     const todayInMilliseconds = Date.now();
-    
     const differenceInSeconds = (chosenDateInMilliseconds - todayInMilliseconds) / 1000;
     const differenceInWeeks = differenceInSeconds / (60 * 60 * 24 * 7);
     // set lead time state with a rounded number in weeks
     setLeadTime(Math.abs(Math.round(differenceInWeeks)));
-
-    if(leadTime < 8) {
-      dispatch({type: 'SET_ERROR_LEADTIME'});
+    if (leadTime < 8) {
+      dispatch({ type: 'SET_ERROR_LEADTIME' });
     }
-
   }
 
   /** ⬇ handleChange:
@@ -85,9 +82,7 @@ export default function EstimateCreate() {
     */
   const handleChange = (key, value) => {
     console.log('In EstimateCreate handleChange, key/value:', key, '/', value);
-    if (key == "anticipated_first_pour_date") {
-      // console.log('*** Time diff is:', timeDifference(value - today))
-    }
+    // if (key == "anticipated_first_pour_date") {}
 
     // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
@@ -127,9 +122,9 @@ export default function EstimateCreate() {
     setError(false);
     setRadioError("");
     // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
-    
+
     const pricingArray = [
-      { key: 'primx_flow_unit_price', value: products.flow_liters},
+      { key: 'primx_flow_unit_price', value: products.flow_liters },
       { key: 'primx_cpea_unit_price', value: products.cpea_liters },
     ]
     if (units == 'imperial') {
@@ -145,7 +140,7 @@ export default function EstimateCreate() {
         { key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqmeters }
       )
     } // End if/else statement. 
-   
+
     // ⬇ Loop through pricingArray to dispatch values to be stored in the estimates reducer:
     pricingArray.forEach(product => {
       dispatch({
@@ -210,12 +205,22 @@ export default function EstimateCreate() {
 
       <br />
 
-      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-        <Alert onClose={handleClose} severity={snack.severity}>
+      {/* Snackbar configures all of the info pop-ups required. */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          variant={snack.variant}
+          onClose={handleClose}
+          severity={snack.severity}
+        >
           {snack.message}
         </Alert>
       </Snackbar>
-      
+
       <form onSubmit={handleSubmit}>
 
         <Grid container
@@ -240,7 +245,7 @@ export default function EstimateCreate() {
                           type="search"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.project_name}
+                          value={estimateData.project_name}
                         />
                       </TableCell>
                     </TableRow>
@@ -253,8 +258,7 @@ export default function EstimateCreate() {
                           required
                           size="small"
                           fullWidth
-                          defaultValue="0"
-                        // defaultValue={estimateData.licensee_id}
+                          value={estimateData.licensee_id}
                         >
                           <MenuItem key="0" value="0">Please Select</MenuItem>
                           {companies.map(companies => {
@@ -274,7 +278,7 @@ export default function EstimateCreate() {
                           type="search"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.project_general_contractor}
+                          value={estimateData.project_general_contractor}
                         />
                       </TableCell>
                     </TableRow>
@@ -288,7 +292,7 @@ export default function EstimateCreate() {
                           type="search"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.project_manager_name}
+                          value={estimateData.project_manager_name}
                         />
                       </TableCell>
                     </TableRow>
@@ -302,7 +306,7 @@ export default function EstimateCreate() {
                           type="search"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.project_manager_email}
+                          value={estimateData.project_manager_email}
                         />
                       </TableCell>
                     </TableRow>
@@ -313,10 +317,10 @@ export default function EstimateCreate() {
                         <TextField
                           onChange={event => handleChange('project_manager_phone', event.target.value)}
                           required
-                          type="number"
+                          type="search"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.project_manager_phone}
+                          value={estimateData.project_manager_phone}
                         />
                       </TableCell>
                     </TableRow>
@@ -330,8 +334,7 @@ export default function EstimateCreate() {
                           required
                           size="small"
                           fullWidth
-                          defaultValue="0"
-                        // defaultValue={estimateData.floor_types_id}
+                          value={estimateData.floor_types_id}
                         >
                           <MenuItem key="0" value="0">Please Select</MenuItem>
                           {floorTypes.map(types => {
@@ -349,8 +352,7 @@ export default function EstimateCreate() {
                           required
                           size="small"
                           fullWidth
-                          defaultValue="0"
-                        // defaultValue={estimateData.placement_types_id}
+                          value={estimateData.placement_types_id}
                         >
                           <MenuItem value="0">Please Select</MenuItem>
                           {placementTypes.map(placementTypes => {
@@ -365,7 +367,7 @@ export default function EstimateCreate() {
                       <TableCell>
                         <FormControl error={error}>
                           <RadioGroup
-                            // defaultValue={estimateData.measurement_units}
+                            value={estimateData.measurement_units}
                             style={{ display: 'inline' }}
                             onChange={event => handleMeasurementUnits(event.target.value)}
                           >
@@ -394,7 +396,7 @@ export default function EstimateCreate() {
           <Grid item xs={6}>
             <Paper elevation={3}>
               <TableContainer>
-                <h3 className="lexendFont">Lead Time & Shipping Information</h3>
+                <h3>Lead Time & Shipping Information</h3>
                 <Table size="small">
                   <TableBody>
 
@@ -423,14 +425,15 @@ export default function EstimateCreate() {
                           type="date"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.anticipated_first_pour_date}
+                          value={estimateData.anticipated_first_pour_date}
                         />
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
-                      <TableCell style={{backgroundColor: leadTime >= 8 || leadTime === '' ? "" : "rgba(255, 0, 0, 0.7)"}}>
+                      {/* This styling will trigger a background and snackbar if the leadtime is under 8 weeks: */}
+                      <TableCell style={{ backgroundColor: leadTime >= 8 || leadTime === '' ? "" : "rgba(255, 0, 0, 0.7)" }}>
                         {leadTime}
                       </TableCell>
                     </TableRow>
@@ -444,7 +447,7 @@ export default function EstimateCreate() {
                           type="search"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.ship_to_address}
+                          value={estimateData.ship_to_address}
                         />
                       </TableCell>
                     </TableRow>
@@ -458,7 +461,7 @@ export default function EstimateCreate() {
                           type="search"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.ship_to_city}
+                          value={estimateData.ship_to_city}
                         />
                       </TableCell>
                     </TableRow>
@@ -471,8 +474,7 @@ export default function EstimateCreate() {
                           required
                           size="small"
                           fullWidth
-                          defaultValue="0"
-                        // defaultValue={estimateData.placement_types_id}
+                          value={estimateData.shipping_costs_id}
                         >
                           <MenuItem key="0" value="0">Please Select</MenuItem>
                           {shippingCosts.map(state => {
@@ -491,7 +493,7 @@ export default function EstimateCreate() {
                           type="text"
                           size="small"
                           fullWidth
-                          defaultValue={estimateData.zip_postal_code}
+                          value={estimateData.zip_postal_code}
                         />
                       </TableCell>
                     </TableRow>
@@ -504,8 +506,7 @@ export default function EstimateCreate() {
                           required
                           size="small"
                           fullWidth
-                          defaultValue="0"
-                        // defaultValue={estimateData.country}
+                          value={estimateData.country}
                         >
                           <MenuItem key="0" value="0">Please Select</MenuItem>
                           <MenuItem key="United States" value="United States">United States</MenuItem>
@@ -513,8 +514,6 @@ export default function EstimateCreate() {
                         </Select>
                       </TableCell>
                     </TableRow>
-
-
 
                     <TableRow>
                       <TableCell colSpan={2} align="right">

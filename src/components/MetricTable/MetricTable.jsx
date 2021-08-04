@@ -105,13 +105,14 @@ export default function MetricTable() {
     dispatch({ type: 'ADD_ESTIMATE', payload: estimateData })
     // ⬇ Sweet Alert to let them know to save the Estimate #:
     swal({
-      title: "Estimate saved!",
+      title: "Estimate saved! Please print this page!",
       text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
       icon: "info",
-      buttons: "Confirm",
-    }) // End Sweet Alert
+      buttons: "I understand.",
+    }).then(() => {
+      window.print();
+    }); // End swal
   } // End handleSave
-
 
   const handleCalculateCosts = () => {
     console.log('In Metric handleCalculateCosts, estimateData:', estimateData);
@@ -180,7 +181,7 @@ export default function MetricTable() {
                           InputProps={{
                             endAdornment: <InputAdornment position="end">m²</InputAdornment>,
                           }}
-                          defaultValue={estimateData.square_meters}
+                          value={estimateData.square_meters}
                         />
                       </TableCell>
 
@@ -196,7 +197,7 @@ export default function MetricTable() {
                             endAdornment: <InputAdornment position="end">m</InputAdornment>,
                           }}
                           fullWidth
-                          defaultValue={estimateData.thickened_edge_perimeter_lineal_meters}
+                          value={estimateData.thickened_edge_perimeter_lineal_meters}
                           onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
 
                         />
@@ -214,7 +215,7 @@ export default function MetricTable() {
                             endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
                           }}
                           fullWidth
-                          defaultValue={estimateData.primx_flow_dosage_liters}
+                          value={estimateData.primx_flow_dosage_liters}
                           onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
 
                         />
@@ -234,7 +235,7 @@ export default function MetricTable() {
                           InputProps={{
                             endAdornment: <InputAdornment position="end">mm</InputAdornment>,
                           }}
-                          defaultValue={estimateData.thickness_millimeters}
+                          value={estimateData.thickness_millimeters}
                         />
                       </TableCell>
 
@@ -250,7 +251,7 @@ export default function MetricTable() {
                           InputProps={{
                             endAdornment: <InputAdornment position="end">m</InputAdornment>,
                           }}
-                          defaultValue={estimateData.thickened_edge_construction_joint_lineal_meters}
+                          value={estimateData.thickened_edge_construction_joint_lineal_meters}
                           onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
 
                         />
@@ -268,7 +269,7 @@ export default function MetricTable() {
                             endAdornment: <InputAdornment position="end">kgs</InputAdornment>,
                           }}
                           fullWidth
-                          defaultValue={estimateData.primx_steel_fibers_dosage_kgs}
+                          value={estimateData.primx_steel_fibers_dosage_kgs}
                           onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_KGS' })}
 
                         />
@@ -292,7 +293,7 @@ export default function MetricTable() {
                             endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
                           }}
                           fullWidth
-                          defaultValue={estimateData.primx_cpea_dosage_liters}
+                          value={estimateData.primx_cpea_dosage_liters}
                         />
                       </TableCell>
                     </TableRow>
