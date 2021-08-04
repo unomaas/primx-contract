@@ -38,7 +38,7 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
     case 'SET_ERROR_LEADTIME':
       return {
         open: true,
-        message: 'Please choose a date of first pour at least 8 weeks out. If needed sooner, please contact PrimX directly.',
+        message: 'Lead times of less than 8 weeks may not be possible. If needed sooner, please contact PrimX directly.',
         severity: "info",
         variant: "filled"
       }
