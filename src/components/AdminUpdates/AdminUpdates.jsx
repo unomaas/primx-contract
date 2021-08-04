@@ -61,7 +61,7 @@ export default function AdminUpdates() {
 
   // fetches companies on page load for update licenses page
   useEffect(() => {
-    renderComponent(), dispatch({ type: 'FETCH_COMPANIES' });
+    renderComponent();
   }, [selectedPage]);
 
 
