@@ -117,6 +117,7 @@ export default function EstimateLookup() {
   return (
     <div className="EstimateCreate-wrapper">
 
+      <section className ="removeInPrint">
       <ButtonToggle />
 
       <br />
@@ -188,6 +189,7 @@ export default function EstimateLookup() {
           </Grid>
         </Grid>
       </form>
+      </section>
       <br />
       {/* End estimate search form */}
 
