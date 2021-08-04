@@ -21,19 +21,19 @@ export const estimatesReducer = (state = {
   ship_to_city: "",
   shipping_costs_id: 0,
   zip_postal_code: "",
-  country: "",
+  country: 0,
   square_feet: "",
-  thickened_edge_perimeter_lineal_feet: "",
-  primx_flow_dosage_liters: "",
+  thickened_edge_perimeter_lineal_feet: "0",
+  primx_flow_dosage_liters: "3",
   thickness_inches: "",
-  thickened_edge_construction_joint_lineal_feet: "",
-  primx_steel_fibers_dosage_lbs: "",
+  thickened_edge_construction_joint_lineal_feet: "0",
+  primx_steel_fibers_dosage_lbs: "60",
   primx_cpea_dosage_liters: "",
   square_meters: "",
-  thickened_edge_perimeter_lineal_meters: "",
+  thickened_edge_perimeter_lineal_meters: "0",
   thickness_millimeters: "",
-  thickened_edge_construction_joint_lineal_meters: "",
-  primx_steel_fibers_dosage_kgs: ""
+  thickened_edge_construction_joint_lineal_meters: "0",
+  primx_steel_fibers_dosage_kgs: "40"
 }, action) => {
   switch (action.type) {
     // Commented out deprecated action that's not being used
