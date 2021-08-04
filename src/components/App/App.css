@@ -111,21 +111,17 @@ input {
   margin-bottom: 10px;
 }
 
-
+/* --------------------------------------------------------------------------------
+Print Screen Scaling
+-------------------------------------------------------------------------------- */
 
 @media print {
 
-  /* @page {
-    size: landscape;
-  } */
-
-  /* @page {
-    size: portrait;
-  } */
-
   @page {
     size: A3;
-  }
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
   .App {
     margin: -100px 0px 0px 0px;
