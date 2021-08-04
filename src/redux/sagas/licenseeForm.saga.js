@@ -105,7 +105,7 @@ function* recalculateEstimate(action) {
                 primx_steel_fibers_unit_price: productObject.steel_fibers_lbs,
                 primx_ultracure_blankets_unit_price: productObject.blankets_sqft,
             }) // or add in the metric specific costs
-        } else if (currentEstimate.measurment_units == 'metric') {
+        } else if (currentEstimate.measurement_units == 'metric') {
             Object.assign(currentEstimate, {
                 primx_dc_unit_price: productObject.dc_kgs,
                 primx_steel_fibers_unit_price: productObject.steel_fibers_kgs,

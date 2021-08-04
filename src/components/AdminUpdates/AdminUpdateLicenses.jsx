@@ -27,10 +27,11 @@ export default function AdminUpdateLicenses() {
   //defining classes for MUI
   const classes = useStyles();
   
+  // GET all licensee company data on component load
   useEffect(() => {
-    // GET products and prices
     dispatch({ type: 'FETCH_ALL_COMPANIES' });
   }, [])
+
 
   // renders a button to mark a licensee as active or inactive
   const renderActivateButton = (params) => {
@@ -38,28 +39,29 @@ export default function AdminUpdateLicenses() {
       // Render a red Deactivate button if the licensee is active, or a blue Reactivate button if the licensee is inactive
       <>
         {params.row.active ? 
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => handleActivateDeactivateClick(params)}
-        >
-          Deactivate
-        </Button> :
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleActivateDeactivateClick(params)}
-        >
-          Reactivate
-        </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleActivateDeactivateClick(params)}
+          >
+            Deactivate
+          </Button> :
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleActivateDeactivateClick(params)}
+          >
+            Reactivate
+          </Button>
         }
       </>
     )
   }
 
+  // Click handler for the rendered Deactivate/Reactivate buttons in the data grid, toggles active status of licensee
   const handleActivateDeactivateClick = (params) => {
     // On click, sends a dispatch to the companies saga to toggle active or inactive licensee status
-    dispatch({type: 'TOGGLE_ACTIVE_INACTIVE_LICENSEE', payload: params.row})
+    dispatch({type: 'TOGGLE_ACTIVE_INACTIVE_LICENSEE', payload: params.row});
   }
 
   //establish rows with campanies array for datagrid
@@ -69,7 +71,7 @@ export default function AdminUpdateLicenses() {
   const columns = [
     { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300},
     {
-      field: 'active_inactive',
+      field: '',
       headerName: 'Activate/ Deactivate',
       width: 225,
       disableClickEventBubbling: true,
@@ -82,6 +84,7 @@ export default function AdminUpdateLicenses() {
   const handleCompanyInputChange = (event) => {
     setCompanyNameInput(event.target.value);
   }
+  
   //handles add company button click that sends payload of company name input to saga for posting to database
   const handleAddCompany = (event) => {
     if (companyNameInput == '') {
