@@ -48,13 +48,16 @@ function* AddEstimate(action) {
         // need to send the user to the search estimates results page using the newly created estimate number
         // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
         yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
-        // SweetAlert popup for confirmation
+        
+         // ⬇ Sweet Alert to let them know to save the Estimate #:
         swal({
-            title: "Estimate saved!",
+            title: "Estimate saved! Please print this page!",
             text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
             icon: "info",
-            buttons: "Confirm",
-          }) // End Sweet Alert
+            buttons: "I understand.",
+          }).then(() => {
+            window.print();
+          }); // End swal
     }
 
     catch (error) {
