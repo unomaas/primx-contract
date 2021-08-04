@@ -194,7 +194,7 @@ export default function useEstimateCalculations(estimate) {
         if (property.includes('cubic_yards') || property.includes('cubic_meters') || property.includes('total_amount') || property.includes('fibers_dosage')) {    
             estimate[property] = Math.ceil(value)
         // price of materials, shipping estimates (all share _estimate in their key name), dosages of liquid ingredients, and additional thickness need rounding to 2 decimals
-        } else if (property.includes('dosage_liters') || property.includes('additional_thickness')) {
+        } else if (property.includes('additional_thickness')) {
             estimate[property] = Number(value).toFixed(2);
         // price of materials and shipping estimates all share _estimate in their key name - they need to be converted to currency    
         } else if (property.includes('materials_price') || property.includes('_estimate') || property.includes('unit_price')) {
