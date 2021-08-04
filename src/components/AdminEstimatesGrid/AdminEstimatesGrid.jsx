@@ -89,6 +89,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         })
     }
 
+    
+
     // columns for Data Grid
     const columns = [
         // estimate and contractor details input by licensee
@@ -119,7 +121,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         { field: 'placement_type', headerName: 'Placement Type', width: 175 }, // Editable + validation?
         { field: 'square_feet', headerName: 'Square Feet', width: 175 }, // Editable + validation?
         { field: 'thickness_inches', headerName: 'Thickness(inches)', width: 175 }, // Editable + validation?
-        { field: 'square_meters', headerName: 'Square Meters', width: 175 }, // Editable + validation?
+        { field: 'square_meters'.toLocaleString('en-US'), headerName: 'Square Meters', width: 175 }, // Editable + validation?
         { field: 'thickness_millimeters', headerName: 'Thickness(mm)', width: 175 }, // Editable + validation?
         { field: 'waste_factor_percentage', headerName: 'Waste Factor (%)', width: 175 }, // Editable + validation?
         { field: 'thickened_edge_construction_joint_lineal_feet', headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175 }, // Editable + validation?
