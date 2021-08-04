@@ -8,9 +8,23 @@ const {
 /**
  * GET route template
  */
- router.get('/', (req, res) => {
+ // GET route to GET all data from the licensees table, both active and inactive licensees
+ router.get('/all', (req, res) => {
     // GET route code here
     const queryText = `SELECT * FROM "licensees" ORDER BY id ASC`;
+
+    pool.query(queryText)
+        .then((results) => res.send(results.rows))
+        .catch((error) => {
+            console.log('Error getting company names', error);
+            res.sendStatus(500);
+        });
+  });
+
+  // GET route to GET all active licensees to be displayed in Select menus for the estimate creation view and the estimate lookup view
+  router.get('/active', (req, res) => {
+    // SQL query to get licensees that are currently active
+    const queryText = `SELECT * FROM "licensees" WHERE "active" = TRUE ORDER BY id ASC`;
 
     pool.query(queryText)
         .then((results) => res.send(results.rows))
