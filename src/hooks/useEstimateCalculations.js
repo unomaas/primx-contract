@@ -199,6 +199,8 @@ export default function useEstimateCalculations(estimate) {
         // price of materials and shipping estimates all share _estimate in their key name - they need to be converted to currency    
         } else if (property.includes('materials_price') || property.includes('_estimate') || property.includes('unit_price')) {
             estimate[property] = formatter.format(value);
+        } else if (property.includes('total_amount_needed'), property.includes('packages_needed'),property.includes('total_order_quantity')) {
+            estimate[property] = (value).toLocaleString('en-US');
         }
     }
 
