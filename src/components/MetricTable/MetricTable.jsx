@@ -114,7 +114,6 @@ export default function MetricTable() {
     }); // End swal
   } // End handleSave
 
-
   const handleCalculateCosts = () => {
     console.log('In Metric handleCalculateCosts, estimateData:', estimateData);
     const calculatedObject = calculateEstimate(estimateData)
