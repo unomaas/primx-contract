@@ -33,7 +33,8 @@ export const estimatesReducer = (state = {
   thickened_edge_perimeter_lineal_meters: "0",
   thickness_millimeters: "",
   thickened_edge_construction_joint_lineal_meters: "0",
-  primx_steel_fibers_dosage_kgs: "40"
+  primx_steel_fibers_dosage_kgs: "40",
+  waste_factor_percentage: 5
 }, action) => {
   switch (action.type) {
     // Commented out deprecated action that's not being used
