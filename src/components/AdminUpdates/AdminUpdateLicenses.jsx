@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import AdminUpdates from './AdminUpdates';
 
 //material ui imports
@@ -9,8 +10,9 @@ import AddIcon from '@material-ui/icons/Add';
 import { DataGrid } from '@material-ui/data-grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
+import Button from '@material-ui/core/Button';
 import { useStyles } from '../MuiStyling/MuiStyling';
+
 
 export default function AdminUpdateLicenses() {
 
@@ -22,11 +24,38 @@ export default function AdminUpdateLicenses() {
   let [companyNameInput, setCompanyNameInput] = useState('');
   // establish snackbar variables for notifications
   const snack = useSelector(store => store.snackBar);
-
-
   //defining classes for MUI
   const classes = useStyles();
+  
+  useEffect(() => {
+    // GET products and prices
+    dispatch({ type: 'FETCH_ALL_COMPANIES' });
+  }, [])
 
+  // renders a button to mark a licensee as active or inactive
+  const renderActivateButton = (params) => {
+    return (
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleActivateDeactivateClick(params)}
+      >
+        {/* Render as Deactivate if the licensee is currently active, or as Reactivate if licensee is currently inactive */}
+        {params.row.active ? 
+        <>
+          Deactivate
+        </> :
+        <>
+          Reactivate
+        </>
+        }
+      </Button>
+    )
+  }
+
+  const handleActivateDeactivateClick = (params) => {
+    console.log('Clicked! Params:', params);
+  }
 
   //establish rows with campanies array for datagrid
   let rows = companies;
@@ -34,6 +63,14 @@ export default function AdminUpdateLicenses() {
   //estabish columns for datagrid
   const columns = [
     { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, editable: true },
+    {
+      field: 'active_inactive',
+      headerName: 'Activate/ Deactivate',
+      width: 225,
+      disableClickEventBubbling: true,
+      renderCell: renderActivateButton, // function declared above
+      align: 'center'
+    },
   ];
 
   //handles edit of datagrid cells
