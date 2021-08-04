@@ -19,10 +19,12 @@ export default function EstimateLookup() {
   // hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates
   // the Submit Order button
   const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
-  const [searchQuery, setSearchQuery] = useState({
-    licensee_id: "0",
-    id: ""
-  });
+  const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
+
+  // const [searchQuery, setSearchQuery] = useState({
+  //   licensee_id: "0",
+  //   id: ""
+  // });
   const [error, setError] = useState(false);
   const classes = useStyles();
   const [selectError, setSelectError] = useState("");
@@ -57,7 +59,11 @@ export default function EstimateLookup() {
   // Change handler for the estimate search form
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
-    setSearchQuery({ ...searchQuery, [key]: value })
+    // setSearchQuery({ ...searchQuery, [key]: value })
+    dispatch({
+      type: 'SET_SEARCH_QUERY',
+      payload: { key: key, value: value }
+    });
   };
 
   const handleSubmit = () => {
@@ -146,7 +152,8 @@ export default function EstimateLookup() {
                             required
                             size="small"
                             fullWidth
-                            value={searchResult.licensee_id}
+                            value={searchQuery.licensee_id}
+                            // defaultValue={searchResult.licensee_id}
                           >
                             <MenuItem key="0" value="0">Please Select</MenuItem>
                             {companies.map(companies => {
@@ -166,8 +173,8 @@ export default function EstimateLookup() {
                           type="search"
                           size="small"
                           fullWidth
-                          // value={searchResult.estimate_number}
-                          defaultValue={estimate_number_searched}
+                          value={searchQuery.estimate_number}
+                          // defaultValue={estimate_number_searched}
                         />
                       </TableCell>
 
@@ -291,12 +298,12 @@ export default function EstimateLookup() {
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      {/* <TableRow>
                         <TableCell><b>Lead Time (In Weeks):</b></TableCell>
                         <TableCell>
                           BRING IN CALCULATE FUNCTION SOMEHOW
                         </TableCell>
-                      </TableRow>
+                      </TableRow> */}
 
                       <TableRow>
                         <TableCell><b>Shipping Street Address:</b></TableCell>
@@ -834,7 +841,7 @@ export default function EstimateLookup() {
           {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
             <>
               <h3>
-                Your estimate number is: {estimate_number_searched}
+                Your estimate number is: {searchResult?.estimate_number}
               </h3>
               <h3>
                 This order is currently being processed. Please contact your PrīmX representative for more details.
