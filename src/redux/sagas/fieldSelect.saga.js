@@ -4,30 +4,11 @@ import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 
 function* fetchFieldSelect() {
+    // fetch all active companies for estimate create Select menu
+    yield put({type: 'FETCH_ACTIVE_COMPANIES'});
+    // fe
+    yield put({type: 'FETCH_PLACEMENT_TYPES'});
 
-    // Fetching company/licensee name and id
-    try {
-      const response = yield axios.get('/api/companies');
-      // set companies used in reducer
-      yield put({
-        type: 'SET_COMPANIES',
-        payload: response.data
-      });
-    } catch (error) {
-      console.log('error with fetchCompanies in field select saga', error);
-    }
-
-    // Fetching placement type
-    try {
-        const placementTypes = yield axios.get('/api/placementtypes');
-        console.log('placementTypes.data', placementTypes.data);
-
-        //send results to placementTypes reducer
-        yield put({type: 'SET_PLACEMENT_TYPES', payload: placementTypes.data});
-    } catch (error) {
-        console.log('error with fetchAllPlacementTypes in field select saga', error);
-        
-    }
 
     // Fetching products
     try {
