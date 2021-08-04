@@ -3,6 +3,7 @@ import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import removeTimestamps from '../../hooks/removeTimestamps';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
+import swal from 'sweetalert';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
@@ -44,10 +45,20 @@ function* AddEstimate(action) {
     // action. payload contains the history object from useHistory
     const history = action.payload.history
 
-    // need to send the user to the search estimates results page using the newly created estimate number
-    // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
-    yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
-  }
+        // need to send the user to the search estimates results page using the newly created estimate number
+        // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
+        yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
+        
+         // ⬇ Sweet Alert to let them know to save the Estimate #:
+        swal({
+            title: "Estimate saved! Please print this page!",
+            text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+            icon: "info",
+            buttons: "I understand.",
+          }).then(() => {
+            window.print();
+          }); // End swal
+    }
 
   catch (error) {
     console.log('User POST request failed', error);
@@ -117,6 +128,7 @@ function* recalculateEstimate(action) {
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then
 // be processed by an admin user
 function* markEstimateAsOrdered(action) {
+<<<<<<< HEAD
   try {
     yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
     // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
@@ -126,6 +138,18 @@ function* markEstimateAsOrdered(action) {
   catch (error) {
     console.log('markEstimateAsOrdered failed', error)
   }
+=======
+    try {
+        yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
+        // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
+        yield put({type: 'FETCH_ESTIMATE_QUERY', payload: action.payload});
+        // set the recalculated boolean in the estimates reducer to false so the place order button gets disabled for other estimates
+        yield put({type: 'SET_RECALCULATE_FALSE'});
+    }
+    catch (error) {
+        console.log('markEstimateAsOrdered failed', error)
+    }
+>>>>>>> main
 
 }
 

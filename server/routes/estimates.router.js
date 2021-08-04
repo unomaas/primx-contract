@@ -248,11 +248,12 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
 
 // PUT request to mark an estimate flagged for order by licensee to be marked as ordered by an admin, and to add the name of the admin making the request
 router.put('/process/:id', rejectUnauthenticated, (req, res) => {
-
+  // Set an order_number variable to be saved in the database. The order number is an O- followed by the estimate number
+  const order_number = `O-${req.body.estimate_number}`
   // SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
-  const queryText = `UPDATE "estimates" SET "marked_as_ordered" = TRUE, "processed_by" = $1 WHERE "id" = $2;`;
+  const queryText = `UPDATE "estimates" SET "marked_as_ordered" = TRUE, "processed_by" = $1, "order_number" = $2 WHERE "id" = $3;`;
   // DB request
-  pool.query(queryText, [req.user.username, req.params.id])
+  pool.query(queryText, [req.user.username, order_number, req.params.id])
     .then(result => {
       res.sendStatus(200);
     })
