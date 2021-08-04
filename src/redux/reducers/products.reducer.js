@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 // Products array is the full array of product data as it comes back from the database. It's used in the AdminUpdateMaterials component
 const productsArray = (state =[], action) => {
     switch (action.type) {
-      case 'SET_PRODUCTS':
+      case 'SET_PRODUCTS_ARRAY':
         return action.payload;
       default:
         return state;

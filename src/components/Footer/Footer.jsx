@@ -9,7 +9,7 @@ import { Box } from '@material-ui/core';
 
 function Footer() {
   return (
-    <footer className="lexendFont">
+    <footer className="lexendFont footerPrint">
       <img src="./images/PrimXLogo-Spaced-01.svg" height="60"></img>
       <br/>
       &copy; 2021 PrīmX NA. All rights reserved.

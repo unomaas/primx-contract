@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import AdminUpdates from './AdminUpdates';
 
 //material ui imports
@@ -9,8 +10,9 @@ import AddIcon from '@material-ui/icons/Add';
 import { DataGrid } from '@material-ui/data-grid';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
+import Button from '@material-ui/core/Button';
 import { useStyles } from '../MuiStyling/MuiStyling';
+
 
 export default function AdminUpdateLicenses() {
 
@@ -22,36 +24,67 @@ export default function AdminUpdateLicenses() {
   let [companyNameInput, setCompanyNameInput] = useState('');
   // establish snackbar variables for notifications
   const snack = useSelector(store => store.snackBar);
-
-
   //defining classes for MUI
   const classes = useStyles();
+  
+  // GET all licensee company data on component load
+  useEffect(() => {
+    dispatch({ type: 'FETCH_ALL_COMPANIES' });
+  }, [])
 
+
+  // renders a button to mark a licensee as active or inactive
+  const renderActivateButton = (params) => {
+    return (
+      // Render a red Deactivate button if the licensee is active, or a blue Reactivate button if the licensee is inactive
+      <>
+        {params.row.active ? 
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleActivateDeactivateClick(params)}
+          >
+            Deactivate
+          </Button> :
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleActivateDeactivateClick(params)}
+          >
+            Reactivate
+          </Button>
+        }
+      </>
+    )
+  }
+
+  // Click handler for the rendered Deactivate/Reactivate buttons in the data grid, toggles active status of licensee
+  const handleActivateDeactivateClick = (params) => {
+    // On click, sends a dispatch to the companies saga to toggle active or inactive licensee status
+    dispatch({type: 'TOGGLE_ACTIVE_INACTIVE_LICENSEE', payload: params.row});
+  }
 
   //establish rows with campanies array for datagrid
   let rows = companies;
 
   //estabish columns for datagrid
   const columns = [
-    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, editable: true },
+    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300},
+    {
+      field: '',
+      headerName: 'Activate/ Deactivate',
+      width: 225,
+      disableClickEventBubbling: true,
+      renderCell: renderActivateButton, // function declared above
+      align: 'center'
+    },
   ];
-
-  //handles edit of datagrid cells
-  const handleEditSubmit = ({ id, field, props }) => {
-    console.log('in handle edit submit for id, field, props', id, field, props);
-    // id argument is the db id of the row being edited and props.value is the new value after submitting the edit
-    dispatch({
-      type: 'UPDATE_COMPANY', payload: {
-        id: id,
-        newValue: props.value
-      }
-    })
-  }
 
   // tracks the state of the company name input in companynameinput variable
   const handleCompanyInputChange = (event) => {
     setCompanyNameInput(event.target.value);
   }
+  
   //handles add company button click that sends payload of company name input to saga for posting to database
   const handleAddCompany = (event) => {
     if (companyNameInput == '') {
@@ -85,7 +118,6 @@ export default function AdminUpdateLicenses() {
           rows={rows}
           columns={columns}
           pageSize={10}
-          onEditCellChangeCommitted={handleEditSubmit}
         />
         <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity={snack.severity}>
