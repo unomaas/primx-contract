@@ -39,7 +39,7 @@ export default function EstimateLookup() {
   useEffect(() => {
     // Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
-      dispatch({ type: 'FETCH_COMPANIES' })
+      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
   }, []);
 
 
