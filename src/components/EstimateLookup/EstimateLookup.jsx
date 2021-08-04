@@ -354,7 +354,7 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Square Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_feet.toLocaleString('en-US')}
+                              {searchResult?.square_feet?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -368,42 +368,42 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards.toLocaleString('en-US')}
+                              {searchResult?.cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards.toLocaleString('en-US')}
+                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards.toLocaleString('en-US')}
+                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards_subtotal.toLocaleString('en-US')}
+                              {searchResult?.cubic_yards_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Waste Factor @ 5%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_yards.toLocaleString('en-US')}
+                              {searchResult?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_yards_total.toLocaleString('en-US')}
+                              {searchResult?.design_cubic_yards_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -426,10 +426,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Lineal Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_feet.toLocaleString('en-US')}
+                              {searchResult?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_feet.toLocaleString('en-US')}
+                              {searchResult?.thickened_edge_construction_joint_lineal_feet}
                             </TableCell>
                           </TableRow>
 
@@ -456,10 +456,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards.toLocaleString('en-US')}
+                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards.toLocaleString('en-US')}
+                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -485,7 +485,7 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Square Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_meters.toLocaleString('en-US')}
+                              {searchResult?.square_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -499,42 +499,42 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters.toLocaleString('en-US')}
+                              {searchResult?.cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters.toLocaleString('en-US')}
+                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters.toLocaleString('en-US')}
+                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters_subtotal.toLocaleString('en-US')}
+                              {searchResult?.cubic_meters_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Waste Factor @ 5%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_meters.toLocaleString('en-US')}
+                              {searchResult?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_meters_total.toLocaleString('en-US')}
+                              {searchResult?.design_cubic_meters_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -557,10 +557,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Lineal Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_meters.toLocaleString('en-US')}
+                              {searchResult?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_meters.toLocaleString('en-US')}
+                              {searchResult?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -587,10 +587,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters.toLocaleString('en-US')}
+                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters.toLocaleString('en-US')}
+                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -659,11 +659,11 @@ export default function EstimateLookup() {
                       {/* Total amounts share key names between imperial and metric */}
                       <TableRow>
                         <TableCell><b>Total Amount:</b></TableCell>
-                        <TableCell>{searchResult?.primx_dc_total_amount_needed.toLocaleString('en-US')}</TableCell>
-                        <TableCell>{searchResult?.primx_flow_total_amount_needed.toLocaleString('en-US')}</TableCell>
-                        <TableCell>{searchResult?.primx_steel_fibers_total_amount_needed.toLocaleString('en-US')}</TableCell>
-                        <TableCell>{searchResult?.primx_ultracure_blankets_total_amount_needed.toLocaleString('en-US')}</TableCell>
-                        <TableCell>{searchResult?.primx_cpea_total_amount_needed.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
 
@@ -692,11 +692,11 @@ export default function EstimateLookup() {
                       {/* All following table data has shared key names between both metric and imperial */}
                       <TableRow>
                         <TableCell><b>Packages Needed:</b></TableCell>
-                        <TableCell>{searchResult?.primx_dc_packages_needed.toLocaleString('en-US')}</TableCell>
-                        <TableCell>{searchResult?.primx_flow_packages_needed.toLocaleString('en-US')}</TableCell>
-                        <TableCell>{searchResult?.primx_steel_fibers_packages_needed.toLocaleString('en-US')}</TableCell>
-                        <TableCell>{searchResult?.primx_ultracure_blankets_packages_needed.toLocaleString('en-US')}</TableCell>
-                        <TableCell>{searchResult?.primx_cpea_packages_needed.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_steel_fibers_packages_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_ultracure_blankets_packages_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_cpea_packages_needed?.toLocaleString('en-US')}</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
 
@@ -732,12 +732,12 @@ export default function EstimateLookup() {
 
                       <TableRow>
                         <TableCell><b>Containers:</b></TableCell>
-                        <TableCell>{searchResult?.primx_dc_containers_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_flow_containers_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_steel_fibers_containers_needed}</TableCell>
+                        <TableCell>{searchResult?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_steel_fibers_containers_needed?.toLocaleString('en-US')}</TableCell>
                         <TableCell>0</TableCell>
-                        <TableCell>{searchResult?.primx_cpea_containers_needed}</TableCell>
-                        <TableCell>{searchResult?.design_total_containers}</TableCell>
+                        <TableCell>{searchResult?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.design_total_containers?.toLocaleString('en-US')}</TableCell>
 
                       </TableRow>
 
