@@ -37,17 +37,18 @@ const {
   /**
    * EDIT route template
    */
+  // PUT route to toggle the active boolean of the licensees table
   router.put('/:id', rejectUnauthenticated, (req, res) => {
-    // EDIT route code here
-    console.log(req.body)
-    const company = req.body.newValue;
-    const queryText = `UPDATE "licensees" SET "licensee_contractor_name"=$1 WHERE "id"=$2`;
-    pool.query(queryText, [company , req.params.id])
+    // SQL query to update the active column of the licensees table
+    const queryText = `UPDATE "licensees" SET "active"=$1 WHERE "id"=$2`;
+    // req.body.active contains true or false depending on the current status of the licensee clicked, sets it to the opposite value
+    pool.query(queryText, [!req.body.active, req.params.id])
       .then(() => { res.sendStatus(200); })
       .catch((error) => {
         console.log('Error completeing UPDATE Companies query', error)
       })
   });
+
 
   router.post('/', rejectUnauthenticated, (req, res) => {
     const queryText = `INSERT INTO "licensees" (licensee_contractor_name)

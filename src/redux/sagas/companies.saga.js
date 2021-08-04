@@ -31,13 +31,13 @@ function* fetchActiveCompanies() {
   }
 }
 
-function* updateCompany(action) {
+function* toggleActiveInactiveLicensee(action) {
   try {
-    // takes payload to database to update company
+    // action.payload contains the id of the licensee, their name, and the boolean of whether active is true or false
     yield axios.put(`/api/companies/${action.payload.id}`, action.payload);
-    // fetches companies
+    // fetches all companies to refresh DOM data for licensee view
     yield put({
-      type: 'FETCH_COMPANIES'
+      type: 'FETCH_ALL_COMPANIES'
     });
   } catch (error) {
     console.log('Error in update company saga: ', error);
@@ -61,7 +61,7 @@ function* addCompany(action) {
 function* companiesSaga() {
   yield takeLatest('FETCH_ALL_COMPANIES', fetchAllCompanies);
   yield takeLatest('FETCH_ACTIVE_COMPANIES', fetchActiveCompanies);
-  yield takeLatest('UPDATE_COMPANY', updateCompany);
+  yield takeLatest('TOGGLE_ACTIVE_INACTIVE_LICENSEE', toggleActiveInactiveLicensee);
   yield takeLatest('ADD_COMPANY', addCompany);
 }
 

@@ -54,7 +54,8 @@ export default function AdminUpdateLicenses() {
   }
 
   const handleActivateDeactivateClick = (params) => {
-    console.log('Clicked! Params:', params);
+    // On click, sends a dispatch to the companies saga to toggle active or inactive licensee status
+    dispatch({type: 'TOGGLE_ACTIVE_INACTIVE_LICENSEE', payload: params.row})
   }
 
   //establish rows with campanies array for datagrid
@@ -62,7 +63,7 @@ export default function AdminUpdateLicenses() {
 
   //estabish columns for datagrid
   const columns = [
-    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, editable: true },
+    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300},
     {
       field: 'active_inactive',
       headerName: 'Activate/ Deactivate',
@@ -72,18 +73,6 @@ export default function AdminUpdateLicenses() {
       align: 'center'
     },
   ];
-
-  //handles edit of datagrid cells
-  const handleEditSubmit = ({ id, field, props }) => {
-    console.log('in handle edit submit for id, field, props', id, field, props);
-    // id argument is the db id of the row being edited and props.value is the new value after submitting the edit
-    dispatch({
-      type: 'UPDATE_COMPANY', payload: {
-        id: id,
-        newValue: props.value
-      }
-    })
-  }
 
   // tracks the state of the company name input in companynameinput variable
   const handleCompanyInputChange = (event) => {
@@ -122,7 +111,6 @@ export default function AdminUpdateLicenses() {
           rows={rows}
           columns={columns}
           pageSize={10}
-          onEditCellChangeCommitted={handleEditSubmit}
         />
         <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity={snack.severity}>
