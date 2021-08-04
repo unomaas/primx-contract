@@ -12,7 +12,7 @@ export const estimatesReducer = (state = {
   project_general_contractor: "",
   project_manager_name: "",
   project_manager_email: "",
-  project_manager_phone: "", 
+  project_manager_phone: "",
   floor_types_id: 0,
   placement_types_id: 0,
   measurement_units: "",
@@ -75,10 +75,7 @@ export const tableState = (state = false, action) => {
 
 // searchedEstimate comes from the licenseeForm saga, which sends back a single estimate object from the DB after running the useEstimateCalculations
 // function on it
-export const searchedEstimate = (state = {
-  licensee_id: 0, 
-  estimate_number: ""
-}, action) => {
+export const searchedEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_QUERY_RESULT':
       return action.payload;
@@ -96,12 +93,28 @@ export const hasRecalculated = (state = false, action) => {
   }
 }
 
+export const searchQuery = (state = {
+  licensee_id: 0,
+  estimate_number: ""
+}, action) => {
+  switch (action.type) {
+    case 'SET_SEARCH_QUERY':
+      return {
+        ...state,
+        [action.payload.key]: action.payload.value
+      };
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   estimatesReducer,
   buttonState,
   tableState,
   searchedEstimate,
-  hasRecalculated
+  hasRecalculated,
+  searchQuery
 });
 
 // export default estimatesReducer;

@@ -107,6 +107,7 @@ export default function ImperialTable() {
       icon: "info",
       buttons: "I understand.",
     }).then(() => {
+      // ⬇ Opens the print window upon confirmation:
       window.print();
     }); // End swal
 
