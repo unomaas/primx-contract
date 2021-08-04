@@ -334,7 +334,7 @@ export default function MetricTable() {
                     <TableRow>
                       <TableCell><b>Square Meters:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.square_meters}
+                        {calculatedDisplayObject?.square_meters?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
@@ -348,14 +348,14 @@ export default function MetricTable() {
                     <TableRow>
                       <TableCell><b>Cubic Meters:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.cubic_meters}
+                        {calculatedDisplayObject?.cubic_meters?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.perimeter_thickening_cubic_meters}
+                        {calculatedDisplayObject?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
@@ -369,18 +369,18 @@ export default function MetricTable() {
                     <TableRow>
                       <TableCell><b>Subtotal:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.cubic_meters_subtotal}
+                        {calculatedDisplayObject?.cubic_meters_subtotal?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Waste Factor @ 5% (m³):</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.waste_factor_cubic_meters}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.waste_factor_cubic_meters?.toLocaleString('en-US')}</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Total Cubic Meters:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.design_cubic_meters_total}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.design_cubic_meters_total?.toLocaleString('en-US')}</TableCell>
                     </TableRow>
 
                   </TableBody>
@@ -401,7 +401,7 @@ export default function MetricTable() {
                     <TableRow>
                       <TableCell><b>Lineal Meters:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.thickened_edge_perimeter_lineal_meters}
+                        {calculatedDisplayObject?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
                       </TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.thickened_edge_construction_joint_lineal_meters}
@@ -422,7 +422,7 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Cubic Meters:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.perimeter_thickening_cubic_meters}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}</TableCell>
                       <TableCell>{calculatedDisplayObject?.construction_joint_thickening_cubic_meters}</TableCell>
                     </TableRow>
 
@@ -469,11 +469,11 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Total Amount:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
@@ -489,11 +489,11 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Packages Needed:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
@@ -529,16 +529,16 @@ export default function MetricTable() {
 
                     <TableRow>
                       <TableCell><b>Containers:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell>0</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell>
                         {/* // Total number of containers go into this cell */}
                         {/* {calculatedDisplayObject?.primx_dc_containers_needed + calculatedDisplayObject?.primx_flow_containers_needed +
                           calculatedDisplayObject?.primx_steel_fibers_containers_needed + calculatedDisplayObject?.primx_cpea_containers_needed} */}
-                        {calculatedDisplayObject?.design_total_containers}
+                        {calculatedDisplayObject?.design_total_containers?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 

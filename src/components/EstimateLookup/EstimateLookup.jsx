@@ -19,10 +19,12 @@ export default function EstimateLookup() {
   // hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates
   // the Submit Order button
   const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
-  const [searchQuery, setSearchQuery] = useState({
-    licensee_id: "0",
-    id: ""
-  });
+  const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
+
+  // const [searchQuery, setSearchQuery] = useState({
+  //   licensee_id: "0",
+  //   id: ""
+  // });
   const [error, setError] = useState(false);
   const classes = useStyles();
   const [selectError, setSelectError] = useState("");
@@ -37,7 +39,7 @@ export default function EstimateLookup() {
   useEffect(() => {
     // Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
-      dispatch({ type: 'FETCH_COMPANIES' })
+      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
   }, []);
 
 
@@ -57,7 +59,11 @@ export default function EstimateLookup() {
   // Change handler for the estimate search form
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
-    setSearchQuery({ ...searchQuery, [key]: value })
+    // setSearchQuery({ ...searchQuery, [key]: value })
+    dispatch({
+      type: 'SET_SEARCH_QUERY',
+      payload: { key: key, value: value }
+    });
   };
 
   const handleSubmit = () => {
@@ -120,6 +126,7 @@ export default function EstimateLookup() {
   return (
     <div className="EstimateCreate-wrapper">
 
+      <section className ="removeInPrint">
       <ButtonToggle />
 
       <br />
@@ -146,7 +153,8 @@ export default function EstimateLookup() {
                             required
                             size="small"
                             fullWidth
-                            value={searchResult.licensee_id}
+                            value={searchQuery.licensee_id}
+                            // defaultValue={searchResult.licensee_id}
                           >
                             <MenuItem key="0" value="0">Please Select</MenuItem>
                             {companies.map(companies => {
@@ -166,8 +174,8 @@ export default function EstimateLookup() {
                           type="search"
                           size="small"
                           fullWidth
-                          // value={searchResult.estimate_number}
-                          defaultValue={estimate_number_searched}
+                          value={searchQuery.estimate_number}
+                          // defaultValue={estimate_number_searched}
                         />
                       </TableCell>
 
@@ -191,12 +199,15 @@ export default function EstimateLookup() {
           </Grid>
         </Grid>
       </form>
+      </section>
       <br />
       {/* End estimate search form */}
 
 
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
+
+       
 
       {searchResult.estimate_number &&
         <>
@@ -205,7 +216,7 @@ export default function EstimateLookup() {
           <Grid container
             spacing={2}
             justifyContent="center"
-          >
+          > 
             {/* Grid Table #1: Display the Licensee/Project Info Form : Shared between imperial and metric*/}
             <Grid item xs={6}>
               <Paper elevation={3}>
@@ -291,12 +302,12 @@ export default function EstimateLookup() {
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      {/* <TableRow>
                         <TableCell><b>Lead Time (In Weeks):</b></TableCell>
                         <TableCell>
                           BRING IN CALCULATE FUNCTION SOMEHOW
                         </TableCell>
-                      </TableRow>
+                      </TableRow> */}
 
                       <TableRow>
                         <TableCell><b>Shipping Street Address:</b></TableCell>
@@ -339,7 +350,7 @@ export default function EstimateLookup() {
               </Paper>
             </Grid>
             {/* End Licensee and Project Information table */}
-
+            
 
             {/* Table #2 Imperial: conditionally render the imperial needs*/}
             {searchResult.measurement_units == 'imperial' &&
@@ -354,7 +365,7 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Square Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_feet}
+                              {searchResult?.square_feet?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -368,42 +379,42 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards}
+                              {searchResult?.cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards}
+                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards}
+                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards_subtotal}
+                              {searchResult?.cubic_yards_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Waste Factor @ 5%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_yards}
+                              {searchResult?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_yards_total}
+                              {searchResult?.design_cubic_yards_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -426,7 +437,7 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Lineal Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_feet}
+                              {searchResult?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
                               {searchResult?.thickened_edge_construction_joint_lineal_feet}
@@ -456,10 +467,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards}
+                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards}
+                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -485,7 +496,7 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Square Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_meters}
+                              {searchResult?.square_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -499,42 +510,42 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters}
+                              {searchResult?.cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters}
+                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters}
+                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters_subtotal}
+                              {searchResult?.cubic_meters_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Waste Factor @ 5%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_meters}
+                              {searchResult?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_meters_total}
+                              {searchResult?.design_cubic_meters_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -557,10 +568,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Lineal Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_meters}
+                              {searchResult?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_meters}
+                              {searchResult?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -587,10 +598,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters}
+                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters}
+                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -659,11 +670,11 @@ export default function EstimateLookup() {
                       {/* Total amounts share key names between imperial and metric */}
                       <TableRow>
                         <TableCell><b>Total Amount:</b></TableCell>
-                        <TableCell>{searchResult?.primx_dc_total_amount_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_flow_total_amount_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_steel_fibers_total_amount_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_ultracure_blankets_total_amount_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_cpea_total_amount_needed}</TableCell>
+                        <TableCell>{searchResult?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
 
@@ -672,18 +683,18 @@ export default function EstimateLookup() {
                         {/* Conditionally render either imperial or metric packaging capacity numbers */}
                         {searchResult.measurement_units == 'imperial' ?
                           <>
-                            <TableCell>2756</TableCell>
-                            <TableCell>1000</TableCell>
-                            <TableCell>42329</TableCell>
-                            <TableCell>6458</TableCell>
-                            <TableCell>1000</TableCell>
+                            <TableCell>2,756</TableCell>
+                            <TableCell>1,000</TableCell>
+                            <TableCell>42,329</TableCell>
+                            <TableCell>6,458</TableCell>
+                            <TableCell>1,000</TableCell>
                           </> :
                           <>
-                            <TableCell>1250</TableCell>
-                            <TableCell>1000</TableCell>
-                            <TableCell>19200</TableCell>
+                            <TableCell>1,250</TableCell>
+                            <TableCell>1,000</TableCell>
+                            <TableCell>19,200</TableCell>
                             <TableCell>600</TableCell>
-                            <TableCell>1000</TableCell>
+                            <TableCell>1,000</TableCell>
                           </>
                         } {/* End conditionally rendered packaging capacity numbers*/}
                         <TableCell></TableCell>
@@ -692,11 +703,11 @@ export default function EstimateLookup() {
                       {/* All following table data has shared key names between both metric and imperial */}
                       <TableRow>
                         <TableCell><b>Packages Needed:</b></TableCell>
-                        <TableCell>{searchResult?.primx_dc_packages_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_flow_packages_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_steel_fibers_packages_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_ultracure_blankets_packages_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_cpea_packages_needed}</TableCell>
+                        <TableCell>{searchResult?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_steel_fibers_packages_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_ultracure_blankets_packages_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_cpea_packages_needed?.toLocaleString('en-US')}</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
 
@@ -732,12 +743,12 @@ export default function EstimateLookup() {
 
                       <TableRow>
                         <TableCell><b>Containers:</b></TableCell>
-                        <TableCell>{searchResult?.primx_dc_containers_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_flow_containers_needed}</TableCell>
-                        <TableCell>{searchResult?.primx_steel_fibers_containers_needed}</TableCell>
+                        <TableCell>{searchResult?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.primx_steel_fibers_containers_needed?.toLocaleString('en-US')}</TableCell>
                         <TableCell>0</TableCell>
-                        <TableCell>{searchResult?.primx_cpea_containers_needed}</TableCell>
-                        <TableCell>{searchResult?.design_total_containers}</TableCell>
+                        <TableCell>{searchResult?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
+                        <TableCell>{searchResult?.design_total_containers?.toLocaleString('en-US')}</TableCell>
 
                       </TableRow>
 
@@ -772,6 +783,8 @@ export default function EstimateLookup() {
                                 {searchResult?.estimate_number}</b>
                             </TableCell>
                             <TableCell colSpan={4} align="right">
+                              
+                              <section className="removeInPrint">
 
                               {/* Recalculate costs  button */}
                               <Button
@@ -816,6 +829,8 @@ export default function EstimateLookup() {
                                 </>
                               }
 
+                              </section>
+
                             </TableCell>
                           </TableRow>
                         </>
@@ -834,7 +849,7 @@ export default function EstimateLookup() {
           {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
             <>
               <h3>
-                Your estimate number is: {estimate_number_searched}
+                Your estimate number is: {searchResult?.estimate_number}
               </h3>
               <h3>
                 This order is currently being processed. Please contact your PrīmX representative for more details.

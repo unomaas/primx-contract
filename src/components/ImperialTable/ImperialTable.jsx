@@ -38,14 +38,7 @@ export default function ImperialTable() {
   const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
 
-  // ⬇ GET on page load:
-  // useEffect(() => {
-  //   // Product Call
-  //   dispatch({ type: 'FETCH_PRODUCTS' }),
-  //     // State/Province Call
-  //     dispatch({ type: 'FETCH_SHIPPING_COSTS' })
-  // }, []);
-  //#endregion ⬆⬆ All state variables above. 
+
 
   // have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data,
   // run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes
@@ -332,7 +325,7 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Square Feet:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.square_feet}
+                        {calculatedDisplayObject?.square_feet?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
@@ -346,14 +339,14 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Cubic Yards:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.cubic_yards}
+                        {calculatedDisplayObject?.cubic_yards?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.perimeter_thickening_cubic_yards}
+                        {calculatedDisplayObject?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
@@ -367,21 +360,21 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Subtotal:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.cubic_yards_subtotal}
+                        {calculatedDisplayObject?.cubic_yards_subtotal?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Waste Factor @ 5% (yd³):</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.waste_factor_cubic_yards}
+                        {calculatedDisplayObject?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Total Cubic Yards:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.design_cubic_yards_total}
+                        {calculatedDisplayObject?.design_cubic_yards_total?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
@@ -403,7 +396,7 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Lineal Feet:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.thickened_edge_perimeter_lineal_feet}
+                        {calculatedDisplayObject?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
                       </TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.thickened_edge_construction_joint_lineal_feet}
@@ -433,10 +426,10 @@ export default function ImperialTable() {
                     <TableRow>
                       <TableCell><b>Cubic Yards:</b></TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.perimeter_thickening_cubic_yards}
+                        {calculatedDisplayObject?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                       </TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.construction_joint_thickening_cubic_yards}
+                        {calculatedDisplayObject?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
@@ -483,11 +476,11 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell><b>Total Amount:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
@@ -503,11 +496,11 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell><b>Packages Needed:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
@@ -543,13 +536,13 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell><b>Containers:</b></TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed}</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell>0</TableCell>
-                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
+                      <TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell>
-                        {calculatedDisplayObject?.design_total_containers}
+                        {calculatedDisplayObject?.design_total_containers?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 

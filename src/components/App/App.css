@@ -110,3 +110,30 @@ input {
   margin: 5px;
   margin-bottom: 10px;
 }
+
+/* --------------------------------------------------------------------------------
+Print Screen Scaling
+-------------------------------------------------------------------------------- */
+
+@media print {
+
+  @page {
+    size: A3;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+  .App {
+    margin: -100px 0px 0px 0px;
+    transform: scale(0.95);
+  }
+
+  .footerPrint {
+    margin: -10px 0px 0px 0px;
+  }
+  
+  .removeInPrint {
+    display: none;
+  }
+
+}
