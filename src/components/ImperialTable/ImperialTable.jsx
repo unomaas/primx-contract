@@ -117,10 +117,6 @@ export default function ImperialTable() {
     // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
   }
 
-  const handleSnackbar = (event, type) => {
-    console.log('In handleSnackbar');
-    dispatch({ type: 'SET_LINEAL_FEET ' });
-  }
 
   //sets snack bar notification to closed after appearing
   const handleClose = (event, reason) => {

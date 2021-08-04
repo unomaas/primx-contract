@@ -776,7 +776,7 @@ export default function EstimateLookup() {
                                     onChange={(event) => setPoNumber(event.target.value)}
                                     size="small"
                                     label="PO Number"
-                                  // helperText="Enter a PO#"
+                                    helperText={poNumError}
                                   >
                                   </TextField>
                                 </> :
