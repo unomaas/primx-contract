@@ -12,7 +12,7 @@ export const estimatesReducer = (state = {
   project_general_contractor: "",
   project_manager_name: "",
   project_manager_email: "",
-  project_manager_phone: "", 
+  project_manager_phone: "",
   floor_types_id: 0,
   placement_types_id: 0,
   measurement_units: "",
@@ -21,19 +21,19 @@ export const estimatesReducer = (state = {
   ship_to_city: "",
   shipping_costs_id: 0,
   zip_postal_code: "",
-  country: "",
+  country: 0,
   square_feet: "",
-  thickened_edge_perimeter_lineal_feet: "",
-  primx_flow_dosage_liters: "",
+  thickened_edge_perimeter_lineal_feet: "0",
+  primx_flow_dosage_liters: "3",
   thickness_inches: "",
-  thickened_edge_construction_joint_lineal_feet: "",
-  primx_steel_fibers_dosage_lbs: "",
+  thickened_edge_construction_joint_lineal_feet: "0",
+  primx_steel_fibers_dosage_lbs: "60",
   primx_cpea_dosage_liters: "",
   square_meters: "",
-  thickened_edge_perimeter_lineal_meters: "",
+  thickened_edge_perimeter_lineal_meters: "0",
   thickness_millimeters: "",
-  thickened_edge_construction_joint_lineal_meters: "",
-  primx_steel_fibers_dosage_kgs: ""
+  thickened_edge_construction_joint_lineal_meters: "0",
+  primx_steel_fibers_dosage_kgs: "40"
 }, action) => {
   switch (action.type) {
     // Commented out deprecated action that's not being used
@@ -75,10 +75,7 @@ export const tableState = (state = false, action) => {
 
 // searchedEstimate comes from the licenseeForm saga, which sends back a single estimate object from the DB after running the useEstimateCalculations
 // function on it
-export const searchedEstimate = (state = {
-  licensee_id: 0, 
-  estimate_number: ""
-}, action) => {
+export const searchedEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_QUERY_RESULT':
       return action.payload;
@@ -87,10 +84,28 @@ export const searchedEstimate = (state = {
   }
 };
 
+// reducer that looks at whether a user has recalculated their estimate numbers on the lookup view before being able to place an order
 export const hasRecalculated = (state = false, action) => {
   switch (action.type) {
     case 'SET_RECALCULATED_TRUE':
       return true;
+    case 'SET_RECALCULATE_FALSE':
+      return false;
+    default:
+      return state;
+  }
+}
+
+export const searchQuery = (state = {
+  licensee_id: 0,
+  estimate_number: ""
+}, action) => {
+  switch (action.type) {
+    case 'SET_SEARCH_QUERY':
+      return {
+        ...state,
+        [action.payload.key]: action.payload.value
+      };
     default:
       return state;
   }
@@ -101,7 +116,8 @@ export default combineReducers({
   buttonState,
   tableState,
   searchedEstimate,
-  hasRecalculated
+  hasRecalculated,
+  searchQuery
 });
 
 // export default estimatesReducer;

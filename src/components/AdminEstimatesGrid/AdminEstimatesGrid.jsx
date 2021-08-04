@@ -190,8 +190,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         if (dataSource == 'pending' || dataSource == 'processed') {
             // add the Purchase Order number and the order number to each of the pending and processed tables
             columns.push(
-                { field: 'po_number', headerName: 'Purchase Order', width: 175 },
-                { field: 'order_number', headerName: 'Order Number', width: 175 }
+                { field: 'po_number', headerName: 'Purchase Order', width: 175 }
             )
         }
         if (dataSource == 'pending') {
@@ -208,6 +207,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         } else if (dataSource == 'processed') {
             // ad the processed by name to the processed table
             columns.push(
+                { field: 'order_number', headerName: 'Order Number', width: 175 },
                 { field: 'processed_by', headerName: 'Processed By', width: 175 }
             )
         }
