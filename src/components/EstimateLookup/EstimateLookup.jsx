@@ -7,7 +7,6 @@ import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, For
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
-
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
 
@@ -864,3 +863,4 @@ export default function EstimateLookup() {
     </div >
   )
 }
+
