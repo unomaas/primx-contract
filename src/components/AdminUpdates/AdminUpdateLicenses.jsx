@@ -35,21 +35,25 @@ export default function AdminUpdateLicenses() {
   // renders a button to mark a licensee as active or inactive
   const renderActivateButton = (params) => {
     return (
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => handleActivateDeactivateClick(params)}
-      >
-        {/* Render as Deactivate if the licensee is currently active, or as Reactivate if licensee is currently inactive */}
+      // Render a red Deactivate button if the licensee is active, or a blue Reactivate button if the licensee is inactive
+      <>
         {params.row.active ? 
-        <>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => handleActivateDeactivateClick(params)}
+        >
           Deactivate
-        </> :
-        <>
+        </Button> :
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => handleActivateDeactivateClick(params)}
+        >
           Reactivate
-        </>
+        </Button>
         }
-      </Button>
+      </>
     )
   }
 
