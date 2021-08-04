@@ -126,6 +126,7 @@ export default function EstimateLookup() {
   return (
     <div className="EstimateCreate-wrapper">
 
+      <section className ="removeInPrint">
       <ButtonToggle />
 
       <br />
@@ -198,12 +199,15 @@ export default function EstimateLookup() {
           </Grid>
         </Grid>
       </form>
+      </section>
       <br />
       {/* End estimate search form */}
 
 
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
+
+       
 
       {searchResult.estimate_number &&
         <>
@@ -212,7 +216,7 @@ export default function EstimateLookup() {
           <Grid container
             spacing={2}
             justifyContent="center"
-          >
+          > 
             {/* Grid Table #1: Display the Licensee/Project Info Form : Shared between imperial and metric*/}
             <Grid item xs={6}>
               <Paper elevation={3}>
@@ -346,7 +350,7 @@ export default function EstimateLookup() {
               </Paper>
             </Grid>
             {/* End Licensee and Project Information table */}
-
+            
 
             {/* Table #2 Imperial: conditionally render the imperial needs*/}
             {searchResult.measurement_units == 'imperial' &&
@@ -779,6 +783,8 @@ export default function EstimateLookup() {
                                 {searchResult?.estimate_number}</b>
                             </TableCell>
                             <TableCell colSpan={4} align="right">
+                              
+                              <section className="removeInPrint">
 
                               {/* Recalculate costs  button */}
                               <Button
@@ -822,6 +828,8 @@ export default function EstimateLookup() {
                                   </Button>
                                 </>
                               }
+
+                              </section>
 
                             </TableCell>
                           </TableRow>
