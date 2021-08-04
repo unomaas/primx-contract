@@ -38,14 +38,7 @@ export default function ImperialTable() {
   const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
 
-  // ⬇ GET on page load:
-  // useEffect(() => {
-  //   // Product Call
-  //   dispatch({ type: 'FETCH_PRODUCTS' }),
-  //     // State/Province Call
-  //     dispatch({ type: 'FETCH_SHIPPING_COSTS' })
-  // }, []);
-  //#endregion ⬆⬆ All state variables above. 
+
 
   // have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data,
   // run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes

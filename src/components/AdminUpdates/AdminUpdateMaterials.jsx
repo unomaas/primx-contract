@@ -82,7 +82,7 @@ export default function AdminUpdateMaterials() {
 
   useEffect(() => {
     // GET products and prices
-    dispatch({ type: 'FETCH_PRODUCTS' });
+    dispatch({ type: 'FETCH_PRODUCTS_ARRAY' });
   }, [])
 
   return (
