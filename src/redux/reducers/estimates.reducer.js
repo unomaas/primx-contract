@@ -41,6 +41,11 @@ export const estimatesReducer = (state = {
     // case 'FETCH_ESTIMATE':
     //   return action.payload;
     case 'SET_ESTIMATE':
+      // validation for waste factor percentage: value can't go below 3
+      if (action.payload.key == 'waste_factor_percentage' && action.payload.value < 3) {
+        action.payload.value = 3;
+      }
+
       return {
         ...state,
         [action.payload.key]: action.payload.value

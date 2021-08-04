@@ -273,8 +273,8 @@ export default function ImperialTable() {
                           }}
                           fullWidth
                           value={estimateData.waste_factor_percentage}
+                          onClick={event => dispatch({ type: 'GET_WASTE_FACTOR' })}
                         >
-
                         </TextField>
                       </TableCell>
                       <TableCell></TableCell>
