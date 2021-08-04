@@ -7,7 +7,6 @@ import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, For
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
-
 import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
 
@@ -92,17 +91,29 @@ export default function EstimateLookup() {
 
   // Click handler for the Place Order button. 
   const handlePlaceOrder = () => {
-    // handle data validation here
-
+    // If they haven't entered a PO number, pop up an error helperText:
+    if (poNumber == "") {
+      setPoNumError("Please enter a P.O. Number.")
+      // If they have entered a PO number, proceed with order submission:
+    } else {
+      console.log('Test');
+      swal({
+        title: "This order has been submitted! Your PrimX representative will be in touch.",
+        text: "Please favorite this page or save the estimate number. You will need it to check the order status in the future.",
+        icon: "success",
+        buttons: "I understand",
+      }) // End Sweet Alert
+      dispatch({
+        type: 'EDIT_PLACE_ORDER', payload: {
+          id: searchResult.id,
+          po_number: poNumber,
+          licensee_id: searchResult.licensee_id,
+          estimate_number: searchResult.estimate_number
+        }
+      })
+    } // End if/else.
     // send the estimate ID and input P.O. number to be updated
-    dispatch({
-      type: 'EDIT_PLACE_ORDER', payload: {
-        id: searchResult.id,
-        po_number: poNumber,
-        licensee_id: searchResult.licensee_id,
-        estimate_number: searchResult.estimate_number
-      }
-    })
+
   }
 
 
@@ -155,7 +166,8 @@ export default function EstimateLookup() {
                           type="search"
                           size="small"
                           fullWidth
-                          value={searchResult.estimate_number}
+                          // value={searchResult.estimate_number}
+                          defaultValue={estimate_number_searched}
                         />
                       </TableCell>
 
@@ -820,19 +832,35 @@ export default function EstimateLookup() {
           {/* Render messages underneath the table if an estimate has been submitted as an order */}
           {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
           {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
-            <h3>This order is currently being processed. Please contact your PrīmX representative for more details.</h3>
+            <>
+              <h3>
+                Your estimate number is: {estimate_number_searched}
+              </h3>
+              <h3>
+                This order is currently being processed. Please contact your PrīmX representative for more details.
+              </h3>
+            </>
           }
           {/* Display this message if an estimate has been processed by an admin */}
           {searchResult.marked_as_ordered &&
-            <h3>This order has been processed. Please contact your PrīmX representative for more details.</h3>
+            <>
+              <h3>
+                This order has been processed. Please contact your PrīmX representative for more details.
+              </h3>
+            </>
           }
         </>
       } {/* End full table conditional render*/}
 
       {/* Conditonally render a failed search message if the search came back with nothing */}
       {!searchResult.estimate_number && estimate_number_searched &&
-        <h3>No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.</h3>
+        <>
+          <h3>
+            No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.
+          </h3>
+        </>
       }
-    </div>
+    </div >
   )
 }
+

@@ -54,8 +54,9 @@ export default function EstimateCreate() {
 
   // ⬇ GET on page load:
   useEffect(() => {
-    // Fetches and set all fields for dropdown menus
-    dispatch({ type: 'FETCH_FIELD_SELECT' })
+    dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
+      // Fetches and set all fields for dropdown menus
+      dispatch({ type: 'FETCH_FIELD_SELECT' })
   }, []);
   //#endregion ⬆⬆ All state variables above. 
 
@@ -121,9 +122,9 @@ export default function EstimateCreate() {
     setError(false);
     setRadioError("");
     // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
-    
+
     const pricingArray = [
-      { key: 'primx_flow_unit_price', value: products.flow_liters},
+      { key: 'primx_flow_unit_price', value: products.flow_liters },
       { key: 'primx_cpea_unit_price', value: products.cpea_liters },
     ]
     if (units == 'imperial') {
@@ -139,7 +140,7 @@ export default function EstimateCreate() {
         { key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqmeters }
       )
     } // End if/else statement. 
-   
+
     // ⬇ Loop through pricingArray to dispatch values to be stored in the estimates reducer:
     pricingArray.forEach(product => {
       dispatch({
