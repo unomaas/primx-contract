@@ -105,7 +105,7 @@ export default function MetricTable() {
     dispatch({ type: 'ADD_ESTIMATE', payload: estimateData })
   } // End handleSave
 
-  
+
   const handleCalculateCosts = () => {
     console.log('In Metric handleCalculateCosts, estimateData:', estimateData);
     const calculatedObject = calculateEstimate(estimateData)
@@ -154,9 +154,11 @@ export default function MetricTable() {
                 <Table size="small">
 
                   <TableHead>
-                    <TableCell align="center" colSpan={2}><h3>Project Quantity Inputs</h3></TableCell>
-                    <TableCell align="center" colSpan={2}><h3>Thickened Edge Inputs</h3></TableCell>
-                    <TableCell align="center" colSpan={2}><h3>Materials Required Inputs</h3></TableCell>
+                    <TableRow>
+                      <TableCell align="center" colSpan={2}><h3>Project Quantity Inputs</h3></TableCell>
+                      <TableCell align="center" colSpan={2}><h3>Thickened Edge Inputs</h3></TableCell>
+                      <TableCell align="center" colSpan={2}><h3>Materials Required Inputs</h3></TableCell>
+                    </TableRow>
                   </TableHead>
 
                   <TableBody>
@@ -215,7 +217,8 @@ export default function MetricTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Thickness:</b>
+                      <TableCell>
+                        <b>Thickness:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -231,7 +234,8 @@ export default function MetricTable() {
                         />
                       </TableCell>
 
-                      <TableCell><b>Lineal Meters @ Construction Joint:</b>
+                      <TableCell>
+                        <b>Lineal Meters @ Construction Joint:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -249,7 +253,8 @@ export default function MetricTable() {
                         />
                       </TableCell>
 
-                      <TableCell><b>PrīmX Steel Fibers @ Dosage Rate per m³:</b>
+                      <TableCell>
+                        <b>PrīmX Steel Fibers @ Dosage Rate per m³:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -269,7 +274,8 @@ export default function MetricTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Waste Factor Percentage</b>
+                      <TableCell>
+                        <b>Waste Factor Percentage</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -288,7 +294,8 @@ export default function MetricTable() {
                       </TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
-                      <TableCell><b>PrīmX CPEA @ Dosage Rate per m³:</b>
+                      <TableCell>
+                        <b>PrīmX CPEA @ Dosage Rate per m³:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
