@@ -6,7 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText } from '@material-ui/core';
+import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
@@ -27,6 +28,8 @@ export default function EstimateLookup() {
   const [selectError, setSelectError] = useState("");
   const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
+  const snack = useSelector(store => store.snackBar);
+
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { estimate_number_searched, licensee_id_searched } = useParams();
   const dispatch = useDispatch();
@@ -42,7 +45,7 @@ export default function EstimateLookup() {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB
     if (estimate_number_searched && licensee_id_searched) {
       dispatch({
-        type: 'FETCH_ESTIMATE_QUERY', 
+        type: 'FETCH_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
           estimate_number: estimate_number_searched
@@ -93,7 +96,8 @@ export default function EstimateLookup() {
     searchResult.history = history;
     // needs to GET shipping information and pricing information before recalculating
     console.log('searchResult before sending:', searchResult);
-    dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult })
+    dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult });
+    dispatch({ type: 'GET_RECALCULATE_INFO' });
   } // End handleRecalculateCosts
 
   /** ⬇ handlePlaceOrder:
@@ -108,13 +112,13 @@ export default function EstimateLookup() {
       console.log('Test');
       swal({
         title: "This order has been submitted! Your PrimX representative will be in touch.",
-        text: "Please favorite this page or save the estimate number. You will need it to check the order status in the future.",
+        text: "Remember, your estimate number has changed! Please favorite this page or save the new estimate number. You will need it to check the order status in the future.",
         icon: "success",
         buttons: "I understand",
       }).then(() => {
         window.print();
       }); // End swal
-        
+
       dispatch({
         type: 'EDIT_PLACE_ORDER',
         payload: {
@@ -126,12 +130,36 @@ export default function EstimateLookup() {
       }) // End dispatch
     } // End if/else.
   } // End handlePlaceOrder
+
+  //sets snack bar notification to closed after appearing
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    dispatch({ type: 'SET_CLOSE' })
+  };
   //#endregion ⬆⬆ Event handlers above. 
 
 
   // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
+
+      {/* Snackbar configures all of the info pop-ups required. */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          variant={snack.variant}
+          onClose={handleClose}
+          severity={snack.severity}
+        >
+          {snack.message}
+        </Alert>
+      </Snackbar>
 
       <section className="removeInPrint">
         <ButtonToggle />
@@ -624,8 +652,7 @@ export default function EstimateLookup() {
                             <TableCell><b>PrīmX Steel Fibers (lbs)</b></TableCell>
                             <TableCell><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
                             <TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
-                          </> :
-                          <>
+                          </> : <>
                             <TableCell><b>PrīmX DC (kgs)</b></TableCell>
                             <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
                             <TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
@@ -648,8 +675,7 @@ export default function EstimateLookup() {
                             <TableCell>{searchResult?.primx_steel_fibers_dosage_lbs}</TableCell>
                             <TableCell>N/A</TableCell>
                             <TableCell>{searchResult?.primx_cpea_dosage_liters}</TableCell>
-                          </> :
-                          <>
+                          </> : <>
                             <TableCell><b>Dosage Rate (per m³):</b></TableCell>
                             <TableCell>40</TableCell>
                             <TableCell>{searchResult?.primx_flow_dosage_liters}</TableCell>
@@ -743,7 +769,6 @@ export default function EstimateLookup() {
                         <TableCell>0</TableCell>
                         <TableCell>{searchResult?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
                         <TableCell>{searchResult?.design_total_containers?.toLocaleString('en-US')}</TableCell>
-
                       </TableRow>
 
                       <TableRow>
@@ -754,7 +779,6 @@ export default function EstimateLookup() {
                         <TableCell>0</TableCell>
                         <TableCell>{searchResult?.primx_cpea_calculated_shipping_estimate}</TableCell>
                         <TableCell>{searchResult?.design_total_shipping_estimate}</TableCell>
-
                       </TableRow>
 
                       <TableRow>
@@ -773,9 +797,7 @@ export default function EstimateLookup() {
                         <>
                           <TableRow>
                             <TableCell colSpan={7} align="right">
-
                               <section className="removeInPrint">
-
                                 {/* Recalculate costs button */}
                                 <Button
                                   variant="contained"
@@ -783,8 +805,8 @@ export default function EstimateLookup() {
                                   onClick={handleRecalculateCosts}
                                 >
                                   Recalculate Costs
-                                </Button> &nbsp; &nbsp;
-
+                                </Button>
+                                &nbsp; &nbsp;
                                 {hasRecalculated ?
                                   <>
                                     <TextField
@@ -796,8 +818,8 @@ export default function EstimateLookup() {
                                     </TextField>
                                   </> :
                                   <>Recalculate costs before placing order.</>
-                                } &nbsp; &nbsp;
-
+                                }
+                                &nbsp; &nbsp;
                                 {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
                                 {hasRecalculated ?
                                   <>

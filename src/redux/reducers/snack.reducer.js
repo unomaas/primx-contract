@@ -107,6 +107,13 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
         severity: 'info',
         variant: 'filled'
       }
+    case 'GET_RECALCULATE_INFO':
+      return {
+        open: true,
+        message: `The prices have been updated to be current with today's rates! Please be aware that your estimate number has changed as a result.`,
+        severity: 'info',
+        variant: 'filled'
+      }
     default:
       return state;
   }
