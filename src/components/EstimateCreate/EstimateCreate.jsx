@@ -193,9 +193,9 @@ export default function EstimateCreate() {
   } // End handleSubmit
 
   // click handler that will autofill data for the licensee and project information view
-  const handlePresentationAutofill = () => {
+  const handlePresentationAutofillData = () => {
     dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_name', value: 'Warehouse on Main' }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'licensee_id', value: 4 }});
+    // dispatch({type: 'SET_ESTIMATE', payload: { key: 'licensee_id', value: 4 }});
     dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_general_contractor', value: `Jenkin's Construction` }});
     dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_manager_name', value: 'Jane Doe' }});
     dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_manager_email', value: 'jane@jenkinsconstruction.com' }});
@@ -249,7 +249,7 @@ export default function EstimateCreate() {
           <Grid item xs={6}>
             <Paper elevation={3}>
               <TableContainer >
-                <h3 className="lexendFont" onClick={handlePresentationAutofill}>Licensee & Project Information</h3>
+                <h3 className="lexendFont" onClick={handlePresentationAutofillData}>Licensee & Project Information</h3>
                 <Table size="small">
                   <TableBody>
 
