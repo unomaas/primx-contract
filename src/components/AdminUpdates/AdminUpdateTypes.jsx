@@ -85,7 +85,7 @@ export default function AdminUpdateTypes() {
   return (
     <div>
       <AdminUpdates />
-      <h4>Update Floor Types</h4>
+      <h2>Update Floor Types</h2>
 
         {/* input nd add button for adding new floor types */}
 
@@ -108,7 +108,7 @@ export default function AdminUpdateTypes() {
       {/* showing floor types */}
       <UpdateFloorTypesGrid floorTypes={floorTypes}/>
 
-      <h4>Update Placement Types</h4>
+      <h2>Update Placement Types</h2>
         {/* input and add button for adding new placement types */}
         <div style={{margin: '0 auto'}}>
           <form noValidate autoComplete="off">
@@ -133,9 +133,19 @@ export default function AdminUpdateTypes() {
         </div>
       {/* showing placement types */}
       <UpdatePlacementTypesGrid placementTypes={placementTypes}/>
-      {/* snackbar to confirm when a floor or placement type has been added */}
-      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={snack.severity}>
+
+      {/* Snackbar configures all of the info pop-ups required. */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          variant={snack.variant}
+          onClose={handleClose}
+          severity={snack.severity}
+        >
           {snack.message}
         </Alert>
       </Snackbar>
