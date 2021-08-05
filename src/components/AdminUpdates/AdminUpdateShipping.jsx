@@ -97,7 +97,7 @@ export default function AdminUpdateShipping() {
       </div>
 
       <div>
-        <h3>Update Shipping Costs</h3>
+        <h2>Update Shipping Costs</h2>
       </div>
 
       <div>
@@ -160,9 +160,19 @@ export default function AdminUpdateShipping() {
       </div>
       {/* the grid below is being imported in - this grid shows the current shipping lanes and their pricing info */}
       <UpdateShippingCostsGrid />
-      {/* snackbar set to confirm a new lane has been successfully added */}
-      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={snack.severity}>
+
+      {/* Snackbar configures all of the info pop-ups required. */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          variant={snack.variant}
+          onClose={handleClose}
+          severity={snack.severity}
+        >
           {snack.message}
         </Alert>
       </Snackbar>

@@ -27,7 +27,7 @@ export default function AdminUpdateLicenses() {
   const snack = useSelector(store => store.snackBar);
   //defining classes for MUI
   const classes = useStyles();
-  
+
   // GET all licensee company data on component load
   useEffect(() => {
     dispatch({ type: 'FETCH_ALL_COMPANIES' });
@@ -39,7 +39,7 @@ export default function AdminUpdateLicenses() {
     return (
       // Render a red Deactivate button if the licensee is active, or a blue Reactivate button if the licensee is inactive
       <>
-        {params.row.active ? 
+        {params.row.active ?
           <Button
             variant="contained"
             color="secondary"
@@ -62,7 +62,8 @@ export default function AdminUpdateLicenses() {
   // Click handler for the rendered Deactivate/Reactivate buttons in the data grid, toggles active status of licensee
   const handleActivateDeactivateClick = (params) => {
     // On click, sends a dispatch to the companies saga to toggle active or inactive licensee status
-    dispatch({type: 'TOGGLE_ACTIVE_INACTIVE_LICENSEE', payload: params.row});
+    dispatch({ type: 'TOGGLE_ACTIVE_INACTIVE_LICENSEE', payload: params.row });
+    dispatch({ type: 'SET_SUCCESS_ACTIVE'});
   }
 
   //establish rows with campanies array for datagrid
@@ -87,7 +88,7 @@ export default function AdminUpdateLicenses() {
   const handleCompanyInputChange = (event) => {
     setCompanyNameInput(event.target.value);
   }
-  
+
   //handles add company button click that sends payload of company name input to saga for posting to database
   const handleAddCompany = (event) => {
     if (companyNameInput == '') {
@@ -109,7 +110,9 @@ export default function AdminUpdateLicenses() {
   return (
     <div >
       <AdminUpdates />
+      
       <h2>Update Licensee</h2>
+
       <TextField id="outlined-basic" className={classes.AddLicenseeInput} label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange} />
       <Fab className={classes.AddLicenseeInput} onClick={handleAddCompany} color="primary" aria-label="add">
         <AddIcon />
@@ -122,8 +125,20 @@ export default function AdminUpdateLicenses() {
           columns={columns}
           pageSize={10}
         />
-        <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity={snack.severity}>
+
+
+        {/* Snackbar configures all of the info pop-ups required. */}
+        <Snackbar
+          open={snack.open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            variant={snack.variant}
+            onClose={handleClose}
+            severity={snack.severity}
+          >
             {snack.message}
           </Alert>
         </Snackbar>
