@@ -126,79 +126,79 @@ export default function EstimateLookup() {
   return (
     <div className="EstimateCreate-wrapper">
 
-      <section className ="removeInPrint">
-      <ButtonToggle />
+      <section className="removeInPrint">
+        <ButtonToggle />
 
-      <br />
+        <br />
 
-      <form onSubmit={handleSubmit}>
-        <Grid container
-          spacing={2}
-          justifyContent="center"
-        >
+        <form onSubmit={handleSubmit}>
+          <Grid container
+            spacing={2}
+            justifyContent="center"
+          >
 
-          {/* Grid #1: The Search Bar for Estimate Lookup */}
-          <Grid item xs={12}>
-            <Paper elevation={3}>
-              <TableContainer >
-                <Table size="small">
-                  <TableBody>
+            {/* Grid #1: The Search Bar for Estimate Lookup */}
+            <Grid item xs={12}>
+              <Paper elevation={3}>
+                <TableContainer >
+                  <Table size="small">
+                    <TableBody>
 
-                    <TableRow>
-                      <TableCell><b>Licensee/Contractor Name:</b></TableCell>
-                      <TableCell>
-                        <FormControl error={error}>
-                          <Select
-                            onChange={event => handleChange('licensee_id', event.target.value)}
+                      <TableRow>
+                        <TableCell><b>Licensee/Contractor Name:</b></TableCell>
+                        <TableCell>
+                          <FormControl error={error}>
+                            <Select
+                              onChange={event => handleChange('licensee_id', event.target.value)}
+                              required
+                              size="small"
+                              fullWidth
+                              value={searchQuery.licensee_id}
+                            // defaultValue={searchResult.licensee_id}
+                            >
+                              <MenuItem key="0" value="0">Please Select</MenuItem>
+                              {companies.map(companies => {
+                                return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                              }
+                              )}
+                            </Select>
+                            <FormHelperText>{selectError}</FormHelperText>
+                          </FormControl>
+                        </TableCell>
+
+                        <TableCell><b>Estimate Number:</b></TableCell>
+                        <TableCell>
+                          <TextField
+                            onChange={event => handleChange('estimate_number', event.target.value)}
                             required
+                            type="search"
                             size="small"
                             fullWidth
-                            value={searchQuery.licensee_id}
-                            // defaultValue={searchResult.licensee_id}
-                          >
-                            <MenuItem key="0" value="0">Please Select</MenuItem>
-                            {companies.map(companies => {
-                              return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
-                            }
-                            )}
-                          </Select>
-                          <FormHelperText>{selectError}</FormHelperText>
-                        </FormControl>
-                      </TableCell>
-
-                      <TableCell><b>Estimate Number:</b></TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('estimate_number', event.target.value)}
-                          required
-                          type="search"
-                          size="small"
-                          fullWidth
-                          value={searchQuery.estimate_number}
+                            value={searchQuery.estimate_number}
                           // defaultValue={estimate_number_searched}
-                        />
-                      </TableCell>
+                          />
+                        </TableCell>
 
-                      <TableCell colSpan={2} align="right">
-                        <Button
-                          type="submit"
-                          // onClick={event => handleSubmit(event)}
-                          variant="contained"
-                          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
-                          color="primary"
-                        >
-                          Search
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                        <TableCell colSpan={2} align="right">
+                          <Button
+                            type="submit"
+                            // onClick={event => handleSubmit(event)}
+                            variant="contained"
+                            style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                            color="primary"
+                          >
+                            Search
+                          </Button>
+                        </TableCell>
+                      </TableRow>
 
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
+        </form>
       </section>
       <br />
       {/* End estimate search form */}
@@ -207,7 +207,7 @@ export default function EstimateLookup() {
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
 
-       
+
 
       {searchResult.estimate_number &&
         <>
@@ -216,7 +216,7 @@ export default function EstimateLookup() {
           <Grid container
             spacing={2}
             justifyContent="center"
-          > 
+          >
             {/* Grid Table #1: Display the Licensee/Project Info Form : Shared between imperial and metric*/}
             <Grid item xs={6}>
               <Paper elevation={3}>
@@ -350,7 +350,7 @@ export default function EstimateLookup() {
               </Paper>
             </Grid>
             {/* End Licensee and Project Information table */}
-            
+
 
             {/* Table #2 Imperial: conditionally render the imperial needs*/}
             {searchResult.measurement_units == 'imperial' &&
@@ -778,59 +778,53 @@ export default function EstimateLookup() {
                       {!searchResult.ordered_by_licensee &&
                         <>
                           <TableRow>
-                            <TableCell colSpan={3} align="left" className={classes.estimateNumberLookup}>
-                              <b>This Estimate Number Is:<br />
-                                {searchResult?.estimate_number}</b>
-                            </TableCell>
-                            <TableCell colSpan={4} align="right">
-                              
+                            <TableCell colSpan={7} align="right">
+
                               <section className="removeInPrint">
 
-                              {/* Recalculate costs  button */}
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleRecalculateCosts}
-                              >
-                                Recalculate Costs
-                              </Button> &nbsp; &nbsp;
+                                {/* Recalculate costs  button */}
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={handleRecalculateCosts}
+                                >
+                                  Recalculate Costs
+                                </Button> &nbsp; &nbsp;
 
-                              {hasRecalculated ?
-                                <>
-                                  <TextField
-                                    onChange={(event) => setPoNumber(event.target.value)}
-                                    size="small"
-                                    label="PO Number"
-                                    helperText={poNumError}
-                                  >
-                                  </TextField>
-                                </> :
-                                <>Recalculate costs before placing order.</>
-                              } &nbsp; &nbsp;
+                                {hasRecalculated ?
+                                  <>
+                                    <TextField
+                                      onChange={(event) => setPoNumber(event.target.value)}
+                                      size="small"
+                                      label="PO Number"
+                                      helperText={poNumError}
+                                    >
+                                    </TextField>
+                                  </> :
+                                  <>Recalculate costs before placing order.</>
+                                } &nbsp; &nbsp;
 
-                              {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
-                              {hasRecalculated ?
-                                <>
-                                  <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={handlePlaceOrder}
-                                  >
-                                    Place Order
-                                  </Button>
-                                </> :
-                                <>
-                                  <Button
-                                    variant="contained"
-                                    disabled
-                                  >
-                                    Place Order
-                                  </Button>
-                                </>
-                              }
-
+                                {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
+                                {hasRecalculated ?
+                                  <>
+                                    <Button
+                                      variant="contained"
+                                      color="secondary"
+                                      onClick={handlePlaceOrder}
+                                    >
+                                      Place Order
+                                    </Button>
+                                  </> :
+                                  <>
+                                    <Button
+                                      variant="contained"
+                                      disabled
+                                    >
+                                      Place Order
+                                    </Button>
+                                  </>
+                                }
                               </section>
-
                             </TableCell>
                           </TableRow>
                         </>
@@ -844,13 +838,15 @@ export default function EstimateLookup() {
               </Paper>
             </Grid>
           </Grid>
+
+          <h3>
+            Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
+          </h3>
+
           {/* Render messages underneath the table if an estimate has been submitted as an order */}
           {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
           {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
             <>
-              <h3>
-                Your estimate number is: {searchResult?.estimate_number}
-              </h3>
               <h3>
                 This order is currently being processed. Please contact your PrīmX representative for more details.
               </h3>
