@@ -843,6 +843,7 @@ export default function EstimateLookup() {
             Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
           </h3>
 
+
           {/* Render messages underneath the table if an estimate has been submitted as an order */}
           {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
           {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
