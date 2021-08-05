@@ -1,71 +1,74 @@
+//#region ⬇⬇ All document setup, below:
+// ⬇ File Imports: 
+import ButtonToggle from '../ButtonToggle/ButtonToggle';
+// ⬇ Dependent Functionality:
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText, Box, Typography } from '@material-ui/core';
+import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
+//#endregion ⬆⬆ All document setup above.
 
-import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
-import ButtonToggle from '../ButtonToggle/ButtonToggle';
+
 
 export default function EstimateLookup() {
+  //#region ⬇⬇ All state variables below:
   const companies = useSelector(store => store.companies);
   const calculateEstimate = useEstimateCalculations;
-
-  // searchResult below is an estimate object searched from the DB that has already been mutated by the useEstimateCalculations function
+  // ⬇ searchResult below is an estimate object searched from the DB that has already been mutated by the useEstimateCalculations function.
   const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
-  // hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates
-  // the Submit Order button
+  // ⬇ hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates the Submit Order button.
   const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
   const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
-
-  // const [searchQuery, setSearchQuery] = useState({
-  //   licensee_id: "0",
-  //   id: ""
-  // });
   const [error, setError] = useState(false);
-  const classes = useStyles();
+  const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
   const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
-  // component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number
-  // const { licensee_id_estimate_number } = useParams();
+  // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { estimate_number_searched, licensee_id_searched } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-
+  // ⬇ Run on page load:
   useEffect(() => {
-    // Make the toggle button show this selection:
+    // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
       dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
   }, []);
-
-
+  // ⬇ Run on estimate search complete:
   useEffect(() => {
-    // if the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view,
-    // dispatch the data in the url params to run a GET request to the DB
+    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB
     if (estimate_number_searched && licensee_id_searched) {
       dispatch({
-        type: 'FETCH_ESTIMATE_QUERY', payload: {
+        type: 'FETCH_ESTIMATE_QUERY', 
+        payload: {
           licensee_id: licensee_id_searched,
           estimate_number: estimate_number_searched
-        }
-      })
-    }
-  }, [estimate_number_searched, licensee_id_searched])
+        } // End payload
+      }) // End dispatch
+    } // End if statement
+  }, [estimate_number_searched, licensee_id_searched]);
+  //#endregion ⬆⬆ All state variables above. 
 
-  // Change handler for the estimate search form
+
+  //#region ⬇⬇ Event handlers below:
+  /** ⬇ handleChange:
+    * Change handler for the estimate search form
+    */
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
     // setSearchQuery({ ...searchQuery, [key]: value })
     dispatch({
       type: 'SET_SEARCH_QUERY',
       payload: { key: key, value: value }
-    });
-  };
+    }); // End dispatch
+  }; // End handleChange
 
+  /** ⬇ handleSubmit:
+    * 
+    */
   const handleSubmit = () => {
     console.log('In handleSubmit')
     // ⬇ Select dropdown validation:
@@ -79,23 +82,23 @@ export default function EstimateLookup() {
       console.log(("Not submitting."));
       setError(true);
       setSelectError("Please select a value.");
-    }
-  };
+    } // End if/else
+  }; // End handleSubmit
 
-
-  // Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current
-  // shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to 
-  // click the submit order button
+  /** ⬇ handleRecalculateCosts:
+    * Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
+    */
   const handleRecalculateCosts = () => {
     // attach history from useHistory to the searchResult object to allow navigation from inside the saga
     searchResult.history = history;
     // needs to GET shipping information and pricing information before recalculating
     console.log('searchResult before sending:', searchResult);
     dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult })
-  }
+  } // End handleRecalculateCosts
 
-
-  // Click handler for the Place Order button. 
+  /** ⬇ handlePlaceOrder:
+    * Click handler for the Place Order button. 
+    */
   const handlePlaceOrder = () => {
     // If they haven't entered a PO number, pop up an error helperText:
     if (poNumber == "") {
@@ -110,19 +113,20 @@ export default function EstimateLookup() {
         buttons: "I understand",
       }) // End Sweet Alert
       dispatch({
-        type: 'EDIT_PLACE_ORDER', payload: {
+        type: 'EDIT_PLACE_ORDER',
+        payload: {
           id: searchResult.id,
           po_number: poNumber,
           licensee_id: searchResult.licensee_id,
           estimate_number: searchResult.estimate_number
-        }
-      })
+        } // End payload
+      }) // End dispatch
     } // End if/else.
-    // send the estimate ID and input P.O. number to be updated
+  } // End handlePlaceOrder
+  //#endregion ⬆⬆ Event handlers above. 
 
-  }
 
-
+  // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
 
@@ -154,7 +158,6 @@ export default function EstimateLookup() {
                               size="small"
                               fullWidth
                               value={searchQuery.licensee_id}
-                            // defaultValue={searchResult.licensee_id}
                             >
                               <MenuItem key="0" value="0">Please Select</MenuItem>
                               {companies.map(companies => {
@@ -175,14 +178,12 @@ export default function EstimateLookup() {
                             size="small"
                             fullWidth
                             value={searchQuery.estimate_number}
-                          // defaultValue={estimate_number_searched}
                           />
                         </TableCell>
 
                         <TableCell colSpan={2} align="right">
                           <Button
                             type="submit"
-                            // onClick={event => handleSubmit(event)}
                             variant="contained"
                             style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
                             color="primary"
@@ -206,13 +207,8 @@ export default function EstimateLookup() {
 
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
-
-
-
       {searchResult.estimate_number &&
         <>
-
-
           <Grid container
             spacing={2}
             justifyContent="center"
@@ -301,13 +297,6 @@ export default function EstimateLookup() {
                           {searchResult?.anticipated_first_pour_date}
                         </TableCell>
                       </TableRow>
-
-                      {/* <TableRow>
-                        <TableCell><b>Lead Time (In Weeks):</b></TableCell>
-                        <TableCell>
-                          BRING IN CALCULATE FUNCTION SOMEHOW
-                        </TableCell>
-                      </TableRow> */}
 
                       <TableRow>
                         <TableCell><b>Shipping Street Address:</b></TableCell>
@@ -614,11 +603,13 @@ export default function EstimateLookup() {
             } {/* End Metric Conditional Render */}
 
 
+            {/* Table #4, Materials Costs Table */}
             <Grid item xs={12}>
               <Paper elevation={3}>
                 <TableContainer>
                   <h3>Materials Table</h3>
                   <Table size="small">
+
                     <TableHead>
                       <TableRow>
                         <TableCell></TableCell>
@@ -782,7 +773,7 @@ export default function EstimateLookup() {
 
                               <section className="removeInPrint">
 
-                                {/* Recalculate costs  button */}
+                                {/* Recalculate costs button */}
                                 <Button
                                   variant="contained"
                                   color="primary"

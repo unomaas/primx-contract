@@ -1,6 +1,5 @@
 //#region ⬇⬇ All document setup, below:
 // ⬇ File Imports: 
-
 import './EstimateCreate.css';
 // ⬇ Dependent Functionality:
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,10 +17,7 @@ import { eventNames } from 'commander';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
 //#endregion ⬆⬆ All document setup above.
-
-
 
 
 
@@ -41,17 +37,7 @@ export default function EstimateCreate() {
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");
   const [leadTime, setLeadTime] = useState("");
-
   const snack = useSelector(store => store.snackBar);
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    dispatch({ type: 'SET_CLOSE' })
-  };
-
   // ⬇ GET on page load:
   useEffect(() => {
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
@@ -62,6 +48,13 @@ export default function EstimateCreate() {
 
 
   //#region ⬇⬇ Event handlers below:
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    dispatch({ type: 'SET_CLOSE' })
+  };
 
   const timeDifference = (chosenDate) => {
     // using the chosen date, run the change handler to set estimateData in the reducer for the chosen date
@@ -82,8 +75,6 @@ export default function EstimateCreate() {
     */
   const handleChange = (key, value) => {
     console.log('In EstimateCreate handleChange, key/value:', key, '/', value);
-    // if (key == "anticipated_first_pour_date") {}
-
     // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
       type: 'SET_ESTIMATE',
@@ -192,12 +183,9 @@ export default function EstimateCreate() {
     // history.push('/dashboard');
   } // End handleSubmit
 
+  //#endregion ⬆⬆ Event handlers above. 
 
 
-  //#endregion ⬆⬆ Event handles above. 
-
-
-  console.log('estimateData is currently:', estimateData);
   return (
     <div className="EstimateCreate-wrapper">
 
