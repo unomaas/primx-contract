@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
 
+
 export default function AdminUpdateLicenses() {
 
   // establish usedispatch as dispatch
@@ -70,14 +71,16 @@ export default function AdminUpdateLicenses() {
 
   //estabish columns for datagrid
   const columns = [
-    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300 },
+    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, headerClassName: classes.header},
     {
       field: '',
       headerName: 'Activate/ Deactivate',
       width: 225,
       disableClickEventBubbling: true,
       renderCell: renderActivateButton, // function declared above
-      align: 'center'
+      align: 'center',
+      headerClassName: classes.header
+      
     },
   ];
 
