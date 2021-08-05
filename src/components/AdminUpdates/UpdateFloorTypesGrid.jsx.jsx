@@ -14,7 +14,7 @@ export default function UpdateFloorTypesGrid({floorTypes}) {
     // columns for Data Grid
     const floorColumns = [
 
-        {field: 'floor_type', headerName: 'Floor Type', width: 400} // Editable + validation?
+        {field: 'floor_type', headerName: 'Floor Type', width: 400, headerClassName: classes.header} // Editable + validation?
     ]
     //rows are the info from the floor types reducer
     let floorRows = floorTypes

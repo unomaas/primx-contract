@@ -40,9 +40,9 @@ export default function AdminUpdateMaterials() {
 
   //estabish columns for datagrid
   const columns = [
-    { field: 'product_name', headerName: 'Product', width: 300, editable: false },
-    { field: 'product_price', headerName: 'Price', width: 175, editable: true },
-    { field: 'on_hand', headerName: 'On Hand', width: 200, editable: true },
+    { field: 'product_name', headerName: 'Product', width: 300, editable: false,headerClassName: classes.header },
+    { field: 'product_price', headerName: 'Price', width: 175, editable: true,headerClassName: classes.header },
+    // { field: 'on_hand', headerName: 'On Hand', width: 200, editable: true },
   ];
 
   const handleEditSubmit = ({ id, field, props }) => {
