@@ -3,35 +3,49 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
     case 'SET_SUCCESS_COMPANY':
       return {
         open: true,
-        message: 'A Licensee Has Been Added!',
+        message: 'The new licensee has been added!',
         severity: "success",
         variant: 'filled'
       }
     case 'SET_SUCCESS_SHIPPING':
       return {
         open: true,
-        message: 'Shipping Details Have Been Added!',
+        message: 'The shipping details have been added!',
         severity: "success",
         variant: 'filled'
       }
     case 'SET_SUCCESS_FLOOR_TYPES':
       return {
         open: true,
-        message: 'Floor Type has Been Added!',
+        message: 'The new floor type has been added!',
         severity: "success",
         variant: 'filled'
       }
     case 'SET_SUCCESS_PLACEMENT_TYPES':
       return {
         open: true,
-        message: 'Placement Type has Been Added!',
+        message: 'The new placement type has been added!',
         severity: "success",
         variant: 'filled'
       }
     case 'SET_SUCCESS_REGISTER_ADMIN':
       return {
         open: true,
-        message: 'New Admin has Been Added!',
+        message: 'The new administrator account has been added!',
+        severity: "success",
+        variant: 'filled'
+      }
+    case 'SET_SUCCESS_DELETE_ADMIN':
+      return {
+        open: true,
+        message: 'That administrator account has been deleted!',
+        severity: "success",
+        variant: 'filled'
+      }
+    case 'SET_SUCCESS_ACTIVE':
+      return {
+        open: true,
+        message: 'Successfully marked the licensee as active/inactive, which affects if they appear as options on the menu drop-downs across the site.',
         severity: "success",
         variant: 'filled'
       }
@@ -48,7 +62,8 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
       return {
         open: true,
         message: 'Please complete all of the input fields to proceed.',
-        severity: "error"
+        severity: "info",
+        variant: "filled"
       }
     case 'GET_LINEAL_INCHES':
       return {
@@ -88,7 +103,14 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
     case 'GET_WASTE_FACTOR':
       return {
         open: true,
-        message: `Enter a percentage to calculate waste factor volume. Default is 5, minimum is 3.`,
+        message: `Please choose a percentage to calculate waste factor volume. The default is 5%, and the minimum is 3%.`,
+        severity: 'info',
+        variant: 'filled'
+      }
+    case 'GET_RECALCULATE_INFO':
+      return {
+        open: true,
+        message: `The prices have been updated to be current with today's rates! Please be aware that your estimate number has changed as a result.`,
         severity: 'info',
         variant: 'filled'
       }

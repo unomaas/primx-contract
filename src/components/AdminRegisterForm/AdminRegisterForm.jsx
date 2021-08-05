@@ -68,7 +68,7 @@ function AdminRegisterForm() {
     <div>
       <form onSubmit={registerUser}>
         <h2>Register New Admin</h2>
-        <p>Use this page to create a new Admin account for another user.</p>
+        <p>Use this page to create a new administrator account for another user.</p>
         {errors.registrationMessage && (
           <h3 className="alert" role="alert">
             {errors.registrationMessage}
@@ -117,9 +117,18 @@ function AdminRegisterForm() {
         </div>
       </form>
 
-      {/* snackbar to confirm when a new admin has been registered */}
-      <Snackbar open={snack.open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={snack.severity}>
+      {/* Snackbar configures all of the info pop-ups required. */}
+      <Snackbar
+        open={snack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
+          variant={snack.variant}
+          onClose={handleClose}
+          severity={snack.severity}
+        >
           {snack.message}
         </Alert>
       </Snackbar>
