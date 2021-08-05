@@ -3,7 +3,7 @@ import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import removeTimestamps from '../../hooks/removeTimestamps';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
-import swal from 'sweetalert';
+// import swal from 'sweetalert';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
@@ -51,12 +51,10 @@ function* AddEstimate(action) {
         
          // ⬇ Sweet Alert to let them know to save the Estimate #:
         swal({
-            title: "Estimate saved! Please print this page!",
-            text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+            title: "Your estimate number has changed!",
+            text: "Please be aware.",
             icon: "info",
             buttons: "I understand.",
-          }).then(() => {
-            window.print();
           }); // End swal
     }
 

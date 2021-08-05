@@ -108,7 +108,10 @@ export default function EstimateLookup() {
         text: "Please favorite this page or save the estimate number. You will need it to check the order status in the future.",
         icon: "success",
         buttons: "I understand",
-      }) // End Sweet Alert
+      }).then(() => {
+        window.print();
+      }); // End swal
+        
       dispatch({
         type: 'EDIT_PLACE_ORDER', payload: {
           id: searchResult.id,
