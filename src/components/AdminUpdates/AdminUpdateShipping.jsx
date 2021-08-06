@@ -87,6 +87,15 @@ export default function AdminUpdateShipping() {
 
   console.log('shippingCosts in AdminUpdateShipping -->', shippingCosts)
 
+  const autofillShipping = () => {
+    setNewShippingCost({
+      ship_to_state_province: 'Manitoba', 
+      dc_price: '16000', 
+      flow_cpea_price: '15000', 
+      fibers_price: '15000' 
+    })
+  }
+
 
 
   return (
@@ -97,7 +106,7 @@ export default function AdminUpdateShipping() {
       </div>
 
       <div>
-        <h2>Update Shipping Costs</h2>
+        <h2 onClick={autofillShipping}>Update Shipping Costs</h2>
       </div>
 
       <div>
