@@ -128,18 +128,6 @@ function* recalculateEstimate(action) {
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then
 // be processed by an admin user
 function* markEstimateAsOrdered(action) {
-<<<<<<< HEAD
-    try {
-        yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
-        // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
-        yield put({type: 'FETCH_ESTIMATE_QUERY', payload: action.payload});
-        // set the recalculated boolean in the estimates reducer to false so the place order button gets disabled for other estimates
-        yield put({type: 'SET_RECALCULATE_FALSE'});
-    }
-    catch (error) {
-        console.log('markEstimateAsOrdered failed', error)
-    }
-=======
   try {
     yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
     // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
@@ -151,7 +139,6 @@ function* markEstimateAsOrdered(action) {
     console.log('markEstimateAsOrdered failed', error)
   }
 
->>>>>>> main
 }
 
 
