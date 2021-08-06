@@ -177,40 +177,6 @@ export default function EstimateCreate() {
     }
   } // End handleSubmit
 
-  /** ⬇ handleSubmit:
-    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
-    */
-  const handleSave = event => {
-    console.log('In handleSave');
-    // ⬇ Don't refresh until submit:
-    event.preventDefault();
-    // // ⬇ Sending newPlant to our reducer: 
-    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-    // // ⬇ Send the user back:
-    // history.push('/dashboard');
-  } // End handleSubmit
-
-  // click handler that will autofill data for the licensee and project information view
-  const handlePresentationAutofillData = () => {
-    handleMeasurementUnits('imperial');
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_name', value: 'Warehouse on Main' }});
-    // dispatch({type: 'SET_ESTIMATE', payload: { key: 'licensee_id', value: 4 }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_general_contractor', value: `Jenkin's Construction` }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_manager_name', value: 'Jane Doe' }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_manager_email', value: 'jane@jenkinsconstruction.com' }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_manager_phone', value: '612-223-4579' }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'floor_types_id', value: 2 }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'placement_types_id', value: 1 }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'measurement_units', value: 'imperial' }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'ship_to_address', value: '501 Main St.' }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'ship_to_city', value: 'Minneapolis' }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'shipping_costs_id', value: 22 }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'zip_postal_code', value: '55454' }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'country', value: 'United States' }});
-  }
-
-
-  //#endregion ⬆⬆ Event handles above. 
 
 
   return (
@@ -247,7 +213,7 @@ export default function EstimateCreate() {
           <Grid item xs={6}>
             <Paper elevation={3}>
               <TableContainer >
-                <h3 className="lexendFont" onClick={handlePresentationAutofillData}>Licensee & Project Information</h3>
+                <h3 className="lexendFont">Licensee & Project Information</h3>
                 <Table size="small">
                   <TableBody>
 

@@ -124,14 +124,6 @@ export default function ImperialTable() {
   };
   //#endregion ⬆⬆ Event handles above. 
 
-  // autofill for presentation
-  const handleQuantityAutofill = () => {
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'square_feet', value: 125000 }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'thickness_inches', value: 5 }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'thickened_edge_perimeter_lineal_feet', value: 1200 }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'thickened_edge_construction_joint_lineal_feet', value: 1300 }});
-    dispatch({type: 'SET_ESTIMATE', payload: { key: 'primx_cpea_dosage_liters', value: 3.5 }});
-  }
 
   return (
     <>
@@ -166,7 +158,7 @@ export default function ImperialTable() {
 
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center" colSpan={2}><h3 onClick={handleQuantityAutofill}>Project Quantity Inputs</h3></TableCell>
+                      <TableCell align="center" colSpan={2}><h3>Project Quantity Inputs</h3></TableCell>
                       <TableCell align="center" colSpan={2}><h3>Thickened Edge Inputs</h3></TableCell>
                       <TableCell align="center" colSpan={2}><h3>Materials Required Inputs</h3></TableCell>
                     </TableRow>

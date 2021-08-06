@@ -141,11 +141,6 @@ export default function EstimateLookup() {
   //#endregion ⬆⬆ Event handlers above. 
 
 
-  // Click handler for prefilling estimate number information for a presentation
-  const handleEstimatePrefill = () => {
-    handleChange('estimate_number', '8365ace3-69c5-4730-ade5-dad32318a321');
-  }
-
   // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
@@ -205,7 +200,7 @@ export default function EstimateLookup() {
                           </FormControl>
                         </TableCell>
 
-                        <TableCell onClick={handleEstimatePrefill}><b>Estimate Number:</b></TableCell>
+                        <TableCell><b>Estimate Number:</b></TableCell>
                         <TableCell>
                           <TextField
                             onChange={event => handleChange('estimate_number', event.target.value)}
