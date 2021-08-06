@@ -89,10 +89,10 @@ export default function AdminUpdateShipping() {
 
   const autofillShipping = () => {
     setNewShippingCost({
-      ship_to_state_province: 'Manitoba', 
-      dc_price: '16000', 
-      flow_cpea_price: '15000', 
-      fibers_price: '15000' 
+      ship_to_state_province: 'Manitoba',
+      dc_price: '16000',
+      flow_cpea_price: '15000',
+      fibers_price: '15000'
     })
   }
 
@@ -111,7 +111,7 @@ export default function AdminUpdateShipping() {
 
       <div>
         {/* form to take in info and create a new shipping lane with costs */}
-        <form className={classes.root} noValidate autoComplete="off">
+        <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
           <div>
             <div >
               <TextField
@@ -136,9 +136,9 @@ export default function AdminUpdateShipping() {
                 onChange={handleDCChange} />
             </div>
 
-            <Fab className={classes.updateShippingSubmit} onClick={handleSubmit} color="primary" aria-label="add">
-                <AddIcon />
-              </Fab>
+            <Fab className={classes.updateShippingSubmit} type="submit" color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
 
             <div >
               <TextField
