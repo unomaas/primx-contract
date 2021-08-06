@@ -1,6 +1,5 @@
 //#region ⬇⬇ All document setup, below:
 // ⬇ File Imports: 
-
 import './EstimateCreate.css';
 // ⬇ Dependent Functionality:
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,10 +17,7 @@ import { eventNames } from 'commander';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
 //#endregion ⬆⬆ All document setup above.
-
-
 
 
 
@@ -41,18 +37,8 @@ export default function EstimateCreate() {
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");
   const [leadTime, setLeadTime] = useState("");
-
   const snack = useSelector(store => store.snackBar);
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    dispatch({ type: 'SET_CLOSE' })
-  };
-
-  // ⬇ GET on page load:
+  // ⬇ Run on page load:
   useEffect(() => {
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
       // Fetches and set all fields for dropdown menus
@@ -62,28 +48,38 @@ export default function EstimateCreate() {
 
 
   //#region ⬇⬇ Event handlers below:
+  /** ⬇ handleClose:
+    * Functionality event handler for the MUI Snackbar, this will close the pop-up notification. 
+    */
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    } // End if statement
+    dispatch({ type: 'SET_CLOSE' })
+  }; // End handleClose
 
+  /** ⬇ timeDifference:
+    * A function to calculate the time difference in weeks between today's date and the first anticipated pour date, to validate whether the job is 8 weeks out or not. 
+    */
   const timeDifference = (chosenDate) => {
-    // using the chosen date, run the change handler to set estimateData in the reducer for the chosen date
+    // ⬇ Using the chosen date, run the change handler to set estimateData in the reducer for the chosen date
     handleChange('anticipated_first_pour_date', chosenDate)
     const chosenDateInMilliseconds = Date.parse(chosenDate);
     const todayInMilliseconds = Date.now();
     const differenceInSeconds = (chosenDateInMilliseconds - todayInMilliseconds) / 1000;
     const differenceInWeeks = differenceInSeconds / (60 * 60 * 24 * 7);
-    // set lead time state with a rounded number in weeks
+    // ⬇ Set lead time state with a rounded number in weeks:
     setLeadTime(Math.abs(Math.round(differenceInWeeks)));
     if (leadTime < 8) {
       dispatch({ type: 'SET_ERROR_LEADTIME' });
-    }
-  }
+    } // End if statement
+  } // End timeDifference
 
   /** ⬇ handleChange:
     * When the user types, this will set their input to the kit object with keys for each field. 
     */
   const handleChange = (key, value) => {
     console.log('In EstimateCreate handleChange, key/value:', key, '/', value);
-    // if (key == "anticipated_first_pour_date") {}
-
     // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
       type: 'SET_ESTIMATE',
@@ -91,7 +87,9 @@ export default function EstimateCreate() {
     });
   } // End handleChange
 
-  // ⬇ Change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
+  /** ⬇ handleShipping:
+    * Change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
+    */
   const handleShipping = (id) => {
     // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
@@ -116,44 +114,44 @@ export default function EstimateCreate() {
     }) // end shippingCosts forEach
   } // End handleShipping
 
+  /** ⬇ handleMeasurementUnits:
+    * This function will add of metric or imperial costs to the estimateData package depending on their selection of the radio buttons.
+    */
   const handleMeasurementUnits = (units) => {
     console.log('In handleMeasurementUnits, units:', units);
     // ⬇ Making sure validation doesn't trigger:
     setError(false);
     setRadioError("");
     // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
-
     const pricingArray = [
       { key: 'primx_flow_unit_price', value: products.flow_liters },
       { key: 'primx_cpea_unit_price', value: products.cpea_liters },
-    ]
+    ] // End pricingArray
     if (units == 'imperial') {
       pricingArray.push(
         { key: 'primx_dc_unit_price', value: products.dc_lbs },
         { key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_lbs },
         { key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqft }
-      )
+      ) // End if
     } else if (units == 'metric') {
       pricingArray.push(
         { key: 'primx_dc_unit_price', value: products.dc_kgs },
         { key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_kgs },
         { key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqmeters }
-      )
-    } // End if/else statement. 
-
+      ) // End else/if
+    } // End if/else statement
     // ⬇ Loop through pricingArray to dispatch values to be stored in the estimates reducer:
     pricingArray.forEach(product => {
       dispatch({
         type: 'SET_ESTIMATE',
         payload: { key: product.key, value: product.value }
-      });
-    })
+      }); // End dispatch
+    }) //End pricingArray for each
     // set units in the estimate reducer
     dispatch({
       type: 'SET_ESTIMATE',
       payload: { key: 'measurement_units', value: units }
-    });
-
+    }); // End dispatch
   } // End handleMeasurementUnits
 
   /** ⬇ handleSubmit:
@@ -214,7 +212,6 @@ export default function EstimateCreate() {
   //#endregion ⬆⬆ Event handles above. 
 
 
-  console.log('estimateData is currently:', estimateData);
   return (
     <div className="EstimateCreate-wrapper">
 
