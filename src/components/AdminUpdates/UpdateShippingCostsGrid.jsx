@@ -21,10 +21,10 @@ export default function UpdateShippingCostsGrid() {
     // columns for Data Grid
     const columns = [
 
-        {field: 'ship_to_state_province', headerName: 'Ship To', width: 200, editable: false}, // Editable + validation?
-        {field: 'dc_price', headerName: 'DC', width: 200, editable: true}, // Editable + validation?
-        {field: 'flow_cpea_price', headerName: 'Flow/CPEA', width: 200, editable: true}, // Editable + validation?
-        {field: 'fibers_price', headerName: 'Fibers', width: 200, editable: true} // Editable + validation?
+        {field: 'ship_to_state_province', headerName: 'Ship To', width: 200, editable: false, headerClassName: classes.header}, // Editable + validation?
+        {field: 'dc_price', headerName: 'DC', width: 200, editable: true, headerClassName: classes.header}, // Editable + validation?
+        {field: 'flow_cpea_price', headerName: 'Flow/CPEA', width: 200, editable: true, headerClassName: classes.header}, // Editable + validation?
+        {field: 'fibers_price', headerName: 'Fibers', width: 200, editable: true, headerClassName: classes.header} // Editable + validation?
 
     ]
     //rows are from the shipping costs reducer

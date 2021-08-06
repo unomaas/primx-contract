@@ -67,7 +67,7 @@ export default function AdminUpdates() {
 
   return (
     <div>
-      <h2>Select Update Field</h2>
+      <h2>Administrator Update Fields</h2>
       {/* drop down for page selection */}
       {/* <FormControl>
         <InputLabel> Select Page </InputLabel> */}
@@ -76,7 +76,7 @@ export default function AdminUpdates() {
         // value={selectedPage}
         onChange={handleSelectPage}
       >
-        <MenuItem key={0} value={0}>Please select an option.</MenuItem>
+        <MenuItem key={0} value={0}>Please Select a Category Here</MenuItem>
         <MenuItem key={1} value={1}>Licensees by Company</MenuItem>
         <MenuItem key={2} value={2}>Floor & Placement Types</MenuItem>
         <MenuItem key={3} value={3}>Shipping Costs by State</MenuItem>
@@ -92,6 +92,7 @@ export default function AdminUpdates() {
         )}
         {/* End System Admin conditional rendering. */}
       </Select>
+      <br />       <br />      <br />
       {/* </FormControl> */}
       {/* {conditionalBool ? conditionalRender : <></>} */}
     </div>
