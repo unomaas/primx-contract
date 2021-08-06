@@ -73,7 +73,7 @@ export default function AdminUpdateLicenses() {
   const columns = [
     { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, headerClassName: classes.header},
     {
-      field: '',
+      field: 'activate_button',
       headerName: 'Activate/ Deactivate',
       width: 225,
       disableClickEventBubbling: true,
