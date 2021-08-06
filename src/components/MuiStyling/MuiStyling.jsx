@@ -52,7 +52,7 @@ const useStyles = makeStyles({
   },
 
   SystemAdminGrid: {
-    width: 510,
+    width: 472,
     margin: 'auto',
   },
 

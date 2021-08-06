@@ -43,11 +43,11 @@ export default function SystemAdminUpdateUserGrid() {
   // columns for Data Grid
   const columns = [
 
-    { field: 'username', headerName: 'Username', width: 385, headerClassName: classes.header }, // Editable + validation?
+    { field: 'username', headerName: 'Username', width: 300, headerClassName: classes.header }, // Editable + validation?
     {
       field: '',
       headerName: 'Delete Admin',
-      width: 1000,
+      width: 170,
       disableClickEventBubbling: true,
       renderCell: renderDeleteButton, // function declared above, creates a button in each row of the pending column
       headerClassName: classes.header
