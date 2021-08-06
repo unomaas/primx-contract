@@ -195,7 +195,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       // add the process order button to the beginning of the pending table
       columns.unshift(
         {
-          field: '',
+          field: 'process_order_buton',
           headerClassName: classes.header, 
           headerName: 'Process Order',
           width: 175,
