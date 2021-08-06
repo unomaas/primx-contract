@@ -89,7 +89,7 @@ export default function AdminUpdateTypes() {
 
         {/* input nd add button for adding new floor types */}
 
-          <form   noValidate autoComplete="off">
+          <form onSubmit={addFloorType} noValidate autoComplete="off">
             <TextField className={classes.AddTypesInput} 
             inputProps={{
                 style: {fontSize: 25, height: 15} 
@@ -100,7 +100,7 @@ export default function AdminUpdateTypes() {
               value={newFloorType} 
               onChange={handleFloorChange}/>
 
-            <Fab className={classes.AddTypesInput} onClick={addFloorType} color="primary" aria-label="add">
+            <Fab className={classes.AddTypesInput} type="submit" color="primary" aria-label="add">
               <AddIcon />
             </Fab>
           </form>
@@ -111,7 +111,7 @@ export default function AdminUpdateTypes() {
       <h2>Update Placement Types</h2>
         {/* input and add button for adding new placement types */}
         <div style={{margin: '0 auto'}}>
-          <form noValidate autoComplete="off">
+          <form onSubmit={addPlacementType} noValidate autoComplete="off">
             <TextField 
             className={classes.AddTypesInput} 
             inputProps={{
@@ -124,7 +124,7 @@ export default function AdminUpdateTypes() {
               
               <Fab 
               className={classes.AddTypesInput} 
-              onClick={addPlacementType} 
+              onSubmit={addPlacementType} 
               color="primary" 
               aria-label="add">
                 <AddIcon />
