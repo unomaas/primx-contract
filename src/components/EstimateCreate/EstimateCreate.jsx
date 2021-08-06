@@ -192,6 +192,7 @@ export default function EstimateCreate() {
 
   // click handler that will autofill data for the licensee and project information view
   const handlePresentationAutofillData = () => {
+    handleMeasurementUnits('imperial');
     dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_name', value: 'Warehouse on Main' }});
     // dispatch({type: 'SET_ESTIMATE', payload: { key: 'licensee_id', value: 4 }});
     dispatch({type: 'SET_ESTIMATE', payload: { key: 'project_general_contractor', value: `Jenkin's Construction` }});
