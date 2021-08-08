@@ -14,7 +14,7 @@ router.get('/all', (req, res) => {
   const queryText = `SELECT * FROM "licensees" ORDER BY "active" DESC, "licensee_contractor_name" ASC;`;
 
   pool.query(queryText)
-    .then((results) => res.send(results.rows))
+    .then((result) => res.send(result.rows))
     .catch((error) => {
       console.log('Error getting company names', error);
       res.sendStatus(500);
@@ -27,7 +27,7 @@ router.get('/active', (req, res) => {
   const queryText = `SELECT * FROM "licensees" WHERE "active" = TRUE ORDER BY "licensee_contractor_name" ASC;`;
 
   pool.query(queryText)
-    .then((results) => res.send(results.rows))
+    .then((result) => res.send(result.rows))
     .catch((error) => {
       console.log('Error getting company names', error);
       res.sendStatus(500);

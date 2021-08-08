@@ -8,12 +8,13 @@ const format = require('pg-format');
 const { v4: uuidv4 } = require('uuid');
 
 
+// *************************** GET ROUTES ***************************
+
 // GET request to grab estimate at ID/Estimate number for Lookup view
 router.get('/lookup/:estimate', (req, res) => {
   const estimateNumber = req.query.estimateNumber
   const licenseeId = req.query.licenseeId
 
-  console.log('Estimate number', estimateNumber, 'licensee ID', licenseeId)
   // SQL query to GET a specific estimate along the floor type names, licensee names, placement type names, and shipping state/province names
   const queryText = `SELECT "estimates".*, "floor_types".floor_type, "licensees".licensee_contractor_name, "placement_types".placement_type, "shipping_costs".ship_to_state_province FROM "estimates"
                      JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
@@ -22,17 +23,14 @@ router.get('/lookup/:estimate', (req, res) => {
                      JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
                      WHERE "estimate_number" = $1 AND "licensee_id" = $2
                      ORDER BY "estimates".id DESC;`;
-  
+
   pool.query(queryText, [estimateNumber, licenseeId])
-    .then( result => {
-      res.send(result.rows);
-    })
+    .then((result) => res.send(result.rows))
     .catch(error => {
       console.log(`Error with /api/estimates/lookup/:estimates GET`, error);
       res.sendStatus(500)
     })
 })
-
 
 // GET request to get all estimates data from the database
 router.get('/all', rejectUnauthenticated, (req, res) => {
@@ -43,11 +41,9 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
                      JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
                      JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
                      ORDER BY "estimates".id DESC;`;
-  // DB request
+  
   pool.query(queryText)
-    .then(result => {
-      res.send(result.rows);
-    })
+    .then((result) => res.send(result.rows))
     .catch(error => {
       console.log('Error with /api/estimates/all GET: ', error);
       res.sendStatus(500);
@@ -56,12 +52,11 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 })
 
 
+// *************************** POST ROUTES ***************************
+
 // POST Route for Licensee Information -> Includes both Metric and Imperial Inputs
 router.post('/', (req, res) => {
-  // console.log('In /api/estimates/ POST route with incoming data:', req.body);
-  
-  // set the values sent from licensee
-  // destructure the req.body values shared between metric and imperial units
+  // set the values sent from licensee by destructuring req.body
   let {
     // shared values regardless of imperial or metric units
     measurement_units,
@@ -106,8 +101,8 @@ router.post('/', (req, res) => {
   } = req.body
 
   // create a unique UUID estimate number to use for the estimate being sent
-  estimate_number = uuidv4();
-  
+  const estimate_number = uuidv4();
+
   // set the destructured object values as the values to send with the POST request
   const values = [
     // starting values don't include metric or imperial specific units
@@ -190,7 +185,7 @@ router.post('/', (req, res) => {
     values.push(
       square_feet, thickness_inches, thickened_edge_perimeter_lineal_feet, thickened_edge_construction_joint_lineal_feet, primx_steel_fibers_dosage_lbs
     )
-  
+
   }
   else if (req.body.measurement_units == 'metric') {
     // append the metric specific data to the SQL query
@@ -214,7 +209,7 @@ router.post('/', (req, res) => {
       $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34
       );
   `
-  
+
   pool.query(queryText, values)
     .then(result => {
       // send back the object created to allow navagiation from the saga to the view of the new estimate
@@ -231,23 +226,19 @@ router.post('/', (req, res) => {
 });
 
 
-
+// *************************** PUT ROUTES ***************************
 
 // PUT request to edit a single piece of data on one row of the estimates table
 router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
-  // SQL query to update a specific piece of data
+  // SQL query to update a specific piece of data, use pg-format to sanitize it first since DB column to update comes in from client side
   const queryText = format(`UPDATE "estimates" SET %I = $1 WHERE "id" = $2;`, req.body.dbColumn);
-  // DB request
+  
   pool.query(queryText, [req.body.newValue, req.params.id])
-    .then(result => {
-      res.sendStatus(200);
-    })
+    .then(result => res.sendStatus(200))
     .catch(error => {
       console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
     })
-
 })
-
 
 // PUT request to mark an estimate flagged for order by licensee to be marked as ordered by an admin, and to add the name of the admin making the request
 router.put('/process/:id', rejectUnauthenticated, (req, res) => {
@@ -255,34 +246,25 @@ router.put('/process/:id', rejectUnauthenticated, (req, res) => {
   const order_number = `O-${req.body.estimate_number}`
   // SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
   const queryText = `UPDATE "estimates" SET "marked_as_ordered" = TRUE, "processed_by" = $1, "order_number" = $2 WHERE "id" = $3;`;
-  // DB request
+  
   pool.query(queryText, [req.user.username, order_number, req.params.id])
-    .then(result => {
-      res.sendStatus(200);
-    })
+    .then(result => res.sendStatus(200))
     .catch(error => {
       console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
     })
 })
-
 
 // PUT request to mark an estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
 router.put('/order/:id', (req, res) => {
-  console.log('req.body:', req.body);
-  
   // SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
   const queryText = `UPDATE "estimates" SET "ordered_by_licensee" = TRUE, "po_number" = $1 WHERE "id" = $2;`;
-  // DB request
+  
   pool.query(queryText, [req.body.po_number, req.params.id])
-    .then(result => {
-      res.sendStatus(200);
-    })
+    .then(result => res.sendStatus(200))
     .catch(error => {
       console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
     })
 })
-
-
 
 
 module.exports = router;
