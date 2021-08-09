@@ -1,26 +1,25 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react';
-import { useStyles } from '../MuiStyling/MuiStyling';
 
 // Material-UI components
+import { useStyles } from '../MuiStyling/MuiStyling';
 import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
-
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function SystemAdminUpdateUserGrid() {
 
+  const dispatch = useDispatch();
+
   const classes = useStyles();
+
+  //grabbing all info of users from reducer
+  const userInfo = useSelector(store => store.userInfoReducer);
 
   useEffect(() => {
     // GET all user data on page load
     dispatch({ type: 'FETCH_USERINFO' });
   }, [])
-
-  const dispatch = useDispatch();
-
-  const userInfo = useSelector(store => store.userInfoReducer);
 
   //function to render the delete button in the datagrid
   const renderDeleteButton = (params) => {
@@ -42,8 +41,11 @@ export default function SystemAdminUpdateUserGrid() {
 
   // columns for Data Grid
   const columns = [
+    { field: 'username', 
+    headerName: 'Username', 
+    width: 300, 
+    headerClassName: classes.header }, 
 
-    { field: 'username', headerName: 'Username', width: 300, headerClassName: classes.header }, // Editable + validation?
     {
       field: '',
       headerName: 'Delete Admin',
@@ -52,14 +54,10 @@ export default function SystemAdminUpdateUserGrid() {
       renderCell: renderDeleteButton, // function declared above, creates a button in each row of the pending column
       headerClassName: classes.header
     }
-
   ]
 
   //datagrid rows are the information from userInfo reducer
   let rows = userInfo
-
-  console.log('user info in grid component -->', userInfo);
-
 
   // click listener for the process order buttons inside the pending order table
   const handleDeleteAdmin = (params) => {
