@@ -84,7 +84,6 @@ export default function MetricTable() {
   // ⬇ Rendering:
   return (
     <>
-
       {/* Snackbar configures all of the info pop-ups required. */}
       <Snackbar
         open={snack.open}
