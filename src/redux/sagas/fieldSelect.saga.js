@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
-
-
 function* fetchFieldSelect() {
     // fetch all active companies for estimate create Select menu
     yield put({type: 'FETCH_ACTIVE_COMPANIES'});
@@ -15,7 +13,6 @@ function* fetchFieldSelect() {
     // fetch the floor types for the estimate create Select menu
     yield put({type: 'FETCH_FLOOR_TYPES'});
   }
-
 
 function* fieldSelectSaga() {
     yield takeLatest('FETCH_FIELD_SELECT', fetchFieldSelect);
