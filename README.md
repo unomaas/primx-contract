@@ -1,20 +1,43 @@
-# Primx - App
+# PrīmX - Ordering Portal Web App
+
+
 
 ## Description
-- Duration: 2 Week Sprint
-This app was created as a solution to Primx's estimate and order placement process. Their process used excel worksheets and there was no pipeline for the administrators to reference. This app is being used by 3 different user types: Contractor, Admin, and SuperAdmin, each with different levels of authorization. Contractors are able to enter in information regarding the project they want an estimate for, which will then provide an estimate to the contractor and add the estimate to the Admin's "open estimates" table on the "view pipeline" page. The contractor can the go back and reference their estimate via order number and company name and make any adjustments/updates to the estimate. Once they have won their project, they can push through their estimate as an order, which will notify the Admins by being added to the "pending orders" table on the "view pipeline" page. Once the order is processed, the Admin can confirm in the app that the order has been processed by clicking the "order processed" button that is located on the order on the far right of the line item. The SuperAdmin is the only admin that is able to create another administrator account. Other than that, all admins have the ability to create and update the shipping costs, create and update materials and inventory, create placement and floor types, and create new licensees. 
 
-## Prerequisites
+- Duration: 2 Week Sprint
+
+This app was created as a solution to PrīmX's estimate and order placement process. This project was done via a team of five developers working remotely over a two week period, as students of Prime Digital Academy.  The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz, and Alex Kim. 
+
+Our client, PrīmX, is an Industrial Concrete Flooring Distributor, who creates a unique ‘jointless’ concrete flooring product. They’re a small company, consisting of just five people, but have a national footprint across the United States and Canada. Their old process used Excel worksheets and there was no pipeline for the administrators to reference. The goal of this app is to help create a modern solution for their ordering platform.
+
+This app is being used by 3 different user types: Contractor, Admin, and SuperAdmin, each with different levels of authorization. 
+
+Contractors are able to enter in information regarding the project they want an estimate for, which will then provide an estimate to the contractor and add the estimate to the Admin's "open estimates" table on the "view pipeline" page. Once they have won their project, The contractor can the go back and reference their estimate via order number and company name and update the estimate's prices to be current with today. After ensuring the prices are current, the contractor can then push through their estimate as an order, which will notify the Admins by being added to the "pending orders" table on the "view pipeline" page. 
+
+The Admin user will be able to login, view all of the open estimates, pending orders, and previously processed orders.  If there are any new pending orders, the Admin will be able to mark them as "processed".  This will allow PrīmX to view who is creating estimates, when they are needed, and in what quantities -- giving them previously unseen trends of their business pipeline. The Admin also has access to export any of the above data requierd.  Finally, the Admin user will also be able to update material prices, shipping costs, and control which licensees are active or inactive. 
+
+The SuperAdmin is the only Admin account that is able to create another Admin account. Other than that, all Admin accounts have the ability to create and update the shipping costs, create and update materials and inventory, create placement and floor types, and create new licensees. 
+
+
+
+### Prerequisites
+
 - Node.js: https://nodejs.org/en/
 - PostgreSQL: https://www.postgresql.org/
 
-## Installation
+
+
+### Installation
+
 To run this program, you will need to:
 - [] Build the database in your SQL server with the code in "database.sql" file. 
 - [] Run 'npm install' in your terminal to install the dependencies.
 - [] Run 'npm run server' in one terminal, and 'npm run client' in another terminal.
 
+
+
 ## Usage
+
 To use this app, start the server and client in your terminal.  React will navigate to http://localhost:3000/ in your browser.
 - Licensee: no login required
   - CREATE NEW ESTIMATE
@@ -59,17 +82,20 @@ To use this app, start the server and client in your terminal.  React will navig
       - Add new admin by entering the username and password into the inputs and clicking the blue register button.
       - Delete and admin by clicking the delete button next to the admin you want to delete.
 
-## Accessibility: 
 
 
-## Built With
+### Built With
  - JavaScript/HTML/CSS
- - React, Redux, Redux Saga, React Router, Axios
- - Node.js, Express, SQL, PostgreSQL
- - Material-ui and Snackbar
-
-## Acknowledgement
+ - React, Redux, Redux Saga, React Router
+ - Axios, Node.js, Express, SQL, PostgreSQL
+ - Material-UI and Sweet Alert
 
 
-## Support
 
+### Acknowledgement
+We would like to thank PrimX and Jeanne Spoden for giving us the opportunity to work on this project, it was wonderful having such an attentive client.  We would also like to thank Prime Digital Academy and our instructor, Dane Smith, for giving us the tools to get here today.  Lastly, we would like to thank everyone in the Genocchi cohort for the love and support. 
+
+
+
+### Support
+Please feel free to reach out to us on GitHub with any feedback or suggestions. 
