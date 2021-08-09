@@ -1,18 +1,14 @@
 //#region ⬇⬇ All document setup, below:
-// ⬇ File Imports: 
 // ⬇ Dependent Functionality:
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import { Alert } from '@material-ui/lab';
+import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
-import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
-
 //#endregion ⬆⬆ All document setup above.
+
 
 
 export default function MetricTable() {
@@ -20,50 +16,24 @@ export default function MetricTable() {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-  const today = new Date().toISOString().substring(0, 10);
   const calculateEstimate = useEstimateCalculations;
-
-  // const [newEstimate, setNewEstimate] = useState({
-  //   measurement_units: 'imperial',
-  //   country: 'United States',
-  //   date_created: today,
-  // });
-
-  const companies = useSelector(store => store.companies);
-  const shippingCosts = useSelector(store => store.shippingCosts);
-  const floorTypes = useSelector(store => store.floorTypes);
-  const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
   const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
-
-  //   // ⬇ GET on page load:
-  //   useEffect(() => {
-  //     // Licensee/Company Name Call
-  //     dispatch({ type: 'FETCH_COMPANIES' }),
-  //       // State/Province Call
-  //       dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
-  //       // Floor Type Call
-  //       dispatch({ type: 'FETCH_FLOOR_TYPES' }),
-  //       // Placement Type Call
-  //       dispatch({ type: 'FETCH_PLACEMENT_TYPES' })
-  //   }, []);
-  //   //#endregion ⬆⬆ All state variables above. 
-
-  // have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data,
-  // run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes
-  // values
+  // ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
   useEffect(() => {
     if (estimateData.square_meters && estimateData.thickness_millimeters && estimateData.thickened_edge_construction_joint_lineal_meters &&
       estimateData.thickened_edge_perimeter_lineal_meters && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_kgs &&
       estimateData.primx_cpea_dosage_liters) {
-      // once all the keys exist, run the calculate estimate function and set the table display state for the calculated values
+      // ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values:
       const calculatedObject = calculateEstimate(estimateData);
       setCalculatedDisplayObject(calculatedObject);
       setSaveButton(true);
     }
-  }, [estimateData])
+  }, [estimateData]);
+  //#endregion ⬆⬆ All state variables above. 
+
 
   //#region ⬇⬇ Event handlers below:
   /** ⬇ handleChange:
@@ -71,37 +41,22 @@ export default function MetricTable() {
    */
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
-    // setNewEstimate({ ...newEstimate, [key]: value });
-
     dispatch({
       type: 'SET_ESTIMATE',
       payload: { key: key, value: value }
-    });
+    }); // End dispatch
   } // End handleChange
 
-  /** ⬇ handleSubmit:
+  /** ⬇ handleSave:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
-  const handleSubmit = event => {
-    console.log('In handleSubmit');
-    // ⬇ Don't refresh until submit:
-    event.preventDefault();
-    // // ⬇ Sending newPlant to our reducer: 
-    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-    // // ⬇ Send the user back:
-    // history.push('/dashboard');
-  } // End handleSubmit
-
-  /** ⬇ handleSubmit:
- * When clicked, this will post the object to the DB and send the user back to the dashboard. 
- */
   const handleSave = event => {
     console.log('In Metric handleSave');
     // attach history from useHistory to the estimate object to allow navigation from inside the saga
     estimateData.history = history;
     // ⬇ Don't refresh until submit:
     event.preventDefault();
-    // send the estimate object to be POSTed
+    // ⬇ Send the estimate object to be POSTed:
     dispatch({ type: 'ADD_ESTIMATE', payload: estimateData });
     // ⬇ Sweet Alert to let them know to save the Estimate #:
     swal({
@@ -114,26 +69,19 @@ export default function MetricTable() {
     }); // End swal
   } // End handleSave
 
-
-  const handleCalculateCosts = () => {
-    console.log('In Metric handleCalculateCosts, estimateData:', estimateData);
-    const calculatedObject = calculateEstimate(estimateData)
-    setCalculatedDisplayObject(calculatedObject)
-    console.log('***CALCULATED OBJECT****', calculatedObject);
-    // console.log('DISPLAY OBJECT', calculatedDisplayObject);
-    // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
-  }
-
-  //sets snack bar notification to closed after appearing
+  /** ⬇ handleClose:
+   * Sets snack bar notification to closed after appearing.
+   */
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
-    }
+    } // End if
     dispatch({ type: 'SET_CLOSE' })
-  };
+  }; // End handleClose
   //#endregion ⬆⬆ Event handles above. 
 
 
+  // ⬇ Rendering:
   return (
     <>
 

@@ -1,33 +1,35 @@
+//#region ⬇⬇ All document setup, below:
+// ⬇ File Imports: 
 import './AdminEstimatesGrid.css';
+// ⬇ Dependent Functionality:
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
-// Material-UI components
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button'
 import { useStyles } from '../MuiStyling/MuiStyling';
-
 import swal from 'sweetalert';
 
 
-// component that renders a Material UI Data Grid, needs an array of estimates as props. gridSource is a string that references which data grid is
-// being created, the current strings are 'pending', 'processed', and 'open'
+// ⬇ Component that renders a Material UI Data Grid, needs an array of estimates as props. gridSource is a string that references which data grid is being created, the current strings are 'pending', 'processed', and 'open':
 export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
+  //#region ⬇⬇ All state variables below:
   const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
-
-  // Create number formatter.
+  // ⬇ Create number formatter.
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   });
+  //#endregion ⬆⬆ All state variables above. 
 
-  // rendering function to display the row's estimate number in a clickable div that will navigate admin to the estimate lookup view for the
-  // clicked estimate
+
+  //#region ⬇⬇ Event handlers below:
+  // ⬇ Rendering function to display the row's estimate number in a clickable div that will navigate admin to the estimate lookup view for the clicked estimate:
   const renderEstimateNumber = (params) => {
     return (
-      // on click sends the admin user to the estimate lookup for the clicked estimate number
+      // ⬇ On click sends the admin user to the estimate lookup for the clicked estimate number
       <div onClick={
         () => history.push(`/lookup/${params.row.licensee_id}/${params.row.estimate_number}`)
       }
@@ -38,7 +40,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     )
   }
 
-  // rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
+  // ⬇ Rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
   const renderProcessButton = (params) => {
     return (
       <Button
@@ -53,9 +55,9 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     )
   }
 
-  // click listener for the process order buttons inside the pending order table
+  // ⬇ Click listener for the process order buttons inside the pending order table
   const handleProcessOrder = (params) => {
-    // open a sweetalert message confirming an order as being processed
+    // ⬇ Open a sweetalert message confirming an order as being processed
     swal({
       title: 'Do you want to process this order?',
       text: 'This marks the order as complete and cannot be undone.',
@@ -64,7 +66,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+        // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
         dispatch({ type: 'EDIT_PROCESS_ORDER', payload: params })
         swal('Order has been processed!', {
           icon: 'success',
@@ -73,10 +75,10 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     });
   }
 
-  // submit handler for in-line cell edits on the data grid
+  // ⬇ Submit handler for in-line cell edits on the data grid:
   const handleEditSubmit = ({ id, field, props }) => {
     console.log('in handle edit submit for id, field, props', id, field, props);
-    // id argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
+    // ⬇ ID argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
     dispatch({
       type: 'EDIT_ESTIMATE_DATA', payload: {
         id: id,
@@ -86,14 +88,23 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     })
   }
 
+  const CustomToolbar = () => {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarExport />
+      </GridToolbarContainer>
+    )
+  }
+  //#endregion ⬆⬆ Event handlers above. 
 
 
-  // columns for Data Grid
+  //#region ⬇⬇ MUI Data Grid specifications below:
+  // ⬇ Columns for Data Grid:
   const columns = [
-    // estimate and contractor details input by licensee
+    // ⬇ Estimate and contractor details input by licensee:
     {
       field: 'estimate_number',
-      headerClassName: classes.header, 
+      headerClassName: classes.header,
       headerName: 'Estimate Number',
       width: 300,
       disableClickEventBubbling: true,
@@ -113,7 +124,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'project_manager_phone', headerClassName: classes.header, headerName: 'Project Manager Phone', width: 175, editable: true },
     { field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: true },
 
-    // technical job details input by licensee
+    // ⬇ Technical job details input by licensee
     { field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
     { field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175 }, // Editable + validation?
     { field: 'placement_type', headerClassName: classes.header, headerName: 'Placement Type', width: 175 }, // Editable + validation?
@@ -131,8 +142,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175 }, // Editable + validation?
     { field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175 }, // Editable + validation?
 
-    // All calculated values are listed below
-    // PrimX DC calculated values
+    // ⬇ All calculated values are listed below
+    // ⬇ PrimX DC calculated values
     { field: 'primx_dc_total_amount_needed', headerClassName: classes.header, headerName: 'DC Total Amount Needed', width: 175 },
     { field: 'primx_dc_packages_needed', headerClassName: classes.header, headerName: 'DC Packages Needed', width: 175 },
     { field: 'primx_dc_total_order_quantity', headerClassName: classes.header, headerName: 'DC Total Order Quantity', width: 175 },
@@ -141,7 +152,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'primx_dc_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'DC Shipping Estimate', width: 175 },
     { field: 'primx_dc_total_cost_estimate', headerClassName: classes.header, headerName: 'DC Total Cost', width: 175 },
 
-    // PrimX Flow calculated values
+    // ⬇ PrimX Flow calculated values
     { field: 'primx_flow_total_amount_needed', headerClassName: classes.header, headerName: 'Flow Total Amount Needed', width: 175 },
     { field: 'primx_flow_packages_needed', headerClassName: classes.header, headerName: 'Flow Packages Needed', width: 175 },
     { field: 'primx_flow_total_order_quantity', headerClassName: classes.header, headerName: 'Flow Total Order Quantity', width: 175 },
@@ -150,7 +161,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'primx_flow_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'Flow Shipping Estimate', width: 175 },
     { field: 'primx_flow_total_cost_estimate', headerClassName: classes.header, headerName: 'Flow Total Cost', width: 175 },
 
-    // PrimX Steel Fibers calculated values
+    // ⬇ PrimX Steel Fibers calculated values
     { field: 'primx_steel_fibers_total_amount_needed', headerClassName: classes.header, headerName: 'Steel Fibers Total Amount Needed', width: 175 },
     { field: 'primx_steel_fibers_packages_needed', headerClassName: classes.header, headerName: 'Steel Fibers Packages Needed', width: 175 },
     { field: 'primx_steel_fibers_total_order_quantity', headerClassName: classes.header, headerName: 'Steel Fibers Total Order Quantity', width: 175 },
@@ -183,20 +194,20 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'design_total_price_estimate', headerClassName: classes.header, headerName: 'Total Cost', width: 175 },
   ]
 
-  // add additional columns based on the data source for the data grid
+  // ⬇ Add additional columns based on the data source for the data grid:
   const addGridColumns = (dataSource) => {
     if (dataSource == 'pending' || dataSource == 'processed') {
-      // add the Purchase Order number and the order number to each of the pending and processed tables
+      // ⬇ Add the Purchase Order number and the order number to each of the pending and processed tables:
       columns.push(
         { field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175 }
       )
     }
     if (dataSource == 'pending') {
-      // add the process order button to the beginning of the pending table
+      // ⬇ Add the process order button to the beginning of the pending table:
       columns.unshift(
         {
           field: 'process_order_buton',
-          headerClassName: classes.header, 
+          headerClassName: classes.header,
           headerName: 'Process Order',
           width: 175,
           disableClickEventBubbling: true,
@@ -204,31 +215,23 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         }
       )
     } else if (dataSource == 'processed') {
-      // ad the processed by name to the processed table
+      // ⬇ Add the processed by name to the processed table:
       columns.push(
         { field: 'order_number', headerClassName: classes.header, headerName: 'Order Number', width: 175 },
         { field: 'processed_by', headerClassName: classes.header, headerName: 'Processed By', width: 175 }
       )
     }
   }
-  // run the addGridColumns function using the props from table as an argument
+
+  // ⬇ Run the addGridColumns function using the props from table as an argument:
   addGridColumns(gridSource);
 
-  // rows for data grid come in as the estimatesArray prop
+  // ⬇ Rows for data grid come in as the estimatesArray prop:
   let rows = estimatesArray;
+  //#endregion ⬆⬆ MUI Data Grid specifications above. 
 
 
-
-
-
-  const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    )
-  }
-
+  // ⬇ Rendering below:
   return (
     <div
       className={classes.AdminEstimatesGridwrapper}
