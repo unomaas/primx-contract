@@ -1,45 +1,33 @@
 //#region ⬇⬇ Document setup below: 
 // ⬇ File setup: 
 import './NavDrawer.css';
-import LogOutButton from '../LogOutButton/LogOutButton';
 // ⬇ Dependent functionality:
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, useParams, Link } from 'react-router-dom';
-import { Drawer, Button, List, ListItem, ListItemText, Divider, IconButton, Box } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { Drawer, List, ListItem, Divider, IconButton, Box } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
 // ⬇ Icons:
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
-import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import UpdateIcon from '@material-ui/icons/Update';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 //#endregion ⬆⬆ Document setup above. 
 
 
+
 export default function NavDrawer() {
   //#region ⬇⬇ All state variables below:
   const [open, setOpen] = useState(false);
-
   const classes = useStyles();
   const history = useHistory();
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   //#endregion ⬆⬆ All state variables above. 
-
-
-  //#region ⬇⬇ Event handlers below:
-  //#endregion ⬆⬆ Event handles above. 
 
 
   // ⬇ Rendering:
@@ -74,17 +62,11 @@ export default function NavDrawer() {
 
               <ListItem button onClick={() => history.push(`/create`)}>
                 <AddCircleOutlineOutlinedIcon /> &nbsp;
-                {/* <ListItemText 
-                  primary={"Create New Estimate"} 
-                  className={classes.LexendTeraFont}
-                  style={{fontFamily: 'Lexend Tera'}}
-                /> */}
                 <p>Create New Estimate</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
-                {/* <ListItemText primary={"Look-Up Estimate"} /> */}
                 <p>Search For Estimate</p>
               </ListItem>
 
@@ -92,38 +74,25 @@ export default function NavDrawer() {
 
               <ListItem button onClick={() => history.push(`/user`)}>
                 <HomeOutlinedIcon /> &nbsp;
-                {/* <ListItemText primary={"Admin Dashboard"} /> */}
                 <p>Admin Dashboard</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/adminupdates`)}>
                 <UpdateIcon /> &nbsp;
-                {/* <ListItemText primary={"Update Items"} /> */}
                 <p>Update Items</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/adminorders`)}>
                 <ViewCarouselIcon /> &nbsp;
-                {/* <ListItemText primary={"View Pipeline"} /> */}
                 <p>View Pipeline</p>
               </ListItem>
 
               {/* Conditional rendering to show system admin portal: */}
               {user.id == '1' ? (
-                // If user is system admin (id is 1):
                 <>
                   <Divider />
-
-
-                {/* <ListItem button onClick={() => history.push(`/registration`)}> */}
-                  {/* <PersonAddOutlinedIcon /> &nbsp; */}
-                  {/* <ListItemText primary={"Create New Admin"} /> */}
-                  {/* <p>Create New Admin</p> */}
-                {/* </ListItem> */}
-
                   <ListItem button onClick={() => history.push(`/systemadmin`)}>
                     <SupervisorAccountIcon /> &nbsp;
-                    {/* <ListItemText primary={"System Admin"} /> */}
                     <p>System Admin</p>
                   </ListItem>
                 </>
@@ -138,7 +107,6 @@ export default function NavDrawer() {
 
               <ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
                 <ExitToAppIcon /> &nbsp;
-                {/* <ListItemText primary={"Log Out"} /> */}
                 <p>Log Out</p>
               </ListItem>
 
@@ -149,13 +117,11 @@ export default function NavDrawer() {
 
               <ListItem button onClick={() => history.push(`/create`)}>
                 <AddCircleOutlineOutlinedIcon /> &nbsp;
-                {/* <ListItemText primary={"Create New Estimate"} /> */}
                 <p>Create New Estimate</p>
               </ListItem>
 
               <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
-                {/* <ListItemText primary={"Look Up Estimate"} /> */}
                 <p>Search For Estimate</p>
               </ListItem>
 
@@ -163,7 +129,6 @@ export default function NavDrawer() {
 
               <ListItem button onClick={() => history.push(`/login`)}>
                 <ExitToAppIcon /> &nbsp;
-                {/* <ListItemText primary={"Admin Login"} /> */}
                 <p>Admin Login</p>
               </ListItem>
 

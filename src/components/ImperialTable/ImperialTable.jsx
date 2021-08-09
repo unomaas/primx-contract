@@ -1,18 +1,15 @@
 //#region ⬇⬇ All document setup, below:
-// ⬇ File Imports: 
 // ⬇ Dependent Functionality:
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import { Alert } from '@material-ui/lab';
+import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
-import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
 import swal from 'sweetalert';
 //#endregion ⬆⬆ All document setup above.
+
 
 
 export default function ImperialTable() {
@@ -20,39 +17,23 @@ export default function ImperialTable() {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-  const today = new Date().toISOString().substring(0, 10);
   const calculateEstimate = useEstimateCalculations;
-  // const [newEstimate, setNewEstimate] = useState({
-  //   measurement_units: 'imperial',
-  //   country: 'United States',
-  //   date_created: today,
-  // });
-
-  const companies = useSelector(store => store.companies);
-  const shippingCosts = useSelector(store => store.shippingCosts);
-  const floorTypes = useSelector(store => store.floorTypes);
-  const placementTypes = useSelector(store => store.placementTypes);
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
-  const productsReducer = useSelector(store => store.products.productArray);
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
   const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
-
-
-
-  // have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data,
-  // run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes
-  // values
+  // ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
   useEffect(() => {
     if (estimateData.square_feet && estimateData.thickness_inches && estimateData.thickened_edge_construction_joint_lineal_feet &&
       estimateData.thickened_edge_perimeter_lineal_feet && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_lbs &&
       estimateData.primx_cpea_dosage_liters) {
-      // once all the keys exist, run the calculate estimate function and set the table display state for the calculated values
+      // ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values
       const calculatedObject = calculateEstimate(estimateData);
       setCalculatedDisplayObject(calculatedObject);
       setSaveButton(true);
     }
-  }, [estimateData])
+  }, [estimateData]);
+  //#endregion ⬆⬆ All state variables above. 
 
 
   //#region ⬇⬇ Event handlers below:
@@ -69,25 +50,12 @@ export default function ImperialTable() {
     });
   } // End handleChange
 
-  /** ⬇ handleSubmit:
+  /** ⬇ handleSave:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
-  const handleSubmit = event => {
-    console.log('In handleSubmit');
-    // ⬇ Don't refresh until submit:
-    event.preventDefault();
-    // // ⬇ Sending newPlant to our reducer: 
-    // dispatch({ type: 'ADD_NEW_KIT', payload: newKit });
-    // // ⬇ Send the user back:
-    // history.push('/dashboard');
-  } // End handleSubmit
-
-  /** ⬇ handleSubmit:
- * When clicked, this will post the object to the DB and send the user back to the dashboard. 
- */
   const handleSave = event => {
     console.log('In Imperial handleSave');
-    // attach history from useHistory to the estimate object to allow navigation from inside the saga
+    // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga
     estimateData.history = history;
     // ⬇ Don't refresh until submit:
     event.preventDefault();
@@ -102,32 +70,23 @@ export default function ImperialTable() {
     }).then(() => {
       window.print();
     }); // End swal
-
   } // End handleSave
 
-  
-  const handleCalculateCosts = () => {
-    console.log('In Imperial handleCalculateCosts');
-    const calculatedObject = calculateEstimate(estimateData)
-    setCalculatedDisplayObject(calculatedObject)
-    console.log('***CALCULATED OBJECT****', calculatedObject);
-    // dispatch({type: 'FETCH_ESTIMATE', payload: calculatedObject});
-  }
-
-
-  //sets snack bar notification to closed after appearing
+  /** ⬇ handleClose:
+   * Sets snack bar notification to closed after appearing.
+   */
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
-    }
+    } // End if 
     dispatch({ type: 'SET_CLOSE' })
-  };
+  }; // End handleClose
   //#endregion ⬆⬆ Event handles above. 
 
 
+  // ⬇ Rendering:
   return (
     <>
-
       {/* Snackbar configures all of the info pop-ups required. */}
       <Snackbar
         open={snack.open}
@@ -143,6 +102,7 @@ export default function ImperialTable() {
           {snack.message}
         </Alert>
       </Snackbar>
+      {/* End Snackbar */}
 
       <form onSubmit={handleSave}>
 

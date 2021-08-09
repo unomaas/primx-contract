@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert } from '@material-ui/lab';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
@@ -17,7 +17,6 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 export default function EstimateLookup() {
   //#region ⬇⬇ All state variables below:
   const companies = useSelector(store => store.companies);
-  const calculateEstimate = useEstimateCalculations;
   // ⬇ searchResult below is an estimate object searched from the DB that has already been mutated by the useEstimateCalculations function.
   const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
   // ⬇ hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates the Submit Order button.
@@ -29,7 +28,6 @@ export default function EstimateLookup() {
   const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
   const snack = useSelector(store => store.snackBar);
-
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { estimate_number_searched, licensee_id_searched } = useParams();
   const dispatch = useDispatch();
@@ -38,11 +36,12 @@ export default function EstimateLookup() {
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
+      // ⬇ Fetch the current companies for drop-down menu options:
       dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
   }, []);
   // ⬇ Run on estimate search complete:
   useEffect(() => {
-    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB
+    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
     if (estimate_number_searched && licensee_id_searched) {
       dispatch({
         type: 'FETCH_ESTIMATE_QUERY',
@@ -58,8 +57,8 @@ export default function EstimateLookup() {
 
   //#region ⬇⬇ Event handlers below:
   /** ⬇ handleChange:
-    * Change handler for the estimate search form
-    */
+   * Change handler for the estimate search form. Will send their entries to a reducer.
+   */
   const handleChange = (key, value) => {
     console.log('In handleChange, key/value:', key, '/', value);
     // setSearchQuery({ ...searchQuery, [key]: value })
@@ -70,8 +69,8 @@ export default function EstimateLookup() {
   }; // End handleChange
 
   /** ⬇ handleSubmit:
-    * 
-    */
+   * When submitted, will search for the entered estimate to populate the tables. 
+   */
   const handleSubmit = () => {
     console.log('In handleSubmit')
     // ⬇ Select dropdown validation:
@@ -89,25 +88,25 @@ export default function EstimateLookup() {
   }; // End handleSubmit
 
   /** ⬇ handleRecalculateCosts:
-    * Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
-    */
+   * Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
+   */
   const handleRecalculateCosts = () => {
-    // attach history from useHistory to the searchResult object to allow navigation from inside the saga
+    // ⬇ Attach history from useHistory to the searchResult object to allow navigation from inside the saga:
     searchResult.history = history;
-    // needs to GET shipping information and pricing information before recalculating
+    // ⬇ Needs to GET shipping information and pricing information before recalculating
     console.log('searchResult before sending:', searchResult);
     dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult });
     dispatch({ type: 'GET_RECALCULATE_INFO' });
   } // End handleRecalculateCosts
 
   /** ⬇ handlePlaceOrder:
-    * Click handler for the Place Order button. 
-    */
+   * Click handler for the Place Order button. 
+   */
   const handlePlaceOrder = () => {
-    // If they haven't entered a PO number, pop up an error helperText:
+    // ⬇ If they haven't entered a PO number, pop up an error helperText:
     if (poNumber == "") {
       setPoNumError("Please enter a P.O. Number.")
-      // If they have entered a PO number, proceed with order submission:
+      // ⬇ If they have entered a PO number, proceed with order submission:
     } else {
       console.log('Test');
       swal({
@@ -118,7 +117,6 @@ export default function EstimateLookup() {
       }).then(() => {
         window.print();
       }); // End swal
-
       dispatch({
         type: 'EDIT_PLACE_ORDER',
         payload: {
@@ -131,13 +129,15 @@ export default function EstimateLookup() {
     } // End if/else.
   } // End handlePlaceOrder
 
-  //sets snack bar notification to closed after appearing
+  /** ⬇ handleClose:
+   * Sets snack bar notification to closed after appearing.
+   */
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
-    }
+    } // End if
     dispatch({ type: 'SET_CLOSE' })
-  };
+  }; // End handleClose
   //#endregion ⬆⬆ Event handlers above. 
 
 

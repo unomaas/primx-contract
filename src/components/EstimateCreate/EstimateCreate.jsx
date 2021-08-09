@@ -4,16 +4,10 @@ import './EstimateCreate.css';
 // ⬇ Dependent Functionality:
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, InputLabel, Select, Radio, RadioGroup, FormControl, FormLabel, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, FormHelperText } from '@material-ui/core';
-import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import { Button, MenuItem, TextField, Select, Radio, RadioGroup, FormControl, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Grid, FormHelperText } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
-import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
 import ImperialTable from '../ImperialTable/ImperialTable';
 import MetricTable from '../MetricTable/MetricTable';
-import { eventNames } from 'commander';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
@@ -24,7 +18,6 @@ import Alert from '@material-ui/lab/Alert';
 export default function EstimateCreate() {
   //#region ⬇⬇ All state variables below:
   const dispatch = useDispatch();
-  const history = useHistory();
   const classes = useStyles();
   const today = new Date().toISOString().substring(0, 10);
   const companies = useSelector(store => store.companies);
@@ -49,8 +42,8 @@ export default function EstimateCreate() {
 
   //#region ⬇⬇ Event handlers below:
   /** ⬇ handleClose:
-    * Functionality event handler for the MUI Snackbar, this will close the pop-up notification. 
-    */
+   * Functionality event handler for the MUI Snackbar, this will close the pop-up notification. 
+   */
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -59,8 +52,8 @@ export default function EstimateCreate() {
   }; // End handleClose
 
   /** ⬇ timeDifference:
-    * A function to calculate the time difference in weeks between today's date and the first anticipated pour date, to validate whether the job is 8 weeks out or not. 
-    */
+   * A function to calculate the time difference in weeks between today's date and the first anticipated pour date, to validate whether the job is 8 weeks out or not. 
+   */
   const timeDifference = (chosenDate) => {
     // ⬇ Using the chosen date, run the change handler to set estimateData in the reducer for the chosen date
     handleChange('anticipated_first_pour_date', chosenDate)
@@ -76,8 +69,8 @@ export default function EstimateCreate() {
   } // End timeDifference
 
   /** ⬇ handleChange:
-    * When the user types, this will set their input to the kit object with keys for each field. 
-    */
+   * When the user types, this will set their input to the kit object with keys for each field. 
+   */
   const handleChange = (key, value) => {
     console.log('In EstimateCreate handleChange, key/value:', key, '/', value);
     // ⬇ Sends the keys/values to the estimate reducer object: 
@@ -88,8 +81,8 @@ export default function EstimateCreate() {
   } // End handleChange
 
   /** ⬇ handleShipping:
-    * Change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
-    */
+   * Change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
+   */
   const handleShipping = (id) => {
     // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
@@ -115,8 +108,8 @@ export default function EstimateCreate() {
   } // End handleShipping
 
   /** ⬇ handleMeasurementUnits:
-    * This function will add of metric or imperial costs to the estimateData package depending on their selection of the radio buttons.
-    */
+   * This function will add of metric or imperial costs to the estimateData package depending on their selection of the radio buttons.
+   */
   const handleMeasurementUnits = (units) => {
     console.log('In handleMeasurementUnits, units:', units);
     // ⬇ Making sure validation doesn't trigger:
@@ -155,11 +148,11 @@ export default function EstimateCreate() {
   } // End handleMeasurementUnits
 
   /** ⬇ handleSubmit:
-    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
-    */
+   * When clicked, this will post the object to the DB and send the user back to the dashboard. 
+   */
   const handleSubmit = (event) => {
     console.log('In handleSubmit');
-    //  Don't refresh until submit:
+    // ⬇ Don't refresh until submit:
     event.preventDefault();
     // ⬇ Radio button validation:
     if (!estimateData.measurement_units) {
@@ -173,12 +166,13 @@ export default function EstimateCreate() {
       dispatch({
         type: 'SET_TABLE_STATE',
         payload: true
-      })
-    }
+      }) // End dispatch
+    } // End else
   } // End handleSubmit
+  //#endregion ⬆⬆ Event handles above. 
 
 
-
+  // ⬇ Rendering:
   return (
     <div className="EstimateCreate-wrapper">
 
@@ -413,7 +407,7 @@ export default function EstimateCreate() {
 
                     <TableRow>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
-                      {/* This styling will trigger a background and snackbar if the leadtime is under 8 weeks: */}
+                      {/* This styling will trigger a background and snackbar if the lead time is under 8 weeks: */}
                       <TableCell style={{ backgroundColor: leadTime >= 8 || leadTime === '' ? "" : "rgba(255, 0, 0, 0.7)" }}>
                         {leadTime}
                       </TableCell>
@@ -501,7 +495,7 @@ export default function EstimateCreate() {
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+                          // onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
                           variant="contained"
                           className={classes.LexendTeraFont11}
                           color="primary"
@@ -521,11 +515,7 @@ export default function EstimateCreate() {
 
       </form>
 
-
-
       <br />
-
-
 
       {/* Conditional rendering to show or hide tables based off submit button: */}
       {showTables ? (
