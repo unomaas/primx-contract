@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 //components
@@ -11,13 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
-import { Block } from '@material-ui/icons';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
 export default function AdminUpdateShipping() {
-  // grab shipping costs value via store reducer
-  const shippingCosts = useSelector(store => store.shippingCosts);
   // establish dispatch for calls to reducers and sagas
   const dispatch = useDispatch();
 
@@ -80,14 +77,6 @@ export default function AdminUpdateShipping() {
     dispatch({ type: 'SET_CLOSE' })
   };
 
-  // useEffect(() => {
-  //   // GET shipping cost data on page load
-  //   dispatch({type: 'FETCH_SHIPPING_COSTS'});
-  // }, [])
-
-  console.log('shippingCosts in AdminUpdateShipping -->', shippingCosts)
-
-
   return (
     <div>
       <div>
@@ -101,7 +90,11 @@ export default function AdminUpdateShipping() {
 
       <div>
         {/* form to take in info and create a new shipping lane with costs */}
-        <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
+        <form
+          onSubmit={handleSubmit}
+          className={classes.root}
+          noValidate
+          autoComplete="off">
           <div>
             <div >
               <TextField
@@ -126,7 +119,11 @@ export default function AdminUpdateShipping() {
                 onChange={handleDCChange} />
             </div>
 
-            <Fab className={classes.updateShippingSubmit} type="submit" color="primary" aria-label="add">
+            <Fab
+              className={classes.updateShippingSubmit}
+              type="submit"
+              color="primary"
+              aria-label="add">
               <AddIcon />
             </Fab>
 

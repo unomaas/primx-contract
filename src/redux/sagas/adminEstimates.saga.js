@@ -14,13 +14,10 @@ function* fetchAllEstimates() {
 
         // send results to adminEstimates reducer
         yield put({ type: 'SET_ADMIN_ESTIMATES', payload: updatedEstimates });
-        
-
     }
     catch (error) {
         console.log('Error with fetchAllEstimates in adminEstimates Saga:', error);
     }
-    
 }
 
 // worker saga to make a PUT request to update that was changed in the AdminEstimatesGrid Data Grid
@@ -28,7 +25,6 @@ function* editEstimateData(action) {
     try {
         // action.payload is an object with the id, a dbColumn that tells column to be edited, and a newValue that contains the requested change
         yield axios.put(`/api/estimates/edit/${action.payload.id}`, action.payload);
-
     }
     catch (error) {
         console.log('Error with editEstimateData in the adminEstimates Saga', error);
@@ -48,8 +44,6 @@ function* editProcessOrder(action) {
         console.log('Error with editProcessOrder in the adminEstimates Saga', error);
     }
 }
-
-
 
 // watcher saga to look for admin estimate requests
 function* adminEstimatesSaga() {
