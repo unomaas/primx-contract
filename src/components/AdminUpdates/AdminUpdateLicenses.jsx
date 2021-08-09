@@ -63,7 +63,7 @@ export default function AdminUpdateLicenses() {
   const handleActivateDeactivateClick = (params) => {
     // On click, sends a dispatch to the companies saga to toggle active or inactive licensee status
     dispatch({ type: 'TOGGLE_ACTIVE_INACTIVE_LICENSEE', payload: params.row });
-    dispatch({ type: 'SET_SUCCESS_ACTIVE'});
+    dispatch({ type: 'SET_SUCCESS_ACTIVE' });
   }
 
   //establish rows with campanies array for datagrid
@@ -71,16 +71,18 @@ export default function AdminUpdateLicenses() {
 
   //estabish columns for datagrid
   const columns = [
-    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, headerClassName: classes.header},
-    {
-      field: 'activate_button',
+    { field: 'licensee_contractor_name', 
+    headerName: 'Licensee/Contractor', 
+    width: 300, 
+    headerClassName: classes.header },
+
+    { field: 'activate_button',
       headerName: 'Activate/ Deactivate',
       width: 225,
       disableClickEventBubbling: true,
       renderCell: renderActivateButton, // function declared above
       align: 'center',
       headerClassName: classes.header
-      
     },
   ];
 
@@ -110,15 +112,26 @@ export default function AdminUpdateLicenses() {
   return (
     <div >
       <AdminUpdates />
-      
+
       <h2>Update Licensee</h2>
 
       <form onSubmit={handleAddCompany}>
-        <TextField id="outlined-basic" className={classes.AddLicenseeInput} label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange} />
-        <Fab className={classes.AddLicenseeInput} type="submit" color="primary" aria-label="add">
+        <TextField
+          id="outlined-basic"
+          className={classes.AddLicenseeInput}
+          label="Add New Licensee"
+          variant="outlined"
+          value={companyNameInput}
+          onChange={handleCompanyInputChange} />
+        <Fab
+          className={classes.AddLicenseeInput}
+          type="submit"
+          color="primary"
+          aria-label="add">
           <AddIcon />
         </Fab>
       </form>
+
       <div className={classes.licenseeGrid}>
         <DataGrid
           className={classes.dataGridTables}
@@ -127,7 +140,6 @@ export default function AdminUpdateLicenses() {
           columns={columns}
           pageSize={10}
         />
-
 
         {/* Snackbar configures all of the info pop-ups required. */}
         <Snackbar
