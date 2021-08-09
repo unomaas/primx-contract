@@ -88,7 +88,6 @@ export default function AdminUpdateShipping() {
   console.log('shippingCosts in AdminUpdateShipping -->', shippingCosts)
 
 
-
   return (
     <div>
       <div>
@@ -102,7 +101,7 @@ export default function AdminUpdateShipping() {
 
       <div>
         {/* form to take in info and create a new shipping lane with costs */}
-        <form className={classes.root} noValidate autoComplete="off">
+        <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
           <div>
             <div >
               <TextField
@@ -127,9 +126,9 @@ export default function AdminUpdateShipping() {
                 onChange={handleDCChange} />
             </div>
 
-            <Fab className={classes.updateShippingSubmit} onClick={handleSubmit} color="primary" aria-label="add">
-                <AddIcon />
-              </Fab>
+            <Fab className={classes.updateShippingSubmit} type="submit" color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
 
             <div >
               <TextField

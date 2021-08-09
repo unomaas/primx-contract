@@ -52,7 +52,7 @@ const useStyles = makeStyles({
   },
 
   SystemAdminGrid: {
-    width: 510,
+    width: 472,
     margin: 'auto',
   },
 
@@ -72,7 +72,7 @@ const useStyles = makeStyles({
   },
 
   productsGrid: {
-    width: 600,
+    width: 475,
     margin: 'auto',
   },
 
@@ -94,6 +94,9 @@ const useStyles = makeStyles({
   estimateNumberLookup: {
     fontSize: '15px',
     color: 'red'
+  },
+  header: {
+    backgroundColor: '#C8C8C8',
   }
 
 }); // End useStyles

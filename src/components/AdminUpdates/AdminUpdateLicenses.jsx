@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
 
+
 export default function AdminUpdateLicenses() {
 
   // establish usedispatch as dispatch
@@ -70,14 +71,16 @@ export default function AdminUpdateLicenses() {
 
   //estabish columns for datagrid
   const columns = [
-    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300 },
+    { field: 'licensee_contractor_name', headerName: 'Licensee/Contractor', width: 300, headerClassName: classes.header},
     {
-      field: '',
+      field: 'activate_button',
       headerName: 'Activate/ Deactivate',
       width: 225,
       disableClickEventBubbling: true,
       renderCell: renderActivateButton, // function declared above
-      align: 'center'
+      align: 'center',
+      headerClassName: classes.header
+      
     },
   ];
 
@@ -110,10 +113,12 @@ export default function AdminUpdateLicenses() {
       
       <h2>Update Licensee</h2>
 
-      <TextField id="outlined-basic" className={classes.AddLicenseeInput} label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange} />
-      <Fab className={classes.AddLicenseeInput} onClick={handleAddCompany} color="primary" aria-label="add">
-        <AddIcon />
-      </Fab>
+      <form onSubmit={handleAddCompany}>
+        <TextField id="outlined-basic" className={classes.AddLicenseeInput} label="Add New Licensee" variant="outlined" value={companyNameInput} onChange={handleCompanyInputChange} />
+        <Fab className={classes.AddLicenseeInput} type="submit" color="primary" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </form>
       <div className={classes.licenseeGrid}>
         <DataGrid
           className={classes.dataGridTables}
