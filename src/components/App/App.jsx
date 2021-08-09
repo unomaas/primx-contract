@@ -3,7 +3,6 @@
 import './App.css';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
-import AboutPage from '../AboutPage/AboutPage';
 import AdminLandingPage from '../AdminLandingPage/AdminLandingPage';
 import AdminLoginPage from '../AdminLoginPage/AdminLoginPage';
 import EstimateCreate from '../EstimateCreate/EstimateCreate';
@@ -69,10 +68,6 @@ function App() {
 
             <Route exact path="/login" >
               <AdminLoginPage />
-            </Route>
-
-            <Route exact path="/about">
-              <AboutPage />
             </Route>
 
             {/* For protected routes, the view could show one of several things on the same route.
