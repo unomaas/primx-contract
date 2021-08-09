@@ -12,7 +12,6 @@ function* fetchAllPlacementTypes() {
         yield put({type: 'SET_PLACEMENT_TYPES', payload: placementTypes.data});
     } catch (error) {
         console.log('error with fetchAllPlacementTypes in placementTypes saga', error);
-        
     }
 }
 

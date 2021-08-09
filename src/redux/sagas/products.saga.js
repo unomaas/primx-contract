@@ -1,13 +1,14 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import {
+  put,
+  takeLatest
+} from 'redux-saga/effects';
 import axios from 'axios';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 // fetchProducts generator to get the array of all products data from the DB
 function* fetchProductsArray() {
   try {
-
     const response = yield axios.get('/api/products');
-
     // set products used in reducer
     yield put({
       type: 'SET_PRODUCTS_ARRAY',
@@ -18,15 +19,16 @@ function* fetchProductsArray() {
   }
 }
 
-
-// worker saga to get all products data from DB and create the custom product identifier/price object to be used in the estimate create and lookup views
+//worker saga to get all products data from DB and create the 
+//custom product identifier/price object to be used in the 
+//estimate create and lookup views
 function* fetchProductsObject() {
   try {
     const response = yield axios.get('/api/products');
 
     // use the createProductPriceObject function to convert the returned product array into an object
     const productObject = createProductPriceObject(response.data);
-    
+
     // set product object in reducer
     yield put({
       type: 'SET_PRODUCTS_OBJECT',
@@ -36,7 +38,6 @@ function* fetchProductsObject() {
     console.log('error with fetchProducts in field select saga', error);
   }
 }
-
 
 function* updateProduct(action) {
   try {
@@ -52,12 +53,13 @@ function* updateProduct(action) {
 }
 
 function* addProduct(action) {
-
   try {
     // takes company name input payload and posts to database
     yield axios.post('/api/products', action.payload);
     // refresh products with new product post
-    yield put({ type: 'FETCH_PRODUCTS_ARRAY'});
+    yield put({
+      type: 'FETCH_PRODUCTS_ARRAY'
+    });
   } catch (error) {
     console.log('Error in post product saga:', error);
   }

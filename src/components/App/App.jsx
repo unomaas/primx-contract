@@ -3,12 +3,8 @@
 import './App.css';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
-import AboutPage from '../AboutPage/AboutPage';
 import AdminLandingPage from '../AdminLandingPage/AdminLandingPage';
-import InfoPage from '../InfoPage/InfoPage';
-import LicenseeHomePage from '../LicenseeHomePage/LicenseeHomePage';
 import AdminLoginPage from '../AdminLoginPage/AdminLoginPage';
-import AdminRegisterPage from '../AdminRegisterPage/AdminRegisterPage';
 import EstimateCreate from '../EstimateCreate/EstimateCreate';
 import EstimateLookup from '../EstimateLookup/EstimateLookup';
 import AdminOrders from '../AdminOrders/AdminOrders';
@@ -26,7 +22,6 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
-
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -64,35 +59,15 @@ function App() {
               <EstimateLookup />
             </Route>
 
-            <Route 
+            {/* This route bring user to specific estimate in /lookup */}
+            <Route
               path="/lookup/:licensee_id_searched/:estimate_number_searched"
               children={<EstimateLookup />}
             >
             </Route>
 
-            {/* When a value is supplied for the authRedirect prop the user will
-            be redirected to the path supplied when logged in, otherwise they will
-            be taken to the component and path supplied. */}
-            {/* // with authRedirect:
-            // - if logged in, redirects to "/user"
-            // - else shows LoginPage at /login */}
             <Route exact path="/login" >
               <AdminLoginPage />
-            </Route>
-
-            {/* Home/Landing Page with Create New or Lookup Estimate: */}
-            {/* <Route exact path="/home">
-              <LicenseeHomePage />
-            </Route> */}
-
-            {/* <Route exact path="/lookup">
-              <EstimateLookup />
-            </Route> */}
-
-            {/* Visiting localhost:3000/about will show the about page. */}
-            {/* // shows AboutPage at all times (logged in or not) */}
-            <Route exact path="/about">
-              <AboutPage />
             </Route>
 
             {/* For protected routes, the view could show one of several things on the same route.
@@ -128,33 +103,12 @@ function App() {
               <AdminUpdateShipping />
             </ProtectedRoute>
 
+            {/* If logged in and user id is 1, that makes the super-admin and allows them to see this system admin page */}
             {user.id == '1' ?
               <ProtectedRoute exact path="/SystemAdmin" >
                 <SystemAdmin />
               </ProtectedRoute>
               : <> </>}
-
-            {/* // logged in shows InfoPage else shows LoginPage */}
-            <ProtectedRoute exact path="/info">
-              <InfoPage />
-            </ProtectedRoute>
-
-
-            {/* // with authRedirect:
-            // - if logged in, redirects to "/user"
-            // - else shows RegisterPage at "/registration" */}
-            {/* {user.id == '1' ?
-              <Route exact path="/registration" >
-                <AdminRegisterPage />
-              </Route>
-              : <></>} */}
-
-            {/* // with authRedirect:
-            // - if logged in, redirects to "/user"
-            // - else shows LandingPage at "/home" */}
-            {/* <ProtectedRoute exact path="/home" authRedirect="/user">
-              <LicenseeHomePage />
-            </ProtectedRoute> */}
 
             <ProtectedRoute exact path="/adminorders">
               <AdminOrders />

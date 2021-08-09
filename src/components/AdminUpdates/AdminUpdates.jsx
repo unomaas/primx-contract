@@ -1,23 +1,10 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import { React, useState, useEffect } from 'react'
 import Select from '@material-ui/core/Select'
-import { FormControl, MenuItem } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import AdminUpdateLicenses from './AdminUpdateLicenses'
-import AdminUpdateTypes from './AdminUpdateTypes'
-import AdminUpdateShipping from './AdminUpdateShipping'
-import AdminUpdateMaterials from './AdminUpdateMaterials'
-import SystemAdmin from './SystemAdmin'
-import { useDispatch, useSelector } from 'react-redux';
+import { MenuItem } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
-
-
-
-
 export default function AdminUpdates() {
-  // defines dispatch
-  const dispatch = useDispatch();
   // defines usehistory
   const history = useHistory();
   //holds value of selection to for page render conditionals
@@ -25,7 +12,6 @@ export default function AdminUpdates() {
   const user = useSelector((store) => store.user);
 
   //holds values for conditional render boolean
-  let [conditionalRender, setConditionalRender] = useState();
   let [conditionalBool, setConditionalBool] = useState(false);
 
 

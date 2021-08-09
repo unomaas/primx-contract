@@ -1,11 +1,11 @@
-import { combineReducers } from 'redux';
+import {
+  combineReducers
+} from 'redux';
 
 const today = new Date().toISOString().substring(0, 10);
 
 // ⬇ estimatesReducer:
 export const estimatesReducer = (state = {
-  // measurement_units: 'imperial',
-  // country: 'United States',
   date_created: today,
   project_name: "",
   licensee_id: 0,
@@ -37,25 +37,23 @@ export const estimatesReducer = (state = {
   waste_factor_percentage: 5
 }, action) => {
   switch (action.type) {
-    // Commented out deprecated action that's not being used
-    // case 'FETCH_ESTIMATE':
-    //   return action.payload;
     case 'SET_ESTIMATE':
       // validation for waste factor percentage: value can't go below 3
       if (action.payload.key == 'waste_factor_percentage' && action.payload.value < 3) {
         action.payload.value = 3;
       }
-
       return {
         ...state,
         [action.payload.key]: action.payload.value
       };
+
     case 'CLEAR_ESTIMATE':
       return {
         // measurement_units: 'imperial',
         country: 'United States',
         date_created: today,
       };
+
     default:
       return state;
   } // End switch

@@ -1,30 +1,16 @@
 import React from 'react';
-import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector } from 'react-redux';
-import AdminUpdates from '../AdminUpdates/AdminUpdates';
 import { useHistory } from "react-router-dom";
 
 // MUI Imports
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 
 function AdminLandingPage() {
-  // this component doesn't do much to start, just renders some user reducer info to the DOM
+  //  renders user reducer info to the DOM
   const user = useSelector((store) => store.user);
+  //defines history
   const history = useHistory();
-
-  //styles for MUI
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      '& > *': {
-        margin: theme.spacing(1),
-        width: '25ch',
-      },
-    },
-  }));
-  //defining classes for MUI
-  const classes = useStyles();
 
   // functions for navigating with the two main buttons
   const goToOrdersAndEstimates = () => {

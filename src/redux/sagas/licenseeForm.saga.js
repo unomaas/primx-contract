@@ -1,4 +1,7 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import {
+  put,
+  takeLatest
+} from 'redux-saga/effects';
 import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import removeTimestamps from '../../hooks/removeTimestamps';
@@ -13,14 +16,12 @@ function* fetchEstimateQuery(action) {
   console.log('IN SAGA -->Estimate Order For Lookup:', estimateNumber, ' Licensee ID:', licenseeId);
 
   try {
-    const response = yield axios.get('/api/estimates/lookup/:estimates',
-      {
-        params: {
-          estimateNumber: estimateNumber,
-          licenseeId: licenseeId
-        }
-      })
-
+    const response = yield axios.get('/api/estimates/lookup/:estimates', {
+      params: {
+        estimateNumber: estimateNumber,
+        licenseeId: licenseeId
+      }
+    })
     // run the timestamp removal function on the returned array of estimates
     const estimateWithoutTimestamps = removeTimestamps(response.data);
 
@@ -29,10 +30,11 @@ function* fetchEstimateQuery(action) {
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
 
     //take response from DB and insert into Admin Reducer
-    yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedResponse });
-  }
-
-  catch (error) {
+    yield put({
+      type: 'SET_ESTIMATE_QUERY_RESULT',
+      payload: calculatedResponse
+    });
+  } catch (error) {
     console.log('User get request failed', error);
   }
 }
@@ -41,26 +43,14 @@ function* fetchEstimateQuery(action) {
 function* AddEstimate(action) {
   try {
     console.log('got to add estimate');
-    
-    const response = yield axios.post('/api/estimates', action.payload);
 
+    const response = yield axios.post('/api/estimates', action.payload);
     // action. payload contains the history object from useHistory
     const history = action.payload.history
-
     // need to send the user to the search estimates results page using the newly created estimate number
     // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
     yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
-
-    // ⬇ Sweet Alert to let them know to save the Estimate #:
-    // swal({
-    //   title: "Your estimate number has changed!",
-    //   text: "Please be aware.",
-    //   icon: "info",
-    //   buttons: "I understand.",
-    // }); // End swal
-  }
-
-  catch (error) {
+  } catch (error) {
     console.log('User POST request failed', error);
   }
 }
@@ -112,15 +102,18 @@ function* recalculateEstimate(action) {
         primx_ultracure_blankets_unit_price: productObject.blankets_sqmeters,
       })
     }
-
     // Now that the current estimate has updated pricing data, send an action to the estimates reducer that will set a recalculated boolean
     // from false to true, allowing the user to click the place order button on the estimate lookup view
-    yield put({ type: 'SET_RECALCULATED_TRUE' })
+    yield put({
+      type: 'SET_RECALCULATED_TRUE'
+    })
     // make a new POST request using the updated data
-    yield put({ type: 'ADD_ESTIMATE', payload: currentEstimate })
+    yield put({
+      type: 'ADD_ESTIMATE',
+      payload: currentEstimate
+    })
 
-  }
-  catch (error) {
+  } catch (error) {
     console.log('recalculate estimate failed', error)
   }
 }
@@ -131,16 +124,18 @@ function* markEstimateAsOrdered(action) {
   try {
     yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
     // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
-    yield put({ type: 'FETCH_ESTIMATE_QUERY', payload: action.payload });
+    yield put({
+      type: 'FETCH_ESTIMATE_QUERY',
+      payload: action.payload
+    });
     // set the recalculated boolean in the estimates reducer to false so the place order button gets disabled for other estimates
-    yield put({ type: 'SET_RECALCULATE_FALSE' });
-  }
-  catch (error) {
+    yield put({
+      type: 'SET_RECALCULATE_FALSE'
+    });
+  } catch (error) {
     console.log('markEstimateAsOrdered failed', error)
   }
-
 }
-
 
 // companies saga to fetch companies
 function* licenseeFormSaga() {

@@ -2,14 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import AdminUpdates from './AdminUpdates';
 
-import { useStyles } from '../MuiStyling/MuiStyling';
-
 //material ui imports
-import TextField from '@material-ui/core/TextField';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import { useStyles } from '../MuiStyling/MuiStyling';
 import { DataGrid } from '@material-ui/data-grid';
-//material ui classes
 
 
 export default function AdminUpdateMaterials() {
@@ -33,16 +28,23 @@ export default function AdminUpdateMaterials() {
     on_hand: 0
   }
  
-
-
   //establish rows with products array for datagrid
   let rows = products;
 
   //estabish columns for datagrid
   const columns = [
-    { field: 'product_name', headerName: 'Product', width: 300, editable: false,headerClassName: classes.header },
-    { field: 'product_price', headerName: 'Price', width: 175, editable: true,headerClassName: classes.header },
-    // { field: 'on_hand', headerName: 'On Hand', width: 200, editable: true },
+    { field: 'product_name', 
+      headerName: 'Product', 
+      width: 300, 
+      editable: false,
+      headerClassName: classes.header },
+
+    { field: 'product_price', 
+    headerName: 'Price', 
+    width: 175, 
+    editable: true,
+    headerClassName: classes.header },
+    // { field: 'on_hand', headerName: 'On Hand', width: 200, editable: true }, 
   ];
 
   const handleEditSubmit = ({ id, field, props }) => {

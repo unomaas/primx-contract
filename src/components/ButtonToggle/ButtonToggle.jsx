@@ -14,7 +14,6 @@ export default function ButtonToggle() {
   const history = useHistory();
   const buttonState = useSelector(store => store.estimatesReducer.buttonState);
   // toggle button states
-  const classes = useStyles();
   const dispatch = useDispatch();
   //#endregion ⬆⬆ All state variables above. 
 
@@ -47,13 +46,19 @@ export default function ButtonToggle() {
         size="small"
       >
         <ToggleButton
-          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+          style={{
+            fontFamily: 'Lexend Tera',
+            fontSize: '11px'
+          }}
           value="create"
         >
           Create New Estimate
         </ToggleButton>
         <ToggleButton
-          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+          style={{
+            fontFamily: 'Lexend Tera',
+            fontSize: '11px'
+          }}
           value="lookup"
         >
           Search For Estimate
