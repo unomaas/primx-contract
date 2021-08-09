@@ -37,13 +37,19 @@ function LicenseeHomePage() {
         value={buttonState}
       >
         <ToggleButton
-          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+          style={{
+            fontFamily: 'Lexend Tera',
+            fontSize: '11px'
+          }}
           value="create"
         >
           Create New Estimate
         </ToggleButton>
         <ToggleButton
-          style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+          style={{
+            fontFamily: 'Lexend Tera',
+            fontSize: '11px'
+          }}
           value="lookup"
         >
           Search For Estimate
