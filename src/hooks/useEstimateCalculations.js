@@ -1,29 +1,17 @@
-// custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays
+// Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays
 export default function useEstimateCalculations(estimate) {
-
-    // Create our number formatter.
-    const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-  
-    // These options are needed to round to whole numbers if that's what you want.
-    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
-    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-    });
-  
-    console.log('estimate:', estimate);
     // set a default value for waste factor percentage if one wasn't entered
     if (!estimate.waste_factor_percentage) {
         estimate.waste_factor_percentage = 5;
     }
-    // shipping prices come in with keys linked to the shipping_costs table if they're being calculated from the estimate creation view,
-    // need to change them to match the keys on the estimate table. If estimates are being calculated from DB data, these keys already exist
+    // Shipping prices come in with keys linked to the shipping_costs table if they're being calculated from the estimate creation view,
+    // we need to change them to match the keys saved on the estimate table. If estimates are being calculated from DB data, these keys already exist
+    // since estimates all contain snapshots of the prices necessary for estimate calculations at the time the estimate was made
     if (!estimate.primx_dc_shipping_estimate) {
         estimate.primx_dc_shipping_estimate = estimate.dc_price;
         estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
         estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
         estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
-
     }
 
     // start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database
@@ -37,17 +25,17 @@ export default function useEstimateCalculations(estimate) {
             estimate[property] = Number(value.replace(/[^0-9\.-]+/g, ""));
         }
     }
-    // begin adding keys to the estimate, first by adding in keys specific to the unit of measurement that's being worked with
+
+    // begin adding new calculated keys to the estimate, first by adding in keys specific to the unit of measurement that's being worked with
 
     // imperial calculalations
     if (estimate.measurement_units == 'imperial') {
-
-        // cubic yards base: original formula for cubic yards divided quantity first by 12, then by 27
+        // cubic yards base: original formula given to us for cubic yards divided quantity first by 12, then by 27
         estimate.cubic_yards = (estimate.square_feet * estimate.thickness_inches / 324);
         // additional thickness for thickened edges
         if (estimate.thickness_inches >= 6) { // if greater than 6 inches, no need for thickened edges
             estimate.additional_thickness_inches = 0;
-        } else {
+        } else { 
             estimate.additional_thickness_inches = ((6 - estimate.thickness_inches) * .5);
         }
         // calculate perimeter thickening and construction joint thickening based on calculated additional thickness, the 5 and 10 values below are provided by PrimX
@@ -94,7 +82,6 @@ export default function useEstimateCalculations(estimate) {
 
     // metric calculalations
     else if (estimate.measurement_units == 'metric') {
-
         // cubic meters base
         estimate.cubic_meters = (estimate.square_meters * estimate.thickness_millimeters / 1000);
         // additional thickness for thickened edges
@@ -146,8 +133,8 @@ export default function useEstimateCalculations(estimate) {
     }
 
 
-    // function for mutating the current estimate object to include calculations for PrimX Flow and CPEA, taking in the volume of the design being looked
-    // at. Works for both metric and imperial units
+    // Function for mutating the current estimate object to include calculations for PrimX Flow and CPEA, taking in the volume of the design being looked
+    // at. Works for both metric and imperial units since PrimX Flow and CPEA are measured in liters no matter what.
     function calculateFlowAndCpea(designVolume) {
         // start by adding calculations data for PrimX Flow
         estimate.primx_flow_total_amount_needed = designVolume * estimate.primx_flow_dosage_liters; // Dosage liters is input by licensee
@@ -186,6 +173,18 @@ export default function useEstimateCalculations(estimate) {
     estimate.design_total_price_estimate = estimate.design_total_shipping_estimate + estimate.design_total_materials_price;
 
 
+
+    // Create our number formatter to format our money quantities back into standard looking currency values.
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+  
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    });
+
+
     // before returning the estimate object, do any necessary rounding on given numbers to match the needs of the various grid displays
     // loop over all key/value pairs in the mutated estimate object, doing rounding based on shared key names
     for (let property in estimate) {
@@ -193,19 +192,17 @@ export default function useEstimateCalculations(estimate) {
         // cubic volumes and total amounts of physical materials are always rounded up if they're decimals after being calculated
         if (property.includes('cubic_yards') || property.includes('cubic_meters') || property.includes('total_amount') || property.includes('fibers_dosage')) {    
             estimate[property] = Math.ceil(value)
-        // price of materials, shipping estimates (all share _estimate in their key name), dosages of liquid ingredients, and additional thickness need rounding to 2 decimals
+        // display additional thickness to two decimal places
         } else if (property.includes('additional_thickness')) {
             estimate[property] = Number(value).toFixed(2);
-        // price of materials and shipping estimates all share _estimate in their key name - they need to be converted to currency    
-        } else if (property.includes('materials_price') || property.includes('_estimate') || property.includes('unit_price')) {
+        // price of materials and shipping estimates all share _estimate or _price in their key name - they need to be converted to currency    
+        } else if (property.includes('_price') || property.includes('_estimate')) {
             estimate[property] = formatter.format(value);
+        // Take remaining quantities and format them with commas if they're sufficiently large to help with table display
         } else if (property.includes('total_amount_needed'), property.includes('packages_needed'),property.includes('total_order_quantity')) {
             estimate[property] = (value).toLocaleString('en-US');
         }
     }
-
-    console.log('After math estimate:', estimate);
-    
 
     return estimate;
 }
