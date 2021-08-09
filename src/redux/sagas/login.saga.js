@@ -11,7 +11,6 @@ function* loginUser(action) {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true,
     };
-
     // send the action.payload as the body
     // the config includes credentials which
     // allow the server session to recognize the user
@@ -42,7 +41,6 @@ function* logoutUser(action) {
       headers: { 'Content-Type': 'application/json' },
       withCredentials: true,
     };
-
     // the config includes credentials which
     // allow the server session to recognize the user
     // when the server recognizes the user session
