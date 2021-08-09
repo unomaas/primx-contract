@@ -41,10 +41,12 @@ export default function SystemAdminUpdateUserGrid() {
 
   // columns for Data Grid
   const columns = [
-    { field: 'username', 
-    headerName: 'Username', 
-    width: 300, 
-    headerClassName: classes.header }, 
+    {
+      field: 'username',
+      headerName: 'Username',
+      width: 300,
+      headerClassName: classes.header
+    },
 
     {
       field: '',
@@ -65,7 +67,7 @@ export default function SystemAdminUpdateUserGrid() {
     if (params.id > 1)
       // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
       dispatch({ type: 'DELETE_ADMIN', payload: params });
-      dispatch({ type: 'SET_SUCCESS_DELETE_ADMIN'});
+      dispatch({ type: 'SET_SUCCESS_DELETE_ADMIN' });
   }
 
   return (
