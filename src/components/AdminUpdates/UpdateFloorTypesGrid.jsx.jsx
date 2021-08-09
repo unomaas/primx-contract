@@ -4,19 +4,20 @@ import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
-
 // component that renders a Material UI Data Grid, needs an array of floor types and placement types as props.
-export default function UpdateFloorTypesGrid({floorTypes}) {
+export default function UpdateFloorTypesGrid({ floorTypes }) {
     //Material UI classes for data grid
     const classes = useStyles();
- 
+
     // columns for Data Grid
     const floorColumns = [
 
-        {field: 'floor_type', 
-        headerName: 'Floor Type', 
-        width: 400,    
-        headerClassName: classes.header} // Editable + validation?
+        {
+            field: 'floor_type',
+            headerName: 'Floor Type',
+            width: 400,
+            headerClassName: classes.header
+        } // Editable + validation?
     ]
 
     //rows are the info from the floor types reducer
@@ -24,9 +25,9 @@ export default function UpdateFloorTypesGrid({floorTypes}) {
 
     return (
         <div
-          className={classes.TypesGrid}
+            className={classes.TypesGrid}
         >
-            <DataGrid 
+            <DataGrid
                 className={classes.dataGridTables}
                 autoHeight
                 rows={floorRows}
