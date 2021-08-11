@@ -30,11 +30,22 @@ The SuperAdmin is the only Admin account that is able to create another Admin ac
 ### Installation
 
 To run this program, you will need to:
-- [] Build the database in your SQL server with the code in "database.sql" file. 
+- [] Build the database in your SQL server with the code in "database.sql" file.
+  - [] When building, start with all queries between the START HERE and STOP HERE comments, then follow instructions after STOP HERE to handle
+       proper CSV import.
+- [] Create a .env file in the root directory of the project with a single line starting with SERVER_SESSION_SECRET={your random string here},
+     where the random string is 8+ random letters or numbers without the brackets.
 - [] Run 'npm install' in your terminal to install the dependencies.
 - [] Run 'npm run server' in one terminal, and 'npm run client' in another terminal.
 
-
+To create a superadmin user you'll need a username and password with database id = 1. The following steps can help set this up:
+- [] In the user.router.js file, comment out the existing /api/user/register POST route, and comment in the unsecured /api/user/register POST
+     route currently disabled in the file. 
+- [] Using Postman or another API testing program, do a POST route test to /api/user/register with a body of a JSON in the following format:
+     {"username": "YOUR USERNAME HERE", "password": "YOUR PASSWORD HERE"} where the YOUR USERNAME HERE and YOUR PASSWORD HERE are your choices.
+- [] After this, you should have a properly stored and hashed username and password in the user table that has access to the System Admin component
+     under the AdminUpdates directory, where further admin creation and deletion is possible.
+- [] Comment out he unsecured POST route just used, and comment back in the original.
 
 ## Usage
 

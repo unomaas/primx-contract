@@ -1,5 +1,7 @@
 -- Database Name: primx_project_db
 
+-- START HERE -- 
+
 -- create estimates table
 CREATE TABLE "estimates" (
 	"id" serial NOT NULL,
@@ -131,9 +133,6 @@ VALUES ('PrīmX DC (lbs)', .40, 0, 'dc_lbs'), ('PrīmX DC (kgs)', .88, 0, 'dc_kg
 ('PrīmX Steel Fibers (lbs)', .69, 0, 'steel_fibers_lbs'), ('PrīmX Steel Fibers (kgs)', 1.52, 0, 'steel_fibers_kgs'), ('PrīmX UltraCure Blankets (sqft)', .08, 0, 'blankets_sqft'), 
 ('PrīmX UltraCure Blankets (metersq)', .86, 0, 'blankets_sqmeters'), ('PrīmX CPEA (liters)', 3.55, 0, 'cpea_liters');
 
--- starting test user for user table
-INSERT INTO "user" ("username", "password") VALUES ('test_user', 'test_password');
-
 -- starting values for placement_types table
 INSERT INTO "placement_types" ("placement_type") VALUES ('Truck Discharge'), ('Pump'), ('Buggy'), ('Conveyor');
 
@@ -146,8 +145,16 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 
 
 
+-- STOP HERE -- 
 
+-- Import the Shipping Source CSV into the shipping_costs table at this point. The CSV headers to DB columns to match up are as follows:
+	-- Shiping Source => ship_to_state_province
+	-- DC => dc_price
+	-- Flow => flow_cpea_price
+	-- Fibers => fibers_price
 
+-- Once this is done, everything needed for the estimates table to accept incoming estimates should be ready. Feel free to insert the dummy data
+-- seen below to have searchable estimates from the EstimateLookup view, and data that will populate on the AdminOrder view.
 
 
 
