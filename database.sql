@@ -146,8 +146,16 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 
 
 
+-- STOP HERE -- 
 
+-- Import the Shipping Source CSV into the shipping_costs table at this point. The CSV headers to DB columns to match up are as follows:
+	-- Shiping Source => ship_to_state_province
+	-- DC => dc_price
+	-- Flow => flow_cpea_price
+	-- Fibers => fibers_price
 
+-- Once this is done, everything needed for the estimates table to accept incoming estimates should be ready. Feel free to insert the dummy data
+-- seen below to have searchable estimates from the EstimateLookup view, and data that will populate on the AdminOrder view.
 
 
 
