@@ -30,11 +30,13 @@ The SuperAdmin is the only Admin account that is able to create another Admin ac
 ### Installation
 
 To run this program, you will need to:
-- [] Build the database in your SQL server with the code in "database.sql" file. 
+- [] Build the database in your SQL server with the code in "database.sql" file.
+  - [] When building, start with all queries between the START HERE and STOP HERE comments, then follow instructions after STOP HERE to handle
+       proper CSV import.
+- [] Create a .env file in the root directory of the project with a single line starting with SERVER_SESSION_SECRET={your random string here},
+     where the random string is 8+ random letters or numbers without the brackets.
 - [] Run 'npm install' in your terminal to install the dependencies.
 - [] Run 'npm run server' in one terminal, and 'npm run client' in another terminal.
-
-
 
 ## Usage
 
