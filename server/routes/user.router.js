@@ -37,6 +37,30 @@ router.post('/register', rejectUnauthenticated, (req, res, next) => {
   }
 });
 
+// BELOW CODE POST ROUTE IS MEANT FOR DEVELOPER SETUP PURPOSES ONLY. This is not a secure route and should only be uncommented and used once upon
+// spinning up the project to create the first admin user in the database. Further instructions can be found in the "installation" section
+// of the README.md file
+
+// router.post('/register',  (req, res, next) => {
+//   console.log('got to /register:', req.body);
+  
+//   const username = req.body.username;
+//   const password = encryptLib.encryptPassword(req.body.password);
+
+//   const queryText = `INSERT INTO "user" (username, password)
+//     VALUES ($1, $2) RETURNING id`;
+//   pool
+//     .query(queryText, [username, password])
+//     .then(() => res.sendStatus(201))
+//     .catch((err) => {
+//       console.log('User registration failed: ', err);
+//       res.sendStatus(500);
+//     });
+  
+// });
+
+// END FIRST USER ACCOUNT SETUP ROUTE
+
 // Handles login form authenticate/login POST
 // userStrategy.authenticate('local') is middleware that we run on this route
 // this middleware will run our POST if successful
