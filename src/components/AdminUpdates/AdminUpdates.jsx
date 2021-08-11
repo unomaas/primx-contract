@@ -23,7 +23,6 @@ export default function AdminUpdates() {
 
   const renderComponent = () => {
     setConditionalBool(true);
-    console.log(selectedPage)
 
     if (selectedPage == 1) {
       // setConditionalRender(AdminUpdateLicenses)

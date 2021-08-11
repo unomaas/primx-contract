@@ -135,7 +135,7 @@ export default function AdminUpdateTypes() {
 
           <Fab
             className={classes.AddTypesInput}
-            onSubmit={addPlacementType}
+            type="submit"
             color="primary"
             aria-label="add">
             <AddIcon />

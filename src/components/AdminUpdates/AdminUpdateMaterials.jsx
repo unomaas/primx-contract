@@ -48,7 +48,6 @@ export default function AdminUpdateMaterials() {
   ];
 
   const handleEditSubmit = ({ id, field, props }) => {
-    console.log('in handle edit submit for id, field, props', id, field, props);
     // id argument is the db id of the row being edited and props.value is the new value after submitting the edit
     dispatch({
       type: 'UPDATE_PRODUCT', payload: {

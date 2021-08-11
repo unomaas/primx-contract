@@ -26,8 +26,6 @@ export default function AdminOrders() {
   allEstimates.forEach(estimate => {
 
     const updatedEstimate = calculateEstimate(estimate);
-    console.log('updated estimate:', updatedEstimate);
-
     // sort the estimates into their individual array
     // orders are considered processed if they've been marked_as_ordered by an admin and ordered_by_licensee by a licensee
     if (estimate.marked_as_ordered && estimate.ordered_by_licensee) {

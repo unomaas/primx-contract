@@ -72,7 +72,6 @@ export default function EstimateCreate() {
    * When the user types, this will set their input to the kit object with keys for each field. 
    */
   const handleChange = (key, value) => {
-    console.log('In EstimateCreate handleChange, key/value:', key, '/', value);
     // ⬇ Sends the keys/values to the estimate reducer object: 
     dispatch({
       type: 'SET_ESTIMATE',
@@ -92,7 +91,6 @@ export default function EstimateCreate() {
     // ⬇ Add in state shipping costs based off of state id in object:
     shippingCosts.forEach(shippingState => {
       if (shippingState.id == id) {
-        console.log('Shipping Data:', shippingState);
         // ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
         for (let keyName in shippingState) {
           dispatch({
@@ -111,7 +109,6 @@ export default function EstimateCreate() {
    * This function will add of metric or imperial costs to the estimateData package depending on their selection of the radio buttons.
    */
   const handleMeasurementUnits = (units) => {
-    console.log('In handleMeasurementUnits, units:', units);
     // ⬇ Making sure validation doesn't trigger:
     setError(false);
     setRadioError("");
@@ -151,7 +148,6 @@ export default function EstimateCreate() {
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
   const handleSubmit = (event) => {
-    console.log('In handleSubmit');
     // ⬇ Don't refresh until submit:
     event.preventDefault();
     // ⬇ Radio button validation:

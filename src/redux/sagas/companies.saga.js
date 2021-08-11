@@ -4,6 +4,7 @@ import axios from 'axios';
 // fetchCompanies generator to GET all companies, both active and inactive, from the DB for the Admin views
 function* fetchAllCompanies() {
   try {
+
     const response = yield axios.get('/api/companies/all');
     // set companies used in reducer
     yield put({
