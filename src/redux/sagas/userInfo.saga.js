@@ -21,7 +21,6 @@ function* fetchAllUsers() {
 //worker saga to delete users if you are the super admin
 function* deleteAdmin(action) {
   try {
-    console.log('in deleteAdmin in userInfo.saga, action.payload.id is -->', action.payload.id);
     //tells userInfo router to delete a user based on their id#
     yield axios.delete(`/api/userInfo/${action.payload.id}`)
     //sends results to reducer

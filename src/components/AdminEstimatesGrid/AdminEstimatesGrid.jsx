@@ -77,7 +77,6 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
   // ⬇ Submit handler for in-line cell edits on the data grid:
   const handleEditSubmit = ({ id, field, props }) => {
-    console.log('in handle edit submit for id, field, props', id, field, props);
     // ⬇ ID argument is the db id of the row being edited, field is the column name, and props.value is the new value after submitting the edit
     dispatch({
       type: 'EDIT_ESTIMATE_DATA', payload: {

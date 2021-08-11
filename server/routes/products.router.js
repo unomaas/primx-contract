@@ -25,7 +25,6 @@ const format = require('pg-format');
    */
   router.put('/:id',rejectUnauthenticated, (req, res) => {
     // EDIT route code here
-    console.log(req.body)
     const queryText = format(`UPDATE "products" SET %I =$1 WHERE "id" = $2;`, req.body.dbColumn);
     pool.query(queryText, [req.body.newValue, req.params.id])
       .then(() => { res.sendStatus(200); })
@@ -35,10 +34,8 @@ const format = require('pg-format');
   });
 
   router.post('/', rejectUnauthenticated, (req, res) => {
-      console.log(req.body)
     const queryText = `INSERT INTO "products" (product_name, product_price, on_hand)
     VALUES ($1, $2, $3)`;
-    console.log(req.body.value)
     pool.query(queryText, [req.body.product_name, req.body.product_price, req.body.on_hand])
     .then(() => res.sendStatus(201))
     .catch((error) => {

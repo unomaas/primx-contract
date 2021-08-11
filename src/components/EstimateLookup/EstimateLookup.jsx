@@ -60,7 +60,6 @@ export default function EstimateLookup() {
    * Change handler for the estimate search form. Will send their entries to a reducer.
    */
   const handleChange = (key, value) => {
-    console.log('In handleChange, key/value:', key, '/', value);
     // setSearchQuery({ ...searchQuery, [key]: value })
     dispatch({
       type: 'SET_SEARCH_QUERY',
@@ -72,16 +71,13 @@ export default function EstimateLookup() {
    * When submitted, will search for the entered estimate to populate the tables. 
    */
   const handleSubmit = () => {
-    console.log('In handleSubmit')
     // ⬇ Select dropdown validation:
     if (searchQuery.licensee_id !== "0") {
       // If they selected a company name from dropdown:
-      console.log("Submitting.");
       // use history to send user to the details subview of their search query
       history.push(`/lookup/${searchQuery.licensee_id}/${searchQuery.estimate_number}`)
     } else {
       // If they haven't, pop up warning and prevent them:
-      console.log(("Not submitting."));
       setError(true);
       setSelectError("Please select a value.");
     } // End if/else
@@ -94,7 +90,6 @@ export default function EstimateLookup() {
     // ⬇ Attach history from useHistory to the searchResult object to allow navigation from inside the saga:
     searchResult.history = history;
     // ⬇ Needs to GET shipping information and pricing information before recalculating
-    console.log('searchResult before sending:', searchResult);
     dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult });
     dispatch({ type: 'GET_RECALCULATE_INFO' });
   } // End handleRecalculateCosts
@@ -108,7 +103,6 @@ export default function EstimateLookup() {
       setPoNumError("Please enter a P.O. Number.")
       // ⬇ If they have entered a PO number, proceed with order submission:
     } else {
-      console.log('Test');
       swal({
         title: "This order has been submitted! Your PrimX representative will be in touch.",
         text: "Remember, your estimate number has changed! Please favorite this page or save the new estimate number. You will need it to check the order status in the future.",

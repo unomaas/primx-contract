@@ -10,7 +10,6 @@ function* fetchShippingCosts() {
     try {
         //GET all shipping costs
         const shippingCosts = yield axios.get('/api/shippingcosts');
-        console.log('shippingCosts.data -->', shippingCosts.data);
 
         //send results to shippingCosts reducer
         yield put({
@@ -24,7 +23,6 @@ function* fetchShippingCosts() {
 
 //worker saga to add shipping costs
 function* postShippingCosts(action) {
-    console.log('in postShippingCosts, action.payload is -->', action.payload);
 
     try {
         //add shipping costs
