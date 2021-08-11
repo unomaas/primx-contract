@@ -18,7 +18,6 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 
   //Delete Route - Delete an admin user
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
-  console.log('in userInfo.router req.params.id -->', req.params.id);
   if (req.user.id == '1') {
   const queryText = `DELETE FROM "user" WHERE "id" = $1;`;
   pool.query(queryText, [req.params.id])

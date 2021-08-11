@@ -13,8 +13,6 @@ function* fetchEstimateQuery(action) {
   const estimateNumber = action.payload.estimate_number
   const licenseeId = action.payload.licensee_id
 
-  console.log('IN SAGA -->Estimate Order For Lookup:', estimateNumber, ' Licensee ID:', licenseeId);
-
   try {
     const response = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
@@ -42,7 +40,6 @@ function* fetchEstimateQuery(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
   try {
-    console.log('got to add estimate');
 
     const response = yield axios.post('/api/estimates', action.payload);
     // action. payload contains the history object from useHistory
@@ -59,18 +56,14 @@ function* AddEstimate(action) {
 // to the new estimate page for their new calculation data, and allow them to click the Submit Order button
 function* recalculateEstimate(action) {
   const currentEstimate = action.payload;
-  console.log('current estimate:', currentEstimate);
-
   try {
     // get updated shipping and product pricing data from the DB
     const shippingCosts = yield axios.get('/api/shippingcosts');
     const productCosts = yield axios.get('/api/products');
-    console.log('Shipping costs, Product costs,', shippingCosts.data, productCosts.data);
 
     // Loop through shippingCosts, find the matching id, and update the shipping costs of the current estimate with the current shipping costs
     shippingCosts.data.forEach(shippingState => {
       if (shippingState.id == currentEstimate.shipping_costs_id) {
-        console.log('Shipping state:', shippingState);
         Object.assign(currentEstimate, {
           primx_dc_shipping_estimate: shippingState.dc_price,
           primx_flow_shipping_estimate: shippingState.flow_cpea_price,

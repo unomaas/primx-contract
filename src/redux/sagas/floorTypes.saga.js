@@ -6,8 +6,6 @@ function* fetchAllFloorTypes() {
     try {
         //GET all floor types
         const floorTypes = yield axios.get('/api/floortypes');
-        console.log('floorTypes.data', floorTypes.data);
-
         //send results to floorTypes reducer
         yield put({type: 'SET_FLOOR_TYPES', payload: floorTypes.data});
     } catch (error) {
@@ -18,7 +16,6 @@ function* fetchAllFloorTypes() {
 
 //worker saga for adding new floor type
 function* postFloorType(action) {
-    console.log('in postFloorType, action.payload is -->', action.payload);
     try {
       //send new floor type
       yield axios.post(`/api/floortypes`, action.payload);

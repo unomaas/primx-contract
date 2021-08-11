@@ -56,7 +56,6 @@ export default function AdminUpdateShipping() {
   //handle the submit of the form
   const handleSubmit = () => {
 
-    console.log('in handleSubmit, adding newShippingCost -->', newShippingCost);
     //shows an error is one of the fields is empty
     if (newShippingCost.dc_price == '' || newShippingCost.ship_to_state_province == '' || newShippingCost.flow_cpea_price == '' ||
       newShippingCost.fibers_price == '') {

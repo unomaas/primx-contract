@@ -6,8 +6,6 @@ function* fetchAllPlacementTypes() {
     try {
         //GET all placement types
         const placementTypes = yield axios.get('/api/placementtypes');
-        console.log('placementTypes.data', placementTypes.data);
-
         //send results to placementTypes reducer
         yield put({type: 'SET_PLACEMENT_TYPES', payload: placementTypes.data});
     } catch (error) {
@@ -17,8 +15,6 @@ function* fetchAllPlacementTypes() {
 
 //worker saga to add placement types
 function* postPlacementType(action) {
-    console.log('in postPlacementType, action.payload is -->', action.payload);
-    
     try {
       //tells placement types router to add placement type to DB
       yield axios.post(`/api/placementtypes`, action.payload);

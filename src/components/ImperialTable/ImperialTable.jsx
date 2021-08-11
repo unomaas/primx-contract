@@ -41,7 +41,6 @@ export default function ImperialTable() {
    * When the user types, this will set their input to the kit object with keys for each field. 
    */
   const handleChange = (key, value) => {
-    console.log('In handleChange, key/value:', key, '/', value);
     // setNewEstimate({ ...newEstimate, [key]: value });
 
     dispatch({
@@ -54,7 +53,6 @@ export default function ImperialTable() {
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
   const handleSave = event => {
-    console.log('In Imperial handleSave');
     // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga
     estimateData.history = history;
     // ⬇ Don't refresh until submit:

@@ -10,9 +10,7 @@ import EstimateCreate from '../EstimateCreate/EstimateCreate';
 import EstimateLookup from '../EstimateLookup/EstimateLookup';
 
 const handleButtonState = (event, selection) => {
-  console.log('In handleButtonState, selection:', selection);
   setButtonState(selection);
-  console.log('In handleButtonState, buttonState:', buttonState);
   history.push(`/${selection}`);
 }
 

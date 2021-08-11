@@ -23,7 +23,6 @@ export default function ButtonToggle() {
    * Will set the state of the button to be whatever selection their at, to ensure it's always current no matter which view they access Create or Look-up views from. 
    */
   const handleButtonState = (event, selection) => {
-    console.log('In handleButtonState, selection:', selection);
     // ⬇ Validation to make sure it's not empty: 
     if (selection !== null) {
       dispatch({
