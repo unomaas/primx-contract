@@ -1,5 +1,8 @@
 {
   "name": "primx-contract-project",
+  "engines": {
+    "node": "16.x"
+  },
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",
