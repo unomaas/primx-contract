@@ -1,6 +1,6 @@
 # PrīmX - Ordering Portal Web App
 
-Thanks for viewing our order platform solution for our client, PrimX NA! 
+Thanks for viewing our order platform solution for our client, PrimX NA! https://primxna.com/
 
 
 ## Description:
