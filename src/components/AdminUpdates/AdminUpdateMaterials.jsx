@@ -47,13 +47,13 @@ export default function AdminUpdateMaterials() {
     // { field: 'on_hand', headerName: 'On Hand', width: 200, editable: true }, 
   ];
 
-  const handleEditSubmit = ({ id, field, props }) => {
-    // id argument is the db id of the row being edited and props.value is the new value after submitting the edit
+  const handleEditSubmit = ({ id, field, value }) => {
+    // id argument is the db id of the row being edited and value is the new value after submitting the edit
     dispatch({
       type: 'UPDATE_PRODUCT', payload: {
         id: id,
         dbColumn: field,
-        newValue: props.value
+        newValue: value
       }
     })
   }
@@ -103,7 +103,7 @@ export default function AdminUpdateMaterials() {
           rows={rows}
           columns={columns}
           pageSize={10}
-          onEditCellChangeCommitted={handleEditSubmit}
+          onCellEditCommit={handleEditSubmit}
         />
       </div>
     </div>

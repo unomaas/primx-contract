@@ -1,8 +1,9 @@
 # PrīmX - Ordering Portal Web App
 
+Thanks for viewing our order platform solution for our client, PrimX NA! https://primxna.com/
 
 
-## Description
+## Description:
 
 - Duration: 2 Week Sprint
 
@@ -20,14 +21,14 @@ The SuperAdmin is the only Admin account that is able to create another Admin ac
 
 
 
-### Prerequisites
+## Prerequisites:
 
 - Node.js: https://nodejs.org/en/
 - PostgreSQL: https://www.postgresql.org/
 
 
 
-### Installation
+## Installation:
 
 To run this program, you will need to:
 - [] Build the database in your SQL server with the code in "database.sql" file.
@@ -47,7 +48,8 @@ To create a superadmin user you'll need a username and password with database id
      under the AdminUpdates directory, where further admin creation and deletion is possible.
 - [] Comment out he unsecured POST route just used, and comment back in the original.
 
-## Usage
+
+## Usage:
 
 To use this app, start the server and client in your terminal.  React will navigate to http://localhost:3000/ in your browser.
 - Licensee: no login required
@@ -95,7 +97,8 @@ To use this app, start the server and client in your terminal.  React will navig
 
 
 
-### Built With
+### Built With:
+
  - JavaScript/HTML/CSS
  - React, Redux, Redux Saga, React Router
  - Axios, Node.js, Express, SQL, PostgreSQL
@@ -103,10 +106,28 @@ To use this app, start the server and client in your terminal.  React will navig
 
 
 
-### Acknowledgement
+### Acknowledgement:
+
 We would like to thank PrimX and Jeanne Spoden for giving us the opportunity to work on this project, it was wonderful having such an attentive client.  We would also like to thank Prime Digital Academy and our instructor, Dane Smith, for giving us the tools to get here today.  Lastly, we would like to thank everyone in the Genocchi cohort for the love and support. 
 
 
 
-### Support
-Please feel free to reach out to us on GitHub with any feedback or suggestions. 
+### Support:
+
+Please feel free to reach out to us with any feedback or suggestions.
+
+- Ryan Maas: 
+  - LinkedIn: https://www.linkedin.com/in/ryan-maas-0814/
+  - GitHub: https://github.com/unomaas
+- Brandon Wharton:
+  - LinkedIn: https://www.linkedin.com/in/brandon-wharton-1450/
+  - GitHub: https://github.com/brandonwharton
+- Chris Klemz:
+  - LinkedIn: https://www.linkedin.com/in/chris-klemz-681b11180/
+  - GitHub: https://github.com/Crklemz
+- Jerry Xiong:
+  - LinkedIn: https://www.linkedin.com/in/jerry-xiong-76ab43212/
+  - GitHub: https://github.com/xiongster94
+- Alex Kim:
+  - LinkedIn: https://www.linkedin.com/in/alex-kim-a724b0103/
+  - GitHub: https://github.com/alexk251
