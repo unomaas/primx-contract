@@ -277,4 +277,49 @@ router.delete('order/:id', rejectUnauthenticated, (req, res) => {
   })
 });
 
+// PUT request to take an existing estimate, GET current shipping and materials pricing from the DB, and update the given estimate with the new
+// pricing data
+router.put('/recalculate/:id', (req, res) => {
+  // SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
+  const queryText = `UPDATE "estimates" SET "primx_dc_unit_price" = $1, "primx_dc_shipping_estimate" = $2, "primx_flow_unit_price" = $3, 
+                     "primx_flow_shipping_estimate" = $4, "primx_steel_fibers_unit_price" = $5, "primx_steel_fibers_shipping_estimate" = $6,
+                     "primx_ultracure_blankets_unit_price" = $7, "primx_cpea_unit_price" = $8, "primx_cpea_shipping_estimate" = $9
+                     WHERE "estimates".id = $10;`;
+  
+  // destructure data received from saga which contains an object with current updated pricing
+  const {
+    primx_dc_unit_price,
+    primx_dc_shipping_estimate,
+    primx_flow_unit_price,
+    primx_flow_shipping_estimate,
+    primx_steel_fibers_unit_price,
+    primx_steel_fibers_shipping_estimate,
+    primx_ultracure_blankets_unit_price,
+    primx_cpea_unit_price,
+    primx_cpea_shipping_estimate,
+    id
+  } = req.body
+  
+  // set the pool query values to equal the destructured values
+  const values = [
+    primx_dc_unit_price,
+    primx_dc_shipping_estimate,
+    primx_flow_unit_price,
+    primx_flow_shipping_estimate,
+    primx_steel_fibers_unit_price,
+    primx_steel_fibers_shipping_estimate,
+    primx_ultracure_blankets_unit_price,
+    primx_cpea_unit_price,
+    primx_cpea_shipping_estimate,
+    id
+  ];
+
+  pool.query(queryText, values)
+    .then(result => res.sendStatus(200))
+    .catch(error => {
+      console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
+    })
+})
+
+
 module.exports = router;
