@@ -304,14 +304,12 @@ router.put('/recalculate/:id', (req, res) => {
     id
   ];
 
-  pool.query(queryText, [req.body.po_number, req.params.id])
+  pool.query(queryText, values)
     .then(result => res.sendStatus(200))
     .catch(error => {
       console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
     })
 })
-
-
 
 
 module.exports = router;
