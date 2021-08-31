@@ -266,5 +266,15 @@ router.put('/order/:id', (req, res) => {
     })
 })
 
+// *************************** DELETE ROUTES ***************************
+
+router.delete('order/:id', rejectUnauthenticated, (req, res) => {
+  pool.query('DELETE FROM "estimates" WHERE id=$1', [req.params.id]).then((result) => {
+      res.sendStatus(200);
+  }).catch((error) => {
+      console.log('Error with /api/estimates/process for id ${req.params.id}', error);
+      res.sendStatus(500);
+  })
+});
 
 module.exports = router;
