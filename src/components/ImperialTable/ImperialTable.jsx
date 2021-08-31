@@ -109,7 +109,7 @@ export default function ImperialTable() {
           justifyContent="center"
         >
 
-          <Grid item xs={12}>
+          <Grid item xs={4}>
             <Paper elevation={3}>
               <TableContainer>
                 <Table size="small">

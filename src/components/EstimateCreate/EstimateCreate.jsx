@@ -508,7 +508,6 @@ export default function EstimateCreate() {
           </Grid>
           {/* End Grid Table #2 */}
         </Grid>
-
       </form>
 
       <br />
