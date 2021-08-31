@@ -267,4 +267,22 @@ router.put('/order/:id', (req, res) => {
 })
 
 
+// PUT request to take an existing estimate, GET current shipping and materials pricing from the DB, and update the given estimate with the new
+// pricing data
+router.put('/recalculate/:id', (req, res) => {
+  // SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
+  const queryText = `UPDATE "estimates" SET "ordered_by_licensee" = TRUE, "po_number" = $1 WHERE "id" = $2;`;
+  
+  console.log('new estimate data', req.body);
+  res.sendStatus(200);
+  // pool.query(queryText, [req.body.po_number, req.params.id])
+  //   .then(result => res.sendStatus(200))
+  //   .catch(error => {
+  //     console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
+  //   })
+})
+
+
+
+
 module.exports = router;

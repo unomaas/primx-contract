@@ -57,64 +57,55 @@ function* AddEstimate(action) {
 function* recalculateEstimate(action) {
   const currentEstimate = action.payload;
   try {
-    // Below is legacy code from an earlier deployment version which has been refactored
+    // get updated shipping and product pricing data from the DB
+    const shippingCosts = yield axios.get('/api/shippingcosts');
+    const productCosts = yield axios.get('/api/products');
 
-    // // get updated shipping and product pricing data from the DB
-    // const shippingCosts = yield axios.get('/api/shippingcosts');
-    // const productCosts = yield axios.get('/api/products');
-
-    // // Loop through shippingCosts, find the matching id, and update the shipping costs of the current estimate with the current shipping costs
-    // shippingCosts.data.forEach(shippingState => {
-    //   if (shippingState.id == currentEstimate.shipping_costs_id) {
-    //     Object.assign(currentEstimate, {
-    //       primx_dc_shipping_estimate: shippingState.dc_price,
-    //       primx_flow_shipping_estimate: shippingState.flow_cpea_price,
-    //       primx_steel_fibers_shipping_estimate: shippingState.fibers_price,
-    //       primx_cpea_shipping_estimate: shippingState.flow_cpea_price
-    //     })
-    //   }
-    // }) // end forEach
-    // // run the createProductPriceObject on the returned product costs to create the pricing object
-    // const productObject = createProductPriceObject(productCosts.data);
+    // Loop through shippingCosts, find the matching id, and update the shipping costs of the current estimate with the current shipping costs
+    shippingCosts.data.forEach(shippingState => {
+      if (shippingState.id == currentEstimate.shipping_costs_id) {
+        Object.assign(currentEstimate, {
+          primx_dc_shipping_estimate: shippingState.dc_price,
+          primx_flow_shipping_estimate: shippingState.flow_cpea_price,
+          primx_steel_fibers_shipping_estimate: shippingState.fibers_price,
+          primx_cpea_shipping_estimate: shippingState.flow_cpea_price
+        })
+      }
+    }) // end forEach
+    // run the createProductPriceObject on the returned product costs to create the pricing object
+    const productObject = createProductPriceObject(productCosts.data);
 
 
-    // // Update product costs with whatever is current in the products DB table
-    // // Start with values shared between imperial and metric
-    // Object.assign(currentEstimate, {
-    //   primx_flow_unit_price: productObject.flow_liters,
-    //   primx_cpea_unit_price: productObject.cpea_liters,
-    // }) // add in the imperial specific costs
-    // if (currentEstimate.measurement_units == 'imperial') {
-    //   Object.assign(currentEstimate, {
-    //     primx_dc_unit_price: productObject.dc_lbs,
-    //     primx_steel_fibers_unit_price: productObject.steel_fibers_lbs,
-    //     primx_ultracure_blankets_unit_price: productObject.blankets_sqft,
-    //   }) // or add in the metric specific costs
-    // } else if (currentEstimate.measurement_units == 'metric') {
-    //   Object.assign(currentEstimate, {
-    //     primx_dc_unit_price: productObject.dc_kgs,
-    //     primx_steel_fibers_unit_price: productObject.steel_fibers_kgs,
-    //     primx_ultracure_blankets_unit_price: productObject.blankets_sqmeters,
-    //   })
-    // }
-    // // Now that the current estimate has updated pricing data, send an action to the estimates reducer that will set a recalculated boolean
-    // // from false to true, allowing the user to click the place order button on the estimate lookup view
-        
-    // // make a new POST request using the updated data
-    //     yield put({
-    //       type: 'ADD_ESTIMATE',
-    //       payload: currentEstimate
-    //     })
-    
+    // Update product costs with whatever is current in the products DB table
+    // Start with values shared between imperial and metric
+    Object.assign(currentEstimate, {
+      primx_flow_unit_price: productObject.flow_liters,
+      primx_cpea_unit_price: productObject.cpea_liters,
+    }) // add in the imperial specific costs
+    if (currentEstimate.measurement_units == 'imperial') {
+      Object.assign(currentEstimate, {
+        primx_dc_unit_price: productObject.dc_lbs,
+        primx_steel_fibers_unit_price: productObject.steel_fibers_lbs,
+        primx_ultracure_blankets_unit_price: productObject.blankets_sqft,
+      }) // or add in the metric specific costs
+    } else if (currentEstimate.measurement_units == 'metric') {
+      Object.assign(currentEstimate, {
+        primx_dc_unit_price: productObject.dc_kgs,
+        primx_steel_fibers_unit_price: productObject.steel_fibers_kgs,
+        primx_ultracure_blankets_unit_price: productObject.blankets_sqmeters,
+      })
+    }
 
-    // Make a PUT request to update the given estimate with current pricing data found in the database.
-    const response = yield axios.put(`/api/estimates/recalculate/${action.payload.id}`, action.payload);
 
-    
+    // Make a PUT request to update the given estimate with mutated pricing data.
+    const response = yield axios.put(`/api/estimates/recalculate/${action.payload.id}`, currentEstimate);
+
+
+    // Now that the current estimate has updated pricing data, send an action to the estimates reducer that will set a recalculated boolean
+    // from false to true, allowing the user to click the place order button on the estimate lookup view
     yield put({
       type: 'SET_RECALCULATED_TRUE'
     })
-
 
   } catch (error) {
     console.log('recalculate estimate failed', error)
