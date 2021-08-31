@@ -105,22 +105,24 @@ export default function MetricTable() {
           justifyContent="center"
         >
 
-          <Grid item xs={12}>
+          {/* Input Table #1: Quantity Inputs */}
+          <Grid item xs={4}>
             <Paper elevation={3}>
               <TableContainer>
                 <Table size="small">
 
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center" colSpan={2}><h3>Project Quantity Inputs</h3></TableCell>
-                      <TableCell align="center" colSpan={2}><h3>Thickened Edge Inputs</h3></TableCell>
-                      <TableCell align="center" colSpan={2}><h3>Materials Required Inputs</h3></TableCell>
+                      <TableCell align="center" colSpan={2}>
+                        <h3>Project Quantity Inputs</h3>
+                      </TableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
                     <TableRow>
-                      <TableCell><b>Square Meters:</b>
+                      <TableCell>
+                        <b>Square Meters:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -133,42 +135,6 @@ export default function MetricTable() {
                             endAdornment: <InputAdornment position="end">m²</InputAdornment>,
                           }}
                           value={estimateData.square_meters}
-                        />
-                      </TableCell>
-
-                      <TableCell><b>Lineal Meters @ Perimeter:</b>
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('thickened_edge_perimeter_lineal_meters', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          InputProps={{
-                            endAdornment: <InputAdornment position="end">m</InputAdornment>,
-                          }}
-                          fullWidth
-                          value={estimateData.thickened_edge_perimeter_lineal_meters}
-                          onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
-
-                        />
-                      </TableCell>
-
-                      <TableCell><b>PrīmX Flow @ Dosage Rate per m³:</b>
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          InputProps={{
-                            endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
-                          }}
-                          fullWidth
-                          value={estimateData.primx_flow_dosage_liters}
-                          onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
-
                         />
                       </TableCell>
                     </TableRow>
@@ -188,44 +154,6 @@ export default function MetricTable() {
                             endAdornment: <InputAdornment position="end">mm</InputAdornment>,
                           }}
                           value={estimateData.thickness_millimeters}
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                        <b>Lineal Meters @ Construction Joint:</b>
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('thickened_edge_construction_joint_lineal_meters', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          fullWidth
-                          InputProps={{
-                            endAdornment: <InputAdornment position="end">m</InputAdornment>,
-                          }}
-                          value={estimateData.thickened_edge_construction_joint_lineal_meters}
-                          onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
-
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                        <b>PrīmX Steel Fibers @ Dosage Rate per m³:</b>
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('primx_steel_fibers_dosage_kgs', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          InputProps={{
-                            endAdornment: <InputAdornment position="end">kgs</InputAdornment>,
-                          }}
-                          fullWidth
-                          value={estimateData.primx_steel_fibers_dosage_kgs}
-                          onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_KGS' })}
-
                         />
                       </TableCell>
                     </TableRow>
@@ -249,8 +177,69 @@ export default function MetricTable() {
                         >
                         </TextField>
                       </TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+
+          {/* Input Table #2: Materials Required */}
+          <Grid item xs={4}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <Table size="small">
+
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center" colSpan={2}>
+                        <h3>Materials Required Inputs</h3>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>
+                        <b>PrīmX Flow @ Dosage Rate per m³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.primx_flow_dosage_liters}
+                          onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell>
+                        <b>PrīmX Steel Fibers @ Dosage Rate per m³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_steel_fibers_dosage_kgs', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">kgs</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.primx_steel_fibers_dosage_kgs}
+                          onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_KGS' })}
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
                       <TableCell>
                         <b>PrīmX CPEA @ Dosage Rate per m³:</b>
                       </TableCell>
@@ -265,6 +254,68 @@ export default function MetricTable() {
                           }}
                           fullWidth
                           value={estimateData.primx_cpea_dosage_liters}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+
+          {/* Input Table #3: Thickened Edge */}
+          <Grid item xs={4}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <Table size="small">
+
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center" colSpan={2}>
+                        <h3>Thickened Edge Inputs</h3>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>
+                        <b>Lineal Meters @ Perimeter:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickened_edge_perimeter_lineal_meters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">m</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.thickened_edge_perimeter_lineal_meters}
+                          onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
+
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell>
+                        <b>Lineal Meters @ Construction Joint:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickened_edge_construction_joint_lineal_meters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">m</InputAdornment>,
+                          }}
+                          value={estimateData.thickened_edge_construction_joint_lineal_meters}
+                          onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
+
                         />
                       </TableCell>
                     </TableRow>

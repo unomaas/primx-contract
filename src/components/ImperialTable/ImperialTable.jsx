@@ -42,7 +42,6 @@ export default function ImperialTable() {
    */
   const handleChange = (key, value) => {
     // setNewEstimate({ ...newEstimate, [key]: value });
-
     dispatch({
       type: 'SET_ESTIMATE',
       payload: { key: key, value: value }
@@ -53,11 +52,11 @@ export default function ImperialTable() {
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
   const handleSave = event => {
-    // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga
+    // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
     estimateData.history = history;
     // ⬇ Don't refresh until submit:
     event.preventDefault();
-    // send the estimate object to be POSTed
+    // ⬇ Send the estimate object to be POSTed:
     dispatch({ type: 'ADD_ESTIMATE', payload: estimateData });
     // ⬇ Sweet Alert to let them know to save the Estimate #:
     swal({
@@ -66,6 +65,7 @@ export default function ImperialTable() {
       icon: "info",
       buttons: "I understand",
     }).then(() => {
+      // ⬇ Pop-up print confirmation:
       window.print();
     }); // End swal
   } // End handleSave
@@ -109,6 +109,7 @@ export default function ImperialTable() {
           justifyContent="center"
         >
 
+          {/* Input Table #1: Quantity Inputs */}
           <Grid item xs={4}>
             <Paper elevation={3}>
               <TableContainer>
@@ -116,15 +117,16 @@ export default function ImperialTable() {
 
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center" colSpan={2}><h3>Project Quantity Inputs</h3></TableCell>
-                      <TableCell align="center" colSpan={2}><h3>Thickened Edge Inputs</h3></TableCell>
-                      <TableCell align="center" colSpan={2}><h3>Materials Required Inputs</h3></TableCell>
+                      <TableCell align="center" colSpan={2}>
+                        <h3>Project Quantity Inputs</h3>
+                      </TableCell>
                     </TableRow>
                   </TableHead>
 
                   <TableBody>
                     <TableRow>
-                      <TableCell><b>Square Feet:</b>
+                      <TableCell>
+                        <b>Square Feet:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -139,45 +141,11 @@ export default function ImperialTable() {
                           value={estimateData.square_feet}
                         />
                       </TableCell>
-
-                      <TableCell><b>Lineal Feet @ Perimeter:</b>
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('thickened_edge_perimeter_lineal_feet', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          InputProps={{
-                            endAdornment: <InputAdornment position="end">ft</InputAdornment>,
-                          }}
-                          fullWidth
-                          value={estimateData.thickened_edge_perimeter_lineal_feet}
-                          onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
-                        />
-                      </TableCell>
-
-                      <TableCell><b>PrīmX Flow @ Dosage Rate per yd³:</b>
-                      </TableCell>
-                      <TableCell>
-                        <TextField
-                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          InputProps={{
-                            endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
-                          }}
-                          fullWidth
-                          value={estimateData.primx_flow_dosage_liters}
-                          onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
-
-                        />
-                      </TableCell>
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Thickness:</b>
+                      <TableCell>
+                        <b>Thickness:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -192,25 +160,72 @@ export default function ImperialTable() {
                           value={estimateData.thickness_inches}
                         />
                       </TableCell>
+                    </TableRow>
 
-                      <TableCell><b>Lineal Feet @ Construction Joint:</b>
+                    <TableRow>
+                      <TableCell>
+                        <b>Waste Factor Percentage</b>
                       </TableCell>
                       <TableCell>
                         <TextField
-                          onChange={event => handleChange('thickened_edge_construction_joint_lineal_feet', event.target.value)}
+                          onChange={event => handleChange('waste_factor_percentage', event.target.value)}
                           required
                           type="number"
                           size="small"
-                          fullWidth
                           InputProps={{
-                            endAdornment: <InputAdornment position="end">ft</InputAdornment>,
+                            endAdornment: <InputAdornment position="end">%</InputAdornment>,
                           }}
-                          value={estimateData.thickened_edge_construction_joint_lineal_feet}
-                          onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
+                          fullWidth
+                          value={estimateData.waste_factor_percentage}
+                          onClick={event => dispatch({ type: 'GET_WASTE_FACTOR' })}
+                        >
+                        </TextField>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+
+          {/* Input Table #2: Materials Required */}
+          <Grid item xs={4}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <Table size="small">
+
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center" colSpan={2}>
+                        <h3>Materials Required Inputs</h3>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>
+                        <b>PrīmX Flow @ Dosage Rate per yd³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.primx_flow_dosage_liters}
+                          onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
                         />
                       </TableCell>
+                    </TableRow>
 
-                      <TableCell><b>PrīmX Steel Fibers @ Dosage Rate per yd³:</b>
+                    <TableRow>
+                      <TableCell>
+                        <b>PrīmX Steel Fibers @ Dosage Rate per yd³:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -229,26 +244,8 @@ export default function ImperialTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Waste Factor Percentage</b>
-                      </TableCell>
                       <TableCell>
-                        <TextField
-                          onChange={event => handleChange('waste_factor_percentage', event.target.value)}
-                          required
-                          type="number"
-                          size="small"
-                          InputProps={{
-                            endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                          }}
-                          fullWidth
-                          value={estimateData.waste_factor_percentage}
-                          onClick={event => dispatch({ type: 'GET_WASTE_FACTOR' })}
-                        >
-                        </TextField>
-                      </TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell><b>PrīmX CPEA @ Dosage Rate per yd³:</b>
+                        <b>PrīmX CPEA @ Dosage Rate per yd³:</b>
                       </TableCell>
                       <TableCell>
                         <TextField
@@ -261,6 +258,67 @@ export default function ImperialTable() {
                           }}
                           fullWidth
                           value={estimateData.primx_cpea_dosage_liters}
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+
+          {/* Input Table #3: Thickened Edge */}
+          <Grid item xs={4}>
+            <Paper elevation={3}>
+              <TableContainer>
+                <Table size="small">
+
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center" colSpan={2}>
+                        <h3>Thickened Edge Inputs</h3>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>
+                        <b>Lineal Feet @ Perimeter:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickened_edge_perimeter_lineal_feet', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ft</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.thickened_edge_perimeter_lineal_feet}
+                          onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell>
+                        <b>Lineal Feet @ Construction Joint:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('thickened_edge_construction_joint_lineal_feet', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          fullWidth
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">ft</InputAdornment>,
+                          }}
+                          value={estimateData.thickened_edge_construction_joint_lineal_feet}
+                          onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
                         />
                       </TableCell>
                     </TableRow>
