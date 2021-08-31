@@ -40,6 +40,21 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     )
   }
 
+  // ⬇ Function for creating delete button inside a data grid cell
+  const addDeleteButton = (params) => {
+    return (
+      <Button
+        variant="contained"
+        color="secondary"
+        // onClick={
+        //   () => handledelete(params)
+        // }
+      >
+        Delete
+      </Button>
+    )
+  }
+
   // ⬇ Rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
   const renderProcessButton = (params) => {
     return (
@@ -196,14 +211,15 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
   // ⬇ Add additional columns based on the data source for the data grid:
   const addGridColumns = (dataSource) => {
     if (dataSource) {
+       // ⬇ Add delete button to all estimates and orders
       columns.unshift(
         {
           field: 'delete_button',
           headerClassName: classes.header,
-          headerName: 'Delete Estimate',
-          width: 175,
-          disableClickEventBubbling: true
-          // renderCell: addDeleteButton
+          headerName: 'Delete',
+          width: 120,
+          disableClickEventBubbling: true,
+          renderCell: addDeleteButton
         }
       )  
     }
