@@ -67,7 +67,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     }).then((willDelete) => {
       if (willDelete) {
       // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
-      // dispatch({ type: 'DELETE_ESITMATE', payload: params })
+      dispatch({ type: 'DELETE_ESTIMATE', payload: params })
       swal(`Deleted Order: ${params.row.estimate_number}`, {
         icon: 'success',
       })
