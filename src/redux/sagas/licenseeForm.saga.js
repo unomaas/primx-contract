@@ -100,12 +100,17 @@ function* recalculateEstimate(action) {
     // Make a PUT request to update the given estimate with mutated pricing data.
     const response = yield axios.put(`/api/estimates/recalculate/${action.payload.id}`, currentEstimate);
 
-
     // Now that the current estimate has updated pricing data, send an action to the estimates reducer that will set a recalculated boolean
     // from false to true, allowing the user to click the place order button on the estimate lookup view
     yield put({
       type: 'SET_RECALCULATED_TRUE'
     })
+
+    // Refresh data on DOM by fetching the new data
+    yield put({ type: 'FETCH_ESTIMATE_QUERY', payload: {
+      licensee_id: currentEstimate.licensee_id,
+      estimate_number: currentEstimate.estimate_number
+    }})
 
   } catch (error) {
     console.log('recalculate estimate failed', error)
