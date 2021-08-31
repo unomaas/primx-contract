@@ -6,6 +6,7 @@ const {
 } = require('../modules/authentication-middleware');
 const format = require('pg-format');
 const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
 
 
 // *************************** GET ROUTES ***************************
@@ -102,7 +103,7 @@ router.post('/', (req, res) => {
 
   // create a unique UUID estimate number to use for the estimate being sent
   const estimate_number = uuidv4();
-
+  
   // set the destructured object values as the values to send with the POST request
   const values = [
     // starting values don't include metric or imperial specific units
@@ -211,8 +212,36 @@ router.post('/', (req, res) => {
   `
 
   pool.query(queryText, values)
-    .then(result => {
+      //grab licensee name via get route and licensee id
+    .then(router.get('/estimates', (req, res) => {
+      const licenseeId = req.query.licenseeId
+    
+      const queryText = `SELECT licensee_contractor_name 
+                         FROM "licensees"
+                         JOIN "licensees" ON "estimates".licensee_id = "licensees".id
+                         WHERE "licensee_id" = $1
+                         `;
+                         pool.query(queryText, licenseeId)
+                         // using licensee name to get the first two letters for the estimate number
+                          .then(result => {
+                            const letters = result.slice(0,3);
+                            console.log('letters after function -->', letters);
+                            
+                            // creating the new estimate number
+                            estimate_number = letters + (123000 + (estimates.id * 3));
+                            console.log('estimate number after change --> ', estimate_number);
+                            
+                          })
+    
+                         .then(result => {
       // send back the object created to allow navagiation from the saga to the view of the new estimate
+      // take id and create the est number, then put req to save the estimate number
+      // estimate number = first two letters of licensee company name + (123000 + (dbID * 3))
+      // first two letter of licensee company name:
+      // async - grab licensee id, then get req to get the licensee name via licensee id, then splice name to get first 2 letters
+      // then I can create the est number by concatinating the letters with 123000 + (dbID * 3)
+
+      
       res.send({
         estimate_number: estimate_number,
         licensee_id: licensee_id
