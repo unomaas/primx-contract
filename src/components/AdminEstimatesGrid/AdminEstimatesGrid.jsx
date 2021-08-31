@@ -195,6 +195,18 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
   // ⬇ Add additional columns based on the data source for the data grid:
   const addGridColumns = (dataSource) => {
+    if (dataSource) {
+      columns.unshift(
+        {
+          field: 'delete_button',
+          headerClassName: classes.header,
+          headerName: 'Delete Estimate',
+          width: 175,
+          disableClickEventBubbling: true
+          // renderCell: addDeleteButton
+        }
+      )  
+    }
     if (dataSource == 'pending' || dataSource == 'processed') {
       // ⬇ Add the Purchase Order number and the order number to each of the pending and processed tables:
       columns.push(
