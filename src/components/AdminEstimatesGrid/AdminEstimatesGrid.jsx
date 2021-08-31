@@ -46,13 +46,33 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       <Button
         variant="contained"
         color="secondary"
-        // onClick={
-        //   () => handledelete(params)
-        // }
+        onClick={
+          () => handleDelete(params)
+        }
       >
         Delete
       </Button>
     )
+  }
+
+  // ⬇ Click listener for delete button
+  const handleDelete = (params) => {
+    // ⬇ Open sweetalert to confirm order delete
+    swal({
+      title: `Do you want to delete Order: ${params.row.estimate_number}`,
+      text: 'This will remove the order/estimate and cannot be undone.',
+      icon: 'warning',
+      buttons: ['Cancel', 'Delete'],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+      // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+      // dispatch({ type: 'DELETE_ESITMATE', payload: params })
+      swal(`Deleted Order: ${params.row.estimate_number}`, {
+        icon: 'success',
+      })
+    }
+  });
   }
 
   // ⬇ Rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
