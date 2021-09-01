@@ -56,6 +56,18 @@ function* archiveEstimate(action) {
         console.log('Erro with archiveEstimate in adminEstimates Saga -->', error);
     }
 }
+// worker saga to make a DELETE request at for estimates
+function* deleteEstimate(action) {
+    try {
+        yield axios.delete(`/api/estimates/delete/${action.payload.id}`, {params:{id: action.payload.id}})
+        // update data grids now that data in DB has changed
+        yield put({type: 'FETCH_ALL_ESTIMATES'});
+    }
+    catch (error) {
+        console.log('Error with Delete Order in adminEstimates Saga', error);
+    }
+}
+
 
 
 // watcher saga to look for admin estimate requests
@@ -68,6 +80,8 @@ function* adminEstimatesSaga() {
     yield takeLatest('EDIT_PROCESS_ORDER', editProcessOrder);
     // request to mark an estimate as archived
     yield takeLatest('ARCHIVE_ESTIMATE', archiveEstimate);
+    // request to delete an estimate
+    yield takeLatest('DELETE_ESTIMATE', deleteEstimate);
 }
 
 export default adminEstimatesSaga;

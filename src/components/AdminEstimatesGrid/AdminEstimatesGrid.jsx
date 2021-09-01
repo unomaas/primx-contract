@@ -40,6 +40,41 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     )
   }
 
+  // ⬇ Function for creating delete button inside a data grid cell
+  const addDeleteButton = (params) => {
+    return (
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={
+          () => handleDelete(params)
+        }
+      >
+        Delete
+      </Button>
+    )
+  }
+
+  // ⬇ Click listener for delete button
+  const handleDelete = (params) => {
+    // ⬇ Open sweetalert to confirm order delete
+    swal({
+      title: `Do you want to delete Order: ${params.row.estimate_number}`,
+      text: 'This will remove the order/estimate and cannot be undone.',
+      icon: 'warning',
+      buttons: ['Cancel', 'Delete'],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+      // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+      dispatch({ type: 'DELETE_ESTIMATE', payload: params })
+      swal(`Deleted Order: ${params.row.estimate_number}`, {
+        icon: 'success',
+      })
+    }
+  });
+  }
+
   // ⬇ Rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
   const renderProcessButton = (params) => {
     return (
@@ -241,6 +276,19 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       )
     }
 
+    if (dataSource == 'archived') {
+       // ⬇ Add delete button to open estimates
+      columns.unshift(
+        {
+          field: 'delete_button',
+          headerClassName: classes.header,
+          headerName: 'Delete',
+          width: 120,
+          disableClickEventBubbling: true,
+          renderCell: addDeleteButton
+        }
+      )  
+    }
     if (dataSource == 'pending' || dataSource == 'processed') {
       // ⬇ Add the Purchase Order number and the order number to each of the pending and processed tables:
       columns.push(
