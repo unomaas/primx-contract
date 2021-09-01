@@ -124,22 +124,22 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: true },
 
     // ⬇ Technical job details input by licensee
-    { field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
-    { field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175 }, // Editable + validation?
+    { field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100}, // Editable + validation?
+    { field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175}, // Editable + validation?
     { field: 'placement_type', headerClassName: classes.header, headerName: 'Placement Type', width: 175 }, // Editable + validation?
-    { field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175 }, // Editable + validation?
-    { field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175 }, // Editable + validation?
-    { field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175 }, // Editable + validation?
-    { field: 'thickness_millimeters', headerClassName: classes.header, headerName: 'Thickness(mm)', width: 175 }, // Editable + validation?
-    { field: 'waste_factor_percentage', headerClassName: classes.header, headerName: 'Waste Factor (%)', width: 175 }, // Editable + validation?
-    { field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175 }, // Editable + validation?
-    { field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175 }, // Editable + validation?
-    { field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175 }, // Editable + validation?
-    { field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175 }, // Editable + validation?
-    { field: 'primx_flow_dosage_liters', headerClassName: classes.header, headerName: 'Flow Dosage (liters)', width: 175 }, // Editable + validation?
-    { field: 'primx_steel_fibers_dosage_lbs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (lbs)', width: 175 }, // Editable + validation?
-    { field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175 }, // Editable + validation?
-    { field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175 }, // Editable + validation?
+    { field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175, editable: true }, // Editable + validation?
+    { field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickness_millimeters', headerClassName: classes.header, headerName: 'Thickness(mm)', width: 175, editable: true }, // Editable + validation?
+    { field: 'waste_factor_percentage', headerClassName: classes.header, headerName: 'Waste Factor (%)', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: true }, // Editable + validation?
+    { field: 'primx_flow_dosage_liters', headerClassName: classes.header, headerName: 'Flow Dosage (liters)', width: 175, editable: true }, // Editable + validation?
+    { field: 'primx_steel_fibers_dosage_lbs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (lbs)', width: 175, editable: true }, // Editable + validation?
+    { field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175, editable: true }, // Editable + validation?
+    { field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175, editable: true }, // Editable + validation?
 
     // ⬇ All calculated values are listed below
     // ⬇ PrimX DC calculated values
@@ -198,7 +198,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     if (dataSource == 'pending' || dataSource == 'processed') {
       // ⬇ Add the Purchase Order number and the order number to each of the pending and processed tables:
       columns.push(
-        { field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175 }
+        { field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175, editable: true }
       )
     }
     if (dataSource == 'pending') {
