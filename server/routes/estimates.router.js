@@ -280,6 +280,20 @@ router.post('/', (req, res) => {
               })
           })
 
+          // PUT request to archive an estimate
+          router.put('/archive/:id', rejectUnauthenticated, (req, res) => {
+            // Set an order_number variable to be saved in the database. The order number is an O- followed by the estimate number
+            const order_number = `O-${req.body.estimate_number}`
+            // SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
+            const queryText = `UPDATE "estimates" SET "archived" = TRUE, "processed_by" = $1, "order_number" = $2 WHERE "id" = $3;`;
+
+            pool.query(queryText, [req.user.username, order_number, req.params.id])
+              .then(result => res.sendStatus(200))
+              .catch(error => {
+                console.log(`Error with /api/estimates/archive PUT for id ${req.params.id}:`, error)
+              })
+          })
+
           // PUT request to mark an estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
           router.put('/order/:id', (req, res) => {
             // SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
