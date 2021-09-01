@@ -93,7 +93,7 @@ export default function AdminOrders() {
       >
         Archived Estimates
       </Typography>
-      <AdminEstimatesGrid estimatesArray={archivedEstimates} gridSource={'open'} />
+      <AdminEstimatesGrid estimatesArray={archivedEstimates} gridSource={'archived'} />
     </div>
   )
 }

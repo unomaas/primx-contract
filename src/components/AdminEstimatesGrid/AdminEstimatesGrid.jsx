@@ -230,7 +230,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
   // ⬇ Add additional columns based on the data source for the data grid:
   const addGridColumns = (dataSource) => {
-    if (dataSource != 'pending' && dataSource != 'processed') {
+    if (dataSource != 'pending' && dataSource != 'processed' && dataSource != 'archived') {
       columns.unshift(
         { field: 'archive_button', 
           headerClassName: classes.header, 
