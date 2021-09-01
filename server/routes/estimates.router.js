@@ -209,39 +209,36 @@ router.post('/', (req, res) => {
       queryText += `
     VALUES (
       $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34
-      );
+      )
+      RETURNING "id";
   `
 
       pool.query(queryText, values)
-        //grab licensee name via get route and licensee id
-        .then(router.get('/estimates', (req, res) => {
-            const licenseeId = req.query.licenseeId
-
-            const queryText = `SELECT licensee_contractor_name 
-                         FROM "licensees"
-                         JOIN "licensees" ON "estimates".licensee_id = "licensees".id
-                         WHERE "licensee_id" = $1
-                         `;
-            pool.query(queryText, licenseeId)
-              // using licensee name to get the first two letters for the estimate number
-              .then(result => {
-                const letters = result.slice(0, 3);
-                console.log('letters after function -->', letters);
-
-                // creating the new estimate number
-                estimate_number = letters + (123000 + (estimates.id * 3));
-                console.log('estimate number after change --> ', estimate_number);
-
-              }) 
-              
-              .then(result => {
-                // send back the object created to allow navagiation from the saga to the view of the new estimate
-                // take id and create the est number, then put req to save the estimate number
-                // estimate number = first two letters of licensee company name + (123000 + (dbID * 3))
-                // first two letter of licensee company name:
-                // async - grab licensee id, then get req to get the licensee name via licensee id, then splice name to get first 2 letters
-                // then I can create the est number by concatinating the letters with 123000 + (dbID * 3)
-
+        
+                    .then(result => {
+                    const id = result.rows[0].id;
+                    // getting the licensee name from the DB
+                    const secondQueryText = `SELECT licensee_contractor_name 
+                                             FROM "licensees"
+                                             WHERE "id" = $1
+                          `;
+                    pool.query(secondQueryText, [licensee_id])
+                    .then(result => {
+                      // declaring letters as the first two characters of the licensee name
+                      const letters = result.rows[0].licensee_contractor_name.slice(0, 2);
+                      // making a new estimate number using letters and a function of numbers
+                      let newId = letters.toLowerCase() + (123000 + (id * 3))
+                      // third query to update the estimate number to the new one created above (making the estimate number smaller per client request)
+                      const thirdQueryText = `UPDATE "estimates" 
+                                              SET estimate_number = $1 
+                                              WHERE "id" = $2;`
+                      pool.query(thirdQueryText, [newId, id])
+                    }
+                    ).catch(error => {
+                      console.log('error in secondQueryText -->', error);
+                      res.sendStatus(500);
+                    })
+                    
                 res.send({
                   estimate_number: estimate_number,
                   licensee_id: licensee_id
