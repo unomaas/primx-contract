@@ -132,9 +132,20 @@ export default function EstimateLookup() {
     } // End if
     dispatch({ type: 'SET_CLOSE' })
   }; // End handleClose
+
+  /** ⬇ handleEdit:
+   * Sends the user back to 1.0 Create Estimate with data pre-loaded to make edits. 
+   */
+  const handleEdit = () => {
+    console.log('In handleEdit, searchResult:', searchResult);
+    dispatch({ type: 'EDIT_ESTIMATE', payload: searchResult });
+    dispatch({ type: 'SET_TABLE_STATE', payload: true });
+    history.push(`/create`);
+  }; // End handleClose
   //#endregion ⬆⬆ Event handlers above. 
 
-
+  console.log('searchQuery is:', searchQuery);
+  console.log('searchResult is:', searchResult);
   // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
@@ -677,7 +688,7 @@ export default function EstimateLookup() {
                             <TableCell>N/A</TableCell>
                             <TableCell>{searchResult?.primx_cpea_dosage_liters}</TableCell>
                           </>
-                        } {/* End conditionally renedered dosages*/}
+                        } {/* End conditionally rendered dosages*/}
                         <TableCell></TableCell>
                       </TableRow>
 
@@ -785,14 +796,23 @@ export default function EstimateLookup() {
                         <TableCell><b>{searchResult?.design_total_price_estimate}</b></TableCell>
                       </TableRow>
 
-
                       {/* Render the following table row for any orders that haven't been placed yet */}
                       {!searchResult.ordered_by_licensee &&
                         <>
                           <TableRow>
                             <TableCell colSpan={7} align="right">
                               <section className="removeInPrint">
-                                {/* Recalculate costs button */}
+                                {/* Edit Estimate Button: */}
+                                <Button
+                                  variant="contained"
+                                  // color="secondary"
+                                  onClick={handleEdit}
+                                >
+                                  Edit This Estimate
+                                </Button>
+                                &nbsp; &nbsp;
+
+                                {/* Recalculate Costs Button: */}
                                 <Button
                                   variant="contained"
                                   color="primary"
@@ -814,6 +834,7 @@ export default function EstimateLookup() {
                                   <>Recalculate costs before placing order.</>
                                 }
                                 &nbsp; &nbsp;
+
                                 {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
                                 {hasRecalculated ?
                                   <>
