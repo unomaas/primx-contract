@@ -315,11 +315,10 @@ router.put('/recalculate/:id', (req, res) => {
 // PUT request which allows user to update any form-fillable data from the main estimate creation sheet, follows a very similar workflow to the 
 // main POST route above
 router.put('/clientupdates/:id', (req, res) => {
-
+  
   // destructure data received from saga which contains an object with all editable DB columns 
   let {
     // shared values regardless of imperial or metric units
-    id,
     measurement_units,
     country,
     project_name,
@@ -405,6 +404,7 @@ router.put('/clientupdates/:id', (req, res) => {
       "thickened_edge_perimeter_lineal_feet"= $21,
       "thickened_edge_construction_joint_lineal_feet"= $22,
       "primx_steel_fibers_dosage_lbs"= $23
+      WHERE "id" = $24;
     `
     // add the imperial values to values array
     values.push(
@@ -420,16 +420,16 @@ router.put('/clientupdates/:id', (req, res) => {
       "thickened_edge_perimeter_lineal_meters" = $21,
       "thickened_edge_construction_joint_lineal_meters" = $22,
       "primx_steel_fibers_dosage_kgs" = $23
+      WHERE "id" = $24;
     `
     // add the metric values to the values array
     values.push(
       square_meters, thickness_millimeters, thickened_edge_perimeter_lineal_meters, thickened_edge_construction_joint_lineal_meters, primx_steel_fibers_dosage_kgs
     )
   }
-
-  // finish the query and values array by targeting the id of the estimate to be updated
-  queryText += `WHERE "id" = $24`
-  values.push(id);
+  
+  // add id to the values array
+  values.push(req.params.id);
 
   pool.query(queryText, values)
     .then(result => res.sendStatus(200))
