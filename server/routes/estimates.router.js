@@ -312,7 +312,7 @@ router.put('/recalculate/:id', (req, res) => {
 
 // *************************** DELETE ROUTES ***************************
 
-router.delete('order/:id', rejectUnauthenticated, (req, res) => {
+router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
   pool.query('DELETE FROM "estimates" WHERE id=$1', [req.params.id]).then((result) => {
       res.sendStatus(200);
   }).catch((error) => {
