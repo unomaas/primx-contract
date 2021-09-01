@@ -270,7 +270,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         { field: 'archive_button', 
           headerClassName: classes.header, 
           headerName: 'Archive', 
-          width: 175, 
+          width: 130, 
           renderCell: renderArchiveButton // function declared above, creates a button in each row of the open estimates table
         }
       )
@@ -283,7 +283,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
           field: 'delete_button',
           headerClassName: classes.header,
           headerName: 'Delete',
-          width: 120,
+          width: 130,
           disableClickEventBubbling: true,
           renderCell: addDeleteButton
         }
