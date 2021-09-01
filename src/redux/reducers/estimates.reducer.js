@@ -46,14 +46,40 @@ export const estimatesReducer = (state = {
         ...state,
         [action.payload.key]: action.payload.value
       };
-
+    case 'EDIT_ESTIMATE':
+      return action.payload;
     case 'CLEAR_ESTIMATE':
       return {
-        // measurement_units: 'imperial',
-        country: 'United States',
         date_created: today,
+        project_name: "",
+        licensee_id: 0,
+        project_general_contractor: "",
+        project_manager_name: "",
+        project_manager_email: "",
+        project_manager_phone: "",
+        floor_types_id: 0,
+        placement_types_id: 0,
+        measurement_units: "",
+        anticipated_first_pour_date: "",
+        ship_to_address: "",
+        ship_to_city: "",
+        shipping_costs_id: 0,
+        zip_postal_code: "",
+        country: 0,
+        square_feet: "",
+        thickened_edge_perimeter_lineal_feet: "0",
+        primx_flow_dosage_liters: "3",
+        thickness_inches: "",
+        thickened_edge_construction_joint_lineal_feet: "0",
+        primx_steel_fibers_dosage_lbs: "60",
+        primx_cpea_dosage_liters: "",
+        square_meters: "",
+        thickened_edge_perimeter_lineal_meters: "0",
+        thickness_millimeters: "",
+        thickened_edge_construction_joint_lineal_meters: "0",
+        primx_steel_fibers_dosage_kgs: "40",
+        waste_factor_percentage: 5
       };
-
     default:
       return state;
   } // End switch
