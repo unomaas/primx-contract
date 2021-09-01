@@ -48,6 +48,7 @@ CREATE TABLE "estimates" (
 	"po_number" varchar(100) DEFAULT NULL,
 	"order_number" varchar(50) DEFAULT NULL,
 	"marked_as_ordered" bool NOT NULL DEFAULT 'false',
+	"archived" bool NOT NULL DEFAULT 'false',
 	"processed_by" varchar(50) DEFAULT NULL,
 	CONSTRAINT "estimates_pk" PRIMARY KEY ("id")
 ) WITH (

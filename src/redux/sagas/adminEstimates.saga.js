@@ -43,6 +43,19 @@ function* editProcessOrder(action) {
     }
 }
 
+function* archiveEstimate(action) {
+    try {
+
+        yield axios.put(`/api/estimates/archive/${action.payload.id}`, action.payload.row)
+
+        // update data grids now that data in DB has changed
+        yield put({type: 'FETCH_ALL_ESTIMATES'});
+
+    }
+    catch (error) {
+        console.log('Erro with archiveEstimate in adminEstimates Saga -->', error);
+    }
+}
 
 
 // watcher saga to look for admin estimate requests
@@ -53,6 +66,8 @@ function* adminEstimatesSaga() {
     yield takeLatest('EDIT_ESTIMATE_DATA', editEstimateData);
     // request to mark an order estimate that is pending as processed in the database
     yield takeLatest('EDIT_PROCESS_ORDER', editProcessOrder);
+    // request to mark an estimate as archived
+    yield takeLatest('ARCHIVE_ESTIMATE', archiveEstimate);
 }
 
 export default adminEstimatesSaga;
