@@ -40,6 +40,41 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     )
   }
 
+  // ⬇ Function for creating delete button inside a data grid cell
+  const addDeleteButton = (params) => {
+    return (
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={
+          () => handleDelete(params)
+        }
+      >
+        Delete
+      </Button>
+    )
+  }
+
+  // ⬇ Click listener for delete button
+  const handleDelete = (params) => {
+    // ⬇ Open sweetalert to confirm order delete
+    swal({
+      title: `Do you want to delete Order: ${params.row.estimate_number}`,
+      text: 'This will remove the order/estimate and cannot be undone.',
+      icon: 'warning',
+      buttons: ['Cancel', 'Delete'],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+      // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+      dispatch({ type: 'DELETE_ESTIMATE', payload: params })
+      swal(`Deleted Order: ${params.row.estimate_number}`, {
+        icon: 'success',
+      })
+    }
+  });
+  }
+
   // ⬇ Rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
   const renderProcessButton = (params) => {
     return (
@@ -53,6 +88,41 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         Process Order
       </Button>
     )
+  }
+
+  // ⬇ Rendering function for creating a button inside a data grid cell, to be used on the open estimates grid to archive estimates
+  const renderArchiveButton = (params) => {
+    return (
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={
+          () => handleArchiveEstimate(params)
+        }
+      >
+        Archive
+      </Button>
+    )
+  }
+
+  // ⬇ Click listener for the archive estimates buttons inside the open estimates table
+  const handleArchiveEstimate = (params) => {
+    // ⬇ Open a sweetalert message confirming an estimate as being archived
+    swal({
+      title: 'Do you want to archive this estimate?',
+      text: 'This marks the estimate as archived and cannot be undone.',
+      icon: 'warning',
+      buttons: ['Cancel', 'Archive'],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+        dispatch({ type: 'ARCHIVE_ESTIMATE', payload: params })
+        swal('Order has been archived!', {
+          icon: 'success',
+        })
+      }
+    });
   }
 
   // ⬇ Click listener for the process order buttons inside the pending order table
@@ -124,22 +194,22 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: true },
 
     // ⬇ Technical job details input by licensee
-    { field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
-    { field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175 }, // Editable + validation?
+    { field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100}, // Editable + validation?
+    { field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175}, // Editable + validation?
     { field: 'placement_type', headerClassName: classes.header, headerName: 'Placement Type', width: 175 }, // Editable + validation?
-    { field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175 }, // Editable + validation?
-    { field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175 }, // Editable + validation?
-    { field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175 }, // Editable + validation?
-    { field: 'thickness_millimeters', headerClassName: classes.header, headerName: 'Thickness(mm)', width: 175 }, // Editable + validation?
-    { field: 'waste_factor_percentage', headerClassName: classes.header, headerName: 'Waste Factor (%)', width: 175 }, // Editable + validation?
-    { field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175 }, // Editable + validation?
-    { field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175 }, // Editable + validation?
-    { field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175 }, // Editable + validation?
-    { field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175 }, // Editable + validation?
-    { field: 'primx_flow_dosage_liters', headerClassName: classes.header, headerName: 'Flow Dosage (liters)', width: 175 }, // Editable + validation?
-    { field: 'primx_steel_fibers_dosage_lbs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (lbs)', width: 175 }, // Editable + validation?
-    { field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175 }, // Editable + validation?
-    { field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175 }, // Editable + validation?
+    { field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175, editable: true }, // Editable + validation?
+    { field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickness_millimeters', headerClassName: classes.header, headerName: 'Thickness(mm)', width: 175, editable: true }, // Editable + validation?
+    { field: 'waste_factor_percentage', headerClassName: classes.header, headerName: 'Waste Factor (%)', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: true }, // Editable + validation?
+    { field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: true }, // Editable + validation?
+    { field: 'primx_flow_dosage_liters', headerClassName: classes.header, headerName: 'Flow Dosage (liters)', width: 175, editable: true }, // Editable + validation?
+    { field: 'primx_steel_fibers_dosage_lbs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (lbs)', width: 175, editable: true }, // Editable + validation?
+    { field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175, editable: true }, // Editable + validation?
+    { field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175, editable: true }, // Editable + validation?
 
     // ⬇ All calculated values are listed below
     // ⬇ PrimX DC calculated values
@@ -195,10 +265,34 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
   // ⬇ Add additional columns based on the data source for the data grid:
   const addGridColumns = (dataSource) => {
+    if (dataSource != 'pending' && dataSource != 'processed' && dataSource != 'archived') {
+      columns.unshift(
+        { field: 'archive_button', 
+          headerClassName: classes.header, 
+          headerName: 'Archive', 
+          width: 130, 
+          renderCell: renderArchiveButton // function declared above, creates a button in each row of the open estimates table
+        }
+      )
+    }
+
+    if (dataSource == 'archived') {
+       // ⬇ Add delete button to open estimates
+      columns.unshift(
+        {
+          field: 'delete_button',
+          headerClassName: classes.header,
+          headerName: 'Delete',
+          width: 130,
+          disableClickEventBubbling: true,
+          renderCell: addDeleteButton
+        }
+      )  
+    }
     if (dataSource == 'pending' || dataSource == 'processed') {
       // ⬇ Add the Purchase Order number and the order number to each of the pending and processed tables:
       columns.push(
-        { field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175 }
+        { field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175, editable: true }
       )
     }
     if (dataSource == 'pending') {
@@ -219,7 +313,9 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         { field: 'order_number', headerClassName: classes.header, headerName: 'Order Number', width: 175 },
         { field: 'processed_by', headerClassName: classes.header, headerName: 'Processed By', width: 175 }
       )
-    }
+    } 
+    // Add and archive button if an open estimate (not pending nor processed)
+    
   }
 
   // ⬇ Run the addGridColumns function using the props from table as an argument:

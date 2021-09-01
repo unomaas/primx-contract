@@ -20,7 +20,7 @@ export default function AdminOrders() {
   const allEstimates = useSelector(store => store.adminEstimates);
 
   // create holding arrays to be filled with estimate objects, then passed as props to create the needed Data Grids
-  const [pendingOrders, processedOrders, openEstimates] = [[], [], []];
+  const [pendingOrders, processedOrders, openEstimates, archivedEstimates] = [[], [], [], []];
 
   // break up all estimates into pending orders, processed orders, and open estimates
   allEstimates.forEach(estimate => {
@@ -32,7 +32,10 @@ export default function AdminOrders() {
       processedOrders.push(estimate);
     } // orders are considered pending if they've been ordered_by_licensee by a licensee but not yet marked_as_ordered by an admin
     else if (estimate.ordered_by_licensee) {
-      pendingOrders.push(estimate);
+      pendingOrders.push(estimate); 
+    } // orders are considered archived if they have estimate.archived marked true my admin via the archive button
+    else if (estimate.archived){
+      archivedEstimates.push(estimate);
     } // orders where neither of those are true are considered open
     else {
       openEstimates.push(estimate);
@@ -80,6 +83,17 @@ export default function AdminOrders() {
         Open Estimates
       </Typography>
       <AdminEstimatesGrid estimatesArray={openEstimates} gridSource={'open'} />
+
+      <br />
+      <Typography
+        variant="h5"
+        component="h2"
+        align="center"
+        className={classes.OrdersHeaders}
+      >
+        Archived Estimates
+      </Typography>
+      <AdminEstimatesGrid estimatesArray={archivedEstimates} gridSource={'archived'} />
     </div>
   )
 }
