@@ -292,7 +292,6 @@ router.post('/', (req, res) => {
               })
           })
 
-
 // PUT request to take an existing estimate, GET current shipping and materials pricing from the DB, and update the given estimate with the new
 // pricing data
 router.put('/recalculate/:id', (req, res) => {
@@ -337,5 +336,15 @@ router.put('/recalculate/:id', (req, res) => {
     })
 })
 
+// *************************** DELETE ROUTES ***************************
+
+router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
+  pool.query('DELETE FROM "estimates" WHERE id=$1', [req.params.id]).then((result) => {
+      res.sendStatus(200);
+  }).catch((error) => {
+      console.log('Error with /api/estimates/process for id ${req.params.id}', error);
+      res.sendStatus(500);
+  })
+});
 
 module.exports = router;

@@ -43,6 +43,18 @@ function* editProcessOrder(action) {
     }
 }
 
+// worker saga to make a DELETE request at for estimates
+function* deleteEstimate(action) {
+    try {
+        yield axios.delete(`/api/estimates/delete/${action.payload.id}`, {params:{id: action.payload.id}})
+        // update data grids now that data in DB has changed
+        yield put({type: 'FETCH_ALL_ESTIMATES'});
+    }
+    catch (error) {
+        console.log('Error with Delete Order in adminEstimates Saga', error);
+    }
+}
+
 
 
 // watcher saga to look for admin estimate requests
@@ -53,6 +65,8 @@ function* adminEstimatesSaga() {
     yield takeLatest('EDIT_ESTIMATE_DATA', editEstimateData);
     // request to mark an order estimate that is pending as processed in the database
     yield takeLatest('EDIT_PROCESS_ORDER', editProcessOrder);
+    // request to delete an estimate
+    yield takeLatest('DELETE_ESTIMATE', deleteEstimate);
 }
 
 export default adminEstimatesSaga;
