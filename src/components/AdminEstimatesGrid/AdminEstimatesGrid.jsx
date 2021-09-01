@@ -230,8 +230,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
   // ⬇ Add additional columns based on the data source for the data grid:
   const addGridColumns = (dataSource) => {
-    if (dataSource) {
-       // ⬇ Add delete button to all estimates and orders
+    if (dataSource != 'pending' && dataSource != 'processed') {
+       // ⬇ Add delete button to open estimates
       columns.unshift(
         {
           field: 'delete_button',
