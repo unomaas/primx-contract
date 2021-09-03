@@ -71,6 +71,28 @@ export default function ImperialTable() {
     }); // End swal
   } // End handleSave
 
+  /** ⬇ handleEdit:
+   * When clicked, this will save the edits and send the user to the view estimate page:
+   */
+  const handleEdit = event => {
+    // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
+    estimateData.history = history;
+    // ⬇ Send the estimate object to be updated:
+    dispatch({ type: 'EDIT_ESTIMATE', payload: estimateData });
+    // ⬇ Sweet Alert to let them know to save the Estimate #:
+    swal({
+      title: "Your edits have been saved!",
+      text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+      icon: "info",
+      buttons: "I understand",
+    }).then(() => {
+      // ⬇ Pop-up print confirmation:
+      window.print();
+    }); // End swal
+    dispatch({ type: 'SET_EDIT_STATE', payload: false });
+    dispatch({ type: 'SET_TABLE_STATE', payload: false });
+  } // End handleEdit
+
   /** ⬇ handleClose:
    * Sets snack bar notification to closed after appearing.
    */
@@ -82,7 +104,7 @@ export default function ImperialTable() {
   }; // End handleClose
   //#endregion ⬆⬆ Event handles above. 
 
-
+  console.log('estimateData is:', estimateData);
   // ⬇ Rendering:
   return (
     <>
@@ -331,9 +353,7 @@ export default function ImperialTable() {
                           // If they are editing this estimate, show the Save Edit:
                           <>
                             <Button
-                              type="submit"
-                              // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                              // onClick={event => handleSave(event)}
+                              onClick={event => handleEdit(event)}
                               variant="contained"
                               className={classes.LexendTeraFont11}
                               color="secondary"

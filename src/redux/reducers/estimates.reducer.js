@@ -107,8 +107,6 @@ export const editState = (state = false, action) => {
   switch (action.type) {
     case 'SET_EDIT_STATE':
       return action.payload;
-    case 'CLEAR_EDIT_STATE':
-      return false;
     default:
       return state;
   } // End switch

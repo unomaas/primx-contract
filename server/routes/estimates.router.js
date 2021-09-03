@@ -295,7 +295,7 @@ router.put('/order/:id', (req, res) => {
   pool.query(queryText, [req.body.po_number, req.params.id])
     .then(result => res.sendStatus(200))
     .catch(error => {
-      console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
+      console.log(`Error with /api/estimates/order/:id PUT for id ${req.params.id}:`, error)
     })
 })
 
@@ -339,7 +339,7 @@ router.put('/recalculate/:id', (req, res) => {
   pool.query(queryText, values)
     .then(result => res.sendStatus(200))
     .catch(error => {
-      console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
+      console.log(`Error with /api/estimates/recalculate/:id PUT for id ${req.params.id}:`, error)
     })
 })
 
@@ -349,7 +349,7 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
   pool.query('DELETE FROM "estimates" WHERE id=$1', [req.params.id]).then((result) => {
     res.sendStatus(200);
   }).catch((error) => {
-    console.log('Error with /api/estimates/process for id ${req.params.id}', error);
+    console.log(`Error with /api/estimates/delete/:id for id ${req.params.id}`, error);
     res.sendStatus(500);
   })
 });
@@ -358,6 +358,8 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
 // main POST route above
 router.put('/clientupdates/:id', (req, res) => {
 
+  // console.log('Req.body is:', req.body, req.params);
+  
   // destructure data received from saga which contains an object with all editable DB columns 
   let {
     // shared values regardless of imperial or metric units
@@ -474,9 +476,11 @@ router.put('/clientupdates/:id', (req, res) => {
   values.push(req.params.id);
 
   pool.query(queryText, values)
-    .then(result => res.sendStatus(200))
+    .then(result => {
+      console.log('Got to .then in PUT request');
+      res.sendStatus(200)})
     .catch(error => {
-      console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
+      console.log(`Error with /api/estimates/clientupdates/:id PUT for id ${req.params.id}:`, error)
     })
 })
 
