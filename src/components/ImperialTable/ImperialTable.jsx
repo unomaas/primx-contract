@@ -22,6 +22,7 @@ export default function ImperialTable() {
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
   const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
+  const editState = useSelector(store => store.estimatesReducer.editState);
   // ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
   useEffect(() => {
     if (estimateData.square_feet && estimateData.thickness_inches && estimateData.thickened_edge_construction_joint_lineal_feet &&
@@ -69,6 +70,28 @@ export default function ImperialTable() {
       window.print();
     }); // End swal
   } // End handleSave
+
+  /** ⬇ handleEdit:
+   * When clicked, this will save the edits and send the user to the view estimate page:
+   */
+  const handleEdit = event => {
+    // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
+    estimateData.history = history;
+    // ⬇ Send the estimate object to be updated:
+    dispatch({ type: 'EDIT_ESTIMATE', payload: estimateData });
+    // ⬇ Sweet Alert to let them know to save the Estimate #:
+    swal({
+      title: "Your edits have been saved!",
+      text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+      icon: "info",
+      buttons: "I understand",
+    }).then(() => {
+      // ⬇ Pop-up print confirmation:
+      window.print();
+    }); // End swal
+    dispatch({ type: 'SET_EDIT_STATE', payload: false });
+    dispatch({ type: 'SET_TABLE_STATE', payload: false });
+  } // End handleEdit
 
   /** ⬇ handleClose:
    * Sets snack bar notification to closed after appearing.
@@ -325,29 +348,49 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell colSpan={6} align="right">
-                        {/* Conditional rendering for the save button: */}
-                        {saveButton ? (
-                          // If they have filled out all of the inputs, make it enabled:
-                          <Button
-                            type="submit"
-                            // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                            // onClick={event => handleSave(event)}
-                            variant="contained"
-                            className={classes.LexendTeraFont11}
-                            color="secondary"
-                          >
-                            Save Estimate
-                          </Button>
+                        {/* Conditional rendering to show the Edit or Save button based off whether they've came here from the Edit Estimate button or not: */}
+                        {editState ? (
+                          // If they are editing this estimate, show the Save Edit:
+                          <>
+                            <Button
+                              onClick={event => handleEdit(event)}
+                              variant="contained"
+                              className={classes.LexendTeraFont11}
+                              color="secondary"
+                            >
+                              Save Edits
+                            </Button>
+                          </>
                         ) : (
-                          // If they haven't filled out the inputs, make it disabled:
-                          <Button
-                            variant="contained"
-                            className={classes.LexendTeraFont11}
-                            disabled
-                          >
-                            Save Estimate
-                          </Button>
+                          // If they are not editing, show the Save Estimate conditional rendering: 
+                          <>
+                            {/* Conditional rendering for the save button to be enabled or disabled based off whether they've filled out all the inputs: */}
+                            {saveButton ? (
+                              // If they have filled out all of the inputs, make it enabled:
+                              <Button
+                                type="submit"
+                                // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+                                // onClick={event => handleSave(event)}
+                                variant="contained"
+                                className={classes.LexendTeraFont11}
+                                color="secondary"
+                              >
+                                Save Estimate
+                              </Button>
+                            ) : (
+                              // If they haven't filled out the inputs, make it disabled:
+                              <Button
+                                variant="contained"
+                                className={classes.LexendTeraFont11}
+                                disabled
+                              >
+                                Save Estimate
+                              </Button>
+                            )}
+                            {/* End conditional rendering for saveButton ? */}
+                          </>
                         )}
+                        {/* End Edit Estimate conditional rendering. */}
                       </TableCell>
                     </TableRow>
 

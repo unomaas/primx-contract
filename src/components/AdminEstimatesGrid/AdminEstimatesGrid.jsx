@@ -59,8 +59,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
   const handleDelete = (params) => {
     // ⬇ Open sweetalert to confirm order delete
     swal({
-      title: `Do you want to delete Order: ${params.row.estimate_number}`,
-      text: 'This will remove the order/estimate and cannot be undone.',
+      title: `Do you want to delete this estimate?`,
+      text: 'This will permanently delete the estimate and cannot be undone.',
       icon: 'warning',
       buttons: ['Cancel', 'Delete'],
       dangerMode: true,
@@ -68,7 +68,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       if (willDelete) {
       // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
       dispatch({ type: 'DELETE_ESTIMATE', payload: params })
-      swal(`Deleted Order: ${params.row.estimate_number}`, {
+      swal(`Estimate has been deleted!`, {
         icon: 'success',
       })
     }

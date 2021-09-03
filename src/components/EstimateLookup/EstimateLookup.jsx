@@ -139,13 +139,14 @@ export default function EstimateLookup() {
   const handleEdit = () => {
     console.log('In handleEdit, searchResult:', searchResult);
     dispatch({ type: 'EDIT_ESTIMATE', payload: searchResult });
+    dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult });
     dispatch({ type: 'SET_TABLE_STATE', payload: true });
+    dispatch({ type: 'SET_EDIT_STATE', payload: true });
     history.push(`/create`);
   }; // End handleClose
   //#endregion ⬆⬆ Event handlers above. 
 
-  console.log('searchQuery is:', searchQuery);
-  console.log('searchResult is:', searchResult);
+
   // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
