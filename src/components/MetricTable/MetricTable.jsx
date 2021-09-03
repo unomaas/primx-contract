@@ -76,7 +76,7 @@ export default function MetricTable() {
     estimateData.history = history;
     // ⬇ Send the estimate object to be updated:
     dispatch({ type: 'EDIT_ESTIMATE', payload: estimateData });
-    // ⬇ Sweet Alert to let them know to save the Estimate #:
+    // ⬇ Sweet Alert to let them know to save the Estimate number:
     swal({
       title: "Your edits have been saved!",
       text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
@@ -90,7 +90,7 @@ export default function MetricTable() {
     dispatch({ type: 'SET_TABLE_STATE', payload: false });
   } // End handleEdit
 
-  /** ⬇ handleClose:
+  /** ⬇ handleClose: 
    * Sets snack bar notification to closed after appearing.
    */
   const handleClose = (event, reason) => {
