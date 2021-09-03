@@ -22,6 +22,7 @@ export default function ImperialTable() {
   const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
   const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
+  const editState = 
   // ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
   useEffect(() => {
     if (estimateData.square_feet && estimateData.thickness_inches && estimateData.thickened_edge_construction_joint_lineal_feet &&
@@ -325,7 +326,7 @@ export default function ImperialTable() {
 
                     <TableRow>
                       <TableCell colSpan={6} align="right">
-                        {/* Conditional rendering for the save button: */}
+                        {/* Conditional rendering for the save button to be enabled or disabled based off whether they've filled out all the inputs: */}
                         {saveButton ? (
                           // If they have filled out all of the inputs, make it enabled:
                           <Button
@@ -348,6 +349,7 @@ export default function ImperialTable() {
                             Save Estimate
                           </Button>
                         )}
+                        {/* End conditional rendering for saveButton ? */}
                       </TableCell>
                     </TableRow>
 

@@ -75,7 +75,6 @@ function* recalculateEstimate(action) {
     // run the createProductPriceObject on the returned product costs to create the pricing object
     const productObject = createProductPriceObject(productCosts.data);
 
-
     // Update product costs with whatever is current in the products DB table
     // Start with values shared between imperial and metric
     Object.assign(currentEstimate, {

@@ -92,7 +92,7 @@ export const buttonState = (state = `create`, action) => {
     default:
       return state;
   } // End switch
-}; // End kitsReducer
+}; // End buttonState
 
 export const tableState = (state = false, action) => {
   switch (action.type) {
@@ -101,7 +101,18 @@ export const tableState = (state = false, action) => {
     default:
       return state;
   } // End switch
-}; // End kitsReducer
+}; // End tableState
+
+export const editState = (state = false, action) => {
+  switch (action.type) {
+    case 'SET_EDIT_STATE':
+      return action.payload;
+    case 'CLEAR_EDIT_STATE':
+      return false;
+    default:
+      return state;
+  } // End switch
+}; // End editState
 
 // searchedEstimate comes from the licenseeForm saga, which sends back a single estimate object from the DB after running the useEstimateCalculations
 // function on it
@@ -145,9 +156,8 @@ export default combineReducers({
   estimatesReducer,
   buttonState,
   tableState,
+  editState,
   searchedEstimate,
   hasRecalculated,
   searchQuery
 });
-
-// export default estimatesReducer;
