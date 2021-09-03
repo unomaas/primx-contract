@@ -227,7 +227,7 @@ router.post('/', (req, res) => {
                       // declaring letters as the first two characters of the licensee name
                       const letters = result.rows[0].licensee_contractor_name.slice(0, 2);
                       // making a new estimate number using letters and a function of numbers
-                      let newId = letters.toLowerCase() + (123000 + (id * 3))
+                      let newId = letters.toUpperCase() + (123000 + (id * 3))
                       // third query to update the estimate number to the new one created above (making the estimate number smaller per client request)
                       const thirdQueryText = `UPDATE "estimates" 
                                               SET estimate_number = $1 
