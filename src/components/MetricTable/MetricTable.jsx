@@ -86,8 +86,9 @@ export default function MetricTable() {
       // ⬇ Pop-up print confirmation:
       window.print();
     }); // End swal
-    dispatch({ type: 'SET_EDIT_STATE', payload: false });
-    dispatch({ type: 'SET_TABLE_STATE', payload: false });
+    // ⬇ Triggers to flip the show table state and show edit button state:
+    // dispatch({ type: 'SET_EDIT_STATE', payload: false });
+    // dispatch({ type: 'SET_TABLE_STATE', payload: false });
   } // End handleEdit
 
   /** ⬇ handleClose: 
