@@ -104,7 +104,7 @@ export default function ImperialTable() {
   }; // End handleClose
   //#endregion ⬆⬆ Event handles above. 
 
-  console.log('estimateData is:', estimateData);
+
   // ⬇ Rendering:
   return (
     <>
