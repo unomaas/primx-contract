@@ -58,7 +58,7 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 // *************************** POST ROUTES ***************************
 
 // POST Route for Licensee Information -> Includes both Metric and Imperial Inputs
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   // set the values sent from licensee by destructuring req.body
   let {
     // shared values regardless of imperial or metric units
@@ -212,49 +212,37 @@ router.post('/', (req, res) => {
       )
       RETURNING "id";
   `
-  
-  
-  pool.query(queryText, values)
+  try {
+    // First DB query: initial POST request with data from the client
+    let { rows } = await pool.query(queryText, values);
+    const id = rows[0].id
 
-    .then(result => {
-      let newEstimateNumber;
-      const id = result.rows[0].id;
-      // getting the licensee name from the DB
-      const secondQueryText = `SELECT licensee_contractor_name 
-                                             FROM "licensees"
-                                             WHERE "id" = $1
-                          `;
-      pool.query(secondQueryText, [licensee_id])
-        .then(secondRes => {
-          // declaring letters as the first two characters of the licensee name
-          const letters = secondRes.rows[0].licensee_contractor_name.slice(0, 2);
-          // making a new estimate number using letters and a function of numbers
-          newEstimateNumber = letters.toLowerCase() + (123000 + (id * 3))
-          // third query to update the estimate number to the new one created above (making the estimate number smaller per client request)
-          const thirdQueryText = `UPDATE "estimates" 
-                                              SET estimate_number = $1 
-                                              WHERE "id" = $2;`
-          pool.query(thirdQueryText, [newEstimateNumber, id])
-            .then(thirdRes => {
-              res.send({
-                estimate_number: newEstimateNumber,
-                licensee_id: licensee_id
-              })
-            })
-            .catch(thirdErr => {
-              console.log('error with nested UPDATE', thirdErr);
-              res.sendStatus(500);
-            })
-        }
-        ).catch(secondErr => {
-          console.log('error in secondQueryText -->', secondErr);
-          res.sendStatus(500);
-        })
+    // Second DB query: GET the full name of the licensee from the licensee table since licensee name from the client is stored as licensee_id
+    const secondQueryText = `SELECT licensee_contractor_name 
+                             FROM "licensees"
+                             WHERE "id" = $1;
+                             `;
+    const licenseeNameResponse = await pool.query(secondQueryText, [licensee_id]);
+
+    // create the specified shorter estimate number using the logic below and the returned id number from the original POST
+    const letters = licenseeNameResponse.rows[0].licensee_contractor_name.slice(0, 2);
+    const newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
+    
+    // Third DB query: PUT to update the newly created estimate with the shorter estimate number just created
+    const thirdQueryText = `UPDATE "estimates" 
+                            SET estimate_number = $1 
+                            WHERE "id" = $2;
+                            `;
+    await pool.query(thirdQueryText, [newEstimateNumber, id]);
+    res.send({
+      estimate_number: newEstimateNumber,
+      licensee_id: licensee_id
     })
-    .catch(error => {
-      console.log(`Error with /api/estimates/ POST:`, error)
-      res.sendStatus(500);
-    })
+  } catch (error) {
+    console.log('Problem with estimates POST', error);
+    res.sendStatus(500);
+  }
+
 
 });
 
