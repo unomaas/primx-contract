@@ -175,7 +175,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       field: 'estimate_number',
       headerClassName: classes.header,
       headerName: 'Estimate Number',
-      width: 300,
+      width: 200,
       disableClickEventBubbling: true,
       renderCell: renderEstimateNumber // function declared above, creates a div with navigation in each of the estimate number cells
     },
