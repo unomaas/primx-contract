@@ -28,7 +28,7 @@ const rootReducer = combineReducers({
   shippingCosts, //contins the shipping costs
   estimatesReducer, // contains the create new estimate build
   userInfoReducer, //contains all users for system admin view
-  snackBar,
+  snackBar, // Is the reducer data for snackbar alerts. 
 });
 
 export default rootReducer;

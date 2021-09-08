@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
-
+import { useStyles } from '../MuiStyling/MuiStyling';
 // MUI Imports
 import Button from '@material-ui/core/Button';
 
@@ -11,6 +11,8 @@ function AdminLandingPage() {
   const user = useSelector((store) => store.user);
   //defines history
   const history = useHistory();
+  const classes = useStyles();
+
 
   // functions for navigating with the two main buttons
   const goToOrdersAndEstimates = () => {
@@ -33,7 +35,6 @@ function AdminLandingPage() {
         onClick={goToOrdersAndEstimates}
         variant="contained"
         color="primary"
-        className="btn"
         className={classes.LexendTeraFont11}
       >
         Go
@@ -45,7 +46,6 @@ function AdminLandingPage() {
         onClick={goToAdminUpdates}
         variant="contained"
         color="primary"
-        className="btn"
         className={classes.LexendTeraFont11}
       >
         Go

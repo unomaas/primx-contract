@@ -103,6 +103,20 @@ export default function EstimateCreate() {
         }; // End for loop.
       } // End if statement
     }) // end shippingCosts forEach
+
+    // If user is in the edit view, recalculate estimate values with new shipping data
+    if () {
+      // ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values:
+      dispatch({
+        type: 'HANDLE_CALCULATED_ESTIMATE',
+        payload: estimateData
+      });
+      
+    }
+
+
+
+
   } // End handleShipping
 
   /** ⬇ handleMeasurementUnits:
