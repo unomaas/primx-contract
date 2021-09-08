@@ -34,7 +34,7 @@ export default function MetricTable() {
       });
       setSaveButton(true);
     }
-  }, [estimateData]);
+  }, [estimateData, calculatedDisplayObject]);
   //#endregion ⬆⬆ All state variables above. 
 
 
