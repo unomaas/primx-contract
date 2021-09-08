@@ -220,7 +220,7 @@ export default function EstimateLookup() {
                           <Button
                             type="submit"
                             variant="contained"
-                            style={{ fontFamily: 'Lexend Tera', fontSize: '11px' }}
+                            className={classes.LexendTeraFont11}
                             color="primary"
                           >
                             Search

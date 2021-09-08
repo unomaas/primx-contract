@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
   LexendTeraFont11: {
     fontFamily: 'Lexend Tera',
-    fontSize: '12px',
+    fontSize: '11px',
   },
   OrdersHeaders: {
     fontFamily: 'Lexend Tera',
