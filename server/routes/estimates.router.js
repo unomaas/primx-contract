@@ -474,7 +474,7 @@ router.put('/clientupdates/:id', (req, res) => {
 
   // add id to the values array
   values.push(req.params.id);
-
+  
   pool.query(queryText, values)
     .then(result => {
       console.log('Got to .then in PUT request');

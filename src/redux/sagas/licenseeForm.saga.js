@@ -57,6 +57,9 @@ function* EditEstimate(action) {
     console.log('Action.payload is:', action.payload);
     
     yield axios.put(`/api/estimates/clientupdates/${action.payload.id}`, action.payload);
+    // after this is done, run the recalculate costs PUT request to ensure up-to-date pricing
+    yield put({ type: 'RECALCULATE_ESTIMATE', payload: action.payload });
+
     // action. payload contains the history object from useHistory
     const history = action.payload.history;
     // need to send the user to the search estimates results page using the newly created estimate number
