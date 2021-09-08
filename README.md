@@ -2,17 +2,16 @@
 
 Thanks for viewing our order platform solution for our client, PrīmX NA! https://primxna.com/
 
+
+
 ## Duration: 
 
 - Total Time: 4 Weeks
   - Original Duration: 2 Week Sprint
     - This app was created as a solution to PrīmX's estimate and order placement process. This project was started via a team of five developers working remotely over a two week period, as students of Prime Digital Academy.  The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz, and Alex Kim. 
   - Further Development: 2 Week Sprint
+    - However, PrīmX liked our solution so much that they've hired us back on as freelance contract developers to further build out their ordering platform solution, via ad hoc requests for flat-rate billing.  We've now added on another 2 Week Sprint workload to make this application more robust, scalable, and user-friendly. The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz. 
 
-
-
-
-However, PrīmX liked our solution so much that they've hired us back on as freelance contract developers to further build out their ordering platform solution.  We've now added on another 2 Week Sprint workload to 
 
 
 ## Description:
@@ -32,6 +31,7 @@ The SuperAdmin is the only Admin account that is able to create another Admin ac
 ## Prerequisites:
 
 - Node.js: https://nodejs.org/en/
+
 - PostgreSQL: https://www.postgresql.org/
 
 
