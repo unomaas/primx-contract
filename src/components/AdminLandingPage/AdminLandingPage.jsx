@@ -34,7 +34,7 @@ function AdminLandingPage() {
         variant="contained"
         color="primary"
         className="btn"
-        style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+        className={classes.LexendTeraFont11}
       >
         Go
       </Button>
@@ -46,7 +46,7 @@ function AdminLandingPage() {
         variant="contained"
         color="primary"
         className="btn"
-        style={{fontFamily: 'Lexend Tera', fontSize: '11px'}}
+        className={classes.LexendTeraFont11}
       >
         Go
       </Button>

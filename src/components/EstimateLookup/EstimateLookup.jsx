@@ -105,12 +105,14 @@ export default function EstimateLookup() {
     } else {
       swal({
         title: "This order has been submitted! Your PrimX representative will be in touch.",
-        text: "Remember, your estimate number has changed! Please favorite this page or save the new estimate number. You will need it to check the order status in the future.",
+        text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
         icon: "success",
         buttons: "I understand",
-      }).then(() => {
-        window.print();
-      }); // End swal
+      }) // End swal
+      // ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
+      // .then(() => {
+      //   window.print();
+      // }); // End swal
       dispatch({
         type: 'EDIT_PLACE_ORDER',
         payload: {
@@ -808,6 +810,7 @@ export default function EstimateLookup() {
                                   variant="contained"
                                   // color="secondary"
                                   onClick={handleEdit}
+                                  className={classes.LexendTeraFont11}
                                 >
                                   Edit This Estimate
                                 </Button>
@@ -818,6 +821,7 @@ export default function EstimateLookup() {
                                   variant="contained"
                                   color="primary"
                                   onClick={handleRecalculateCosts}
+                                  className={classes.LexendTeraFont11}
                                 >
                                   Recalculate Costs
                                 </Button>
@@ -843,6 +847,7 @@ export default function EstimateLookup() {
                                       variant="contained"
                                       color="secondary"
                                       onClick={handlePlaceOrder}
+                                      className={classes.LexendTeraFont11}
                                     >
                                       Place Order
                                     </Button>
@@ -851,6 +856,7 @@ export default function EstimateLookup() {
                                     <Button
                                       variant="contained"
                                       disabled
+                                      className={classes.LexendTeraFont11}
                                     >
                                       Place Order
                                     </Button>
