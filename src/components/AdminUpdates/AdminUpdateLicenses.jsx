@@ -44,6 +44,7 @@ export default function AdminUpdateLicenses() {
             variant="contained"
             color="secondary"
             onClick={() => handleActivateDeactivateClick(params)}
+            className={classes.LexendTeraFont11}
           >
             Deactivate
           </Button> :
@@ -51,6 +52,7 @@ export default function AdminUpdateLicenses() {
             variant="contained"
             color="primary"
             onClick={() => handleActivateDeactivateClick(params)}
+            className={classes.LexendTeraFont11}
           >
             Reactivate
           </Button>
@@ -77,7 +79,7 @@ export default function AdminUpdateLicenses() {
     headerClassName: classes.header },
 
     { field: 'activate_button',
-      headerName: 'Activate/ Deactivate',
+      headerName: 'Activate/Deactivate',
       width: 225,
       disableClickEventBubbling: true,
       renderCell: renderActivateButton, // function declared above

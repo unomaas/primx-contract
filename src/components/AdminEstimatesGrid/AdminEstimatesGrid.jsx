@@ -46,9 +46,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       <Button
         variant="contained"
         color="secondary"
-        onClick={
-          () => handleDelete(params)
-        }
+        onClick={() => handleDelete(params)}
+        className={classes.LexendTeraFont11}
       >
         Delete
       </Button>
@@ -66,13 +65,13 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-      // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
-      dispatch({ type: 'DELETE_ESTIMATE', payload: params })
-      swal(`Estimate has been deleted!`, {
-        icon: 'success',
-      })
-    }
-  });
+        // ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+        dispatch({ type: 'DELETE_ESTIMATE', payload: params })
+        swal(`Estimate has been deleted!`, {
+          icon: 'success',
+        })
+      }
+    });
   }
 
   // ⬇ Rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
@@ -81,9 +80,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       <Button
         variant="contained"
         color="primary"
-        onClick={
-          () => handleProcessOrder(params)
-        }
+        onClick={() => handleProcessOrder(params)}
+        className={classes.LexendTeraFont11}
       >
         Process Order
       </Button>
@@ -96,9 +94,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
       <Button
         variant="contained"
         color="primary"
-        onClick={
-          () => handleArchiveEstimate(params)
-        }
+        onClick={() => handleArchiveEstimate(params)}
+        className={classes.LexendTeraFont11}
       >
         Archive
       </Button>
@@ -194,8 +191,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: true },
 
     // ⬇ Technical job details input by licensee
-    { field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100}, // Editable + validation?
-    { field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175}, // Editable + validation?
+    { field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
+    { field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175 }, // Editable + validation?
     { field: 'placement_type', headerClassName: classes.header, headerName: 'Placement Type', width: 175 }, // Editable + validation?
     { field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175, editable: true }, // Editable + validation?
     { field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175, editable: true }, // Editable + validation?
@@ -267,17 +264,18 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
   const addGridColumns = (dataSource) => {
     if (dataSource != 'pending' && dataSource != 'processed' && dataSource != 'archived') {
       columns.unshift(
-        { field: 'archive_button', 
-          headerClassName: classes.header, 
-          headerName: 'Archive', 
-          width: 130, 
+        {
+          field: 'archive_button',
+          headerClassName: classes.header,
+          headerName: 'Archive',
+          width: 130,
           renderCell: renderArchiveButton // function declared above, creates a button in each row of the open estimates table
         }
       )
     }
 
     if (dataSource == 'archived') {
-       // ⬇ Add delete button to open estimates
+      // ⬇ Add delete button to open estimates
       columns.unshift(
         {
           field: 'delete_button',
@@ -287,7 +285,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
           disableClickEventBubbling: true,
           renderCell: addDeleteButton
         }
-      )  
+      )
     }
     if (dataSource == 'pending' || dataSource == 'processed') {
       // ⬇ Add the Purchase Order number and the order number to each of the pending and processed tables:
@@ -313,9 +311,9 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         { field: 'order_number', headerClassName: classes.header, headerName: 'Order Number', width: 175 },
         { field: 'processed_by', headerClassName: classes.header, headerName: 'Processed By', width: 175 }
       )
-    } 
+    }
     // Add and archive button if an open estimate (not pending nor processed)
-    
+
   }
 
   // ⬇ Run the addGridColumns function using the props from table as an argument:

@@ -29,9 +29,8 @@ export default function SystemAdminUpdateUserGrid() {
         <Button
           variant="contained"
           color="secondary"
-          onClick={
-            () => handleDeleteAdmin(params)
-          }
+          onClick={() => handleDeleteAdmin(params)}
+          className={classes.LexendTeraFont11}
         >
           Delete
         </Button>
