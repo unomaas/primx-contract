@@ -1,13 +1,21 @@
 # PrīmX - Ordering Portal Web App
 
-Thanks for viewing our order platform solution for our client, PrimX NA! https://primxna.com/
+Thanks for viewing our order platform solution for our client, PrīmX NA! https://primxna.com/
+
+## Duration: 
+
+- Total Time: 4 Weeks
+  - Original Duration: 2 Week Sprint
+    - This app was created as a solution to PrīmX's estimate and order placement process. This project was started via a team of five developers working remotely over a two week period, as students of Prime Digital Academy.  The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz, and Alex Kim. 
+  - Further Development: 2 Week Sprint
+
+
+
+
+However, PrīmX liked our solution so much that they've hired us back on as freelance contract developers to further build out their ordering platform solution.  We've now added on another 2 Week Sprint workload to 
 
 
 ## Description:
-
-- Duration: 2 Week Sprint
-
-This app was created as a solution to PrīmX's estimate and order placement process. This project was done via a team of five developers working remotely over a two week period, as students of Prime Digital Academy.  The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz, and Alex Kim. 
 
 Our client, PrīmX, is an Industrial Concrete Flooring Distributor, who creates a unique ‘jointless’ concrete flooring product. They’re a small company, consisting of just five people, but have a national footprint across the United States and Canada. Their old process used Excel worksheets and there was no pipeline for the administrators to reference. The goal of this app is to help create a modern solution for their ordering platform.
 
