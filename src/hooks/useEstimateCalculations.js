@@ -14,6 +14,18 @@ export default function useEstimateCalculations(estimate) {
         estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
     }
 
+    // This block checks to see if a price estimate exists already, indicating that the calculations are being done on the edit view between Estimate
+    // Lookup and EstimateCreate. estimate.dc_price only exists if a new shipping state has been selected from the dropdown menu in EstimateCreate.
+    // If both these conditions are met, it means a user is editing an estimate and is changing their desired shipping state. When this happens,
+    // set the shipping estimate keys to match the new keys set by the change in ship-to state or province.
+    if (estimate.design_total_price_estimate && estimate.dc_price) {
+        estimate.primx_dc_shipping_estimate = estimate.dc_price;
+        estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
+        estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
+        estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
+    }
+
+
     // start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database
     for (let property in estimate) {
         // save the value of property being looped over

@@ -136,6 +136,15 @@ function* recalculateEstimate(action) {
   }
 }
 
+function* handleCalculatedEstimate(action) {
+  // Save a mutated object with the calculation values
+  const calculatedEstimate = useEstimateCalculations(action.payload);
+  yield put({
+    type: 'SET_CALCULATED_ESTIMATE',
+    payload: calculatedEstimate
+  });
+}
+
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then
 // be processed by an admin user
 function* markEstimateAsOrdered(action) {
@@ -167,6 +176,8 @@ function* licenseeFormSaga() {
   yield takeLatest('EDIT_PLACE_ORDER', markEstimateAsOrdered);
   // Will let a licensee edit their previous estimate values:
   yield takeLatest('EDIT_ESTIMATE', EditEstimate);
+  // Takes in a working estimate and runs the calculation function on it before saving the new calculated object in a reducer
+  yield takeLatest('HANDLE_CALCULATED_ESTIMATE', handleCalculatedEstimate);
 }
 
 export default licenseeFormSaga;

@@ -27,6 +27,7 @@ export default function EstimateCreate() {
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const products = useSelector(store => store.products.productsObject);
   const showTables = useSelector(store => store.estimatesReducer.tableState);
+  const editState = useSelector(store => store.estimatesReducer.editState);
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");
   const [leadTime, setLeadTime] = useState("");
@@ -107,6 +108,14 @@ export default function EstimateCreate() {
         }; // End for loop.
       } // End if statement
     }) // end shippingCosts forEach
+
+    // If user is in the edit view, recalculate estimate values with new shipping data
+    if (editState) {
+      dispatch({
+        type: 'HANDLE_CALCULATED_ESTIMATE',
+        payload: estimateData
+      });
+    }
   } // End handleShipping
 
   /** ⬇ handleMeasurementUnits:

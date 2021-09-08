@@ -18,7 +18,7 @@ export default function MetricTable() {
   const classes = useStyles();
   const calculateEstimate = useEstimateCalculations;
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
-  const [calculatedDisplayObject, setCalculatedDisplayObject] = useState({});
+  const calculatedDisplayObject = useSelector(store => store.estimatesReducer.setCalcEstimate);
   const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
   const editState = useSelector(store => store.estimatesReducer.editState);
@@ -28,11 +28,13 @@ export default function MetricTable() {
       estimateData.thickened_edge_perimeter_lineal_meters && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_kgs &&
       estimateData.primx_cpea_dosage_liters) {
       // ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values:
-      const calculatedObject = calculateEstimate(estimateData);
-      setCalculatedDisplayObject(calculatedObject);
+      dispatch({
+        type: 'HANDLE_CALCULATED_ESTIMATE',
+        payload: estimateData
+      });
       setSaveButton(true);
     }
-  }, [estimateData]);
+  }, [estimateData, calculatedDisplayObject]);
   //#endregion ⬆⬆ All state variables above. 
 
 

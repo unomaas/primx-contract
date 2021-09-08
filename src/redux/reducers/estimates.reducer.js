@@ -120,8 +120,8 @@ export const searchedEstimate = (state = {}, action) => {
       return action.payload;
     default:
       return state;
-  }
-};
+  } // End switch
+}; // End searchedEstimate
 
 // reducer that looks at whether a user has recalculated their estimate numbers on the lookup view before being able to place an order
 export const hasRecalculated = (state = false, action) => {
@@ -132,8 +132,8 @@ export const hasRecalculated = (state = false, action) => {
       return false;
     default:
       return state;
-  }
-}
+  } // End switch
+}; // End hasRecalculated
 
 export const searchQuery = (state = {
   licensee_id: 0,
@@ -147,8 +147,17 @@ export const searchQuery = (state = {
       };
     default:
       return state;
-  }
-}
+  } // End switch
+}; // End searchQuery
+
+export const setCalcEstimate = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_CALCULATED_ESTIMATE':            
+        return action.payload;
+    default:
+        return state;
+  } // End switch
+}; // End setCalcEstimate
 
 export default combineReducers({
   estimatesReducer,
@@ -157,5 +166,6 @@ export default combineReducers({
   editState,
   searchedEstimate,
   hasRecalculated,
-  searchQuery
+  searchQuery,
+  setCalcEstimate
 });
