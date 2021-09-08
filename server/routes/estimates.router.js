@@ -358,7 +358,7 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
 // main POST route above
 router.put('/clientupdates/:id', (req, res) => {
 
-  // console.log('Req.body is:', req.body, req.params);
+  console.log('Req.body is:', req.body, req.params);
   
   // destructure data received from saga which contains an object with all editable DB columns 
   let {
@@ -474,7 +474,8 @@ router.put('/clientupdates/:id', (req, res) => {
 
   // add id to the values array
   values.push(req.params.id);
-
+  console.log('Query text => Values', queryText, values);
+  
   pool.query(queryText, values)
     .then(result => {
       console.log('Got to .then in PUT request');
