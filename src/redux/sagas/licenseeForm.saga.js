@@ -40,13 +40,30 @@ function* fetchEstimateQuery(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
   try {
-
     const response = yield axios.post('/api/estimates', action.payload);
     // action. payload contains the history object from useHistory
     const history = action.payload.history
     // need to send the user to the search estimates results page using the newly created estimate number
     // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
     yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
+  } catch (error) {
+    console.log('User POST request failed', error);
+  }
+}
+
+// Saga Worker to edit estimate into table
+function* EditEstimate(action) {
+  try {
+    console.log('Action.payload is:', action.payload);
+    
+    yield axios.put(`/api/estimates/clientupdates/${action.payload.id}`, action.payload);
+    // action. payload contains the history object from useHistory
+    const history = action.payload.history;
+    // need to send the user to the search estimates results page using the newly created estimate number
+    // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
+    console.log('Action.payload is:', action.payload);
+
+    yield history.push(`/lookup/${action.payload.licensee_id}/${action.payload.estimate_number}`);
   } catch (error) {
     console.log('User POST request failed', error);
   }
@@ -74,7 +91,6 @@ function* recalculateEstimate(action) {
     }) // end forEach
     // run the createProductPriceObject on the returned product costs to create the pricing object
     const productObject = createProductPriceObject(productCosts.data);
-
 
     // Update product costs with whatever is current in the products DB table
     // Start with values shared between imperial and metric
@@ -146,6 +162,8 @@ function* licenseeFormSaga() {
   yield takeLatest('RECALCULATE_ESTIMATE', recalculateEstimate);
   // Marks an estimate as ordered in the DB and attaches a supplied P.O. number to it
   yield takeLatest('EDIT_PLACE_ORDER', markEstimateAsOrdered);
+  // Will let a licensee edit their previous estimate values:
+  yield takeLatest('EDIT_ESTIMATE', EditEstimate);
 }
 
 export default licenseeFormSaga;

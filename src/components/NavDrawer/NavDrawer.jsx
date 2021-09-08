@@ -77,14 +77,14 @@ export default function NavDrawer() {
                 <p>Admin Dashboard</p>
               </ListItem>
 
-              <ListItem button onClick={() => history.push(`/adminupdates`)}>
-                <UpdateIcon /> &nbsp;
-                <p>Update Items</p>
-              </ListItem>
-
               <ListItem button onClick={() => history.push(`/adminorders`)}>
                 <ViewCarouselIcon /> &nbsp;
                 <p>View Pipeline</p>
+              </ListItem>
+
+              <ListItem button onClick={() => history.push(`/adminupdates`)}>
+                <UpdateIcon /> &nbsp;
+                <p>Update Items</p>
               </ListItem>
 
               {/* Conditional rendering to show system admin portal: */}
