@@ -46,7 +46,7 @@ export const estimatesReducer = (state = {
         ...state,
         [action.payload.key]: action.payload.value
       };
-    case 'EDIT_ESTIMATE':
+    case 'SET_EDIT_DATA':
       return action.payload;
     case 'CLEAR_ESTIMATE':
       return {

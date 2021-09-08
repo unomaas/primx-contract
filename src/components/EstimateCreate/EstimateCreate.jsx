@@ -93,13 +93,17 @@ export default function EstimateCreate() {
       if (shippingState.id == id) {
         // ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
         for (let keyName in shippingState) {
-          dispatch({
-            type: 'SET_ESTIMATE',
-            payload: {
-              key: keyName,
-              value: shippingState[keyName]
-            } // End payload.
-          }) // End dispatch.
+          // Ignore the id key for the shipping state, otherwise the edit view will break by changing the estimate id that's being edited
+          // to the id of the shipping state
+          if (keyName != 'id') {
+            dispatch({
+              type: 'SET_ESTIMATE',
+              payload: {
+                key: keyName,
+                value: shippingState[keyName]
+              } // End payload.
+            }) // End dispatch.
+          }
         }; // End for loop.
       } // End if statement
     }) // end shippingCosts forEach
