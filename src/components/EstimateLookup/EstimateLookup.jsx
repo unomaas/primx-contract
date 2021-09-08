@@ -144,8 +144,7 @@ export default function EstimateLookup() {
   }; // End handleClose
   //#endregion ⬆⬆ Event handlers above. 
 
-  console.log('searchQuery is:', searchQuery);
-  console.log('searchResult is:', searchResult);
+
   // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
