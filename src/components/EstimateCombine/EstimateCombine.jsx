@@ -42,43 +42,44 @@ export default function EstimateCombine() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB.
+    // ⬇
     if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched) {
       dispatch({
-        type: 'FETCH_ESTIMATE_QUERY',
+        type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
           estimate_number: estimate_number_searched
         } // End payload
       }), // End dispatch
-      dispatch({
-        type: 'FETCH_ESTIMATE_QUERY',
-        payload: {
-          licensee_id: licensee_id_searched,
-          estimate_number: second_estimate_number_searched
-        } // End payload
-      }) // End dispatch
+        dispatch({
+          type: 'FETCH_SECOND_ESTIMATE_QUERY',
+          payload: {
+            licensee_id: licensee_id_searched,
+            estimate_number: second_estimate_number_searched
+          } // End payload
+        }) // End dispatch
     } else if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched && third_estimate_number_searched) {
       dispatch({
-        type: 'FETCH_ESTIMATE_QUERY',
+        type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
           estimate_number: estimate_number_searched
         } // End payload
       }), // End dispatch
-      dispatch({
-        type: 'FETCH_ESTIMATE_QUERY',
-        payload: {
-          licensee_id: licensee_id_searched,
-          estimate_number: second_estimate_number_searched
-        } // End payload
-      }), // End dispatch
-      ispatch({
-        type: 'FETCH_ESTIMATE_QUERY',
-        payload: {
-          licensee_id: licensee_id_searched,
-          estimate_number: third_estimate_number_searched
-        } // End payload
-      }) // End dispatch
+        dispatch({
+          type: 'FETCH_SECOND_ESTIMATE_QUERY',
+          payload: {
+            licensee_id: licensee_id_searched,
+            estimate_number: second_estimate_number_searched
+          } // End payload
+        }), // End dispatch
+        dispatch({
+          type: 'FETCH_THIRD_ESTIMATE_QUERY',
+          payload: {
+            licensee_id: licensee_id_searched,
+            estimate_number: third_estimate_number_searched
+          } // End payload
+        }) // End dispatch
     } // End if statement
   }, [licensee_id_searched, estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched]);
   //#endregion ⬆⬆ All state variables above. 
@@ -100,21 +101,26 @@ export default function EstimateCombine() {
    * When submitted, will search for the entered estimate to populate the tables. 
    */
   const handleSubmit = () => {
+    // ⬇ Clearing validation each time: 
+    setError(false);
+    setSelectError("");
     // ⬇ Select dropdown validation:
-    if (searchQuery.licensee_id !== "0") {
-      // If they selected a company name from dropdown:
-      // use history to send user to the details subview of their search query
-      history.push(`/combine/${searchQuery.licensee_id}/${searchQuery.estimate_number}`)
-    } else {
-      // If they haven't, pop up warning and prevent them:
+    if (combineQuery.licensee_id === 0) {
+      // If they haven't selected a drop-down, pop up warning and prevent them:
       setError(true);
       setSelectError("Please select a value.");
-    } // End if/else
+    } // ⬇ If they only entered two estimate numbers:
+    else if (combineQuery.estimate_number && combineQuery.second_estimate_number) {
+      history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
+    } // ⬇ If they entered three estimate numbers:
+    else if (combineQuery.estimate_number && combineQuery.second_estimate_number && combineQuery.third_estimate_number) {
+      history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
+    } // End if/else statement
   }; // End handleSubmit
   //#endregion ⬆⬆ Event handlers above. 
 
 
-
+  // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
 
