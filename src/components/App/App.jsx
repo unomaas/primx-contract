@@ -15,6 +15,8 @@ import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
 import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
+import CombineEstimatesForm from '../CombineEstimatesForm/CombineEstimatesFrom';
+
 
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
@@ -58,6 +60,11 @@ function App() {
             {/* /lookup leads to the search estimate view for finding individual estimates */}
             <Route exact path="/lookup">
               <EstimateLookup />
+            </Route>
+
+            {/* /combine leads to the combine estimate view for combining up to 3 estimates */}
+            <Route exact path="/combine">
+              <CombineEstimatesForm />
             </Route>
 
             {/* This route bring user to specific estimate in /lookup */}
