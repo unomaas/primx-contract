@@ -66,11 +66,7 @@ function App() {
 
             {/* This route bring user to specific estimate in /lookup */}
             <Route
-              path="
-                /lookup
-                /:licensee_id_searched
-                /:estimate_number_searched
-              "
+              path="/lookup/:licensee_id_searched/:estimate_number_searched"
               children={<EstimateLookup />}
             >
             </Route>
@@ -82,25 +78,14 @@ function App() {
 
             {/* (For Combinations of 2) This route bring user to specific estimate combinations in /combine */}
             <Route
-              path="
-                /combine
-                /:licensee_id_searched
-                /:estimate_number_searched
-                /:2nd_estimate_number_searched
-              "
+              path="/combine/:licensee_id_searched/:estimate_number_searched/:second_estimate_number_searched"
               children={<EstimateCombine />}
             >
             </Route>
 
             {/* (For Combinations of 3) This route bring user to specific estimate combinations in /combine */}
             <Route
-              path="
-                /combine
-                /:licensee_id_searched
-                /:estimate_number_searched
-                /:2nd_estimate_number_searched
-                /:3rd_estimate_number_searched
-              "
+              path="/combine/:licensee_id_searched/:estimate_number_searched/:second_estimate_number_searched/:third_estimate_number_searched"
               children={<EstimateCombine />}
             >
             </Route>

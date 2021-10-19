@@ -28,7 +28,7 @@ export default function EstimateCombine() {
   const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { estimate_number_searched, licensee_id_searched } = useParams();
+  const { licensee_id_searched, estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   // ⬇ Run on page load:
@@ -46,7 +46,8 @@ export default function EstimateCombine() {
         type: 'FETCH_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
-          estimate_number: estimate_number_searched
+          estimate_number: estimate_number_searched,
+
         } // End payload
       }) // End dispatch
     } // End if statement
@@ -61,7 +62,7 @@ export default function EstimateCombine() {
   const handleChange = (key, value) => {
     // setSearchQuery({ ...searchQuery, [key]: value })
     dispatch({
-      type: 'SET_SEARCH_QUERY',
+      type: 'SET_COMBINE_QUERY',
       payload: { key: key, value: value }
     }); // End dispatch
   }; // End handleChange
@@ -74,7 +75,7 @@ export default function EstimateCombine() {
     if (searchQuery.licensee_id !== "0") {
       // If they selected a company name from dropdown:
       // use history to send user to the details subview of their search query
-      history.push(`/lookup/${searchQuery.licensee_id}/${searchQuery.estimate_number}`)
+      history.push(`/combine/${searchQuery.licensee_id}/${searchQuery.estimate_number}`)
     } else {
       // If they haven't, pop up warning and prevent them:
       setError(true);
@@ -156,7 +157,7 @@ export default function EstimateCombine() {
                           </FormControl>
                         </TableCell>
 
-                        <TableCell><b>Estimate Number:</b></TableCell>
+                        <TableCell><b>First Estimate Number:</b></TableCell>
                         <TableCell>
                           <TextField
                             onChange={event => handleChange('estimate_number', event.target.value)}

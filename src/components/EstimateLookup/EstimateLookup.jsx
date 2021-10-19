@@ -28,7 +28,7 @@ export default function EstimateLookup() {
   const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { estimate_number_searched, licensee_id_searched } = useParams();
+  const { licensee_id_searched, estimate_number_searched } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   // ⬇ Run on page load:
@@ -41,7 +41,7 @@ export default function EstimateLookup() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
-    if (estimate_number_searched && licensee_id_searched) {
+    if (licensee_id_searched && estimate_number_searched) {
       dispatch({
         type: 'FETCH_ESTIMATE_QUERY',
         payload: {
@@ -72,7 +72,7 @@ export default function EstimateLookup() {
   const handleSubmit = () => {
     // ⬇ Clearing validation each time: 
     setError(false);
-      setSelectError("");
+    setSelectError("");
     // ⬇ Select dropdown validation:
     if (searchQuery.licensee_id !== 0) {
       // If they selected a company name from dropdown:
