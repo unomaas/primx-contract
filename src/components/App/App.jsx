@@ -15,6 +15,8 @@ import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
 import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
+import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
+
 
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
@@ -42,6 +44,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <div className="App">
+
+          {/* This manages the Snackbar alerts throughout the app: */}
+          <MuiSnackbarManager />
 
           <Nav />
 

@@ -31,7 +31,6 @@ export default function EstimateCreate() {
   const [error, setError] = useState(false);
   const [radioError, setRadioError] = useState("");
   const [leadTime, setLeadTime] = useState("");
-  const snack = useSelector(store => store.snackBar);
   // ⬇ Run on page load:
   useEffect(() => {
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
@@ -188,22 +187,6 @@ export default function EstimateCreate() {
       <ButtonToggle />
 
       <br />
-
-      {/* Snackbar configures all of the info pop-ups required. */}
-      <Snackbar
-        open={snack.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          variant={snack.variant}
-          onClose={handleClose}
-          severity={snack.severity}
-        >
-          {snack.message}
-        </Alert>
-      </Snackbar>
 
       <form onSubmit={handleSubmit}>
 

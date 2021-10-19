@@ -27,7 +27,6 @@ export default function EstimateLookup() {
   const [selectError, setSelectError] = useState("");
   const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
-  const snack = useSelector(store => store.snackBar);
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { estimate_number_searched, licensee_id_searched } = useParams();
   const dispatch = useDispatch();
@@ -125,16 +124,6 @@ export default function EstimateLookup() {
     } // End if/else.
   } // End handlePlaceOrder
 
-  /** ⬇ handleClose:
-   * Sets snack bar notification to closed after appearing.
-   */
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    } // End if
-    dispatch({ type: 'SET_CLOSE' })
-  }; // End handleClose
-
   /** ⬇ handleEdit:
    * Sends the user back to 1.0 Create Estimate with data pre-loaded to make edits. 
    */
@@ -151,22 +140,6 @@ export default function EstimateLookup() {
   // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
-
-      {/* Snackbar configures all of the info pop-ups required. */}
-      <Snackbar
-        open={snack.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          variant={snack.variant}
-          onClose={handleClose}
-          severity={snack.severity}
-        >
-          {snack.message}
-        </Alert>
-      </Snackbar>
 
       <section className="removeInPrint">
         <ButtonToggle />

@@ -19,7 +19,6 @@ export default function MetricTable() {
   const calculateEstimate = useEstimateCalculations;
   const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
   const calculatedDisplayObject = useSelector(store => store.estimatesReducer.setCalcEstimate);
-  const snack = useSelector(store => store.snackBar);
   const [saveButton, setSaveButton] = useState(false);
   const editState = useSelector(store => store.estimatesReducer.editState);
   // ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
@@ -93,36 +92,13 @@ export default function MetricTable() {
     // dispatch({ type: 'SET_TABLE_STATE', payload: false });
   } // End handleEdit
 
-  /** ⬇ handleClose: 
-   * Sets snack bar notification to closed after appearing.
-   */
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    } // End if
-    dispatch({ type: 'SET_CLOSE' })
-  }; // End handleClose
   //#endregion ⬆⬆ Event handles above. 
 
 
   // ⬇ Rendering:
   return (
     <>
-      {/* Snackbar configures all of the info pop-ups required. */}
-      <Snackbar
-        open={snack.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          variant={snack.variant}
-          onClose={handleClose}
-          severity={snack.severity}
-        >
-          {snack.message}
-        </Alert>
-      </Snackbar>
+
 
       <form onSubmit={handleSave}>
 

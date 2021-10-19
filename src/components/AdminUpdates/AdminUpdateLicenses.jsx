@@ -8,8 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { DataGrid } from '@material-ui/data-grid';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
@@ -23,8 +21,6 @@ export default function AdminUpdateLicenses() {
   const companies = useSelector(store => store.companies);
   // establish add company input state with use state
   let [companyNameInput, setCompanyNameInput] = useState('');
-  // establish snackbar variables for notifications
-  const snack = useSelector(store => store.snackBar);
   //defining classes for MUI
   const classes = useStyles();
 
@@ -103,12 +99,6 @@ export default function AdminUpdateLicenses() {
     }
   }
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    dispatch({ type: 'SET_CLOSE' })
-  };
 
 
   return (
@@ -143,21 +133,6 @@ export default function AdminUpdateLicenses() {
           pageSize={10}
         />
 
-        {/* Snackbar configures all of the info pop-ups required. */}
-        <Snackbar
-          open={snack.open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          <Alert
-            variant={snack.variant}
-            onClose={handleClose}
-            severity={snack.severity}
-          >
-            {snack.message}
-          </Alert>
-        </Snackbar>
       </div>
     </div>
   )
