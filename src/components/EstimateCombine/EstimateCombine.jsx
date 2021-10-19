@@ -22,14 +22,12 @@ export default function EstimateCombine() {
   const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
   const combinedResult = useSelector(store => store.estimatesReducer.combinedEstimate);
 
-  // ⬇ hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates the Submit Order button.
-  const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
   const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
+  const combineQuery = useSelector(store => store.estimatesReducer.combineQuery);
+
   const [error, setError] = useState(false);
   const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
-  const [poNumError, setPoNumError] = useState("");
-  const [poNumber, setPoNumber] = useState('');
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { licensee_id_searched, estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched } = useParams();
   const dispatch = useDispatch();
@@ -43,18 +41,46 @@ export default function EstimateCombine() {
   }, []);
   // ⬇ Run on estimate search complete:
   useEffect(() => {
-    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
-    if (estimate_number_searched && licensee_id_searched) {
+    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB.
+    if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched) {
       dispatch({
         type: 'FETCH_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
-          estimate_number: estimate_number_searched,
-          second_estimate_number: second_estimate_number_searched
+          estimate_number: estimate_number_searched
+        } // End payload
+      }), // End dispatch
+      dispatch({
+        type: 'FETCH_ESTIMATE_QUERY',
+        payload: {
+          licensee_id: licensee_id_searched,
+          estimate_number: second_estimate_number_searched
+        } // End payload
+      }) // End dispatch
+    } else if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched && third_estimate_number_searched) {
+      dispatch({
+        type: 'FETCH_ESTIMATE_QUERY',
+        payload: {
+          licensee_id: licensee_id_searched,
+          estimate_number: estimate_number_searched
+        } // End payload
+      }), // End dispatch
+      dispatch({
+        type: 'FETCH_ESTIMATE_QUERY',
+        payload: {
+          licensee_id: licensee_id_searched,
+          estimate_number: second_estimate_number_searched
+        } // End payload
+      }), // End dispatch
+      ispatch({
+        type: 'FETCH_ESTIMATE_QUERY',
+        payload: {
+          licensee_id: licensee_id_searched,
+          estimate_number: third_estimate_number_searched
         } // End payload
       }) // End dispatch
     } // End if statement
-  }, [estimate_number_searched, licensee_id_searched]);
+  }, [licensee_id_searched, estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched]);
   //#endregion ⬆⬆ All state variables above. 
 
 
@@ -85,38 +111,9 @@ export default function EstimateCombine() {
       setSelectError("Please select a value.");
     } // End if/else
   }; // End handleSubmit
+  //#endregion ⬆⬆ Event handlers above. 
 
 
-  /** ⬇ handlePlaceOrder:
-   * Click handler for the Place Order button. 
-   */
-  const handlePlaceOrder = () => {
-    // ⬇ If they haven't entered a PO number, pop up an error helperText:
-    if (poNumber == "") {
-      setPoNumError("Please enter a P.O. Number.")
-      // ⬇ If they have entered a PO number, proceed with order submission:
-    } else {
-      swal({
-        title: "This order has been submitted! Your PrimX representative will be in touch.",
-        text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
-        icon: "success",
-        buttons: "I understand",
-      }) // End swal
-      // ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
-      // .then(() => {
-      //   window.print();
-      // }); // End swal
-      dispatch({
-        type: 'EDIT_PLACE_ORDER',
-        payload: {
-          id: searchResult.id,
-          po_number: poNumber,
-          licensee_id: searchResult.licensee_id,
-          estimate_number: searchResult.estimate_number
-        } // End payload
-      }) // End dispatch
-    } // End if/else.
-  } // End handlePlaceOrder
 
   return (
     <div className="EstimateCreate-wrapper">
@@ -140,6 +137,7 @@ export default function EstimateCombine() {
                     <TableBody>
 
                       <TableRow>
+
                         <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                         <TableCell>
                           <FormControl error={error}>
@@ -148,7 +146,7 @@ export default function EstimateCombine() {
                               required
                               size="small"
                               fullWidth
-                              value={searchQuery.licensee_id}
+                              value={combineQuery.licensee_id}
                             >
                               <MenuItem key="0" value="0">Please Select</MenuItem>
                               {companies.map(companies => {
@@ -168,52 +166,35 @@ export default function EstimateCombine() {
                             type="search"
                             size="small"
                             fullWidth
-                            value={searchQuery.estimate_number}
+                            value={combineQuery.estimate_number}
                           />
                         </TableCell>
 
                         <TableCell colSpan={2} align="right">
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            className={classes.LexendTeraFont11}
-                            color="primary"
-                          >
-                            Search
-                          </Button>
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
-                        <TableCell><b>Licensee/Contractor Name:</b></TableCell>
-                        <TableCell>
-                          <FormControl error={error}>
-                            <Select
-                              onChange={event => handleChange('licensee_id', event.target.value)}
-                              required
-                              size="small"
-                              fullWidth
-                              value={searchQuery.licensee_id}
-                            >
-                              <MenuItem key="0" value="0">Please Select</MenuItem>
-                              {companies.map(companies => {
-                                return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
-                              }
-                              )}
-                            </Select>
-                            <FormHelperText>{selectError}</FormHelperText>
-                          </FormControl>
-                        </TableCell>
-
-                        <TableCell><b>First Estimate Number:</b></TableCell>
+                        <TableCell><b>Second Estimate Number:</b></TableCell>
                         <TableCell>
                           <TextField
-                            onChange={event => handleChange('estimate_number', event.target.value)}
+                            onChange={event => handleChange('second_estimate_number', event.target.value)}
                             required
                             type="search"
                             size="small"
                             fullWidth
-                            value={searchQuery.estimate_number}
+                            value={combineQuery.second_estimate_number}
+                          />
+                        </TableCell>
+
+                        <TableCell><b>Third Estimate Number:</b></TableCell>
+                        <TableCell>
+                          <TextField
+                            onChange={event => handleChange('third_estimate_number', event.target.value)}
+                            type="search"
+                            size="small"
+                            fullWidth
+                            value={combineQuery.thirdestimate_number}
                           />
                         </TableCell>
 
@@ -240,6 +221,7 @@ export default function EstimateCombine() {
       <br />
       {/* End estimate search form */}
 
+      {/* Conditionally render entire code block below if the user has successfully combined estimates */}
       {combinedResult.estimate_number &&
         <EstimateCombineTable />
       }
