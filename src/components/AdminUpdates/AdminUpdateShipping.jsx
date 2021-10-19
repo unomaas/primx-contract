@@ -11,8 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+
 
 export default function AdminUpdateShipping() {
   // establish dispatch for calls to reducers and sagas
@@ -22,8 +21,6 @@ export default function AdminUpdateShipping() {
   // establish shipping cost prices for specific states locally
   let [newShippingCost, setNewShippingCost] = useState({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
 
-  // establish snackbar variables for notifications
-  const snack = useSelector(store => store.snackBar);
 
   //styles for MUI
   const useStyles = makeStyles((theme) => ({
@@ -155,22 +152,6 @@ export default function AdminUpdateShipping() {
       </div>
       {/* the grid below is being imported in - this grid shows the current shipping lanes and their pricing info */}
       <UpdateShippingCostsGrid />
-
-      {/* Snackbar configures all of the info pop-ups required. */}
-      <Snackbar
-        open={snack.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          variant={snack.variant}
-          onClose={handleClose}
-          severity={snack.severity}
-        >
-          {snack.message}
-        </Alert>
-      </Snackbar>
     </div>
   )
 }
