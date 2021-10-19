@@ -67,11 +67,6 @@ function App() {
               <EstimateLookup />
             </Route>
 
-            {/* /combine leads to the combine estimate view for combining up to 3 estimates */}
-            <Route exact path="/combine">
-              <CombineEstimatesForm />
-            </Route>
-
             {/* This route bring user to specific estimate in /lookup */}
             <Route
               path="/lookup/:licensee_id_searched/:estimate_number_searched"

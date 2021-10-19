@@ -167,6 +167,15 @@ export const combineQuery = (state = {
   } // End switch
 }; // End searchQuery
 
+export const combinedEstimate = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_ESTIMATE_COMBINE_RESULT':
+      return action.payload;
+    default:
+      return state;
+  } // End switch
+}; // End searchedEstimate
+
 export const setCalcEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_CALCULATED_ESTIMATE':            
@@ -184,5 +193,7 @@ export default combineReducers({
   searchedEstimate,
   hasRecalculated,
   searchQuery,
-  setCalcEstimate
+  setCalcEstimate,
+  combineQuery,
+  combinedEstimate,
 });

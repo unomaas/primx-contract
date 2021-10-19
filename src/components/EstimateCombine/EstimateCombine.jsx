@@ -1,6 +1,7 @@
 //#region ⬇⬇ All document setup, below:
 // ⬇ File Imports: 
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
+import EstimateCombineTable from './EstimateCombineTable';
 // ⬇ Dependent Functionality:
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +20,8 @@ export default function EstimateCombine() {
   const companies = useSelector(store => store.companies);
   // ⬇ searchResult below is an estimate object searched from the DB that has already been mutated by the useEstimateCalculations function.
   const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
+  const combinedResult = useSelector(store => store.estimatesReducer.combinedEstimate);
+
   // ⬇ hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates the Submit Order button.
   const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
   const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
@@ -47,7 +50,7 @@ export default function EstimateCombine() {
         payload: {
           licensee_id: licensee_id_searched,
           estimate_number: estimate_number_searched,
-
+          second_estimate_number: second_estimate_number_searched
         } // End payload
       }) // End dispatch
     } // End if statement
@@ -181,6 +184,51 @@ export default function EstimateCombine() {
                         </TableCell>
                       </TableRow>
 
+                      <TableRow>
+                        <TableCell><b>Licensee/Contractor Name:</b></TableCell>
+                        <TableCell>
+                          <FormControl error={error}>
+                            <Select
+                              onChange={event => handleChange('licensee_id', event.target.value)}
+                              required
+                              size="small"
+                              fullWidth
+                              value={searchQuery.licensee_id}
+                            >
+                              <MenuItem key="0" value="0">Please Select</MenuItem>
+                              {companies.map(companies => {
+                                return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                              }
+                              )}
+                            </Select>
+                            <FormHelperText>{selectError}</FormHelperText>
+                          </FormControl>
+                        </TableCell>
+
+                        <TableCell><b>First Estimate Number:</b></TableCell>
+                        <TableCell>
+                          <TextField
+                            onChange={event => handleChange('estimate_number', event.target.value)}
+                            required
+                            type="search"
+                            size="small"
+                            fullWidth
+                            value={searchQuery.estimate_number}
+                          />
+                        </TableCell>
+
+                        <TableCell colSpan={2} align="right">
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            className={classes.LexendTeraFont11}
+                            color="primary"
+                          >
+                            Search
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+
                     </TableBody>
                   </Table>
                 </TableContainer>
@@ -192,6 +240,9 @@ export default function EstimateCombine() {
       <br />
       {/* End estimate search form */}
 
+      {combinedResult.estimate_number &&
+        <CombineEstimatesForm />
+      }
 
     </div>
   )
