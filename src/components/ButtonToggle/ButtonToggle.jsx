@@ -53,6 +53,7 @@ export default function ButtonToggle() {
         >
           Create New Estimate
         </ToggleButton>
+
         <ToggleButton
           style={{
             fontFamily: 'Lexend Tera',
@@ -61,6 +62,16 @@ export default function ButtonToggle() {
           value="lookup"
         >
           Search For Estimate
+        </ToggleButton>
+
+        <ToggleButton
+          style={{
+            fontFamily: 'Lexend Tera',
+            fontSize: '11px'
+          }}
+          value="combine"
+        >
+          Combine Estimates
         </ToggleButton>
       </ToggleButtonGroup>
     </div>

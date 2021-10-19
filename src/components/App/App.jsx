@@ -7,6 +7,7 @@ import AdminLandingPage from '../AdminLandingPage/AdminLandingPage';
 import AdminLoginPage from '../AdminLoginPage/AdminLoginPage';
 import EstimateCreate from '../EstimateCreate/EstimateCreate';
 import EstimateLookup from '../EstimateLookup/EstimateLookup';
+import EstimateCombine from '../EstimateCombine/EstimateCombine';
 import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
@@ -68,8 +69,42 @@ function App() {
 
             {/* This route bring user to specific estimate in /lookup */}
             <Route
-              path="/lookup/:licensee_id_searched/:estimate_number_searched"
+              path="
+                /lookup
+                /:licensee_id_searched
+                /:estimate_number_searched
+              "
               children={<EstimateLookup />}
+            >
+            </Route>
+
+            {/* /combine leads to the combine estimate view for combining individual estimates */}
+            <Route exact path="/combine">
+              <EstimateCombine />
+            </Route>
+
+            {/* (For Combinations of 2) This route bring user to specific estimate combinations in /combine */}
+            <Route
+              path="
+                /combine
+                /:licensee_id_searched
+                /:estimate_number_searched
+                /:2nd_estimate_number_searched
+              "
+              children={<EstimateCombine />}
+            >
+            </Route>
+
+            {/* (For Combinations of 3) This route bring user to specific estimate combinations in /combine */}
+            <Route
+              path="
+                /combine
+                /:licensee_id_searched
+                /:estimate_number_searched
+                /:2nd_estimate_number_searched
+                /:3rd_estimate_number_searched
+              "
+              children={<EstimateCombine />}
             >
             </Route>
 
@@ -77,10 +112,7 @@ function App() {
               <AdminLoginPage />
             </Route>
 
-            {/* For protected routes, the view could show one of several things on the same route.
-            Visiting localhost:3000/user will show the AdminLandingPage if the user is logged in.
-            If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
-            Even though it seems like they are different pages, the user is always on localhost:3000/user */}
+            {/* For protected routes, the view could show one of several things on the same route.  Visiting localhost:3000/user will show the AdminLandingPage if the user is logged in.  If the user is not logged in, the ProtectedRoute will show the LoginPage (component).  Even though it seems like they are different pages, the user is always on localhost:3000/user */}
             {/* // logged in shows AdminLandingPage else shows LoginPage */}
             <ProtectedRoute exact path="/user" >
               <AdminLandingPage />
@@ -115,7 +147,7 @@ function App() {
               <ProtectedRoute exact path="/SystemAdmin" >
                 <SystemAdmin />
               </ProtectedRoute>
-              : <> </>}
+              : <><h1>404</h1></>}
 
             <ProtectedRoute exact path="/adminorders">
               <AdminOrders />
