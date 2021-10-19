@@ -241,7 +241,7 @@ export default function EstimateCombine() {
       {/* End estimate search form */}
 
       {combinedResult.estimate_number &&
-        <CombineEstimatesForm />
+        <EstimateCombineTable />
       }
 
     </div>
