@@ -16,8 +16,6 @@ import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
 import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
 import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
-
-
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -26,6 +24,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
+
 
 
 function App() {
@@ -145,7 +144,10 @@ function App() {
               <ProtectedRoute exact path="/SystemAdmin" >
                 <SystemAdmin />
               </ProtectedRoute>
-              : <><h1>404</h1></>}
+              : <>
+                <h1>Error 404: Page Not Found.</h1>
+                <h3>Please go back and try a different option.</h3>
+              </>}
 
             <ProtectedRoute exact path="/adminorders">
               <AdminOrders />
@@ -153,7 +155,8 @@ function App() {
 
             {/* If none of the other routes matched, we will show a 404. */}
             <Route>
-              <h1>404</h1>
+              <h1>Error 404: Page Not Found.</h1>
+              <h3>Please go back and try a different option.</h3>
             </Route>
 
           </Switch>

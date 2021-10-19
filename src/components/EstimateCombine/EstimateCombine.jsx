@@ -12,6 +12,8 @@ import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
 
+
+
 export default function EstimateCombine() {
   //#region ⬇⬇ All state variables below:
   const companies = useSelector(store => store.companies);
@@ -32,7 +34,7 @@ export default function EstimateCombine() {
   // ⬇ Run on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
-    dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
+    dispatch({ type: 'SET_BUTTON_STATE', payload: 'combine' }),
       // ⬇ Fetch the current companies for drop-down menu options:
       dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
   }, []);
@@ -52,11 +54,11 @@ export default function EstimateCombine() {
   //#endregion ⬆⬆ All state variables above. 
 
 
-    //#region ⬇⬇ Event handlers below:
+  //#region ⬇⬇ Event handlers below:
   /** ⬇ handleChange:
    * Change handler for the estimate search form. Will send their entries to a reducer.
    */
-   const handleChange = (key, value) => {
+  const handleChange = (key, value) => {
     // setSearchQuery({ ...searchQuery, [key]: value })
     dispatch({
       type: 'SET_SEARCH_QUERY',
@@ -84,7 +86,7 @@ export default function EstimateCombine() {
   /** ⬇ handlePlaceOrder:
    * Click handler for the Place Order button. 
    */
-   const handlePlaceOrder = () => {
+  const handlePlaceOrder = () => {
     // ⬇ If they haven't entered a PO number, pop up an error helperText:
     if (poNumber == "") {
       setPoNumError("Please enter a P.O. Number.")
@@ -113,10 +115,82 @@ export default function EstimateCombine() {
   } // End handlePlaceOrder
 
   return (
-    <div>
-      
-      
-      
+    <div className="EstimateCreate-wrapper">
+
+      <section className="removeInPrint">
+        <ButtonToggle />
+
+        <br />
+
+        <form onSubmit={handleSubmit}>
+          <Grid container
+            spacing={2}
+            justifyContent="center"
+          >
+
+            {/* Grid #1: The Search Bar for Estimate Lookup */}
+            <Grid item xs={12}>
+              <Paper elevation={3}>
+                <TableContainer >
+                  <Table size="small">
+                    <TableBody>
+
+                      <TableRow>
+                        <TableCell><b>Licensee/Contractor Name:</b></TableCell>
+                        <TableCell>
+                          <FormControl error={error}>
+                            <Select
+                              onChange={event => handleChange('licensee_id', event.target.value)}
+                              required
+                              size="small"
+                              fullWidth
+                              value={searchQuery.licensee_id}
+                            >
+                              <MenuItem key="0" value="0">Please Select</MenuItem>
+                              {companies.map(companies => {
+                                return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+                              }
+                              )}
+                            </Select>
+                            <FormHelperText>{selectError}</FormHelperText>
+                          </FormControl>
+                        </TableCell>
+
+                        <TableCell><b>Estimate Number:</b></TableCell>
+                        <TableCell>
+                          <TextField
+                            onChange={event => handleChange('estimate_number', event.target.value)}
+                            required
+                            type="search"
+                            size="small"
+                            fullWidth
+                            value={searchQuery.estimate_number}
+                          />
+                        </TableCell>
+
+                        <TableCell colSpan={2} align="right">
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            className={classes.LexendTeraFont11}
+                            color="primary"
+                          >
+                            Search
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+            </Grid>
+          </Grid>
+        </form>
+      </section>
+      <br />
+      {/* End estimate search form */}
+
 
     </div>
   )

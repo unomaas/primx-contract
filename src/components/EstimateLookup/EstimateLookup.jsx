@@ -70,15 +70,18 @@ export default function EstimateLookup() {
    * When submitted, will search for the entered estimate to populate the tables. 
    */
   const handleSubmit = () => {
+    // ⬇ Clearing validation each time: 
+    setError(false);
+      setSelectError("");
     // ⬇ Select dropdown validation:
-    if (searchQuery.licensee_id !== "0") {
+    if (searchQuery.licensee_id !== 0) {
       // If they selected a company name from dropdown:
       // use history to send user to the details subview of their search query
       history.push(`/lookup/${searchQuery.licensee_id}/${searchQuery.estimate_number}`)
     } else {
       // If they haven't, pop up warning and prevent them:
       setError(true);
-      setSelectError("Please select a value.");
+      setSelectError("Please select a company.");
     } // End if/else
   }; // End handleSubmit
 
