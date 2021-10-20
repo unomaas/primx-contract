@@ -116,27 +116,7 @@ export const editState = (state = false, action) => {
 // function on it
 export const searchedEstimate = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_FIRST_ESTIMATE_QUERY_RESULT':
-      return action.payload;
-    default:
-      return state;
-  } // End switch
-}; // End searchedEstimate
-
-// secondSearchedEstimate comes from multipleEstimate Saga, which adds returns another estimate object from DB after running useEstimateCalculations
-export const secondSearchedEstimate = (state = {}, action) => {
-  switch (action.type) {
-    case 'SET_SECOND_ESTIMATE_QUERY_RESULT':
-      return action.payload;
-    default:
-      return state;
-  } // End switch
-}; // End searchedEstimate
-
-// ThirdSearchedEstimate comes from multipleEstimate Saga, which adds returns another estimate object from DB after running useEstimateCalculations
-export const thirdSearchedEstimate = (state = {}, action) => {
-  switch (action.type) {
-    case 'SET_THIRD_ESTIMATE_QUERY_RESULT':
+    case 'SET_ESTIMATE_QUERY_RESULT':
       return action.payload;
     default:
       return state;
@@ -170,32 +150,6 @@ export const searchQuery = (state = {
   } // End switch
 }; // End searchQuery
 
-export const combineQuery = (state = {
-  licensee_id: 0,
-  estimate_number: "",
-  second_estimate_number: "",
-  third_estimate_number: ""
-}, action) => {
-  switch (action.type) {
-    case 'SET_COMBINE_QUERY':
-      return {
-        ...state,
-        [action.payload.key]: action.payload.value
-      };
-    default:
-      return state;
-  } // End switch
-}; // End searchQuery
-
-export const combinedEstimate = (state = {}, action) => {
-  switch (action.type) {
-    case 'SET_ESTIMATE_COMBINE_RESULT':
-      return action.payload;
-    default:
-      return state;
-  } // End switch
-}; // End searchedEstimate
-
 export const setCalcEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_CALCULATED_ESTIMATE':            
@@ -214,6 +168,4 @@ export default combineReducers({
   hasRecalculated,
   searchQuery,
   setCalcEstimate,
-  combineQuery,
-  combinedEstimate,
 });

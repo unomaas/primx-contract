@@ -22,30 +22,8 @@ export default function EstimateLookupTable() {
   const classes = useStyles(); // Keep in for MUI styling. 
   const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
-  // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { licensee_id_searched, estimate_number_searched } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  // ⬇ Run on page load:
-  useEffect(() => {
-    // ⬇ Make the toggle button show this selection:
-    dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
-      // ⬇ Fetch the current companies for drop-down menu options:
-      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
-  }, []);
-  // ⬇ Run on estimate search complete:
-  useEffect(() => {
-    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
-    if (licensee_id_searched && estimate_number_searched) {
-      dispatch({
-        type: 'FETCH_ESTIMATE_QUERY',
-        payload: {
-          licensee_id: licensee_id_searched,
-          estimate_number: estimate_number_searched
-        } // End payload
-      }) // End dispatch
-    } // End if statement
-  }, [estimate_number_searched, licensee_id_searched]);
   //#endregion ⬆⬆ All state variables above. 
 
 
