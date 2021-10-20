@@ -126,7 +126,7 @@ ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk0" FOREIGN KEY ("licensee_id
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk1" FOREIGN KEY ("shipping_costs_id") REFERENCES "shipping_costs"("id");
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk2" FOREIGN KEY ("floor_types_id") REFERENCES "floor_types"("id");
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk3" FOREIGN KEY ("placement_types_id") REFERENCES "placement_types"("id");
-ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk4" FOREIGN KEY ("processed_by") REFERENCES "user"("username");
+ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk4" FOREIGN KEY ("processed_by") REFERENCES "user"("username") ON DELETE SET NULL;
 
 -- starting values for products table
 INSERT INTO "products" ("product_name", "product_price", "on_hand", "product_identifier")
