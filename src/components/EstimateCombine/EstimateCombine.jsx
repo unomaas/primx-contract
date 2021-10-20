@@ -28,7 +28,7 @@ export default function EstimateCombine() {
   const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { licensee_id_searched, first_estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched } = useParams();
+  const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   // ⬇ Run on page load:
@@ -41,45 +41,49 @@ export default function EstimateCombine() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB.
-    if (licensee_id_searched && first_estimate_number_searched && second_estimate_number_searched && third_estimate_number_searched) {
+    if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
+      console.log('********** HEY LOOK HERE THREE WORKS!!!!!!!!!!');
+      console.log('Heres what we got:', licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined,  third_estimate_number_combined);
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
-          estimate_number: first_estimate_number_searched
+          estimate_number: first_estimate_number_combined
         } // End payload
       }), // End dispatch
         dispatch({
           type: 'FETCH_SECOND_ESTIMATE_QUERY',
           payload: {
             licensee_id: licensee_id_searched,
-            estimate_number: second_estimate_number_searched
+            estimate_number: second_estimate_number_combined
           } // End payload
         }), // End dispatch
         dispatch({
           type: 'FETCH_THIRD_ESTIMATE_QUERY',
           payload: {
             licensee_id: licensee_id_searched,
-            estimate_number: third_estimate_number_searched
+            estimate_number: third_estimate_number_combined
           } // End payload
         }) // End dispatch
-    } else if (licensee_id_searched && first_estimate_number_searched && second_estimate_number_searched) {
+    } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
+      console.log('********** NO ONLY TWO WORKS WHY!!!!!!!!!!');
+      console.log('Heres what we got:', licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined,  third_estimate_number_combined);
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
-          estimate_number: first_estimate_number_searched
+          estimate_number: first_estimate_number_combined
         } // End payload
       }), // End dispatch
         dispatch({
           type: 'FETCH_SECOND_ESTIMATE_QUERY',
           payload: {
             licensee_id: licensee_id_searched,
-            estimate_number: second_estimate_number_searched
+            estimate_number: second_estimate_number_combined
           } // End payload
         }) // End dispatch
     } // End if statement
-  }, [licensee_id_searched, first_estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched]);
+  }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]);
   //#endregion ⬆⬆ All state variables above. 
 
 
@@ -99,6 +103,7 @@ export default function EstimateCombine() {
    * When submitted, will search for the entered estimate to populate the tables. 
    */
   const handleSubmit = (event) => {
+    console.log('In handleSubmit:', combineQuery.first_estimate_number, combineQuery.second_estimate_number, combineQuery.third_estimate_number);
     // ⬇ Don't refresh until submit:
     event.preventDefault();
     // ⬇ Clearing validation each time: 
@@ -122,9 +127,6 @@ export default function EstimateCombine() {
   }; // End handleSubmit
   //#endregion ⬆⬆ Event handlers above. 
 
-  console.log('*****************', third_estimate_number_searched);
-  
-  console.log('*****************', licensee_id_searched, first_estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched );
 
   // ⬇ Rendering below:
   return (
@@ -205,7 +207,7 @@ export default function EstimateCombine() {
                             type="search"
                             size="small"
                             fullWidth
-                            value={combineQuery.thirdestimate_number}
+                            value={combineQuery.third_estimate_number}
                           />
                         </TableCell>
 
