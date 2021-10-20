@@ -52,7 +52,7 @@ function* fetchSecondEstimateQuery(action) {
       const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
       //take response from DB and insert into Admin Reducer
       yield put({
-        type: 'SET_ESTIMATE_QUERY_RESULT',
+        type: 'SET_SECOND_ESTIMATE_QUERY_RESULT',
         payload: calculatedResponse
       });
     } catch (error) {
