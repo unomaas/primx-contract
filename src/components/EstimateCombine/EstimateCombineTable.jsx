@@ -41,8 +41,7 @@ export default function EstimateCombineTable() {
 
   // ⬇ Rendering below:
   return (
-    <div className="EstimateCreate-wrapper">
-
+    <>
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
       <>
@@ -274,10 +273,10 @@ export default function EstimateCombineTable() {
                           <TableCell><b>Width (yd³):</b></TableCell>
                           <TableCell>
                             5
-                            </TableCell>
+                          </TableCell>
                           <TableCell>
                             10
-                            </TableCell>
+                          </TableCell>
                         </TableRow>
 
                         <TableRow>
@@ -399,10 +398,10 @@ export default function EstimateCombineTable() {
                           <TableCell><b>Width (yd³):</b></TableCell>
                           <TableCell>
                             5
-                            </TableCell>
+                          </TableCell>
                           <TableCell>
                             10
-                            </TableCell>
+                          </TableCell>
                         </TableRow>
 
                         <TableRow>
@@ -526,10 +525,10 @@ export default function EstimateCombineTable() {
                           <TableCell><b>Width (yd³):</b></TableCell>
                           <TableCell>
                             5
-                            </TableCell>
+                          </TableCell>
                           <TableCell>
                             10
-                            </TableCell>
+                          </TableCell>
                         </TableRow>
 
                         <TableRow>
@@ -657,10 +656,10 @@ export default function EstimateCombineTable() {
                           <TableCell><b>Width (m³):</b></TableCell>
                           <TableCell>
                             1.5
-                            </TableCell>
+                          </TableCell>
                           <TableCell>
                             3.0
-                            </TableCell>
+                          </TableCell>
                         </TableRow>
 
                         <TableRow>
@@ -784,10 +783,10 @@ export default function EstimateCombineTable() {
                           <TableCell><b>Width (m³):</b></TableCell>
                           <TableCell>
                             1.5
-                            </TableCell>
+                          </TableCell>
                           <TableCell>
                             3.0
-                            </TableCell>
+                          </TableCell>
                         </TableRow>
 
                         <TableRow>
@@ -911,10 +910,10 @@ export default function EstimateCombineTable() {
                           <TableCell><b>Width (m³):</b></TableCell>
                           <TableCell>
                             1.5
-                            </TableCell>
+                          </TableCell>
                           <TableCell>
                             3.0
-                            </TableCell>
+                          </TableCell>
                         </TableRow>
 
                         <TableRow>
@@ -1118,9 +1117,9 @@ export default function EstimateCombineTable() {
                                 >
                                   Edit This Estimate
                                 </Button> */}
-                                &nbsp; &nbsp;
+                            &nbsp; &nbsp;
 
-                                {/* Recalculate Costs Button:
+                            {/* Recalculate Costs Button:
                                 <Button
                                   variant="contained"
                                   color="primary"
@@ -1129,9 +1128,9 @@ export default function EstimateCombineTable() {
                                 >
                                   Recalculate Costs
                                 </Button> */}
-                                &nbsp; &nbsp;
+                            &nbsp; &nbsp;
 
-                                    <TextField
+                            <TextField
                               onChange={(event) => setPoNumber(event.target.value)}
                               size="small"
                               label="PO Number"
@@ -1139,9 +1138,9 @@ export default function EstimateCombineTable() {
                             >
                             </TextField>
 
-                                &nbsp; &nbsp;
+                            &nbsp; &nbsp;
 
-                                {/* Submit Order Button */}
+                            {/* Submit Order Button */}
 
                             <Button
                               variant="contained"
@@ -1150,7 +1149,7 @@ export default function EstimateCombineTable() {
                               className={classes.LexendTeraFont11}
                             >
                               Place Order
-                                    </Button>
+                            </Button>
                           </section>
                         </TableCell>
                       </TableRow>
@@ -1177,7 +1176,7 @@ export default function EstimateCombineTable() {
           <>
             <h3>
               This order is currently being processed.  Please contact your PrīmX representative for more details.
-              </h3>
+            </h3>
           </>
         }
         {/* Display this message if an estimate has been processed by an admin */}
@@ -1185,7 +1184,7 @@ export default function EstimateCombineTable() {
           <>
             <h3>
               This order has been processed.  Please contact your PrīmX representative for more details.
-              </h3>
+            </h3>
           </>
         }
       </>
@@ -1199,7 +1198,7 @@ export default function EstimateCombineTable() {
           </h3>
         </>
       }
-    </div >
+    </>
   )
 }
 
