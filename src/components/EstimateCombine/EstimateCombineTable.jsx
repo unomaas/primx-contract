@@ -16,8 +16,9 @@ export default function EstimateCombineTable() {
   //#region ⬇⬇ All state variables below:
   // ⬇ first,second,thirdEstimate below are objects searched from the DB
   const firstEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
-  const secondEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
-  const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
+  const secondEstimate = useSelector(store => store.estimatesReducer.secondSearchedEstimate);
+  const thirdEstimate = useSelector(store => store.estimatesReducer.thirdSearchedEstimate);
+
   // ⬇ Keep in for MUI styling (deprecated now as of 10/20/21). 
   const classes = useStyles();
   const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);

@@ -116,7 +116,27 @@ export const editState = (state = false, action) => {
 // function on it
 export const searchedEstimate = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_ESTIMATE_QUERY_RESULT':
+    case 'SET_FIRST_ESTIMATE_QUERY_RESULT':
+      return action.payload;
+    default:
+      return state;
+  } // End switch
+}; // End searchedEstimate
+
+// secondSearchedEstimate comes from multipleEstimate Saga, which adds returns another estimate object from DB after running useEstimateCalculations
+export const secondSearchedEstimate = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_SECOND_ESTIMATE_QUERY_RESULT':
+      return action.payload;
+    default:
+      return state;
+  } // End switch
+}; // End searchedEstimate
+
+// ThirdSearchedEstimate comes from multipleEstimate Saga, which adds returns another estimate object from DB after running useEstimateCalculations
+export const thirdSearchedEstimate = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_THIRD_ESTIMATE_QUERY_RESULT':
       return action.payload;
     default:
       return state;
