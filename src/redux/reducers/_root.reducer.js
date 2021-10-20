@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
   placementTypes, //contains placement types
   floorTypes, //contains floor types
   products, // contains products, prices of products and products available
-  shippingCosts, //contins the shipping costs
+  shippingCosts, //contains the shipping costs
   estimatesReducer, // contains the create new estimate build
   userInfoReducer, //contains all users for system admin view
   snackBar, // Is the reducer data for snackbar alerts. 
