@@ -42,7 +42,6 @@ export default function EstimateCombine() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB.
-    // ⬇
     if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched) {
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
