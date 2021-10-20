@@ -2,6 +2,15 @@ import {
   combineReducers
 } from 'redux';
 
+// export const combineEstimatesReducer = (state = {}, action) => {
+//   switch (action.type) {
+//     case 'NOTHING':
+//       return action.payload;
+//     default:
+//       return state;
+//   } // End switch
+// }; // End searchedEstimate
+
 // Handles the query of a user entering estimate numbers to combine:
 export const combineQuery = (state = {
   licensee_id: 0,
