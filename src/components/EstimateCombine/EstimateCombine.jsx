@@ -122,6 +122,9 @@ export default function EstimateCombine() {
   }; // End handleSubmit
   //#endregion ⬆⬆ Event handlers above. 
 
+  console.log('*****************', third_estimate_number_searched);
+  
+  console.log('*****************', licensee_id_searched, first_estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched );
 
   // ⬇ Rendering below:
   return (
