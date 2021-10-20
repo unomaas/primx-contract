@@ -375,7 +375,7 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Thickness (in):</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickness_inches}
+                              {searchResult?.thickness_inches?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -443,7 +443,7 @@ export default function EstimateLookup() {
                               {searchResult?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_feet}
+                              {searchResult?.thickened_edge_construction_joint_lineal_feet?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -460,10 +460,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Additional Thickness (in):</b></TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_inches}
+                              {searchResult?.additional_thickness_inches?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_inches}
+                              {searchResult?.additional_thickness_inches?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -506,7 +506,7 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickness_millimeters}
+                              {searchResult?.thickness_millimeters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -591,10 +591,10 @@ export default function EstimateLookup() {
                           <TableRow>
                             <TableCell><b>Additional Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_millimeters}
+                              {searchResult?.additional_thickness_millimeters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_millimeters}
+                              {searchResult?.additional_thickness_millimeters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
