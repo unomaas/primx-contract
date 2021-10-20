@@ -100,6 +100,7 @@ export default function EstimateCombine() {
    * When submitted, will search for the entered estimate to populate the tables. 
    */
   const handleSubmit = () => {
+    
     // ⬇ Clearing validation each time: 
     setError(false);
     setSelectError("");
