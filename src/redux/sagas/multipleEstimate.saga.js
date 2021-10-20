@@ -88,7 +88,7 @@ function* fetchThirdEstimateQuery(action) {
   }
 
   // Combined estimate saga to fetch estimate for combined cost
-function* combinedEstimateSaga() {
+function* multipleEstimateSaga() {
     // Makes a GET request for the first search Query
     yield takeLatest('FETCH_FIRST_ESTIMATE_QUERY', fetchFirstEstimateQuery);
     // GET request for the second search Query
@@ -97,4 +97,4 @@ function* combinedEstimateSaga() {
     yield takeLatest('FETCH_THIRD_ESTIMATE_QUERY', fetchThirdEstimateQuery);
   }
   
-  export default combinedEstimateSaga;
+  export default multipleEstimateSaga;
