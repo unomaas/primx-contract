@@ -230,7 +230,6 @@ export default function EstimateCombine() {
       {combinedResult.estimate_number &&
         <EstimateCombineTable />}
       
-
     </div>
   )
 }
