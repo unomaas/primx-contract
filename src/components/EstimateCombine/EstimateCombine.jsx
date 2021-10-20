@@ -113,7 +113,7 @@ export default function EstimateCombine() {
       history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
     } // ⬇ If they entered three estimate numbers:
     else if (combineQuery.estimate_number && combineQuery.second_estimate_number && combineQuery.third_estimate_number) {
-      history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
+      history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}/${combineQuery.third_estimate_number}`);
     } // End if/else statement
   }; // End handleSubmit
   //#endregion ⬆⬆ Event handlers above. 
