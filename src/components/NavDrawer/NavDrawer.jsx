@@ -14,6 +14,7 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SearchIcon from '@material-ui/icons/Search';
 import UpdateIcon from '@material-ui/icons/Update';
+import StorageIcon from '@material-ui/icons/Storage'
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 //#endregion ⬆⬆ Document setup above. 
@@ -68,6 +69,11 @@ export default function NavDrawer() {
               <ListItem button onClick={() => history.push(`/lookup`)}>
                 <SearchIcon /> &nbsp;
                 <p>Search For Estimate</p>
+              </ListItem>
+
+              <ListItem button onClick={() => history.push(`/combine`)}>
+                <StorageIcon /> &nbsp;
+                <p>Combine Estimates</p>
               </ListItem>
 
               <Divider />
