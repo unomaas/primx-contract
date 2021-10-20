@@ -6,7 +6,7 @@ import {
   import useEstimateCalculations from '../../hooks/useEstimateCalculations';
   import removeTimestamps from '../../hooks/removeTimestamps';
 
-// Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
+// Saga Worker to create a GET request for first estimate
 function* fetchFirstEstimateQuery(action) {
     const licenseeId = action.payload.licensee_id
     const estimateNumber = action.payload.estimate_number
@@ -33,8 +33,8 @@ function* fetchFirstEstimateQuery(action) {
     }
   }
   
-  // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
-  function* fetchSecondEstimateQuery(action) {
+// Saga Worker to create a GET request for second estimate
+function* fetchSecondEstimateQuery(action) {
     const licenseeId = action.payload.licensee_id
     const estimateNumber = action.payload.estimate_number
   
@@ -60,8 +60,8 @@ function* fetchFirstEstimateQuery(action) {
     }
   }
   
-  // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
-  function* fetchThirdEstimateQuery(action) {
+// Saga Worker to create a GET request for third estimate
+function* fetchThirdEstimateQuery(action) {
     const licenseeId = action.payload.licensee_id
     const estimateNumber = action.payload.estimate_number
   
@@ -88,13 +88,13 @@ function* fetchFirstEstimateQuery(action) {
   }
 
   // Combined estimate saga to fetch estimate for combined cost
-function* licenseeFormSaga() {
-    // Makes a POST request for a new estimate
+function* combinedEstimateSaga() {
+    // Makes a GET request for the first search Query
     yield takeLatest('FETCH_FIRST_ESTIMATE_QUERY', fetchFirstEstimateQuery);
-    // Makes a GET request to get a single estimate from the DB after being searched in the estimate lookup view
+    // GET request for the second search Query
     yield takeLatest('FETCH_SECOND_ESTIMATE_QUERY', fetchSecondEstimateQuery);
-    // Runs a number of functions to recalculate an old estimate with updated pricing data before creating a new estimate in the DB
+    // GET request for third search Query
     yield takeLatest('FETCH_THIRD_ESTIMATE_QUERY', fetchThirdEstimateQuery);
   }
   
-  export default licenseeFormSaga;
+  export default combinedEstimateSaga;
