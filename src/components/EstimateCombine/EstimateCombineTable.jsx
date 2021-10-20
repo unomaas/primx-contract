@@ -430,7 +430,8 @@ export default function EstimateCombineTable() {
                   </TableContainer>
                 </Paper>
               </Grid>
-
+            {thirdEstimate && thirdEstimate.measurement_units == 'imperial' && 
+            <>
               <Grid item xs={6}>
                 <Paper elevation={3}>
                   <TableContainer>
@@ -556,6 +557,7 @@ export default function EstimateCombineTable() {
                   </TableContainer>
                 </Paper>
               </Grid>
+              </> }
             </>
           } {/* End imperial conditional rendering*/}
 
@@ -815,7 +817,8 @@ export default function EstimateCombineTable() {
                   </TableContainer>
                 </Paper>
               </Grid>
-
+            {thirdEstimate && thirdEstimate.measurement_units == 'imperial' && 
+            <>
               <Grid item xs={6}>
                 <Paper elevation={3}>
                   <TableContainer>
@@ -941,6 +944,7 @@ export default function EstimateCombineTable() {
                   </TableContainer>
                 </Paper>
               </Grid>
+              </> }
             </>
           } {/* End Metric Conditional Render */}
 
@@ -1165,14 +1169,17 @@ export default function EstimateCombineTable() {
           </Grid>
         </Grid>
 
-        <h3>
-          Your estimate numbers are: <span style={{ color: 'red' }}>{firstEstimate?.estimate_number, secondEstimate?.estimate_number, thirdEstimate?.estimate_number}</span>
-        </h3>
-
+        {firstEstimate.ordered_by_licensee && secondEstimate.ordered_by_licensee && !firstEstimate.marked_as_ordered &&
+          <>
+            <h3>
+              Your estimate numbers are: <span style={{ color: 'red' }}>{firstEstimate?.estimate_number}, {secondEstimate?.estimate_number}, {thirdEstimate?.estimate_number}</span> //create condish rend
+            </h3>
+          </>
+        }
 
         {/* Render messages underneath the table if an estimate has been submitted as an order */}
         {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
-        {firstEstimate.ordered_by_licensee && !firstEstimate.marked_as_ordered &&
+        {firstEstimate.ordered_by_licensee && secondEstimate.ordered_by_licensee && !firstEstimate.marked_as_ordered &&
           <>
             <h3>
               This order is currently being processed.  Please contact your PrīmX representative for more details.
@@ -1180,7 +1187,7 @@ export default function EstimateCombineTable() {
           </>
         }
         {/* Display this message if an estimate has been processed by an admin */}
-        {firstEstimate.marked_as_ordered &&
+        {firstEstimate.marked_as_ordered && secondEstimate.marked_as_ordered &&
           <>
             <h3>
               This order has been processed.  Please contact your PrīmX representative for more details.
@@ -1191,7 +1198,7 @@ export default function EstimateCombineTable() {
       {/* End full table conditional render*/}
 
       {/* Conditonally render a failed search message if the search came back with nothing */}
-      {!firstEstimate.estimate_number && estimate_number_searched &&
+      {!firstEstimate.estimate_number && !secondEstimate.estimate_number && estimate_number_searched &&
         <>
           <h3>
             No matching estimate was found, please try again.  Please contact your PrīmX representative if you need further assistance.
