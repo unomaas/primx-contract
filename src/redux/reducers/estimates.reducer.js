@@ -116,7 +116,7 @@ export const editState = (state = false, action) => {
 // function on it
 export const searchedEstimate = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_ESTIMATE_QUERY_RESULT':
+    case 'SET_FIRST_ESTIMATE_QUERY_RESULT':
       return action.payload;
     default:
       return state;
