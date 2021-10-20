@@ -11,12 +11,28 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 
 export default function EstimateCombineTable() {
+  //#region ⬇⬇ All state variables below:
+  const companies = useSelector(store => store.companies);
 
-// ⬇ first,second,thirdEstimate below are objects searched from the DB
-const firstEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
-const secondEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
-const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
+  // ⬇ first,second,thirdEstimate below are objects searched from the DB
+  const firstEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
+  const secondEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
+  const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
 
+  // Keep in for MUI styling. 
+  const classes = useStyles(); 
+
+  const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
+  const [error, setError] = useState(false);
+
+  const [selectError, setSelectError] = useState("");
+  const [poNumError, setPoNumError] = useState("");
+  const [poNumber, setPoNumber] = useState('');
+
+  // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
+  const { licensee_id_searched, estimate_number_searched } = useParams();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
 
   // ⬇ Rendering below:
@@ -41,112 +57,112 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                       <TableRow>
                         <TableCell><b>Project Name:</b></TableCell>
                         <TableCell>
-                          {searchResult?.project_name}
+                          {firstEstimate?.project_name}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                         <TableCell>
-                          {searchResult?.licensee_contractor_name}
+                          {firstEstimate?.licensee_contractor_name}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Project General Contractor:</b></TableCell>
                         <TableCell>
-                          {searchResult?.project_general_contractor}
+                          {firstEstimate?.project_general_contractor}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Project Manager Name:</b></TableCell>
                         <TableCell>
-                          {searchResult?.project_manager_name}
+                          {firstEstimate?.project_manager_name}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Project Manager Email:</b></TableCell>
                         <TableCell>
-                          {searchResult?.project_manager_email}
+                          {firstEstimate?.project_manager_email}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Project Manager Cell:</b></TableCell>
                         <TableCell>
-                          {searchResult?.project_manager_phone}
+                          {firstEstimate?.project_manager_phone}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Floor Type:</b></TableCell>
                         <TableCell>
-                          {searchResult?.floor_type}
+                          {firstEstimate?.floor_type}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Placement Type:</b></TableCell>
                         <TableCell>
-                          {searchResult?.placement_type}
+                          {firstEstimate?.placement_type}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Unit of Measurement:</b></TableCell>
                         <TableCell>
-                          {searchResult?.measurement_units}
+                          {firstEstimate?.measurement_units}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Estimate Creation Date:</b></TableCell>
                         <TableCell>
-                          {searchResult?.date_created}
+                          {firstEstimate?.date_created}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Anticipated First Pour Date:</b></TableCell>
                         <TableCell>
-                          {searchResult?.anticipated_first_pour_date}
+                          {firstEstimate?.anticipated_first_pour_date}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Shipping Street Address:</b></TableCell>
                         <TableCell>
-                          {searchResult?.ship_to_address}
+                          {firstEstimate?.ship_to_address}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Shipping City:</b></TableCell>
                         <TableCell>
-                          {searchResult?.ship_to_city}
+                          {firstEstimate?.ship_to_city}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Shipping State/Province:</b></TableCell>
                         <TableCell>
-                          {searchResult?.ship_to_state_province}
+                          {firstEstimate?.ship_to_state_province}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Shipping Zip/Postal Code:</b></TableCell>
                         <TableCell>
-                          {searchResult?.zip_postal_code}
+                          {firstEstimate?.zip_postal_code}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Shipping Country:</b></TableCell>
                         <TableCell>
-                          {searchResult?.country}
+                          {firstEstimate?.country}
                         </TableCell>
                       </TableRow>
 
@@ -159,7 +175,7 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
 
 
             {/* Table #2 Imperial: conditionally render the imperial needs*/}
-            {searchResult.measurement_units == 'imperial' &&
+            {firstEstimate.measurement_units == 'imperial' &&
               <>
                 <Grid item xs={6}>
                   <Paper elevation={3}>
@@ -171,56 +187,56 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Square Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_feet?.toLocaleString('en-US')}
+                              {firstEstimate?.square_feet?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickness (in):</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickness_inches}
+                              {firstEstimate?.thickness_inches}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards?.toLocaleString('en-US')}
+                              {firstEstimate?.cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {firstEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {firstEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards_subtotal?.toLocaleString('en-US')}
+                              {firstEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
-                            <TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
+                            <TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_yards?.toLocaleString('en-US')}
+                              {firstEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_yards_total?.toLocaleString('en-US')}
+                              {firstEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -243,10 +259,10 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Lineal Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
+                              {firstEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_feet}
+                              {firstEstimate?.thickened_edge_construction_joint_lineal_feet}
                             </TableCell>
                           </TableRow>
 
@@ -263,20 +279,20 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Additional Thickness (in):</b></TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_inches}
+                              {firstEstimate?.additional_thickness_inches}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_inches}
+                              {firstEstimate?.additional_thickness_inches}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {firstEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {firstEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -290,56 +306,56 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Square Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_feet?.toLocaleString('en-US')}
+                              {secondEstimate?.square_feet?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickness (in):</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickness_inches}
+                              {secondEstimate?.thickness_inches}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards?.toLocaleString('en-US')}
+                              {secondEstimate?.cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {secondEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {secondEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards_subtotal?.toLocaleString('en-US')}
+                              {secondEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
-                            <TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
+                            <TableCell><b>Waste Factor @ {secondEstimate?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_yards?.toLocaleString('en-US')}
+                              {secondEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_yards_total?.toLocaleString('en-US')}
+                              {secondEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -362,10 +378,10 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Lineal Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
+                              {secondEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_feet}
+                              {secondEstimate?.thickened_edge_construction_joint_lineal_feet}
                             </TableCell>
                           </TableRow>
 
@@ -382,20 +398,20 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Additional Thickness (in):</b></TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_inches}
+                              {secondEstimate?.additional_thickness_inches}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_inches}
+                              {secondEstimate?.additional_thickness_inches}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {secondEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {secondEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -409,56 +425,56 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Square Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_feet?.toLocaleString('en-US')}
+                              {thirdEstimate?.square_feet?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickness (in):</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickness_inches}
+                              {thirdEstimate?.thickness_inches}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards?.toLocaleString('en-US')}
+                              {thirdEstimate?.cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {thirdEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {thirdEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_yards_subtotal?.toLocaleString('en-US')}
+                              {thirdEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
-                            <TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
+                            <TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_yards?.toLocaleString('en-US')}
+                              {thirdEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_yards_total?.toLocaleString('en-US')}
+                              {thirdEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -481,10 +497,10 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Lineal Feet:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
+                              {thirdEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_feet}
+                              {thirdEstimate?.thickened_edge_construction_joint_lineal_feet}
                             </TableCell>
                           </TableRow>
 
@@ -501,20 +517,20 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Additional Thickness (in):</b></TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_inches}
+                              {thirdEstimate?.additional_thickness_inches}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_inches}
+                              {thirdEstimate?.additional_thickness_inches}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {thirdEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+                              {thirdEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -528,7 +544,7 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
 
 
             {/* Table #3: Metric - conditionally render the metric needs */}
-            {searchResult.measurement_units == 'metric' &&
+            {firstEstimate.measurement_units == 'metric' &&
               <>
                 <Grid item xs={6}>
                   <Paper elevation={3}>
@@ -540,56 +556,56 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Square Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.square_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickness_millimeters}
+                              {firstEstimate?.thickness_millimeters}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters_subtotal?.toLocaleString('en-US')}
+                              {firstEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
-                            <TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
+                            <TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_meters_total?.toLocaleString('en-US')}
+                              {firstEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -612,10 +628,10 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Lineal Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -632,20 +648,20 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Additional Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_millimeters}
+                              {firstEstimate?.additional_thickness_millimeters}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_millimeters}
+                              {firstEstimate?.additional_thickness_millimeters}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -659,56 +675,56 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Square Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.square_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickness_millimeters}
+                              {firstEstimate?.thickness_millimeters}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters_subtotal?.toLocaleString('en-US')}
+                              {firstEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
-                            <TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
+                            <TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_meters?.toLocaleString('en-US')}
+                              {firstEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_meters_total?.toLocaleString('en-US')}
+                              {firstEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -731,10 +747,10 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Lineal Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
+                              {secondEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
+                              {secondEstimate?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -751,20 +767,20 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Additional Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_millimeters}
+                              {secondEstimate?.additional_thickness_millimeters}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_millimeters}
+                              {secondEstimate?.additional_thickness_millimeters}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {secondEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {secondEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -778,56 +794,56 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Square Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.square_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.square_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickness_millimeters}
+                              {thirdEstimate?.thickness_millimeters}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
-                              {searchResult?.cubic_meters_subtotal?.toLocaleString('en-US')}
+                              {thirdEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
-                            <TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
+                            <TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
-                              {searchResult?.waste_factor_cubic_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Total Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.design_cubic_meters_total?.toLocaleString('en-US')}
+                              {thirdEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -850,10 +866,10 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Lineal Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -870,20 +886,20 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
                           <TableRow>
                             <TableCell><b>Additional Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_millimeters}
+                              {thirdEstimate?.additional_thickness_millimeters}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.additional_thickness_millimeters}
+                              {thirdEstimate?.additional_thickness_millimeters}
                             </TableCell>
                           </TableRow>
 
                           <TableRow>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
-                              {searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                             <TableCell>
-                              {searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+                              {thirdEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -1117,13 +1133,13 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
           </Grid>
 
           <h3>
-            Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
+            Your estimate numbers are: <span style={{ color: 'red' }}>{firstEstimate?.estimate_number, secondEstimate?.estimate_number, thirdEstimate?.estimate_number}</span>
           </h3>
 
 
           {/* Render messages underneath the table if an estimate has been submitted as an order */}
           {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
-          {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
+          {firstEstimate.ordered_by_licensee && !firstEstimate.marked_as_ordered &&
             <>
               <h3>
                 This order is currently being processed. Please contact your PrīmX representative for more details.
@@ -1131,7 +1147,7 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
             </>
           }
           {/* Display this message if an estimate has been processed by an admin */}
-          {searchResult.marked_as_ordered &&
+          {firstEstimate.marked_as_ordered &&
             <>
               <h3>
                 This order has been processed. Please contact your PrīmX representative for more details.
@@ -1142,7 +1158,7 @@ const thirdEstimate = useSelector(store => store.estimatesReducer.searchedEstima
        {/* End full table conditional render*/}
 
       {/* Conditonally render a failed search message if the search came back with nothing */}
-      {!searchResult.estimate_number && estimate_number_searched &&
+      {!firstEstimate.estimate_number && estimate_number_searched &&
         <>
           <h3>
             No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.
