@@ -228,8 +228,8 @@ export default function EstimateCombine() {
 
       {/* Conditionally render entire code block below if the user has successfully combined estimates */}
       {combinedResult.estimate_number &&
-        <EstimateCombineTable />
-      }
+        <EstimateCombineTable />}
+      
 
     </div>
   )
