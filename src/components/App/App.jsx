@@ -68,7 +68,7 @@ function App() {
 
             {/* This route bring user to specific estimate in /lookup */}
             <Route
-              path="/lookup/:licensee_id_searched/:estimate_number_searched"
+              exact path="/lookup/:licensee_id_searched/:estimate_number_searched"
               children={<EstimateLookup />}
             >
             </Route>

@@ -42,8 +42,6 @@ export default function EstimateCombine() {
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB.
     if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
-      console.log('********** HEY LOOK HERE THREE WORKS!!!!!!!!!!');
-      console.log('Heres what we got:', licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined,  third_estimate_number_combined);
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
@@ -66,8 +64,6 @@ export default function EstimateCombine() {
           } // End payload
         }) // End dispatch
     } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
-      console.log('********** NO ONLY TWO WORKS WHY!!!!!!!!!!');
-      console.log('Heres what we got:', licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined,  third_estimate_number_combined);
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
@@ -103,7 +99,6 @@ export default function EstimateCombine() {
    * When submitted, will search for the entered estimate to populate the tables. 
    */
   const handleSubmit = (event) => {
-    console.log('In handleSubmit:', combineQuery.first_estimate_number, combineQuery.second_estimate_number, combineQuery.third_estimate_number);
     // ⬇ Don't refresh until submit:
     event.preventDefault();
     // ⬇ Clearing validation each time: 
@@ -116,10 +111,10 @@ export default function EstimateCombine() {
       setSelectError("Please select a value.");
     } // ⬇ If they have selected a drop-down, run another if statement to see if two or three estimates were entered:
     else {
-      // ⬇ If they only entered two estimate numbers:
+      // ⬇ If they entered three estimate numbers:
       if (combineQuery.first_estimate_number && combineQuery.second_estimate_number && combineQuery.third_estimate_number) {
         history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.first_estimate_number}/${combineQuery.second_estimate_number}/${combineQuery.third_estimate_number}`);
-      } // ⬇ If they entered three estimate numbers:
+      } // ⬇ If they only entered two estimate numbers: 
       else if (combineQuery.first_estimate_number && combineQuery.second_estimate_number) {
         history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
       } // End if/else statement
