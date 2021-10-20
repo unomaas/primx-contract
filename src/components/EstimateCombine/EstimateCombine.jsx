@@ -19,10 +19,10 @@ export default function EstimateCombine() {
   const companies = useSelector(store => store.companies);
   // ⬇ searchResult below is an estimate object searched from the DB that has already been mutated by the useEstimateCalculations function.
   const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
-  const combinedResult = useSelector(store => store.estimatesReducer.combinedEstimate);
+  // const combinedResult = useSelector(store => store.estimatesReducer.combinedEstimate);
 
   const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
-  const combineQuery = useSelector(store => store.estimatesReducer.combineQuery);
+  const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
 
   const [error, setError] = useState(false);
   const classes = useStyles(); // Keep in for MUI styling. 
@@ -41,22 +41,7 @@ export default function EstimateCombine() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB.
-    if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched) {
-      dispatch({
-        type: 'FETCH_FIRST_ESTIMATE_QUERY',
-        payload: {
-          licensee_id: licensee_id_searched,
-          estimate_number: estimate_number_searched
-        } // End payload
-      }), // End dispatch
-        dispatch({
-          type: 'FETCH_SECOND_ESTIMATE_QUERY',
-          payload: {
-            licensee_id: licensee_id_searched,
-            estimate_number: second_estimate_number_searched
-          } // End payload
-        }) // End dispatch
-    } else if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched && third_estimate_number_searched) {
+    if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched && third_estimate_number_searched) {
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
@@ -76,6 +61,21 @@ export default function EstimateCombine() {
           payload: {
             licensee_id: licensee_id_searched,
             estimate_number: third_estimate_number_searched
+          } // End payload
+        }) // End dispatch
+    } else if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched) {
+      dispatch({
+        type: 'FETCH_FIRST_ESTIMATE_QUERY',
+        payload: {
+          licensee_id: licensee_id_searched,
+          estimate_number: estimate_number_searched
+        } // End payload
+      }), // End dispatch
+        dispatch({
+          type: 'FETCH_SECOND_ESTIMATE_QUERY',
+          payload: {
+            licensee_id: licensee_id_searched,
+            estimate_number: second_estimate_number_searched
           } // End payload
         }) // End dispatch
     } // End if statement
@@ -99,7 +99,6 @@ export default function EstimateCombine() {
    * When submitted, will search for the entered estimate to populate the tables. 
    */
   const handleSubmit = () => {
-    
     // ⬇ Clearing validation each time: 
     setError(false);
     setSelectError("");
@@ -108,13 +107,15 @@ export default function EstimateCombine() {
       // If they haven't selected a drop-down, pop up warning and prevent them:
       setError(true);
       setSelectError("Please select a value.");
-    } // ⬇ If they only entered two estimate numbers:
-    else if (combineQuery.estimate_number && combineQuery.second_estimate_number) {
-      history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
-    } // ⬇ If they entered three estimate numbers:
-    else if (combineQuery.estimate_number && combineQuery.second_estimate_number && combineQuery.third_estimate_number) {
-      history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}/${combineQuery.third_estimate_number}`);
-    } // End if/else statement
+    } else {
+      // ⬇ If they only entered two estimate numbers:
+      if (combineQuery.estimate_number && combineQuery.second_estimate_number && combineQuery.third_estimate_number) {
+        history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}/${combineQuery.third_estimate_number}`);
+      } // ⬇ If they entered three estimate numbers:
+      else if (combineQuery.estimate_number && combineQuery.second_estimate_number) {
+        history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
+      } // End if/else statement
+    } // End if statement
   }; // End handleSubmit
   //#endregion ⬆⬆ Event handlers above. 
 
@@ -227,9 +228,9 @@ export default function EstimateCombine() {
       {/* End estimate search form */}
 
       {/* Conditionally render entire code block below if the user has successfully combined estimates */}
-      {combinedResult.estimate_number &&
+      {/* {combinedResult.estimate_number &&
         <EstimateCombineTable />
-      }
+      } */}
 
       {/* 
       {combinedResult.estimate_number ? (
