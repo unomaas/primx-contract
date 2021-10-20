@@ -150,6 +150,32 @@ export const searchQuery = (state = {
   } // End switch
 }; // End searchQuery
 
+export const combineQuery = (state = {
+  licensee_id: 0,
+  estimate_number: "",
+  second_estimate_number: "",
+  third_estimate_number: ""
+}, action) => {
+  switch (action.type) {
+    case 'SET_COMBINE_QUERY':
+      return {
+        ...state,
+        [action.payload.key]: action.payload.value
+      };
+    default:
+      return state;
+  } // End switch
+}; // End searchQuery
+
+export const combinedEstimate = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_ESTIMATE_COMBINE_RESULT':
+      return action.payload;
+    default:
+      return state;
+  } // End switch
+}; // End searchedEstimate
+
 export const setCalcEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_CALCULATED_ESTIMATE':            
@@ -167,5 +193,7 @@ export default combineReducers({
   searchedEstimate,
   hasRecalculated,
   searchQuery,
-  setCalcEstimate
+  setCalcEstimate,
+  combineQuery,
+  combinedEstimate,
 });

@@ -15,7 +15,8 @@ import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
 import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
-import CombineEstimatesForm from '../CombineEstimatesForm/CombineEstimatesFrom';
+import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
+
 
 
 // ⬇ Dependent Functionality:
@@ -26,6 +27,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
+
 
 
 function App() {
@@ -45,6 +47,9 @@ function App() {
       <Router>
         <div className="App">
 
+          {/* This manages the Snackbar alerts throughout the app: */}
+          <MuiSnackbarManager />
+
           <Nav />
 
           <Switch>
@@ -62,18 +67,9 @@ function App() {
               <EstimateLookup />
             </Route>
 
-            {/* /combine leads to the combine estimate view for combining up to 3 estimates */}
-            <Route exact path="/combine">
-              <CombineEstimatesForm />
-            </Route>
-
             {/* This route bring user to specific estimate in /lookup */}
             <Route
-              path="
-                /lookup
-                /:licensee_id_searched
-                /:estimate_number_searched
-              "
+              path="/lookup/:licensee_id_searched/:estimate_number_searched"
               children={<EstimateLookup />}
             >
             </Route>
@@ -85,25 +81,14 @@ function App() {
 
             {/* (For Combinations of 2) This route bring user to specific estimate combinations in /combine */}
             <Route
-              path="
-                /combine
-                /:licensee_id_searched
-                /:estimate_number_searched
-                /:2nd_estimate_number_searched
-              "
+              path="/combine/:licensee_id_searched/:estimate_number_searched/:second_estimate_number_searched"
               children={<EstimateCombine />}
             >
             </Route>
 
             {/* (For Combinations of 3) This route bring user to specific estimate combinations in /combine */}
             <Route
-              path="
-                /combine
-                /:licensee_id_searched
-                /:estimate_number_searched
-                /:2nd_estimate_number_searched
-                /:3rd_estimate_number_searched
-              "
+              path="/combine/:licensee_id_searched/:estimate_number_searched/:second_estimate_number_searched/:third_estimate_number_searched"
               children={<EstimateCombine />}
             >
             </Route>
@@ -147,7 +132,10 @@ function App() {
               <ProtectedRoute exact path="/SystemAdmin" >
                 <SystemAdmin />
               </ProtectedRoute>
-              : <><h1>404</h1></>}
+              : <>
+                <h1>Error 404: Page Not Found.</h1>
+                <h3>Please go back and try a different option.</h3>
+              </>}
 
             <ProtectedRoute exact path="/adminorders">
               <AdminOrders />
@@ -155,7 +143,8 @@ function App() {
 
             {/* If none of the other routes matched, we will show a 404. */}
             <Route>
-              <h1>404</h1>
+              <h1>Error 404: Page Not Found.</h1>
+              <h3>Please go back and try a different option.</h3>
             </Route>
 
           </Switch>

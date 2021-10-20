@@ -11,9 +11,6 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
-
 
 export default function AdminUpdateTypes() {
 
@@ -22,8 +19,7 @@ export default function AdminUpdateTypes() {
   //defining states for sending data to server
   let [newFloorType, setNewFloorType] = useState('');
   let [newPlacementType, setNewPlacementType] = useState('');
-  // establish snackbar variables for notifications
-  const snack = useSelector(store => store.snackBar);
+
 
   //useSelector for array of floor types
   const floorTypes = useSelector(store => store.floorTypes);
@@ -63,13 +59,6 @@ export default function AdminUpdateTypes() {
       setNewPlacementType('')
     }
   }
-  //sets snack bar notification to closed after appearing
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    dispatch({ type: 'SET_CLOSE' })
-  };
 
   useEffect(() => {
     // GET floor and placement types data on page load
@@ -144,22 +133,6 @@ export default function AdminUpdateTypes() {
       </div>
       {/* showing placement types */}
       <UpdatePlacementTypesGrid placementTypes={placementTypes} />
-
-      {/* Snackbar configures all of the info pop-ups required. */}
-      <Snackbar
-        open={snack.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          variant={snack.variant}
-          onClose={handleClose}
-          severity={snack.severity}
-        >
-          {snack.message}
-        </Alert>
-      </Snackbar>
     </div>
   )
 }

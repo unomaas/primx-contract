@@ -27,9 +27,8 @@ export default function EstimateLookup() {
   const [selectError, setSelectError] = useState("");
   const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
-  const snack = useSelector(store => store.snackBar);
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { estimate_number_searched, licensee_id_searched } = useParams();
+  const { licensee_id_searched, estimate_number_searched } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   // ⬇ Run on page load:
@@ -42,7 +41,7 @@ export default function EstimateLookup() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
-    if (estimate_number_searched && licensee_id_searched) {
+    if (licensee_id_searched && estimate_number_searched) {
       dispatch({
         type: 'FETCH_ESTIMATE_QUERY',
         payload: {
@@ -71,15 +70,18 @@ export default function EstimateLookup() {
    * When submitted, will search for the entered estimate to populate the tables. 
    */
   const handleSubmit = () => {
+    // ⬇ Clearing validation each time: 
+    setError(false);
+    setSelectError("");
     // ⬇ Select dropdown validation:
-    if (searchQuery.licensee_id !== "0") {
+    if (searchQuery.licensee_id !== 0) {
       // If they selected a company name from dropdown:
       // use history to send user to the details subview of their search query
       history.push(`/lookup/${searchQuery.licensee_id}/${searchQuery.estimate_number}`)
     } else {
       // If they haven't, pop up warning and prevent them:
       setError(true);
-      setSelectError("Please select a value.");
+      setSelectError("Please select a company.");
     } // End if/else
   }; // End handleSubmit
 
@@ -125,16 +127,6 @@ export default function EstimateLookup() {
     } // End if/else.
   } // End handlePlaceOrder
 
-  /** ⬇ handleClose:
-   * Sets snack bar notification to closed after appearing.
-   */
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    } // End if
-    dispatch({ type: 'SET_CLOSE' })
-  }; // End handleClose
-
   /** ⬇ handleEdit:
    * Sends the user back to 1.0 Create Estimate with data pre-loaded to make edits. 
    */
@@ -151,22 +143,6 @@ export default function EstimateLookup() {
   // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
-
-      {/* Snackbar configures all of the info pop-ups required. */}
-      <Snackbar
-        open={snack.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          variant={snack.variant}
-          onClose={handleClose}
-          severity={snack.severity}
-        >
-          {snack.message}
-        </Alert>
-      </Snackbar>
 
       <section className="removeInPrint">
         <ButtonToggle />

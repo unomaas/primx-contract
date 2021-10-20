@@ -5,13 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+
 
 function AdminRegisterForm() {
 
   const errors = useSelector((store) => store.errors);
-  const snack = useSelector(store => store.snackBar);
 
   //defining states for sending data to server
   const [username, setUsername] = useState('');
@@ -45,14 +43,6 @@ function AdminRegisterForm() {
     setUsername('');
     setPassword('');
   }; // end registerUser
-
-  //sets snack bar notification to closed after appearing
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    dispatch({type: 'SET_CLOSE'})
-  };
 
   useEffect(() => {
     // GET all users on page load
@@ -111,22 +101,6 @@ function AdminRegisterForm() {
         </Button>
         </div>
       </form>
-
-      {/* Snackbar configures all of the info pop-ups required. */}
-      <Snackbar
-        open={snack.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          variant={snack.variant}
-          onClose={handleClose}
-          severity={snack.severity}
-        >
-          {snack.message}
-        </Alert>
-      </Snackbar>
     </div>
 
   );
