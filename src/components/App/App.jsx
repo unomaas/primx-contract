@@ -80,14 +80,14 @@ function App() {
 
             {/* (For Combinations of 2) This route bring user to specific estimate combinations in /combine */}
             <Route
-              path="/combine/:licensee_id_searched/:estimate_number_searched/:second_estimate_number_searched"
+              path="/combine/:licensee_id_searched/:first_estimate_number_searched/:second_estimate_number_searched"
               children={<EstimateCombine />}
             >
             </Route>
 
             {/* (For Combinations of 3) This route bring user to specific estimate combinations in /combine */}
             <Route
-              path="/combine/:licensee_id_searched/:estimate_number_searched/:second_estimate_number_searched/:third_estimate_number_searched"
+              path="/combine/:licensee_id_searched/:first_estimate_number_searched/:second_estimate_number_searched/:third_estimate_number_searched"
               children={<EstimateCombine />}
             >
             </Route>
