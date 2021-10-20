@@ -14,7 +14,7 @@ import {
 // Handles the query of a user entering estimate numbers to combine:
 export const combineQuery = (state = {
   licensee_id: 0,
-  estimate_number: "",
+  first_estimate_number: "",
   second_estimate_number: "",
   third_estimate_number: ""
 }, action) => {

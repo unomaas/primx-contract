@@ -47,7 +47,7 @@ export default function EstimateLookup() {
         } // End payload
       }) // End dispatch
     } // End if statement
-  }, [estimate_number_searched, licensee_id_searched]);
+  }, [licensee_id_searched, estimate_number_searched]);
   //#endregion ⬆⬆ All state variables above. 
 
 
@@ -168,6 +168,8 @@ export default function EstimateLookup() {
       {searchResult.estimate_number &&
         <EstimateLookupTable />
       }
+
+
 
     </div >
   )

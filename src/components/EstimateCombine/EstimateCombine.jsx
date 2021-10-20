@@ -28,7 +28,7 @@ export default function EstimateCombine() {
   const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { licensee_id_searched, estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched } = useParams();
+  const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   // ⬇ Run on page load:
@@ -41,45 +41,49 @@ export default function EstimateCombine() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB.
-    if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched && third_estimate_number_searched) {
+    if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
+      console.log('********** HEY LOOK HERE THREE WORKS!!!!!!!!!!');
+      console.log('Heres what we got:', licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined,  third_estimate_number_combined);
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
-          estimate_number: estimate_number_searched
+          estimate_number: first_estimate_number_combined
         } // End payload
       }), // End dispatch
         dispatch({
           type: 'FETCH_SECOND_ESTIMATE_QUERY',
           payload: {
             licensee_id: licensee_id_searched,
-            estimate_number: second_estimate_number_searched
+            estimate_number: second_estimate_number_combined
           } // End payload
         }), // End dispatch
         dispatch({
           type: 'FETCH_THIRD_ESTIMATE_QUERY',
           payload: {
             licensee_id: licensee_id_searched,
-            estimate_number: third_estimate_number_searched
+            estimate_number: third_estimate_number_combined
           } // End payload
         }) // End dispatch
-    } else if (licensee_id_searched && estimate_number_searched && second_estimate_number_searched) {
+    } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
+      console.log('********** NO ONLY TWO WORKS WHY!!!!!!!!!!');
+      console.log('Heres what we got:', licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined,  third_estimate_number_combined);
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
-          estimate_number: estimate_number_searched
+          estimate_number: first_estimate_number_combined
         } // End payload
       }), // End dispatch
         dispatch({
           type: 'FETCH_SECOND_ESTIMATE_QUERY',
           payload: {
             licensee_id: licensee_id_searched,
-            estimate_number: second_estimate_number_searched
+            estimate_number: second_estimate_number_combined
           } // End payload
         }) // End dispatch
     } // End if statement
-  }, [licensee_id_searched, estimate_number_searched, second_estimate_number_searched, third_estimate_number_searched]);
+  }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]);
   //#endregion ⬆⬆ All state variables above. 
 
 
@@ -98,21 +102,25 @@ export default function EstimateCombine() {
   /** ⬇ handleSubmit:
    * When submitted, will search for the entered estimate to populate the tables. 
    */
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    console.log('In handleSubmit:', combineQuery.first_estimate_number, combineQuery.second_estimate_number, combineQuery.third_estimate_number);
+    // ⬇ Don't refresh until submit:
+    event.preventDefault();
     // ⬇ Clearing validation each time: 
     setError(false);
     setSelectError("");
     // ⬇ Select dropdown validation:
     if (combineQuery.licensee_id === 0) {
-      // If they haven't selected a drop-down, pop up warning and prevent them:
+      // ⬇ If they haven't selected a drop-down, pop up warning and prevent them:
       setError(true);
       setSelectError("Please select a value.");
-    } else {
+    } // ⬇ If they have selected a drop-down, run another if statement to see if two or three estimates were entered:
+    else {
       // ⬇ If they only entered two estimate numbers:
-      if (combineQuery.estimate_number && combineQuery.second_estimate_number && combineQuery.third_estimate_number) {
-        history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}/${combineQuery.third_estimate_number}`);
+      if (combineQuery.first_estimate_number && combineQuery.second_estimate_number && combineQuery.third_estimate_number) {
+        history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.first_estimate_number}/${combineQuery.second_estimate_number}/${combineQuery.third_estimate_number}`);
       } // ⬇ If they entered three estimate numbers:
-      else if (combineQuery.estimate_number && combineQuery.second_estimate_number) {
+      else if (combineQuery.first_estimate_number && combineQuery.second_estimate_number) {
         history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
       } // End if/else statement
     } // End if statement
@@ -141,7 +149,6 @@ export default function EstimateCombine() {
                 <TableContainer >
                   <Table size="small">
                     <TableBody>
-
                       <TableRow>
 
                         <TableCell><b>Licensee/Contractor Name:</b></TableCell>
@@ -167,12 +174,12 @@ export default function EstimateCombine() {
                         <TableCell><b>First Estimate Number:</b></TableCell>
                         <TableCell>
                           <TextField
-                            onChange={event => handleChange('estimate_number', event.target.value)}
+                            onChange={event => handleChange('first_estimate_number', event.target.value)}
                             required
                             type="search"
                             size="small"
                             fullWidth
-                            value={combineQuery.estimate_number}
+                            value={combineQuery.first_estimate_number}
                           />
                         </TableCell>
 
@@ -200,7 +207,7 @@ export default function EstimateCombine() {
                             type="search"
                             size="small"
                             fullWidth
-                            value={combineQuery.thirdestimate_number}
+                            value={combineQuery.third_estimate_number}
                           />
                         </TableCell>
 
