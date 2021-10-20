@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
@@ -228,8 +227,26 @@ export default function EstimateCombine() {
 
       {/* Conditionally render entire code block below if the user has successfully combined estimates */}
       {combinedResult.estimate_number &&
-        <EstimateCombineTable />}
+        <EstimateCombineTable />
+      }
+
+      {/* 
+      {combinedResult.estimate_number ? (
+        <>
+          <p>
+            This feature allows you to combine up to three (3) existing estimates into one order for a reduced shipping cost. <br />
+            The first and second estimate numbers are required to use this feature.  The third estimate number is optional. <br />
+            All estimates MUST go to the same shipping location in order to qualify for this reduced rate. <br />
+            <b>Please be aware that whatever the Shipping/Contact Information is for the FIRST estimate number entered, that will be the information used for the other estimate(s).</b> <br />
+            If you need to edit the information for any of the estimates used, that must be done in the "Search For Estimate" page.
+          </p>
+        </>
+      ) : (
+        <EstimateCombineTable />
+      )}
       
+      */}
+
     </div>
   )
 }
