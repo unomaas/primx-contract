@@ -11,7 +11,7 @@ import shippingCostsSaga from './shippingCosts.saga';
 import licenseeFormSaga from './licenseeForm.saga';
 import userInfoSaga from './userInfo.saga';
 import fieldSelectSaga from './fieldSelect.saga'
-import multipleEstimateSaga from './multipleEstimate.saga';
+import combineEstimatesSaga from './combineEstimates.saga';
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -34,6 +34,6 @@ export default function* rootSaga() {
     licenseeFormSaga(),
     userInfoSaga(),
     fieldSelectSaga(),
-    multipleEstimateSaga(),
+    combineEstimatesSaga(),
   ]);
 }

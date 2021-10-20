@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
@@ -15,8 +14,6 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 export default function EstimateCombineTable() {
   //#region ⬇⬇ All state variables below:
-  const companies = useSelector(store => store.companies);
-
   // ⬇ first,second,thirdEstimate below are objects searched from the DB
   const firstEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
   const secondEstimate = useSelector(store => store.estimatesReducer.secondSearchedEstimate);
@@ -24,16 +21,12 @@ export default function EstimateCombineTable() {
 
   // ⬇ Keep in for MUI styling (deprecated now as of 10/20/21). 
   const classes = useStyles();
-
   const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
-  // const [error, setError] = useState(false);
 
-  // const [selectError, setSelectError] = useState("");
-  // const [poNumError, setPoNumError] = useState("");
+  const [poNumError, setPoNumError] = useState("");
   const [poNumber, setPoNumber] = useState('');
 
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { licensee_id_searched, estimate_number_searched } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   //#endregion ⬆⬆ All state variables above. 
