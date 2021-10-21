@@ -124,7 +124,7 @@ export default function EstimateCombine() {
         history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.first_estimate_number}/${combineQuery.second_estimate_number}/${combineQuery.third_estimate_number}`);
       } // ⬇ If they only entered two estimate numbers: 
       else if (combineQuery.first_estimate_number && combineQuery.second_estimate_number) {
-        history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.estimate_number}/${combineQuery.second_estimate_number}`);
+        history.push(`/combine/${combineQuery.licensee_id}/${combineQuery.first_estimate_number}/${combineQuery.second_estimate_number}`);
       } // End if/else statement
     } // End if statement
   }; // End handleSubmit

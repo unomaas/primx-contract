@@ -73,12 +73,13 @@ export const thirdCombinedEstimate = (state = {}, action) => {
   } // End switch
 }; // End searchedEstimate
 
-export const combinedEstimatesData = (state = {}, action) => {
+export const combinedEstimatesData = (state = [], action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_COMBINED_DATA':
-      return action.payload;
+      console.log('ACTION IS:', action.payload)
+      return [...state, action.payload];
     case 'CLEAR_COMBINED_ESTIMATES_DATA':
-      return {};
+      return [];
     default:
       return state;
   } // End switch

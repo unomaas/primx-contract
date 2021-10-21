@@ -22,7 +22,6 @@ function* fetchFirstEstimateQuery(action) {
       type: 'SET_FIRST_ESTIMATE_QUERY_RESULT',
       payload: response.data
     })
-    // console.log('*************** LOOK HERE********', response.data)
     yield put({
       type: 'SET_ESTIMATE_COMBINED_DATA',
       payload: response.data
@@ -47,7 +46,11 @@ function* fetchSecondEstimateQuery(action) {
     yield put({
       type: 'SET_SECOND_ESTIMATE_QUERY_RESULT',
       payload: response.data
-    });
+    })
+    yield put({
+      type: 'SET_ESTIMATE_COMBINED_DATA',
+      payload: response.data
+    })
   } catch (error) {
     console.log('User get request failed', error);
   }
@@ -68,7 +71,11 @@ function* fetchThirdEstimateQuery(action) {
     yield put({
       type: 'SET_THIRD_ESTIMATE_QUERY_RESULT',
       payload: response.data
-    });
+    })
+    yield put({
+      type: 'SET_ESTIMATE_COMBINED_DATA',
+      payload: response.data
+    })
   } catch (error) {
     console.log('User get request failed', error);
   }
