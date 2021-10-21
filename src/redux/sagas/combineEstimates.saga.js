@@ -81,6 +81,16 @@ function* fetchThirdEstimateQuery(action) {
   }
 }
 
+// Saga worker to run the math machine on the combined estimates object:
+function* handleCalculatedCombinedEstimate(action) {
+  // Save a mutated object with the calculation values
+  const calculatedCombinedEstimate = useEstimateCalculations(action.payload);
+  yield put({
+    type: 'SET_CALCULATED_COMBINED_ESTIMATE',
+    payload: calculatedCombinedEstimate
+  });
+} // End
+
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
   // Makes a GET request for the first search Query
@@ -89,6 +99,8 @@ function* combineEstimatesSaga() {
   yield takeLatest('FETCH_SECOND_ESTIMATE_QUERY', fetchSecondEstimateQuery);
   // GET request for third search Query
   yield takeLatest('FETCH_THIRD_ESTIMATE_QUERY', fetchThirdEstimateQuery);
+  // Makes the math machine run on the combined estimates:
+  yield takeLatest('HANDLE_CALCULATED_COMBINED_ESTIMATE', handleCalculatedCombinedEstimate);
 }
 
 export default combineEstimatesSaga;

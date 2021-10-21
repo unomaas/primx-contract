@@ -27,6 +27,7 @@ export default function EstimateCombine() {
   const firstCombinedEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
   const secondCombinedEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
   const thirdCombinedEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
+  const combinedEstimatesData = useSelector(store => store.combineEstimatesReducer.combinedEstimatesData);
 
   const [error, setError] = useState(false);
   const classes = useStyles(); // Keep in for MUI styling. 
@@ -86,7 +87,77 @@ export default function EstimateCombine() {
     } // End if statement
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
   );
-  //#endregion ⬆⬆ All state variables above. 
+  // When the page loads with the Estimate Number queries, run this to see loop through the requested estimates, combined their raw quantity data, and send it through the math machine:
+  useEffect(() => {
+    if (combinedEstimatesData) {
+      // loop through and make an object
+      let combinedEstimateTotals = {
+        anticipated_first_pour_date: firstCombinedEstimate.anticipated_first_pour_date,
+        archived: firstCombinedEstimate.archived,
+        country: firstCombinedEstimate.country,
+        date_created: firstCombinedEstimate.date_created,
+        estimate_number: firstCombinedEstimate.estimate_number,
+        floor_type: firstCombinedEstimate.floor_type,
+        floor_types_id: firstCombinedEstimate.floor_types_id,
+        id: firstCombinedEstimate.id,
+        licensee_contractor_name: firstCombinedEstimate.licensee_contractor_name,
+        licensee_id: firstCombinedEstimate.licensee_id,
+        marked_as_ordered: firstCombinedEstimate.marked_as_ordered,
+        measurement_units: firstCombinedEstimate.measurement_units,
+        order_number: firstCombinedEstimate.order_number,
+        ordered_by_licensee: firstCombinedEstimate.ordered_by_licensee,
+        placement_type: firstCombinedEstimate.placement_type,
+        placement_types_id: firstCombinedEstimate.placement_types_id,
+        po_number: firstCombinedEstimate.po_number,
+        primx_cpea_dosage_liters: firstCombinedEstimate.primx_cpea_dosage_liters,
+        primx_cpea_shipping_estimate: firstCombinedEstimate.primx_cpea_shipping_estimate,
+        primx_cpea_unit_price: firstCombinedEstimate.primx_cpea_unit_price,
+        primx_dc_shipping_estimate: firstCombinedEstimate.primx_dc_shipping_estimate,
+        primx_dc_unit_price: firstCombinedEstimate.primx_dc_unit_price,
+        primx_flow_dosage_liters: firstCombinedEstimate.primx_flow_dosage_liters,
+        primx_flow_shipping_estimate: firstCombinedEstimate.primx_flow_shipping_estimate,
+        primx_flow_unit_price: firstCombinedEstimate.primx_flow_unit_price,
+        primx_steel_fibers_dosage_kgs: firstCombinedEstimate.primx_steel_fibers_dosage_kgs,
+        primx_steel_fibers_dosage_lbs: firstCombinedEstimate.primx_steel_fibers_dosage_lbs,
+        primx_steel_fibers_shipping_estimate: firstCombinedEstimate.primx_steel_fibers_shipping_estimate,
+        primx_steel_fibers_unit_price: firstCombinedEstimate.primx_steel_fibers_unit_price,
+        primx_ultracure_blankets_unit_price: firstCombinedEstimate.primx_ultracure_blankets_unit_price,
+        processed_by: firstCombinedEstimate.processed_by,
+        project_general_contractor: firstCombinedEstimate.project_general_contractor,
+        project_manager_email: firstCombinedEstimate.project_manager_email,
+        project_manager_name: firstCombinedEstimate.project_manager_name,
+        project_manager_phone: firstCombinedEstimate.project_manager_phone,
+        project_name: firstCombinedEstimate.project_name,
+        ship_to_address: firstCombinedEstimate.ship_to_address,
+        ship_to_city: firstCombinedEstimate.ship_to_city,
+        ship_to_state_province: firstCombinedEstimate.ship_to_state_province,
+        shipping_costs_id: firstCombinedEstimate.shipping_costs_id,
+        square_feet: firstCombinedEstimate.square_feet,
+        square_meters: firstCombinedEstimate.square_meters,
+        thickened_edge_construction_joint_lineal_feet: firstCombinedEstimate.thickened_edge_construction_joint_lineal_feet,
+        thickened_edge_construction_joint_lineal_meters: firstCombinedEstimate.thickened_edge_construction_joint_lineal_meters,
+        thickened_edge_perimeter_lineal_feet: firstCombinedEstimate.thickened_edge_perimeter_lineal_feet,
+        thickened_edge_perimeter_lineal_meters: firstCombinedEstimate.thickened_edge_perimeter_lineal_meters,
+        thickness_inches: firstCombinedEstimate.thickness_inches,
+        thickness_millimeters: firstCombinedEstimate.thickness_millimeters,
+        waste_factor_percentage: firstCombinedEstimate.waste_factor_percentage,
+        zip_postal_code: firstCombinedEstimate.zip_postal_code
+      }
+      // for (let estimates in combinedEstimatesData) {
+      //   // combinedEstimateTotals += estimate;
+      // }
+      console.log(combinedEstimateTotals);
+      // have the totals +='d to the first one
+      // run that object through the machine, below
+
+      // ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values:
+      // dispatch({
+      //   type: 'HANDLE_CALCULATED_COMBINED_ESTIMATE',
+      //   payload: 
+      // });
+    } // End if statement 
+  }, [combinedEstimatesData]); // End useEffect
+  // #endregion ⬆⬆ All state variables above. 
 
 
   //#region ⬇⬇ Event handlers below:

@@ -132,7 +132,7 @@ function* recalculateEstimate(action) {
   } catch (error) {
     console.log('recalculate estimate failed', error)
   }
-}
+} // End
 
 function* handleCalculatedEstimate(action) {
   // Save a mutated object with the calculation values
@@ -141,7 +141,7 @@ function* handleCalculatedEstimate(action) {
     type: 'SET_CALCULATED_ESTIMATE',
     payload: calculatedEstimate
   });
-}
+} // End
 
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then
 // be processed by an admin user

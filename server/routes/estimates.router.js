@@ -140,9 +140,9 @@ router.post('/', async (req, res) => {
     primx_cpea_unit_price,
     primx_cpea_shipping_estimate,
     estimate_number,
-    combined_est_1,
-    combined_est_2,
-    combined_est_3,
+    // combined_est_1,
+    // combined_est_2,
+    // combined_est_3,
     waste_factor_percentage
   ]
 
