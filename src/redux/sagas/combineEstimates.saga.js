@@ -18,9 +18,6 @@ function* fetchFirstEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
-    // run the timestamp removal function on the returned array of estimates
-    const estimateWithoutTimestamps = removeTimestamps(response.data);
-    //take response from DB and insert into Admin Reducer
     yield put({
       type: 'SET_FIRST_ESTIMATE_QUERY_RESULT',
       payload: response.data
@@ -42,13 +39,9 @@ function* fetchSecondEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
-    // run the timestamp removal function on the returned array of estimates
-    const estimateWithoutTimestamps = removeTimestamps(response.data);
-
-    //take response from DB and insert into Admin Reducer
     yield put({
       type: 'SET_SECOND_ESTIMATE_QUERY_RESULT',
-      payload: estimateWithoutTimestamps
+      payload: response.data
     });
   } catch (error) {
     console.log('User get request failed', error);
@@ -67,12 +60,9 @@ function* fetchThirdEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
-    // run the timestamp removal function on the returned array of estimates
-    const estimateWithoutTimestamps = removeTimestamps(response.data);
-    //take response from DB and insert into Admin Reducer
     yield put({
       type: 'SET_THIRD_ESTIMATE_QUERY_RESULT',
-      payload: estimateWithoutTimestamps
+      payload: response.data
     });
   } catch (error) {
     console.log('User get request failed', error);
