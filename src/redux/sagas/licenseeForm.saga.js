@@ -38,6 +38,8 @@ function* fetchEstimateQuery(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
   try {
+
+    
     const response = yield axios.post('/api/estimates', action.payload);
     // action. payload contains the history object from useHistory
     const history = action.payload.history
