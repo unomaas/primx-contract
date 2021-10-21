@@ -258,6 +258,9 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
     { field: 'design_total_materials_price', headerClassName: classes.header, headerName: 'Total Materials Sum', width: 175 },
     { field: 'design_total_shipping_estimate', headerClassName: classes.header, headerName: 'Total Shipping Estimate Sum', width: 175 },
     { field: 'design_total_price_estimate', headerClassName: classes.header, headerName: 'Total Cost', width: 175 },
+    { field: 'combined_est_1', headerClassName: classes.header, headerName: 'Estimate Number 1', width: 175 },
+    { field: 'combined_est_1', headerClassName: classes.header, headerName: 'Estimate Number 2', width: 175 },
+    { field: 'combined_est_1', headerClassName: classes.header, headerName: 'Estimate Number 3', width: 175 },
   ]
 
   // ⬇ Add additional columns based on the data source for the data grid:

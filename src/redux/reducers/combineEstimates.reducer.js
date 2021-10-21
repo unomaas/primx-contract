@@ -76,8 +76,7 @@ export const thirdCombinedEstimate = (state = {}, action) => {
 export const combinedEstimatesData = (state = {}, action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_COMBINED_DATA':
-      return action.payload,
-      console.log('combinedEstimatesTotal is:', action.payload);
+      return action.payload;
     case 'CLEAR_COMBINED_ESTIMATES_DATA':
       return {};
     default:

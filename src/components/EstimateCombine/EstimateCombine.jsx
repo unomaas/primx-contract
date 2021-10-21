@@ -10,6 +10,7 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
+import { firstCombinedEstimate, secondCombinedEstimate, thirdCombinedEstimate } from '../../redux/reducers/combineEstimates.reducer';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -34,6 +35,7 @@ export default function EstimateCombine() {
   const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+  let estArray = [];
   // ⬇ Run on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
@@ -82,7 +84,8 @@ export default function EstimateCombine() {
           } // End payload
         }) // End dispatch
     } // End if statement
-  }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]);
+  }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
+  );
   //#endregion ⬆⬆ All state variables above. 
 
 
