@@ -137,6 +137,9 @@ router.post('/', async (req, res) => {
     primx_cpea_unit_price,
     primx_cpea_shipping_estimate,
     estimate_number,
+    combined_est_1,
+    combined_est_2,
+    combined_est_3,
     waste_factor_percentage
   ]
 
@@ -171,6 +174,9 @@ router.post('/', async (req, res) => {
     "primx_cpea_unit_price",
     "primx_cpea_shipping_estimate",
     "estimate_number",
+    "combined_est_1",
+    "combined_est_2",
+    "combined_est_3",
     "waste_factor_percentage",
   `
   // Add in the imperial or metric specific values based on unit choice
@@ -208,7 +214,7 @@ router.post('/', async (req, res) => {
   // add the values clause to the SQL query 
   queryText += `
     VALUES (
-      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34
+      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34.$35,$36,$37
       )
       RETURNING "id";
   `
@@ -227,6 +233,11 @@ router.post('/', async (req, res) => {
     // create the specified shorter estimate number using the logic below and the returned id number from the original POST
     const letters = licenseeNameResponse.rows[0].licensee_contractor_name.slice(0, 2);
     const newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
+
+    // if a combined etsimate, add a letter C to the estimate number
+    if(combined_est_1 && combined_est_2) {
+      newEstimateNumber += "C"
+    }
     
     // Third DB query: PUT to update the newly created estimate with the shorter estimate number just created
     const thirdQueryText = `UPDATE "estimates" 
