@@ -236,7 +236,7 @@ router.post('/', async (req, res) => {
 
     // if a combined etsimate, add a letter C to the estimate number
     if(combined_est_1 && combined_est_2) {
-      newEstimateNumber += "C"
+      newEstimateNumber += "-C"
     }
     
     // Third DB query: PUT to update the newly created estimate with the shorter estimate number just created
