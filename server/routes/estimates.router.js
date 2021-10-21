@@ -103,7 +103,10 @@ router.post('/', async (req, res) => {
     thickened_edge_perimeter_lineal_meters,
     thickened_edge_construction_joint_lineal_meters,
     primx_steel_fibers_dosage_kgs,
-    waste_factor_percentage
+    waste_factor_percentage,
+    combined_estimate_number_1,
+    combined_estimate_number_2,
+    combined_estimate_number_3
   } = req.body
 
   // create a unique UUID estimate number to use for the estimate being sent
@@ -140,9 +143,9 @@ router.post('/', async (req, res) => {
     primx_cpea_unit_price,
     primx_cpea_shipping_estimate,
     estimate_number,
-    combined_est_1,
-    combined_est_2,
-    combined_est_3,
+    // combined_estimate_number_1,
+    // combined_estimate_number_2,
+    // combined_estimate_number_3,
     waste_factor_percentage
   ]
 
@@ -177,9 +180,9 @@ router.post('/', async (req, res) => {
     "primx_cpea_unit_price",
     "primx_cpea_shipping_estimate",
     "estimate_number",
-    "combined_est_1",
-    "combined_est_2",
-    "combined_est_3",
+    "combined_estimate_number_1",
+    "combined_estimate_number_2",
+    "combined_estimate_number_3",
     "waste_factor_percentage",
   `
   // Add in the imperial or metric specific values based on unit choice
@@ -217,7 +220,7 @@ router.post('/', async (req, res) => {
   // add the values clause to the SQL query 
   queryText += `
     VALUES (
-      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34.$35,$36,$37
+      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34
       )
       RETURNING "id";
   `
