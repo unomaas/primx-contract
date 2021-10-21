@@ -23,6 +23,9 @@ export default function EstimateCombine() {
 
   const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
   const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
+  const firstCombinedEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
+  const secondCombinedEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
+  const thirdCombinedEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
 
   const [error, setError] = useState(false);
   const classes = useStyles(); // Keep in for MUI styling. 
@@ -63,12 +66,6 @@ export default function EstimateCombine() {
             estimate_number: third_estimate_number_combined
           } // End payload
         }) // End dispatch
-        // .then(() => {
-        //   // Create array of objects:
-        //   // Loop through objects to create new object package:
-        //   // Send that package through the math machine and to the 4th reducer:
-        //   for (let data of )
-        // })
     } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
@@ -110,6 +107,8 @@ export default function EstimateCombine() {
     // ⬇ Clearing validation each time: 
     setError(false);
     setSelectError("");
+    // ⬇ Clearing reducers data before submission to prevent zombie data:
+    dispatch({ type: 'CLEAR_COMBINED_ESTIMATES_DATA' })
     // ⬇ Select dropdown validation:
     if (combineQuery.licensee_id === 0) {
       // ⬇ If they haven't selected a drop-down, pop up warning and prevent them:

@@ -21,7 +21,12 @@ function* fetchFirstEstimateQuery(action) {
     yield put({
       type: 'SET_FIRST_ESTIMATE_QUERY_RESULT',
       payload: response.data
-    });
+    })
+    // console.log('*************** LOOK HERE********', response.data)
+    // yield put({
+    //   type: 'SET_ESTIMATE_COMBINED_RESULT',
+    //   payload: response.data
+    // })
   } catch (error) {
     console.log('User get request failed', error);
   }
