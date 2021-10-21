@@ -73,9 +73,9 @@ export const thirdCombinedEstimate = (state = {}, action) => {
   } // End switch
 }; // End searchedEstimate
 
-export const combinedEstimatesTotal = (state = {}, action) => {
+export const combinedEstimatesData = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_ESTIMATE_COMBINED_RESULT':
+    case 'SET_ESTIMATE_COMBINED_DATA':
       return action.payload,
       console.log('combinedEstimatesTotal is:', action.payload);
     case 'CLEAR_COMBINED_ESTIMATES_DATA':
@@ -91,5 +91,5 @@ export default combineReducers({
   firstCombinedEstimate,
   secondCombinedEstimate,
   thirdCombinedEstimate,
-  combinedEstimatesTotal,
+  combinedEstimatesData,
 });
