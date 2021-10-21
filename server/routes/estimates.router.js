@@ -19,16 +19,19 @@ router.get('/lookup/:estimate', (req, res) => {
   const licenseeId = req.query.licenseeId
 
   // SQL query to GET a specific estimate along the floor type names, licensee names, placement type names, and shipping state/province names
-  const queryText = `SELECT "estimates".*, "floor_types".floor_type, "licensees".licensee_contractor_name, "placement_types".placement_type, "shipping_costs".ship_to_state_province FROM "estimates"
-                     JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
-                     JOIN "licensees" ON "estimates".licensee_id = "licensees".id
-                     JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
-                     JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
-                     WHERE "estimate_number" = $1 AND "licensee_id" = $2
-                     ORDER BY "estimates".id DESC;`;
-
+  const queryText = `
+    SELECT "estimates".*, "floor_types".floor_type, "licensees".licensee_contractor_name, "placement_types".placement_type, "shipping_costs".ship_to_state_province FROM "estimates"
+    JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
+    JOIN "licensees" ON "estimates".licensee_id = "licensees".id
+    JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
+    JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
+    WHERE "estimate_number" = $1 AND "licensee_id" = $2
+    ORDER BY "estimates".id DESC;
+  `;
   pool.query(queryText, [estimateNumber, licenseeId])
-    .then((result) => res.send(result.rows))
+    .then((result) =>
+      res.send(result.rows)
+    )
     .catch(error => {
       console.log(`Error with /api/estimates/lookup/:estimates GET`, error);
       res.sendStatus(500)
@@ -227,7 +230,7 @@ router.post('/', async (req, res) => {
     // create the specified shorter estimate number using the logic below and the returned id number from the original POST
     const letters = licenseeNameResponse.rows[0].licensee_contractor_name.slice(0, 2);
     const newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
-    
+
     // Third DB query: PUT to update the newly created estimate with the shorter estimate number just created
     const thirdQueryText = `UPDATE "estimates" 
                             SET estimate_number = $1 
@@ -359,7 +362,7 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
 router.put('/clientupdates/:id', (req, res) => {
 
   // console.log('Req.body is:', req.body, req.params);
-  
+
   // destructure data received from saga which contains an object with all editable DB columns 
   let {
     // shared values regardless of imperial or metric units
@@ -474,11 +477,12 @@ router.put('/clientupdates/:id', (req, res) => {
 
   // add id to the values array
   values.push(req.params.id);
-  
+
   pool.query(queryText, values)
     .then(result => {
       console.log('Got to .then in PUT request');
-      res.sendStatus(200)})
+      res.sendStatus(200)
+    })
     .catch(error => {
       console.log(`Error with /api/estimates/clientupdates/:id PUT for id ${req.params.id}:`, error)
     })
