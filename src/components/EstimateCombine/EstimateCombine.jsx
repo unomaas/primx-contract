@@ -63,6 +63,12 @@ export default function EstimateCombine() {
             estimate_number: third_estimate_number_combined
           } // End payload
         }) // End dispatch
+        // .then(() => {
+        //   // Create array of objects:
+        //   // Loop through objects to create new object package:
+        //   // Send that package through the math machine and to the 4th reducer:
+        //   for (let data of )
+        // })
     } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',

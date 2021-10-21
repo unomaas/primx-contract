@@ -23,7 +23,7 @@ function* fetchFirstEstimateQuery(action) {
     //take response from DB and insert into Admin Reducer
     yield put({
       type: 'SET_FIRST_ESTIMATE_QUERY_RESULT',
-      payload: estimateWithoutTimestamps
+      payload: response.data
     });
   } catch (error) {
     console.log('User get request failed', error);

@@ -24,6 +24,13 @@ export const combineQuery = (state = {
         ...state,
         [action.payload.key]: action.payload.value
       };
+    case 'CLEAR_COMBINED_ESTIMATES_DATA':
+      return {
+        licensee_id: 0,
+        first_estimate_number: "",
+        second_estimate_number: "",
+        third_estimate_number: ""
+      };
     default:
       return state;
   } // End switch
@@ -35,6 +42,8 @@ export const firstCombinedEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_FIRST_ESTIMATE_QUERY_RESULT':
       return action.payload;
+    case 'CLEAR_COMBINED_ESTIMATES_DATA':
+      return {};
     default:
       return state;
   } // End switch
@@ -45,6 +54,8 @@ export const secondCombinedEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_SECOND_ESTIMATE_QUERY_RESULT':
       return action.payload;
+    case 'CLEAR_COMBINED_ESTIMATES_DATA':
+      return {};
     default:
       return state;
   } // End switch
@@ -55,6 +66,8 @@ export const thirdCombinedEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_THIRD_ESTIMATE_QUERY_RESULT':
       return action.payload;
+    case 'CLEAR_COMBINED_ESTIMATES_DATA':
+      return {};
     default:
       return state;
   } // End switch
@@ -64,6 +77,8 @@ export const combinedEstimatesTotal = (state = {}, action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_COMBINED_RESULT':
       return action.payload;
+    case 'CLEAR_COMBINED_ESTIMATES_DATA':
+      return {};
     default:
       return state;
   } // End switch
