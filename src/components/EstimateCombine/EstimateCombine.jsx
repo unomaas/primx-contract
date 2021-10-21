@@ -85,8 +85,6 @@ export default function EstimateCombine() {
         }) // End dispatch
     } // End if statement
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
-  
-    
   );
   //#endregion ⬆⬆ All state variables above. 
 
