@@ -50,9 +50,9 @@ CREATE TABLE "estimates" (
 	"marked_as_ordered" bool NOT NULL DEFAULT 'false',
 	"archived" bool NOT NULL DEFAULT 'false',
 	"processed_by" varchar(50) DEFAULT NULL,
-	"combined_estimate_number_1" varchar(50) NULL UNIQUE,
-    "combined_estimate_number_2" varchar(50) NULL UNIQUE,
-    "combined_estimate_number_3" varchar(50) NULL UNIQUE,
+	"combined_estimate_number_1" varchar(50) NULL,
+    "combined_estimate_number_2" varchar(50) NULL,
+    "combined_estimate_number_3" varchar(50) NULL,
 	CONSTRAINT "estimates_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
