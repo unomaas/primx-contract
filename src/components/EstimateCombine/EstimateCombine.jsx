@@ -177,7 +177,7 @@ export default function EstimateCombine() {
                         <TableCell><b>First Estimate Number:</b></TableCell>
                         <TableCell>
                           <TextField
-                            onChange={event => handleChange('first_estimate_number', event.target.value)}
+                            onChange={event => handleChange('first_estimate_number', event.target.value.toLocaleUpperCase())}
                             required
                             type="search"
                             size="small"
@@ -194,7 +194,7 @@ export default function EstimateCombine() {
                         <TableCell><b>Second Estimate Number:</b></TableCell>
                         <TableCell>
                           <TextField
-                            onChange={event => handleChange('second_estimate_number', event.target.value)}
+                            onChange={event => handleChange('second_estimate_number', event.target.value.toLocaleUpperCase())}
                             required
                             type="search"
                             size="small"
@@ -206,7 +206,7 @@ export default function EstimateCombine() {
                         <TableCell><b>Third Estimate Number:</b></TableCell>
                         <TableCell>
                           <TextField
-                            onChange={event => handleChange('third_estimate_number', event.target.value)}
+                            onChange={event => handleChange('third_estimate_number', event.target.value.toLocaleUpperCase())}
                             type="search"
                             size="small"
                             fullWidth
