@@ -10,7 +10,7 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
-import { firstCombinedEstimate, secondCombinedEstimate, thirdCombinedEstimate } from '../../redux/reducers/combineEstimates.reducer';
+import { combinedEstimatesData, firstCombinedEstimate, secondCombinedEstimate, thirdCombinedEstimate } from '../../redux/reducers/combineEstimates.reducer';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -20,22 +20,37 @@ export default function EstimateCombine() {
   const companies = useSelector(store => store.companies);
   // ⬇ searchResult below is an estimate object searched from the DB that has already been mutated by the useEstimateCalculations function.
   const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
-  // const combinedResult = useSelector(store => store.estimatesReducer.combinedEstimate);
+  const combinedEstimatesData = useSelector(store => store.combineEstimatesReducer.combinedEstimatesData);
 
   const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
   const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
-  const firstCombinedEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
-  const secondCombinedEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
-  const thirdCombinedEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
+  const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
+  const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
+  const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
+
+    // ⬇ hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates the Submit Order button.
+    const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
+    const classes = useStyles(); // Keep in for MUI styling.
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    //#region ⬇⬇ Event handlers below:
+    /** ⬇ handleRecalculateCosts:
+     * Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
+     */
+    const handleRecalculateCosts = () => {
+      // ⬇ Attach history from useHistory to the searchResult object to allow navigation from inside the saga:
+      searchResult.history = history;
+      // ⬇ Needs to GET shipping information and pricing information before recalculating
+      dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult });
+      dispatch({ type: 'GET_RECALCULATE_INFO' });
+    } // End handleRecalculateCosts
 
   const [error, setError] = useState(false);
-  const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
-  const dispatch = useDispatch();
-  const history = useHistory();
-  let estArray = [];
+  
   // ⬇ Run on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
@@ -242,22 +257,12 @@ export default function EstimateCombine() {
         <EstimateCombineTable />
       } */}
 
-      {/* 
-      {combinedResult.estimate_number ? (
-        <>
-          <p>
-            This feature allows you to combine up to three (3) existing estimates into one order for a reduced shipping cost. <br />
-            The first and second estimate numbers are required to use this feature.  The third estimate number is optional. <br />
-            All estimates MUST go to the same shipping location in order to qualify for this reduced rate. <br />
-            <b>Please be aware that whatever the Shipping/Contact Information is for the FIRST estimate number entered, that will be the information used for the other estimate(s).</b> <br />
-            If you need to edit the information for any of the estimates used, that must be done in the "Search For Estimate" page.
-          </p>
-        </>
-      ) : (
-        <EstimateCombineTable />
-      )}
       
-      */}
+      {combinedEstimatesData[0] && 
+        <EstimateCombineTable />
+      }
+      
+     
 
     </div>
   )

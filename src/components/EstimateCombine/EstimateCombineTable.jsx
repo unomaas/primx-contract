@@ -15,9 +15,10 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 export default function EstimateCombineTable() {
   //#region ⬇⬇ All state variables below:
   // ⬇ first,second,thirdEstimate below are objects searched from the DB
-  const firstEstimate = useSelector(store => store.estimatesReducer.searchedEstimate);
-  const secondEstimate = useSelector(store => store.estimatesReducer.secondSearchedEstimate);
-  const thirdEstimate = useSelector(store => store.estimatesReducer.thirdSearchedEstimate);
+  const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
+  const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
+  const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
+  const combinedEstimatesData = useSelector(store => store.combineEstimatesReducer.combinedEstimatesData);
 
   // ⬇ Keep in for MUI styling (deprecated now as of 10/20/21). 
   const classes = useStyles();
@@ -942,7 +943,7 @@ export default function EstimateCombineTable() {
           } {/* End Metric Conditional Render */}
 
 
-          {/* Table #4, Materials Costs Table */}
+          Table #4, Materials Costs Table
           <Grid item xs={12}>
             <Paper elevation={3}>
               <TableContainer>
@@ -953,7 +954,7 @@ export default function EstimateCombineTable() {
                     <TableRow>
                       <TableCell></TableCell>
                       {/* Conditionally render either imperial or metric table headings */}
-                      {combinedResult.measurement_units == 'imperial' ?
+                      {combinedEstimatesData.measurement_units == 'imperial' ?
                         <>
                           <TableCell><b>PrīmX DC (lbs)</b></TableCell>
                           <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
@@ -975,21 +976,21 @@ export default function EstimateCombineTable() {
                   <TableBody>
                     <TableRow>
                       {/* Conditionally render either imperial or metric dosage numbers */}
-                      {combinedResult.measurement_units == 'imperial' ?
+                      {combinedEstimatesData.measurement_units == 'imperial' ?
                         <>
                           <TableCell><b>Dosage Rate (per yd³):</b></TableCell>
                           <TableCell>67</TableCell>
-                          <TableCell>{combinedResult?.primx_flow_dosage_liters}</TableCell>
-                          <TableCell>{combinedResult?.primx_steel_fibers_dosage_lbs}</TableCell>
+                          <TableCell>{combinedEstimatesData?.primx_flow_dosage_liters}</TableCell>
+                          <TableCell>{combinedEstimatesData?.primx_steel_fibers_dosage_lbs}</TableCell>
                           <TableCell>N/A</TableCell>
-                          <TableCell>{combinedResult?.primx_cpea_dosage_liters}</TableCell>
+                          <TableCell>{combinedEstimatesData?.primx_cpea_dosage_liters}</TableCell>
                         </> : <>
                           <TableCell><b>Dosage Rate (per m³):</b></TableCell>
                           <TableCell>40</TableCell>
-                          <TableCell>{combinedResult?.primx_flow_dosage_liters}</TableCell>
-                          <TableCell>{combinedResult?.primx_steel_fibers_dosage_kgs}</TableCell>
+                          <TableCell>{combinedEstimatesData?.primx_flow_dosage_liters}</TableCell>
+                          <TableCell>{combinedEstimatesData?.primx_steel_fibers_dosage_kgs}</TableCell>
                           <TableCell>N/A</TableCell>
-                          <TableCell>{combinedResult?.primx_cpea_dosage_liters}</TableCell>
+                          <TableCell>{combinedEstimatesData?.primx_cpea_dosage_liters}</TableCell>
                         </>
                       } {/* End conditionally rendered dosages*/}
                       <TableCell></TableCell>
@@ -998,18 +999,18 @@ export default function EstimateCombineTable() {
                     {/* Total amounts share key names between imperial and metric */}
                     <TableRow>
                       <TableCell><b>Total Amount:</b></TableCell>
-                      <TableCell>{combinedResult?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Packaging Capacity:</b></TableCell>
                       {/* Conditionally render either imperial or metric packaging capacity numbers */}
-                      {combinedResult.measurement_units == 'imperial' ?
+                      {combinedEstimatesData.measurement_units == 'imperial' ?
                         <>
                           <TableCell>2,756</TableCell>
                           <TableCell>1,000</TableCell>
@@ -1031,72 +1032,72 @@ export default function EstimateCombineTable() {
                     {/* All following table data has shared key names between both metric and imperial */}
                     <TableRow>
                       <TableCell><b>Packages Needed:</b></TableCell>
-                      <TableCell>{combinedResult?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_steel_fibers_packages_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_ultracure_blankets_packages_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_cpea_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_steel_fibers_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_ultracure_blankets_packages_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_cpea_packages_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Total Order Quantity:</b></TableCell>
-                      <TableCell>{combinedResult?.primx_dc_total_order_quantity}</TableCell>
-                      <TableCell>{combinedResult?.primx_flow_total_order_quantity}</TableCell>
-                      <TableCell>{combinedResult?.primx_steel_fibers_total_order_quantity}</TableCell>
-                      <TableCell>{combinedResult?.primx_ultracure_blankets_total_order_quantity}</TableCell>
-                      <TableCell>{combinedResult?.primx_cpea_total_order_quantity}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_dc_total_order_quantity}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_flow_total_order_quantity}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_steel_fibers_total_order_quantity}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_ultracure_blankets_total_order_quantity}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_cpea_total_order_quantity}</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Materials Price:</b></TableCell>
-                      <TableCell>{combinedResult?.primx_dc_unit_price}</TableCell>
-                      <TableCell>{combinedResult?.primx_flow_unit_price}</TableCell>
-                      <TableCell>{combinedResult?.primx_steel_fibers_unit_price}</TableCell>
-                      <TableCell>{combinedResult?.primx_ultracure_blankets_unit_price}</TableCell>
-                      <TableCell>{combinedResult?.primx_cpea_unit_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_dc_unit_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_flow_unit_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_steel_fibers_unit_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_ultracure_blankets_unit_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_cpea_unit_price}</TableCell>
                       <TableCell><b>Totals:</b></TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Total Materials Price:</b></TableCell>
-                      <TableCell>{combinedResult?.primx_dc_total_materials_price}</TableCell>
-                      <TableCell>{combinedResult?.primx_flow_total_materials_price}</TableCell>
-                      <TableCell>{combinedResult?.primx_steel_fibers_total_materials_price}</TableCell>
-                      <TableCell>{combinedResult?.primx_ultracure_blankets_total_materials_price}</TableCell>
-                      <TableCell>{combinedResult?.primx_cpea_total_materials_price}</TableCell>
-                      <TableCell>{combinedResult?.design_total_materials_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_dc_total_materials_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_flow_total_materials_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_steel_fibers_total_materials_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_ultracure_blankets_total_materials_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_cpea_total_materials_price}</TableCell>
+                      <TableCell>{combinedEstimatesData?.design_total_materials_price}</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Containers:</b></TableCell>
-                      <TableCell>{combinedResult?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.primx_steel_fibers_containers_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_steel_fibers_containers_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell>0</TableCell>
-                      <TableCell>{combinedResult?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
-                      <TableCell>{combinedResult?.design_total_containers?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
+                      <TableCell>{combinedEstimatesData?.design_total_containers?.toLocaleString('en-US')}</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Shipping Estimate:</b></TableCell>
-                      <TableCell>{combinedResult?.primx_dc_calculated_shipping_estimate}</TableCell>
-                      <TableCell>{combinedResult?.primx_flow_calculated_shipping_estimate}</TableCell>
-                      <TableCell>{combinedResult?.primx_steel_fibers_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_dc_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_flow_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_steel_fibers_calculated_shipping_estimate}</TableCell>
                       <TableCell>0</TableCell>
-                      <TableCell>{combinedResult?.primx_cpea_calculated_shipping_estimate}</TableCell>
-                      <TableCell>{combinedResult?.design_total_shipping_estimate}</TableCell>
+                      <TableCell>{combinedEstimatesData?.primx_cpea_calculated_shipping_estimate}</TableCell>
+                      <TableCell>{combinedEstimatesData?.design_total_shipping_estimate}</TableCell>
                     </TableRow>
 
                     <TableRow>
                       <TableCell><b>Total Cost:</b></TableCell>
-                      <TableCell><b>{combinedResult?.primx_dc_total_cost_estimate}</b></TableCell>
-                      <TableCell><b>{combinedResult?.primx_flow_total_cost_estimate}</b></TableCell>
-                      <TableCell><b>{combinedResult?.primx_steel_fibers_total_cost_estimate}</b></TableCell>
-                      <TableCell><b>{combinedResult?.primx_ultracure_blankets_total_cost_estimate}</b></TableCell>
-                      <TableCell><b>{combinedResult?.primx_cpea_total_cost_estimate}</b></TableCell>
-                      <TableCell><b>{combinedResult?.design_total_price_estimate}</b></TableCell>
+                      <TableCell><b>{combinedEstimatesData?.primx_dc_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{combinedEstimatesData?.primx_flow_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{combinedEstimatesData?.primx_steel_fibers_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{combinedEstimatesData?.primx_ultracure_blankets_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{combinedEstimatesData?.primx_cpea_total_cost_estimate}</b></TableCell>
+                      <TableCell><b>{combinedEstimatesData?.design_total_price_estimate}</b></TableCell>
                     </TableRow>
 
                     {/* Render the following table row for any orders that haven't been placed yet */}
