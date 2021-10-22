@@ -130,7 +130,7 @@ export default function EstimateLookup() {
                         <TableCell><b>Estimate Number:</b></TableCell>
                         <TableCell>
                           <TextField
-                            onChange={event => handleChange('estimate_number', event.target.value)}
+                            onChange={event => handleChange('estimate_number', event.target.value.toLocaleUpperCase())}
                             required
                             type="search"
                             size="small"
