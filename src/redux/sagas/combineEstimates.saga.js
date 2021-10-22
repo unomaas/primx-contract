@@ -18,13 +18,18 @@ function* fetchFirstEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
+    // run the timestamp removal function on the returned array of estimates
+    const estimateWithoutTimestamps = removeTimestamps(response.data);
+    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
+    // before sending it to the reducer
+    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
     yield put({
       type: 'SET_FIRST_ESTIMATE_QUERY_RESULT',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
     yield put({
       type: 'SET_ESTIMATE_COMBINED_DATA',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
   } catch (error) {
     console.log('User get request failed', error);
@@ -43,13 +48,18 @@ function* fetchSecondEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
+    // run the timestamp removal function on the returned array of estimates
+    const estimateWithoutTimestamps = removeTimestamps(response.data);
+    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
+    // before sending it to the reducer
+    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
     yield put({
       type: 'SET_SECOND_ESTIMATE_QUERY_RESULT',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
     yield put({
       type: 'SET_ESTIMATE_COMBINED_DATA',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
   } catch (error) {
     console.log('User get request failed', error);
@@ -68,13 +78,18 @@ function* fetchThirdEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
+    // run the timestamp removal function on the returned array of estimates
+    const estimateWithoutTimestamps = removeTimestamps(response.data);
+    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
+    // before sending it to the reducer
+    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
     yield put({
       type: 'SET_THIRD_ESTIMATE_QUERY_RESULT',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
     yield put({
       type: 'SET_ESTIMATE_COMBINED_DATA',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
   } catch (error) {
     console.log('User get request failed', error);
