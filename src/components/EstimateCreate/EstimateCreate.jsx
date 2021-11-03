@@ -41,16 +41,6 @@ export default function EstimateCreate() {
 
 
   //#region ⬇⬇ Event handlers below:
-  /** ⬇ handleClose:
-   * Functionality event handler for the MUI Snackbar, this will close the pop-up notification. 
-   */
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    } // End if statement
-    dispatch({ type: 'SET_CLOSE' })
-  }; // End handleClose
-
   /** ⬇ timeDifference:
    * A function to calculate the time difference in weeks between today's date and the first anticipated pour date, to validate whether the job is 8 weeks out or not. 
    */
@@ -107,14 +97,13 @@ export default function EstimateCreate() {
         }; // End for loop.
       } // End if statement
     }) // end shippingCosts forEach
-
-    // If user is in the edit view, recalculate estimate values with new shipping data
+    // If user is in the edit view, recalculate estimate values with new shipping data:
     if (editState) {
       dispatch({
         type: 'HANDLE_CALCULATED_ESTIMATE',
         payload: estimateData
-      });
-    }
+      }); // End dispatch
+    } // End if statement
   } // End handleShipping
 
   /** ⬇ handleMeasurementUnits:
