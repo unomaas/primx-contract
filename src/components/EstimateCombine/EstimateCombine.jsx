@@ -28,7 +28,7 @@ export default function EstimateCombine() {
   const combinedEstimatesArray = useSelector(store => store.combineEstimatesReducer.combinedEstimatesArray);
   const combinedEstimateTotals = useSelector(store => store.combineEstimatesReducer.combinedEstimateTotals);
 
-  const classes = useStyles();
+
   const [error, setError] = useState(false);
   const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
