@@ -14,7 +14,6 @@ import { firstCombinedEstimate, secondCombinedEstimate, thirdCombinedEstimate } 
 //#endregion ⬆⬆ All document setup above.
 
 
-
 export default function EstimateCombine() {
   //#region ⬇⬇ All state variables below:
   const companies = useSelector(store => store.companies);
@@ -302,6 +301,7 @@ export default function EstimateCombine() {
       )}
       
       */}
+      
 
     </div>
   )
