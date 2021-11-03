@@ -131,6 +131,11 @@ export default function NavDrawer() {
                 <p>Search For Estimate</p>
               </ListItem>
 
+              <ListItem button onClick={() => history.push(`/combine`)}>
+                <StorageIcon /> &nbsp;
+                <p>Combine Estimates</p>
+              </ListItem>
+
               <Divider />
 
               <ListItem button onClick={() => history.push(`/login`)}>

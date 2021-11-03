@@ -54,7 +54,7 @@ function* AddEstimate(action) {
 // Saga Worker to edit estimate into table
 function* EditEstimate(action) {
   try {
-    console.log('Action.payload is:', action.payload);
+    // console.log('Action.payload is:', action.payload);
     
     yield axios.put(`/api/estimates/clientupdates/${action.payload.id}`, action.payload);
     // after this is done, run the recalculate costs PUT request to ensure up-to-date pricing
@@ -134,7 +134,7 @@ function* recalculateEstimate(action) {
   } catch (error) {
     console.log('recalculate estimate failed', error)
   }
-}
+} // End
 
 function* handleCalculatedEstimate(action) {
   // Save a mutated object with the calculation values
@@ -143,7 +143,7 @@ function* handleCalculatedEstimate(action) {
     type: 'SET_CALCULATED_ESTIMATE',
     payload: calculatedEstimate
   });
-}
+} // End
 
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then
 // be processed by an admin user

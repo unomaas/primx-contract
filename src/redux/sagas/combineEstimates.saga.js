@@ -18,13 +18,25 @@ function* fetchFirstEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
+    // run the timestamp removal function on the returned array of estimates
+    const estimateWithoutTimestamps = removeTimestamps(response.data);
+    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
+    // before sending it to the reducer
+    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    // Recalculate this estimates prices to be current before displaying:
+    yield put({
+      type: 'RECALCULATE_ESTIMATE',
+      payload: calculatedResponse
+    })
+    // Send this data to the first estimate reducer:
     yield put({
       type: 'SET_FIRST_ESTIMATE_QUERY_RESULT',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
+    // Also send this data to the combined estimate array reducer:
     yield put({
       type: 'SET_ESTIMATE_COMBINED_DATA',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
   } catch (error) {
     console.log('User get request failed', error);
@@ -43,13 +55,23 @@ function* fetchSecondEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
+    // run the timestamp removal function on the returned array of estimates
+    const estimateWithoutTimestamps = removeTimestamps(response.data);
+    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
+    // before sending it to the reducer
+    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    // Recalculate this estimates prices to be current before displaying:
+    yield put({
+      type: 'RECALCULATE_ESTIMATE',
+      payload: calculatedResponse
+    })
     yield put({
       type: 'SET_SECOND_ESTIMATE_QUERY_RESULT',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
     yield put({
       type: 'SET_ESTIMATE_COMBINED_DATA',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
   } catch (error) {
     console.log('User get request failed', error);
@@ -68,18 +90,38 @@ function* fetchThirdEstimateQuery(action) {
         licenseeId: licenseeId
       }
     })
+    // run the timestamp removal function on the returned array of estimates
+    const estimateWithoutTimestamps = removeTimestamps(response.data);
+    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
+    // before sending it to the reducer
+    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    // Recalculate this estimates prices to be current before displaying:
+    yield put({
+      type: 'RECALCULATE_ESTIMATE',
+      payload: calculatedResponse
+    })
     yield put({
       type: 'SET_THIRD_ESTIMATE_QUERY_RESULT',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
     yield put({
       type: 'SET_ESTIMATE_COMBINED_DATA',
-      payload: response.data[0]
+      payload: calculatedResponse
     })
   } catch (error) {
     console.log('User get request failed', error);
   }
 }
+
+// Saga worker to run the math machine on the combined estimates object:
+function* handleCalculatedCombinedEstimate(action) {
+  // Save a mutated object with the calculation values
+  const calculatedCombinedEstimate = useEstimateCalculations(action.payload);
+  yield put({
+    type: 'SET_CALCULATED_COMBINED_ESTIMATE',
+    payload: calculatedCombinedEstimate
+  });
+} // End
 
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
@@ -89,6 +131,8 @@ function* combineEstimatesSaga() {
   yield takeLatest('FETCH_SECOND_ESTIMATE_QUERY', fetchSecondEstimateQuery);
   // GET request for third search Query
   yield takeLatest('FETCH_THIRD_ESTIMATE_QUERY', fetchThirdEstimateQuery);
+  // Makes the math machine run on the combined estimates:
+  yield takeLatest('HANDLE_CALCULATED_COMBINED_ESTIMATE', handleCalculatedCombinedEstimate);
 }
 
 export default combineEstimatesSaga;
