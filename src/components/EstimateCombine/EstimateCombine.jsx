@@ -29,6 +29,7 @@ export default function EstimateCombine() {
   const combinedEstimatesArray = useSelector(store => store.combineEstimatesReducer.combinedEstimatesArray);
   const combinedEstimateTotals = useSelector(store => store.combineEstimatesReducer.combinedEstimateTotals);
 
+  const classes = useStyles();
   const [error, setError] = useState(false);
   const [selectError, setSelectError] = useState("");
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
