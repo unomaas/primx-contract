@@ -44,7 +44,7 @@ export default function EstimateCombineTable() {
           justifyContent="center"
         >
           {/* Grid Table #1: Display the Licensee/Project Info Form : Shared between imperial and metric*/}
-          <Grid item xs={6}>
+          <Grid item xs={12}>
             <Paper elevation={3}>
               <TableContainer>
                 <h3>Licensee & Project Information</h3>
