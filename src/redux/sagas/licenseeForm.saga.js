@@ -54,7 +54,7 @@ function* AddEstimate(action) {
 // Saga Worker to edit estimate into table
 function* EditEstimate(action) {
   try {
-    console.log('Action.payload is:', action.payload);
+    // console.log('Action.payload is:', action.payload);
     
     yield axios.put(`/api/estimates/clientupdates/${action.payload.id}`, action.payload);
     // after this is done, run the recalculate costs PUT request to ensure up-to-date pricing

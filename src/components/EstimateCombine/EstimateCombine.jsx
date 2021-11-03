@@ -22,12 +22,12 @@ export default function EstimateCombine() {
   const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
   // const combinedResult = useSelector(store => store.estimatesReducer.combinedEstimate);
 
-  const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
   const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
   const firstCombinedEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
   const secondCombinedEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
   const thirdCombinedEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
-  const combinedEstimatesData = useSelector(store => store.combineEstimatesReducer.combinedEstimatesData);
+  const combinedEstimatesArray = useSelector(store => store.combineEstimatesReducer.combinedEstimatesArray);
+  const combinedEstimateTotals = useSelector(store => store.combineEstimatesReducer.combinedEstimateTotals);
 
   const [error, setError] = useState(false);
   const classes = useStyles(); // Keep in for MUI styling. 
@@ -36,7 +36,6 @@ export default function EstimateCombine() {
   const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  let estArray = [];
   // ⬇ Run on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
@@ -46,7 +45,7 @@ export default function EstimateCombine() {
   }, []);
   // ⬇ Run on estimate search complete:
   useEffect(() => {
-    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB.
+    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB:
     if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
@@ -88,75 +87,49 @@ export default function EstimateCombine() {
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
   );
   // When the page loads with the Estimate Number queries, run this to see loop through the requested estimates, combined their raw quantity data, and send it through the math machine:
-  // useEffect(() => {
-  //   if (combinedEstimatesData) {
-  //     // loop through and make an object
-  //     let combinedEstimateTotals = {
-  //       anticipated_first_pour_date: firstCombinedEstimate.anticipated_first_pour_date,
-  //       archived: firstCombinedEstimate.archived,
-  //       country: firstCombinedEstimate.country,
-  //       date_created: firstCombinedEstimate.date_created,
-  //       estimate_number: firstCombinedEstimate.estimate_number,
-  //       floor_type: firstCombinedEstimate.floor_type,
-  //       floor_types_id: firstCombinedEstimate.floor_types_id,
-  //       id: firstCombinedEstimate.id,
-  //       licensee_contractor_name: firstCombinedEstimate.licensee_contractor_name,
-  //       licensee_id: firstCombinedEstimate.licensee_id,
-  //       marked_as_ordered: firstCombinedEstimate.marked_as_ordered,
-  //       measurement_units: firstCombinedEstimate.measurement_units,
-  //       order_number: firstCombinedEstimate.order_number,
-  //       ordered_by_licensee: firstCombinedEstimate.ordered_by_licensee,
-  //       placement_type: firstCombinedEstimate.placement_type,
-  //       placement_types_id: firstCombinedEstimate.placement_types_id,
-  //       po_number: firstCombinedEstimate.po_number,
-  //       primx_cpea_dosage_liters: firstCombinedEstimate.primx_cpea_dosage_liters,
-  //       primx_cpea_shipping_estimate: firstCombinedEstimate.primx_cpea_shipping_estimate,
-  //       primx_cpea_unit_price: firstCombinedEstimate.primx_cpea_unit_price,
-  //       primx_dc_shipping_estimate: firstCombinedEstimate.primx_dc_shipping_estimate,
-  //       primx_dc_unit_price: firstCombinedEstimate.primx_dc_unit_price,
-  //       primx_flow_dosage_liters: firstCombinedEstimate.primx_flow_dosage_liters,
-  //       primx_flow_shipping_estimate: firstCombinedEstimate.primx_flow_shipping_estimate,
-  //       primx_flow_unit_price: firstCombinedEstimate.primx_flow_unit_price,
-  //       primx_steel_fibers_dosage_kgs: firstCombinedEstimate.primx_steel_fibers_dosage_kgs,
-  //       primx_steel_fibers_dosage_lbs: firstCombinedEstimate.primx_steel_fibers_dosage_lbs,
-  //       primx_steel_fibers_shipping_estimate: firstCombinedEstimate.primx_steel_fibers_shipping_estimate,
-  //       primx_steel_fibers_unit_price: firstCombinedEstimate.primx_steel_fibers_unit_price,
-  //       primx_ultracure_blankets_unit_price: firstCombinedEstimate.primx_ultracure_blankets_unit_price,
-  //       processed_by: firstCombinedEstimate.processed_by,
-  //       project_general_contractor: firstCombinedEstimate.project_general_contractor,
-  //       project_manager_email: firstCombinedEstimate.project_manager_email,
-  //       project_manager_name: firstCombinedEstimate.project_manager_name,
-  //       project_manager_phone: firstCombinedEstimate.project_manager_phone,
-  //       project_name: firstCombinedEstimate.project_name,
-  //       ship_to_address: firstCombinedEstimate.ship_to_address,
-  //       ship_to_city: firstCombinedEstimate.ship_to_city,
-  //       ship_to_state_province: firstCombinedEstimate.ship_to_state_province,
-  //       shipping_costs_id: firstCombinedEstimate.shipping_costs_id,
-  //       square_feet: firstCombinedEstimate.square_feet,
-  //       square_meters: firstCombinedEstimate.square_meters,
-  //       thickened_edge_construction_joint_lineal_feet: firstCombinedEstimate.thickened_edge_construction_joint_lineal_feet,
-  //       thickened_edge_construction_joint_lineal_meters: firstCombinedEstimate.thickened_edge_construction_joint_lineal_meters,
-  //       thickened_edge_perimeter_lineal_feet: firstCombinedEstimate.thickened_edge_perimeter_lineal_feet,
-  //       thickened_edge_perimeter_lineal_meters: firstCombinedEstimate.thickened_edge_perimeter_lineal_meters,
-  //       thickness_inches: firstCombinedEstimate.thickness_inches,
-  //       thickness_millimeters: firstCombinedEstimate.thickness_millimeters,
-  //       waste_factor_percentage: firstCombinedEstimate.waste_factor_percentage,
-  //       zip_postal_code: firstCombinedEstimate.zip_postal_code
-  //     }
-  //     // for (let estimates in combinedEstimatesData) {
-  //     //   // combinedEstimateTotals += estimate;
-  //     // }
-  //     console.log(combinedEstimateTotals);
-  //     // have the totals +='d to the first one
-  //     // run that object through the machine, below
+  useEffect(() => {
+    if (combinedEstimatesArray.length !== 0) {
+      // ⬇ Setting the combinedEstimateTotals to mimic the first estimate's data, so we can feed it through the current math engine without issues:
+      // setCombinedEstimatesTotals(firstCombinedEstimate);
+      console.log(firstCombinedEstimate);
+      dispatch({ type: 'SET_TOTALS_COMBINED_ESTIMATE', payload: firstCombinedEstimate });
+      // ⬇ Clearing the amounts needed so we can loop through and total accurately:
+      console.log(combinedEstimateTotals);
 
-  //     // ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values:
-  //     // dispatch({
-  //     //   type: 'HANDLE_CALCULATED_COMBINED_ESTIMATE',
-  //     //   payload: 
-  //     // });
-  //   } // End if statement 
-  // }, [combinedEstimatesData]); // End useEffect
+      combinedEstimateTotals.primx_cpea_total_amount_needed = 0;
+      
+      // for (let estimate of combinedEstimatesArray) {
+      //   console.log(estimate);
+      //   console.log(estimate.primx_cpea_total_amount_needed);
+      //   console.log(combinedEstimateTotals.primx_cpea_total_amount_needed);
+      //   // combinedEstimateTotals.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
+      //   // combinedEstimateTotals.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
+      //   // combinedEstimateTotals.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
+      //   // combinedEstimateTotals.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
+      //   // combinedEstimateTotals.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+      // }
+      // // // ⬇ If the first estimate was imperial, we want to total the imperial packages needed:
+      // // if (combinedEstimateTotals.measurement_units == 'imperial') {
+
+      // // } // ⬇ And same for if they're metric: 
+      // // else if (combinedEstimateTotals.measurement_units == 'metric') {
+
+      // // }
+      // // for (let estimates in combinedEstimatesData) {
+      // //   // combinedEstimateTotals += estimate;
+      // // }
+      // console.log('Combined Estimate Total Is:', combinedEstimateTotals.primx_cpea_total_amount_needed);
+      // console.log('First Estimate is:', firstCombinedEstimate);
+      // have the totals +='d to the first one
+      // run that object through the machine, below
+
+      // ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values:
+      // dispatch({
+      //   type: 'HANDLE_CALCULATED_COMBINED_ESTIMATE',
+      //   payload: 
+      // });
+    } // End if statement 
+  }, [combinedEstimatesArray]); // End useEffect
   // #endregion ⬆⬆ All state variables above. 
 
 
@@ -309,7 +282,7 @@ export default function EstimateCombine() {
       {/* End estimate search form */}
 
       {/* Conditionally render entire code block below if the user has successfully combined estimates */}
-      {/* {combinedResult.estimate_number &&
+      {/* {combinedEstimatesData[0] &&
         <EstimateCombineTable />
       } */}
 

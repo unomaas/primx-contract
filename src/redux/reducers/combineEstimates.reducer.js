@@ -74,7 +74,7 @@ export const thirdCombinedEstimate = (state = {}, action) => {
 }; // End searchedEstimate
 
 // This reducer holds an array of objects (which are existing estimates), which is then looped through to build the totals for the estimate math machine:
-export const combinedEstimatesData = (state = [], action) => {
+export const combinedEstimatesArray = (state = [], action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_COMBINED_DATA':
       return [...state, action.payload];
@@ -95,12 +95,23 @@ export const setCalcCombinedEstimate = (state = {}, action) => {
   } // End switch
 }; // End setCalcEstimate
 
+// This reducer sets the object with the mutated/mathed data from all of hte combined estimates:
+export const combinedEstimateTotals = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_TOTALS_COMBINED_ESTIMATE':            
+        return action.payload;
+    default:
+        return state;
+  } // End switch
+}; // End setCalcEstimate
+
 
 export default combineReducers({
   combineQuery,
   firstCombinedEstimate,
   secondCombinedEstimate,
   thirdCombinedEstimate,
-  combinedEstimatesData,
+  combinedEstimatesArray,
   setCalcCombinedEstimate,
+  combinedEstimateTotals,
 });

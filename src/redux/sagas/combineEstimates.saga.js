@@ -23,10 +23,17 @@ function* fetchFirstEstimateQuery(action) {
     // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    // Recalculate this estimates prices to be current before displaying:
+    yield put({
+      type: 'RECALCULATE_ESTIMATE',
+      payload: calculatedResponse
+    })
+    // Send this data to the first estimate reducer:
     yield put({
       type: 'SET_FIRST_ESTIMATE_QUERY_RESULT',
       payload: calculatedResponse
     })
+    // Also send this data to the combined estimate array reducer:
     yield put({
       type: 'SET_ESTIMATE_COMBINED_DATA',
       payload: calculatedResponse
@@ -53,6 +60,11 @@ function* fetchSecondEstimateQuery(action) {
     // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    // Recalculate this estimates prices to be current before displaying:
+    yield put({
+      type: 'RECALCULATE_ESTIMATE',
+      payload: calculatedResponse
+    })
     yield put({
       type: 'SET_SECOND_ESTIMATE_QUERY_RESULT',
       payload: calculatedResponse
@@ -83,6 +95,11 @@ function* fetchThirdEstimateQuery(action) {
     // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    // Recalculate this estimates prices to be current before displaying:
+    yield put({
+      type: 'RECALCULATE_ESTIMATE',
+      payload: calculatedResponse
+    })
     yield put({
       type: 'SET_THIRD_ESTIMATE_QUERY_RESULT',
       payload: calculatedResponse
