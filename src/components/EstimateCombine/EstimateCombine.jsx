@@ -87,26 +87,32 @@ export default function EstimateCombine() {
   );
   // When the page loads with the Estimate Number queries, run this to see loop through the requested estimates, combined their raw quantity data, and send it through the math machine:
   useEffect(() => {
+    console.log('Step #1: Inside useEffect.  Sending Dispatch.');
+    // dispatch({ type: 'SET_TOTALS_COMBINED_ESTIMATE', payload: firstCombinedEstimate });
+
+    // combinedEstimateTotals.primx_cpea_total_amount_needed = 0;
+
     if (combinedEstimatesArray.length !== 0) {
+      console.log('Step #2: Inside if statement.');
       // ⬇ Setting the combinedEstimateTotals to mimic the first estimate's data, so we can feed it through the current math engine without issues:
       // setCombinedEstimatesTotals(firstCombinedEstimate);
-      console.log(firstCombinedEstimate);
-      dispatch({ type: 'SET_TOTALS_COMBINED_ESTIMATE', payload: firstCombinedEstimate });
+      // console.log(firstCombinedEstimate);
       // ⬇ Clearing the amounts needed so we can loop through and total accurately:
-      console.log(combinedEstimateTotals);
+      // console.log(combinedEstimateTotals);
 
-      combinedEstimateTotals.primx_cpea_total_amount_needed = 0;
-      
+
       // for (let estimate of combinedEstimatesArray) {
-      //   console.log(estimate);
-      //   console.log(estimate.primx_cpea_total_amount_needed);
-      //   console.log(combinedEstimateTotals.primx_cpea_total_amount_needed);
+      //   console.log('Estimate is:', estimate);
+      //   console.log('Estimate CPEA total amount is:', estimate.primx_cpea_total_amount_needed);
+      //   console.log('CombinedEstimateTotals CPEA amount is:', combinedEstimateTotals.primx_cpea_total_amount_needed);
       //   // combinedEstimateTotals.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
       //   // combinedEstimateTotals.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
       //   // combinedEstimateTotals.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
       //   // combinedEstimateTotals.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
       //   // combinedEstimateTotals.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
       // }
+      // console.log(combinedEstimateTotals.primx_cpea_total_amount_needed);
+
       // // // ⬇ If the first estimate was imperial, we want to total the imperial packages needed:
       // // if (combinedEstimateTotals.measurement_units == 'imperial') {
 
@@ -128,7 +134,8 @@ export default function EstimateCombine() {
       //   payload: 
       // });
     } // End if statement 
-  }, [combinedEstimatesArray]); // End useEffect
+
+  }, [combinedEstimatesArray.length]); // End useEffect
   // #endregion ⬆⬆ All state variables above. 
 
 
@@ -301,7 +308,7 @@ export default function EstimateCombine() {
       )}
       
       */}
-      
+
 
     </div>
   )
