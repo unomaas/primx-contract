@@ -38,8 +38,13 @@ function* fetchFirstEstimateQuery(action) {
       type: 'SET_ESTIMATE_COMBINED_DATA',
       payload: calculatedResponse
     })
+    // Also send this data to the 4th reducer to use as the combined totals: 
+    yield put({
+      type: 'SET_TOTALS_COMBINED_ESTIMATE',
+      payload: calculatedResponse
+    })
   } catch (error) {
-    console.log('User get request failed', error);
+    console.log('fetchFirstEstimateQuery failed', error);
   }
 }
 
@@ -74,7 +79,7 @@ function* fetchSecondEstimateQuery(action) {
       payload: calculatedResponse
     })
   } catch (error) {
-    console.log('User get request failed', error);
+    console.log('fetchSecondEstimateQuery failed', error);
   }
 }
 
@@ -109,7 +114,7 @@ function* fetchThirdEstimateQuery(action) {
       payload: calculatedResponse
     })
   } catch (error) {
-    console.log('User get request failed', error);
+    console.log('fetchThirdEstimateQuery failed', error);
   }
 }
 

@@ -31,6 +31,14 @@ export default function EstimateCombine() {
   const [error, setError] = useState(false);
   const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
+
+  const [testObject, setTestObject] = useState({
+    primx_cpea_total_amount_needed: 0,
+    primx_dc_total_amount_needed: 0,
+    primx_flow_total_amount_needed: 0,
+    primx_steel_fibers_total_amount_needed: 0,
+    primx_ultracure_blankets_total_amount_needed: 0
+  });
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
   const dispatch = useDispatch();
@@ -46,6 +54,7 @@ export default function EstimateCombine() {
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB:
     if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
+      console.log('*** Step #A.');
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
@@ -68,6 +77,7 @@ export default function EstimateCombine() {
           } // End payload
         }) // End dispatch
     } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
+      console.log('*** Step #B.');
       dispatch({
         type: 'FETCH_FIRST_ESTIMATE_QUERY',
         payload: {
@@ -87,55 +97,49 @@ export default function EstimateCombine() {
   );
   // When the page loads with the Estimate Number queries, run this to see loop through the requested estimates, combined their raw quantity data, and send it through the math machine:
   useEffect(() => {
-    console.log('Step #1: Inside useEffect.  Sending Dispatch.');
-    // dispatch({ type: 'SET_TOTALS_COMBINED_ESTIMATE', payload: firstCombinedEstimate });
+    console.log('*** Step #1: Inside useEffect.');
+    setTestObject({
+      primx_cpea_total_amount_needed: 0,
+      primx_dc_total_amount_needed: 0,
+      primx_flow_total_amount_needed: 0,
+      primx_steel_fibers_total_amount_needed: 0,
+      primx_ultracure_blankets_total_amount_needed: 0
+    });
+    if (combinedEstimatesArray.length == 3) {
+      console.log('*** Step #2: Inside if ==3 statement.');
+      for (let estimate of combinedEstimatesArray) {
+        testObject.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
+        testObject.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
+        testObject.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
+        testObject.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
+        testObject.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+        console.log('Final Test Object:', testObject);
 
-    // combinedEstimateTotals.primx_cpea_total_amount_needed = 0;
+        combinedEstimateTotals.primx_cpea_total_amount_needed = testObject.primx_cpea_total_amount_needed;
+        // combinedEstimateTotals.primx_dc_total_amount_needed = testObject.primx_dc_total_amount_needed;
+        // combinedEstimateTotals.primx_flow_total_amount_needed = testObject.primx_flow_total_amount_needed;
+        // combinedEstimateTotals.primx_steel_fibers_total_amount_needed = testObject.primx_steel_fibers_total_amount_needed;
+        // combinedEstimateTotals.primx_ultracure_blankets_total_amount_needed = testObject.primx_ultracure_blankets_total_amount_needed;
+      } // End for loop
+    } else if (combinedEstimatesArray.length == 2) {
+      console.log('*** Step #3: Inside else if ==2 statement.');
+      for (let estimate of combinedEstimatesArray) {
+        testObject.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
+        testObject.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
+        testObject.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
+        testObject.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
+        testObject.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+        console.log('Final Test Object:', testObject);
 
-    if (combinedEstimatesArray.length !== 0) {
-      console.log('Step #2: Inside if statement.');
-      // ⬇ Setting the combinedEstimateTotals to mimic the first estimate's data, so we can feed it through the current math engine without issues:
-      // setCombinedEstimatesTotals(firstCombinedEstimate);
-      // console.log(firstCombinedEstimate);
-      // ⬇ Clearing the amounts needed so we can loop through and total accurately:
-      // console.log(combinedEstimateTotals);
+        // combinedEstimateTotals.primx_cpea_total_amount_needed = testObject.primx_cpea_total_amount_needed;
+        // combinedEstimateTotals.primx_dc_total_amount_needed = testObject.primx_dc_total_amount_needed;
+        // combinedEstimateTotals.primx_flow_total_amount_needed = testObject.primx_flow_total_amount_needed;
+        // combinedEstimateTotals.primx_steel_fibers_total_amount_needed = testObject.primx_steel_fibers_total_amount_needed;
+        // combinedEstimateTotals.primx_ultracure_blankets_total_amount_needed = testObject.primx_ultracure_blankets_total_amount_needed;
+      } // End for loop
+    } // End if/else statement
 
-
-      // for (let estimate of combinedEstimatesArray) {
-      //   console.log('Estimate is:', estimate);
-      //   console.log('Estimate CPEA total amount is:', estimate.primx_cpea_total_amount_needed);
-      //   console.log('CombinedEstimateTotals CPEA amount is:', combinedEstimateTotals.primx_cpea_total_amount_needed);
-      //   // combinedEstimateTotals.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
-      //   // combinedEstimateTotals.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
-      //   // combinedEstimateTotals.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
-      //   // combinedEstimateTotals.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
-      //   // combinedEstimateTotals.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
-      // }
-      // console.log(combinedEstimateTotals.primx_cpea_total_amount_needed);
-
-      // // // ⬇ If the first estimate was imperial, we want to total the imperial packages needed:
-      // // if (combinedEstimateTotals.measurement_units == 'imperial') {
-
-      // // } // ⬇ And same for if they're metric: 
-      // // else if (combinedEstimateTotals.measurement_units == 'metric') {
-
-      // // }
-      // // for (let estimates in combinedEstimatesData) {
-      // //   // combinedEstimateTotals += estimate;
-      // // }
-      // console.log('Combined Estimate Total Is:', combinedEstimateTotals.primx_cpea_total_amount_needed);
-      // console.log('First Estimate is:', firstCombinedEstimate);
-      // have the totals +='d to the first one
-      // run that object through the machine, below
-
-      // ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values:
-      // dispatch({
-      //   type: 'HANDLE_CALCULATED_COMBINED_ESTIMATE',
-      //   payload: 
-      // });
-    } // End if statement 
-
-  }, [combinedEstimatesArray.length]); // End useEffect
+  }, [combinedEstimatesArray]); // End useEffect
   // #endregion ⬆⬆ All state variables above. 
 
 
