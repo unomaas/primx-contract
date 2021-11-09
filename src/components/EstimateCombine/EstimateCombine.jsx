@@ -39,6 +39,9 @@ export default function EstimateCombine() {
     primx_steel_fibers_total_amount_needed: 0,
     primx_ultracure_blankets_total_amount_needed: 0
   });
+
+  const [mathContainerPreMachine, setMathContainerPreMachine] = useState({});
+
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
   const dispatch = useDispatch();
@@ -97,7 +100,7 @@ export default function EstimateCombine() {
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
   );
   // When the page loads with the Estimate Number queries, run this to see loop through the requested estimates, combined their raw quantity data, and send it through the math machine:
-  useEffect(() => {
+  useEffect(async () => {
     console.log('*** Step #1: Inside useEffect.');
 
     // Setting values to zero each time it's ran: 
@@ -125,28 +128,28 @@ export default function EstimateCombine() {
         key: 'primx_cpea_total_amount_needed', 
         value: testObject.primx_cpea_total_amount_needed
       }
-    })
+    }),
     dispatch({
       type: 'SET_TEST_COMBINED_ESTIMATE',
       payload: {
         key: 'primx_dc_total_amount_needed', 
         value: testObject.primx_dc_total_amount_needed
       }
-    })
+    }),
     dispatch({
       type: 'SET_TEST_COMBINED_ESTIMATE',
       payload: {
         key: 'primx_flow_total_amount_needed', 
         value: testObject.primx_flow_total_amount_needed
       }
-    })
+    }),
     dispatch({
       type: 'SET_TEST_COMBINED_ESTIMATE',
       payload: {
         key: 'primx_steel_fibers_total_amount_needed', 
         value: testObject.primx_steel_fibers_total_amount_needed
       }
-    })
+    }), 
     dispatch({
       type: 'SET_TEST_COMBINED_ESTIMATE',
       payload: {
@@ -154,12 +157,13 @@ export default function EstimateCombine() {
         value: testObject.primx_ultracure_blankets_total_amount_needed
       }
     })
-    // dispatch({
-    //   type: 'SET_CALCULATED_COMBINED_ESTIMATE',
-    //   payload: combinedEstimateTotals
-    // })
 
-    // console.log('*** combinedEstimateTotals is:', combinedEstimateTotals);
+    // Need to figure out how to get it to a math machine.  The below won't work for some reason, I imagine because it's firing off too soon. 
+    // dispatch({
+    //   type: 'HANDLE_CALCULATED_COMBINED_ESTIMATE',
+    //   payload: combinedEstimateTotals
+    // });
+
 
   }, [combinedEstimatesArray.length]); // End useEffect
   // #endregion ⬆⬆ All state variables above. 
