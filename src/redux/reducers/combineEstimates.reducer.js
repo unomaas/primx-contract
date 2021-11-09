@@ -78,30 +78,37 @@ export const combinedEstimatesArray = (state = [], action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_COMBINED_DATA':
       return [...state, action.payload];
-    case 'CLEAR_COMBINED_ESTIMATES_DATA':
-      return [];
+    // case 'CLEAR_COMBINED_ESTIMATES_DATA':
+    //   return [];
     default:
       return state;
   } // End switch
 }; // End searchedEstimate
 
 // This reducer sets the object with the mutated/mathed data from all of hte combined estimates:
-export const setCalcCombinedEstimate = (state = {}, action) => {
+export const combinedEstimateTotals = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_CALCULATED_COMBINED_ESTIMATE':            
-        return action.payload;
+    case 'SET_TOTALS_COMBINED_ESTIMATE':
+      return action.payload;
+    case 'SET_TEST_COMBINED_ESTIMATE':
+      return {
+        ...state,
+        [action.payload.key]: action.payload.value
+      };
+    case 'CLEAR_COMBINED_ESTIMATES_DATA':
+      return {};
     default:
-        return state;
+      return state;
   } // End switch
 }; // End setCalcEstimate
 
 // This reducer sets the object with the mutated/mathed data from all of hte combined estimates:
-export const combinedEstimateTotals = (state = {}, action) => {
+export const calcCombinedEstimate = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_TOTALS_COMBINED_ESTIMATE':            
-        return action.payload;
+    case 'SET_CALCULATED_COMBINED_ESTIMATE':
+      return action.payload;
     default:
-        return state;
+      return state;
   } // End switch
 }; // End setCalcEstimate
 
@@ -112,6 +119,6 @@ export default combineReducers({
   secondCombinedEstimate,
   thirdCombinedEstimate,
   combinedEstimatesArray,
-  setCalcCombinedEstimate,
   combinedEstimateTotals,
+  calcCombinedEstimate,
 });

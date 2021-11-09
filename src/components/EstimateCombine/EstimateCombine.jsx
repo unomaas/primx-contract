@@ -48,7 +48,8 @@ export default function EstimateCombine() {
     // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'combine' }),
       // ⬇ Fetch the current companies for drop-down menu options:
-      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
+      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
+      dispatch({ type: 'CLEAR_COMBINED_ESTIMATES_DATA' })
   }, []);
   // ⬇ Run on estimate search complete:
   useEffect(() => {
@@ -98,48 +99,69 @@ export default function EstimateCombine() {
   // When the page loads with the Estimate Number queries, run this to see loop through the requested estimates, combined their raw quantity data, and send it through the math machine:
   useEffect(() => {
     console.log('*** Step #1: Inside useEffect.');
-    setTestObject({
-      primx_cpea_total_amount_needed: 0,
-      primx_dc_total_amount_needed: 0,
-      primx_flow_total_amount_needed: 0,
-      primx_steel_fibers_total_amount_needed: 0,
-      primx_ultracure_blankets_total_amount_needed: 0
-    });
-    if (combinedEstimatesArray.length == 3) {
-      console.log('*** Step #2: Inside if ==3 statement.');
-      for (let estimate of combinedEstimatesArray) {
-        testObject.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
-        testObject.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
-        testObject.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
-        testObject.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
-        testObject.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
-        console.log('Final Test Object:', testObject);
 
-        combinedEstimateTotals.primx_cpea_total_amount_needed = testObject.primx_cpea_total_amount_needed;
-        // combinedEstimateTotals.primx_dc_total_amount_needed = testObject.primx_dc_total_amount_needed;
-        // combinedEstimateTotals.primx_flow_total_amount_needed = testObject.primx_flow_total_amount_needed;
-        // combinedEstimateTotals.primx_steel_fibers_total_amount_needed = testObject.primx_steel_fibers_total_amount_needed;
-        // combinedEstimateTotals.primx_ultracure_blankets_total_amount_needed = testObject.primx_ultracure_blankets_total_amount_needed;
-      } // End for loop
-    } else if (combinedEstimatesArray.length == 2) {
-      console.log('*** Step #3: Inside else if ==2 statement.');
-      for (let estimate of combinedEstimatesArray) {
-        testObject.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
-        testObject.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
-        testObject.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
-        testObject.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
-        testObject.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
-        console.log('Final Test Object:', testObject);
+    // Setting values to zero each time it's ran: 
+    testObject.primx_cpea_total_amount_needed = 0;
+    testObject.primx_dc_total_amount_needed = 0;
+    testObject.primx_flow_total_amount_needed = 0;
+    testObject.primx_steel_fibers_total_amount_needed = 0;
+    testObject.primx_ultracure_blankets_total_amount_needed = 0;
 
-        // combinedEstimateTotals.primx_cpea_total_amount_needed = testObject.primx_cpea_total_amount_needed;
-        // combinedEstimateTotals.primx_dc_total_amount_needed = testObject.primx_dc_total_amount_needed;
-        // combinedEstimateTotals.primx_flow_total_amount_needed = testObject.primx_flow_total_amount_needed;
-        // combinedEstimateTotals.primx_steel_fibers_total_amount_needed = testObject.primx_steel_fibers_total_amount_needed;
-        // combinedEstimateTotals.primx_ultracure_blankets_total_amount_needed = testObject.primx_ultracure_blankets_total_amount_needed;
-      } // End for loop
-    } // End if/else statement
+    // Run the loop, add each to total:
+    for (let estimate of combinedEstimatesArray) {
+      testObject.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
+      testObject.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
+      testObject.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
+      testObject.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
+      testObject.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+      console.log('Loop Test Object:', testObject);
+    } // End for loop
 
-  }, [combinedEstimatesArray]); // End useEffect
+    console.log('Final Test Object:', testObject);
+
+    dispatch({
+      type: 'SET_TEST_COMBINED_ESTIMATE',
+      payload: {
+        key: 'primx_cpea_total_amount_needed', 
+        value: testObject.primx_cpea_total_amount_needed
+      }
+    })
+    dispatch({
+      type: 'SET_TEST_COMBINED_ESTIMATE',
+      payload: {
+        key: 'primx_dc_total_amount_needed', 
+        value: testObject.primx_dc_total_amount_needed
+      }
+    })
+    dispatch({
+      type: 'SET_TEST_COMBINED_ESTIMATE',
+      payload: {
+        key: 'primx_flow_total_amount_needed', 
+        value: testObject.primx_flow_total_amount_needed
+      }
+    })
+    dispatch({
+      type: 'SET_TEST_COMBINED_ESTIMATE',
+      payload: {
+        key: 'primx_steel_fibers_total_amount_needed', 
+        value: testObject.primx_steel_fibers_total_amount_needed
+      }
+    })
+    dispatch({
+      type: 'SET_TEST_COMBINED_ESTIMATE',
+      payload: {
+        key: 'primx_ultracure_blankets_total_amount_needed', 
+        value: testObject.primx_ultracure_blankets_total_amount_needed
+      }
+    })
+    // dispatch({
+    //   type: 'SET_CALCULATED_COMBINED_ESTIMATE',
+    //   payload: combinedEstimateTotals
+    // })
+
+    // console.log('*** combinedEstimateTotals is:', combinedEstimateTotals);
+
+  }, [combinedEstimatesArray.length]); // End useEffect
   // #endregion ⬆⬆ All state variables above. 
 
 
