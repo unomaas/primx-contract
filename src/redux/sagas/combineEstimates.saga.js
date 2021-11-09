@@ -24,10 +24,10 @@ function* fetchFirstEstimateQuery(action) {
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
     // Recalculate this estimates prices to be current before displaying:
-    yield put({
-      type: 'RECALCULATE_ESTIMATE',
-      payload: calculatedResponse
-    })
+    // yield put({
+    //   type: 'RECALCULATE_ESTIMATE',
+    //   payload: calculatedResponse
+    // })
     // Send this data to the first estimate reducer:
     yield put({
       type: 'SET_FIRST_ESTIMATE_QUERY_RESULT',
@@ -38,8 +38,13 @@ function* fetchFirstEstimateQuery(action) {
       type: 'SET_ESTIMATE_COMBINED_DATA',
       payload: calculatedResponse
     })
+    // Also send this data to the 4th reducer to use as the combined totals: 
+    yield put({
+      type: 'SET_TOTALS_COMBINED_ESTIMATE',
+      payload: calculatedResponse
+    })
   } catch (error) {
-    console.log('User get request failed', error);
+    console.log('fetchFirstEstimateQuery failed', error);
   }
 }
 
@@ -61,10 +66,10 @@ function* fetchSecondEstimateQuery(action) {
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
     // Recalculate this estimates prices to be current before displaying:
-    yield put({
-      type: 'RECALCULATE_ESTIMATE',
-      payload: calculatedResponse
-    })
+    // yield put({
+    //   type: 'RECALCULATE_ESTIMATE',
+    //   payload: calculatedResponse
+    // })
     yield put({
       type: 'SET_SECOND_ESTIMATE_QUERY_RESULT',
       payload: calculatedResponse
@@ -74,7 +79,7 @@ function* fetchSecondEstimateQuery(action) {
       payload: calculatedResponse
     })
   } catch (error) {
-    console.log('User get request failed', error);
+    console.log('fetchSecondEstimateQuery failed', error);
   }
 }
 
@@ -96,10 +101,10 @@ function* fetchThirdEstimateQuery(action) {
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
     // Recalculate this estimates prices to be current before displaying:
-    yield put({
-      type: 'RECALCULATE_ESTIMATE',
-      payload: calculatedResponse
-    })
+    // yield put({
+    //   type: 'RECALCULATE_ESTIMATE',
+    //   payload: calculatedResponse
+    // })
     yield put({
       type: 'SET_THIRD_ESTIMATE_QUERY_RESULT',
       payload: calculatedResponse
@@ -109,7 +114,7 @@ function* fetchThirdEstimateQuery(action) {
       payload: calculatedResponse
     })
   } catch (error) {
-    console.log('User get request failed', error);
+    console.log('fetchThirdEstimateQuery failed', error);
   }
 }
 
