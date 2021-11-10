@@ -201,13 +201,18 @@ function* fetchThreeEstimatesQuery(action) {
     // const finalCalculateResponse = yield put({ type: 'RECALCULATE_ESTIMATE', payload: talliedCombinedEstimate });
 
     // console.log('*** finalCalculateResponse', finalCalculateResponse.payload);
-    
+
+    // run the timestamp removal function on the returned array of estimates
+    const estimateWithoutTimestamps = removeTimestamps(talliedCombinedEstimate);
+    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
+    // before sending it to the reducer
+    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
 
     // console.log('*** Real Estimate is:', testEstimate.primx_cpea_total_amount_needed);
     // console.log('*** Real Test is:', estimatesArray[0].primx_cpea_total_amount_needed);
 
     // run the timestamp removal function on the returned array of estimates
-    const finalEstimateWithoutTimestamps = removeTimestamps(talliedCombinedEstimate);
+    // const finalEstimateWithoutTimestamps = removeTimestamps(talliedCombinedEstimate);
 
     // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it before sending it to the reducer
     // const finalCalculatedResponse = yield useEstimateCalculations(talliedCombinedEstimate);
