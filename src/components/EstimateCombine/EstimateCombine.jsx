@@ -51,8 +51,8 @@ export default function EstimateCombine() {
     // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'combine' }),
       // ⬇ Fetch the current companies for drop-down menu options:
-      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
-      dispatch({ type: 'CLEAR_COMBINED_ESTIMATES_DATA' })
+      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
+    // dispatch({ type: 'CLEAR_COMBINED_ESTIMATES_DATA' })
   }, []);
   // ⬇ Run on estimate search complete:
   useEffect(() => {
@@ -60,112 +60,129 @@ export default function EstimateCombine() {
     if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
       console.log('*** Step #A.');
       dispatch({
-        type: 'FETCH_FIRST_ESTIMATE_QUERY',
+        type: 'FETCH_THREE_ESTIMATES_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
-          estimate_number: first_estimate_number_combined
+          first_estimate_number: first_estimate_number_combined,
+          second_estimate_number: second_estimate_number_combined,
+          third_estimate_number: third_estimate_number_combined
         } // End payload
-      }), // End dispatch
-        dispatch({
-          type: 'FETCH_SECOND_ESTIMATE_QUERY',
-          payload: {
-            licensee_id: licensee_id_searched,
-            estimate_number: second_estimate_number_combined
-          } // End payload
-        }), // End dispatch
-        dispatch({
-          type: 'FETCH_THIRD_ESTIMATE_QUERY',
-          payload: {
-            licensee_id: licensee_id_searched,
-            estimate_number: third_estimate_number_combined
-          } // End payload
-        }) // End dispatch
+      }) // End dispatch
+      // dispatch({
+      //   type: 'FETCH_FIRST_ESTIMATE_QUERY',
+      //   payload: {
+      //     licensee_id: licensee_id_searched,
+      //     estimate_number: first_estimate_number_combined
+      //   } // End payload
+      // }), // End dispatch
+      //   dispatch({
+      //     type: 'FETCH_SECOND_ESTIMATE_QUERY',
+      //     payload: {
+      //       licensee_id: licensee_id_searched,
+      //       estimate_number: second_estimate_number_combined
+      //     } // End payload
+      //   }), // End dispatch
+      //   dispatch({
+      //     type: 'FETCH_THIRD_ESTIMATE_QUERY',
+      //     payload: {
+      //       licensee_id: licensee_id_searched,
+      //       estimate_number: third_estimate_number_combined
+      //     } // End payload
+      //   }) // End dispatch
     } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
       console.log('*** Step #B.');
       dispatch({
-        type: 'FETCH_FIRST_ESTIMATE_QUERY',
+        type: 'FETCH_THREE_ESTIMATES_QUERY', // Will make a TWO saga after THREE works. 
         payload: {
           licensee_id: licensee_id_searched,
-          estimate_number: first_estimate_number_combined
+          first_estimate_number: first_estimate_number_combined,
+          second_estimate_number: second_estimate_number_combined
         } // End payload
-      }), // End dispatch
-        dispatch({
-          type: 'FETCH_SECOND_ESTIMATE_QUERY',
-          payload: {
-            licensee_id: licensee_id_searched,
-            estimate_number: second_estimate_number_combined
-          } // End payload
-        }) // End dispatch
-    } // End if statement
-  }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
+      }) // End dispatch
+      //   dispatch({
+      //     type: 'FETCH_FIRST_ESTIMATE_QUERY',
+      //     payload: {
+      //       licensee_id: licensee_id_searched,
+      //       estimate_number: first_estimate_number_combined
+      //     } // End payload
+      //   }), // End dispatch
+      //     dispatch({
+      //       type: 'FETCH_SECOND_ESTIMATE_QUERY',
+      //       payload: {
+      //         licensee_id: licensee_id_searched,
+      //         estimate_number: second_estimate_number_combined
+      //       } // End payload
+      //     }) // End dispatch
+      } // End if statement
+    }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
   );
   // When the page loads with the Estimate Number queries, run this to see loop through the requested estimates, combined their raw quantity data, and send it through the math machine:
-  useEffect(async () => {
-    console.log('*** Step #1: Inside useEffect.');
+  // useEffect( () => {
+  //   console.log('*** Step #1: Inside useEffect.');
 
-    // Setting values to zero each time it's ran: 
-    testObject.primx_cpea_total_amount_needed = 0;
-    testObject.primx_dc_total_amount_needed = 0;
-    testObject.primx_flow_total_amount_needed = 0;
-    testObject.primx_steel_fibers_total_amount_needed = 0;
-    testObject.primx_ultracure_blankets_total_amount_needed = 0;
+  //   // Setting values to zero each time it's ran: 
+  //   testObject.primx_cpea_total_amount_needed = 0;
+  //   testObject.primx_dc_total_amount_needed = 0;
+  //   testObject.primx_flow_total_amount_needed = 0;
+  //   testObject.primx_steel_fibers_total_amount_needed = 0;
+  //   testObject.primx_ultracure_blankets_total_amount_needed = 0;
 
-    // Run the loop, add each to total:
-    for (let estimate of combinedEstimatesArray) {
-      testObject.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
-      testObject.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
-      testObject.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
-      testObject.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
-      testObject.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
-      console.log('Loop Test Object:', testObject);
-    } // End for loop
+  //   // Run the loop, add each to total:
+  //   for (let estimate of combinedEstimatesArray) {
+  //     testObject.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
+  //     testObject.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
+  //     testObject.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
+  //     testObject.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
+  //     testObject.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+  //     console.log('Loop Test Object:', testObject);
+  //   } // End for loop
 
-    console.log('Final Test Object:', testObject);
+  //   console.log('Final Test Object:', testObject);
 
-    dispatch({
-      type: 'SET_TEST_COMBINED_ESTIMATE',
-      payload: {
-        key: 'primx_cpea_total_amount_needed', 
-        value: testObject.primx_cpea_total_amount_needed
-      }
-    }),
-    dispatch({
-      type: 'SET_TEST_COMBINED_ESTIMATE',
-      payload: {
-        key: 'primx_dc_total_amount_needed', 
-        value: testObject.primx_dc_total_amount_needed
-      }
-    }),
-    dispatch({
-      type: 'SET_TEST_COMBINED_ESTIMATE',
-      payload: {
-        key: 'primx_flow_total_amount_needed', 
-        value: testObject.primx_flow_total_amount_needed
-      }
-    }),
-    dispatch({
-      type: 'SET_TEST_COMBINED_ESTIMATE',
-      payload: {
-        key: 'primx_steel_fibers_total_amount_needed', 
-        value: testObject.primx_steel_fibers_total_amount_needed
-      }
-    }), 
-    dispatch({
-      type: 'SET_TEST_COMBINED_ESTIMATE',
-      payload: {
-        key: 'primx_ultracure_blankets_total_amount_needed', 
-        value: testObject.primx_ultracure_blankets_total_amount_needed
-      }
-    })
+  //   dispatch({
+  //     type: 'SET_TEST_COMBINED_ESTIMATE',
+  //     payload: {
+  //       key: 'primx_cpea_total_amount_needed', 
+  //       value: testObject.primx_cpea_total_amount_needed
+  //     }
+  //   }),
+  //   dispatch({
+  //     type: 'SET_TEST_COMBINED_ESTIMATE',
+  //     payload: {
+  //       key: 'primx_dc_total_amount_needed', 
+  //       value: testObject.primx_dc_total_amount_needed
+  //     }
+  //   }),
+  //   dispatch({
+  //     type: 'SET_TEST_COMBINED_ESTIMATE',
+  //     payload: {
+  //       key: 'primx_flow_total_amount_needed', 
+  //       value: testObject.primx_flow_total_amount_needed
+  //     }
+  //   }),
+  //   dispatch({
+  //     type: 'SET_TEST_COMBINED_ESTIMATE',
+  //     payload: {
+  //       key: 'primx_steel_fibers_total_amount_needed', 
+  //       value: testObject.primx_steel_fibers_total_amount_needed
+  //     }
+  //   }), 
+  //   dispatch({
+  //     type: 'SET_TEST_COMBINED_ESTIMATE',
+  //     payload: {
+  //       key: 'primx_ultracure_blankets_total_amount_needed', 
+  //       value: testObject.primx_ultracure_blankets_total_amount_needed
+  //     }
+  //   })
 
-    // Need to figure out how to get it to a math machine.  The below won't work for some reason, I imagine because it's firing off too soon. 
-    // dispatch({
-    //   type: 'HANDLE_CALCULATED_COMBINED_ESTIMATE',
-    //   payload: combinedEstimateTotals
-    // });
+  //   // Need to figure out how to get it to a math machine.  The below won't work for some reason, I imagine because it's firing off too soon. 
+  //   // dispatch({
+  //   //   type: 'HANDLE_CALCULATED_COMBINED_ESTIMATE',
+  //   //   payload: combinedEstimateTotals
+  //   // });
 
 
-  }, [combinedEstimatesArray.length]); // End useEffect
+  // }, [combinedEstimatesArray.length]); // End useEffect
   // #endregion ⬆⬆ All state variables above. 
 
 
