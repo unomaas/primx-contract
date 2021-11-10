@@ -4,10 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
-import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
 
