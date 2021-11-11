@@ -183,8 +183,8 @@ function* fetchThreeEstimatesQuery(action) {
     }
     console.log('*** totalsObjectHolder is:', totalsObjectHolder);
 
-    // Creating a dummy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
-    // let talliedCombinedEstimate = estimatesArray[0];
+    // Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
+    // The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
     let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
     console.log('*** Test Estimate is:', talliedCombinedEstimate);
     // Setting the tallied amount to the object to feed through the math machine: 
@@ -201,11 +201,11 @@ function* fetchThreeEstimatesQuery(action) {
     console.log('*** Totals Estimate is:', talliedCombinedEstimate.primx_flow_total_amount_needed);
     console.log('*** Totals Estimate is:', talliedCombinedEstimate.primx_steel_fibers_total_amount_needed);
     console.log('*** Totals Estimate is:', talliedCombinedEstimate.primx_ultracure_blankets_total_amount_needed);
-    console.log('*** Totals Estimate is:', talliedCombinedEstimate);
+    console.log('*** Totals Estimate is:', talliedCombinedEstimate.primx_cpea_total_amount_needed);
 
-    estimatesArray[0].primx_cpea_total_amount_needed = 0;
-    console.log('*** estimatesArray[0] is, ', estimatesArray[0].primx_cpea_total_amount_needed);
-    console.log('*** talliedCombinedEstimate[0] is, ', talliedCombinedEstimate.primx_cpea_total_amount_needed);
+    // estimatesArray[0].primx_cpea_total_amount_needed = 0;
+    // console.log('*** estimatesArray[0] is, ', estimatesArray[0].primx_cpea_total_amount_needed);
+    // console.log('*** talliedCombinedEstimate[0] is, ', talliedCombinedEstimate.primx_cpea_total_amount_needed);
     
 
     // const finalCalculateResponse = yield put({ type: 'RECALCULATE_ESTIMATE', payload: talliedCombinedEstimate });
@@ -213,14 +213,14 @@ function* fetchThreeEstimatesQuery(action) {
     // console.log('*** finalCalculateResponse', finalCalculateResponse.payload);
 
     // run the timestamp removal function on the returned array of estimates
-    // const estimateWithoutTimestamps = removeTimestamps([talliedCombinedEstimate]);
-    // console.log('*** estimateWithoutTimestamps', estimateWithoutTimestamps[0]);
+    const estimateWithoutTimestamps1 = removeTimestamps([talliedCombinedEstimate]);
+    console.log('*** estimateWithoutTimestamps', estimateWithoutTimestamps1[0].primx_cpea_total_amount_needed);
     
     // // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
     // // before sending it to the reducer
-    // const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    const calculatedResponse1 = yield useEstimateCalculations(estimateWithoutTimestamps1[0]);
 
-    // console.log('*** FINAL Estimate is:', calculatedResponse);
+    console.log('*** FINAL Estimate is:', calculatedResponse1.primx_cpea_total_amount_needed);
     // console.log('*** Real Test is:', estimatesArray[0].primx_cpea_total_amount_needed);
 
     // run the timestamp removal function on the returned array of estimates
