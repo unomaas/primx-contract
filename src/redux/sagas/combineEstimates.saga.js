@@ -87,6 +87,8 @@ function* fetchThreeEstimatesQuery(action) {
 
 // Saga Worker to create a GET request for combining two estimates. 
 function* fetchTwoEstimatesQuery(action) {
+  // ⬇ Clearing the third estimate reducer, just in case it has zombie data from a prior search:
+  yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" });
   // ⬇ Declaring variables:
   const licenseeId = action.payload.licensee_id;
   const firstEstimateNumber = action.payload.first_estimate_number;
@@ -117,8 +119,6 @@ function* fetchTwoEstimatesQuery(action) {
     // ⬇ Sending each estimate to a reducer to display on the combine table:
     yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: estimatesArray[0] });
     yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: estimatesArray[1] });
-    // ⬇ Clearing the third estimate reducer, just in case it has zombie data from a prior search:
-    yield put({ type: "CLEAR_COMBINED_ESTIMATE" });
     // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
     const totalsObjectHolder = {
       primx_cpea_total_amount_needed: 0,
