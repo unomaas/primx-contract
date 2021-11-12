@@ -110,7 +110,7 @@ export default function EstimateCombine() {
   }; // End handleSubmit
   //#endregion ⬆⬆ Event handlers above. 
 
-
+  console.log('showcombinedtable:', showCombinedTable)
   // ⬇ Rendering below:
   return (
     <div className="EstimateCreate-wrapper">
@@ -218,7 +218,8 @@ export default function EstimateCombine() {
       {/* End estimate search form */}
 
       {/* Conditional rendering for showing the info graphic or showing the combined estimates table. */}
-      {showCombinedTable ? (
+      {!showCombinedTable ? (
+        // If they haven't searched, show these instructions:
         <Grid container
           spacing={2}
           justifyContent="center"
@@ -234,7 +235,7 @@ export default function EstimateCombine() {
               </p>
               The first and second estimate numbers are required to use this feature.  The third estimate number is optional.
               <p>
-                <b>Please be aware that whatever the Shipping/Contact Information will default to the FIRST estimate number entered, that will be the information used for the other estimate(s).</b>
+                <b>Please be aware that whatever the Shipping/Contact Information for the FIRST estimate number entered, will be the information used for the other estimate(s).</b>
               </p>
               <p>
                 All estimates MUST go to the same shipping location in order to qualify for this reduced rate.
@@ -242,11 +243,11 @@ export default function EstimateCombine() {
               <p>
                 If you need to edit the information for any of the estimates used, that must be done via the "Search For Estimate" page.
               </p>
-              <br />
             </Paper>
           </Grid>
         </Grid>
       ) : (
+        // If they have searched, show the table: 
         <EstimateCombineTable />
       )} {/* End conditional rendering */}
     </div >
