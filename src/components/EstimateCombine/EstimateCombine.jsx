@@ -37,7 +37,8 @@ export default function EstimateCombine() {
     // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'combine' }),
       // ⬇ Fetch the current companies for drop-down menu options:
-      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
+      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
+      dispatch({ type: 'HIDE_COMBINED_TABLE' })
     // dispatch({ type: 'CLEAR_COMBINED_ESTIMATES_DATA' })
   }, []); // End useEffect
   // ⬇ Run on estimate search complete:
