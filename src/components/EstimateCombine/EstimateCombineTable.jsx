@@ -27,6 +27,8 @@ export default function EstimateCombineTable() {
   // ⬇ Used for page navigation:
   const dispatch = useDispatch();
   const history = useHistory();
+  // ⬇ hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates the Submit Order button.
+  const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
   // ⬇ Used for handle the state of how many tables to show:
   const [tableWidth, setTableWidth] = useState(4);
   // ⬇ Checks if the third estimate is populated, and if so, adjusts the table size to display accordingly:
@@ -38,6 +40,51 @@ export default function EstimateCombineTable() {
     } // End if/else
   }, [thirdEstimate]); // End useEffect 
   //#endregion ⬆⬆ All state variables above. 
+
+
+  //#region ⬇⬇ Event handlers below:
+  /** ⬇ handleRecalculateCosts:
+   * Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
+   */
+  const handleRecalculateCosts = () => {
+    // ⬇ Attach history from useHistory to the searchResult object to allow navigation from inside the saga:
+    calcCombinedEstimate.history = history;
+    // ⬇ Needs to GET shipping information and pricing information before recalculating
+    dispatch({ type: 'RECALCULATE_ESTIMATE', payload: calcCombinedEstimate });
+    dispatch({ type: 'GET_RECALCULATE_INFO' });
+  } // End handleRecalculateCosts
+
+  /** ⬇ handlePlaceOrder:
+   * Click handler for the Place Order button. 
+   */
+  const handlePlaceOrder = () => {
+    // // ⬇ If they haven't entered a PO number, pop up an error helperText:
+    // if (poNumber == "") {
+    //   setPoNumError("Please enter a P.O. Number.")
+    //   // ⬇ If they have entered a PO number, proceed with order submission:
+    // } else {
+    //   swal({
+    //     title: "This order has been submitted! Your PrimX representative will be in touch.",
+    //     text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
+    //     icon: "success",
+    //     buttons: "I understand",
+    //   }) // End swal
+    //   // ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
+    //   // .then(() => {
+    //   //   window.print();
+    //   // }); // End swal
+    //   dispatch({
+    //     type: 'EDIT_PLACE_ORDER',
+    //     payload: {
+    //       id: searchResult.id,
+    //       po_number: poNumber,
+    //       licensee_id: searchResult.licensee_id,
+    //       estimate_number: searchResult.estimate_number
+    //     } // End payload
+    //   }) // End dispatch
+    // } // End if/else.
+  } // End handlePlaceOrder
+  //#endregion ⬆⬆ Event handlers above. 
 
 
   // ⬇ Rendering below:
@@ -52,7 +99,8 @@ export default function EstimateCombineTable() {
           {/* 4 if doesn't exist, or 6 if does */}
           <Paper elevation={3}>
             <TableContainer>
-              <h3>Licensee & Project Information</h3>
+              <h3>Estimate {firstEstimate.estimate_number}</h3>
+              <h4>Licensee & Project Information</h4>
               <Table size="small">
                 <TableBody>
 
@@ -168,6 +216,29 @@ export default function EstimateCombineTable() {
                     </TableCell>
                   </TableRow>
 
+                  <TableRow>
+                    <TableCell><b>First Estimate Number:</b></TableCell>
+                    <TableCell>
+                      {firstEstimate?.estimate_number}
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Second Estimate Number:</b></TableCell>
+                    <TableCell>
+                      {secondEstimate?.estimate_number}
+                    </TableCell>
+                  </TableRow>
+
+                  {/* Conditional rendering to only show third estimate number if it exists: */}
+                  {thirdEstimate.estimate_number &&
+                    <TableRow>
+                      <TableCell><b>Third Estimate Number:</b></TableCell>
+                      <TableCell>
+                        {thirdEstimate?.estimate_number}
+                      </TableCell>
+                    </TableRow>
+                  } {/* End conditional rendering */}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -182,7 +253,8 @@ export default function EstimateCombineTable() {
             <Grid item xs={tableWidth}>
               <Paper elevation={3}>
                 <TableContainer>
-                  <h3>Estimate #1 Quantity Calculations</h3>
+                  <h3>Estimate {firstEstimate.estimate_number}</h3>
+                  <h4>Quantity Calculations</h4>
                   <Table size="small">
                     <TableBody>
 
@@ -245,7 +317,7 @@ export default function EstimateCombineTable() {
                     </TableBody>
                   </Table>
 
-                  <h3>Estimate #1 Thickened Edge Calculator</h3>
+                  <h4>Thickened Edge Calculator</h4>
                   <p>If applicable, for slabs under 6in.</p>
                   <Table size="small">
 
@@ -300,13 +372,13 @@ export default function EstimateCombineTable() {
                     </TableBody>
                   </Table>
 
-                  <h3>Estimate #1 Materials Table</h3>
+                  <h4>Materials Table</h4>
                   <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-                        <TableCell><b>Total Amount Needed</b></TableCell>
+                        <TableCell><b>Amount Needed</b></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -369,7 +441,8 @@ export default function EstimateCombineTable() {
             <Grid item xs={tableWidth}>
               <Paper elevation={3}>
                 <TableContainer>
-                  <h3>Estimate #2 Quantity Calculations</h3>
+                  <h3>Estimate {secondEstimate.estimate_number}</h3>
+                  <h4>Quantity Calculations</h4>
                   <Table size="small">
                     <TableBody>
 
@@ -432,7 +505,7 @@ export default function EstimateCombineTable() {
                     </TableBody>
                   </Table>
 
-                  <h3>Estimate #2 Thickened Edge Calculator</h3>
+                  <h4>Thickened Edge Calculator</h4>
                   <p>If applicable, for slabs under 6in.</p>
                   <Table size="small">
 
@@ -487,13 +560,13 @@ export default function EstimateCombineTable() {
                     </TableBody>
                   </Table>
 
-                  <h3>Estimate #2 Materials Table</h3>
+                  <h4>Materials Table</h4>
                   <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-                        <TableCell><b>Total Amount Needed</b></TableCell>
+                        <TableCell><b>Amount Needed</b></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -560,7 +633,8 @@ export default function EstimateCombineTable() {
                   <Paper elevation={3}>
                     <TableContainer>
 
-                      <h3>Estimate #3 Quantity Calculations</h3>
+                      <h3>Estimate {thirdEstimate.estimate_number}</h3>
+                      <h4>Quantity Calculations</h4>
                       <Table size="small">
                         <TableBody>
 
@@ -623,7 +697,7 @@ export default function EstimateCombineTable() {
                         </TableBody>
                       </Table>
 
-                      <h3>Estimate #3 Thickened Edge Calculator</h3>
+                      <h4>Thickened Edge Calculator</h4>
                       <p>If applicable, for slabs under 6in.</p>
                       <Table size="small">
 
@@ -679,13 +753,13 @@ export default function EstimateCombineTable() {
                         </TableBody>
                       </Table>
 
-                      <h3>Estimate #3 Materials Table</h3>
+                      <h4>Materials Table</h4>
                       <Table size="small">
                         <TableHead>
                           <TableRow>
                             <TableCell></TableCell>
                             <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-                            <TableCell><b>Total Amount Needed</b></TableCell>
+                            <TableCell><b>Amount Needed</b></TableCell>
                           </TableRow>
                         </TableHead>
 
@@ -879,7 +953,7 @@ export default function EstimateCombineTable() {
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per m³)</b></TableCell>
-                        <TableCell><b>Total Amount Needed</b></TableCell>
+                        <TableCell><b>Amount Needed</b></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -1067,7 +1141,7 @@ export default function EstimateCombineTable() {
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per m³)</b></TableCell>
-                        <TableCell><b>Total Amount Needed</b></TableCell>
+                        <TableCell><b>Amount Needed</b></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -1259,7 +1333,7 @@ export default function EstimateCombineTable() {
                           <TableRow>
                             <TableCell></TableCell>
                             <TableCell><b>Dosage Rate (per m³)</b></TableCell>
-                            <TableCell><b>Total Amount Needed</b></TableCell>
+                            <TableCell><b>Amount Needed</b></TableCell>
                           </TableRow>
                         </TableHead>
 
@@ -1464,48 +1538,53 @@ export default function EstimateCombineTable() {
                     <TableRow>
                       <TableCell colSpan={7} align="right">
                         <section className="removeInPrint">
-                          {/* Edit Estimate Button:
-                                <Button
-                                  variant="contained"
-                                  // color="secondary"
-                                  onClick={handleEdit}
-                                  className={classes.LexendTeraFont11}
-                                >
-                                  Edit This Estimate
-                                </Button> */}
-                          &nbsp; &nbsp;
 
-                          {/* Recalculate Costs Button:
-                                <Button
-                                  variant="contained"
-                                  color="primary"
-                                  onClick={handleRecalculateCosts}
-                                  className={classes.LexendTeraFont11}
-                                >
-                                  Recalculate Costs
-                                </Button> */}
-                          &nbsp; &nbsp;
-
-                          <TextField
-                            onChange={(event) => setPoNumber(event.target.value)}
-                            size="small"
-                            label="PO Number"
-                            helperText={poNumError}
-                          >
-                          </TextField>
-
-                          &nbsp; &nbsp;
-
-                          {/* Submit Order Button */}
-
+                          {/* Recalculate Costs Button: */}
                           <Button
                             variant="contained"
-                            color="secondary"
-                            // onClick={handlePlaceOrder}
+                            color="primary"
+                            onClick={handleRecalculateCosts}
                             className={classes.LexendTeraFont11}
                           >
-                            Place Order
+                            Recalculate Costs
                           </Button>
+                          &nbsp; &nbsp;
+                          {hasRecalculated ?
+                            <>
+                              <TextField
+                                onChange={(event) => setPoNumber(event.target.value)}
+                                size="small"
+                                label="PO Number"
+                                helperText={poNumError}
+                              >
+                              </TextField>
+                            </> :
+                            <>Recalculate costs before placing order.</>
+                          }
+                          &nbsp; &nbsp;
+
+                          {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
+                          {hasRecalculated ?
+                            <>
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={handlePlaceOrder}
+                                className={classes.LexendTeraFont11}
+                              >
+                                Place Order
+                              </Button>
+                            </> :
+                            <>
+                              <Button
+                                variant="contained"
+                                disabled
+                                className={classes.LexendTeraFont11}
+                              >
+                                Place Order
+                              </Button>
+                            </>
+                          }
                         </section>
                       </TableCell>
                     </TableRow>
