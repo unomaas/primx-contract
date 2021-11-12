@@ -14,23 +14,31 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 export default function EstimateCombine() {
   //#region ⬇⬇ All state variables below:
-  const companies = useSelector(store => store.companies);
-  const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
-  // ⬇ calcCombinedEstimate is the object returned by seraching for multiple estimates to combined, with updated quotes. 
-  const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
-  const [error, setError] = useState(false);
-  const classes = useStyles(); // Keep in for MUI styling. 
-  const [selectError, setSelectError] = useState("");
-  // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
+  // ⬇ Used for page navigation:
   const dispatch = useDispatch();
   const history = useHistory();
-  // ⬇ Run on page load:
+  // ⬇ Used for company drop-down select:
+  const companies = useSelector(store => store.companies);
+  // ⬇ Used for the combine query:
+  const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
+  // ⬇ calcCombinedEstimate is the object returned by searching for multiple estimates to combined, with updated quotes. 
+  const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
+  // ⬇ showCombinedTable handles the state of showing table: 
+  const showCombinedTable = useSelector(store => store.combineEstimatesReducer.showCombinedTable);
+  // ⬇ Sets the error state for a faulty search:
+  const [error, setError] = useState(false);
+  const [selectError, setSelectError] = useState("");
+  // ⬇ Deprecated, used for Styling MUI components. 
+  const classes = useStyles(); // Keep in for MUI styling. 
+  // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
+  const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
+  // ⬇ Run once on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'combine' }),
       // ⬇ Fetch the current companies for drop-down menu options:
-      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
+      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
+      dispatch({ type: 'HIDE_COMBINED_TABLE' })
     // dispatch({ type: 'CLEAR_COMBINED_ESTIMATES_DATA' })
   }, []); // End useEffect
   // ⬇ Run on estimate search complete:
@@ -209,29 +217,38 @@ export default function EstimateCombine() {
       <br />
       {/* End estimate search form */}
 
-      {/* Conditionally render entire code block below if the user has successfully combined estimates */}
-      {/* {combinedEstimatesData[0] &&
-        <EstimateCombineTable />
-      } */}
-
-      {/* 
-      {combinedResult.estimate_number ? (
-        <>
-          <p>
-            This feature allows you to combine up to three (3) existing estimates into one order for a reduced shipping cost. <br />
-            The first and second estimate numbers are required to use this feature.  The third estimate number is optional. <br />
-            All estimates MUST go to the same shipping location in order to qualify for this reduced rate. <br />
-            <b>Please be aware that whatever the Shipping/Contact Information is for the FIRST estimate number entered, that will be the information used for the other estimate(s).</b> <br />
-            If you need to edit the information for any of the estimates used, that must be done in the "Search For Estimate" page.
-          </p>
-        </>
+      {/* Conditional rendering for showing the info graphic or showing the combined estimates table. */}
+      {showCombinedTable ? (
+        <Grid container
+          spacing={2}
+          justifyContent="center"
+        >
+          <Grid item xs={12}>
+            <Paper
+              elevation={3}
+              style={{ padding: '1em 2em' }}
+            >
+              <h3>Combine Multiple Estimates:</h3>
+              <p>
+                This feature allows you to combine up to three (3) existing estimates into one order for a reduced shipping cost.
+              </p>
+              The first and second estimate numbers are required to use this feature.  The third estimate number is optional.
+              <p>
+                <b>Please be aware that whatever the Shipping/Contact Information will default to the FIRST estimate number entered, that will be the information used for the other estimate(s).</b>
+              </p>
+              <p>
+                All estimates MUST go to the same shipping location in order to qualify for this reduced rate.
+              </p>
+              <p>
+                If you need to edit the information for any of the estimates used, that must be done via the "Search For Estimate" page.
+              </p>
+              <br />
+            </Paper>
+          </Grid>
+        </Grid>
       ) : (
         <EstimateCombineTable />
-      )}
-      
-      */}
-
-
-    </div>
+      )} {/* End conditional rendering */}
+    </div >
   )
 }
