@@ -27,6 +27,8 @@ export default function EstimateCombineTable() {
   // ⬇ Used for page navigation:
   const dispatch = useDispatch();
   const history = useHistory();
+  // ⬇ hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates the Submit Order button.
+  const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
   // ⬇ Used for handle the state of how many tables to show:
   const [tableWidth, setTableWidth] = useState(4);
   // ⬇ Checks if the third estimate is populated, and if so, adjusts the table size to display accordingly:
@@ -52,7 +54,8 @@ export default function EstimateCombineTable() {
           {/* 4 if doesn't exist, or 6 if does */}
           <Paper elevation={3}>
             <TableContainer>
-              <h3>Licensee & Project Information</h3>
+              <h3>Estimate {firstEstimate.estimate_number}</h3>
+              <h4>Licensee & Project Information</h4>
               <Table size="small">
                 <TableBody>
 
@@ -168,6 +171,29 @@ export default function EstimateCombineTable() {
                     </TableCell>
                   </TableRow>
 
+                  <TableRow>
+                    <TableCell><b>First Estimate Number:</b></TableCell>
+                    <TableCell>
+                      {firstEstimate?.estimate_number}
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell><b>Second Estimate Number:</b></TableCell>
+                    <TableCell>
+                      {secondEstimate?.estimate_number}
+                    </TableCell>
+                  </TableRow>
+
+                  {/* Conditional rendering to only show third estimate number if it exists: */}
+                  {thirdEstimate.estimate_number &&
+                    <TableRow>
+                      <TableCell><b>Third Estimate Number:</b></TableCell>
+                      <TableCell>
+                        {thirdEstimate?.estimate_number}
+                      </TableCell>
+                    </TableRow>
+                  } {/* End conditional rendering */}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -182,7 +208,8 @@ export default function EstimateCombineTable() {
             <Grid item xs={tableWidth}>
               <Paper elevation={3}>
                 <TableContainer>
-                  <h3>Estimate #1 Quantity Calculations</h3>
+                  <h3>Estimate {firstEstimate.estimate_number}</h3>
+                  <h4>Quantity Calculations</h4>
                   <Table size="small">
                     <TableBody>
 
@@ -245,7 +272,7 @@ export default function EstimateCombineTable() {
                     </TableBody>
                   </Table>
 
-                  <h3>Estimate #1 Thickened Edge Calculator</h3>
+                  <h4>Thickened Edge Calculator</h4>
                   <p>If applicable, for slabs under 6in.</p>
                   <Table size="small">
 
@@ -300,13 +327,13 @@ export default function EstimateCombineTable() {
                     </TableBody>
                   </Table>
 
-                  <h3>Estimate #1 Materials Table</h3>
+                  <h4>Materials Table</h4>
                   <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-                        <TableCell><b>Total Amount Needed</b></TableCell>
+                        <TableCell><b>Amount Needed</b></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -369,7 +396,8 @@ export default function EstimateCombineTable() {
             <Grid item xs={tableWidth}>
               <Paper elevation={3}>
                 <TableContainer>
-                  <h3>Estimate #2 Quantity Calculations</h3>
+                  <h3>Estimate {secondEstimate.estimate_number}</h3>
+                  <h4>Quantity Calculations</h4>
                   <Table size="small">
                     <TableBody>
 
@@ -432,7 +460,7 @@ export default function EstimateCombineTable() {
                     </TableBody>
                   </Table>
 
-                  <h3>Estimate #2 Thickened Edge Calculator</h3>
+                  <h4>Thickened Edge Calculator</h4>
                   <p>If applicable, for slabs under 6in.</p>
                   <Table size="small">
 
@@ -487,13 +515,13 @@ export default function EstimateCombineTable() {
                     </TableBody>
                   </Table>
 
-                  <h3>Estimate #2 Materials Table</h3>
+                  <h4>Materials Table</h4>
                   <Table size="small">
                     <TableHead>
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-                        <TableCell><b>Total Amount Needed</b></TableCell>
+                        <TableCell><b>Amount Needed</b></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -560,7 +588,8 @@ export default function EstimateCombineTable() {
                   <Paper elevation={3}>
                     <TableContainer>
 
-                      <h3>Estimate #3 Quantity Calculations</h3>
+                      <h3>Estimate {thirdEstimate.estimate_number}</h3>
+                      <h4>Quantity Calculations</h4>
                       <Table size="small">
                         <TableBody>
 
@@ -623,7 +652,7 @@ export default function EstimateCombineTable() {
                         </TableBody>
                       </Table>
 
-                      <h3>Estimate #3 Thickened Edge Calculator</h3>
+                      <h4>Thickened Edge Calculator</h4>
                       <p>If applicable, for slabs under 6in.</p>
                       <Table size="small">
 
@@ -679,13 +708,13 @@ export default function EstimateCombineTable() {
                         </TableBody>
                       </Table>
 
-                      <h3>Estimate #3 Materials Table</h3>
+                      <h4>Materials Table</h4>
                       <Table size="small">
                         <TableHead>
                           <TableRow>
                             <TableCell></TableCell>
                             <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-                            <TableCell><b>Total Amount Needed</b></TableCell>
+                            <TableCell><b>Amount Needed</b></TableCell>
                           </TableRow>
                         </TableHead>
 
@@ -879,7 +908,7 @@ export default function EstimateCombineTable() {
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per m³)</b></TableCell>
-                        <TableCell><b>Total Amount Needed</b></TableCell>
+                        <TableCell><b>Amount Needed</b></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -1067,7 +1096,7 @@ export default function EstimateCombineTable() {
                       <TableRow>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per m³)</b></TableCell>
-                        <TableCell><b>Total Amount Needed</b></TableCell>
+                        <TableCell><b>Amount Needed</b></TableCell>
                       </TableRow>
                     </TableHead>
 
@@ -1259,7 +1288,7 @@ export default function EstimateCombineTable() {
                           <TableRow>
                             <TableCell></TableCell>
                             <TableCell><b>Dosage Rate (per m³)</b></TableCell>
-                            <TableCell><b>Total Amount Needed</b></TableCell>
+                            <TableCell><b>Amount Needed</b></TableCell>
                           </TableRow>
                         </TableHead>
 
