@@ -7,6 +7,7 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import useCombineEstimateCalculations from '../../hooks/useCombineEstimateCalculations';
 import removeTimestamps from '../../hooks/removeTimestamps';
 
+
 // ⬇ Saga Worker to create a GET request for combining three estimates. 
 function* fetchThreeEstimatesQuery(action) {
   // ⬇ Declaring variables:
@@ -75,11 +76,12 @@ function* fetchThreeEstimatesQuery(action) {
     yield put({
       type: "SET_CALCULATED_COMBINED_ESTIMATE",
       payload: calculatedResponse
-    }); // End dispatch
+    }); // End yield put
   } catch (error) {
-    console.log('fetchThreeEstimatesQuery failed', error);
+    console.log('fetchThreeEstimatesQuery failed:', error);
   } // End try/catch
 } // End fetchThreeEstimatesQuery Saga
+
 
 // Saga Worker to create a GET request for combining two estimates. 
 function* fetchTwoEstimatesQuery(action) {
@@ -145,14 +147,14 @@ function* fetchTwoEstimatesQuery(action) {
     // ⬇ If a response came back successfully, there is one estimate object in an array. 
     // ⬇ Run the updated Combine Estimates Calc on it:
     const calculatedResponse = yield useCombineEstimateCalculations(estimateWithoutTimestamps[0]);
-    yield put({
-      type: "SET_CALCULATED_COMBINED_ESTIMATE",
-      payload: calculatedResponse
-    }); // End dispatch
+    // ⬇ Send that data to the reducer, and set the show table to true:
+    yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });
+    yield put({ type: "SHOW_COMBINED_TABLE" });
   } catch (error) {
-    console.log('fetchThreeEstimatesQuery failed', error);
+    console.log('fetchTwoEstimatesQuery failed:', error);
   } // End try/catch
 } // End fetchTwoEstimatesQuery Saga
+
 
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
@@ -160,5 +162,6 @@ function* combineEstimatesSaga() {
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
 } // End combineEstimatesSaga
+
 
 export default combineEstimatesSaga;
