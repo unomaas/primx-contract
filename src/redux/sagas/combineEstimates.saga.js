@@ -73,10 +73,12 @@ function* fetchThreeEstimatesQuery(action) {
     // ⬇ If a response came back successfully, there is one estimate object in an array. 
     // ⬇ Run the updated Combine Estimates Calc on it:
     const calculatedResponse = yield useCombineEstimateCalculations(estimateWithoutTimestamps[0]);
+    // ⬇ Send that data to the reducer, and set the show table to true:
     yield put({
       type: "SET_CALCULATED_COMBINED_ESTIMATE",
       payload: calculatedResponse
     }); // End yield put
+    yield put({ type: "SHOW_COMBINED_TABLE" });
   } catch (error) {
     console.log('fetchThreeEstimatesQuery failed:', error);
   } // End try/catch
