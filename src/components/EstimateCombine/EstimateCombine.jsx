@@ -6,60 +6,43 @@ import EstimateCombineTable from './EstimateCombineTable';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
-import { firstCombinedEstimate, secondCombinedEstimate, thirdCombinedEstimate } from '../../redux/reducers/combineEstimates.reducer';
 //#endregion ⬆⬆ All document setup above.
 
 
 export default function EstimateCombine() {
   //#region ⬇⬇ All state variables below:
-  const companies = useSelector(store => store.companies);
-  // ⬇ searchResult below is an estimate object searched from the DB that has already been mutated by the useEstimateCalculations function.
-  const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
-  // const combinedResult = useSelector(store => store.estimatesReducer.combinedEstimate);
-
-  const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
-  const firstCombinedEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
-  const secondCombinedEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
-  const thirdCombinedEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
-  const combinedEstimatesArray = useSelector(store => store.combineEstimatesReducer.combinedEstimatesArray);
-  const combinedEstimateTotals = useSelector(store => store.combineEstimatesReducer.combinedEstimateTotals);
-
-
-  const [error, setError] = useState(false);
-  const classes = useStyles(); // Keep in for MUI styling. 
-  const [selectError, setSelectError] = useState("");
-
-  const [testObject, setTestObject] = useState({
-    primx_cpea_total_amount_needed: 0,
-    primx_dc_total_amount_needed: 0,
-    primx_flow_total_amount_needed: 0,
-    primx_steel_fibers_total_amount_needed: 0,
-    primx_ultracure_blankets_total_amount_needed: 0
-  });
-
-  const [mathContainerPreMachine, setMathContainerPreMachine] = useState({});
-
-  // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
+  // ⬇ Used for page navigation:
   const dispatch = useDispatch();
   const history = useHistory();
-  // ⬇ Run on page load:
+  // ⬇ Used for company drop-down select:
+  const companies = useSelector(store => store.companies);
+  // ⬇ Used for the combine query:
+  const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
+  // ⬇ calcCombinedEstimate is the object returned by searching for multiple estimates to combined, with updated quotes. 
+  const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
+  // ⬇ showCombinedTable handles the state of showing table: 
+  const showCombinedTable = useSelector(store => store.combineEstimatesReducer.showCombinedTable);
+  // ⬇ Sets the error state for a faulty search:
+  const [error, setError] = useState(false);
+  const [selectError, setSelectError] = useState("");
+  // ⬇ Deprecated, used for Styling MUI components. 
+  const classes = useStyles(); // Keep in for MUI styling. 
+  // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
+  const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
+  // ⬇ Run once on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'combine' }),
       // ⬇ Fetch the current companies for drop-down menu options:
       dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
-    // dispatch({ type: 'CLEAR_COMBINED_ESTIMATES_DATA' })
-  }, []);
+  }, []); // End useEffect
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB:
     if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
-      console.log('*** Step #A.');
       dispatch({
         type: 'FETCH_THREE_ESTIMATES_QUERY',
         payload: {
@@ -69,121 +52,18 @@ export default function EstimateCombine() {
           third_estimate_number: third_estimate_number_combined
         } // End payload
       }) // End dispatch
-      // dispatch({
-      //   type: 'FETCH_FIRST_ESTIMATE_QUERY',
-      //   payload: {
-      //     licensee_id: licensee_id_searched,
-      //     estimate_number: first_estimate_number_combined
-      //   } // End payload
-      // }), // End dispatch
-      //   dispatch({
-      //     type: 'FETCH_SECOND_ESTIMATE_QUERY',
-      //     payload: {
-      //       licensee_id: licensee_id_searched,
-      //       estimate_number: second_estimate_number_combined
-      //     } // End payload
-      //   }), // End dispatch
-      //   dispatch({
-      //     type: 'FETCH_THIRD_ESTIMATE_QUERY',
-      //     payload: {
-      //       licensee_id: licensee_id_searched,
-      //       estimate_number: third_estimate_number_combined
-      //     } // End payload
-      //   }) // End dispatch
     } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
-      console.log('*** Step #B.');
       dispatch({
-        type: 'FETCH_THREE_ESTIMATES_QUERY', // Will make a TWO saga after THREE works. 
+        type: 'FETCH_TWO_ESTIMATES_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
           first_estimate_number: first_estimate_number_combined,
           second_estimate_number: second_estimate_number_combined
         } // End payload
       }) // End dispatch
-      //   dispatch({
-      //     type: 'FETCH_FIRST_ESTIMATE_QUERY',
-      //     payload: {
-      //       licensee_id: licensee_id_searched,
-      //       estimate_number: first_estimate_number_combined
-      //     } // End payload
-      //   }), // End dispatch
-      //     dispatch({
-      //       type: 'FETCH_SECOND_ESTIMATE_QUERY',
-      //       payload: {
-      //         licensee_id: licensee_id_searched,
-      //         estimate_number: second_estimate_number_combined
-      //       } // End payload
-      //     }) // End dispatch
-      } // End if statement
-    }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
-  );
-  // When the page loads with the Estimate Number queries, run this to see loop through the requested estimates, combined their raw quantity data, and send it through the math machine:
-  // useEffect( () => {
-  //   console.log('*** Step #1: Inside useEffect.');
-
-  //   // Setting values to zero each time it's ran: 
-  //   testObject.primx_cpea_total_amount_needed = 0;
-  //   testObject.primx_dc_total_amount_needed = 0;
-  //   testObject.primx_flow_total_amount_needed = 0;
-  //   testObject.primx_steel_fibers_total_amount_needed = 0;
-  //   testObject.primx_ultracure_blankets_total_amount_needed = 0;
-
-  //   // Run the loop, add each to total:
-  //   for (let estimate of combinedEstimatesArray) {
-  //     testObject.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
-  //     testObject.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
-  //     testObject.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
-  //     testObject.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
-  //     testObject.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
-  //     console.log('Loop Test Object:', testObject);
-  //   } // End for loop
-
-  //   console.log('Final Test Object:', testObject);
-
-  //   dispatch({
-  //     type: 'SET_TEST_COMBINED_ESTIMATE',
-  //     payload: {
-  //       key: 'primx_cpea_total_amount_needed', 
-  //       value: testObject.primx_cpea_total_amount_needed
-  //     }
-  //   }),
-  //   dispatch({
-  //     type: 'SET_TEST_COMBINED_ESTIMATE',
-  //     payload: {
-  //       key: 'primx_dc_total_amount_needed', 
-  //       value: testObject.primx_dc_total_amount_needed
-  //     }
-  //   }),
-  //   dispatch({
-  //     type: 'SET_TEST_COMBINED_ESTIMATE',
-  //     payload: {
-  //       key: 'primx_flow_total_amount_needed', 
-  //       value: testObject.primx_flow_total_amount_needed
-  //     }
-  //   }),
-  //   dispatch({
-  //     type: 'SET_TEST_COMBINED_ESTIMATE',
-  //     payload: {
-  //       key: 'primx_steel_fibers_total_amount_needed', 
-  //       value: testObject.primx_steel_fibers_total_amount_needed
-  //     }
-  //   }), 
-  //   dispatch({
-  //     type: 'SET_TEST_COMBINED_ESTIMATE',
-  //     payload: {
-  //       key: 'primx_ultracure_blankets_total_amount_needed', 
-  //       value: testObject.primx_ultracure_blankets_total_amount_needed
-  //     }
-  //   })
-
-  //   // Need to figure out how to get it to a math machine.  The below won't work for some reason, I imagine because it's firing off too soon. 
-  //   // dispatch({
-  //   //   type: 'HANDLE_CALCULATED_COMBINED_ESTIMATE',
-  //   //   payload: combinedEstimateTotals
-  //   // });
-
-
-  // }, [combinedEstimatesArray.length]); // End useEffect
+    } // End if statement
+  }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
+  ); // End useEffect 
   // #endregion ⬆⬆ All state variables above. 
 
 
@@ -335,29 +215,39 @@ export default function EstimateCombine() {
       <br />
       {/* End estimate search form */}
 
-      {/* Conditionally render entire code block below if the user has successfully combined estimates */}
-      {/* {combinedEstimatesData[0] &&
-        <EstimateCombineTable />
-      } */}
-
-      {/* 
-      {combinedResult.estimate_number ? (
-        <>
-          <p>
-            This feature allows you to combine up to three (3) existing estimates into one order for a reduced shipping cost. <br />
-            The first and second estimate numbers are required to use this feature.  The third estimate number is optional. <br />
-            All estimates MUST go to the same shipping location in order to qualify for this reduced rate. <br />
-            <b>Please be aware that whatever the Shipping/Contact Information is for the FIRST estimate number entered, that will be the information used for the other estimate(s).</b> <br />
-            If you need to edit the information for any of the estimates used, that must be done in the "Search For Estimate" page.
-          </p>
-        </>
+      {/* Conditional rendering for showing the info graphic or showing the combined estimates table. */}
+      {!showCombinedTable ? (
+        // If they haven't searched, show these instructions:
+        <Grid container
+          spacing={2}
+          justifyContent="center"
+        >
+          <Grid item xs={12}>
+            <Paper
+              elevation={3}
+              style={{ padding: '1em 2em' }}
+            >
+              <h3>Combine Multiple Estimates:</h3>
+              <p>
+                This feature allows you to combine up to three (3) existing estimates into one order for a reduced shipping cost.
+              </p>
+              The first and second estimate numbers are required to use this feature.  The third estimate number is optional.
+              <p>
+                <b>Please be aware that whatever the Shipping/Contact Information for the FIRST estimate number entered, will be the information used for the other estimate(s).</b>
+              </p>
+              <p>
+                All estimates MUST go to the same shipping location in order to qualify for this reduced rate.
+              </p>
+              <p>
+                If you need to edit the information for any of the estimates used, that must be done via the "Search For Estimate" page.
+              </p>
+            </Paper>
+          </Grid>
+        </Grid>
       ) : (
+        // If they have searched, show the table: 
         <EstimateCombineTable />
-      )}
-      
-      */}
-
-
-    </div>
+      )} {/* End conditional rendering */}
+    </div >
   )
 }
