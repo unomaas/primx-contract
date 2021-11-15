@@ -157,12 +157,29 @@ function* fetchTwoEstimatesQuery(action) {
   } // End try/catch
 } // End fetchTwoEstimatesQuery Saga
 
+//add combined estimate to estimates table in DB
+function* addCombinedEstimate(action) {
+  try {
+
+    const response = yield axios.post('/api/estimates', action.payload);
+    // action. payload contains the history object from useHistory
+    //const history = action.payload.history
+    // need to send the user to the search estimates results page using the newly created estimate number
+    // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
+    //yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
+  } catch (error) {
+    console.log('User POST combined estimate request failed', error);
+  }
+}
+
 
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
   // Makes a GET request for the first search Query
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
+  yield takeLatest('ADD_COMBINED_ESTIMATE', addCombinedEstimate);
+
 } // End combineEstimatesSaga
 
 

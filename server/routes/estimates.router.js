@@ -238,7 +238,7 @@ router.post('/', async (req, res) => {
 
     // create the specified shorter estimate number using the logic below and the returned id number from the original POST
     const letters = licenseeNameResponse.rows[0].licensee_contractor_name.slice(0, 2);
-    const newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
+    let newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
 
     // if a combined etsimate, add a letter C to the estimate number
     if(combined_estimate_number_1 && combined_estimate_number_2) {
