@@ -59,10 +59,18 @@ export default function EstimateCombineTable() {
    */
   const handlePlaceOrder = () => {
     // // ⬇ If they haven't entered a PO number, pop up an error helperText:
-    // if (poNumber == "") {
-    //   setPoNumError("Please enter a P.O. Number.")
-    //   // ⬇ If they have entered a PO number, proceed with order submission:
-    // } else {
+    if (poNumber == "") {
+      setPoNumError("Please enter a P.O. Number.")
+      // ⬇ If they have entered a PO number, proceed with order submission:
+    } else {
+      calcCombinedEstimate.estimate_number += '-C';
+      calcCombinedEstimate.po_number = poNumber;
+      calcCombinedEstimate.combined_estimate_number_1 = firstEstimate.estimate_number;
+      calcCombinedEstimate.combined_estimate_number_2 = secondEstimate.estimate_number;
+      calcCombinedEstimate.combined_estimate_number_3 = thirdEstimate.estimate_number;
+
+      console.log('this is calcCombinedEstimate -->', calcCombinedEstimate);
+      dispatch({type: 'ADD_COMBINED_ESTIMATE', payload: calcCombinedEstimate});
     //   swal({
     //     title: "This order has been submitted! Your PrimX representative will be in touch.",
     //     text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
@@ -82,7 +90,7 @@ export default function EstimateCombineTable() {
     //       estimate_number: searchResult.estimate_number
     //     } // End payload
     //   }) // End dispatch
-    // } // End if/else.
+    } // End if/else.
   } // End handlePlaceOrder
   //#endregion ⬆⬆ Event handlers above. 
 
