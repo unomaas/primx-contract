@@ -2,6 +2,9 @@ import {
   combineReducers
 } from 'redux';
 
+// const today = new Date().toISOString().substring(0, 10);
+
+
 // Handles the query of a user entering estimate numbers to combine:
 export const combineQuery = (state = {
   licensee_id: 0,
@@ -94,6 +97,86 @@ export const showCombinedTable = (state = false, action) => {
   } // End switch
 }; // End showCombinedTable
 
+// export const estimatesCombinedReducer = (state = {
+//   date_created: today,
+//   project_name: "",
+//   licensee_id: 0,
+//   project_general_contractor: "",
+//   project_manager_name: "",
+//   project_manager_email: "",
+//   project_manager_phone: "",
+//   floor_types_id: 0,
+//   placement_types_id: 0,
+//   measurement_units: "",
+//   anticipated_first_pour_date: "",
+//   ship_to_address: "",
+//   ship_to_city: "",
+//   shipping_costs_id: 0,
+//   zip_postal_code: "",
+//   country: 0,
+//   square_feet: "",
+//   thickened_edge_perimeter_lineal_feet: "0",
+//   primx_flow_dosage_liters: "3",
+//   thickness_inches: "",
+//   thickened_edge_construction_joint_lineal_feet: "0",
+//   primx_steel_fibers_dosage_lbs: "60",
+//   primx_cpea_dosage_liters: "",
+//   square_meters: "",
+//   thickened_edge_perimeter_lineal_meters: "0",
+//   thickness_millimeters: "",
+//   thickened_edge_construction_joint_lineal_meters: "0",
+//   primx_steel_fibers_dosage_kgs: "40",
+//   waste_factor_percentage: 5
+// }, action) => {
+//   switch (action.type) {
+//     case 'SET_COMBINED_ESTIMATE':
+//       // validation for waste factor percentage: value can't go below 3
+//       if (action.payload.key == 'waste_factor_percentage' && action.payload.value < 3) {
+//         action.payload.value = 3;
+//       }
+//       return {
+//         ...state,
+//         [action.payload.key]: action.payload.value
+//       };
+//     // case 'SET_EDIT_DATA':
+//     //   return action.payload;
+//     case 'CLEAR__COMBINED_ESTIMATE':
+//       return {
+//         date_created: today,
+//         project_name: "",
+//         licensee_id: 0,
+//         project_general_contractor: "",
+//         project_manager_name: "",
+//         project_manager_email: "",
+//         project_manager_phone: "",
+//         floor_types_id: 0,
+//         placement_types_id: 0,
+//         measurement_units: "",
+//         anticipated_first_pour_date: "",
+//         ship_to_address: "",
+//         ship_to_city: "",
+//         shipping_costs_id: 0,
+//         zip_postal_code: "",
+//         country: 0,
+//         square_feet: "",
+//         thickened_edge_perimeter_lineal_feet: "0",
+//         primx_flow_dosage_liters: "3",
+//         thickness_inches: "",
+//         thickened_edge_construction_joint_lineal_feet: "0",
+//         primx_steel_fibers_dosage_lbs: "60",
+//         primx_cpea_dosage_liters: "",
+//         square_meters: "",
+//         thickened_edge_perimeter_lineal_meters: "0",
+//         thickness_millimeters: "",
+//         thickened_edge_construction_joint_lineal_meters: "0",
+//         primx_steel_fibers_dosage_kgs: "40",
+//         waste_factor_percentage: 5
+//       };
+//     default:
+//       return state;
+//   } // End switch
+// }; // End estimatesCombinedReducer
+
 
 export default combineReducers({
   combineQuery, // ⬅ The query search from the combined estimates page.
@@ -102,4 +185,5 @@ export default combineReducers({
   secondCombinedEstimate, // ⬅ The second estimate used in the combination.
   thirdCombinedEstimate, // ⬅ The third estimate used in the combination.
   showCombinedTable, // ⬅ The show table state for the combined estimates. 
+  // estimatesCombinedReducer, // reducer to send info to DB unmutated
 });

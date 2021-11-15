@@ -52,6 +52,7 @@ export default function EstimateCombineTable() {
     // ⬇ Needs to GET shipping information and pricing information before recalculating
     dispatch({ type: 'RECALCULATE_ESTIMATE', payload: calcCombinedEstimate });
     dispatch({ type: 'GET_RECALCULATE_INFO' });
+    // dispatch({type: 'SET_ESTIMATE', payload: calcCombinedEstimate});
   } // End handleRecalculateCosts
 
   /** ⬇ handlePlaceOrder:
@@ -63,13 +64,14 @@ export default function EstimateCombineTable() {
       setPoNumError("Please enter a P.O. Number.")
       // ⬇ If they have entered a PO number, proceed with order submission:
     } else {
-      calcCombinedEstimate.estimate_number += '-C';
+      calcCombinedEstimate.estimate_number = firstEstimate.estimate_number + '-C';
       calcCombinedEstimate.po_number = poNumber;
       calcCombinedEstimate.combined_estimate_number_1 = firstEstimate.estimate_number;
       calcCombinedEstimate.combined_estimate_number_2 = secondEstimate.estimate_number;
       calcCombinedEstimate.combined_estimate_number_3 = thirdEstimate.estimate_number;
 
       console.log('this is calcCombinedEstimate -->', calcCombinedEstimate);
+
       dispatch({type: 'ADD_COMBINED_ESTIMATE', payload: calcCombinedEstimate});
     //   swal({
     //     title: "This order has been submitted! Your PrimX representative will be in touch.",
