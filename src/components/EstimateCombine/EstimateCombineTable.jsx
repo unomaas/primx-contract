@@ -34,9 +34,9 @@ export default function EstimateCombineTable() {
   // ⬇ Checks if the third estimate is populated, and if so, adjusts the table size to display accordingly:
   useEffect(() => {
     if (Object.keys(thirdEstimate).length != 0) {
-      setTableWidth(6);
-    } else {
       setTableWidth(4);
+    } else {
+      setTableWidth(6);
     } // End if/else
   }, [thirdEstimate]); // End useEffect 
   //#endregion ⬆⬆ All state variables above. 
@@ -95,7 +95,7 @@ export default function EstimateCombineTable() {
         justifyContent="center"
       >
         {/* Grid Table #1: Display the Licensee/Project Info Form : Shared between imperial and metric*/}
-        <Grid item xs={tableWidth}>
+        <Grid item xs={12}>
           {/* 4 if doesn't exist, or 6 if does */}
           <Paper elevation={3}>
             <TableContainer>
@@ -629,7 +629,7 @@ export default function EstimateCombineTable() {
 
             {thirdEstimate && thirdEstimate.measurement_units == 'imperial' &&
               <>
-                <Grid item xs={6}>
+                <Grid item xs={tableWidth}>
                   <Paper elevation={3}>
                     <TableContainer>
 
