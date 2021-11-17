@@ -110,7 +110,7 @@ router.post('/', async (req, res) => {
   } = req.body
 
   // create a unique UUID estimate number to use for the estimate being sent
-  const estimate_number = uuidv4();
+  let estimate_number = "";
 
   // set the destructured object values as the values to send with the POST request
   const values = [

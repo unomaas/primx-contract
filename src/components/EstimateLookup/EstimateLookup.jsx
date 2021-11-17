@@ -11,6 +11,7 @@ import { Alert } from '@material-ui/lab';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import EstimateLookupTable from './EstimateLookupTable';
+import EstimateCombineTable from '../EstimateCombine/EstimateCombineTable';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -165,8 +166,20 @@ export default function EstimateLookup() {
 
       {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
       {/* Contains some conditional rendering within */}
-      {searchResult.estimate_number &&
+      {/* {searchResult.estimate_number &&
         <EstimateLookupTable />
+      } */}
+      {(searchResult?.estimate_number?.charAt(searchResult?.estimate_number?.length - 1) === "C") ?
+        <>
+          {/* <EstimateCombineTable /> */}
+          true
+        </>
+        :
+
+        <>
+        false
+        {/* <EstimateLookupTable /> */}
+        </>
       }
 
 
