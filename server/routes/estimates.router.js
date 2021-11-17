@@ -110,7 +110,7 @@ router.post('/', async (req, res) => {
   } = req.body
 
   // create a unique UUID estimate number to use for the estimate being sent
-  const estimate_number = uuidv4();
+  let estimate_number = "";
 
   // set the destructured object values as the values to send with the POST request
   const values = [
@@ -227,7 +227,11 @@ router.post('/', async (req, res) => {
   try {
     // First DB query: initial POST request with data from the client
     let { rows } = await pool.query(queryText, values);
-    const id = rows[0].id
+    const id = rows[0].id    
+    console.log('id is', id);
+    console.log('req.body is', req.body);
+    
+    
 
     // Second DB query: GET the full name of the licensee from the licensee table since licensee name from the client is stored as licensee_id
     const secondQueryText = `SELECT licensee_contractor_name 
@@ -238,11 +242,16 @@ router.post('/', async (req, res) => {
 
     // create the specified shorter estimate number using the logic below and the returned id number from the original POST
     const letters = licenseeNameResponse.rows[0].licensee_contractor_name.slice(0, 2);
-    const newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
+    let newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
 
     // if a combined etsimate, add a letter C to the estimate number
+    console.log('combined_estimate_num1');
+    
     if(combined_estimate_number_1 && combined_estimate_number_2) {
-      newEstimateNumber += "-C"
+      newEstimateNumber += "-C";
+      console.log('newEstimateNumber', newEstimateNumber);
+      
+      
     }
     
     // Third DB query: PUT to update the newly created estimate with the shorter estimate number just created

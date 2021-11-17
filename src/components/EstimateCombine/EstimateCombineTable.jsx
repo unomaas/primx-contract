@@ -54,36 +54,31 @@ export default function EstimateCombineTable() {
     dispatch({ type: 'GET_RECALCULATE_INFO' });
   } // End handleRecalculateCosts
 
-  /** ⬇ handlePlaceOrder:
-   * Click handler for the Place Order button. 
+  /** ⬇ handleSave:
+   * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
-  const handlePlaceOrder = () => {
-    // // ⬇ If they haven't entered a PO number, pop up an error helperText:
-    // if (poNumber == "") {
-    //   setPoNumError("Please enter a P.O. Number.")
-    //   // ⬇ If they have entered a PO number, proceed with order submission:
-    // } else {
-    //   swal({
-    //     title: "This order has been submitted! Your PrimX representative will be in touch.",
-    //     text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
-    //     icon: "success",
-    //     buttons: "I understand",
-    //   }) // End swal
-    //   // ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
-    //   // .then(() => {
-    //   //   window.print();
-    //   // }); // End swal
-    //   dispatch({
-    //     type: 'EDIT_PLACE_ORDER',
-    //     payload: {
-    //       id: searchResult.id,
-    //       po_number: poNumber,
-    //       licensee_id: searchResult.licensee_id,
-    //       estimate_number: searchResult.estimate_number
-    //     } // End payload
-    //   }) // End dispatch
-    // } // End if/else.
-  } // End handlePlaceOrder
+   const handleSave = event => {
+    // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
+    calcCombinedEstimate.history = history;
+    // Attach the estimate numbers to use inside the POST: 
+    calcCombinedEstimate.combined_estimate_number_1 = firstEstimate.estimate_number;
+    calcCombinedEstimate.combined_estimate_number_2 = secondEstimate.estimate_number;
+    calcCombinedEstimate.combined_estimate_number_3 = thirdEstimate.estimate_number;
+    console.log('handleSave calcCombinedEstimate', calcCombinedEstimate);
+
+    // ⬇ Send the estimate object to be POSTed:
+    dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
+    // ⬇ Sweet Alert to let them know to save the Estimate #:
+    swal({
+      title: "Estimate saved!",
+      text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+      icon: "info",
+      buttons: "I understand",
+    }).then(() => {
+      // ⬇ Pop-up print confirmation:
+      window.print();
+    }); // End swal
+  } // End handleSave
   //#endregion ⬆⬆ Event handlers above. 
 
 
@@ -1548,19 +1543,7 @@ export default function EstimateCombineTable() {
                           >
                             Recalculate Costs
                           </Button>
-                          &nbsp; &nbsp;
-                          {hasRecalculated ?
-                            <>
-                              <TextField
-                                onChange={(event) => setPoNumber(event.target.value)}
-                                size="small"
-                                label="PO Number"
-                                helperText={poNumError}
-                              >
-                              </TextField>
-                            </> :
-                            <>Recalculate costs before placing order.</>
-                          }
+
                           &nbsp; &nbsp;
 
                           {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
@@ -1569,10 +1552,10 @@ export default function EstimateCombineTable() {
                               <Button
                                 variant="contained"
                                 color="secondary"
-                                onClick={handlePlaceOrder}
+                                onClick={handleSave}
                                 className={classes.LexendTeraFont11}
                               >
-                                Place Order
+                                Save Estimate
                               </Button>
                             </> :
                             <>
@@ -1581,7 +1564,7 @@ export default function EstimateCombineTable() {
                                 disabled
                                 className={classes.LexendTeraFont11}
                               >
-                                Place Order
+                                Save Estimate
                               </Button>
                             </>
                           }
