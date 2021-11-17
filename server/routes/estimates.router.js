@@ -241,9 +241,9 @@ router.post('/', async (req, res) => {
     const newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
 
     // if a combined etsimate, add a letter C to the estimate number
-    if(combined_estimate_number_1 && combined_estimate_number_2) {
-      newEstimateNumber += "-C"
-    }
+    // if(combined_estimate_number_1 && combined_estimate_number_2) {
+    //   newEstimateNumber += "-C"
+    // }
     
     // Third DB query: PUT to update the newly created estimate with the shorter estimate number just created
     const thirdQueryText = `UPDATE "estimates" 
