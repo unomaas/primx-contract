@@ -32,6 +32,10 @@ export default function EstimateCombine() {
   const classes = useStyles(); // Keep in for MUI styling. 
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
+  // ⬇ first,second,thirdEstimate below are objects searched from the DB
+  const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
+  const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
+  const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
   // ⬇ Run once on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
@@ -246,7 +250,11 @@ export default function EstimateCombine() {
         </Grid>
       ) : (
         // If they have searched, show the table: 
-        <EstimateCombineTable />
+        <EstimateCombineTable
+          firstEstimate={firstEstimate}
+          secondEstimate={secondEstimate}
+          thirdEstimate={thirdEstimate}
+        />
       )} {/* End conditional rendering */}
     </div >
   )

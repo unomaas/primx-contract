@@ -8,10 +8,11 @@ import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { useParams } from 'react-router';
+import { useParams, useLocation } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import EstimateLookupTable from './EstimateLookupTable';
 import EstimateCombineTable from '../EstimateCombine/EstimateCombineTable';
+import queryString from 'query-string';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -26,9 +27,13 @@ export default function EstimateLookup() {
   const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { licensee_id_searched, estimate_number_searched } = useParams();
+  const { licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+  // ⬇ first,second,thirdEstimate below are objects searched from the DB
+  const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
+  const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
+  const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
   // ⬇ Run on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
@@ -40,6 +45,14 @@ export default function EstimateLookup() {
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
     if (licensee_id_searched && estimate_number_searched) {
+      // If it's a combined estimate, fire off the other GET's:
+      if (estimate_number_searched.charAt(estimate_number_searched.length - 1) === "C") {
+        console.log('*** true true true', licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined);
+
+        // dispatch({type: "LOOKUP_ESTIMATE_NUMBERS", payload: stimateNumbers });
+        // If three estimates, fire three GETS:
+
+      }
       dispatch({
         type: 'FETCH_ESTIMATE_QUERY',
         payload: {
@@ -83,7 +96,6 @@ export default function EstimateLookup() {
     } // End if/else
   }; // End handleSubmit
   //#endregion ⬆⬆ Event handlers above. 
-
 
   // ⬇ Rendering below:
   return (
@@ -171,14 +183,17 @@ export default function EstimateLookup() {
       } */}
       {(searchResult?.estimate_number?.charAt(searchResult?.estimate_number?.length - 1) === "C") ?
         <>
-          {/* <EstimateCombineTable /> */}
-          true
+          <EstimateCombineTable
+            firstEstimate={firstEstimate}
+            secondEstimate={secondEstimate}
+            thirdEstimate={thirdEstimate}
+          />
         </>
         :
 
         <>
-        false
-        {/* <EstimateLookupTable /> */}
+          {/* false */}
+          {/* <EstimateLookupTable /> */}
         </>
       }
 

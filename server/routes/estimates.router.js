@@ -227,11 +227,7 @@ router.post('/', async (req, res) => {
   try {
     // First DB query: initial POST request with data from the client
     let { rows } = await pool.query(queryText, values);
-    const id = rows[0].id    
-    console.log('id is', id);
-    console.log('req.body is', req.body);
-    
-    
+    const id = rows[0].id   
 
     // Second DB query: GET the full name of the licensee from the licensee table since licensee name from the client is stored as licensee_id
     const secondQueryText = `SELECT licensee_contractor_name 
@@ -244,14 +240,9 @@ router.post('/', async (req, res) => {
     const letters = licenseeNameResponse.rows[0].licensee_contractor_name.slice(0, 2);
     let newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
 
-    // if a combined etsimate, add a letter C to the estimate number
-    console.log('combined_estimate_num1');
-    
+    // if a combined etsimate, add a letter C to the estimate number    
     if(combined_estimate_number_1 && combined_estimate_number_2) {
       newEstimateNumber += "-C";
-      console.log('newEstimateNumber', newEstimateNumber);
-      
-      
     }
     
     // Third DB query: PUT to update the newly created estimate with the shorter estimate number just created
@@ -268,8 +259,6 @@ router.post('/', async (req, res) => {
     console.log('Problem with estimates POST', error);
     res.sendStatus(500);
   }
-
-
 });
 
 
