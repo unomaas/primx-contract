@@ -157,12 +157,18 @@ function* fetchTwoEstimatesQuery(action) {
   } // End try/catch
 } // End fetchTwoEstimatesQuery Saga
 
+// ⬇ Saga Worker to create a GET request for combining three estimates. 
+function* lookupEstimateNumbers(action) {
+
+} // End lookupEstimateNumbers Saga
+
 
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
   // Makes a GET request for the first search Query
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
+  yield takeLatest('LOOKUP_ESTIMATE_NUMBERS', lookupEstimateNumbers);
 } // End combineEstimatesSaga
 
 

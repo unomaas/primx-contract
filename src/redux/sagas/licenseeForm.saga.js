@@ -41,6 +41,12 @@ function* AddEstimate(action) {
     const response = yield axios.post('/api/estimates', action.payload);
     // action. payload contains the history object from useHistory
     const history = action.payload.history
+    console.log('*** action payload:', action.payload);
+    console.log('*** response:', response);
+
+    // To add check and push for if combined here push to it.  The routes have been made.
+    // Then add some sort of different lookup useEffect to handle the gets. 
+    
     // need to send the user to the search estimates results page using the newly created estimate number
     // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
     yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);

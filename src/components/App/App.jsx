@@ -73,6 +73,20 @@ function App() {
             >
             </Route>
 
+            {/* This route bring user to specific estimate in /lookup */}
+            <Route
+              exact path="/lookup/:licensee_id_searched/:estimate_number_searched/:first_estimate_number_combined/:second_estimate_number_combined"
+              children={<EstimateLookup />}
+            >
+            </Route>
+
+            {/* This route bring user to specific estimate in /lookup */}
+            <Route
+              exact path="/lookup/:licensee_id_searched/:estimate_number_searched/:first_estimate_number_combined/:second_estimate_number_combined/:third_estimate_number_combined"
+              children={<EstimateLookup />}
+            >
+            </Route>
+
             {/* /combine leads to the combine estimate view for combining individual estimates */}
             <Route exact path="/combine">
               <EstimateCombine />

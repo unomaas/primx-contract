@@ -11,12 +11,13 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 
 
-export default function EstimateCombineTable() {
+export default function EstimateCombineTable({firstEstimate, secondEstimate, thirdEstimate}) {
   //#region ⬇⬇ All state variables below:
   // ⬇ first,second,thirdEstimate below are objects searched from the DB
-  const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
-  const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
-  const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
+  // const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
+  // const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
+  // const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
+
   // ⬇ calcCombinedEstimate is the object returned by searching for multiple estimates to combined, with updated quotes. 
   const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
   // ⬇ Deprecated, used for Styling MUI components. 
@@ -81,7 +82,7 @@ export default function EstimateCombineTable() {
   } // End handleSave
   //#endregion ⬆⬆ Event handlers above. 
 
-
+  console.log('*** Third Estimate is:', thirdEstimate);
   // ⬇ Rendering below:
   return (
     <>
