@@ -158,11 +158,16 @@ function* fetchTwoEstimatesQuery(action) {
   } // End try/catch
 } // End fetchTwoEstimatesQuery Saga
 
-// ⬇ Saga Worker to create a GET request for combining three estimates. 
-function* lookupCombinedEstimate(action) {
+
+// ⬇ Saga Worker to handle looking up a saved combined estimate:
+function* pushToCombineEstimates(action) {
+  // Pulling the variables from the payload: 
   const licenseeId = action.payload.licenseeId;
   const estimateNumber = action.payload.estimateNumber;
+  // Saving history for the navigation from Saga:
+  const history = action.payload.history;
   try {
+    // Ping the server with combined estimate to pull the estimate numbers:
     const response = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
         estimateNumber: estimateNumber,
@@ -170,58 +175,20 @@ function* lookupCombinedEstimate(action) {
       } // End params
     }); // End response    
     // Saving the response to get the other data from: 
-    console.log('*** response.data is', response.data);
-    
     const returnedEstimate = response.data[0];
-    console.log('*** returnedEstimate is', returnedEstimate);
-    
-    const returnedEstimateWithoutTimestamps = removeTimestamps(response.data);
-    console.log('*** returnedEstimateWithoutTimestamps', returnedEstimateWithoutTimestamps);
-    
-    const returnedCalculatedResponse = yield useEstimateCalculations(returnedEstimateWithoutTimestamps[0]);
-    console.log('*** returnedCalculatedResponse', returnedCalculatedResponse);
-    
-    yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: returnedCalculatedResponse });
-    // Setup to get the first estimate: 
+    // Pulling the estimate numbers from it: 
     const firstEstimateNumber = returnedEstimate.combined_estimate_number_1;
-    const firstEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
-      params: {
-        estimateNumber: firstEstimateNumber,
-        licenseeId: licenseeId
-      } // End params
-    }); // End response     
-    const firstEstimateWithoutTimestamps = removeTimestamps(firstEstimate.data);
-    const firstCalculatedResponse = yield useEstimateCalculations(firstEstimateWithoutTimestamps[0]);
-    yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: firstCalculatedResponse });
-    // Setup to get the second estimate: 
     const secondEstimateNumber = returnedEstimate.combined_estimate_number_2;
-    const secondEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
-      params: {
-        estimateNumber: secondEstimateNumber,
-        licenseeId: licenseeId
-      } // End params
-    }); // End response  
-    const secondEstimateWithoutTimestamps = removeTimestamps(secondEstimate.data);
-    const secondCalculatedResponse = yield useEstimateCalculations(secondEstimateWithoutTimestamps[0]);
-    yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: secondCalculatedResponse });
-    // Setup to get third estimate number, if it exists: 
     const thirdEstimateNumber = returnedEstimate.combined_estimate_number_3;
+    // If three estimate numbers were combined, push to three and do the math engines: 
     if (thirdEstimateNumber) {
-      const thirdEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
-        params: {
-          estimateNumber: thirdEstimateNumber,
-          licenseeId: licenseeId
-        } // End params
-      }); // End response  
-      const thirdEstimateWithoutTimestamps = removeTimestamps(thirdEstimate.data);
-      const thirdCalculatedResponse = yield useEstimateCalculations(thirdEstimateWithoutTimestamps[0]);
-      yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: thirdCalculatedResponse });
-    } // End if statement
-    yield put({ type: "SHOW_COMBINED_TABLE" });
+      history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}/${thirdEstimateNumber}`);
+    } else { // ⬇ If they only entered two estimate numbers: 
+      history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}`);
+    } // End if/else statement
   } catch (error) {
-    console.error('lookupEstimateNumbers failed:', error);
+    console.error('pushToCombineEstimates failed:', error);
   } // End try/catch
-
 } // End lookupEstimateNumbers Saga
 
 
@@ -230,7 +197,8 @@ function* combineEstimatesSaga() {
   // Makes a GET request for the first search Query
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
-  yield takeLatest('LOOKUP_ESTIMATE_NUMBERS', lookupCombinedEstimate);
+  // yield takeLatest('LOOKUP_ESTIMATE_NUMBERS', lookupCombinedEstimate);
+  yield takeLatest('PUSH_TO_COMBINE_ESTIMATE', pushToCombineEstimates);
 } // End combineEstimatesSaga
 
 
