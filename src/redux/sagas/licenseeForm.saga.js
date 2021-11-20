@@ -41,21 +41,10 @@ function* AddEstimate(action) {
     // action.payload contains the history object from useHistory:
     const history = action.payload.history
     // Saving the response and action.payload to variables for easier reading:
-    const returnedEstimateNumber = response.data.estimate_number;
-    const newEstimate = action.payload;
-    // If the estimate posted is a combined estimate: 
-    if (returnedEstimateNumber.charAt(returnedEstimateNumber.length - 1) === "C") {
-      // And if there's three estimates combined: 
-      if (newEstimate.combined_estimate_number_3) {
-        yield history.push(`/lookup/${returnedEstimateNumber.licensee_id}/${returnedEstimateNumber.estimate_number}/${newEstimate.combined_estimate_number_1}/${newEstimate.combined_estimate_number_2}/${newEstimate.combined_estimate_number_3}`);
-      } else { // Else push to two estimate combined: 
-        yield history.push(`/lookup/${returnedEstimateNumber.licensee_id}/${returnedEstimateNumber.estimate_number}/${newEstimate.combined_estimate_number_1}/${newEstimate.combined_estimate_number_2}`);
-      } // End nested if/else
-    } else { // Else push to standard lookup:
-      yield history.push(`/lookup/${returnedEstimateNumber.licensee_id}/${returnedEstimateNumber.estimate_number}`);
-    } // End if/else
+    const returnedEstimate = response.data;
+    yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
   } catch (error) {
-    console.log('User POST request failed', error);
+    console.error('AddEstimate POST request failed', error);
   }
 }
 

@@ -34,6 +34,8 @@ export default function EstimateLookup() {
   const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
   const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
   const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
+  const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
+
   // ⬇ Run on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
@@ -194,23 +196,16 @@ export default function EstimateLookup() {
       {/* {searchResult.estimate_number &&
         <EstimateLookupTable />
       } */}
-      {(searchResult?.estimate_number?.charAt(searchResult?.estimate_number?.length - 1) === "C") ?
-        <>
-          {/* <EstimateCombineTable
-            firstEstimate={firstEstimate}
-            secondEstimate={secondEstimate}
-            thirdEstimate={thirdEstimate}
-          /> */}
-        </>
+      {(estimate_number_searched?.charAt(estimate_number_searched?.length - 1) === "C") ?
+        <EstimateCombineTable
+          firstEstimate={firstEstimate}
+          secondEstimate={secondEstimate}
+          thirdEstimate={thirdEstimate}
+          calcCombinedEstimate={calcCombinedEstimate}
+        />
         :
-
-        <>
-          {/* false */}
-          <EstimateLookupTable />
-        </>
-      }
-
-
+        <EstimateLookupTable />
+      } {/* End conditional rendering */}
 
     </div >
   )

@@ -159,17 +159,9 @@ function* fetchTwoEstimatesQuery(action) {
 } // End fetchTwoEstimatesQuery Saga
 
 // ⬇ Saga Worker to create a GET request for combining three estimates. 
-function* lookupEstimateNumbers(action) {
-  console.log('*** action.payload:', action.payload);
+function* lookupCombinedEstimate(action) {
   const licenseeId = action.payload.licenseeId;
   const estimateNumber = action.payload.estimateNumber;
-  console.log('*** ', licenseeId, estimateNumber);
-
-  // const firstEstimateNumberCombined = action.payload.firstEstimateNumberCombined;
-  // const secondEstimateNumberCombined = action.payload.secondEstimateNumberCombined; 
-  // const thirdEstimateNumberCombined = action.payload.thirdEstimateNumberCombined;  
-
-  // console.log('*** thirdEstimateNumberCombined', thirdEstimateNumberCombined);
   try {
     const response = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
@@ -177,40 +169,55 @@ function* lookupEstimateNumbers(action) {
         licenseeId: licenseeId
       } // End params
     }); // End response    
-    console.log('*** lookupEstimateNumbers response is:', response.data[0]);
+    // Saving the response to get the other data from: 
+    console.log('*** response.data is', response.data);
+    
     const returnedEstimate = response.data[0];
+    console.log('*** returnedEstimate is', returnedEstimate);
+    
+    const returnedEstimateWithoutTimestamps = removeTimestamps(response.data);
+    console.log('*** returnedEstimateWithoutTimestamps', returnedEstimateWithoutTimestamps);
+    
+    const returnedCalculatedResponse = yield useEstimateCalculations(returnedEstimateWithoutTimestamps[0]);
+    console.log('*** returnedCalculatedResponse', returnedCalculatedResponse);
+    
+    yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: returnedCalculatedResponse });
+    // Setup to get the first estimate: 
     const firstEstimateNumber = returnedEstimate.combined_estimate_number_1;
-    const secondEstimateNumber = returnedEstimate.combined_estimate_number_2;
-    const thirdEstimateNumber = returnedEstimate.combined_estimate_number_3;
-    console.log('*** :', returnedEstimate, firstEstimateNumber, secondEstimateNumber, thirdEstimateNumber);
     const firstEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
         estimateNumber: firstEstimateNumber,
         licenseeId: licenseeId
       } // End params
-    }); // End response 
-    const estimateWithoutTimestamps = removeTimestamps(response.data);
-    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
-    yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: firstEstimate });
+    }); // End response     
+    const firstEstimateWithoutTimestamps = removeTimestamps(firstEstimate.data);
+    const firstCalculatedResponse = yield useEstimateCalculations(firstEstimateWithoutTimestamps[0]);
+    yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: firstCalculatedResponse });
+    // Setup to get the second estimate: 
+    const secondEstimateNumber = returnedEstimate.combined_estimate_number_2;
     const secondEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
         estimateNumber: secondEstimateNumber,
         licenseeId: licenseeId
       } // End params
     }); // End response  
-    yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: secondEstimate });
+    const secondEstimateWithoutTimestamps = removeTimestamps(secondEstimate.data);
+    const secondCalculatedResponse = yield useEstimateCalculations(secondEstimateWithoutTimestamps[0]);
+    yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: secondCalculatedResponse });
+    // Setup to get third estimate number, if it exists: 
+    const thirdEstimateNumber = returnedEstimate.combined_estimate_number_3;
     if (thirdEstimateNumber) {
       const thirdEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
         params: {
-          estimateNumber: secondEstimateNumber,
+          estimateNumber: thirdEstimateNumber,
           licenseeId: licenseeId
         } // End params
       }); // End response  
-      yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: thirdEstimate });
-    }
-
-
-
+      const thirdEstimateWithoutTimestamps = removeTimestamps(thirdEstimate.data);
+      const thirdCalculatedResponse = yield useEstimateCalculations(thirdEstimateWithoutTimestamps[0]);
+      yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: thirdCalculatedResponse });
+    } // End if statement
+    yield put({ type: "SHOW_COMBINED_TABLE" });
   } catch (error) {
     console.error('lookupEstimateNumbers failed:', error);
   } // End try/catch
@@ -223,7 +230,7 @@ function* combineEstimatesSaga() {
   // Makes a GET request for the first search Query
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
-  yield takeLatest('LOOKUP_ESTIMATE_NUMBERS', lookupEstimateNumbers);
+  yield takeLatest('LOOKUP_ESTIMATE_NUMBERS', lookupCombinedEstimate);
 } // End combineEstimatesSaga
 
 
