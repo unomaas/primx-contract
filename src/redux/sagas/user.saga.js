@@ -29,7 +29,7 @@ function* fetchUser() {
     });
 
   } catch (error) {
-    console.log('User get request failed', error);
+    console.error('User get request failed', error);
   }
 }
 

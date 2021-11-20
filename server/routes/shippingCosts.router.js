@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
   pool.query(queryText).then((result) => {
       res.send(result.rows);
   }).catch((error) => {
-      console.log('error in shipping costs GET router', error);
+      console.error('Error in shipping costs GET router', error);
       res.sendStatus(500);
   })
 });
@@ -25,7 +25,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
     .then(result => {
       res.sendStatus(201)
     }).catch((error) => {
-      console.log('error in shipping costs POST route', error);
+      console.error('Error in shipping costs POST route', error);
       res.sendStatus(500);
     })
 });
@@ -37,7 +37,7 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
     .then(result => {
     res.sendStatus(202);
     }).catch ((error) => {
-      console.log('error in shipping costs PUT route -->', error);
+      console.error('Error in shipping costs PUT route -->', error);
       res.sendStatus(500);
     });
   });

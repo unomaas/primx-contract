@@ -75,7 +75,6 @@ export default function EstimateLookupTable() {
    * Sends the user back to 1.0 Create Estimate with data pre-loaded to make edits. 
    */
   const handleEdit = () => {
-    console.log('In handleEdit, searchResult:', searchResult);
     dispatch({ type: 'SET_EDIT_DATA', payload: searchResult });
     dispatch({ type: 'SET_TABLE_STATE', payload: true });
     dispatch({ type: 'SET_EDIT_STATE', payload: true });

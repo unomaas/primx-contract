@@ -22,7 +22,7 @@ function* registerUser(action) {
       type: 'SET_SUCCESS_REGISTER_ADMIN'
     });
   } catch (error) {
-    console.log('Error with user registration:', error);
+    console.error('Error with user registration:', error);
     yield put({
       type: 'REGISTRATION_FAILED'
     });

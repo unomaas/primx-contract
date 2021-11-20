@@ -81,7 +81,7 @@ function* fetchThreeEstimatesQuery(action) {
     }); // End yield put
     yield put({ type: "SHOW_COMBINED_TABLE" });
   } catch (error) {
-    console.log('fetchThreeEstimatesQuery failed:', error);
+    console.error('fetchThreeEstimatesQuery failed:', error);
   } // End try/catch
 } // End fetchThreeEstimatesQuery Saga
 
@@ -154,7 +154,7 @@ function* fetchTwoEstimatesQuery(action) {
     yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });
     yield put({ type: "SHOW_COMBINED_TABLE" });
   } catch (error) {
-    console.log('fetchTwoEstimatesQuery failed:', error);
+    console.error('fetchTwoEstimatesQuery failed:', error);
   } // End try/catch
 } // End fetchTwoEstimatesQuery Saga
 

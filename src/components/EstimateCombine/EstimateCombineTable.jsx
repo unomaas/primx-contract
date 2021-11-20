@@ -65,8 +65,6 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
     calcCombinedEstimate.combined_estimate_number_1 = firstEstimate.estimate_number;
     calcCombinedEstimate.combined_estimate_number_2 = secondEstimate.estimate_number;
     calcCombinedEstimate.combined_estimate_number_3 = thirdEstimate.estimate_number;
-    console.log('handleSave calcCombinedEstimate', calcCombinedEstimate);
-
     // ⬇ Send the estimate object to be POSTed:
     dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
     // ⬇ Sweet Alert to let them know to save the Estimate #:

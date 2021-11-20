@@ -12,7 +12,7 @@ function* fetchAllCompanies() {
       payload: response.data
     });
   } catch (error) {
-    console.log('Error with fetchAllCompanies:', error);
+    console.error('Error with fetchAllCompanies:', error);
   }
 }
 
@@ -27,7 +27,7 @@ function* fetchActiveCompanies() {
     })
   }
   catch (error) {
-    console.log('Error with fetchActiveCompanies:', error)
+    console.error('Error with fetchActiveCompanies:', error)
   }
 }
 
@@ -40,7 +40,7 @@ function* toggleActiveInactiveLicensee(action) {
       type: 'FETCH_ALL_COMPANIES'
     });
   } catch (error) {
-    console.log('Error in update company saga: ', error);
+    console.error('Error in update company saga: ', error);
   }
 }
 
@@ -53,7 +53,7 @@ function* addCompany(action) {
     yield put({ type: 'FETCH_ALL_COMPANIES'});
     yield put({ type: 'SET_SUCCESS_COMPANY'})
   } catch (error) {
-    console.log('Error in post company saga:', error);
+    console.error('Error in post company saga:', error);
   }
 }
 

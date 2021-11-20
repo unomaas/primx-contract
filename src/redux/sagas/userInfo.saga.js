@@ -14,7 +14,7 @@ function* fetchAllUsers() {
       payload: users.data
     })
   } catch (error) {
-    console.log('fetchAllUsers get request failed -->', error);
+    console.error('fetchAllUsers get request failed -->', error);
   }
 }
 
@@ -28,7 +28,7 @@ function* deleteAdmin(action) {
       type: 'FETCH_USERINFO'
     })
   } catch (error) {
-    console.log('error deleting admin in userInfo.SAGA -->', error);
+    console.error('Error deleting admin in userInfo.SAGA -->', error);
   }
 }
 

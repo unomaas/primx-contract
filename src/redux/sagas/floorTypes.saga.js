@@ -9,7 +9,7 @@ function* fetchAllFloorTypes() {
         //send results to floorTypes reducer
         yield put({type: 'SET_FLOOR_TYPES', payload: floorTypes.data});
     } catch (error) {
-        console.log('error with fetchAllFloorTypes in floorTypes saga', error);
+        console.error('Error with fetchAllFloorTypes in floorTypes saga', error);
         
     }
 }
@@ -23,7 +23,7 @@ function* postFloorType(action) {
       yield put({type: 'FETCH_FLOOR_TYPES'});
       yield put({ type:'SET_SUCCESS_FLOOR_TYPES'})
     } catch (error) {
-      console.log('error in post floor type SAGA -->', error);
+      console.error('Error in post floor type SAGA -->', error);
     }
   }
 

@@ -13,7 +13,7 @@ function* fetchAllEstimates() {
     yield put({ type: 'SET_ADMIN_ESTIMATES', payload: updatedEstimates });
   }
   catch (error) {
-    console.log('Error with fetchAllEstimates in adminEstimates Saga:', error);
+    console.error('Error with fetchAllEstimates in adminEstimates Saga:', error);
   }
 
 }
@@ -25,7 +25,7 @@ function* editEstimateData(action) {
     yield axios.put(`/api/estimates/edit/${action.payload.id}`, action.payload);
   }
   catch (error) {
-    console.log('Error with editEstimateData in the adminEstimates Saga', error);
+    console.error('Error with editEstimateData in the adminEstimates Saga', error);
   }
 }
 
@@ -39,7 +39,7 @@ function* editProcessOrder(action) {
     yield put({ type: 'FETCH_ALL_ESTIMATES' });
   }
   catch (error) {
-    console.log('Error with editProcessOrder in the adminEstimates Saga', error);
+    console.error('Error with editProcessOrder in the adminEstimates Saga', error);
   }
 }
 
@@ -53,7 +53,7 @@ function* archiveEstimate(action) {
 
   }
   catch (error) {
-    console.log('Erro with archiveEstimate in adminEstimates Saga -->', error);
+    console.error('Error with archiveEstimate in adminEstimates Saga:', error);
   }
 }
 // worker saga to make a DELETE request at for estimates
@@ -64,7 +64,7 @@ function* deleteEstimate(action) {
     yield put({ type: 'FETCH_ALL_ESTIMATES' });
   }
   catch (error) {
-    console.log('Error with Delete Order in adminEstimates Saga', error);
+    console.error('Error with Delete Order in adminEstimates Saga', error);
   }
 }
 

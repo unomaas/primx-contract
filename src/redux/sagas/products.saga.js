@@ -15,7 +15,7 @@ function* fetchProductsArray() {
       payload: response.data
     });
   } catch (error) {
-    console.log('product get request failed', error);
+    console.error('product get request failed', error);
   }
 }
 
@@ -35,7 +35,7 @@ function* fetchProductsObject() {
       payload: productObject
     });
   } catch (error) {
-    console.log('error with fetchProducts in field select saga', error);
+    console.error('Error with fetchProducts in field select saga', error);
   }
 }
 
@@ -48,7 +48,7 @@ function* updateProduct(action) {
       type: 'FETCH_PRODUCTS_ARRAY'
     });
   } catch (error) {
-    console.log('Error in update product saga: ', error);
+    console.error('Error in update product saga: ', error);
   }
 }
 
@@ -61,7 +61,7 @@ function* addProduct(action) {
       type: 'FETCH_PRODUCTS_ARRAY'
     });
   } catch (error) {
-    console.log('Error in post product saga:', error);
+    console.error('Error in post product saga:', error);
   }
 }
 

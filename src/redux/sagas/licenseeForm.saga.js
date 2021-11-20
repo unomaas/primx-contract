@@ -30,7 +30,7 @@ function* fetchEstimateQuery(action) {
       payload: calculatedResponse
     });
   } catch (error) {
-    console.log('User get request failed', error);
+    console.error('fetchEstimateQuery error', error);
   }
 }
 
@@ -42,14 +42,12 @@ function* AddEstimate(action) {
     const history = action.payload.history
     // Saving the response and action.payload to variables for easier reading:
     const returnedEstimate = response.data;
-    console.log('*** returned estimate post is', returnedEstimate);
     // If we just saved a combined estimate, do not push them, as they're already at the page we would push to: 
-    if (returnedEstimate.charAt(returnedEstimate.length - 1) === "C") {
+    if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
         return;
     } else { // Otherwise they were just saving a single estimate and we do push:
       yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
     }
-
   } catch (error) {
     console.error('AddEstimate POST request failed', error);
   }
@@ -58,8 +56,6 @@ function* AddEstimate(action) {
 // Saga Worker to edit estimate into table
 function* EditEstimate(action) {
   try {
-    // console.log('Action.payload is:', action.payload);
-
     yield axios.put(`/api/estimates/clientupdates/${action.payload.id}`, action.payload);
     // after this is done, run the recalculate costs PUT request to ensure up-to-date pricing
     yield put({ type: 'RECALCULATE_ESTIMATE', payload: action.payload });
@@ -68,11 +64,9 @@ function* EditEstimate(action) {
     const history = action.payload.history;
     // need to send the user to the search estimates results page using the newly created estimate number
     // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
-    console.log('Action.payload is:', action.payload);
-
     yield history.push(`/lookup/${action.payload.licensee_id}/${action.payload.estimate_number}`);
   } catch (error) {
-    console.log('User POST request failed', error);
+    console.error('EditEstimate error', error);
   }
 }
 
@@ -136,7 +130,7 @@ function* recalculateEstimate(action) {
     })
 
   } catch (error) {
-    console.log('recalculate estimate failed', error)
+    console.error('recalculate estimate failed', error)
   }
 } // End
 
@@ -164,7 +158,7 @@ function* markEstimateAsOrdered(action) {
       type: 'SET_RECALCULATE_FALSE'
     });
   } catch (error) {
-    console.log('markEstimateAsOrdered failed', error)
+    console.error('markEstimateAsOrdered failed', error)
   }
 }
 
