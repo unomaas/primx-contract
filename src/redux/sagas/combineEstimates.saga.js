@@ -182,9 +182,9 @@ function* pushToCombineEstimates(action) {
     const thirdEstimateNumber = returnedEstimate.combined_estimate_number_3;
     // If three estimate numbers were combined, push to three and do the math engines: 
     if (thirdEstimateNumber) {
-      history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}/${thirdEstimateNumber}`);
+      yield history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}/${thirdEstimateNumber}`);
     } else { // ⬇ If they only entered two estimate numbers: 
-      history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}`);
+      yield history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}`);
     } // End if/else statement
   } catch (error) {
     console.error('pushToCombineEstimates failed:', error);
@@ -194,10 +194,8 @@ function* pushToCombineEstimates(action) {
 
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
-  // Makes a GET request for the first search Query
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
-  // yield takeLatest('LOOKUP_ESTIMATE_NUMBERS', lookupCombinedEstimate);
   yield takeLatest('PUSH_TO_COMBINE_ESTIMATE', pushToCombineEstimates);
 } // End combineEstimatesSaga
 

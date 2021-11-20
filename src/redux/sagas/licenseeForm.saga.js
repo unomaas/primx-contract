@@ -42,7 +42,14 @@ function* AddEstimate(action) {
     const history = action.payload.history
     // Saving the response and action.payload to variables for easier reading:
     const returnedEstimate = response.data;
-    yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
+    console.log('*** returned estimate post is', returnedEstimate);
+    // If we just saved a combined estimate, do not push them, as they're already at the page we would push to: 
+    if (returnedEstimate.charAt(returnedEstimate.length - 1) === "C") {
+        return;
+    } else { // Otherwise they were just saving a single estimate and we do push:
+      yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
+    }
+
   } catch (error) {
     console.error('AddEstimate POST request failed', error);
   }
