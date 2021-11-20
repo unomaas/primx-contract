@@ -496,5 +496,14 @@ router.put('/clientupdates/:id', (req, res) => {
     })
 })
 
+// PUT request for when an individual estimate is saved in a combined estimate: 
+router.put('/usedincombine/:id', (req, res) => {
+  console.log('*** usedincombine', req.body, res);
+  
+  // const queryText = `UPDATE "estimates" SET "used_in_a_combined_estimate" = TRUE, WHERE "id" = $1;`;
+
+})
+
+
 
 module.exports = router;

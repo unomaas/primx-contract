@@ -44,7 +44,7 @@ function* AddEstimate(action) {
     const returnedEstimate = response.data;
     // If we just saved a combined estimate, do not push them, as they're already at the page we would push to: 
     if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
-        return;
+      yield axios.put('/api/estimates/usedincombine', action.payload);
     } else { // Otherwise they were just saving a single estimate and we do push:
       yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
     }
