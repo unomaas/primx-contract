@@ -10,9 +10,8 @@ import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
-  const licenseeId = action.payload.licensee_id
-  const estimateNumber = action.payload.estimate_number
-
+  const licenseeId = action.payload.licensee_id;
+  const estimateNumber = action.payload.estimate_number;
   try {
     const response = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
@@ -39,17 +38,22 @@ function* fetchEstimateQuery(action) {
 function* AddEstimate(action) {
   try {
     const response = yield axios.post('/api/estimates', action.payload);
-    // action. payload contains the history object from useHistory
+    // action.payload contains the history object from useHistory:
     const history = action.payload.history
-    console.log('*** action payload:', action.payload);
-    console.log('*** response:', response);
-
-    // To add check and push for if combined here push to it.  The routes have been made.
-    // Then add some sort of different lookup useEffect to handle the gets. 
-    
-    // need to send the user to the search estimates results page using the newly created estimate number
-    // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
-    yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
+    // Saving the response and action.payload to variables for easier reading:
+    const returnedEstimateNumber = response.data.estimate_number;
+    const newEstimate = action.payload;
+    // If the estimate posted is a combined estimate: 
+    if (returnedEstimateNumber.charAt(returnedEstimateNumber.length - 1) === "C") {
+      // And if there's three estimates combined: 
+      if (newEstimate.combined_estimate_number_3) {
+        yield history.push(`/lookup/${returnedEstimateNumber.licensee_id}/${returnedEstimateNumber.estimate_number}/${newEstimate.combined_estimate_number_1}/${newEstimate.combined_estimate_number_2}/${newEstimate.combined_estimate_number_3}`);
+      } else { // Else push to two estimate combined: 
+        yield history.push(`/lookup/${returnedEstimateNumber.licensee_id}/${returnedEstimateNumber.estimate_number}/${newEstimate.combined_estimate_number_1}/${newEstimate.combined_estimate_number_2}`);
+      } // End nested if/else
+    } else { // Else push to standard lookup:
+      yield history.push(`/lookup/${returnedEstimateNumber.licensee_id}/${returnedEstimateNumber.estimate_number}`);
+    } // End if/else
   } catch (error) {
     console.log('User POST request failed', error);
   }
@@ -59,7 +63,7 @@ function* AddEstimate(action) {
 function* EditEstimate(action) {
   try {
     // console.log('Action.payload is:', action.payload);
-    
+
     yield axios.put(`/api/estimates/clientupdates/${action.payload.id}`, action.payload);
     // after this is done, run the recalculate costs PUT request to ensure up-to-date pricing
     yield put({ type: 'RECALCULATE_ESTIMATE', payload: action.payload });
@@ -125,13 +129,15 @@ function* recalculateEstimate(action) {
 
     // Now that the current estimate has updated pricing data, send an action to the estimates reducer that will set a recalculated boolean
     // from false to true, allowing the user to click the place order button on the estimate lookup view
-    yield put({type: 'SET_RECALCULATED_TRUE'})
+    yield put({ type: 'SET_RECALCULATED_TRUE' })
 
     // Refresh data on DOM by fetching the new data
-    yield put({ type: 'FETCH_ESTIMATE_QUERY', payload: {
-      licensee_id: currentEstimate.licensee_id,
-      estimate_number: currentEstimate.estimate_number
-    }})
+    yield put({
+      type: 'FETCH_ESTIMATE_QUERY', payload: {
+        licensee_id: currentEstimate.licensee_id,
+        estimate_number: currentEstimate.estimate_number
+      }
+    })
 
   } catch (error) {
     console.log('recalculate estimate failed', error)

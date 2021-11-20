@@ -44,15 +44,27 @@ export default function EstimateLookup() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
-    if (licensee_id_searched && estimate_number_searched) {
-      // If it's a combined estimate, fire off the other GET's:
-      if (estimate_number_searched.charAt(estimate_number_searched.length - 1) === "C") {
-        console.log('*** true true true', licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined);
-
-        // dispatch({type: "LOOKUP_ESTIMATE_NUMBERS", payload: stimateNumbers });
-        // If three estimates, fire three GETS:
-
-      }
+    // if (licensee_id_searched && estimate_number_searched) {
+    // If it's a combined estimate, fire off the other GET's:
+    if (estimate_number_searched.charAt(estimate_number_searched.length - 1) === "C") {
+      console.log('*** estimate_number_searched', licensee_id_searched, estimate_number_searched);
+      // // Bundling the params into an object with keys to send to the Saga:
+      // let params = {
+      //   licenseeID: licensee_id_searched,
+      //   estimateNumberSearched: estimate_number_searched,
+      //   firstEstimateNumberCombined: first_estimate_number_combined,
+      //   secondEstimateNumberCombined: second_estimate_number_combined,
+      //   thirdEstimateNumberCombined: third_estimate_number_combined
+      // }; // End params
+      // Dispatching to the Saga: 
+      dispatch({
+        type: "LOOKUP_ESTIMATE_NUMBERS",
+        payload: {
+          licenseeId: licensee_id_searched,
+          estimateNumber: estimate_number_searched
+        } // End payload
+      });
+    } else {
       dispatch({
         type: 'FETCH_ESTIMATE_QUERY',
         payload: {
@@ -60,7 +72,8 @@ export default function EstimateLookup() {
           estimate_number: estimate_number_searched
         } // End payload
       }) // End dispatch
-    } // End if statement
+    }
+    // }// End if statement
   }, [licensee_id_searched, estimate_number_searched]);
   //#endregion ⬆⬆ All state variables above. 
 
@@ -183,17 +196,17 @@ export default function EstimateLookup() {
       } */}
       {(searchResult?.estimate_number?.charAt(searchResult?.estimate_number?.length - 1) === "C") ?
         <>
-          <EstimateCombineTable
+          {/* <EstimateCombineTable
             firstEstimate={firstEstimate}
             secondEstimate={secondEstimate}
             thirdEstimate={thirdEstimate}
-          />
+          /> */}
         </>
         :
 
         <>
           {/* false */}
-          {/* <EstimateLookupTable /> */}
+          <EstimateLookupTable />
         </>
       }
 

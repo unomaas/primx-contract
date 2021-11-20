@@ -6,6 +6,7 @@ import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import useCombineEstimateCalculations from '../../hooks/useCombineEstimateCalculations';
 import removeTimestamps from '../../hooks/removeTimestamps';
+import { ExpansionPanelActions } from '@material-ui/core';
 
 
 // ⬇ Saga Worker to create a GET request for combining three estimates. 
@@ -59,7 +60,7 @@ function* fetchThreeEstimatesQuery(action) {
       totalsObjectHolder.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
       totalsObjectHolder.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
     } // End for loop
-    // ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
+    // ⬇ Creating a 'deep copy' container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
     // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
     let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
     // ⬇ Setting the tallied amount to the object to feed through the math machine: 
@@ -159,6 +160,60 @@ function* fetchTwoEstimatesQuery(action) {
 
 // ⬇ Saga Worker to create a GET request for combining three estimates. 
 function* lookupEstimateNumbers(action) {
+  console.log('*** action.payload:', action.payload);
+  const licenseeId = action.payload.licenseeId;
+  const estimateNumber = action.payload.estimateNumber;
+  console.log('*** ', licenseeId, estimateNumber);
+
+  // const firstEstimateNumberCombined = action.payload.firstEstimateNumberCombined;
+  // const secondEstimateNumberCombined = action.payload.secondEstimateNumberCombined; 
+  // const thirdEstimateNumberCombined = action.payload.thirdEstimateNumberCombined;  
+
+  // console.log('*** thirdEstimateNumberCombined', thirdEstimateNumberCombined);
+  try {
+    const response = yield axios.get('/api/estimates/lookup/:estimates', {
+      params: {
+        estimateNumber: estimateNumber,
+        licenseeId: licenseeId
+      } // End params
+    }); // End response    
+    console.log('*** lookupEstimateNumbers response is:', response.data[0]);
+    const returnedEstimate = response.data[0];
+    const firstEstimateNumber = returnedEstimate.combined_estimate_number_1;
+    const secondEstimateNumber = returnedEstimate.combined_estimate_number_2;
+    const thirdEstimateNumber = returnedEstimate.combined_estimate_number_3;
+    console.log('*** :', returnedEstimate, firstEstimateNumber, secondEstimateNumber, thirdEstimateNumber);
+    const firstEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
+      params: {
+        estimateNumber: firstEstimateNumber,
+        licenseeId: licenseeId
+      } // End params
+    }); // End response 
+    const estimateWithoutTimestamps = removeTimestamps(response.data);
+    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: firstEstimate });
+    const secondEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
+      params: {
+        estimateNumber: secondEstimateNumber,
+        licenseeId: licenseeId
+      } // End params
+    }); // End response  
+    yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: secondEstimate });
+    if (thirdEstimateNumber) {
+      const thirdEstimate = yield axios.get('/api/estimates/lookup/:estimates', {
+        params: {
+          estimateNumber: secondEstimateNumber,
+          licenseeId: licenseeId
+        } // End params
+      }); // End response  
+      yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: thirdEstimate });
+    }
+
+
+
+  } catch (error) {
+    console.error('lookupEstimateNumbers failed:', error);
+  } // End try/catch
 
 } // End lookupEstimateNumbers Saga
 
