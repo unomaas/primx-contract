@@ -253,7 +253,8 @@ router.post('/', async (req, res) => {
     await pool.query(thirdQueryText, [newEstimateNumber, id]);
     res.send({
       estimate_number: newEstimateNumber,
-      licensee_id: licensee_id
+      licensee_id: licensee_id,
+      id: id
     })
   } catch (error) {
     console.error('Problem with estimates POST', error);
