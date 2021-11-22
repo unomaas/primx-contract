@@ -6,6 +6,7 @@ import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import useCombineEstimateCalculations from '../../hooks/useCombineEstimateCalculations';
 import removeTimestamps from '../../hooks/removeTimestamps';
+import { ExpansionPanelActions } from '@material-ui/core';
 
 
 // ⬇ Saga Worker to create a GET request for combining three estimates. 
@@ -59,7 +60,7 @@ function* fetchThreeEstimatesQuery(action) {
       totalsObjectHolder.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
       totalsObjectHolder.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
     } // End for loop
-    // ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
+    // ⬇ Creating a 'deep copy' container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
     // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
     let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
     // ⬇ Setting the tallied amount to the object to feed through the math machine: 
@@ -80,7 +81,7 @@ function* fetchThreeEstimatesQuery(action) {
     }); // End yield put
     yield put({ type: "SHOW_COMBINED_TABLE" });
   } catch (error) {
-    console.log('fetchThreeEstimatesQuery failed:', error);
+    console.error('fetchThreeEstimatesQuery failed:', error);
   } // End try/catch
 } // End fetchThreeEstimatesQuery Saga
 
@@ -153,22 +154,49 @@ function* fetchTwoEstimatesQuery(action) {
     yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });
     yield put({ type: "SHOW_COMBINED_TABLE" });
   } catch (error) {
-    console.log('fetchTwoEstimatesQuery failed:', error);
+    console.error('fetchTwoEstimatesQuery failed:', error);
   } // End try/catch
 } // End fetchTwoEstimatesQuery Saga
 
-// ⬇ Saga Worker to create a GET request for combining three estimates. 
-function* lookupEstimateNumbers(action) {
 
+// ⬇ Saga Worker to handle looking up a saved combined estimate:
+function* pushToCombineEstimates(action) {
+  // Pulling the variables from the payload: 
+  const licenseeId = action.payload.licenseeId;
+  const estimateNumber = action.payload.estimateNumber;
+  // Saving history for the navigation from Saga:
+  const history = action.payload.history;
+  try {
+    // Ping the server with combined estimate to pull the estimate numbers:
+    const response = yield axios.get('/api/estimates/lookup/:estimates', {
+      params: {
+        estimateNumber: estimateNumber,
+        licenseeId: licenseeId
+      } // End params
+    }); // End response    
+    // Saving the response to get the other data from: 
+    const returnedEstimate = response.data[0];
+    // Pulling the estimate numbers from it: 
+    const firstEstimateNumber = returnedEstimate.combined_estimate_number_1;
+    const secondEstimateNumber = returnedEstimate.combined_estimate_number_2;
+    const thirdEstimateNumber = returnedEstimate.combined_estimate_number_3;
+    // If three estimate numbers were combined, push to three and do the math engines: 
+    if (thirdEstimateNumber) {
+      yield history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}/${thirdEstimateNumber}`);
+    } else { // ⬇ If they only entered two estimate numbers: 
+      yield history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}`);
+    } // End if/else statement
+  } catch (error) {
+    console.error('pushToCombineEstimates failed:', error);
+  } // End try/catch
 } // End lookupEstimateNumbers Saga
 
 
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
-  // Makes a GET request for the first search Query
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
-  yield takeLatest('LOOKUP_ESTIMATE_NUMBERS', lookupEstimateNumbers);
+  yield takeLatest('PUSH_TO_COMBINE_ESTIMATE', pushToCombineEstimates);
 } // End combineEstimatesSaga
 
 

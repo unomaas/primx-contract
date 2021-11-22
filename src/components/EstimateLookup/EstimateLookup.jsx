@@ -27,13 +27,9 @@ export default function EstimateLookup() {
   const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
-  const { licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
+  const { licensee_id_searched, estimate_number_searched } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  // ⬇ first,second,thirdEstimate below are objects searched from the DB
-  const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
-  const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
-  const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
   // ⬇ Run on page load:
   useEffect(() => {
     // ⬇ Make the toggle button show this selection:
@@ -44,23 +40,27 @@ export default function EstimateLookup() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
-    if (licensee_id_searched && estimate_number_searched) {
-      // If it's a combined estimate, fire off the other GET's:
-      if (estimate_number_searched.charAt(estimate_number_searched.length - 1) === "C") {
-        console.log('*** true true true', licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined);
-
-        // dispatch({type: "LOOKUP_ESTIMATE_NUMBERS", payload: stimateNumbers });
-        // If three estimates, fire three GETS:
-
-      }
-      dispatch({
-        type: 'FETCH_ESTIMATE_QUERY',
-        payload: {
-          licensee_id: licensee_id_searched,
-          estimate_number: estimate_number_searched
-        } // End payload
-      }) // End dispatch
-    } // End if statement
+    // if (estimate_number_searched) {
+      if (estimate_number_searched?.charAt(estimate_number_searched?.length - 1) === "C") {
+        dispatch({
+          type: "PUSH_TO_COMBINE_ESTIMATE",
+          payload: {
+            licenseeId: licensee_id_searched,
+            estimateNumber: estimate_number_searched,
+            // Sending history for navigation:
+            history: history
+          } // End payload
+        });
+      } else { // If not a combined estimate, do normal GET:
+        dispatch({
+          type: 'FETCH_ESTIMATE_QUERY',
+          payload: {
+            licensee_id: licensee_id_searched,
+            estimate_number: estimate_number_searched
+          } // End payload
+        }); // End dispatch
+      }; // End if/else
+    // }
   }, [licensee_id_searched, estimate_number_searched]);
   //#endregion ⬆⬆ All state variables above. 
 
@@ -175,29 +175,9 @@ export default function EstimateLookup() {
       <br />
       {/* End estimate search form */}
 
-
-      {/* Conditionally render entire code block below if the user has successfully searched an estimate */}
-      {/* Contains some conditional rendering within */}
-      {/* {searchResult.estimate_number &&
+      {searchResult.estimate_number &&
         <EstimateLookupTable />
-      } */}
-      {(searchResult?.estimate_number?.charAt(searchResult?.estimate_number?.length - 1) === "C") ?
-        <>
-          <EstimateCombineTable
-            firstEstimate={firstEstimate}
-            secondEstimate={secondEstimate}
-            thirdEstimate={thirdEstimate}
-          />
-        </>
-        :
-
-        <>
-          {/* false */}
-          {/* <EstimateLookupTable /> */}
-        </>
       }
-
-
 
     </div >
   )

@@ -33,7 +33,7 @@ router.get('/lookup/:estimate', (req, res) => {
       res.send(result.rows)
     )
     .catch(error => {
-      console.log(`Error with /api/estimates/lookup/:estimates GET`, error);
+      console.error(`Error with /api/estimates/lookup/:estimates GET`, error);
       res.sendStatus(500)
     })
 })
@@ -51,7 +51,7 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
   pool.query(queryText)
     .then((result) => res.send(result.rows))
     .catch(error => {
-      console.log('Error with /api/estimates/all GET: ', error);
+      console.error('Error with /api/estimates/all GET: ', error);
       res.sendStatus(500);
     })
 
@@ -253,10 +253,11 @@ router.post('/', async (req, res) => {
     await pool.query(thirdQueryText, [newEstimateNumber, id]);
     res.send({
       estimate_number: newEstimateNumber,
-      licensee_id: licensee_id
+      licensee_id: licensee_id,
+      id: id
     })
   } catch (error) {
-    console.log('Problem with estimates POST', error);
+    console.error('Problem with estimates POST', error);
     res.sendStatus(500);
   }
 });
@@ -272,7 +273,7 @@ router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
   pool.query(queryText, [req.body.newValue, req.params.id])
     .then(result => res.sendStatus(200))
     .catch(error => {
-      console.log(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
+      console.error(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
     })
 })
 
@@ -286,7 +287,7 @@ router.put('/process/:id', rejectUnauthenticated, (req, res) => {
   pool.query(queryText, [req.user.username, order_number, req.params.id])
     .then(result => res.sendStatus(200))
     .catch(error => {
-      console.log(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
+      console.error(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
     })
 })
 
@@ -298,7 +299,7 @@ router.put('/archive/:id', rejectUnauthenticated, (req, res) => {
   pool.query(queryText, [req.params.id])
     .then(result => res.sendStatus(200))
     .catch(error => {
-      console.log(`Error with /api/estimates/archive PUT for id ${req.params.id}:`, error)
+      console.error(`Error with /api/estimates/archive PUT for id ${req.params.id}:`, error)
     })
 })
 
@@ -310,7 +311,7 @@ router.put('/order/:id', (req, res) => {
   pool.query(queryText, [req.body.po_number, req.params.id])
     .then(result => res.sendStatus(200))
     .catch(error => {
-      console.log(`Error with /api/estimates/order/:id PUT for id ${req.params.id}:`, error)
+      console.error(`Error with /api/estimates/order/:id PUT for id ${req.params.id}:`, error)
     })
 })
 
@@ -354,7 +355,7 @@ router.put('/recalculate/:id', (req, res) => {
   pool.query(queryText, values)
     .then(result => res.sendStatus(200))
     .catch(error => {
-      console.log(`Error with /api/estimates/recalculate/:id PUT for id ${req.params.id}:`, error)
+      console.error(`Error with /api/estimates/recalculate/:id PUT for id ${req.params.id}:`, error)
     })
 })
 
@@ -364,7 +365,7 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
   pool.query('DELETE FROM "estimates" WHERE id=$1', [req.params.id]).then((result) => {
     res.sendStatus(200);
   }).catch((error) => {
-    console.log(`Error with /api/estimates/delete/:id for id ${req.params.id}`, error);
+    console.error(`Error with /api/estimates/delete/:id for id ${req.params.id}`, error);
     res.sendStatus(500);
   })
 });
@@ -372,9 +373,6 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
 // PUT request which allows user to update any form-fillable data from the main estimate creation sheet, follows a very similar workflow to the 
 // main POST route above
 router.put('/clientupdates/:id', (req, res) => {
-
-  // console.log('Req.body is:', req.body, req.params);
-
   // destructure data received from saga which contains an object with all editable DB columns 
   let {
     // shared values regardless of imperial or metric units
@@ -492,13 +490,21 @@ router.put('/clientupdates/:id', (req, res) => {
 
   pool.query(queryText, values)
     .then(result => {
-      console.log('Got to .then in PUT request');
       res.sendStatus(200)
     })
     .catch(error => {
-      console.log(`Error with /api/estimates/clientupdates/:id PUT for id ${req.params.id}:`, error)
+      console.error(`Error with /api/estimates/clientupdates/:id PUT for id ${req.params.id}:`, error)
     })
 })
+
+// PUT request for when an individual estimate is saved in a combined estimate: 
+router.put('/usedincombine/:id', (req, res) => {
+  console.log('*** usedincombine', req.body, res);
+  
+  // const queryText = `UPDATE "estimates" SET "used_in_a_combined_estimate" = TRUE, WHERE "id" = $1;`;
+
+})
+
 
 
 module.exports = router;

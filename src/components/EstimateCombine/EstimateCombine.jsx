@@ -254,6 +254,7 @@ export default function EstimateCombine() {
           firstEstimate={firstEstimate}
           secondEstimate={secondEstimate}
           thirdEstimate={thirdEstimate}
+          calcCombinedEstimate={calcCombinedEstimate}
         />
       )} {/* End conditional rendering */}
     </div >

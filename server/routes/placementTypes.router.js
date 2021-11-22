@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   pool.query(queryText).then((result) => {
       res.send(result.rows);
   }).catch((error) => {
-      console.log('error in placement types GET router', error);
+      console.error('Error in placement types GET router', error);
       res.sendStatus(500);
   })
 });
@@ -27,7 +27,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
       res.sendStatus(201)
     })
     .catch(error => {
-      console.log('error in placement type post route', error);
+      console.error('Error in placement type post route', error);
       res.sendStatus(500);
     })
 });

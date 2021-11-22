@@ -17,7 +17,7 @@ function* fetchShippingCosts() {
             payload: shippingCosts.data
         });
     } catch (error) {
-        console.log('error with fetchShippingCosts in shippingCosts saga', error);
+        console.error('Error with fetchShippingCosts in shippingCosts saga', error);
     }
 }
 
@@ -35,7 +35,7 @@ function* postShippingCosts(action) {
             type: 'SET_SUCCESS_SHIPPING'
         })
     } catch (error) {
-        console.log('error in postShippingCosts SAGA -->', error);
+        console.error('Error in postShippingCosts SAGA -->', error);
     }
 }
 
@@ -45,7 +45,7 @@ function* updateShippingCosts(action) {
         //update shipping cost
         yield axios.put(`/api/shippingcosts/edit/${action.payload.id}`, action.payload);
     } catch (error) {
-        console.log('error in updateShippingCosts saga', error);
+        console.error('Error in updateShippingCosts saga', error);
     }
 }
 

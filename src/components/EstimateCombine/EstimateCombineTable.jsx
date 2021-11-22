@@ -11,7 +11,7 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 
 
-export default function EstimateCombineTable({firstEstimate, secondEstimate, thirdEstimate}) {
+export default function EstimateCombineTable({firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate}) {
   //#region ⬇⬇ All state variables below:
   // ⬇ first,second,thirdEstimate below are objects searched from the DB
   // const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
@@ -19,7 +19,7 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
   // const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
 
   // ⬇ calcCombinedEstimate is the object returned by searching for multiple estimates to combined, with updated quotes. 
-  const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
+  // const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
   // ⬇ Deprecated, used for Styling MUI components. 
   const classes = useStyles();
   // ⬇ Sets the error state for a faulty search:
@@ -65,8 +65,6 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
     calcCombinedEstimate.combined_estimate_number_1 = firstEstimate.estimate_number;
     calcCombinedEstimate.combined_estimate_number_2 = secondEstimate.estimate_number;
     calcCombinedEstimate.combined_estimate_number_3 = thirdEstimate.estimate_number;
-    console.log('handleSave calcCombinedEstimate', calcCombinedEstimate);
-
     // ⬇ Send the estimate object to be POSTed:
     dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
     // ⬇ Sweet Alert to let them know to save the Estimate #:
@@ -82,7 +80,7 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
   } // End handleSave
   //#endregion ⬆⬆ Event handlers above. 
 
-  console.log('*** Third Estimate is:', thirdEstimate);
+
   // ⬇ Rendering below:
   return (
     <>

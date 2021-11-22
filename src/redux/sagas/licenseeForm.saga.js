@@ -10,9 +10,8 @@ import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
-  const licenseeId = action.payload.licensee_id
-  const estimateNumber = action.payload.estimate_number
-
+  const licenseeId = action.payload.licensee_id;
+  const estimateNumber = action.payload.estimate_number;
   try {
     const response = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
@@ -31,7 +30,7 @@ function* fetchEstimateQuery(action) {
       payload: calculatedResponse
     });
   } catch (error) {
-    console.log('User get request failed', error);
+    console.error('fetchEstimateQuery error', error);
   }
 }
 
@@ -39,27 +38,27 @@ function* fetchEstimateQuery(action) {
 function* AddEstimate(action) {
   try {
     const response = yield axios.post('/api/estimates', action.payload);
-    // action. payload contains the history object from useHistory
+    // action.payload contains the history object from useHistory:
     const history = action.payload.history
-    console.log('*** action payload:', action.payload);
-    console.log('*** response:', response);
-
-    // To add check and push for if combined here push to it.  The routes have been made.
-    // Then add some sort of different lookup useEffect to handle the gets. 
+    // Saving the response and action.payload to variables for easier reading:
+    const returnedEstimate = response.data;
+    console.log('*** returnedEStimate is:', returnedEstimate);
     
-    // need to send the user to the search estimates results page using the newly created estimate number
-    // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
-    yield history.push(`/lookup/${response.data.licensee_id}/${response.data.estimate_number}`);
+    // If we just saved a combined estimate, do not push them, as they're already at the page we would push to: 
+    if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
+      yield axios.put(`/api/estimates/usedincombine`, action.payload);
+      return;
+    } else { // Otherwise they were just saving a single estimate and we do push:
+      yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
+    }
   } catch (error) {
-    console.log('User POST request failed', error);
+    console.error('AddEstimate POST request failed', error);
   }
 }
 
 // Saga Worker to edit estimate into table
 function* EditEstimate(action) {
   try {
-    // console.log('Action.payload is:', action.payload);
-    
     yield axios.put(`/api/estimates/clientupdates/${action.payload.id}`, action.payload);
     // after this is done, run the recalculate costs PUT request to ensure up-to-date pricing
     yield put({ type: 'RECALCULATE_ESTIMATE', payload: action.payload });
@@ -68,11 +67,9 @@ function* EditEstimate(action) {
     const history = action.payload.history;
     // need to send the user to the search estimates results page using the newly created estimate number
     // response.data is currently a newly created estimate_number and the licensee_id that was selected for the post
-    console.log('Action.payload is:', action.payload);
-
     yield history.push(`/lookup/${action.payload.licensee_id}/${action.payload.estimate_number}`);
   } catch (error) {
-    console.log('User POST request failed', error);
+    console.error('EditEstimate error', error);
   }
 }
 
@@ -125,16 +122,18 @@ function* recalculateEstimate(action) {
 
     // Now that the current estimate has updated pricing data, send an action to the estimates reducer that will set a recalculated boolean
     // from false to true, allowing the user to click the place order button on the estimate lookup view
-    yield put({type: 'SET_RECALCULATED_TRUE'})
+    yield put({ type: 'SET_RECALCULATED_TRUE' })
 
     // Refresh data on DOM by fetching the new data
-    yield put({ type: 'FETCH_ESTIMATE_QUERY', payload: {
-      licensee_id: currentEstimate.licensee_id,
-      estimate_number: currentEstimate.estimate_number
-    }})
+    yield put({
+      type: 'FETCH_ESTIMATE_QUERY', payload: {
+        licensee_id: currentEstimate.licensee_id,
+        estimate_number: currentEstimate.estimate_number
+      }
+    })
 
   } catch (error) {
-    console.log('recalculate estimate failed', error)
+    console.error('recalculate estimate failed', error)
   }
 } // End
 
@@ -162,7 +161,7 @@ function* markEstimateAsOrdered(action) {
       type: 'SET_RECALCULATE_FALSE'
     });
   } catch (error) {
-    console.log('markEstimateAsOrdered failed', error)
+    console.error('markEstimateAsOrdered failed', error)
   }
 }
 

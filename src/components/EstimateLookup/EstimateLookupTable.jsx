@@ -3,6 +3,8 @@
 // ⬇ Dependent Functionality:
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useLocation } from 'react-router';
+
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
@@ -21,6 +23,8 @@ export default function EstimateLookupTable() {
   const [poNumber, setPoNumber] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
+  // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
+  const { licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
   //#endregion ⬆⬆ All state variables above. 
 
 
@@ -71,7 +75,6 @@ export default function EstimateLookupTable() {
    * Sends the user back to 1.0 Create Estimate with data pre-loaded to make edits. 
    */
   const handleEdit = () => {
-    console.log('In handleEdit, searchResult:', searchResult);
     dispatch({ type: 'SET_EDIT_DATA', payload: searchResult });
     dispatch({ type: 'SET_TABLE_STATE', payload: true });
     dispatch({ type: 'SET_EDIT_STATE', payload: true });

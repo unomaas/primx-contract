@@ -16,7 +16,7 @@ router.get('/all', (req, res) => {
   pool.query(queryText)
     .then((result) => res.send(result.rows))
     .catch((error) => {
-      console.log('Error getting company names', error);
+      console.error('Error getting company names', error);
       res.sendStatus(500);
     });
 });
@@ -29,7 +29,7 @@ router.get('/active', (req, res) => {
   pool.query(queryText)
     .then((result) => res.send(result.rows))
     .catch((error) => {
-      console.log('Error getting company names', error);
+      console.error('Error getting company names', error);
       res.sendStatus(500);
     });
 });
@@ -45,7 +45,7 @@ router.post('/', rejectUnauthenticated, (req, res) => {
   pool.query(queryText, [req.body.value])
     .then(() => res.sendStatus(201))
     .catch((error) => {
-      console.log('Company ServerSide Post failed:', error);
+      console.error('Company ServerSide Post failed:', error);
       res.sendStatus(500);
     });
 })
@@ -61,7 +61,7 @@ router.put('/:id', rejectUnauthenticated, (req, res) => {
   pool.query(queryText, [!req.body.active, req.params.id])
     .then(() => { res.sendStatus(200); })
     .catch((error) => {
-      console.log('Error completeing UPDATE Companies query', error)
+      console.error('Error completeing UPDATE Companies query', error)
     })
 });
 

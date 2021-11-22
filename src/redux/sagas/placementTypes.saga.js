@@ -9,7 +9,7 @@ function* fetchAllPlacementTypes() {
         //send results to placementTypes reducer
         yield put({type: 'SET_PLACEMENT_TYPES', payload: placementTypes.data});
     } catch (error) {
-        console.log('error with fetchAllPlacementTypes in placementTypes saga', error);
+        console.error('Error with fetchAllPlacementTypes in placementTypes saga', error);
     }
 }
 
@@ -22,7 +22,7 @@ function* postPlacementType(action) {
       yield put({type: 'FETCH_PLACEMENT_TYPES'});
       yield put({type: 'SET_SUCCESS_PLACEMENT_TYPES'});
     } catch (error) {
-      console.log('error in post placement type SAGA -->', error);
+      console.error('Error in post placement type SAGA -->', error);
     }
   }
 
