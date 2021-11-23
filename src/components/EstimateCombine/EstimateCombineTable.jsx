@@ -11,7 +11,7 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 
 
-export default function EstimateCombineTable({firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate}) {
+export default function EstimateCombineTable({ firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate }) {
   //#region ⬇⬇ All state variables below:
   // ⬇ first,second,thirdEstimate below are objects searched from the DB
   // const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
@@ -58,9 +58,9 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
   /** ⬇ handleSave:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
-   const handleSave = event => {
-     // TODO: Attach the estimate numbers used:
-     
+  const handleSave = event => {
+    // TODO: Attach the estimate numbers used:
+
     // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
     calcCombinedEstimate.history = history;
     // Attach the estimate numbers to use inside the POST: 
@@ -1548,8 +1548,20 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
                           &nbsp; &nbsp;
 
                           {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
+                          {/* Conditional rendering below:
+                          - If recalculated is true, show the next set:
+                          - If these estimate numbers have been saved in an estimate prior, show submit: */}
                           {hasRecalculated ?
                             <>
+                              {(firstEstimate.used_in_a_combined_estimate == 'TRUE' &&
+                                secondEstimate.used_in_a_combined_estimate == 'TRUE' &&
+                                thirdEstimate.used_in_a_combined_estimate == 'TRUE') ?
+                                <>
+                                  true
+                                </> : <>
+                                  false
+                                </>
+                              }
                               <Button
                                 variant="contained"
                                 color="secondary"
@@ -1558,8 +1570,7 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
                               >
                                 Save Estimate
                               </Button>
-                            </> :
-                            <>
+                            </> : <>
                               <Button
                                 variant="contained"
                                 disabled

@@ -517,7 +517,6 @@ router.put('/usedincombine', (req, res) => {
       WHERE "estimate_number" in ($1, $2, $3);
     `;
   } else {
-    console.log('*** thirdCombinedEstimateNumber', thirdCombinedEstimateNumber);
     // If there is no third estimate number, take it out of the values array:
     values.pop();
     // Then send the query: 
