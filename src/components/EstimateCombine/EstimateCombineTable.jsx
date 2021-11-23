@@ -48,7 +48,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
    * Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
    */
   const handleRecalculateCosts = () => {
-    console.log('*** in handleRecalculateCosts, estimates true or not:', firstEstimate, firstEstimate.used_in_a_combined_estimate, secondEstimate.used_in_a_combined_estimate, thirdEstimate.used_in_a_combined_estimate);
     // ⬇ Attach history from useHistory to the searchResult object to allow navigation from inside the saga:
     calcCombinedEstimate.history = history;
     // ⬇ Needs to GET shipping information and pricing information before recalculating
@@ -65,9 +64,9 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
     // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
     calcCombinedEstimate.history = history;
     // Attach the estimate numbers to use inside the POST: 
-    calcCombinedEstimate.combined_estimate_number_1 = firstEstimate.estimate_number;
-    calcCombinedEstimate.combined_estimate_number_2 = secondEstimate.estimate_number;
-    calcCombinedEstimate.combined_estimate_number_3 = thirdEstimate.estimate_number;
+    calcCombinedEstimate.estimate_number_combined_1 = firstEstimate.estimate_number;
+    calcCombinedEstimate.estimate_number_combined_2 = secondEstimate.estimate_number;
+    calcCombinedEstimate.estimate_number_combined_3 = thirdEstimate.estimate_number;
     // ⬇ Send the estimate object to be POSTed:
     dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
     // ⬇ Sweet Alert to let them know to save the Estimate #:
@@ -1554,10 +1553,10 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                           - If these estimate numbers have been saved in an estimate prior, show submit: */}
                           {hasRecalculated ?
                             <>
-                              Recalc True ALL:
-                              {(firstEstimate.used_in_a_combined_estimate == 'TRUE' &&
-                                secondEstimate.used_in_a_combined_estimate == 'TRUE' &&
-                                thirdEstimate.used_in_a_combined_estimate == 'TRUE') ?
+                              {/* Recalc True ALL: */}
+                              {(firstEstimate.saved_in_a_combined_order == true &&
+                                secondEstimate.saved_in_a_combined_order == true &&
+                                thirdEstimate.saved_in_a_combined_order == true) ?
                                 <>
                                   {/* Recalc True and Saved True -- Show submit Button */}
                                   <Button
@@ -1582,9 +1581,9 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                               }
                             </> : <>
                               {/* Recalc False ALL: */}
-                              {(firstEstimate.used_in_a_combined_estimate == 'TRUE' &&
-                                secondEstimate.used_in_a_combined_estimate == 'TRUE' &&
-                                thirdEstimate.used_in_a_combined_estimate == 'TRUE') ?
+                              {(firstEstimate.saved_in_a_combined_order == true &&
+                                secondEstimate.saved_in_a_combined_order == true &&
+                                thirdEstimate.saved_in_a_combined_order == true) ?
                                 <>
                                   {/* Realc False and Saved True -- Show grayed out submit */}
                                   <Button

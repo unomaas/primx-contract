@@ -11,8 +11,6 @@ import { ExpansionPanelActions } from '@material-ui/core';
 
 // ⬇ Saga Worker to create a GET request for combining three estimates. 
 function* fetchThreeEstimatesQuery(action) {
-  console.log('*** in fetchThreeEstimatesQuery, action.payload:', action.payload);
-  
   // ⬇ Declaring variables:
   const licenseeId = action.payload.licensee_id;
   const firstEstimateNumber = action.payload.first_estimate_number;
@@ -35,15 +33,10 @@ function* fetchThreeEstimatesQuery(action) {
           licenseeId: licenseeId
         } // End params
       }) // End response      
-      // ⬇ Run the timestamp removal function on the returned array of estimates:
-      console.log('*** in for loop, response.data is:', response.data);
-      
+      // ⬇ Run the timestamp removal function on the returned array of estimates:      
       const estimateWithoutTimestamps = removeTimestamps(response.data);
-      console.log('*** in for loop, estimateWithoutTimestamps is:', estimateWithoutTimestamps);
-
       // ⬇ If a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it:
       const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
-      console.log('*** in for loop, calculatedResponse is:', calculatedResponse);
       // ⬇ Save it to the estimatesArray for later use. 
       estimatesArray.push(calculatedResponse);
     } // End for loop
@@ -184,9 +177,9 @@ function* pushToCombineEstimates(action) {
     // Saving the response to get the other data from: 
     const returnedEstimate = response.data[0];
     // Pulling the estimate numbers from it: 
-    const firstEstimateNumber = returnedEstimate.combined_estimate_number_1;
-    const secondEstimateNumber = returnedEstimate.combined_estimate_number_2;
-    const thirdEstimateNumber = returnedEstimate.combined_estimate_number_3;
+    const firstEstimateNumber = returnedEstimate.estimate_number_combined_1;
+    const secondEstimateNumber = returnedEstimate.estimate_number_combined_2;
+    const thirdEstimateNumber = returnedEstimate.estimate_number_combined_3;
     // If three estimate numbers were combined, push to three and do the math engines: 
     if (thirdEstimateNumber) {
       yield history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}/${thirdEstimateNumber}`);
@@ -204,6 +197,7 @@ function* combineEstimatesSaga() {
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
   yield takeLatest('PUSH_TO_COMBINE_ESTIMATE', pushToCombineEstimates);
+  
 } // End combineEstimatesSaga
 
 

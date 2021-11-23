@@ -36,22 +36,16 @@ function* fetchEstimateQuery(action) {
 
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
-
-
   try {
     const response = yield axios.post('/api/estimates', action.payload);
-    console.log('*** action.payload is:', action.payload);
-    
     // action.payload contains the history object from useHistory:
     const history = action.payload.history
     // Saving the response and action.payload to variables for easier reading:
-    const returnedEstimate = response.data;
-    console.log('*** returnedEStimate is:', returnedEstimate);
-    
+    const returnedEstimate = response.data;    
     // If we just saved a combined estimate, do not push them, as they're already at the page we would push to: 
     if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
-      yield axios.put(`/api/estimates/usedincombine`, action.payload);
-      return;
+      yield axios.put(`/api/estimates/usedincombine`, action.payload);      
+      // return;
     } else { // Otherwise they were just saving a single estimate and we do push:
       yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
     }

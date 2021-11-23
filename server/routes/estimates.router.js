@@ -29,11 +29,11 @@ router.get('/lookup/:estimate', (req, res) => {
     ORDER BY "estimates".id DESC;
   `;
   pool.query(queryText, [estimateNumber, licenseeId])
-    .then((result) =>
-      res.send(result.rows)
-    )
+    .then(result => {
+      res.send(result.rows);
+    })
     .catch(error => {
-      console.error(`Error with /api/estimates/lookup/:estimates GET`, error);
+      console.error(`Error with /api/estimates/lookup/:estimates GET`, error)
       res.sendStatus(500)
     })
 })
@@ -104,9 +104,9 @@ router.post('/', async (req, res) => {
     thickened_edge_construction_joint_lineal_meters,
     primx_steel_fibers_dosage_kgs,
     waste_factor_percentage,
-    combined_estimate_number_1,
-    combined_estimate_number_2,
-    combined_estimate_number_3
+    estimate_number_combined_1,
+    estimate_number_combined_2,
+    estimate_number_combined_3
   } = req.body
 
   // create a unique UUID estimate number to use for the estimate being sent
@@ -143,9 +143,9 @@ router.post('/', async (req, res) => {
     primx_cpea_unit_price,
     primx_cpea_shipping_estimate,
     estimate_number,
-    combined_estimate_number_1,
-    combined_estimate_number_2,
-    combined_estimate_number_3,
+    estimate_number_combined_1,
+    estimate_number_combined_2,
+    estimate_number_combined_3,
     waste_factor_percentage
   ]
 
@@ -180,9 +180,9 @@ router.post('/', async (req, res) => {
     "primx_cpea_unit_price",
     "primx_cpea_shipping_estimate",
     "estimate_number",
-    "combined_estimate_number_1",
-    "combined_estimate_number_2",
-    "combined_estimate_number_3",
+    "estimate_number_combined_1",
+    "estimate_number_combined_2",
+    "estimate_number_combined_3",
     "waste_factor_percentage",
   `
   // Add in the imperial or metric specific values based on unit choice
@@ -241,7 +241,7 @@ router.post('/', async (req, res) => {
     let newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
 
     // if a combined etsimate, add a letter C to the estimate number    
-    if (combined_estimate_number_1 && combined_estimate_number_2) {
+    if (estimate_number_combined_1 && estimate_number_combined_2) {
       newEstimateNumber += "-C";
     }
 
@@ -497,12 +497,11 @@ router.put('/clientupdates/:id', (req, res) => {
     })
 })
 
-// PUT request for when an individual estimate is saved in a combined estimate, flip it's 'used_in_a_combined_estimate' key to TRUE: 
+// PUT request for when an individual estimate is saved in a combined estimate, flip it's 'saved_in_a_combined_order' key to TRUE: 
 router.put('/usedincombine', (req, res) => {
-  // console.log('*** usedincombine', req.body);
-  const firstCombinedEstimateNumber = req.body.combined_estimate_number_1;
-  const secondCombinedEstimateNumber = req.body.combined_estimate_number_2;
-  const thirdCombinedEstimateNumber = req.body.combined_estimate_number_3;
+  const firstCombinedEstimateNumber = req.body.estimate_number_combined_1;
+  const secondCombinedEstimateNumber = req.body.estimate_number_combined_2;
+  const thirdCombinedEstimateNumber = req.body.estimate_number_combined_3;
   let queryText = "";
   let values = [
     firstCombinedEstimateNumber,
@@ -513,7 +512,7 @@ router.put('/usedincombine', (req, res) => {
     // If there's a third estimate, fire off the query: 
     queryText = `
       UPDATE "estimates"  
-      SET "used_in_a_combined_estimate" = 'TRUE' 
+      SET "saved_in_a_combined_order" = 'TRUE' 
       WHERE "estimate_number" in ($1, $2, $3);
     `;
   } else {
@@ -522,7 +521,7 @@ router.put('/usedincombine', (req, res) => {
     // Then send the query: 
     queryText = `
       UPDATE "estimates"  
-      SET "used_in_a_combined_estimate" = 'TRUE' 
+      SET "saved_in_a_combined_order" = 'TRUE' 
       WHERE "estimate_number" in ($1, $2);
     `;
   } // End if/else query text. 

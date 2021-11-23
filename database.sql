@@ -44,21 +44,20 @@ CREATE TABLE "estimates" (
 	"primx_cpea_unit_price" money NOT NULL,
 	"primx_cpea_shipping_estimate" money NOT NULL,
 	"estimate_number" varchar(50) NOT NULL UNIQUE,
-	"ordered_by_licensee" bool NOT NULL DEFAULT 'false',
+	"ordered_by_licensee" bool NOT NULL DEFAULT 'FALSE',
 	"po_number" varchar(100) DEFAULT NULL,
 	"order_number" varchar(50) DEFAULT NULL,
-	"marked_as_ordered" bool NOT NULL DEFAULT 'false',
-	"archived" bool NOT NULL DEFAULT 'false',
+	"marked_as_ordered" bool NOT NULL DEFAULT 'FALSE',
+	"archived" bool NOT NULL DEFAULT 'FALSE',
 	"processed_by" varchar(50) DEFAULT NULL,
-  "used_in_a_combined_estimate" bool DEFAULT 'false',
-	"combined_estimate_number_1" varchar(50) DEFAULT NULL,
-  "combined_estimate_number_2" varchar(50) DEFAULT NULL,
-  "combined_estimate_number_3" varchar(50) DEFAULT NULL,
+  "saved_in_a_combined_order" bool NOT NULL DEFAULT 'FALSE',
+	"estimate_number_combined_1" varchar(50) DEFAULT NULL,
+  "estimate_number_combined_2" varchar(50) DEFAULT NULL,
+  "estimate_number_combined_3" varchar(50) DEFAULT NULL,
 	CONSTRAINT "estimates_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
 );
-
 
 -- create shipping_costs table
 CREATE TABLE "shipping_costs" (
@@ -110,7 +109,6 @@ CREATE TABLE "user" (
   OIDS=FALSE
 );
 
-
 -- create products table
 CREATE TABLE "products" (
 	"id" serial NOT NULL,
@@ -122,8 +120,6 @@ CREATE TABLE "products" (
 ) WITH (
   OIDS=FALSE
 );
-
-
 
 -- add foreign key constraints
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk0" FOREIGN KEY ("licensee_id") REFERENCES "licensees"("id");
@@ -163,25 +159,27 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 
 
 
--- Imperial dummy data starter
-INSERT INTO "estimates" 
-	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
-	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_types_id","placement_types_id","square_feet",
-	"thickness_inches","thickened_edge_perimeter_lineal_feet","thickened_edge_construction_joint_lineal_feet",
-	"primx_flow_dosage_liters","primx_steel_fibers_dosage_lbs","primx_cpea_dosage_liters",
-	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",
-	"primx_steel_fibers_shipping_estimate","primx_ultracure_blankets_unit_price","primx_cpea_unit_price","primx_cpea_shipping_estimate","estimate_number")
-VALUES ('imperial', 'United States', '2021-07-23', 'Imperial Test Project', 1, 'Tucknology Industries', '500 Main St', 'Minneapolis', 22, 55454, '2021-10-31', 'Chris Klemz', 'chris@prime.io',
-	1234567890, 2, 1, 10000, 5, 1000, 1000, 3, 68, 4, .40, 16000, 2.00, 15000, .69, 15000, .08, 3.55, 15000, 1234);
+-- DUMMY DATA NEEDS TO BE UPDATED WITH THE NEW TABLE ADDITIONS: 
 
--- Metric dummy data starter
-INSERT INTO "estimates" 
-	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
-	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_types_id","placement_types_id","square_meters",
-	"thickness_millimeters","thickened_edge_perimeter_lineal_meters","thickened_edge_construction_joint_lineal_meters",
-	"primx_flow_dosage_liters","primx_steel_fibers_dosage_kgs","primx_cpea_dosage_liters",
-	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",
-	"primx_steel_fibers_shipping_estimate","primx_ultracure_blankets_unit_price","primx_cpea_unit_price","primx_cpea_shipping_estimate","estimate_number")
-VALUES ('metric', 'Canada', '2021-07-23', 'Metric Test Project', 3, 'Genocchio Productions', '700 First Ave', 'Vancouver', 5, 'a52bc1', '2021-11-07', 'Alex Kim', 'alex@prime.io',
-	9876543210, 1, 3, 4000, 120, 200, 200, 3.92, 40, 1, .88, 15000, 2.00, 14000, 1.52, 14000, .86, 3.55, 15000, 5678);
+-- -- Imperial dummy data starter
+-- INSERT INTO "estimates" 
+-- 	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
+-- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_types_id","placement_types_id","square_feet",
+-- 	"thickness_inches","thickened_edge_perimeter_lineal_feet","thickened_edge_construction_joint_lineal_feet",
+-- 	"primx_flow_dosage_liters","primx_steel_fibers_dosage_lbs","primx_cpea_dosage_liters",
+-- 	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",
+-- 	"primx_steel_fibers_shipping_estimate","primx_ultracure_blankets_unit_price","primx_cpea_unit_price","primx_cpea_shipping_estimate","estimate_number")
+-- VALUES ('imperial', 'United States', '2021-07-23', 'Imperial Test Project', 1, 'Tucknology Industries', '500 Main St', 'Minneapolis', 22, 55454, '2021-10-31', 'Chris Klemz', 'chris@prime.io',
+-- 	1234567890, 2, 1, 10000, 5, 1000, 1000, 3, 68, 4, .40, 16000, 2.00, 15000, .69, 15000, .08, 3.55, 15000, 1234);
+
+-- -- Metric dummy data starter
+-- INSERT INTO "estimates" 
+-- 	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
+-- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_types_id","placement_types_id","square_meters",
+-- 	"thickness_millimeters","thickened_edge_perimeter_lineal_meters","thickened_edge_construction_joint_lineal_meters",
+-- 	"primx_flow_dosage_liters","primx_steel_fibers_dosage_kgs","primx_cpea_dosage_liters",
+-- 	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",
+-- 	"primx_steel_fibers_shipping_estimate","primx_ultracure_blankets_unit_price","primx_cpea_unit_price","primx_cpea_shipping_estimate","estimate_number")
+-- VALUES ('metric', 'Canada', '2021-07-23', 'Metric Test Project', 3, 'Genocchio Productions', '700 First Ave', 'Vancouver', 5, 'a52bc1', '2021-11-07', 'Alex Kim', 'alex@prime.io',
+-- 	9876543210, 1, 3, 4000, 120, 200, 200, 3.92, 40, 1, .88, 15000, 2.00, 14000, 1.52, 14000, .86, 3.55, 15000, 5678);
 
