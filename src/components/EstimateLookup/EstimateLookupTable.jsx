@@ -673,8 +673,9 @@ export default function EstimateLookupTable() {
                                   helperText={poNumError}
                                 >
                                 </TextField>
-                              </> :
-                              <>Recalculate costs before placing order.</>
+                              </> : <>
+                                Recalculate costs before placing order.
+                              </>
                             }
                             &nbsp; &nbsp;
 

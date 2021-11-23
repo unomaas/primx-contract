@@ -48,6 +48,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
    * Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
    */
   const handleRecalculateCosts = () => {
+    console.log('*** in handleRecalculateCosts, estimates true or not:', firstEstimate, firstEstimate.used_in_a_combined_estimate, secondEstimate.used_in_a_combined_estimate, thirdEstimate.used_in_a_combined_estimate);
     // ⬇ Attach history from useHistory to the searchResult object to allow navigation from inside the saga:
     calcCombinedEstimate.history = history;
     // ⬇ Needs to GET shipping information and pricing information before recalculating
@@ -1553,31 +1554,57 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                           - If these estimate numbers have been saved in an estimate prior, show submit: */}
                           {hasRecalculated ?
                             <>
+                              Recalc True ALL:
                               {(firstEstimate.used_in_a_combined_estimate == 'TRUE' &&
                                 secondEstimate.used_in_a_combined_estimate == 'TRUE' &&
                                 thirdEstimate.used_in_a_combined_estimate == 'TRUE') ?
                                 <>
-                                  true
+                                  {/* Recalc True and Saved True -- Show submit Button */}
+                                  <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    // onClick={handleSave}
+                                    className={classes.LexendTeraFont11}
+                                  >
+                                    Place Order
+                                  </Button>
                                 </> : <>
-                                  false
+                                  {/* Recalc True and Saved False -- Show Save Button */}
+                                  <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleSave}
+                                    className={classes.LexendTeraFont11}
+                                  >
+                                    Save Estimate
+                                  </Button>
                                 </>
                               }
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={handleSave}
-                                className={classes.LexendTeraFont11}
-                              >
-                                Save Estimate
-                              </Button>
                             </> : <>
-                              <Button
-                                variant="contained"
-                                disabled
-                                className={classes.LexendTeraFont11}
-                              >
-                                Save Estimate
-                              </Button>
+                              {/* Recalc False ALL: */}
+                              {(firstEstimate.used_in_a_combined_estimate == 'TRUE' &&
+                                secondEstimate.used_in_a_combined_estimate == 'TRUE' &&
+                                thirdEstimate.used_in_a_combined_estimate == 'TRUE') ?
+                                <>
+                                  {/* Realc False and Saved True -- Show grayed out submit */}
+                                  <Button
+                                    variant="contained"
+                                    disabled
+                                    className={classes.LexendTeraFont11}
+                                  >
+                                    Place Order
+                                  </Button>
+                                </> : <>
+                                  {/* Recalc False and Saved False -- Show grayed out Save */}
+                                  <Button
+                                    variant="contained"
+                                    disabled
+                                    className={classes.LexendTeraFont11}
+                                  >
+                                    Save Estimate
+                                  </Button>
+                                </>
+                              }
                             </>
                           }
                         </section>

@@ -11,6 +11,8 @@ import { ExpansionPanelActions } from '@material-ui/core';
 
 // ⬇ Saga Worker to create a GET request for combining three estimates. 
 function* fetchThreeEstimatesQuery(action) {
+  console.log('*** in fetchThreeEstimatesQuery, action.payload:', action.payload);
+  
   // ⬇ Declaring variables:
   const licenseeId = action.payload.licensee_id;
   const firstEstimateNumber = action.payload.first_estimate_number;
@@ -34,9 +36,14 @@ function* fetchThreeEstimatesQuery(action) {
         } // End params
       }) // End response      
       // ⬇ Run the timestamp removal function on the returned array of estimates:
+      console.log('*** in for loop, response.data is:', response.data);
+      
       const estimateWithoutTimestamps = removeTimestamps(response.data);
+      console.log('*** in for loop, estimateWithoutTimestamps is:', estimateWithoutTimestamps);
+
       // ⬇ If a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it:
       const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+      console.log('*** in for loop, calculatedResponse is:', calculatedResponse);
       // ⬇ Save it to the estimatesArray for later use. 
       estimatesArray.push(calculatedResponse);
     } // End for loop
