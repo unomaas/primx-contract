@@ -33,7 +33,7 @@ function* fetchThreeEstimatesQuery(action) {
           licenseeId: licenseeId
         } // End params
       }) // End response      
-      // ⬇ Run the timestamp removal function on the returned array of estimates:
+      // ⬇ Run the timestamp removal function on the returned array of estimates:      
       const estimateWithoutTimestamps = removeTimestamps(response.data);
       // ⬇ If a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it:
       const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
@@ -177,9 +177,9 @@ function* pushToCombineEstimates(action) {
     // Saving the response to get the other data from: 
     const returnedEstimate = response.data[0];
     // Pulling the estimate numbers from it: 
-    const firstEstimateNumber = returnedEstimate.combined_estimate_number_1;
-    const secondEstimateNumber = returnedEstimate.combined_estimate_number_2;
-    const thirdEstimateNumber = returnedEstimate.combined_estimate_number_3;
+    const firstEstimateNumber = returnedEstimate.estimate_number_combined_1;
+    const secondEstimateNumber = returnedEstimate.estimate_number_combined_2;
+    const thirdEstimateNumber = returnedEstimate.estimate_number_combined_3;
     // If three estimate numbers were combined, push to three and do the math engines: 
     if (thirdEstimateNumber) {
       yield history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}/${thirdEstimateNumber}`);
@@ -197,6 +197,7 @@ function* combineEstimatesSaga() {
   yield takeLatest('FETCH_THREE_ESTIMATES_QUERY', fetchThreeEstimatesQuery);
   yield takeLatest('FETCH_TWO_ESTIMATES_QUERY', fetchTwoEstimatesQuery);
   yield takeLatest('PUSH_TO_COMBINE_ESTIMATE', pushToCombineEstimates);
+  
 } // End combineEstimatesSaga
 
 

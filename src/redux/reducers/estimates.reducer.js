@@ -128,7 +128,7 @@ export const hasRecalculated = (state = false, action) => {
   switch (action.type) {
     case 'SET_RECALCULATED_TRUE':
       return true;
-    case 'SET_RECALCULATE_FALSE':
+    case 'SET_RECALCULATED_FALSE':
       return false;
     default:
       return state;

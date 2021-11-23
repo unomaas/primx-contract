@@ -11,7 +11,7 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 
 
-export default function EstimateCombineTable({firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate}) {
+export default function EstimateCombineTable({ firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate }) {
   //#region ⬇⬇ All state variables below:
   // ⬇ first,second,thirdEstimate below are objects searched from the DB
   // const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
@@ -58,13 +58,15 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
   /** ⬇ handleSave:
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
-   const handleSave = event => {
+  const handleSave = event => {
+    // TODO: Attach the estimate numbers used:
+
     // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
     calcCombinedEstimate.history = history;
     // Attach the estimate numbers to use inside the POST: 
-    calcCombinedEstimate.combined_estimate_number_1 = firstEstimate.estimate_number;
-    calcCombinedEstimate.combined_estimate_number_2 = secondEstimate.estimate_number;
-    calcCombinedEstimate.combined_estimate_number_3 = thirdEstimate.estimate_number;
+    calcCombinedEstimate.estimate_number_combined_1 = firstEstimate.estimate_number;
+    calcCombinedEstimate.estimate_number_combined_2 = secondEstimate.estimate_number;
+    calcCombinedEstimate.estimate_number_combined_3 = thirdEstimate.estimate_number;
     // ⬇ Send the estimate object to be POSTed:
     dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
     // ⬇ Sweet Alert to let them know to save the Estimate #:
@@ -1546,25 +1548,62 @@ export default function EstimateCombineTable({firstEstimate, secondEstimate, thi
                           &nbsp; &nbsp;
 
                           {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
+                          {/* Conditional rendering below:
+                          - If recalculated is true, show the next set:
+                          - If these estimate numbers have been saved in an estimate prior, show submit: */}
                           {hasRecalculated ?
                             <>
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={handleSave}
-                                className={classes.LexendTeraFont11}
-                              >
-                                Save Estimate
-                              </Button>
-                            </> :
-                            <>
-                              <Button
-                                variant="contained"
-                                disabled
-                                className={classes.LexendTeraFont11}
-                              >
-                                Save Estimate
-                              </Button>
+                              {/* Recalc True ALL: */}
+                              {(firstEstimate.saved_in_a_combined_order == true &&
+                                secondEstimate.saved_in_a_combined_order == true &&
+                                thirdEstimate.saved_in_a_combined_order == true) ?
+                                <>
+                                  {/* Recalc True and Saved True -- Show submit Button */}
+                                  <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    // onClick={handleSave}
+                                    className={classes.LexendTeraFont11}
+                                  >
+                                    Place Order
+                                  </Button>
+                                </> : <>
+                                  {/* Recalc True and Saved False -- Show Save Button */}
+                                  <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleSave}
+                                    className={classes.LexendTeraFont11}
+                                  >
+                                    Save Estimate
+                                  </Button>
+                                </>
+                              }
+                            </> : <>
+                              {/* Recalc False ALL: */}
+                              {(firstEstimate.saved_in_a_combined_order == true &&
+                                secondEstimate.saved_in_a_combined_order == true &&
+                                thirdEstimate.saved_in_a_combined_order == true) ?
+                                <>
+                                  {/* Realc False and Saved True -- Show grayed out submit */}
+                                  <Button
+                                    variant="contained"
+                                    disabled
+                                    className={classes.LexendTeraFont11}
+                                  >
+                                    Place Order
+                                  </Button>
+                                </> : <>
+                                  {/* Recalc False and Saved False -- Show grayed out Save */}
+                                  <Button
+                                    variant="contained"
+                                    disabled
+                                    className={classes.LexendTeraFont11}
+                                  >
+                                    Save Estimate
+                                  </Button>
+                                </>
+                              }
                             </>
                           }
                         </section>

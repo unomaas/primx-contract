@@ -35,7 +35,8 @@ export default function EstimateLookup() {
     // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
       // ⬇ Fetch the current companies for drop-down menu options:
-      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
+      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
+      dispatch({ type: 'SET_RECALCULATED_FALSE'})
   }, []);
   // ⬇ Run on estimate search complete:
   useEffect(() => {

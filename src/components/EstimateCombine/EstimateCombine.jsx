@@ -41,7 +41,8 @@ export default function EstimateCombine() {
     // ⬇ Make the toggle button show this selection:
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'combine' }),
       // ⬇ Fetch the current companies for drop-down menu options:
-      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' })
+      dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
+      dispatch({ type: 'SET_RECALCULATED_FALSE'})
   }, []); // End useEffect
   // ⬇ Run on estimate search complete:
   useEffect(() => {
@@ -237,7 +238,7 @@ export default function EstimateCombine() {
               </p>
               The first and second estimate numbers are required to use this feature.  The third estimate number is optional.
               <p>
-                <b>Please be aware that whatever the Shipping/Contact Information for the FIRST estimate number entered, will be the information used for the other estimate(s).</b>
+                <b>Please be aware that whatever the Shipping/Contact Information is for the FIRST estimate number entered, that will be the information used for the other estimate(s).</b>
               </p>
               <p>
                 All estimates MUST go to the same shipping location in order to qualify for this reduced rate.
