@@ -51,8 +51,8 @@ export default function EstimateLookup() {
             // Sending history for navigation:
             history: history
           } // End payload
-        });
-      } else { // If not a combined estimate, do normal GET:
+        }); // If not a combined estimate, do normal GET:
+      } else if (licensee_id_searched && estimate_number_searched) { 
         dispatch({
           type: 'FETCH_ESTIMATE_QUERY',
           payload: {

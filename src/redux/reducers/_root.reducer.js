@@ -11,6 +11,7 @@ import estimatesReducer from './estimates.reducer';
 import userInfoReducer from './userInfo.reducer';
 import snackBar from './snack.reducer';
 import combineEstimatesReducer from './combineEstimates.reducer';
+import backdropReducer from './backdrop.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   userInfoReducer, //contains all users for system admin view
   snackBar, // Is the reducer data for snackbar alerts. 
   combineEstimatesReducer, // Is the reducer for combining multiple estimates.
+  backdropReducer, // Handles the backdrop and loading screen animation. 
 });
 
 export default rootReducer;

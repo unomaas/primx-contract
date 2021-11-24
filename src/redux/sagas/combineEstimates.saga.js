@@ -80,6 +80,7 @@ function* fetchThreeEstimatesQuery(action) {
       payload: calculatedResponse
     }); // End yield put
     yield put({ type: "SHOW_COMBINED_TABLE" });
+    yield put({ type: "LOADING_SCREEN_OFF"});
   } catch (error) {
     console.error('fetchThreeEstimatesQuery failed:', error);
   } // End try/catch
