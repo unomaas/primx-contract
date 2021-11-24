@@ -7,12 +7,41 @@ body,
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
+  /* font-size: 11px; */
+  /* text-size-adjust: 80%; */
+}
+
+/* App wide changes: */
+
+/* Affects everything except titles: */
+td, input, .MuiSelect-root, span, th {
+  font-size: 13px !important;
+}
+
+p {
+  font-size: 14px !important;
 }
 
 img {
   display: inline-block;
   max-width: 100%;
 }
+
+h3 {
+  font-size: 14px;
+}
+
+h4 {
+  font-size: 13px;
+}
+
+/* For the footer: */
+.lexendFont {
+  font-size: 14px;
+  color: black;
+}
+
+
 
 /* --------------------------------------------------------------------------------
 Container
@@ -121,7 +150,7 @@ Print Screen Scaling
     size: A3;
     margin-top: 0;
     margin-bottom: 0;
-}
+  }
 
   .App {
     margin: -100px 0px 0px 0px;
@@ -131,7 +160,7 @@ Print Screen Scaling
   .footerPrint {
     margin: -10px 0px 0px 0px;
   }
-  
+
   .removeInPrint {
     display: none;
   }

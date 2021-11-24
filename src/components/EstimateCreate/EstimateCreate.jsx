@@ -188,7 +188,7 @@ export default function EstimateCreate() {
           <Grid item xs={6}>
             <Paper elevation={3}>
               <TableContainer >
-                <h3 className="lexendFont">Licensee & Project Information</h3>
+                <h3>Licensee & Project Information</h3>
                 <Table size="small">
                   <TableBody>
 

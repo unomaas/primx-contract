@@ -16,7 +16,6 @@ const useStyles = makeStyles({
   // ⬇ Makes the Data Grid Tables in a normal font: 
   LexendTeraFont: {
     fontFamily: 'Lexend Tera',
-    
   },
   LexendTeraFont11: {
     fontFamily: 'Lexend Tera',
@@ -73,7 +72,11 @@ const useStyles = makeStyles({
   },
   header: {
     backgroundColor: '#C8C8C8',
-  }
+  },
+  ButtonToggle: {
+    fontFamily: 'Lexend Tera',
+    fontSize: '11px'
+  },
 
 }); // End useStyles
 
