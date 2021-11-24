@@ -16,7 +16,7 @@ import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
 import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
 import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
-
+import MuiBackdropManager from '../MuiBackdropManager/MuiBackdropManager';
 
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
@@ -33,12 +33,22 @@ function App() {
   //#region ⬇⬇ All state variables below:
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const backdropState = useSelector(store => store.backdropReducer);
+
   // ⬇ Runs on page load:
   useEffect(() => {
-    dispatch({ type: 'FETCH_USER' });
+    dispatch({ type: 'FETCH_USER' })
   }, [dispatch]);
   //#endregion ⬆⬆ All state variables above. 
 
+  // ⬇  This manages the backdrop and loading screen. If true, show header/loader:
+  if (backdropState) {
+    return <div className="App">
+      <Nav />
+      <MuiBackdropManager />
+      {/* <Footer /> */}
+    </div>;
+  }
 
   // ⬇ Rendering:
   return (
