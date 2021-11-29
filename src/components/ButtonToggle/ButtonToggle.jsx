@@ -15,6 +15,8 @@ export default function ButtonToggle() {
   const buttonState = useSelector(store => store.estimatesReducer.buttonState);
   // toggle button states
   const dispatch = useDispatch();
+  const classes = useStyles();
+
   //#endregion ⬆⬆ All state variables above. 
 
 
@@ -47,7 +49,7 @@ export default function ButtonToggle() {
         <ToggleButton
           style={{
             fontFamily: 'Lexend Tera',
-            fontSize: '11px'
+            fontSize: '5px'
           }}
           value="create"
         >
@@ -57,7 +59,7 @@ export default function ButtonToggle() {
         <ToggleButton
           style={{
             fontFamily: 'Lexend Tera',
-            fontSize: '11px'
+            fontSize: '5px'
           }}
           value="lookup"
         >
@@ -67,7 +69,7 @@ export default function ButtonToggle() {
         <ToggleButton
           style={{
             fontFamily: 'Lexend Tera',
-            fontSize: '11px'
+            fontSize: '5px'
           }}
           value="combine"
         >

@@ -41,14 +41,8 @@ function App() {
   }, [dispatch]);
   //#endregion ⬆⬆ All state variables above. 
 
-  // // ⬇  This manages the backdrop and loading screen. If true, show header/loader:
-  // if (backdropState) {
-  //   console.log('*** backdropState is:', backdropState);
-  //   return <MuiBackdropManager />;
-  // }
 
   // ⬇ Rendering:
-  console.log('*** is loading :', isLoading);
   return (
     <ThemeProvider theme={theme}>
       <Router>

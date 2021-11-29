@@ -154,6 +154,7 @@ function* fetchTwoEstimatesQuery(action) {
     // ⬇ Send that data to the reducer, and set the show table to true:
     yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });
     yield put({ type: "SHOW_COMBINED_TABLE" });
+    yield put({ type: "LOADING_SCREEN_OFF"});
   } catch (error) {
     console.error('fetchTwoEstimatesQuery failed:', error);
   } // End try/catch

@@ -12,6 +12,9 @@ function* fetchFieldSelect() {
     yield put({type: 'FETCH_SHIPPING_COSTS'});
     // fetch the floor types for the estimate create Select menu
     yield put({type: 'FETCH_FLOOR_TYPES'});
+
+    // yield put({ type: "LOADING_SCREEN_OFF"});
+
   }
 
 function* fieldSelectSaga() {
