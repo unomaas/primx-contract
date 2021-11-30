@@ -80,10 +80,43 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
       window.print();
     }); // End swal
   } // End handleSave
+
+  /** ⬇ handlePlaceOrder:
+ * Click handler for the Place Order button. 
+ */
+  const handlePlaceOrder = () => {
+    // ⬇ If they haven't entered a PO number, pop up an error helperText:
+    if (poNumber == "") {
+      setPoNumError("Please enter a P.O. Number.")
+      // ⬇ If they have entered a PO number, proceed with order submission:
+    } else {
+      swal({
+        title: "This order has been submitted! Your PrimX representative will be in touch.",
+        text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
+        icon: "success",
+        buttons: "I understand",
+      }) // End swal
+      // ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
+      // .then(() => {
+      //   window.print();
+      // }); // End swal
+      dispatch({
+        type: 'EDIT_PLACE_ORDER',
+        payload: {
+          id: calcCombinedEstimate.id,
+          po_number: poNumber,
+          licensee_id: calcCombinedEstimate.licensee_id,
+          estimate_number: calcCombinedEstimate.estimate_number
+        } // End payload
+      }) // End dispatch
+    } // End if/else.
+  } // End handlePlaceOrder
   //#endregion ⬆⬆ Event handlers above. 
 
 
   // ⬇ Rendering below:
+  console.log('*** calcCombinedEstimate', calcCombinedEstimate);
+
   return (
     <>
       <Grid container
@@ -1547,7 +1580,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
                           &nbsp; &nbsp;
 
-                          {/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
                           {/* Conditional rendering below:
                           - If recalculated is true, show the next set:
                           - If these estimate numbers have been saved in an estimate prior, show submit: */}
@@ -1559,10 +1591,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                                 thirdEstimate.saved_in_a_combined_order == true) ?
                                 <>
                                   {/* Recalc True and Saved True -- Show submit Button */}
+                                  <TextField
+                                    onChange={(event) => setPoNumber(event.target.value)}
+                                    size="small"
+                                    label="PO Number"
+                                    helperText={poNumError}
+                                  />
+                                  &nbsp; &nbsp;
                                   <Button
                                     variant="contained"
                                     color="secondary"
-                                    // onClick={handleSave}
+                                    onClick={handlePlaceOrder}
                                     className={classes.LexendTeraFont11}
                                   >
                                     Place Order
@@ -1586,6 +1625,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                                 thirdEstimate.saved_in_a_combined_order == true) ?
                                 <>
                                   {/* Realc False and Saved True -- Show grayed out submit */}
+                                  Recalculate costs before placing order.
+                                  &nbsp; &nbsp;
                                   <Button
                                     variant="contained"
                                     disabled

@@ -627,7 +627,7 @@ export default function EstimateLookupTable() {
                     <TableCell>{searchResult?.design_total_shipping_estimate}</TableCell>
                   </TableRow>
 
-                  <TableRow hover="true">
+                  <TableRow hover={true}>
                     <TableCell><b>Total Cost:</b></TableCell>
                     <TableCell><b>{searchResult?.primx_dc_total_cost_estimate}</b></TableCell>
                     <TableCell><b>{searchResult?.primx_flow_total_cost_estimate}</b></TableCell>
@@ -640,7 +640,7 @@ export default function EstimateLookupTable() {
                   {/* Render the following table row for any orders that haven't been placed yet */}
                   {!searchResult.ordered_by_licensee &&
                     <>
-                      <TableRow >
+                      <TableRow>
                         <TableCell colSpan={7} align="right">
                           <section className="removeInPrint">
                             {/* Edit Estimate Button: */}
@@ -671,8 +671,7 @@ export default function EstimateLookupTable() {
                                   size="small"
                                   label="PO Number"
                                   helperText={poNumError}
-                                >
-                                </TextField>
+                                />
                               </> : <>
                                 Recalculate costs before placing order.
                               </>
