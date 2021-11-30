@@ -254,6 +254,9 @@ function* fetchManyEstimatesQuery(action) {
           // MAKE SURE IT WORKS FOR BOTH TWO AND THREE
           // IF THEY COME HERE AND AN ESTIMATE IS ALREADY SAVED
           // SHOW THEM THAT COMBINED ESTIMATAE NUMBER ON THE PAGE
+
+
+          // ON 2nd thought, make the lookup page be the main point of seraching for combined orders.  That's might be the easiest way to pull the combined estimate number, since we already pull the rest of the numbers. 
       }
     } else if {
 
