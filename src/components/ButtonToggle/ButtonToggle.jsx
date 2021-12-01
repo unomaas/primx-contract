@@ -45,11 +45,12 @@ export default function ButtonToggle() {
         onChange={handleButtonState}
         value={buttonState}
         size="small"
+        // style={{fontSize: "5px"}}
       >
         <ToggleButton
           style={{
             fontFamily: 'Lexend Tera',
-            fontSize: '5px'
+            // fontSize: '5px'
           }}
           value="create"
         >
@@ -59,7 +60,7 @@ export default function ButtonToggle() {
         <ToggleButton
           style={{
             fontFamily: 'Lexend Tera',
-            fontSize: '5px'
+            // fontSize: '5px'
           }}
           value="lookup"
         >
@@ -69,7 +70,8 @@ export default function ButtonToggle() {
         <ToggleButton
           style={{
             fontFamily: 'Lexend Tera',
-            fontSize: '5px'
+            // fontSize: '5px'
+            // size="small"
           }}
           value="combine"
         >
