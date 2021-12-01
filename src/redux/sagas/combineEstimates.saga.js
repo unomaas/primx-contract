@@ -259,6 +259,8 @@ function* fetchManyEstimatesQuery(action) {
           // ON 2nd thought, make the lookup page be the main point of seraching for combined orders.  That's might be the easiest way to pull the combined estimate number, since we already pull the rest of the numbers. 
 
           // NEW IDEA:  Make a reducer that will populate with the combined searched estimate number. If it's populated, that means someone searched an existing combo.  If it's not populated, this estimate probably hasn't been saved. 
+
+          // NEW NEW IDEA: Save the combined estimate number to the DB and use that as a reference for all of the logic.  Also likely do the lookup page as the combined order as a way to differentiate URLs. 
       }
     } 
     // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 

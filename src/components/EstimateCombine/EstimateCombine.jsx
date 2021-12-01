@@ -47,9 +47,32 @@ export default function EstimateCombine() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB:
-    if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
-      dispatch({
-        type: 'FETCH_THREE_ESTIMATES_QUERY',
+    
+    // if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
+    //   dispatch({
+    //     type: 'FETCH_THREE_ESTIMATES_QUERY',
+    //     payload: {
+    //       licensee_id: licensee_id_searched,
+    //       first_estimate_number: first_estimate_number_combined,
+    //       second_estimate_number: second_estimate_number_combined,
+    //       third_estimate_number: third_estimate_number_combined
+    //     } // End payload
+    //   }) // End dispatch
+    // } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
+    //   dispatch({
+    //     type: 'FETCH_TWO_ESTIMATES_QUERY',
+    //     payload: {
+    //       licensee_id: licensee_id_searched,
+    //       first_estimate_number: first_estimate_number_combined,
+    //       second_estimate_number: second_estimate_number_combined,
+    //       third_estimate_number: third_estimate_number_combined
+    //     } // End payload
+    //   }) // End dispatch
+    // } // End if statement
+
+
+        dispatch({
+        type: 'FETCH_MANY_ESTIMATES_QUERY',
         payload: {
           licensee_id: licensee_id_searched,
           first_estimate_number: first_estimate_number_combined,
@@ -57,28 +80,6 @@ export default function EstimateCombine() {
           third_estimate_number: third_estimate_number_combined
         } // End payload
       }) // End dispatch
-    } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
-      dispatch({
-        type: 'FETCH_TWO_ESTIMATES_QUERY',
-        payload: {
-          licensee_id: licensee_id_searched,
-          first_estimate_number: first_estimate_number_combined,
-          second_estimate_number: second_estimate_number_combined,
-          third_estimate_number: third_estimate_number_combined
-        } // End payload
-      }) // End dispatch
-    } // End if statement
-
-
-      //   dispatch({
-      //   type: 'FETCH_MANY_ESTIMATES_QUERY',
-      //   payload: {
-      //     licensee_id: licensee_id_searched,
-      //     first_estimate_number: first_estimate_number_combined,
-      //     second_estimate_number: second_estimate_number_combined,
-      //     third_estimate_number: third_estimate_number_combined
-      //   } // End payload
-      // }) // End dispatch
 
 
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]

@@ -50,7 +50,7 @@ CREATE TABLE "estimates" (
 	"marked_as_ordered" bool NOT NULL DEFAULT 'FALSE',
 	"archived" bool NOT NULL DEFAULT 'FALSE',
 	"processed_by" varchar(50) DEFAULT NULL,
-  "saved_in_a_combined_order" bool NOT NULL DEFAULT 'FALSE',
+  "saved_in_a_combined_order" varchar(50) DEFAULT 'NULL',
 	"estimate_number_combined_1" varchar(50) DEFAULT NULL,
   "estimate_number_combined_2" varchar(50) DEFAULT NULL,
   "estimate_number_combined_3" varchar(50) DEFAULT NULL,
