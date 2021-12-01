@@ -257,10 +257,10 @@ function* fetchManyEstimatesQuery(action) {
 
 
           // ON 2nd thought, make the lookup page be the main point of seraching for combined orders.  That's might be the easiest way to pull the combined estimate number, since we already pull the rest of the numbers. 
-      }
-    } else if {
 
-    }
+          // NEW IDEA:  Make a reducer that will populate with the combined searched estimate number. If it's populated, that means someone searched an existing combo.  If it's not populated, this estimate probably hasn't been saved. 
+      }
+    } 
     // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
     const totalsObjectHolder = {
       primx_cpea_total_amount_needed: 0,
