@@ -260,7 +260,7 @@ function* fetchManyEstimatesQuery(action) {
 
           // NEW IDEA:  Make a reducer that will populate with the combined searched estimate number. If it's populated, that means someone searched an existing combo.  If it's not populated, this estimate probably hasn't been saved. 
 
-          // NEW NEW IDEA: Save the combined estimate number to the DB and use that as a reference for all of the logic.  Also likely do the lookup page as the combined order as a way to differentiate URLs. 
+          //************ */ NEW NEW IDEA: Save the combined estimate number to the DB and use that as a reference for all of the logic.  Also likely do the lookup page as the combined order as a way to differentiate URLs. 
       }
     } 
     // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
