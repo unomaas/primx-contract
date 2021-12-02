@@ -133,14 +133,15 @@ function* fetchCombinedEStimatesQuery(action) {
   console.log('*** newEStimate is', newEstimate);
 
       // ⬇ If a response came back successfully, there is one estimate object in an array. Run the updated Combine Estimates Calc on it:
-      const calculatedCombinedResponse = yield useCombineEstimateCalculations(newEstimate);
+      const calculatedCombinedResponse = yield useEstimateCalculations(newEstimate);
 
       console.log('*** calculatedCombinedResponse', calculatedCombinedResponse);
 
 // TO DO: For some reason, feeding the object through the combined math machine is returning NaN's.  Don't know why.  The deep clone is preventing it from going backwards but I suspect the issue wouldn't happen if it worked.  Need to either a.) figure out why this 2nd call of the combined math machine is returning NaN's, OR just rebuild the whole calc combined object like we do in the search.  Which honestly might be better anyways as that's how we price it?  Idk, that might not work either.  
 
+// ALSO, RESET THE DB SO ALL OF THIS STILL WORKS:
 
-
+// SOLVED: Was using the wrong math machine. 
     
 
     
