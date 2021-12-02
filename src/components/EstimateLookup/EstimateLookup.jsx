@@ -45,6 +45,7 @@ export default function EstimateLookup() {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
     // if (estimate_number_searched) {
     if (estimate_number_searched?.charAt(estimate_number_searched?.length - 1) === "C") {
+      console.log('*** TEST 1');
       dispatch({
         type: "FETCH_COMBINED_ESTIMATE_QUERY",
         payload: {
@@ -55,6 +56,7 @@ export default function EstimateLookup() {
         } // End payload
       }); // If not a combined estimate, do normal GET:
     } else if (licensee_id_searched && estimate_number_searched) {
+      console.log('*** TEST 2');
       dispatch({
         type: 'FETCH_ESTIMATE_QUERY',
         payload: {
@@ -179,7 +181,7 @@ export default function EstimateLookup() {
       {/* End estimate search form */}
 
       {/* If the search result is a combined estimate, show combined table, else show single table: */}
-      {searchResult?.estimate_number?.charAt(searchResult?.length - 1) === "C" ?
+      {searchResult?.estimate_number?.charAt(searchResult?.length - 1) === "C" &&
         <>
           <EstimateCombineTable
             firstEstimate={firstEstimate}
@@ -191,13 +193,20 @@ export default function EstimateLookup() {
           <h3>
             Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
           </h3>
-        </> : <>
+        </>
+      }
+
+      {/* If the search result is a combined estimate, show combined table, else show single table: */}
+      {/* {searchResult.estimate_number &&
+        <>
           <EstimateLookupTable />
           <h3>
             Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
           </h3>
         </>
-      }
+      } */}
+
+
 
       {/* Render messages underneath the table if an estimate has been submitted as an order */}
       {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}

@@ -97,39 +97,108 @@ function* fetchManyEstimatesQuery(action) {
 
 // ⬇ Saga Worker to handle looking up a saved combined estimate:
 function* fetchCombinedEStimatesQuery(action) {
-  // Pulling the variables from the payload: 
+  // ⬇ Pulling the variables from the payload: 
   const licenseeId = action.payload.licenseeId;
-  const estimateNumber = action.payload.estimateNumber;
-  // Saving history for the navigation from Saga:
-  const history = action.payload.history;
+  const combinedEstimateNumber = action.payload.estimateNumber;
+  console.log('*** combinedEstimateNumber', combinedEstimateNumber);
+  
+  // ⬇ Saving history for the navigation from Saga:
+  // const history = action.payload.history;
+
+  // ⬇ Creating an array to push to: 
+  const estimatesArray = [];
+
+  // ⬇ Putting them in an array to loop through:
+  const estimateNumberArray = []; // End estimateNumberArray
+
   try {
-    // Ping the server with combined estimate to pull the estimate numbers:
-    const response = yield axios.get('/api/estimates/lookup/:estimates', {
+    // ⬇ Ping the server with combined estimate to pull the estimate numbers:
+    const firstResponse = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
-        estimateNumber: estimateNumber,
+        estimateNumber: combinedEstimateNumber,
         licenseeId: licenseeId
       } // End params
     }); // End response    
-    // Saving the response to get the other data from: 
-    const returnedEstimate = response.data[0];
-    // Pulling the estimate numbers from it: 
-    const firstEstimateNumber = returnedEstimate.estimate_number_combined_1;
-    const secondEstimateNumber = returnedEstimate.estimate_number_combined_2;
-    const thirdEstimateNumber = returnedEstimate.estimate_number_combined_3;
-    // If three estimate numbers were combined, push to three and do the math engines: 
-    if (thirdEstimateNumber) {
-      yield history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}/${thirdEstimateNumber}`);
-    } else { // ⬇ If they only entered two estimate numbers: 
-      yield history.push(`/combine/${licenseeId}/${firstEstimateNumber}/${secondEstimateNumber}`);
-    } // End if/else statement
+
+    console.log('*** firstResponse is', firstResponse.data[0]);
+    
+
+    const firstEstimateWithoutTimestamps = removeTimestamps(firstResponse.data);
+
+    console.log('*** firstEstimateWithoutTimestamps', firstEstimateWithoutTimestamps[0]);
 
 
-    yield put({
-      type: 'SET_ESTIMATE_QUERY_RESULT',
-      payload: calculatedResponse
-    });
+  // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
+  let newEstimate = JSON.parse(JSON.stringify(firstEstimateWithoutTimestamps[0]));
+  console.log('*** newEStimate is', newEstimate);
+
+      // ⬇ If a response came back successfully, there is one estimate object in an array. Run the updated Combine Estimates Calc on it:
+      const calculatedCombinedResponse = yield useCombineEstimateCalculations(newEstimate);
+
+      console.log('*** calculatedCombinedResponse', calculatedCombinedResponse);
+
+// TO DO: For some reason, feeding the object through the combined math machine is returning NaN's.  Don't know why.  The deep clone is preventing it from going backwards but I suspect the issue wouldn't happen if it worked.  Need to either a.) figure out why this 2nd call of the combined math machine is returning NaN's, OR just rebuild the whole calc combined object like we do in the search.  Which honestly might be better anyways as that's how we price it?  Idk, that might not work either.  
 
 
+
+    
+
+    
+    // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
+    // let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
+
+
+    // // ⬇ Sending this to the calc combined reducer and the query result, as both will be referenced: 
+    // yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedCombinedResponse });
+    // yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedCombinedResponse });
+
+    // // ⬇ Pulling the estimate numbers from : 
+    // const firstEstimateNumber = returnedCombinedEstimate.estimate_number_combined_1;
+    // const secondEstimateNumber = returnedCombinedEstimate.estimate_number_combined_2;
+    // const thirdEstimateNumber = returnedCombinedEstimate.estimate_number_combined_3;
+    // console.log('*** estimate numbers', firstEstimateNumber, secondEstimateNumber, thirdEstimateNumber);
+    // // ⬇ Putting them in an array to loop through:
+    // estimateNumberArray.push(firstEstimateNumber, secondEstimateNumber);
+
+    // // ⬇ If the third estimate exists, add it too:
+    // if (thirdEstimateNumber) {
+    //   estimateNumberArray.push(thirdEstimateNumber);
+    // } // End if
+    // console.log('*** array', estimateNumberArray);
+
+
+
+
+
+
+
+
+    // for (let i = 0; i < estimateNumberArray.length; i++) {
+    //   const response = yield axios.get('/api/estimates/lookup/:estimates', {
+    //     params: {
+    //       estimateNumber: estimateNumberArray[i],
+    //       licenseeId: licenseeId
+    //     } // End params
+    //   }) // End response      
+    //   // ⬇ Run the timestamp removal function on the returned array of estimates:
+    //   const estimateWithoutTimestamps = removeTimestamps(response.data);
+    //   // ⬇ If a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it:
+    //   const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    //   // ⬇ Save it to the estimatesArray for later use. 
+    //   estimatesArray.push(calculatedResponse);
+    // } // End for loop
+
+    // // ⬇ Saving the estimates from the array to variables: 
+    // const firstEstimate = estimatesArray[0];
+    // const secondEstimate = estimatesArray[1];
+    // // ⬇ Sending each estimate to a reducer to display on the combine table:
+    // yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: firstEstimate });
+    // yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: secondEstimate });
+    // // ⬇ If the third estimate exists, send it:
+    // if (thirdEstimateNumber) {
+    //   const thirdEstimate = estimatesArray[2];
+    //   yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: thirdEstimate });
+    // } // End if 
 
   } catch (error) {
     console.error('fetchCombinedEStimatesQuery failed:', error);
