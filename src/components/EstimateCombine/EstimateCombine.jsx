@@ -23,8 +23,8 @@ export default function EstimateCombine() {
   const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
   // ⬇ calcCombinedEstimate is the object returned by searching for multiple estimates to combined, with updated quotes. 
   const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
-  // ⬇ showCombinedTable handles the state of showing table: 
-  const showCombinedTable = useSelector(store => store.combineEstimatesReducer.showCombinedTable);
+  // ⬇ showDataTable handles the state of showing table: 
+  const showDataTable = useSelector(store => store.combineEstimatesReducer.showDataTable);
   // ⬇ Sets the error state for a faulty search:
   const [error, setError] = useState(false);
   const [selectError, setSelectError] = useState("");
@@ -42,46 +42,20 @@ export default function EstimateCombine() {
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'combine' }),
       // ⬇ Fetch the current companies for drop-down menu options:
       dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
-      dispatch({ type: 'SET_RECALCULATED_FALSE'})
+      dispatch({ type: 'SET_RECALCULATED_FALSE' })
   }, []); // End useEffect
   // ⬇ Run on estimate search complete:
   useEffect(() => {
-    // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the URL params to run a GET request to the DB:
-    
-    // if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined && third_estimate_number_combined) {
-    //   dispatch({
-    //     type: 'FETCH_THREE_ESTIMATES_QUERY',
-    //     payload: {
-    //       licensee_id: licensee_id_searched,
-    //       first_estimate_number: first_estimate_number_combined,
-    //       second_estimate_number: second_estimate_number_combined,
-    //       third_estimate_number: third_estimate_number_combined
-    //     } // End payload
-    //   }) // End dispatch
-    // } else if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
-    //   dispatch({
-    //     type: 'FETCH_TWO_ESTIMATES_QUERY',
-    //     payload: {
-    //       licensee_id: licensee_id_searched,
-    //       first_estimate_number: first_estimate_number_combined,
-    //       second_estimate_number: second_estimate_number_combined,
-    //       third_estimate_number: third_estimate_number_combined
-    //     } // End payload
-    //   }) // End dispatch
-    // } // End if statement
-
-
-        dispatch({
-        type: 'FETCH_MANY_ESTIMATES_QUERY',
-        payload: {
-          licensee_id: licensee_id_searched,
-          first_estimate_number: first_estimate_number_combined,
-          second_estimate_number: second_estimate_number_combined,
-          third_estimate_number: third_estimate_number_combined
-        } // End payload
-      }) // End dispatch
-
-
+    // ⬇ If the user got here with params by searching from the lookup view, dispatch the data in the URL params to run a GET request to the DB:
+    dispatch({
+      type: 'FETCH_MANY_ESTIMATES_QUERY',
+      payload: {
+        licensee_id: licensee_id_searched,
+        first_estimate_number: first_estimate_number_combined,
+        second_estimate_number: second_estimate_number_combined,
+        third_estimate_number: third_estimate_number_combined
+      } // End payload
+    }) // End dispatch
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
   ); // End useEffect 
   // #endregion ⬆⬆ All state variables above. 
@@ -236,7 +210,7 @@ export default function EstimateCombine() {
       {/* End estimate search form */}
 
       {/* Conditional rendering for showing the info graphic or showing the combined estimates table. */}
-      {!showCombinedTable ? (
+      {!showDataTable ? (
         // If they haven't searched, show these instructions:
         <Grid container
           spacing={2}

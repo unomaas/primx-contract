@@ -26,6 +26,8 @@ export default function EstimateLookup() {
   const [error, setError] = useState(false);
   const classes = useStyles(); // Keep in for MUI styling. 
   const [selectError, setSelectError] = useState("");
+  // ⬇ showDataTable handles the state of showing table: 
+  const showDataTable = useSelector(store => store.combineEstimatesReducer.showDataTable);
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { licensee_id_searched, estimate_number_searched } = useParams();
   const dispatch = useDispatch();
@@ -36,31 +38,33 @@ export default function EstimateLookup() {
     dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
       // ⬇ Fetch the current companies for drop-down menu options:
       dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
-      dispatch({ type: 'SET_RECALCULATED_FALSE'})
+      dispatch({ type: 'SET_RECALCULATED_FALSE' })
   }, []);
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
     // if (estimate_number_searched) {
-      if (estimate_number_searched?.charAt(estimate_number_searched?.length - 1) === "C") {
-        dispatch({
-          type: "PUSH_TO_COMBINE_ESTIMATE",
-          payload: {
-            licenseeId: licensee_id_searched,
-            estimateNumber: estimate_number_searched,
-            // Sending history for navigation:
-            history: history
-          } // End payload
-        }); // If not a combined estimate, do normal GET:
-      } else if (licensee_id_searched && estimate_number_searched) { 
-        dispatch({
-          type: 'FETCH_ESTIMATE_QUERY',
-          payload: {
-            licensee_id: licensee_id_searched,
-            estimate_number: estimate_number_searched
-          } // End payload
-        }); // End dispatch
-      }; // End if/else
+    if (estimate_number_searched?.charAt(estimate_number_searched?.length - 1) === "C") {
+      console.log('*** TEST 1');
+      dispatch({
+        type: "FETCH_COMBINED_ESTIMATE_QUERY",
+        payload: {
+          licenseeId: licensee_id_searched,
+          estimateNumber: estimate_number_searched,
+          // Sending history for navigation:
+          history: history
+        } // End payload
+      }); // If not a combined estimate, do normal GET:
+    } else if (licensee_id_searched && estimate_number_searched) {
+      console.log('*** TEST 2');
+      dispatch({
+        type: 'FETCH_ESTIMATE_QUERY',
+        payload: {
+          licensee_id: licensee_id_searched,
+          estimate_number: estimate_number_searched
+        } // End payload
+      }); // End dispatch
+    }; // End if/else
     // }
   }, [licensee_id_searched, estimate_number_searched]);
   //#endregion ⬆⬆ All state variables above. 
@@ -176,8 +180,60 @@ export default function EstimateLookup() {
       <br />
       {/* End estimate search form */}
 
-      {searchResult.estimate_number &&
-        <EstimateLookupTable />
+      {/* If the search result is a combined estimate, show combined table, else show single table: */}
+      {searchResult?.estimate_number?.charAt(searchResult?.length - 1) === "C" &&
+        <>
+          <EstimateCombineTable
+            firstEstimate={firstEstimate}
+            secondEstimate={secondEstimate}
+            thirdEstimate={thirdEstimate}
+            calcCombinedEstimate={calcCombinedEstimate}
+            searchResult={searchResult}
+          />
+          <h3>
+            Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
+          </h3>
+        </>
+      }
+
+      {/* If the search result is a combined estimate, show combined table, else show single table: */}
+      {/* {searchResult.estimate_number &&
+        <>
+          <EstimateLookupTable />
+          <h3>
+            Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
+          </h3>
+        </>
+      } */}
+
+
+
+      {/* Render messages underneath the table if an estimate has been submitted as an order */}
+      {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
+      {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
+        <>
+          <h3>
+            This order is currently being processed. Please contact your PrīmX representative for more details.
+          </h3>
+        </>
+      }
+      {/* Display this message if an estimate has been processed by an admin */}
+      {searchResult.marked_as_ordered &&
+        <>
+          <h3>
+            This order has been processed. Please contact your PrīmX representative for more details.
+          </h3>
+        </>
+      }
+      {/* End full table conditional render*/}
+
+      {/* Conditonally render a failed search message if the search came back with nothing */}
+      {!searchResult.estimate_number && estimate_number_searched &&
+        <>
+          <h3>
+            No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.
+          </h3>
+        </>
       }
 
     </div >

@@ -216,6 +216,11 @@ export default function useCombineEstimateCalculations(estimate) {
     }
   }
 
+  // // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
+  // let newEstimate = JSON.parse(JSON.stringify(estimate));
+  // console.log('*** newEStimate is', newEstimate);
+
+
   return estimate;
 }
 
