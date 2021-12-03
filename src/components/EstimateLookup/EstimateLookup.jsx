@@ -208,8 +208,6 @@ export default function EstimateLookup() {
         </>
       }
 
-
-
       {/* Render messages underneath the table if an estimate has been submitted as an order */}
       {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
       {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&

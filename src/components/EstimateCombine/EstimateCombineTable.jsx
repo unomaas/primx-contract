@@ -101,7 +101,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
       //   window.print();
       // }); // End swal
       dispatch({
-        type: 'EDIT_PLACE_ORDER',
+        type: 'MARK_ESTIMATE_ORDERED',
         payload: {
           id: calcCombinedEstimate.id,
           po_number: poNumber,
@@ -115,10 +115,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 
   // ⬇ Rendering below:
-  console.log('*** calcCombinedEstimate', calcCombinedEstimate);
-  console.log('*** thirdEstimate', thirdEstimate);
-
-
   return (
     <>
       <Grid container

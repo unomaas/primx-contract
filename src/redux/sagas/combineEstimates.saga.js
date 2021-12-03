@@ -96,7 +96,9 @@ function* fetchManyEstimatesQuery(action) {
 
 
 // ⬇ Saga Worker to handle looking up a saved combined estimate:
-function* fetchCombinedEStimatesQuery(action) {
+function* fetchCombinedEstimatesQuery(action) {
+  // ⬇ Clearing the third estimate reducer, just in case it has zombie data from a prior search:
+  yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" }); Z
   // ⬇ Pulling the variables from the payload: 
   const licenseeId = action.payload.licenseeId;
   const combinedEstimateNumber = action.payload.estimateNumber;
@@ -126,7 +128,6 @@ function* fetchCombinedEStimatesQuery(action) {
     const firstEstimateNumber = calculatedCombinedResponse.estimate_number_combined_1;
     const secondEstimateNumber = calculatedCombinedResponse.estimate_number_combined_2;
     const thirdEstimateNumber = calculatedCombinedResponse.estimate_number_combined_3;
-    console.log('*** estimate numbers', firstEstimateNumber, secondEstimateNumber, thirdEstimateNumber);
     // ⬇ Putting them in an array to loop through:
     estimateNumberArray.push(firstEstimateNumber, secondEstimateNumber);
     // ⬇ If the third estimate exists, add it too:
@@ -161,14 +162,34 @@ function* fetchCombinedEStimatesQuery(action) {
     yield put({ type: "SHOW_COMBINED_ESTIMATE" });
     yield put({ type: "LOADING_SCREEN_OFF" });
   } catch (error) {
-    console.error('fetchCombinedEStimatesQuery failed:', error);
+    console.error('fetchCombinedEstimatesQuery failed:', error);
   } // End try/catch
-} // End fetchCombinedEStimatesQuery Saga
+} // End fetchCombinedEstimatesQuery Saga
+
+// Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then be processed by an admin user
+function* markEstimateOrdered(action) {
+  try {
+    yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
+    // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
+    // yield put({
+    //   type: 'FETCH_ESTIMATE_QUERY',
+    //   payload: action.payload
+    // });
+    // set the recalculated boolean in the estimates reducer to false so the place order button gets disabled for other estimates
+    yield put({
+      type: 'SET_RECALCULATE_FALSE'
+    });
+  } catch (error) {
+    console.error('markEstimateOrdered failed', error)
+  }
+}
 
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
   yield takeLatest('FETCH_MANY_ESTIMATES_QUERY', fetchManyEstimatesQuery);
-  yield takeLatest('FETCH_COMBINED_ESTIMATE_QUERY', fetchCombinedEStimatesQuery);
+  yield takeLatest('FETCH_COMBINED_ESTIMATE_QUERY', fetchCombinedEstimatesQuery);
+  yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markEstimateOrdered);
+
 } // End combineEstimatesSaga
 
 
