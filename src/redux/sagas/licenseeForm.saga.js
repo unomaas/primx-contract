@@ -29,7 +29,7 @@ function* fetchEstimateQuery(action) {
       type: 'SET_ESTIMATE_QUERY_RESULT',
       payload: calculatedResponse
     });
-    // yield put({ type: "SHOW_DATA_TABLE" });
+    yield put({ type: "SHOW_SINGLE_ESTIMATE" });
   } catch (error) {
     console.error('fetchEstimateQuery error', error);
   }

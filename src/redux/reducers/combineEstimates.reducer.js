@@ -95,6 +95,22 @@ export const showDataTable = (state = false, action) => {
 }; // End showDataTable
 
 
+// This reducer sets the object with the first estimate data from all of hte combined estimates:
+export const showLookupTable = (state = 'hidden', action) => {
+  switch (action.type) {
+    case 'SHOW_SINGLE_ESTIMATE':
+      return 'single';
+    case 'SHOW_COMBINED_ESTIMATE':
+      return 'combined';
+    case 'HIDE_LOOKUP_TABLES':
+      return 'hidden';
+    default:
+      return state;
+  } // End switch
+}; // End showDataTable
+
+
+
 export default combineReducers({
   combineQuery, // ⬅ The query search from the combined estimates page.
   calcCombinedEstimate, // ⬅ The mutated object with all the totals and math.
@@ -102,4 +118,5 @@ export default combineReducers({
   secondCombinedEstimate, // ⬅ The second estimate used in the combination.
   thirdCombinedEstimate, // ⬅ The third estimate used in the combination.
   showDataTable, // ⬅ The show table state for the combined estimates. 
+  showLookupTable, // ⬅ The show table for Lookup, Combine vs Single. 
 });
