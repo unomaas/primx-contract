@@ -715,38 +715,9 @@ export default function EstimateLookupTable() {
         </Grid>
       </Grid>
 
-      <h3>
-        Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
-      </h3>
 
 
-      {/* Render messages underneath the table if an estimate has been submitted as an order */}
-      {/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
-      {searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
-        <>
-          <h3>
-            This order is currently being processed. Please contact your PrīmX representative for more details.
-          </h3>
-        </>
-      }
-      {/* Display this message if an estimate has been processed by an admin */}
-      {searchResult.marked_as_ordered &&
-        <>
-          <h3>
-            This order has been processed. Please contact your PrīmX representative for more details.
-          </h3>
-        </>
-      }
-      {/* End full table conditional render*/}
 
-      {/* Conditonally render a failed search message if the search came back with nothing */}
-      {!searchResult.estimate_number && estimate_number_searched &&
-        <>
-          <h3>
-            No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.
-          </h3>
-        </>
-      }
     </div >
   )
 }

@@ -299,7 +299,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <TableRow>
                         <TableCell><b>Thickness (in):</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.thickness_inches?.toLocaleString('en-US')}
+                          {parseInt(firstEstimate?.thickness_inches)?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
@@ -487,7 +487,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <TableRow>
                         <TableCell><b>Thickness (in):</b></TableCell>
                         <TableCell>
-                          {secondEstimate?.thickness_inches?.toLocaleString('en-US')}
+                          {parseInt(secondEstimate?.thickness_inches)?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
@@ -679,7 +679,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                           <TableRow>
                             <TableCell><b>Thickness (in):</b></TableCell>
                             <TableCell>
-                              {thirdEstimate?.thickness_inches?.toLocaleString('en-US')}
+                              {parseInt(thirdEstimate?.thickness_inches)?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -874,7 +874,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <TableRow>
                         <TableCell><b>Thickness (mm):</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.thickness_millimeters?.toLocaleString('en-US')}
+                          {parseInt(firstEstimate?.thickness_inches)?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
@@ -1055,56 +1055,56 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <TableRow>
                         <TableCell><b>Square Meters:</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.square_meters?.toLocaleString('en-US')}
+                          {secondEstimate?.square_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Thickness (mm):</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.thickness_millimeters?.toLocaleString('en-US')}
+                          {parseInt(secondEstimate?.thickness_inches)?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Cubic Meters:</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.cubic_meters?.toLocaleString('en-US')}
+                          {secondEstimate?.cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+                          {secondEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+                          {secondEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Subtotal:</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
+                          {secondEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
+                          {secondEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
                       <TableRow>
                         <TableCell><b>Total Cubic Meters:</b></TableCell>
                         <TableCell>
-                          {firstEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
+                          {secondEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
@@ -1253,7 +1253,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                           <TableRow>
                             <TableCell><b>Thickness (mm):</b></TableCell>
                             <TableCell>
-                              {thirdEstimate?.thickness_millimeters?.toLocaleString('en-US')}
+                              {parseInt(thirdEstimate?.thickness_inches)?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
@@ -1564,96 +1564,96 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   </TableRow>
 
                   {/* Render the following table row for any orders that haven't been placed yet */}
-                  {/* {!searchResult.ordered_by_licensee && */}
-                  <>
-                    <TableRow>
-                      <TableCell colSpan={7} align="right">
-                        <section className="removeInPrint">
+                  {!calcCombinedEstimate?.ordered_by_licensee &&
+                    <>
+                      <TableRow>
+                        <TableCell colSpan={7} align="right">
+                          <section className="removeInPrint">
 
-                          {/* Recalculate Costs Button: */}
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleRecalculateCosts}
-                            className={classes.LexendTeraFont11}
-                          >
-                            Recalculate Costs
-                          </Button>
+                            {/* Recalculate Costs Button: */}
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={handleRecalculateCosts}
+                              className={classes.LexendTeraFont11}
+                            >
+                              Recalculate Costs
+                            </Button>
 
-                          &nbsp; &nbsp;
+                            &nbsp; &nbsp;
 
-                          {/* Conditional rendering below:
+                            {/* Conditional rendering below:
                           - If recalculated is true, show the next set:
                           - If these estimate numbers have been saved in an estimate prior, show submit: */}
-                          {hasRecalculated ?
-                            <>
-                              {/* Recalc True ALL: */}
-                              {((firstEstimate.saved_in_a_combined_order == true) &&
-                                (secondEstimate.saved_in_a_combined_order == true) &&
-                                ((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.saved_in_a_combined_order == true))) ?
-                                <>
-                                  {/* Recalc True and Saved True -- Show submit Button */}
-                                  <TextField
-                                    onChange={(event) => setPoNumber(event.target.value)}
-                                    size="small"
-                                    label="PO Number"
-                                    helperText={poNumError}
-                                  />
-                                  &nbsp; &nbsp;
-                                  <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={handlePlaceOrder}
-                                    className={classes.LexendTeraFont11}
-                                  >
-                                    Place Order
-                                  </Button>
-                                </> : <>
-                                  {/* Recalc True and Saved False -- Show Save Button */}
-                                  <Button
-                                    variant="contained"
-                                    color="secondary"
-                                    onClick={handleSave}
-                                    className={classes.LexendTeraFont11}
-                                  >
-                                    Save Estimate
-                                  </Button>
-                                </>
-                              }
-                            </> : <>
-                              {/* Recalc False ALL: */}
-                              {((firstEstimate.saved_in_a_combined_order == true) &&
-                                (secondEstimate.saved_in_a_combined_order == true) &&
-                                (JSON.stringify(thirdEstimate) === '{}' || thirdEstimate.saved_in_a_combined_order == true)) ?
-                                <>
-                                  {/* Realc False and Saved True -- Show grayed out submit */}
-                                  Recalculate costs before placing order.
-                                  &nbsp; &nbsp;
-                                  <Button
-                                    variant="contained"
-                                    disabled
-                                    className={classes.LexendTeraFont11}
-                                  >
-                                    Place Order
-                                  </Button>
-                                </> : <>
-                                  {/* Recalc False and Saved False -- Show grayed out Save */}
-                                  <Button
-                                    variant="contained"
-                                    disabled
-                                    className={classes.LexendTeraFont11}
-                                  >
-                                    Save Estimate
-                                  </Button>
-                                </>
-                              }
-                            </>
-                          }
-                        </section>
-                      </TableCell>
-                    </TableRow>
-                  </>
-                  {/* End conditional render on materials table displaying buttons*/}
+                            {hasRecalculated ?
+                              <>
+                                {/* Recalc True ALL: */}
+                                {((firstEstimate.saved_in_a_combined_order == true) &&
+                                  (secondEstimate.saved_in_a_combined_order == true) &&
+                                  ((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.saved_in_a_combined_order == true))) ?
+                                  <>
+                                    {/* Recalc True and Saved True -- Show submit Button */}
+                                    <TextField
+                                      onChange={(event) => setPoNumber(event.target.value)}
+                                      size="small"
+                                      label="PO Number"
+                                      helperText={poNumError}
+                                    />
+                                    &nbsp; &nbsp;
+                                    <Button
+                                      variant="contained"
+                                      color="secondary"
+                                      onClick={handlePlaceOrder}
+                                      className={classes.LexendTeraFont11}
+                                    >
+                                      Place Order
+                                    </Button>
+                                  </> : <>
+                                    {/* Recalc True and Saved False -- Show Save Button */}
+                                    <Button
+                                      variant="contained"
+                                      color="secondary"
+                                      onClick={handleSave}
+                                      className={classes.LexendTeraFont11}
+                                    >
+                                      Save Estimate
+                                    </Button>
+                                  </>
+                                }
+                              </> : <>
+                                {/* Recalc False ALL: */}
+                                {((firstEstimate.saved_in_a_combined_order == true) &&
+                                  (secondEstimate.saved_in_a_combined_order == true) &&
+                                  (JSON.stringify(thirdEstimate) === '{}' || thirdEstimate.saved_in_a_combined_order == true)) ?
+                                  <>
+                                    {/* Realc False and Saved True -- Show grayed out submit */}
+                                    Recalculate costs before placing order.
+                                    &nbsp; &nbsp;
+                                    <Button
+                                      variant="contained"
+                                      disabled
+                                      className={classes.LexendTeraFont11}
+                                    >
+                                      Place Order
+                                    </Button>
+                                  </> : <>
+                                    {/* Recalc False and Saved False -- Show grayed out Save */}
+                                    <Button
+                                      variant="contained"
+                                      disabled
+                                      className={classes.LexendTeraFont11}
+                                    >
+                                      Save Estimate
+                                    </Button>
+                                  </>
+                                }
+                              </>
+                            }
+                          </section>
+                        </TableCell>
+                      </TableRow>
+                    </>
+                  } {/* End conditional render on materials table displaying buttons*/}
 
                   {/* End Materials Table */}
 

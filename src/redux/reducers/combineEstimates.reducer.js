@@ -83,16 +83,32 @@ export const thirdCombinedEstimate = (state = {}, action) => {
 
 
 // This reducer sets the object with the first estimate data from all of hte combined estimates:
-export const showCombinedTable = (state = false, action) => {
+export const showDataTable = (state = false, action) => {
   switch (action.type) {
-    case 'SHOW_COMBINED_TABLE':
+    case 'SHOW_DATA_TABLE':
       return true;
-    case 'HIDE_COMBINED_TABLE':
+    case 'HIDE_DATA_TABLE':
       return false;
     default:
       return state;
   } // End switch
-}; // End showCombinedTable
+}; // End showDataTable
+
+
+// This reducer sets the object with the first estimate data from all of hte combined estimates:
+export const showLookupTable = (state = 'hidden', action) => {
+  switch (action.type) {
+    case 'SHOW_SINGLE_ESTIMATE':
+      return 'single';
+    case 'SHOW_COMBINED_ESTIMATE':
+      return 'combined';
+    case 'HIDE_LOOKUP_TABLES':
+      return 'hidden';
+    default:
+      return state;
+  } // End switch
+}; // End showDataTable
+
 
 
 export default combineReducers({
@@ -101,5 +117,6 @@ export default combineReducers({
   firstCombinedEstimate, // ⬅ The first estimate used in the combination.
   secondCombinedEstimate, // ⬅ The second estimate used in the combination.
   thirdCombinedEstimate, // ⬅ The third estimate used in the combination.
-  showCombinedTable, // ⬅ The show table state for the combined estimates. 
+  showDataTable, // ⬅ The show table state for the combined estimates. 
+  showLookupTable, // ⬅ The show table for Lookup, Combine vs Single. 
 });
