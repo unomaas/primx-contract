@@ -83,7 +83,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         onClick={() => handleProcessOrder(params)}
         className={classes.LexendTeraFont11}
       >
-        Process Order
+        Process
       </Button>
     )
   }

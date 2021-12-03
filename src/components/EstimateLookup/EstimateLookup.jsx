@@ -28,6 +28,12 @@ export default function EstimateLookup() {
   const [selectError, setSelectError] = useState("");
   // ⬇ showDataTable handles the state of showing table: 
   const showDataTable = useSelector(store => store.combineEstimatesReducer.showDataTable);
+  const showLookupTable = useSelector(store => store.combineEstimatesReducer.showLookupTable);
+  // ⬇ first,second,thirdEstimate below are objects searched from the DB
+  const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
+  const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
+  const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
+  const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
   // ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
   const { licensee_id_searched, estimate_number_searched } = useParams();
   const dispatch = useDispatch();
@@ -45,7 +51,6 @@ export default function EstimateLookup() {
     // ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
     // if (estimate_number_searched) {
     if (estimate_number_searched?.charAt(estimate_number_searched?.length - 1) === "C") {
-      console.log('*** TEST 1');
       dispatch({
         type: "FETCH_COMBINED_ESTIMATE_QUERY",
         payload: {
@@ -56,7 +61,6 @@ export default function EstimateLookup() {
         } // End payload
       }); // If not a combined estimate, do normal GET:
     } else if (licensee_id_searched && estimate_number_searched) {
-      console.log('*** TEST 2');
       dispatch({
         type: 'FETCH_ESTIMATE_QUERY',
         payload: {
@@ -180,31 +184,29 @@ export default function EstimateLookup() {
       <br />
       {/* End estimate search form */}
 
-      {/* If the search result is a combined estimate, show combined table, else show single table: */}
-      {searchResult?.estimate_number?.charAt(searchResult?.length - 1) === "C" &&
-        <>
-          <EstimateCombineTable
-            firstEstimate={firstEstimate}
-            secondEstimate={secondEstimate}
-            thirdEstimate={thirdEstimate}
-            calcCombinedEstimate={calcCombinedEstimate}
-            searchResult={searchResult}
-          />
-          <h3>
-            Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
-          </h3>
-        </>
-      }
-
-      {/* If the search result is a combined estimate, show combined table, else show single table: */}
-      {/* {searchResult.estimate_number &&
+      {showLookupTable === 'single' &&
         <>
           <EstimateLookupTable />
           <h3>
             Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
           </h3>
         </>
-      } */}
+      }
+
+      {showLookupTable === 'combined' &&
+        <>
+          <EstimateCombineTable
+            firstEstimate={firstEstimate}
+            secondEstimate={secondEstimate}
+            thirdEstimate={thirdEstimate}
+            calcCombinedEstimate={calcCombinedEstimate}
+          // searchResult={searchResult}
+          />
+          <h3>
+            Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
+          </h3>
+        </>
+      }
 
 
 
