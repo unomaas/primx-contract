@@ -29,6 +29,7 @@ function* fetchEstimateQuery(action) {
       type: 'SET_ESTIMATE_QUERY_RESULT',
       payload: calculatedResponse
     });
+    // Shows the single table on the lookup page: 
     yield put({ type: "SHOW_SINGLE_ESTIMATE" });
   } catch (error) {
     console.error('fetchEstimateQuery error', error);
@@ -114,15 +115,11 @@ function* recalculateEstimate(action) {
         primx_ultracure_blankets_unit_price: productObject.blankets_sqmeters,
       })
     }
-
-
     // Make a PUT request to update the given estimate with mutated pricing data.
     const response = yield axios.put(`/api/estimates/recalculate/${action.payload.id}`, currentEstimate);
-
     // Now that the current estimate has updated pricing data, send an action to the estimates reducer that will set a recalculated boolean
     // from false to true, allowing the user to click the place order button on the estimate lookup view
     yield put({ type: 'SET_RECALCULATED_TRUE' })
-
     // Refresh data on DOM by fetching the new data
     yield put({
       type: 'FETCH_ESTIMATE_QUERY', payload: {
@@ -130,11 +127,10 @@ function* recalculateEstimate(action) {
         estimate_number: currentEstimate.estimate_number
       }
     })
-
   } catch (error) {
     console.error('recalculate estimate failed', error)
   }
-} // End
+} // End recalculateEstimate
 
 function* handleCalculatedEstimate(action) {
   // Save a mutated object with the calculation values
@@ -145,9 +141,8 @@ function* handleCalculatedEstimate(action) {
   });
 } // End
 
-// Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then
-// be processed by an admin user
-function* markEstimateAsOrdered(action) {
+// Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then be processed by an admin user
+function* markEstimateOrdered(action) {
   try {
     yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
     // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
@@ -160,7 +155,7 @@ function* markEstimateAsOrdered(action) {
       type: 'SET_RECALCULATE_FALSE'
     });
   } catch (error) {
-    console.error('markEstimateAsOrdered failed', error)
+    console.error('markEstimateOrdered failed', error)
   }
 }
 
@@ -173,7 +168,7 @@ function* licenseeFormSaga() {
   // Runs a number of functions to recalculate an old estimate with updated pricing data before creating a new estimate in the DB
   yield takeLatest('RECALCULATE_ESTIMATE', recalculateEstimate);
   // Marks an estimate as ordered in the DB and attaches a supplied P.O. number to it
-  yield takeLatest('EDIT_PLACE_ORDER', markEstimateAsOrdered);
+  yield takeLatest('MARK_ESTIMATE_ORDERED', markEstimateOrdered);
   // Will let a licensee edit their previous estimate values:
   yield takeLatest('EDIT_ESTIMATE', EditEstimate);
   // Takes in a working estimate and runs the calculation function on it before saving the new calculated object in a reducer

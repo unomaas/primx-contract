@@ -60,7 +60,7 @@ export default function EstimateLookupTable() {
       //   window.print();
       // }); // End swal
       dispatch({
-        type: 'EDIT_PLACE_ORDER',
+        type: 'MARK_ESTIMATE_ORDERED',
         payload: {
           id: searchResult.id,
           po_number: poNumber,
