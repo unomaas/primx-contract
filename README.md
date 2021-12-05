@@ -9,8 +9,8 @@ Thanks for viewing our order platform solution for our client, PrīmX NA! https:
 - Total Time: 4 Weeks
   - Original Duration: 2 Week Sprint
     - This app was created as a solution to PrīmX's estimate and order placement process. This project was started via a team of five developers working remotely over a two week period, as students of Prime Digital Academy.  The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz, and Alex Kim. 
-  - Further Development: 2 Week Sprint
-    - However, PrīmX liked our solution so much that they've hired us back on as freelance contract developers to further build out their ordering platform, via ad hoc requests for flat-rate billing.  We've now added on another 2 Week Sprint workload to make this application more robust, scalable, and user-friendly. The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz. 
+  - Further Development: In 2 Week Sprint Durations
+    - However, PrīmX liked our solution so much that they've hired us back on as freelance contract developers to further build out their ordering platform, and provide ongoing updates and support. We've now added on many other 2 Week Sprint durations to make this application more robust, scalable, and user-friendly. The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz. 
 
 
 
