@@ -10,26 +10,21 @@ import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
-  console.log('*** fetchEstimatequery, action.payload', action.payload);
-
   const licenseeId = action.payload.licensee_id;
   const estimateNumber = action.payload.estimate_number;
-  console.log('*** estimateNumber, estimateNumber', estimateNumber);
-
   try {
     const response = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
         estimateNumber: estimateNumber,
         licenseeId: licenseeId
-      }
-    })
+      } // End params
+    }) // End response
     // run the timestamp removal function on the returned array of estimates
     const estimateWithoutTimestamps = removeTimestamps(response.data);
     // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
-
-    // Shows either the single table or the combined table: 
+    // Depending on if the estimate is a combined or single, it will push the appropriate data and show the correct table: 
     if (estimateNumber?.charAt(estimateNumber?.length - 1) === "C") {
       yield put({ type: "SHOW_COMBINED_ESTIMATE" });
       yield put({

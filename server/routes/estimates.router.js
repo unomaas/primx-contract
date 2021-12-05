@@ -322,32 +322,24 @@ router.put('/order/:id', (req, res) => {
 
 // PUT request to mark a combined estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
 router.put('/combine-order/:id', (req, res) => {
-  // SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
-
-  console.log('*** in combine-order, reqs', req.body);
-
+  // ⬇ Declaring all the variables to hold the data for easier ref: 
   const po_number = req.body.poNumber;
   const combinedEstimateNumber = req.body.calcCombinedEstimate.estimate_number;
   const firstEstimateNumber = req.body.calcCombinedEstimate.estimate_number_combined_1;
   const secondEstimateNumber = req.body.calcCombinedEstimate.estimate_number_combined_2;
   const thirdEstimateNumber = req.body.calcCombinedEstimate.estimate_number_combined_3;
-
-
-  console.log('*** in combine-order, thirdEstimateNumber', thirdEstimateNumber);
-
-
-
-
+  // ⬇ queryText to update later: 
   let queryText = ``;
-
+  // ⬇ The values to send to the DB: 
   const values = [
     po_number,
     combinedEstimateNumber,
     firstEstimateNumber,
     secondEstimateNumber
-  ];
-
+  ]; // End values
+  // ⬇ SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
   if (thirdEstimateNumber) {
+    // ⬇ If the third estimate number exists, add it to the values and set the SQL text to accommodate: 
     values.push(thirdEstimateNumber);
     queryText = `
       UPDATE "estimates" 
@@ -355,26 +347,22 @@ router.put('/combine-order/:id', (req, res) => {
         "ordered_by_licensee" = TRUE, 
         "po_number" = $1 
       WHERE "estimate_number" in ($2, $3, $4, $5);
-    `;
-  } else {
+    `; // End queryText
+  } else { // ⬇ If it's only two estimates, SQL to match: 
     queryText = `
       UPDATE "estimates" 
       SET 
         "ordered_by_licensee" = TRUE, 
         "po_number" = $1 
       WHERE "estimate_number" in ($2, $3, $4);
-    `;
+    `; // End queryText
   } // End if/else
-
-  console.log('*** values and thirdEstimate', queryText, values);
-
-
   pool.query(queryText, values)
     .then(result => res.sendStatus(200))
     .catch(error => {
       console.error(`Error with /api/estimates/combined-order/:id PUT:`, error)
-    })
-})
+    }) // End pool.query
+}) // End router.put('/combine-order/:id'
 
 // PUT request to take an existing estimate, GET current shipping and materials pricing from the DB, and update the given estimate with the new
 // pricing data
