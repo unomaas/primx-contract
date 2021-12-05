@@ -32,6 +32,10 @@ export default function AdminOrders() {
       processedOrders.push(estimate);
     } // orders are considered pending if they've been ordered_by_licensee by a licensee but not yet marked_as_ordered by an admin
     else if (estimate.ordered_by_licensee) {
+      // If this estimate was used in a combined, hide it from the GUI: 
+      if (estimate.archived) {
+        return;
+      }
       pendingOrders.push(estimate); 
     } // orders are considered archived if they have estimate.archived marked true my admin via the archive button
     else if (estimate.archived){

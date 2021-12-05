@@ -179,7 +179,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <TableRow>
                     <TableCell><b>Unit of Measurement:</b></TableCell>
                     <TableCell>
-                      {firstEstimate?.measurement_units}
+                      {firstEstimate?.measurement_units?.charAt(0)?.toUpperCase() + firstEstimate?.measurement_units?.slice(1)}
                     </TableCell>
                   </TableRow>
 

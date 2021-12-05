@@ -26,7 +26,9 @@ function AdminLandingPage() {
   return (
     <div className="container">
       <center>
-        <h2>Welcome, {user.username}!</h2>
+        <h2>
+          Welcome, {user?.username?.charAt(0)?.toUpperCase() + user?.username?.slice(1)}!
+          </h2>
       </center>
 
       {/* navigate to orders and estimates page */}
