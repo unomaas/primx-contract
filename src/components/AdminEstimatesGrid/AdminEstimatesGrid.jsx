@@ -338,6 +338,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         rows={rows}
         columns={columns}
         pageSize={10}
+        rowsPerPageOptions={[10,25,50,100]}
         checkboxSelection
         onCellEditCommit={handleEditSubmit}
         components={{

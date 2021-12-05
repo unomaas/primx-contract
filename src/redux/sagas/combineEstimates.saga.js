@@ -200,12 +200,24 @@ function* markCombinedEstimateOrdered(action) {
   }
 }
 
+// Worker Saga to server as a shortcut to clear all of the stale data reduers on page navigation:
+function* clearAllStaleData(action) {
+  try {
+    yield put({ type: "CLEAR_ESTIMATE" });
+    yield put({ type: "CLEAR_COMBINED_ESTIMATES_DATA" });
+    yield put({ type: "CLEAR_ESTIMATE_QUERY_RESULT" });
+    yield put({ type: "SET_RECALCULATED_FALSE" });
+  } catch (error) {
+    console.error('clearAllStaleData failed', error)
+  }
+}
+
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
   yield takeLatest('FETCH_MANY_ESTIMATES_QUERY', fetchManyEstimatesQuery);
   yield takeLatest('FETCH_COMBINED_ESTIMATE_QUERY', fetchCombinedEstimatesQuery);
   yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markCombinedEstimateOrdered);
-
+  yield takeLatest('CLEAR_ALL_STALE_DATA', clearAllStaleData);
 } // End combineEstimatesSaga
 
 

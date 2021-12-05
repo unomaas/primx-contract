@@ -81,6 +81,7 @@ export default function UpdateShippingCostsGrid() {
                 rows={rows}
                 columns={columns}
                 pageSize={10}
+        rowsPerPageOptions={[10,25,50,100]}
                 onCellEditCommit={handleEditSubmit}
             />
         </div>

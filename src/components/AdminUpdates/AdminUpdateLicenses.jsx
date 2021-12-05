@@ -131,6 +131,7 @@ export default function AdminUpdateLicenses() {
           rows={rows}
           columns={columns}
           pageSize={10}
+        rowsPerPageOptions={[10,25,50,100]}
         />
 
       </div>

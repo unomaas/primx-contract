@@ -55,7 +55,7 @@ export default function EstimateCombine() {
         second_estimate_number: second_estimate_number_combined,
         third_estimate_number: third_estimate_number_combined,
         // Sending history for navigation:
-        history: history
+        history: history,
       } // End payload
     }) // End dispatch
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
@@ -225,17 +225,16 @@ export default function EstimateCombine() {
             >
               <h3>Combine Multiple Estimates:</h3>
               <p>
-                This feature allows you to combine up to three (3) existing estimates into one order for a reduced shipping cost.
-              </p>
-              The first and second estimate numbers are required to use this feature.  The third estimate number is optional.
-              <p>
-                <b>Please be aware that whatever the Shipping/Contact Information is for the FIRST estimate number entered, that will be the information used for the other estimate(s).</b>
+                This feature allows you to combine up to three (3) existing estimates into one order for a reduced shipping cost. The first and second estimate numbers are required to use this feature.  The third estimate number is optional.
               </p>
               <p>
-                All estimates MUST go to the same shipping location in order to qualify for this reduced rate.
+                <b>Please be aware that whatever the Shipping/Contact Information is for the FIRST estimate number entered, that will be the information used for the other estimate(s).</b> All estimates MUST go to the same shipping location in order to qualify for this reduced rate.
               </p>
               <p>
                 If you need to edit the information for any of the estimates used, that must be done via the "Search For Estimate" page.
+              </p>
+              <p>
+                Lastly, please be aware that combining estimates together will result in a new <b>combined estimate number</b> that ends with a "<b>-C</b>" notation. You will need this to lookup and place that order later.
               </p>
             </Paper>
           </Grid>

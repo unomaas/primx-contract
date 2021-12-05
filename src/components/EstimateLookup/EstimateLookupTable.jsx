@@ -157,7 +157,7 @@ export default function EstimateLookupTable() {
                   <TableRow>
                     <TableCell><b>Unit of Measurement:</b></TableCell>
                     <TableCell>
-                      {searchResult?.measurement_units}
+                      {searchResult?.measurement_units?.charAt(0)?.toUpperCase() + searchResult?.measurement_units?.slice(1)}
                     </TableCell>
                   </TableRow>
 

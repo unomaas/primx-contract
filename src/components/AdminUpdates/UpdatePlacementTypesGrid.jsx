@@ -35,6 +35,7 @@ export default function UpdatePlacementTypesGrid({ placementTypes }) {
                 rows={placementRows}
                 columns={placementColumns}
                 pageSize={10}
+        rowsPerPageOptions={[10,25,50,100]}
             />
         </div>
     )

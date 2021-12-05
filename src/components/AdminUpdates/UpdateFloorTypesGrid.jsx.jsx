@@ -33,6 +33,7 @@ export default function UpdateFloorTypesGrid({ floorTypes }) {
                 rows={floorRows}
                 columns={floorColumns}
                 pageSize={10}
+        rowsPerPageOptions={[10,25,50,100]}
             />
         </div>
     )
