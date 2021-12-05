@@ -118,6 +118,8 @@ export const searchedEstimate = (state = {}, action) => {
   switch (action.type) {
     case 'SET_ESTIMATE_QUERY_RESULT':
       return action.payload;
+    case 'CLEAR_ESTIMATE_QUERY_RESULT':
+      return {};
     default:
       return state;
   } // End switch
@@ -152,10 +154,10 @@ export const searchQuery = (state = {
 
 export const setCalcEstimate = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_CALCULATED_ESTIMATE':            
-        return action.payload;
+    case 'SET_CALCULATED_ESTIMATE':
+      return action.payload;
     default:
-        return state;
+      return state;
   } // End switch
 }; // End setCalcEstimate
 

@@ -32,6 +32,8 @@ export default function ButtonToggle() {
         payload: selection
       });
       history.push(`/${selection}`);
+      dispatch({ type: "CLEAR_ALL_STALE_DATA" });
+
     } // End if statement
   } // End handleButtonState
   //#endregion ⬆⬆ Event handlers above. 
@@ -45,7 +47,7 @@ export default function ButtonToggle() {
         onChange={handleButtonState}
         value={buttonState}
         size="small"
-        // style={{fontSize: "5px"}}
+      // style={{fontSize: "5px"}}
       >
         <ToggleButton
           style={{
