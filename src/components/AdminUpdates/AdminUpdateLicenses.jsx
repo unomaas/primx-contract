@@ -130,7 +130,7 @@ export default function AdminUpdateLicenses() {
           autoHeight
           rows={rows}
           columns={columns}
-          pageSize={10}
+          rowsPerPage={10}
         />
 
       </div>

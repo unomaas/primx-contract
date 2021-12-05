@@ -80,7 +80,7 @@ export default function UpdateShippingCostsGrid() {
                 autoHeight
                 rows={rows}
                 columns={columns}
-                pageSize={10}
+                rowsPerPage={10}
                 onCellEditCommit={handleEditSubmit}
             />
         </div>
