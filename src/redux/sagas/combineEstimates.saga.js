@@ -11,6 +11,8 @@ import { ExpansionPanelActions } from '@material-ui/core';
 
 // Saga Worker to create a a new combined estimated quote: 
 function* fetchManyEstimatesQuery(action) {
+  // Saving history for navigation:
+  const history = action.payload.history;
   // ⬇ Clearing the third estimate reducer, just in case it has zombie data from a prior search:
   yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" });
   // ⬇ Declaring variables:
@@ -48,6 +50,18 @@ function* fetchManyEstimatesQuery(action) {
     // ⬇ Saving the estimates from the array to variables: 
     const firstEstimate = estimatesArray[0];
     const secondEstimate = estimatesArray[1];
+    if (firstEstimate.estimate_number_combined_1) {
+      // If this estimate has already been saved in a combined estimate: 
+      if (firstEstimate.estimate_number_combined_1.charAt(firstEstimate.estimate_number_combined_1.length - 1) === "C") {
+        // And they're both the same estimate number: 
+        if (firstEstimate.estimate_number_combined_1 === secondEstimate.estimate_number_combined_1) {
+          // Push them to that estimate:
+          history.push(`/lookup/${firstEstimate.licensee_id}/${firstEstimate.estimate_number_combined_1}`)
+          // And stop this code block:
+          return;
+        } // End if 
+      } // End if
+    } // End if 
     // ⬇ Sending each estimate to a reducer to display on the combine table:
     yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: firstEstimate });
     yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: secondEstimate });
@@ -98,7 +112,7 @@ function* fetchManyEstimatesQuery(action) {
 // ⬇ Saga Worker to handle looking up a saved combined estimate:
 function* fetchCombinedEstimatesQuery(action) {
   // ⬇ Clearing the third estimate reducer, just in case it has zombie data from a prior search:
-  yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" }); 
+  yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" });
   // ⬇ Pulling the variables from the payload: 
   const licenseeId = action.payload.licenseeId;
   const combinedEstimateNumber = action.payload.estimateNumber;
@@ -169,32 +183,15 @@ function* fetchCombinedEstimatesQuery(action) {
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then be processed by an admin user
 function* markCombinedEstimateOrdered(action) {
   try {
-
-    console.log('*** in markCombinedEstimateOrdered', action.payload);
-
     const id = action.payload.calcCombinedEstimate.id;
     const calcCombinedEstimate = action.payload.calcCombinedEstimate;
-    console.log('*** calcCombinedEstimate', calcCombinedEstimate);
-    
-
-
+    // Update all of the estimates as marked ordered and link them together: 
     yield axios.put(`/api/estimates/combine-order/${id}`, action.payload);
- 
-    
     // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
     yield put({
       type: 'FETCH_ESTIMATE_QUERY',
       payload: calcCombinedEstimate
     });
-    yield put({ })
-    // set the recalculated boolean in the estimates reducer to false so the place order button gets disabled for other estimates
-
-    // SETUP A ROUTE TO MARK ALL THE INDIVIDUAL ESTIMATES AS ORDERED AS WELL
-
-    // RESET THE DB AND SETUP A PUSH TO COMBINED ESTIMATE URL IF THEY HAVE ALL BEEN SAVED ALREADY
-
-    // MAKE A MARKED AS SAVED REDUCER FOR THE COMBINED, STOP USING THE SINGLE. 
-
     yield put({
       type: 'SET_RECALCULATE_FALSE'
     });

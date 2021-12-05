@@ -53,7 +53,9 @@ export default function EstimateCombine() {
         licensee_id: licensee_id_searched,
         first_estimate_number: first_estimate_number_combined,
         second_estimate_number: second_estimate_number_combined,
-        third_estimate_number: third_estimate_number_combined
+        third_estimate_number: third_estimate_number_combined,
+        // Sending history for navigation:
+        history: history
       } // End payload
     }) // End dispatch
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]

@@ -1573,9 +1573,9 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             {hasRecalculated ?
                               <>
                                 {/* Recalc True ALL: */}
-                                {((firstEstimate.saved_in_a_combined_order == true) &&
-                                  (secondEstimate.saved_in_a_combined_order == true) &&
-                                  ((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.saved_in_a_combined_order == true))) ?
+                                {((firstEstimate.used_in_a_combined_order == true) &&
+                                  (secondEstimate.used_in_a_combined_order == true) &&
+                                  ((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.used_in_a_combined_order == true))) ?
                                   <>
                                     {/* Recalc True and Saved True -- Show submit Button */}
                                     <TextField
@@ -1607,9 +1607,9 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                                 }
                               </> : <>
                                 {/* Recalc False ALL: */}
-                                {((firstEstimate.saved_in_a_combined_order == true) &&
-                                  (secondEstimate.saved_in_a_combined_order == true) &&
-                                  (JSON.stringify(thirdEstimate) === '{}' || thirdEstimate.saved_in_a_combined_order == true)) ?
+                                {((firstEstimate.used_in_a_combined_order == true) &&
+                                  (secondEstimate.used_in_a_combined_order == true) &&
+                                  (JSON.stringify(thirdEstimate) === '{}' || thirdEstimate.used_in_a_combined_order == true)) ?
                                   <>
                                     {/* Realc False and Saved True -- Show grayed out submit */}
                                     Recalculate costs before placing order.
