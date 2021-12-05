@@ -172,15 +172,21 @@ function* markCombinedEstimateOrdered(action) {
 
     console.log('*** in markCombinedEstimateOrdered', action.payload);
 
+    const id = action.payload.calcCombinedEstimate.id;
+    const calcCombinedEstimate = action.payload.calcCombinedEstimate;
+    console.log('*** calcCombinedEstimate', calcCombinedEstimate);
+    
 
-    yield axios.put(`/api/estimates/combine-order/${action.payload.id}`, action.payload);
+
+    yield axios.put(`/api/estimates/combine-order/${id}`, action.payload);
  
     
     // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
     yield put({
       type: 'FETCH_ESTIMATE_QUERY',
-      payload: action.payload
+      payload: calcCombinedEstimate
     });
+    yield put({ })
     // set the recalculated boolean in the estimates reducer to false so the place order button gets disabled for other estimates
 
     // SETUP A ROUTE TO MARK ALL THE INDIVIDUAL ESTIMATES AS ORDERED AS WELL

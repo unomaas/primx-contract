@@ -10,8 +10,12 @@ import createProductPriceObject from '../../hooks/createProductPriceObject';
 
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
+  console.log('*** fetchEstimatequery, action.payload', action.payload);
+
   const licenseeId = action.payload.licensee_id;
   const estimateNumber = action.payload.estimate_number;
+  console.log('*** estimateNumber, estimateNumber', estimateNumber);
+
   try {
     const response = yield axios.get('/api/estimates/lookup/:estimates', {
       params: {
@@ -24,16 +28,24 @@ function* fetchEstimateQuery(action) {
     // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
-    //take response from DB and insert into Admin Reducer
-    yield put({
-      type: 'SET_ESTIMATE_QUERY_RESULT',
-      payload: calculatedResponse
-    });
+
     // Shows either the single table or the combined table: 
-    if (estimateNumber?.charAt(estimateNumber?.length - 1) === "C") {    
+    if (estimateNumber?.charAt(estimateNumber?.length - 1) === "C") {
       yield put({ type: "SHOW_COMBINED_ESTIMATE" });
+      yield put({
+        type: 'SET_ESTIMATE_QUERY_RESULT',
+        payload: calculatedResponse
+      });
+      yield put({
+        type: "SET_CALCULATED_COMBINED_ESTIMATE",
+        payload: calculatedResponse
+      });
     } else {
       yield put({ type: "SHOW_SINGLE_ESTIMATE" });
+      yield put({
+        type: 'SET_ESTIMATE_QUERY_RESULT',
+        payload: calculatedResponse
+      });
     }
   } catch (error) {
     console.error('fetchEstimateQuery error', error);
@@ -47,10 +59,10 @@ function* AddEstimate(action) {
     // action.payload contains the history object from useHistory:
     const history = action.payload.history
     // Saving the response and action.payload to variables for easier reading:
-    const returnedEstimate = response.data;    
+    const returnedEstimate = response.data;
     // If we just saved a combined estimate, do not push them, as they're already at the page we would push to: 
     if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
-      yield axios.put(`/api/estimates/usedincombine`, action.payload);      
+      yield axios.put(`/api/estimates/usedincombine`, action.payload);
       // return;
     } else { // Otherwise they were just saving a single estimate and we do push:
       yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
