@@ -345,6 +345,7 @@ router.put('/combine-order/:id', (req, res) => {
       UPDATE "estimates" 
       SET 
         "ordered_by_licensee" = TRUE, 
+        "archived" = TRUE,
         "po_number" = $1 
       WHERE "estimate_number" in ($2, $3, $4, $5);
     `; // End queryText
@@ -353,6 +354,7 @@ router.put('/combine-order/:id', (req, res) => {
       UPDATE "estimates" 
       SET 
         "ordered_by_licensee" = TRUE, 
+        "archived" = TRUE,
         "po_number" = $1 
       WHERE "estimate_number" in ($2, $3, $4);
     `; // End queryText
@@ -579,7 +581,7 @@ router.put('/usedincombine', async (req, res) => {
     // Query will mark all estimates as true, and update with each others numbers:
     queryText1 = `
       UPDATE "estimates"  
-      SET "used_in_a_combined_order" = 'TRUE' 
+      SET "used_in_a_combined_order" = 'TRUE', 
       WHERE "estimate_number" in ($1, $2, $3);
     `; // End queryText1
     queryText2 = `
