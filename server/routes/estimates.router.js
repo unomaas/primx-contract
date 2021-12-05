@@ -306,7 +306,11 @@ router.put('/archive/:id', rejectUnauthenticated, (req, res) => {
 // PUT request to mark an estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
 router.put('/order/:id', (req, res) => {
   // SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
-  const queryText = `UPDATE "estimates" SET "ordered_by_licensee" = TRUE, "po_number" = $1 WHERE "id" = $2;`;
+  const queryText = `
+    UPDATE "estimates" 
+    SET "ordered_by_licensee" = TRUE, "po_number" = $1 
+    WHERE "id" = $2;
+  `;
 
   pool.query(queryText, [req.body.po_number, req.params.id])
     .then(result => res.sendStatus(200))
@@ -315,14 +319,69 @@ router.put('/order/:id', (req, res) => {
     })
 })
 
+
+// PUT request to mark a combined estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
+router.put('/combine-order/:id', (req, res) => {
+  // ⬇ Declaring all the variables to hold the data for easier ref: 
+  const po_number = req.body.poNumber;
+  const combinedEstimateNumber = req.body.calcCombinedEstimate.estimate_number;
+  const firstEstimateNumber = req.body.calcCombinedEstimate.estimate_number_combined_1;
+  const secondEstimateNumber = req.body.calcCombinedEstimate.estimate_number_combined_2;
+  const thirdEstimateNumber = req.body.calcCombinedEstimate.estimate_number_combined_3;
+  // ⬇ queryText to update later: 
+  let queryText = ``;
+  // ⬇ The values to send to the DB: 
+  const values = [
+    po_number,
+    combinedEstimateNumber,
+    firstEstimateNumber,
+    secondEstimateNumber
+  ]; // End values
+  // ⬇ SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
+  if (thirdEstimateNumber) {
+    // ⬇ If the third estimate number exists, add it to the values and set the SQL text to accommodate: 
+    values.push(thirdEstimateNumber);
+    queryText = `
+      UPDATE "estimates" 
+      SET 
+        "ordered_by_licensee" = TRUE, 
+        "po_number" = $1 
+      WHERE "estimate_number" in ($2, $3, $4, $5);
+    `; // End queryText
+  } else { // ⬇ If it's only two estimates, SQL to match: 
+    queryText = `
+      UPDATE "estimates" 
+      SET 
+        "ordered_by_licensee" = TRUE, 
+        "po_number" = $1 
+      WHERE "estimate_number" in ($2, $3, $4);
+    `; // End queryText
+  } // End if/else
+  pool.query(queryText, values)
+    .then(result => res.sendStatus(200))
+    .catch(error => {
+      console.error(`Error with /api/estimates/combined-order/:id PUT:`, error)
+    }) // End pool.query
+}) // End router.put('/combine-order/:id'
+
 // PUT request to take an existing estimate, GET current shipping and materials pricing from the DB, and update the given estimate with the new
 // pricing data
 router.put('/recalculate/:id', (req, res) => {
   // SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
-  const queryText = `UPDATE "estimates" SET "primx_dc_unit_price" = $1, "primx_dc_shipping_estimate" = $2, "primx_flow_unit_price" = $3, 
-                     "primx_flow_shipping_estimate" = $4, "primx_steel_fibers_unit_price" = $5, "primx_steel_fibers_shipping_estimate" = $6,
-                     "primx_ultracure_blankets_unit_price" = $7, "primx_cpea_unit_price" = $8, "primx_cpea_shipping_estimate" = $9
-                     WHERE "estimates".id = $10;`;
+  const queryText = `
+    UPDATE "estimates" 
+    SET 
+      "primx_dc_unit_price" = $1, 
+      "primx_dc_shipping_estimate" = $2, 
+      "primx_flow_unit_price" = $3, 
+      "primx_flow_shipping_estimate" = $4, 
+      "primx_steel_fibers_unit_price" = $5, 
+      "primx_steel_fibers_shipping_estimate" = $6,
+      "primx_ultracure_blankets_unit_price" = $7, 
+      "primx_cpea_unit_price" = $8, 
+      "primx_cpea_shipping_estimate" = $9
+    WHERE "estimates".id = $10;
+  `;
 
   // destructure data received from saga which contains an object with current updated pricing
   const {
@@ -505,19 +564,17 @@ router.put('/usedincombine', (req, res) => {
   let queryText = "";
   let values = [
     firstCombinedEstimateNumber,
-    secondCombinedEstimateNumber,
-    thirdCombinedEstimateNumber
+    secondCombinedEstimateNumber
   ];
   if (thirdCombinedEstimateNumber) {
-    // If there's a third estimate, fire off the query: 
+    // If there's a third estimate, add it to values, and fire off the query: 
+    values.push(thirdCombinedEstimateNumber);
     queryText = `
       UPDATE "estimates"  
       SET "saved_in_a_combined_order" = 'TRUE' 
       WHERE "estimate_number" in ($1, $2, $3);
     `;
   } else {
-    // If there is no third estimate number, take it out of the values array:
-    values.pop();
     // Then send the query: 
     queryText = `
       UPDATE "estimates"  

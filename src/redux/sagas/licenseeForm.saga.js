@@ -17,20 +17,31 @@ function* fetchEstimateQuery(action) {
       params: {
         estimateNumber: estimateNumber,
         licenseeId: licenseeId
-      }
-    })
+      } // End params
+    }) // End response
     // run the timestamp removal function on the returned array of estimates
     const estimateWithoutTimestamps = removeTimestamps(response.data);
     // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
     // before sending it to the reducer
     const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
-    //take response from DB and insert into Admin Reducer
-    yield put({
-      type: 'SET_ESTIMATE_QUERY_RESULT',
-      payload: calculatedResponse
-    });
-    // Shows the single table on the lookup page: 
-    yield put({ type: "SHOW_SINGLE_ESTIMATE" });
+    // Depending on if the estimate is a combined or single, it will push the appropriate data and show the correct table: 
+    if (estimateNumber?.charAt(estimateNumber?.length - 1) === "C") {
+      yield put({ type: "SHOW_COMBINED_ESTIMATE" });
+      yield put({
+        type: 'SET_ESTIMATE_QUERY_RESULT',
+        payload: calculatedResponse
+      });
+      yield put({
+        type: "SET_CALCULATED_COMBINED_ESTIMATE",
+        payload: calculatedResponse
+      });
+    } else {
+      yield put({ type: "SHOW_SINGLE_ESTIMATE" });
+      yield put({
+        type: 'SET_ESTIMATE_QUERY_RESULT',
+        payload: calculatedResponse
+      });
+    }
   } catch (error) {
     console.error('fetchEstimateQuery error', error);
   }
@@ -43,14 +54,12 @@ function* AddEstimate(action) {
     // action.payload contains the history object from useHistory:
     const history = action.payload.history
     // Saving the response and action.payload to variables for easier reading:
-    const returnedEstimate = response.data;    
-    // If we just saved a combined estimate, do not push them, as they're already at the page we would push to: 
+    const returnedEstimate = response.data;
+    // If we just saved a combined estimate, 
     if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
-      yield axios.put(`/api/estimates/usedincombine`, action.payload);      
-      // return;
-    } else { // Otherwise they were just saving a single estimate and we do push:
-      yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
+      yield axios.put(`/api/estimates/usedincombine`, action.payload);
     }
+    yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
   } catch (error) {
     console.error('AddEstimate POST request failed', error);
   }

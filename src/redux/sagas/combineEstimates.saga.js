@@ -98,7 +98,7 @@ function* fetchManyEstimatesQuery(action) {
 // ⬇ Saga Worker to handle looking up a saved combined estimate:
 function* fetchCombinedEstimatesQuery(action) {
   // ⬇ Clearing the third estimate reducer, just in case it has zombie data from a prior search:
-  yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" }); Z
+  yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" }); 
   // ⬇ Pulling the variables from the payload: 
   const licenseeId = action.payload.licenseeId;
   const combinedEstimateNumber = action.payload.estimateNumber;
@@ -167,15 +167,34 @@ function* fetchCombinedEstimatesQuery(action) {
 } // End fetchCombinedEstimatesQuery Saga
 
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then be processed by an admin user
-function* markEstimateOrdered(action) {
+function* markCombinedEstimateOrdered(action) {
   try {
-    yield axios.put(`/api/estimates/order/${action.payload.id}`, action.payload);
+
+    console.log('*** in markCombinedEstimateOrdered', action.payload);
+
+    const id = action.payload.calcCombinedEstimate.id;
+    const calcCombinedEstimate = action.payload.calcCombinedEstimate;
+    console.log('*** calcCombinedEstimate', calcCombinedEstimate);
+    
+
+
+    yield axios.put(`/api/estimates/combine-order/${id}`, action.payload);
+ 
+    
     // fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
-    // yield put({
-    //   type: 'FETCH_ESTIMATE_QUERY',
-    //   payload: action.payload
-    // });
+    yield put({
+      type: 'FETCH_ESTIMATE_QUERY',
+      payload: calcCombinedEstimate
+    });
+    yield put({ })
     // set the recalculated boolean in the estimates reducer to false so the place order button gets disabled for other estimates
+
+    // SETUP A ROUTE TO MARK ALL THE INDIVIDUAL ESTIMATES AS ORDERED AS WELL
+
+    // RESET THE DB AND SETUP A PUSH TO COMBINED ESTIMATE URL IF THEY HAVE ALL BEEN SAVED ALREADY
+
+    // MAKE A MARKED AS SAVED REDUCER FOR THE COMBINED, STOP USING THE SINGLE. 
+
     yield put({
       type: 'SET_RECALCULATE_FALSE'
     });
@@ -188,7 +207,7 @@ function* markEstimateOrdered(action) {
 function* combineEstimatesSaga() {
   yield takeLatest('FETCH_MANY_ESTIMATES_QUERY', fetchManyEstimatesQuery);
   yield takeLatest('FETCH_COMBINED_ESTIMATE_QUERY', fetchCombinedEstimatesQuery);
-  yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markEstimateOrdered);
+  yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markCombinedEstimateOrdered);
 
 } // End combineEstimatesSaga
 

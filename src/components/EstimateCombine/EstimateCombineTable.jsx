@@ -13,13 +13,6 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 export default function EstimateCombineTable({ firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate }) {
   //#region ⬇⬇ All state variables below:
-  // ⬇ first,second,thirdEstimate below are objects searched from the DB
-  // const firstEstimate = useSelector(store => store.combineEstimatesReducer.firstCombinedEstimate);
-  // const secondEstimate = useSelector(store => store.combineEstimatesReducer.secondCombinedEstimate);
-  // const thirdEstimate = useSelector(store => store.combineEstimatesReducer.thirdCombinedEstimate);
-
-  // ⬇ calcCombinedEstimate is the object returned by searching for multiple estimates to combined, with updated quotes. 
-  // const calcCombinedEstimate = useSelector(store => store.combineEstimatesReducer.calcCombinedEstimate);
   // ⬇ Deprecated, used for Styling MUI components. 
   const classes = useStyles();
   // ⬇ Sets the error state for a faulty search:
@@ -45,7 +38,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
   //#region ⬇⬇ Event handlers below:
   /** ⬇ handleRecalculateCosts:
-   * Click handler for the recalculate costs button. When clicked, runs the caluclateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
+   * Click handler for the recalculate costs button. When clicked, runs the calculateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
    */
   const handleRecalculateCosts = () => {
     // ⬇ Attach history from useHistory to the searchResult object to allow navigation from inside the saga:
@@ -59,8 +52,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
    * When clicked, this will post the object to the DB and send the user back to the dashboard. 
    */
   const handleSave = event => {
-    // TODO: Attach the estimate numbers used:
-
     // ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
     calcCombinedEstimate.history = history;
     // Attach the estimate numbers to use inside the POST: 
@@ -72,7 +63,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
     // ⬇ Sweet Alert to let them know to save the Estimate #:
     swal({
       title: "Estimate saved!",
-      text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+      text: "NOTE: Your estimate number has changed! Please print or save it, as you will need it to look up this estimate again, and submit the order for processing.",
       icon: "info",
       buttons: "I understand",
     }).then(() => {
@@ -101,13 +92,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
       //   window.print();
       // }); // End swal
       dispatch({
-        type: 'MARK_ESTIMATE_ORDERED',
+        type: 'MARK_COMBINED_ESTIMATE_ORDERED',
         payload: {
-          id: calcCombinedEstimate.id,
-          po_number: poNumber,
-          licensee_id: calcCombinedEstimate.licensee_id,
-          estimate_number: calcCombinedEstimate.estimate_number
-        } // End payload
+          calcCombinedEstimate: calcCombinedEstimate,
+          poNumber: poNumber
+        }
       }) // End dispatch
     } // End if/else.
   } // End handlePlaceOrder
