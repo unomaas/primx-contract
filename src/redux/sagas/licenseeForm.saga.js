@@ -29,8 +29,12 @@ function* fetchEstimateQuery(action) {
       type: 'SET_ESTIMATE_QUERY_RESULT',
       payload: calculatedResponse
     });
-    // Shows the single table on the lookup page: 
-    yield put({ type: "SHOW_SINGLE_ESTIMATE" });
+    // Shows either the single table or the combined table: 
+    if (estimateNumber?.charAt(estimateNumber?.length - 1) === "C") {    
+      yield put({ type: "SHOW_COMBINED_ESTIMATE" });
+    } else {
+      yield put({ type: "SHOW_SINGLE_ESTIMATE" });
+    }
   } catch (error) {
     console.error('fetchEstimateQuery error', error);
   }
