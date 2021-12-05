@@ -11,6 +11,8 @@ import { ExpansionPanelActions } from '@material-ui/core';
 
 // Saga Worker to create a a new combined estimated quote: 
 function* fetchManyEstimatesQuery(action) {
+  // Saving history for navigation:
+  const history = action.payload.history;
   // ⬇ Clearing the third estimate reducer, just in case it has zombie data from a prior search:
   yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" });
   // ⬇ Declaring variables:
@@ -45,9 +47,19 @@ function* fetchManyEstimatesQuery(action) {
       // ⬇ Save it to the estimatesArray for later use. 
       estimatesArray.push(calculatedResponse);
     } // End for loop
+
+
+
     // ⬇ Saving the estimates from the array to variables: 
     const firstEstimate = estimatesArray[0];
     const secondEstimate = estimatesArray[1];
+
+    console.log('*** fetchManyEstimatesQuery firstEstimate,', firstEstimate, secondEstimate);
+    if (firstEstimate.estimate_number_combined_1 === secondEstimate.estimate_number_combined_1) {
+      history.push(`/lookup/${firstEstimate.licensee_id}/${firstEstimate.estimate_number_combined_1}`)
+        return;
+    } // End if 
+    
     // ⬇ Sending each estimate to a reducer to display on the combine table:
     yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: firstEstimate });
     yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: secondEstimate });
