@@ -51,18 +51,28 @@ function* fetchEstimateQuery(action) {
 function* AddEstimate(action) {
   try {
     const response = yield axios.post('/api/estimates', action.payload);
+    console.log('*** in AddEstimate, action.payload:', action.payload);
+
     // action.payload contains the history object from useHistory:
     const history = action.payload.history
     // Saving the response and action.payload to variables for easier reading:
     const returnedEstimate = response.data;
-    // If we just saved a combined estimate, 
+    console.log('*** in AddEstimate, returnedEstimate:', returnedEstimate);
+
+    // If we just saved a combined estimate:
     if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
+      // Update the calc combined object with the new estimate number: 
+      action.payload.estimate_number = returnedEstimate.estimate_number;
+      // Update the DB with all estimate numbers involved. 
       yield axios.put(`/api/estimates/usedincombine`, action.payload);
-    }
-    yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
+      // Push to the lookup view: 
+      yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
+    } else {
+      yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
+    } // End if/else
   } catch (error) {
     console.error('AddEstimate POST request failed', error);
-  }
+  } // End try/catch
 }
 
 // Saga Worker to edit estimate into table

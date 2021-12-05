@@ -558,29 +558,43 @@ router.put('/clientupdates/:id', (req, res) => {
 
 // PUT request for when an individual estimate is saved in a combined estimate, flip it's 'saved_in_a_combined_order' key to TRUE: 
 router.put('/usedincombine', (req, res) => {
+  console.log('*** in usedincombine, req.body:', req.body);
   const firstCombinedEstimateNumber = req.body.estimate_number_combined_1;
   const secondCombinedEstimateNumber = req.body.estimate_number_combined_2;
   const thirdCombinedEstimateNumber = req.body.estimate_number_combined_3;
+  const combinedEstimateNumber = req.body.estimate_number;
   let queryText = "";
   let values = [
     firstCombinedEstimateNumber,
     secondCombinedEstimateNumber
-  ];
+  ]; // End values
   if (thirdCombinedEstimateNumber) {
-    // If there's a third estimate, add it to values, and fire off the query: 
+    // If there's a third estimate, add it to values:
     values.push(thirdCombinedEstimateNumber);
+    // Query will mark all estimates as true, and update with each others numbers:
     queryText = `
-      UPDATE "estimates"  
-      SET "saved_in_a_combined_order" = 'TRUE' 
-      WHERE "estimate_number" in ($1, $2, $3);
-    `;
+      BEGIN;
+        UPDATE "estimates"  
+        SET "used_in_a_combined_order" = 'TRUE' 
+        WHERE "estimate_number" in ($1, $2, $3);
+        
+        UPDATE "estimates"  
+        SET "estimate_number_combined_1" = $4
+        WHERE "estimate_number" in ($1, $2, $3);
+      COMMIT;
+    `; // End queryText
   } else {
-    // Then send the query: 
     queryText = `
-      UPDATE "estimates"  
-      SET "saved_in_a_combined_order" = 'TRUE' 
-      WHERE "estimate_number" in ($1, $2);
-    `;
+      BEGIN;
+        UPDATE "estimates"  
+        SET "used_in_a_combined_order" = 'TRUE' 
+        WHERE "estimate_number" in ($1, $2);
+        
+        UPDATE "estimates"  
+        SET "estimate_number_combined_1" = $3
+        WHERE "estimate_number" in ($1, $2);
+      COMMIT;
+    `; // End queryText
   } // End if/else query text. 
   pool.query(queryText, values)
     .then(result => {
