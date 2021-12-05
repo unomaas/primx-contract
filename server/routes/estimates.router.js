@@ -556,7 +556,7 @@ router.put('/clientupdates/:id', (req, res) => {
     })
 })
 
-// PUT request for when an individual estimate is saved in a combined estimate, flip it's 'saved_in_a_combined_order' key to TRUE: 
+// PUT request for when an individual estimate is saved in a combined estimate, flip it's 'used_in_a_combined_order' key to TRUE: 
 router.put('/usedincombine', async (req, res) => {
   const combinedEstimateNumber = req.body.estimate_number;
   const firstCombinedEstimateNumber = req.body.estimate_number_combined_1;
