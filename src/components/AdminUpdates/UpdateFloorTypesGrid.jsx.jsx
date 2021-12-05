@@ -32,7 +32,8 @@ export default function UpdateFloorTypesGrid({ floorTypes }) {
                 autoHeight
                 rows={floorRows}
                 columns={floorColumns}
-                rowsPerPage={10}
+                pageSize={10}
+        rowsPerPageOptions={[10,25,50,100]}
             />
         </div>
     )

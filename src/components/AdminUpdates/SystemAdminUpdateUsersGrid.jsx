@@ -77,7 +77,8 @@ export default function SystemAdminUpdateUserGrid() {
         autoHeight
         rows={rows}
         columns={columns}
-        rowsPerPage={10}
+        pageSize={10}
+        rowsPerPageOptions={[10,25,50,100]}
       />
     </div>
   )

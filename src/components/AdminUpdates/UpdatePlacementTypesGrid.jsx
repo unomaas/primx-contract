@@ -34,7 +34,8 @@ export default function UpdatePlacementTypesGrid({ placementTypes }) {
                 autoHeight
                 rows={placementRows}
                 columns={placementColumns}
-                rowsPerPage={10}
+                pageSize={10}
+        rowsPerPageOptions={[10,25,50,100]}
             />
         </div>
     )
