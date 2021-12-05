@@ -557,52 +557,56 @@ router.put('/clientupdates/:id', (req, res) => {
 })
 
 // PUT request for when an individual estimate is saved in a combined estimate, flip it's 'saved_in_a_combined_order' key to TRUE: 
-router.put('/usedincombine', (req, res) => {
-  console.log('*** in usedincombine, req.body:', req.body);
+router.put('/usedincombine', async (req, res) => {
+  const combinedEstimateNumber = req.body.estimate_number;
   const firstCombinedEstimateNumber = req.body.estimate_number_combined_1;
   const secondCombinedEstimateNumber = req.body.estimate_number_combined_2;
   const thirdCombinedEstimateNumber = req.body.estimate_number_combined_3;
-  const combinedEstimateNumber = req.body.estimate_number;
-  let queryText = "";
-  let values = [
-    firstCombinedEstimateNumber,
-    secondCombinedEstimateNumber
+  let queryText1 = "";
+  let queryText2 = "";
+  let values1 = [
+    firstCombinedEstimateNumber, // $1
+    secondCombinedEstimateNumber // $2
+  ]; // End values
+  let values2 = [
+    firstCombinedEstimateNumber, // $1
+    secondCombinedEstimateNumber // $2
   ]; // End values
   if (thirdCombinedEstimateNumber) {
     // If there's a third estimate, add it to values:
-    values.push(thirdCombinedEstimateNumber);
+    values1.push(thirdCombinedEstimateNumber); // $3
+    values2.push(thirdCombinedEstimateNumber, combinedEstimateNumber); // $3 $4
     // Query will mark all estimates as true, and update with each others numbers:
-    queryText = `
-      BEGIN;
-        UPDATE "estimates"  
-        SET "used_in_a_combined_order" = 'TRUE' 
-        WHERE "estimate_number" in ($1, $2, $3);
-        
-        UPDATE "estimates"  
-        SET "estimate_number_combined_1" = $4
-        WHERE "estimate_number" in ($1, $2, $3);
-      COMMIT;
-    `; // End queryText
+    queryText1 = `
+      UPDATE "estimates"  
+      SET "used_in_a_combined_order" = 'TRUE' 
+      WHERE "estimate_number" in ($1, $2, $3);
+    `; // End queryText1
+    queryText2 = `
+      UPDATE "estimates"  
+      SET "estimate_number_combined_1" = $4
+      WHERE "estimate_number" in ($1, $2, $3);
+    `; // End queryText2
   } else {
-    queryText = `
-      BEGIN;
-        UPDATE "estimates"  
-        SET "used_in_a_combined_order" = 'TRUE' 
-        WHERE "estimate_number" in ($1, $2);
-        
-        UPDATE "estimates"  
-        SET "estimate_number_combined_1" = $3
-        WHERE "estimate_number" in ($1, $2);
-      COMMIT;
-    `; // End queryText
+    values2.push(combinedEstimateNumber); // $3
+    queryText1 = `
+      UPDATE "estimates"  
+      SET "used_in_a_combined_order" = 'TRUE' 
+      WHERE "estimate_number" in ($1, $2);
+    `; // End queryText1
+    queryText2 = `
+      UPDATE "estimates"  
+      SET "estimate_number_combined_1" = $3
+      WHERE "estimate_number" in ($1, $2);
+    `; // End queryText2
   } // End if/else query text. 
-  pool.query(queryText, values)
-    .then(result => {
-      res.sendStatus(200); // OK
-    })
-    .catch(error => {
-      console.error(`Error with /api/estimates/usedincombine PUT`, error)
-    }) // End .then/.catch
+  try {
+    await pool.query(queryText1, values1);
+    await pool.query(queryText2, values2);
+    res.sendStatus(200); // OK
+  } catch (error) {
+    console.error(`Error with /api/estimates/usedincombine PUT`, error)
+  } // End try/catch
 }) // End PUT /usedincombine
 
 
