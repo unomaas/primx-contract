@@ -31,9 +31,10 @@ export default function ButtonToggle() {
         type: 'SET_BUTTON_STATE',
         payload: selection
       });
+      // Push them to the right page:
       history.push(`/${selection}`);
+      // And clear all of the reducer data on click: 
       dispatch({ type: "CLEAR_ALL_STALE_DATA" });
-
     } // End if statement
   } // End handleButtonState
   //#endregion ⬆⬆ Event handlers above. 
