@@ -192,9 +192,8 @@ function* markCombinedEstimateOrdered(action) {
       type: 'FETCH_ESTIMATE_QUERY',
       payload: calcCombinedEstimate
     });
-    yield put({
-      type: 'SET_RECALCULATE_FALSE'
-    });
+    yield put({ type: 'SET_RECALCULATE_FALSE' });
+
   } catch (error) {
     console.error('markEstimateOrdered failed', error)
   }
@@ -207,6 +206,8 @@ function* clearAllStaleData(action) {
     yield put({ type: "CLEAR_COMBINED_ESTIMATES_DATA" });
     yield put({ type: "CLEAR_ESTIMATE_QUERY_RESULT" });
     yield put({ type: "SET_RECALCULATED_FALSE" });
+    yield put({ type: "HIDE_LOOKUP_TABLES" });
+    yield put({ type: "SET_TABLE_STATE", payload: false });
   } catch (error) {
     console.error('clearAllStaleData failed', error)
   }

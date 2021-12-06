@@ -47,17 +47,19 @@ export default function EstimateCombine() {
   // ⬇ Run on estimate search complete:
   useEffect(() => {
     // ⬇ If the user got here with params by searching from the lookup view, dispatch the data in the URL params to run a GET request to the DB:
-    dispatch({
-      type: 'FETCH_MANY_ESTIMATES_QUERY',
-      payload: {
-        licensee_id: licensee_id_searched,
-        first_estimate_number: first_estimate_number_combined,
-        second_estimate_number: second_estimate_number_combined,
-        third_estimate_number: third_estimate_number_combined,
-        // Sending history for navigation:
-        history: history,
-      } // End payload
-    }) // End dispatch
+    if (licensee_id_searched && first_estimate_number_combined && second_estimate_number_combined) {
+      dispatch({
+        type: 'FETCH_MANY_ESTIMATES_QUERY',
+        payload: {
+          licensee_id: licensee_id_searched,
+          first_estimate_number: first_estimate_number_combined,
+          second_estimate_number: second_estimate_number_combined,
+          third_estimate_number: third_estimate_number_combined,
+          // Sending history for navigation:
+          history: history,
+        } // End payload
+      }) // End dispatch
+    } // End if statement
   }, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
   ); // End useEffect 
   // #endregion ⬆⬆ All state variables above. 
