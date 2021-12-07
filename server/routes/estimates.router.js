@@ -581,7 +581,7 @@ router.put('/usedincombine', async (req, res) => {
     // Query will mark all estimates as true, and update with each others numbers:
     queryText1 = `
       UPDATE "estimates"  
-      SET "used_in_a_combined_order" = 'TRUE', 
+      SET "used_in_a_combined_order" = 'TRUE' 
       WHERE "estimate_number" in ($1, $2, $3);
     `; // End queryText1
     queryText2 = `
