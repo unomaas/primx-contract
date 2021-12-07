@@ -376,11 +376,6 @@ router.put('/combine-order/:id', async (req, res) => {
   } catch (error) {
     console.error(`Error with /api/estimates/combined-order/:id PUT:`, error);
   } // End try/catch
-  // pool.query(queryText, values)
-  //   .then(result => res.sendStatus(200))
-  //   .catch(error => {
-  //     console.error(`Error with /api/estimates/combined-order/:id PUT:`, error)
-  //   }) // End pool.query
 }) // End router.put('/combine-order/:id'
 
 // PUT request to take an existing estimate, GET current shipping and materials pricing from the DB, and update the given estimate with the new
