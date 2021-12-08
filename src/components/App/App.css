@@ -20,7 +20,7 @@ td, input, .MuiSelect-root, th {
 
 /* Targets the text on the Combine Estimates instructions: */
 p {
-  font-size: 13px !important;
+  font-size: 13.5px !important;
 }
 
 /* Targets all the MUI buttons: */
@@ -35,7 +35,7 @@ img {
 }
 
 h2 {
-  font-size: 25px !important;
+  font-size: 22px !important;
   font-family: 'Lexend Tera' !important;
 }
 
@@ -47,6 +47,10 @@ h3 {
 h4 {
   font-size: 13px !important;
   font-family: 'Lexend Tera' !important;
+}
+
+svg {
+  font-size: 25px !important;
 }
 
 /* For the footer: */
