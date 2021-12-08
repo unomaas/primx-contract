@@ -48,34 +48,20 @@ export default function ButtonToggle() {
         onChange={handleButtonState}
         value={buttonState}
         size="small"
-      // style={{fontSize: "11px"}}
       >
         <ToggleButton
-          style={{
-            fontFamily: 'Lexend Tera',
-            // fontSize: '11px'
-          }}
           value="create"
         >
           Create New Estimate
         </ToggleButton>
 
         <ToggleButton
-          style={{
-            fontFamily: 'Lexend Tera',
-            // fontSize: '5px'
-          }}
           value="lookup"
         >
           Search For Estimate
         </ToggleButton>
 
         <ToggleButton
-          style={{
-            fontFamily: 'Lexend Tera',
-            // fontSize: '5px'
-            // size="small"
-          }}
           value="combine"
         >
           Combine Estimates
