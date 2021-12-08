@@ -426,7 +426,7 @@ export default function MetricTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Waste Factor @ 5% (m³):</b></TableCell>
+                      <TableCell><b>Waste Factor (m³):</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.waste_factor_cubic_meters?.toLocaleString('en-US')}</TableCell>
                     </TableRow>
 

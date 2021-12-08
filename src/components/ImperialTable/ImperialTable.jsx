@@ -426,7 +426,7 @@ export default function ImperialTable() {
                     </TableRow>
 
                     <TableRow>
-                      <TableCell><b>Waste Factor @ 5% (yd³):</b></TableCell>
+                      <TableCell><b>Waste Factor (yd³):</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                       </TableCell>
