@@ -13,13 +13,20 @@ body {
 
 /* App wide changes: */
 
-/* Affects everything except titles: */
-td, input, .MuiSelect-root, span, th {
+/* Targets everything except titles and headers and the below: */
+td, input, .MuiSelect-root, th {
+  font-size: 12px !important;
+}
+
+/* Targets the text on the Combine Estimates instructions: */
+p {
   font-size: 13px !important;
 }
 
-p {
-  font-size: 14px !important;
+/* Targets all the MUI buttons: */
+span {
+  font-size: 11px !important;
+  font-family: 'Lexend Tera';
 }
 
 img {
@@ -27,12 +34,19 @@ img {
   max-width: 100%;
 }
 
+h2 {
+  font-size: 25px !important;
+  font-family: 'Lexend Tera' !important;
+}
+
 h3 {
-  font-size: 14px;
+  font-size: 14px !important;
+  font-family: 'Lexend Tera' !important;
 }
 
 h4 {
-  font-size: 13px;
+  font-size: 13px !important;
+  font-family: 'Lexend Tera' !important;
 }
 
 /* For the footer: */

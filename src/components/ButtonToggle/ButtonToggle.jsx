@@ -42,18 +42,18 @@ export default function ButtonToggle() {
 
   // ⬇ Rendering below:
   return (
-    <div className="">
+    <div id="ToggleButtonGroup">
       <ToggleButtonGroup
         exclusive
         onChange={handleButtonState}
         value={buttonState}
         size="small"
-      // style={{fontSize: "5px"}}
+      // style={{fontSize: "11px"}}
       >
         <ToggleButton
           style={{
             fontFamily: 'Lexend Tera',
-            // fontSize: '5px'
+            // fontSize: '11px'
           }}
           value="create"
         >
