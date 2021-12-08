@@ -188,7 +188,7 @@ export default function EstimateLookup() {
         <>
           <EstimateLookupTable />
           <h3>
-            Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
+            Your estimate number is: <b style={{ color: 'red' }}>{searchResult?.estimate_number}</b>
           </h3>
         </>
       }
@@ -203,7 +203,7 @@ export default function EstimateLookup() {
           // searchResult={searchResult}
           />
           <h3>
-            Your estimate number is: <span style={{ color: 'red' }}>{searchResult?.estimate_number}</span>
+            Your estimate number is: <b style={{ color: 'red' }}>{searchResult?.estimate_number}</b>
           </h3>
         </>
       }
