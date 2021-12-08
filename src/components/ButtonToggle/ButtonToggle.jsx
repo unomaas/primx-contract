@@ -42,40 +42,26 @@ export default function ButtonToggle() {
 
   // ⬇ Rendering below:
   return (
-    <div className="">
+    <div id="ToggleButtonGroup">
       <ToggleButtonGroup
         exclusive
         onChange={handleButtonState}
         value={buttonState}
         size="small"
-      // style={{fontSize: "5px"}}
       >
         <ToggleButton
-          style={{
-            fontFamily: 'Lexend Tera',
-            // fontSize: '5px'
-          }}
           value="create"
         >
           Create New Estimate
         </ToggleButton>
 
         <ToggleButton
-          style={{
-            fontFamily: 'Lexend Tera',
-            // fontSize: '5px'
-          }}
           value="lookup"
         >
           Search For Estimate
         </ToggleButton>
 
         <ToggleButton
-          style={{
-            fontFamily: 'Lexend Tera',
-            // fontSize: '5px'
-            // size="small"
-          }}
           value="combine"
         >
           Combine Estimates

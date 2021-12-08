@@ -67,7 +67,7 @@ export default function EstimateCombine() {
 
   //#region ⬇⬇ Event handlers below:
   /** ⬇ handleChange:
-   * Change handler for the estimate search form. Will send their entries to a reducer.
+   * Change handler for the estimate search form. Will send their entries to a reducer. 
    */
   const handleChange = (key, value) => {
     // setSearchQuery({ ...searchQuery, [key]: value })
@@ -253,3 +253,5 @@ export default function EstimateCombine() {
     </div >
   )
 }
+
+
