@@ -65,3 +65,6 @@ typings/
 .env
 
 # ignore package-lock as it complicates merging
+
+# Ignore backups: 
+database_backups/
