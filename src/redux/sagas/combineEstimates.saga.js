@@ -130,18 +130,16 @@ function* fetchCombinedEstimatesQuery(action) {
         licenseeId: licenseeId
       } // End params
     }); // End response        
-    const firstEstimateWithoutTimestamps = removeTimestamps(firstResponse.data);
-    // ⬇ If a response came back successfully, there is one estimate object in an array. The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
-    let deepCopy = JSON.parse(JSON.stringify(firstEstimateWithoutTimestamps[0]));
-    // ⬇ Run the original math engin on it, as it's from the DB and not a tallied object:
-    const calculatedCombinedResponse = yield useEstimateCalculations(deepCopy);
-    // ⬇ Sending this to the calc combined reducer and the query result, as both will be referenced: 
-    yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedCombinedResponse });
-    yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedCombinedResponse });
+
+    const combinedEstimateData = firstResponse.data[0];
+
     // ⬇ Pulling the estimate numbers from : 
-    const firstEstimateNumber = calculatedCombinedResponse.estimate_number_combined_1;
-    const secondEstimateNumber = calculatedCombinedResponse.estimate_number_combined_2;
-    const thirdEstimateNumber = calculatedCombinedResponse.estimate_number_combined_3;
+    const firstEstimateNumber = combinedEstimateData.estimate_number_combined_1;
+    const secondEstimateNumber = combinedEstimateData.estimate_number_combined_2;
+    const thirdEstimateNumber = combinedEstimateData.estimate_number_combined_3;
+
+    console.log('*** combined, first, 2nd, third', combinedEstimateData, firstEstimateNumber, secondEstimateNumber, thirdEstimateNumber);
+
     // ⬇ Putting them in an array to loop through:
     estimateNumberArray.push(firstEstimateNumber, secondEstimateNumber);
     // ⬇ If the third estimate exists, add it too:
@@ -173,12 +171,46 @@ function* fetchCombinedEstimatesQuery(action) {
       const thirdEstimate = estimatesArray[2];
       yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: thirdEstimate });
     } // End if 
+
+    // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
+    const totalsObjectHolder = {
+      primx_cpea_total_amount_needed: 0,
+      primx_dc_total_amount_needed: 0,
+      primx_flow_total_amount_needed: 0,
+      primx_steel_fibers_total_amount_needed: 0,
+      primx_ultracure_blankets_total_amount_needed: 0
+    }; // End totalsObjectHolder
+    // ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
+    for (let estimate of estimatesArray) {
+      totalsObjectHolder.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
+      totalsObjectHolder.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
+      totalsObjectHolder.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
+      totalsObjectHolder.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
+      totalsObjectHolder.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+    } // End for loop
+    // ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
+    // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
+    let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
+    // ⬇ Setting the tallied amount to the object to feed through the math machine: 
+    talliedCombinedEstimate.primx_cpea_total_amount_needed = totalsObjectHolder.primx_cpea_total_amount_needed;
+    talliedCombinedEstimate.primx_dc_total_amount_needed = totalsObjectHolder.primx_dc_total_amount_needed;
+    talliedCombinedEstimate.primx_flow_total_amount_needed = totalsObjectHolder.primx_flow_total_amount_needed;
+    talliedCombinedEstimate.primx_steel_fibers_total_amount_needed = totalsObjectHolder.primx_steel_fibers_total_amount_needed;
+    talliedCombinedEstimate.primx_ultracure_blankets_total_amount_needed = totalsObjectHolder.primx_ultracure_blankets_total_amount_needed;
+    // ⬇ Run the timestamp removal function on the returned array of estimates:
+    const estimateWithoutTimestamps = removeTimestamps([talliedCombinedEstimate]);
+    // ⬇ If a response came back successfully, there is one estimate object in an array. Run the updated Combine Estimates Calc on it:
+    const calculatedResponse = yield useCombineEstimateCalculations(estimateWithoutTimestamps[0]);
+    // ⬇ Send that data to the reducer, and set the show table to true:
+    yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });
+    yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedResponse });
     yield put({ type: "SHOW_COMBINED_ESTIMATE" });
     yield put({ type: "LOADING_SCREEN_OFF" });
   } catch (error) {
     console.error('fetchCombinedEstimatesQuery failed:', error);
   } // End try/catch
 } // End fetchCombinedEstimatesQuery Saga
+
 
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then be processed by an admin user
 function* markCombinedEstimateOrdered(action) {
@@ -220,7 +252,7 @@ function* combineEstimatesSaga() {
   yield takeLatest('FETCH_COMBINED_ESTIMATE_QUERY', fetchCombinedEstimatesQuery);
   yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markCombinedEstimateOrdered);
   yield takeLatest('CLEAR_ALL_STALE_DATA', clearAllStaleData);
-} // End combineEstimatesSaga
+} // End combineEstimatesSaga //
 
 
 export default combineEstimatesSaga;
