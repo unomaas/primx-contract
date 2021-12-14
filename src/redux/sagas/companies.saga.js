@@ -51,7 +51,7 @@ function* addCompany(action) {
     yield axios.post('/api/companies', {value:action.payload});
     // refresh companies with new company post
     yield put({ type: 'FETCH_ALL_COMPANIES'});
-    yield put({ type: 'SET_SUCCESS_COMPANY'})
+    yield put({ type: 'SNACK_SUCCESS_COMPANY'})
   } catch (error) {
     console.error('Error in post company saga:', error);
   }

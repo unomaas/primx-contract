@@ -19,7 +19,7 @@ function* registerUser(action) {
       type: 'FETCH_USERINFO'
     });
     yield put({
-      type: 'SET_SUCCESS_REGISTER_ADMIN'
+      type: 'SNACK_SUCCESS_REGISTER_ADMIN'
     });
   } catch (error) {
     console.error('Error with user registration:', error);

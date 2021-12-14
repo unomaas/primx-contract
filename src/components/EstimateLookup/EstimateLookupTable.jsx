@@ -37,7 +37,7 @@ export default function EstimateLookupTable() {
     searchResult.history = history;
     // ⬇ Needs to GET shipping information and pricing information before recalculating
     dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult });
-    dispatch({ type: 'GET_RECALCULATE_INFO' });
+    dispatch({ type: 'SNACK_RECALCULATE_INFO' });
   } // End handleRecalculateCosts
 
   /** ⬇ handlePlaceOrder:

@@ -176,7 +176,7 @@ export default function ImperialTable() {
                           }}
                           fullWidth
                           value={estimateData.waste_factor_percentage}
-                          onClick={event => dispatch({ type: 'GET_WASTE_FACTOR' })}
+                          onClick={event => dispatch({ type: 'SNACK_WASTE_FACTOR' })}
                         >
                         </TextField>
                       </TableCell>
@@ -237,7 +237,7 @@ export default function ImperialTable() {
                           }}
                           fullWidth
                           value={estimateData.primx_steel_fibers_dosage_lbs}
-                          onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_LBS' })}
+                          onClick={event => dispatch({ type: 'SNACK_PRIMX_STEEL_LBS' })}
                         />
                       </TableCell>
                     </TableRow>
@@ -297,7 +297,7 @@ export default function ImperialTable() {
                           }}
                           fullWidth
                           value={estimateData.thickened_edge_perimeter_lineal_feet}
-                          onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
+                          onClick={event => dispatch({ type: 'SNACK_LINEAL_INCHES' })}
                         />
                       </TableCell>
                     </TableRow>
@@ -317,7 +317,7 @@ export default function ImperialTable() {
                             endAdornment: <InputAdornment position="end">ft</InputAdornment>,
                           }}
                           value={estimateData.thickened_edge_construction_joint_lineal_feet}
-                          onClick={event => dispatch({ type: 'GET_LINEAL_INCHES' })}
+                          onClick={event => dispatch({ type: 'SNACK_LINEAL_INCHES' })}
                         />
                       </TableCell>
                     </TableRow>

@@ -61,7 +61,7 @@ export default function AdminUpdateLicenses() {
   const handleActivateDeactivateClick = (params) => {
     // On click, sends a dispatch to the companies saga to toggle active or inactive licensee status
     dispatch({ type: 'TOGGLE_ACTIVE_INACTIVE_LICENSEE', payload: params.row });
-    dispatch({ type: 'SET_SUCCESS_ACTIVE' });
+    dispatch({ type: 'SNACK_SUCCESS_ACTIVE' });
   }
 
   //establish rows with campanies array for datagrid
@@ -92,7 +92,7 @@ export default function AdminUpdateLicenses() {
   //handles add company button click that sends payload of company name input to saga for posting to database
   const handleAddCompany = (event) => {
     if (companyNameInput == '') {
-      dispatch({ type: 'SET_EMPTY_ERROR' })
+      dispatch({ type: 'SNACK_EMPTY_ERROR' })
     } else {
       dispatch({ type: 'ADD_COMPANY', payload: companyNameInput });
       setCompanyNameInput('');

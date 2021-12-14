@@ -112,7 +112,7 @@ export const editState = (state = false, action) => {
   } // End switch
 }; // End editState
 
-// searchedEstimate comes from the licenseeForm saga, which sends back a single estimate object from the DB after running the useEstimateCalculations
+// searchedEstimate comes from the estimates saga, which sends back a single estimate object from the DB after running the useEstimateCalculations
 // function on it
 export const searchedEstimate = (state = {}, action) => {
   switch (action.type) {

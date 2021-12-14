@@ -175,7 +175,7 @@ function* markEstimateOrdered(action) {
 }
 
 // companies saga to fetch companies
-function* licenseeFormSaga() {
+function* estimatesSaga() {
   // Makes a POST request for a new estimate
   yield takeLatest('ADD_ESTIMATE', AddEstimate);
   // Makes a GET request to get a single estimate from the DB after being searched in the estimate lookup view
@@ -190,4 +190,4 @@ function* licenseeFormSaga() {
   yield takeLatest('HANDLE_CALCULATED_ESTIMATE', handleCalculatedEstimate);
 }
 
-export default licenseeFormSaga;
+export default estimatesSaga;

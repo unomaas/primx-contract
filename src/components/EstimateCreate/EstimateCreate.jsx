@@ -54,7 +54,7 @@ export default function EstimateCreate() {
     // ⬇ Set lead time state with a rounded number in weeks:
     setLeadTime(Math.abs(Math.round(differenceInWeeks)));
     if (leadTime < 8) {
-      dispatch({ type: 'SET_ERROR_LEADTIME' });
+      dispatch({ type: 'SNACK_ERROR_LEADTIME' });
     } // End if statement
   } // End timeDifference
 
@@ -157,7 +157,7 @@ export default function EstimateCreate() {
       setRadioError("Please select a value.");
     } // ⬇ Dropdown menu validation:
     else if (!estimateData.licensee_id || !estimateData.floor_types_id || !estimateData.placement_types_id || !estimateData.shipping_costs_id || !estimateData.country) {
-      dispatch({ type: 'SET_EMPTY_ERROR' });
+      dispatch({ type: 'SNACK_EMPTY_ERROR' });
     } // ⬇ Show table:
     else {
       dispatch({

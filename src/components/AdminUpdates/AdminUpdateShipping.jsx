@@ -56,7 +56,7 @@ export default function AdminUpdateShipping() {
     //shows an error is one of the fields is empty
     if (newShippingCost.dc_price == '' || newShippingCost.ship_to_state_province == '' || newShippingCost.flow_cpea_price == '' ||
       newShippingCost.fibers_price == '') {
-      dispatch({ type: 'SET_EMPTY_ERROR' })
+      dispatch({ type: 'SNACK_EMPTY_ERROR' })
 
     } else {
       // dispatch sent to shippingCost saga, payload as below
@@ -64,14 +64,6 @@ export default function AdminUpdateShipping() {
       setNewShippingCost({ ship_to_state_province: '', dc_price: '', flow_cpea_price: '', fibers_price: '' });
     }
   }
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    dispatch({ type: 'SET_CLOSE' })
-  };
 
   return (
     <div>

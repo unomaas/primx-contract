@@ -175,7 +175,7 @@ export default function MetricTable() {
                           }}
                           fullWidth
                           value={estimateData.waste_factor_percentage}
-                          onClick={event => dispatch({ type: 'GET_WASTE_FACTOR' })}
+                          onClick={event => dispatch({ type: 'SNACK_WASTE_FACTOR' })}
                         >
                         </TextField>
                       </TableCell>
@@ -236,7 +236,7 @@ export default function MetricTable() {
                           }}
                           fullWidth
                           value={estimateData.primx_steel_fibers_dosage_kgs}
-                          onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_KGS' })}
+                          onClick={event => dispatch({ type: 'SNACK_PRIMX_STEEL_KGS' })}
                         />
                       </TableCell>
                     </TableRow>
@@ -295,7 +295,7 @@ export default function MetricTable() {
                           }}
                           fullWidth
                           value={estimateData.thickened_edge_perimeter_lineal_meters}
-                          onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
+                          onClick={event => dispatch({ type: 'SNACK_LINEAL_METERS' })}
 
                         />
                       </TableCell>
@@ -316,7 +316,7 @@ export default function MetricTable() {
                             endAdornment: <InputAdornment position="end">m</InputAdornment>,
                           }}
                           value={estimateData.thickened_edge_construction_joint_lineal_meters}
-                          onClick={event => dispatch({ type: 'GET_LINEAL_METERS' })}
+                          onClick={event => dispatch({ type: 'SNACK_LINEAL_METERS' })}
 
                         />
                       </TableCell>

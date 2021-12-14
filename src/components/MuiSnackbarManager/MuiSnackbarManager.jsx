@@ -1,4 +1,4 @@
-// *** The Snackbar Manager is a component that lets us use Material-UI Snackbar Alerts throughout the entire app.  It requires having a snack.reducer.js to call out to, and having the Snackbar Manager loaded into the highest level of your app (for less redundancy.) ***
+// *** The Snackbar Manager is a component that lets us use Material-UI Snackbar Alerts throughout the entire app.  It requires having a snackBar.reducer.js to call out to, and having the Snackbar Manager loaded into the highest level of your app (for less redundancy.) ***
 
 //#region ⬇⬇ All document setup, below:
 import React from 'react';
@@ -11,7 +11,7 @@ import { Alert } from '@material-ui/lab';
 export default function MuiSnackbarManager() {
   //#region ⬇⬇ All state variables below:
   const dispatch = useDispatch();
-  const snack = useSelector(store => store.snackBar);
+  const snackBar = useSelector(store => store.snackBar);
   //#endregion ⬆⬆ All state variables above. 
 
   
@@ -23,7 +23,7 @@ export default function MuiSnackbarManager() {
     if (reason === 'clickaway') {
       return;
     } // End if statement
-    dispatch({ type: 'SET_CLOSE' })
+    dispatch({ type: 'SNACK_CLOSE' })
   }; // End handleClose
   //#endregion ⬆⬆ Event handlers above. 
 
@@ -31,17 +31,17 @@ export default function MuiSnackbarManager() {
   // ⬇ Rendering:
   return (
     <Snackbar
-      open={snack.open}
+      open={snackBar.open}
       autoHideDuration={6000}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
       <Alert
-        variant={snack.variant}
+        variant={snackBar.variant}
         onClose={handleClose}
-        severity={snack.severity}
+        severity={snackBar.severity}
       >
-        {snack.message}
+        {snackBar.message}
       </Alert>
     </Snackbar>
   ) // End return

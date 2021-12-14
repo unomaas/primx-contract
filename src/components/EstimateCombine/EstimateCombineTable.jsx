@@ -45,7 +45,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
     calcCombinedEstimate.history = history;
     // ⬇ Needs to GET shipping information and pricing information before recalculating
     dispatch({ type: 'RECALCULATE_ESTIMATE', payload: calcCombinedEstimate });
-    dispatch({ type: 'GET_RECALCULATE_INFO' });
+    dispatch({ type: 'SNACK_RECALCULATE_INFO' });
   } // End handleRecalculateCosts
 
   /** ⬇ handleSave:

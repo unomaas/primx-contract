@@ -21,7 +21,7 @@ function* postFloorType(action) {
       yield axios.post(`/api/floortypes`, action.payload);
       //send results to floorTypes reducer
       yield put({type: 'FETCH_FLOOR_TYPES'});
-      yield put({ type:'SET_SUCCESS_FLOOR_TYPES'})
+      yield put({ type:'SNACK_SUCCESS_FLOOR_TYPES'})
     } catch (error) {
       console.error('Error in post floor type SAGA -->', error);
     }

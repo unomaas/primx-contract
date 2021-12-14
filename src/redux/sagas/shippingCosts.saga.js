@@ -32,7 +32,7 @@ function* postShippingCosts(action) {
             type: 'FETCH_SHIPPING_COSTS'
         });
         yield put({
-            type: 'SET_SUCCESS_SHIPPING'
+            type: 'SNACK_SUCCESS_SHIPPING'
         })
     } catch (error) {
         console.error('Error in postShippingCosts SAGA -->', error);

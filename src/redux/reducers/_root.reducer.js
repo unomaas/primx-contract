@@ -9,7 +9,7 @@ import products from './products.reducer';
 import shippingCosts from './shippingCosts.reducer';
 import estimatesReducer from './estimates.reducer';
 import userInfoReducer from './userInfo.reducer';
-import snackBar from './snack.reducer';
+import snackBar from './snackBar.reducer';
 import combineEstimatesReducer from './combineEstimates.reducer';
 import backdropReducer from './backdrop.reducer';
 

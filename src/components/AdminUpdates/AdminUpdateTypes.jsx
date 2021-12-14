@@ -39,7 +39,7 @@ export default function AdminUpdateTypes() {
   const addFloorType = () => {
     if (newFloorType == '') {
       //error shows if a field is empty
-      dispatch({ type: 'SET_EMPTY_ERROR' })
+      dispatch({ type: 'SNACK_EMPTY_ERROR' })
     } else {
       //sends newFloorType to reducer to add floor type to DB
       dispatch({ type: "ADD_FLOOR_TYPE", payload: { floor_type: newFloorType } })
@@ -51,7 +51,7 @@ export default function AdminUpdateTypes() {
   const addPlacementType = () => {
     if (newPlacementType == '') {
       //error shows if a field is empty
-      dispatch({ type: 'SET_EMPTY_ERROR' })
+      dispatch({ type: 'SNACK_EMPTY_ERROR' })
     } else {
       //sends newPlacementType to reducer to add floor type to DB
       dispatch({ type: "ADD_PLACEMENT_TYPE", payload: { placement_type: newPlacementType } })
