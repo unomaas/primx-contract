@@ -2,16 +2,8 @@
 
 Thanks for viewing our order platform solution for our client, PrīmX NA! https://primxna.com/
 
-
-
-## Duration: 
-
-- Total Time: 4 Weeks
-  - Original Duration: 2 Week Sprint
-    - This app was created as a solution to PrīmX's estimate and order placement process. This project was started via a team of five developers working remotely over a two week period, as students of Prime Digital Academy.  The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz, and Alex Kim. 
-  - Further Development: In 2 Week Sprint Durations
-    - However, PrīmX liked our solution so much that they've hired us back on as freelance contract developers to further build out their ordering platform, and provide ongoing updates and support. We've now added on many other 2 Week Sprint durations to make this application more robust, scalable, and user-friendly. The team was comprised of: Ryan Maas, Brandon Wharton, Jerry Xiong, Chris Klemz. 
-
+## Disclaimer:
+This is a continuation of the PrimX group project as a solo contract, created, executed, and managed solely by Ryan Maas. 
 
 
 ## Description:
@@ -129,15 +121,3 @@ Please feel free to reach out to us with any feedback or suggestions.
 - Ryan Maas: 
   - LinkedIn: https://www.linkedin.com/in/ryan-maas-0814/
   - GitHub: https://github.com/unomaas
-- Brandon Wharton:
-  - LinkedIn: https://www.linkedin.com/in/brandon-wharton-1450/
-  - GitHub: https://github.com/brandonwharton
-- Chris Klemz:
-  - LinkedIn: https://www.linkedin.com/in/chris-klemz-681b11180/
-  - GitHub: https://github.com/Crklemz
-- Jerry Xiong:
-  - LinkedIn: https://www.linkedin.com/in/jerry-xiong-76ab43212/
-  - GitHub: https://github.com/xiongster94
-- Alex Kim:
-  - LinkedIn: https://www.linkedin.com/in/alex-kim-a724b0103/
-  - GitHub: https://github.com/alexk251
