@@ -57,7 +57,10 @@ const snackBarReducer = (state = { open: false, message: '', severity: "success"
         variant: "filled"
       }
     case 'SNACK_CLOSE':
-      return { ...state, open: false }
+      return {
+        ...state,
+        open: false
+      }
     case 'SNACK_EMPTY_ERROR':
       return {
         open: true,
