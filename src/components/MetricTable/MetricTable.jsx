@@ -259,6 +259,26 @@ export default function MetricTable() {
                         />
                       </TableCell>
                     </TableRow>
+
+                    <TableRow>
+                      <TableCell>
+                        <b>PrīmX DC @ Dosage Rate per m³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_dc_dosage_meters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">kgs</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.primx_dc_dosage_meters}
+                        />
+                      </TableCell>
+                    </TableRow>
+
                   </TableBody>
                 </Table>
               </TableContainer>

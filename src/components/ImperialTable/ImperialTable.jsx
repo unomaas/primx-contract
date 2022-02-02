@@ -261,6 +261,25 @@ export default function ImperialTable() {
                       </TableCell>
                     </TableRow>
 
+										<TableRow>
+                      <TableCell>
+                        <b>PrīmX DC @ Dosage Rate per yd³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_dc_dosage_yards', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.primx_dc_dosage_yards}
+                        />
+                      </TableCell>
+                    </TableRow>
+
                   </TableBody>
                 </Table>
               </TableContainer>
