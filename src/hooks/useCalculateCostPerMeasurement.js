@@ -2,10 +2,10 @@
  * Will calculate the total cost by square measurement and return a pretty USD amount. 
  */
 export default function useCalculateCostPerMeasurement(cost, quantity) {
-	if (cost && quantity) {
+	if (cost && quantity) {		
 		// ⬇ Removes the commas and strings from our dollar amount string: 
-		let costWithoutDollars = cost.replace("$", "");
-		let costWithoutCommas = costWithoutDollars.replace(",", "");
+		let costWithoutDollars = cost.replace("$", "");		
+		let costWithoutCommas = costWithoutDollars.replace(/,/g, "");
 		// ⬇ Divides appropriately: 
 		let costPerMeasurement = costWithoutCommas / quantity;
 		// ⬇ Reformats as a USD string: 
