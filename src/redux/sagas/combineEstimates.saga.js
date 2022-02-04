@@ -48,7 +48,7 @@ function* fetchManyEstimatesQuery(action) {
       estimatesArray.push(calculatedResponse);
     } // End for loop
     // ⬇ Saving the estimates from the array to variables: 
-    const firstEstimate = estimatesArray[0];
+    const firstEstimate = estimatesArray[0];		
     const secondEstimate = estimatesArray[1];
     if (firstEstimate.estimate_number_combined_1) {
       // If this estimate has already been saved in a combined estimate: 
@@ -76,7 +76,9 @@ function* fetchManyEstimatesQuery(action) {
       primx_dc_total_amount_needed: 0,
       primx_flow_total_amount_needed: 0,
       primx_steel_fibers_total_amount_needed: 0,
-      primx_ultracure_blankets_total_amount_needed: 0
+      primx_ultracure_blankets_total_amount_needed: 0,
+			square_feet: 0,
+			square_meters: 0, 
     }; // End totalsObjectHolder
     // ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
     for (let estimate of estimatesArray) {
@@ -85,6 +87,8 @@ function* fetchManyEstimatesQuery(action) {
       totalsObjectHolder.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
       totalsObjectHolder.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
       totalsObjectHolder.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+			totalsObjectHolder.square_feet += estimate.square_feet;
+      totalsObjectHolder.square_meters += estimate.square_meters;
     } // End for loop
     // ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
     // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
@@ -95,6 +99,8 @@ function* fetchManyEstimatesQuery(action) {
     talliedCombinedEstimate.primx_flow_total_amount_needed = totalsObjectHolder.primx_flow_total_amount_needed;
     talliedCombinedEstimate.primx_steel_fibers_total_amount_needed = totalsObjectHolder.primx_steel_fibers_total_amount_needed;
     talliedCombinedEstimate.primx_ultracure_blankets_total_amount_needed = totalsObjectHolder.primx_ultracure_blankets_total_amount_needed;
+		talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
+    talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
     // ⬇ Run the timestamp removal function on the returned array of estimates:
     const estimateWithoutTimestamps = removeTimestamps([talliedCombinedEstimate]);
     // ⬇ If a response came back successfully, there is one estimate object in an array. Run the updated Combine Estimates Calc on it:
@@ -130,16 +136,11 @@ function* fetchCombinedEstimatesQuery(action) {
         licenseeId: licenseeId
       } // End params
     }); // End response        
-
     const combinedEstimateData = firstResponse.data[0];
-
     // ⬇ Pulling the estimate numbers from : 
     const firstEstimateNumber = combinedEstimateData.estimate_number_combined_1;
     const secondEstimateNumber = combinedEstimateData.estimate_number_combined_2;
     const thirdEstimateNumber = combinedEstimateData.estimate_number_combined_3;
-
-    console.log('*** combined, first, 2nd, third', combinedEstimateData, firstEstimateNumber, secondEstimateNumber, thirdEstimateNumber);
-
     // ⬇ Putting them in an array to loop through:
     estimateNumberArray.push(firstEstimateNumber, secondEstimateNumber);
     // ⬇ If the third estimate exists, add it too:
@@ -171,14 +172,15 @@ function* fetchCombinedEstimatesQuery(action) {
       const thirdEstimate = estimatesArray[2];
       yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: thirdEstimate });
     } // End if 
-
     // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
     const totalsObjectHolder = {
       primx_cpea_total_amount_needed: 0,
       primx_dc_total_amount_needed: 0,
       primx_flow_total_amount_needed: 0,
       primx_steel_fibers_total_amount_needed: 0,
-      primx_ultracure_blankets_total_amount_needed: 0
+      primx_ultracure_blankets_total_amount_needed: 0,
+			square_feet: 0,
+			square_meters: 0, 
     }; // End totalsObjectHolder
     // ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
     for (let estimate of estimatesArray) {
@@ -187,6 +189,8 @@ function* fetchCombinedEstimatesQuery(action) {
       totalsObjectHolder.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
       totalsObjectHolder.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
       totalsObjectHolder.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+      totalsObjectHolder.square_feet += estimate.square_feet;
+      totalsObjectHolder.square_meters += estimate.square_meters;
     } // End for loop
     // ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
     // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
@@ -197,6 +201,8 @@ function* fetchCombinedEstimatesQuery(action) {
     talliedCombinedEstimate.primx_flow_total_amount_needed = totalsObjectHolder.primx_flow_total_amount_needed;
     talliedCombinedEstimate.primx_steel_fibers_total_amount_needed = totalsObjectHolder.primx_steel_fibers_total_amount_needed;
     talliedCombinedEstimate.primx_ultracure_blankets_total_amount_needed = totalsObjectHolder.primx_ultracure_blankets_total_amount_needed;
+    talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
+    talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
     // ⬇ Run the timestamp removal function on the returned array of estimates:
     const estimateWithoutTimestamps = removeTimestamps([talliedCombinedEstimate]);
     // ⬇ If a response came back successfully, there is one estimate object in an array. Run the updated Combine Estimates Calc on it:

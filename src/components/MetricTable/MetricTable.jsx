@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
+import useCalculateCostPerMeasurement from '../../hooks/useCalculateCostPerMeasurement';
 import { Alert } from '@material-ui/lab';
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
@@ -114,7 +115,7 @@ export default function MetricTable() {
                 <Table size="small">
 
                   <TableHead>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell align="center" colSpan={2}>
                         <h3>Project Quantity Inputs</h3>
                       </TableCell>
@@ -122,7 +123,7 @@ export default function MetricTable() {
                   </TableHead>
 
                   <TableBody>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell>
                         <b>Square Meters:</b>
                       </TableCell>
@@ -141,7 +142,7 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell>
                         <b>Thickness:</b>
                       </TableCell>
@@ -160,7 +161,7 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell>
                         <b>Waste Factor Percentage</b>
                       </TableCell>
@@ -193,7 +194,7 @@ export default function MetricTable() {
                 <Table size="small">
 
                   <TableHead>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell align="center" colSpan={2}>
                         <h3>Materials Required Inputs</h3>
                       </TableCell>
@@ -201,7 +202,7 @@ export default function MetricTable() {
                   </TableHead>
 
                   <TableBody>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell>
                         <b>PrīmX Flow @ Dosage Rate per m³:</b>
                       </TableCell>
@@ -221,7 +222,7 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell>
                         <b>PrīmX Steel Fibers @ Dosage Rate per m³:</b>
                       </TableCell>
@@ -241,7 +242,7 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell>
                         <b>PrīmX CPEA @ Dosage Rate per m³:</b>
                       </TableCell>
@@ -259,6 +260,26 @@ export default function MetricTable() {
                         />
                       </TableCell>
                     </TableRow>
+
+                    <TableRow hover={true}>
+                      <TableCell>
+                        <b>PrīmX DC @ Dosage Rate per m³:</b>
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          onChange={event => handleChange('primx_dc_dosage_meters', event.target.value)}
+                          required
+                          type="number"
+                          size="small"
+                          InputProps={{
+                            endAdornment: <InputAdornment position="end">kgs</InputAdornment>,
+                          }}
+                          fullWidth
+                          value={estimateData.primx_dc_dosage_meters}
+                        />
+                      </TableCell>
+                    </TableRow>
+
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -272,7 +293,7 @@ export default function MetricTable() {
                 <Table size="small">
 
                   <TableHead>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell align="center" colSpan={2}>
                         <h3>Thickened Edge Inputs</h3>
                       </TableCell>
@@ -280,7 +301,7 @@ export default function MetricTable() {
                   </TableHead>
 
                   <TableBody>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell>
                         <b>Lineal Meters @ Perimeter:</b>
                       </TableCell>
@@ -301,7 +322,7 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell>
                         <b>Lineal Meters @ Construction Joint:</b>
                       </TableCell>
@@ -322,7 +343,7 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                     <TableCell colSpan={6} align="right">
                         {/* Conditional rendering to show the Edit or Save button based off whether they've came here from the Edit Estimate button or not: */}
                         {editState ? (
@@ -383,54 +404,54 @@ export default function MetricTable() {
                 <Table size="small">
                   <TableBody>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Square Meters:</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.square_meters?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Thickness (mm):</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.thickness_millimeters}
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Cubic Meters:</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.cubic_meters?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.construction_joint_thickening_cubic_meters}
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Subtotal:</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.cubic_meters_subtotal?.toLocaleString('en-US')}
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Waste Factor (m³):</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.waste_factor_cubic_meters?.toLocaleString('en-US')}</TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Total Cubic Meters:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.design_cubic_meters_total?.toLocaleString('en-US')}</TableCell>
                     </TableRow>
@@ -442,7 +463,7 @@ export default function MetricTable() {
                 <Table size="small">
 
                   <TableHead>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell></TableCell>
                       <TableCell><b>Perimeter</b></TableCell>
                       <TableCell><b>Construction Joint</b></TableCell>
@@ -450,7 +471,7 @@ export default function MetricTable() {
                   </TableHead>
 
                   <TableBody>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Lineal Meters:</b></TableCell>
                       <TableCell>
                         {calculatedDisplayObject?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
@@ -460,19 +481,19 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Width (m³):</b></TableCell>
                       <TableCell>1.5</TableCell>
                       <TableCell>3.0</TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Additional Thickness (mm):</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.additional_thickness_millimeters}</TableCell>
                       <TableCell>{calculatedDisplayObject?.additional_thickness_millimeters}</TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Cubic Meters:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}</TableCell>
                       <TableCell>{calculatedDisplayObject?.construction_joint_thickening_cubic_meters}</TableCell>
@@ -491,7 +512,7 @@ export default function MetricTable() {
                 <Table size="small">
 
                   <TableHead>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell></TableCell>
                       <TableCell><b>PrīmX DC (kgs)</b></TableCell>
                       <TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
@@ -503,7 +524,7 @@ export default function MetricTable() {
                   </TableHead>
 
                   <TableBody>
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Dosage Rate per m³:</b></TableCell>
                       <TableCell>40</TableCell>
                       <TableCell>
@@ -519,7 +540,7 @@ export default function MetricTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Total Amount:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
@@ -529,7 +550,7 @@ export default function MetricTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Packaging Capacity:</b></TableCell>
                       <TableCell>1,250</TableCell>
                       <TableCell>1,000</TableCell>
@@ -539,7 +560,7 @@ export default function MetricTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Packages Needed:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
@@ -549,7 +570,7 @@ export default function MetricTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Total Order Quantity:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
@@ -559,7 +580,7 @@ export default function MetricTable() {
                       <TableCell></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Materials Price:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_unit_price}</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_unit_price}</TableCell>
@@ -569,7 +590,7 @@ export default function MetricTable() {
                       <TableCell><b>Totals:</b></TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Total Materials Price:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_total_materials_price}</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_total_materials_price}</TableCell>
@@ -579,7 +600,7 @@ export default function MetricTable() {
                       <TableCell>{calculatedDisplayObject?.design_total_materials_price}</TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Containers:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
@@ -594,7 +615,7 @@ export default function MetricTable() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Shipping Estimate:</b></TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_dc_calculated_shipping_estimate}</TableCell>
                       <TableCell>{calculatedDisplayObject?.primx_flow_calculated_shipping_estimate}</TableCell>
@@ -604,7 +625,7 @@ export default function MetricTable() {
                       <TableCell>{calculatedDisplayObject?.design_total_shipping_estimate}</TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Total Cost:</b></TableCell>
                       <TableCell><b>{calculatedDisplayObject?.primx_dc_total_cost_estimate}</b></TableCell>
                       <TableCell><b>{calculatedDisplayObject?.primx_flow_total_cost_estimate}</b></TableCell>
@@ -614,7 +635,29 @@ export default function MetricTable() {
                       <TableCell><b>{calculatedDisplayObject?.design_total_price_estimate}</b></TableCell>
                     </TableRow>
 
-                    {/* <TableRow>
+										<TableRow hover={true}>
+											<TableCell><b>Cost per m²:</b></TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_dc_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_flow_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_cpea_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.design_total_price_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+										</TableRow>
+
+                    {/* <TableRow hover={true}>
                       <TableCell colSpan={11} align="right">
                         <Button
                           type="submit"
