@@ -98,112 +98,112 @@ export default function EstimateLookupTable() {
 							<Table size="small">
 								<TableBody>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Project Name:</b></TableCell>
 										<TableCell>
 											{searchResult?.project_name}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Licensee/Contractor Name:</b></TableCell>
 										<TableCell>
 											{searchResult?.licensee_contractor_name}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Project General Contractor:</b></TableCell>
 										<TableCell>
 											{searchResult?.project_general_contractor}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Project Manager Name:</b></TableCell>
 										<TableCell>
 											{searchResult?.project_manager_name}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Project Manager Email:</b></TableCell>
 										<TableCell>
 											{searchResult?.project_manager_email}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Project Manager Cell:</b></TableCell>
 										<TableCell>
 											{searchResult?.project_manager_phone}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Floor Type:</b></TableCell>
 										<TableCell>
 											{searchResult?.floor_type}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Placement Type:</b></TableCell>
 										<TableCell>
 											{searchResult?.placement_type}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Unit of Measurement:</b></TableCell>
 										<TableCell>
 											{searchResult?.measurement_units?.charAt(0)?.toUpperCase() + searchResult?.measurement_units?.slice(1)}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Estimate Creation Date:</b></TableCell>
 										<TableCell>
 											{searchResult?.date_created}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Anticipated First Pour Date:</b></TableCell>
 										<TableCell>
 											{searchResult?.anticipated_first_pour_date}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Shipping Street Address:</b></TableCell>
 										<TableCell>
 											{searchResult?.ship_to_address}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Shipping City:</b></TableCell>
 										<TableCell>
 											{searchResult?.ship_to_city}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Shipping State/Province:</b></TableCell>
 										<TableCell>
 											{searchResult?.ship_to_state_province}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Shipping Zip/Postal Code:</b></TableCell>
 										<TableCell>
 											{searchResult?.zip_postal_code}
 										</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Shipping Country:</b></TableCell>
 										<TableCell>
 											{searchResult?.country}
@@ -228,56 +228,56 @@ export default function EstimateLookupTable() {
 									<Table size="small">
 										<TableBody>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Square Feet:</b></TableCell>
 												<TableCell>
 													{searchResult?.square_feet?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Thickness (in):</b></TableCell>
 												<TableCell>
 													{searchResult?.thickness_inches?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Cubic Yards:</b></TableCell>
 												<TableCell>
 													{searchResult?.cubic_yards?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
 												<TableCell>
 													{searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
 												<TableCell>
 													{searchResult?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Subtotal:</b></TableCell>
 												<TableCell>
 													{searchResult?.cubic_yards_subtotal?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
 												<TableCell>
 													{searchResult?.waste_factor_cubic_yards?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Total Cubic Yards:</b></TableCell>
 												<TableCell>
 													{searchResult?.design_cubic_yards_total?.toLocaleString('en-US')}
@@ -292,7 +292,7 @@ export default function EstimateLookupTable() {
 									<Table size="small">
 
 										<TableHead>
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell></TableCell>
 												<TableCell><b>Perimeter</b></TableCell>
 												<TableCell><b>Construction Joint</b></TableCell>
@@ -300,7 +300,7 @@ export default function EstimateLookupTable() {
 										</TableHead>
 
 										<TableBody>
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Lineal Feet:</b></TableCell>
 												<TableCell>
 													{searchResult?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
@@ -310,7 +310,7 @@ export default function EstimateLookupTable() {
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Width (yd³):</b></TableCell>
 												<TableCell>
 													5
@@ -320,7 +320,7 @@ export default function EstimateLookupTable() {
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Additional Thickness (in):</b></TableCell>
 												<TableCell>
 													{searchResult?.additional_thickness_inches?.toLocaleString('en-US')}
@@ -330,7 +330,7 @@ export default function EstimateLookupTable() {
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Cubic Yards:</b></TableCell>
 												<TableCell>
 													{searchResult?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
@@ -359,56 +359,56 @@ export default function EstimateLookupTable() {
 									<Table size="small">
 										<TableBody>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Square Meters:</b></TableCell>
 												<TableCell>
 													{searchResult?.square_meters?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Thickness (mm):</b></TableCell>
 												<TableCell>
 													{searchResult?.thickness_millimeters?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Cubic Meters:</b></TableCell>
 												<TableCell>
 													{searchResult?.cubic_meters?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
 												<TableCell>
 													{searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
 												<TableCell>
 													{searchResult?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Subtotal:</b></TableCell>
 												<TableCell>
 													{searchResult?.cubic_meters_subtotal?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
 												<TableCell>
 													{searchResult?.waste_factor_cubic_meters?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Total Cubic Meters:</b></TableCell>
 												<TableCell>
 													{searchResult?.design_cubic_meters_total?.toLocaleString('en-US')}
@@ -423,7 +423,7 @@ export default function EstimateLookupTable() {
 									<Table size="small">
 
 										<TableHead>
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell></TableCell>
 												<TableCell><b>Perimeter</b></TableCell>
 												<TableCell><b>Construction Joint</b></TableCell>
@@ -431,7 +431,7 @@ export default function EstimateLookupTable() {
 										</TableHead>
 
 										<TableBody>
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Lineal Meters:</b></TableCell>
 												<TableCell>
 													{searchResult?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
@@ -441,7 +441,7 @@ export default function EstimateLookupTable() {
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Width (m³):</b></TableCell>
 												<TableCell>
 													1.5
@@ -451,7 +451,7 @@ export default function EstimateLookupTable() {
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Additional Thickness (mm):</b></TableCell>
 												<TableCell>
 													{searchResult?.additional_thickness_millimeters?.toLocaleString('en-US')}
@@ -461,7 +461,7 @@ export default function EstimateLookupTable() {
 												</TableCell>
 											</TableRow>
 
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell><b>Cubic Meters:</b></TableCell>
 												<TableCell>
 													{searchResult?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
@@ -488,7 +488,7 @@ export default function EstimateLookupTable() {
 							<Table size="small">
 
 								<TableHead>
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell></TableCell>
 										{/* Conditionally render either imperial or metric table headings */}
 										{searchResult.measurement_units == 'imperial' ?
@@ -511,7 +511,7 @@ export default function EstimateLookupTable() {
 								</TableHead>
 
 								<TableBody>
-									<TableRow>
+									<TableRow hover={true}>
 										{/* Conditionally render either imperial or metric dosage numbers */}
 										{searchResult.measurement_units == 'imperial' ?
 											<>
@@ -534,7 +534,7 @@ export default function EstimateLookupTable() {
 									</TableRow>
 
 									{/* Total amounts share key names between imperial and metric */}
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Total Amount:</b></TableCell>
 										<TableCell>{searchResult?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
 										<TableCell>{searchResult?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
@@ -544,7 +544,7 @@ export default function EstimateLookupTable() {
 										<TableCell></TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Packaging Capacity:</b></TableCell>
 										{/* Conditionally render either imperial or metric packaging capacity numbers */}
 										{searchResult.measurement_units == 'imperial' ?
@@ -567,7 +567,7 @@ export default function EstimateLookupTable() {
 									</TableRow>
 
 									{/* All following table data has shared key names between both metric and imperial */}
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Packages Needed:</b></TableCell>
 										<TableCell>{searchResult?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
 										<TableCell>{searchResult?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
@@ -577,7 +577,7 @@ export default function EstimateLookupTable() {
 										<TableCell></TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Total Order Quantity:</b></TableCell>
 										<TableCell>{searchResult?.primx_dc_total_order_quantity}</TableCell>
 										<TableCell>{searchResult?.primx_flow_total_order_quantity}</TableCell>
@@ -587,7 +587,7 @@ export default function EstimateLookupTable() {
 										<TableCell></TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Materials Price:</b></TableCell>
 										<TableCell>{searchResult?.primx_dc_unit_price}</TableCell>
 										<TableCell>{searchResult?.primx_flow_unit_price}</TableCell>
@@ -597,7 +597,7 @@ export default function EstimateLookupTable() {
 										<TableCell><b>Totals:</b></TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Total Materials Price:</b></TableCell>
 										<TableCell>{searchResult?.primx_dc_total_materials_price}</TableCell>
 										<TableCell>{searchResult?.primx_flow_total_materials_price}</TableCell>
@@ -607,7 +607,7 @@ export default function EstimateLookupTable() {
 										<TableCell>{searchResult?.design_total_materials_price}</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Containers:</b></TableCell>
 										<TableCell>{searchResult?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
 										<TableCell>{searchResult?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
@@ -617,7 +617,7 @@ export default function EstimateLookupTable() {
 										<TableCell>{searchResult?.design_total_containers?.toLocaleString('en-US')}</TableCell>
 									</TableRow>
 
-									<TableRow>
+									<TableRow hover={true}>
 										<TableCell><b>Shipping Estimate:</b></TableCell>
 										<TableCell>{searchResult?.primx_dc_calculated_shipping_estimate}</TableCell>
 										<TableCell>{searchResult?.primx_flow_calculated_shipping_estimate}</TableCell>
@@ -636,10 +636,8 @@ export default function EstimateLookupTable() {
 										<TableCell><b>{searchResult?.primx_cpea_total_cost_estimate}</b></TableCell>
 										<TableCell><b>{searchResult?.design_total_price_estimate}</b></TableCell>
 									</TableRow>
-									{/* ! Ryan Here */}
 
-									<TableRow>
-
+									<TableRow hover={true}>
 										{/* Conditionally render either imperial or metric cost per square measurement */}
 										{searchResult.measurement_units == 'imperial' ?
 											<>
@@ -662,12 +660,10 @@ export default function EstimateLookupTable() {
 										} {/* End conditionally rendered costs calc*/}
 									</TableRow>
 
-
-
 									{/* Render the following table row for any orders that haven't been placed yet */}
 									{!searchResult.ordered_by_licensee &&
 										<>
-											<TableRow>
+											<TableRow hover={true}>
 												<TableCell colSpan={7} align="right">
 													<section className="removeInPrint">
 														{/* Edit Estimate Button: */}

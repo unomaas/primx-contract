@@ -192,7 +192,7 @@ export default function EstimateCreate() {
                 <Table size="small">
                   <TableBody>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Project Name:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -206,7 +206,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                       <TableCell>
                         <Select
@@ -225,7 +225,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Project General Contractor:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -239,7 +239,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Project Manager Name:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -253,7 +253,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Project Manager Email:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -267,7 +267,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Project Manager Phone:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -282,7 +282,7 @@ export default function EstimateCreate() {
                     </TableRow>
 
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Floor Type:</b></TableCell>
                       <TableCell>
                         <Select
@@ -300,7 +300,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Placement Type:</b></TableCell>
                       <TableCell>
                         <Select
@@ -318,7 +318,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Unit of Measurement:</b></TableCell>
                       <TableCell>
                         <FormControl error={error}>
@@ -356,7 +356,7 @@ export default function EstimateCreate() {
                 <Table size="small">
                   <TableBody>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Today's Date:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -371,7 +371,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Anticipated First Pour Date:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -386,7 +386,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Lead Time (In Weeks):</b></TableCell>
                       {/* This styling will trigger a background and snackbar if the lead time is under 8 weeks: */}
                       <TableCell style={{ backgroundColor: leadTime >= 8 || leadTime === '' ? "" : "rgba(255, 0, 0, 0.7)" }}>
@@ -394,7 +394,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Shipping Street Address:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -408,7 +408,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Shipping City:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -422,7 +422,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Shipping State/Province:</b></TableCell>
                       <TableCell>
                         <Select
@@ -440,7 +440,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Shipping Zip/Postal Code:</b></TableCell>
                       <TableCell>
                         <TextField
@@ -454,7 +454,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Shipping Country:</b></TableCell>
                       <TableCell>
                         <Select
@@ -471,7 +471,7 @@ export default function EstimateCreate() {
                       </TableCell>
                     </TableRow>
 
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell colSpan={2} align="right">
                         <Button
                           type="submit"
