@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
+import useCalculateCostPerMeasurement from '../../hooks/useCalculateCostPerMeasurement';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -120,126 +121,126 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
               <Table size="small">
                 <TableBody>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Project Name:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.project_name}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Licensee/Contractor Name:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.licensee_contractor_name}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Project General Contractor:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.project_general_contractor}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Project Manager Name:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.project_manager_name}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Project Manager Email:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.project_manager_email}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Project Manager Cell:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.project_manager_phone}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Floor Type:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.floor_type}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Placement Type:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.placement_type}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Unit of Measurement:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.measurement_units?.charAt(0)?.toUpperCase() + firstEstimate?.measurement_units?.slice(1)}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Estimate Creation Date:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.date_created}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Anticipated First Pour Date:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.anticipated_first_pour_date}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Shipping Street Address:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.ship_to_address}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Shipping City:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.ship_to_city}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Shipping State/Province:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.ship_to_state_province}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Shipping Zip/Postal Code:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.zip_postal_code}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Shipping Country:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.country}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>First Estimate Number:</b></TableCell>
                     <TableCell>
                       {firstEstimate?.estimate_number}
                     </TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Second Estimate Number:</b></TableCell>
                     <TableCell>
                       {secondEstimate?.estimate_number}
@@ -248,7 +249,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
                   {/* Conditional rendering to only show third estimate number if it exists: */}
                   {thirdEstimate.estimate_number &&
-                    <TableRow>
+                    <TableRow hover={true}>
                       <TableCell><b>Third Estimate Number:</b></TableCell>
                       <TableCell>
                         {thirdEstimate?.estimate_number}
@@ -274,56 +275,56 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <Table size="small">
                     <TableBody>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Square Feet:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.square_feet?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickness (in):</b></TableCell>
                         <TableCell>
                           {parseInt(firstEstimate?.thickness_inches)?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Cubic Yards:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.cubic_yards?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Subtotal:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Total Cubic Yards:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
@@ -338,7 +339,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <Table size="small">
 
                     <TableHead>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell></TableCell>
                         <TableCell><b>Perimeter</b></TableCell>
                         <TableCell><b>Construction Joint</b></TableCell>
@@ -346,7 +347,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     </TableHead>
 
                     <TableBody>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Lineal Feet:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
@@ -356,7 +357,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Width (yd³):</b></TableCell>
                         <TableCell>
                           5
@@ -366,7 +367,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Additional Thickness (in):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
@@ -376,7 +377,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Cubic Yards:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
@@ -391,7 +392,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <h4>Materials Table</h4>
                   <Table size="small">
                     <TableHead>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
                         <TableCell><b>Amount Needed</b></TableCell>
@@ -399,7 +400,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     </TableHead>
 
                     <TableBody>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX DC (lbs):</b></TableCell>
                         <TableCell>
                           67
@@ -409,7 +410,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
@@ -419,7 +420,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
@@ -429,7 +430,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
                         <TableCell>
                           N/A
@@ -439,7 +440,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
@@ -462,56 +463,56 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <Table size="small">
                     <TableBody>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Square Feet:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.square_feet?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickness (in):</b></TableCell>
                         <TableCell>
                           {parseInt(secondEstimate?.thickness_inches)?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Cubic Yards:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.cubic_yards?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Subtotal:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Waste Factor @ {secondEstimate?.waste_factor_percentage}%:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Total Cubic Yards:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
@@ -526,7 +527,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <Table size="small">
 
                     <TableHead>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell></TableCell>
                         <TableCell><b>Perimeter</b></TableCell>
                         <TableCell><b>Construction Joint</b></TableCell>
@@ -534,7 +535,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     </TableHead>
 
                     <TableBody>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Lineal Feet:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
@@ -544,7 +545,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Width (yd³):</b></TableCell>
                         <TableCell>
                           5
@@ -554,7 +555,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Additional Thickness (in):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
@@ -564,7 +565,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Cubic Yards:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
@@ -579,7 +580,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <h4>Materials Table</h4>
                   <Table size="small">
                     <TableHead>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
                         <TableCell><b>Amount Needed</b></TableCell>
@@ -587,7 +588,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     </TableHead>
 
                     <TableBody>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX DC (lbs):</b></TableCell>
                         <TableCell>
                           67
@@ -597,7 +598,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
@@ -607,7 +608,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
@@ -617,7 +618,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
                         <TableCell>
                           N/A
@@ -627,7 +628,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
@@ -654,56 +655,56 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <Table size="small">
                         <TableBody>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Square Feet:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.square_feet?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Thickness (in):</b></TableCell>
                             <TableCell>
                               {parseInt(thirdEstimate?.thickness_inches)?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage}%:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Total Cubic Yards:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
@@ -718,7 +719,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <Table size="small">
 
                         <TableHead>
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell></TableCell>
                             <TableCell><b>Perimeter</b></TableCell>
                             <TableCell><b>Construction Joint</b></TableCell>
@@ -726,7 +727,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableHead>
 
                         <TableBody>
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Lineal Feet:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
@@ -736,7 +737,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Width (yd³):</b></TableCell>
                             <TableCell>
                               5
@@ -746,7 +747,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Additional Thickness (in):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
@@ -756,7 +757,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Cubic Yards:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
@@ -772,7 +773,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <h4>Materials Table</h4>
                       <Table size="small">
                         <TableHead>
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell></TableCell>
                             <TableCell><b>Dosage Rate (per yd³)</b></TableCell>
                             <TableCell><b>Amount Needed</b></TableCell>
@@ -780,7 +781,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableHead>
 
                         <TableBody>
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX DC (lbs):</b></TableCell>
                             <TableCell>
                               67
@@ -790,7 +791,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
@@ -800,7 +801,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
@@ -810,7 +811,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
                             <TableCell>
                               N/A
@@ -820,7 +821,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
@@ -849,56 +850,56 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <Table size="small">
                     <TableBody>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Square Meters:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.square_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickness (mm):</b></TableCell>
                         <TableCell>
                           {parseInt(firstEstimate?.thickness_inches)?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Cubic Meters:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Subtotal:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Total Cubic Meters:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
@@ -913,7 +914,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <Table size="small">
 
                     <TableHead>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell></TableCell>
                         <TableCell><b>Perimeter</b></TableCell>
                         <TableCell><b>Construction Joint</b></TableCell>
@@ -921,7 +922,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     </TableHead>
 
                     <TableBody>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Lineal Meters:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
@@ -931,7 +932,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Width (m³):</b></TableCell>
                         <TableCell>
                           1.5
@@ -941,7 +942,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Additional Thickness (mm):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
@@ -951,7 +952,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Cubic Meters:</b></TableCell>
                         <TableCell>
                           {firstEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
@@ -966,7 +967,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <h3>Estimate #1 Materials Table</h3>
                   <Table size="small">
                     <TableHead>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per m³)</b></TableCell>
                         <TableCell><b>Amount Needed</b></TableCell>
@@ -974,7 +975,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     </TableHead>
 
                     <TableBody>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX DC (kgs):</b></TableCell>
                         <TableCell>
                           40
@@ -984,7 +985,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
@@ -994,7 +995,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
@@ -1004,7 +1005,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
                         <TableCell>
                           N/A
@@ -1014,7 +1015,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
                         <TableCell>
                           {firstEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
@@ -1037,56 +1038,56 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <Table size="small">
                     <TableBody>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Square Meters:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.square_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickness (mm):</b></TableCell>
                         <TableCell>
                           {parseInt(secondEstimate?.thickness_inches)?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Cubic Meters:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Subtotal:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Total Cubic Meters:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
@@ -1101,7 +1102,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <Table size="small">
 
                     <TableHead>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell></TableCell>
                         <TableCell><b>Perimeter</b></TableCell>
                         <TableCell><b>Construction Joint</b></TableCell>
@@ -1109,7 +1110,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     </TableHead>
 
                     <TableBody>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Lineal Meters:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
@@ -1119,7 +1120,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Width (m³):</b></TableCell>
                         <TableCell>
                           1.5
@@ -1129,7 +1130,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Additional Thickness (mm):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
@@ -1139,7 +1140,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>Cubic Meters:</b></TableCell>
                         <TableCell>
                           {secondEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
@@ -1154,7 +1155,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   <h3>Estimate #2 Materials Table</h3>
                   <Table size="small">
                     <TableHead>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell></TableCell>
                         <TableCell><b>Dosage Rate (per m³)</b></TableCell>
                         <TableCell><b>Amount Needed</b></TableCell>
@@ -1162,7 +1163,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     </TableHead>
 
                     <TableBody>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX DC (kgs):</b></TableCell>
                         <TableCell>
                           40
@@ -1172,7 +1173,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
@@ -1182,7 +1183,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
@@ -1192,7 +1193,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
                         <TableCell>
                           N/A
@@ -1202,7 +1203,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableCell>
                       </TableRow>
 
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
                         <TableCell>
                           {secondEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
@@ -1228,56 +1229,56 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <Table size="small">
                         <TableBody>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Square Meters:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.square_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Thickness (mm):</b></TableCell>
                             <TableCell>
                               {parseInt(thirdEstimate?.thickness_inches)?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Subtotal:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage?.toLocaleString('en-US')}%:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Total Cubic Meters:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
@@ -1292,7 +1293,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <Table size="small">
 
                         <TableHead>
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell></TableCell>
                             <TableCell><b>Perimeter</b></TableCell>
                             <TableCell><b>Construction Joint</b></TableCell>
@@ -1300,7 +1301,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableHead>
 
                         <TableBody>
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Lineal Meters:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
@@ -1310,7 +1311,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Width (m³):</b></TableCell>
                             <TableCell>
                               1.5
@@ -1320,7 +1321,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Additional Thickness (mm):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
@@ -1330,7 +1331,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>Cubic Meters:</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
@@ -1346,7 +1347,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                       <h3>Estimate #3 Materials Table</h3>
                       <Table size="small">
                         <TableHead>
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell></TableCell>
                             <TableCell><b>Dosage Rate (per m³)</b></TableCell>
                             <TableCell><b>Amount Needed</b></TableCell>
@@ -1354,7 +1355,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                         </TableHead>
 
                         <TableBody>
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX DC (kgs):</b></TableCell>
                             <TableCell>
                               40
@@ -1364,7 +1365,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
@@ -1374,7 +1375,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
@@ -1384,7 +1385,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
                             <TableCell>
                               N/A
@@ -1394,7 +1395,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                             </TableCell>
                           </TableRow>
 
-                          <TableRow>
+                          <TableRow hover={true}>
                             <TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
                             <TableCell>
                               {thirdEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
@@ -1421,7 +1422,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
               <Table size="small">
 
                 <TableHead>
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell></TableCell>
                     {/* Conditionally render either imperial or metric table headings */}
                     {calcCombinedEstimate.measurement_units == 'imperial' ?
@@ -1445,7 +1446,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
                 <TableBody>
                   {/* Total amounts share key names between imperial and metric */}
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Total Amount:</b></TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
@@ -1455,7 +1456,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     <TableCell></TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Packaging Capacity:</b></TableCell>
                     {/* Conditionally render either imperial or metric packaging capacity numbers */}
                     {calcCombinedEstimate.measurement_units == 'imperial' ?
@@ -1478,7 +1479,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                   </TableRow>
 
                   {/* All following table data has shared key names between both metric and imperial */}
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Packages Needed:</b></TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
@@ -1488,7 +1489,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     <TableCell></TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Total Order Quantity:</b></TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_dc_total_order_quantity?.toLocaleString('en-US')}</TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_flow_total_order_quantity?.toLocaleString('en-US')}</TableCell>
@@ -1498,7 +1499,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     <TableCell></TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Materials Price:</b></TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_dc_unit_price?.toLocaleString('en-US')}</TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_flow_unit_price?.toLocaleString('en-US')}</TableCell>
@@ -1508,7 +1509,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     <TableCell><b>Totals:</b></TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Total Materials Price:</b></TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_dc_total_materials_price?.toLocaleString('en-US')}</TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_flow_total_materials_price?.toLocaleString('en-US')}</TableCell>
@@ -1518,7 +1519,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     <TableCell>{calcCombinedEstimate?.design_total_materials_price?.toLocaleString('en-US')}</TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Containers:</b></TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
@@ -1528,7 +1529,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     <TableCell>{calcCombinedEstimate?.design_total_containers?.toLocaleString('en-US')}</TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Shipping Estimate:</b></TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_dc_calculated_shipping_estimate?.toLocaleString('en-US')}</TableCell>
                     <TableCell>{calcCombinedEstimate?.primx_flow_calculated_shipping_estimate?.toLocaleString('en-US')}</TableCell>
@@ -1538,7 +1539,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     <TableCell>{calcCombinedEstimate?.design_total_shipping_estimate?.toLocaleString('en-US')}</TableCell>
                   </TableRow>
 
-                  <TableRow>
+                  <TableRow hover={true}>
                     <TableCell><b>Total Cost:</b></TableCell>
                     <TableCell><b>{calcCombinedEstimate?.primx_dc_total_cost_estimate?.toLocaleString('en-US')}</b></TableCell>
                     <TableCell><b>{calcCombinedEstimate?.primx_flow_total_cost_estimate?.toLocaleString('en-US')}</b></TableCell>
@@ -1548,10 +1549,33 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
                     <TableCell><b>{calcCombinedEstimate?.design_total_price_estimate?.toLocaleString('en-US')}</b></TableCell>
                   </TableRow>
 
+									<TableRow hover={true}>
+										{/* Conditionally render either imperial or metric cost per square measurement */}
+										{calcCombinedEstimate.measurement_units == 'imperial' ?
+											<>
+												<TableCell><b>Cost per ft²:</b></TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_dc_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_flow_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_steel_fibers_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_ultracure_blankets_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_cpea_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.design_total_price_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
+											</> : <>
+												<TableCell><b>Cost per m²:</b></TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_dc_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_flow_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_steel_fibers_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_ultracure_blankets_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_cpea_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
+												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.design_total_price_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
+											</>
+										} {/* End conditionally rendered costs calc*/}
+									</TableRow>
+
                   {/* Render the following table row for any orders that haven't been placed yet */}
                   {!calcCombinedEstimate?.ordered_by_licensee &&
                     <>
-                      <TableRow>
+                      <TableRow hover={true}>
                         <TableCell colSpan={7} align="right">
                           <section className="removeInPrint">
 
