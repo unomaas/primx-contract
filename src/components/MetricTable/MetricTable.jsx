@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
+import useCalculateCostPerMeasurement from '../../hooks/useCalculateCostPerMeasurement';
 import { Alert } from '@material-ui/lab';
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
@@ -633,6 +634,28 @@ export default function MetricTable() {
                       <TableCell><b>{calculatedDisplayObject?.primx_cpea_total_cost_estimate}</b></TableCell>
                       <TableCell><b>{calculatedDisplayObject?.design_total_price_estimate}</b></TableCell>
                     </TableRow>
+
+										<TableRow>
+											<TableCell><b>Cost per m²:</b></TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_dc_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_flow_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_cpea_total_cost_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+											<TableCell>
+												{useCalculateCostPerMeasurement(calculatedDisplayObject?.design_total_price_estimate, calculatedDisplayObject?.square_meters)}
+											</TableCell>
+										</TableRow>
 
                     {/* <TableRow>
                       <TableCell colSpan={11} align="right">
