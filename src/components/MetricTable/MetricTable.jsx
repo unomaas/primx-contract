@@ -163,7 +163,7 @@ export default function MetricTable() {
 
                     <TableRow hover={true}>
                       <TableCell>
-                        <b>Waste Factor Percentage</b>
+                        <b>Waste Factor Percentage:</b>
                       </TableCell>
                       <TableCell>
                         <TextField

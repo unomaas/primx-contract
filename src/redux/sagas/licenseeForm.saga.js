@@ -51,23 +51,24 @@ function* fetchEstimateQuery(action) {
 function* AddEstimate(action) {
   try {
     const response = yield axios.post('/api/estimates', action.payload);
-    // action.payload contains the history object from useHistory:
+    // ⬇ action.payload contains the history object from useHistory:
     const history = action.payload.history
-    // Saving the response and action.payload to variables for easier reading:
+    // ⬇ Saving the response and action.payload to variables for easier reading:
     const returnedEstimate = response.data;
-    // If we just saved a combined estimate:
+    // ⬇ If we just saved a combined estimate:
     if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
-      // Update the calc combined object with the new estimate number: 
+      // ⬇ Update the calc combined object with the new estimate number: 
       action.payload.estimate_number = returnedEstimate.estimate_number;
-      // Update the DB with all estimate numbers involved. 
+      // ⬇ Update the DB with all estimate numbers involved:
       yield axios.put(`/api/estimates/usedincombine`, action.payload);
-      // Push to the lookup view: 
+      // ⬇ Push to the lookup view: 
       yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
     } else {
       yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
     } // End if/else
   } catch (error) {
     console.error('AddEstimate POST request failed', error);
+		alert('This estimate failed to save, please try again later.');
   } // End try/catch
 }
 
