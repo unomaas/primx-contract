@@ -196,7 +196,7 @@ router.post('/', async (req, res) => {
       "thickened_edge_perimeter_lineal_feet",
       "thickened_edge_construction_joint_lineal_feet",
       "primx_steel_fibers_dosage_lbs",
-			"primx_dc_dosage_lbs",
+			"primx_dc_dosage_lbs"
       )
     `; // End queryText
 		// add the imperial values to values array
@@ -211,7 +211,7 @@ router.post('/', async (req, res) => {
       "thickened_edge_perimeter_lineal_meters",
       "thickened_edge_construction_joint_lineal_meters",
       "primx_steel_fibers_dosage_kgs",
-			"primx_dc_dosage_kgs",
+			"primx_dc_dosage_kgs"
       )
     `; // End queryText
 		// add the metric values to the values array
