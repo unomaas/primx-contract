@@ -29,14 +29,14 @@ export const estimatesReducer = (state = {
   thickened_edge_construction_joint_lineal_feet: "0",
   primx_steel_fibers_dosage_lbs: "60",
   primx_cpea_dosage_liters: "0",
-	primx_dc_dosage_yards: "67",
-	primx_dc_dosage_meters: "40",
+	primx_dc_dosage_lbs: "67",
+	primx_dc_dosage_kgs: "40",
   square_meters: "",
   thickened_edge_perimeter_lineal_meters: "0",
   thickness_millimeters: "",
   thickened_edge_construction_joint_lineal_meters: "0",
   primx_steel_fibers_dosage_kgs: "40",
-  waste_factor_percentage: 5
+  waste_factor_percentage: 5,
 }, action) => {
   switch (action.type) {
     case 'SET_ESTIMATE':
@@ -75,8 +75,8 @@ export const estimatesReducer = (state = {
         thickened_edge_construction_joint_lineal_feet: "0",
         primx_steel_fibers_dosage_lbs: "60",
         primx_cpea_dosage_liters: "0",
-				primx_dc_dosage_yards: "67",
-				primx_dc_dosage_meters: "40",
+				primx_dc_dosage_lbs: "67",
+				primx_dc_dosage_kgs: "40",
         square_meters: "",
         thickened_edge_perimeter_lineal_meters: "0",
         thickness_millimeters: "",

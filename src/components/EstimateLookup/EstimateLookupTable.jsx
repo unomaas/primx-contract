@@ -515,15 +515,23 @@ export default function EstimateLookupTable() {
 										{/* Conditionally render either imperial or metric dosage numbers */}
 										{searchResult.measurement_units == 'imperial' ?
 											<>
-												<TableCell><b>Dosage Rate (per yd³):</b></TableCell>
-												<TableCell>67</TableCell>
+												<TableCell>
+													<b>Dosage Rate (per yd³):</b>
+												</TableCell>
+												<TableCell>
+													{searchResult?.primx_dc_dosage_lbs}
+												</TableCell>
 												<TableCell>{searchResult?.primx_flow_dosage_liters}</TableCell>
 												<TableCell>{searchResult?.primx_steel_fibers_dosage_lbs}</TableCell>
 												<TableCell>N/A</TableCell>
 												<TableCell>{searchResult?.primx_cpea_dosage_liters}</TableCell>
 											</> : <>
-												<TableCell><b>Dosage Rate (per m³):</b></TableCell>
-												<TableCell>40</TableCell>
+												<TableCell>
+													<b>Dosage Rate (per m³):</b>
+												</TableCell>
+												<TableCell>
+													{searchResult?.primx_dc_dosage_kgs}
+												</TableCell>
 												<TableCell>{searchResult?.primx_flow_dosage_liters}</TableCell>
 												<TableCell>{searchResult?.primx_steel_fibers_dosage_kgs}</TableCell>
 												<TableCell>N/A</TableCell>

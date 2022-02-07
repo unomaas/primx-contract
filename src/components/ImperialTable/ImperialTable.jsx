@@ -164,7 +164,7 @@ export default function ImperialTable() {
 
 										<TableRow hover={true}>
 											<TableCell>
-												<b>Waste Factor Percentage</b>
+												<b>Waste Factor Percentage:</b>
 											</TableCell>
 											<TableCell>
 												<TextField
@@ -268,7 +268,7 @@ export default function ImperialTable() {
 											</TableCell>
 											<TableCell>
 												<TextField
-													onChange={event => handleChange('primx_dc_dosage_yards', event.target.value)}
+													onChange={event => handleChange('primx_dc_dosage_lbs', event.target.value)}
 													required
 													type="number"
 													size="small"
@@ -276,7 +276,7 @@ export default function ImperialTable() {
 														endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
 													}}
 													fullWidth
-													value={estimateData.primx_dc_dosage_yards}
+													value={estimateData.primx_dc_dosage_lbs}
 												/>
 											</TableCell>
 										</TableRow>
@@ -539,8 +539,12 @@ export default function ImperialTable() {
 
 									<TableBody>
 										<TableRow hover={true}>
-											<TableCell><b>Dosage Rate per yd³:</b></TableCell>
-											<TableCell>67</TableCell>
+											<TableCell>
+												<b>Dosage Rate per yd³:</b>
+											</TableCell>
+											<TableCell>
+												{calculatedDisplayObject?.primx_dc_dosage_lbs}
+											</TableCell>
 											<TableCell>
 												{calculatedDisplayObject?.primx_flow_dosage_liters}
 											</TableCell>
