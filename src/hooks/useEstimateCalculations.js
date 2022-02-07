@@ -59,7 +59,8 @@ export default function useEstimateCalculations(estimate) {
     estimate.design_cubic_yards_total = estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards;
 
     // calculate amounts and prices of materials that are measured in pounds and square feet, start with DC
-    estimate.primx_dc_total_amount_needed = estimate.design_cubic_yards_total * 67; // 67 is the factor provided by PrimX
+		// ! Ryan Here
+    estimate.primx_dc_total_amount_needed = estimate.design_cubic_yards_total * estimate.primx_dc_dosage_lbs; // 67 is the factor provided by PrimX
     estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_amount_needed / 2756); // dc comes in packages of 2756 lbs, need to round up
     estimate.primx_dc_total_order_quantity = estimate.primx_dc_packages_needed * 2756;
     estimate.primx_dc_total_materials_price = estimate.primx_dc_total_order_quantity * estimate.primx_dc_unit_price;
@@ -111,7 +112,8 @@ export default function useEstimateCalculations(estimate) {
     estimate.design_cubic_meters_total = estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters;
 
     // calculate amounts and prices of materials that are measured in kgs and square meters, start with DC
-    estimate.primx_dc_total_amount_needed = estimate.design_cubic_meters_total * 40; // 40 is the factor provided by PrimX
+		// ! Ryan Here
+    estimate.primx_dc_total_amount_needed = estimate.design_cubic_meters_total * estimate.primx_dc_dosage_kgs; // 40 is the factor provided by PrimX
     estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_amount_needed / 1250); // dc comes in packages of 1250 kg, need to round up
     estimate.primx_dc_total_order_quantity = estimate.primx_dc_packages_needed * 1250;
     estimate.primx_dc_total_materials_price = estimate.primx_dc_total_order_quantity * estimate.primx_dc_unit_price;

@@ -98,13 +98,13 @@ router.post('/', async (req, res) => {
 		thickened_edge_perimeter_lineal_feet,
 		thickened_edge_construction_joint_lineal_feet,
 		primx_steel_fibers_dosage_lbs,
-		primx_dc_dosage_yards,
+		primx_dc_dosage_lbs,
 		square_meters,
 		thickness_millimeters,
 		thickened_edge_perimeter_lineal_meters,
 		thickened_edge_construction_joint_lineal_meters,
 		primx_steel_fibers_dosage_kgs,
-		primx_dc_dosage_meters,
+		primx_dc_dosage_kgs,
 		waste_factor_percentage,
 		estimate_number_combined_1,
 		estimate_number_combined_2,
@@ -196,12 +196,12 @@ router.post('/', async (req, res) => {
       "thickened_edge_perimeter_lineal_feet",
       "thickened_edge_construction_joint_lineal_feet",
       "primx_steel_fibers_dosage_lbs",
-			"primx_dc_dosage_yards",
+			"primx_dc_dosage_lbs",
       )
     `; // End queryText
 		// add the imperial values to values array
 		values.push(
-			square_feet, thickness_inches, thickened_edge_perimeter_lineal_feet, thickened_edge_construction_joint_lineal_feet, primx_steel_fibers_dosage_lbs, primx_dc_dosage_yards
+			square_feet, thickness_inches, thickened_edge_perimeter_lineal_feet, thickened_edge_construction_joint_lineal_feet, primx_steel_fibers_dosage_lbs, primx_dc_dosage_lbs
 		); // End values.push
 	} else if (req.body.measurement_units == 'metric') {
 		// append the metric specific data to the SQL query
@@ -211,12 +211,12 @@ router.post('/', async (req, res) => {
       "thickened_edge_perimeter_lineal_meters",
       "thickened_edge_construction_joint_lineal_meters",
       "primx_steel_fibers_dosage_kgs",
-			"primx_dc_dosage_meters",
+			"primx_dc_dosage_kgs",
       )
     `; // End queryText
 		// add the metric values to the values array
 		values.push(
-			square_meters, thickness_millimeters, thickened_edge_perimeter_lineal_meters, thickened_edge_construction_joint_lineal_meters, primx_steel_fibers_dosage_kgs, primx_dc_dosage_meters
+			square_meters, thickness_millimeters, thickened_edge_perimeter_lineal_meters, thickened_edge_construction_joint_lineal_meters, primx_steel_fibers_dosage_kgs, primx_dc_dosage_kgs
 		); // End values.push
 	} // End if/else if
 
@@ -243,7 +243,7 @@ router.post('/', async (req, res) => {
 		const letters = licenseeNameResponse.rows[0].licensee_contractor_name.slice(0, 2);
 		let newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
 
-		// if a combined etsimate, add a letter C to the estimate number    
+		// if it's a combined estimate, add a letter C to the estimate number    
 		if (estimate_number_combined_1 && estimate_number_combined_2) {
 			newEstimateNumber += "-C";
 		}
