@@ -40,7 +40,7 @@ export default function useCombineEstimateCalculations(estimate) {
 
   // begin adding new calculated keys to the estimate, first by adding in keys specific to the unit of measurement that's being worked with
 
-  // imperial calculalations
+  // imperial calculations
   if (estimate.measurement_units == 'imperial') {
     // // cubic yards base: original formula given to us for cubic yards divided quantity first by 12, then by 27
     // estimate.cubic_yards = (estimate.square_feet * estimate.thickness_inches / 324);
@@ -92,26 +92,27 @@ export default function useCombineEstimateCalculations(estimate) {
     calculateFlowAndCpea(estimate.design_cubic_yards_total);
   }
 
-  // metric calculalations
+  // metric calculations
   else if (estimate.measurement_units == 'metric') {
-    // cubic meters base
-    estimate.cubic_meters = (estimate.square_meters * estimate.thickness_millimeters / 1000);
-    // additional thickness for thickened edges
-    if (estimate.thickness_millimeters >= 152.4) { // if greater than 152.4 mm, no need for thickened edges
-      estimate.additional_thickness_millimeters = 0;
-    } else {
-      estimate.additional_thickness_millimeters = ((152.4 - estimate.thickness_millimeters) * .5);
-    }
-    // calculate perimeter thickening and construction joint thickening based on calculated additional thickness, the .0015 and .003 values below are provided by PrimX
-    estimate.perimeter_thickening_cubic_meters = estimate.thickened_edge_perimeter_lineal_meters * estimate.additional_thickness_millimeters * .0015;
-    estimate.construction_joint_thickening_cubic_meters = estimate.thickened_edge_construction_joint_lineal_meters * estimate.additional_thickness_millimeters * .003;
-    // calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic meters
-    estimate.cubic_meters_subtotal = estimate.cubic_meters + estimate.perimeter_thickening_cubic_meters + estimate.construction_joint_thickening_cubic_meters;
-    estimate.waste_factor_cubic_meters = estimate.cubic_meters_subtotal * (estimate.waste_factor_percentage / 100);
-    estimate.design_cubic_meters_total = estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters;
+    // // cubic meters base
+    // estimate.cubic_meters = (estimate.square_meters * estimate.thickness_millimeters / 1000);
+    // // additional thickness for thickened edges
+    // if (estimate.thickness_millimeters >= 152.4) { // if greater than 152.4 mm, no need for thickened edges
+    //   estimate.additional_thickness_millimeters = 0;
+    // } else {
+    //   estimate.additional_thickness_millimeters = ((152.4 - estimate.thickness_millimeters) * .5);
+    // }
+    // // calculate perimeter thickening and construction joint thickening based on calculated additional thickness, the .0015 and .003 values below are provided by PrimX
+    // estimate.perimeter_thickening_cubic_meters = estimate.thickened_edge_perimeter_lineal_meters * estimate.additional_thickness_millimeters * .0015;
+    // estimate.construction_joint_thickening_cubic_meters = estimate.thickened_edge_construction_joint_lineal_meters * estimate.additional_thickness_millimeters * .003;
+    // // calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic meters
+    // estimate.cubic_meters_subtotal = estimate.cubic_meters + estimate.perimeter_thickening_cubic_meters + estimate.construction_joint_thickening_cubic_meters;
+    // estimate.waste_factor_cubic_meters = estimate.cubic_meters_subtotal * (estimate.waste_factor_percentage / 100);
+    // estimate.design_cubic_meters_total = estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters;
 
     // calculate amounts and prices of materials that are measured in kgs and square meters, start with DC
 		// ! Ryan Here. Went to come patch the math machine for combined, found that Imperial DC Dosage of 67 is turned off, but Metric DC Dosage of 40 was not. I *think* it's an error that the dosage should be off for both, but am not sure. Test combining 2 or 3 metric estimates later and see what happens. 
+		// ! More notes... it looks like none of the metric stuff was commented out the same as the imperial.  This could be bad. 
     // estimate.primx_dc_total_amount_needed = estimate.design_cubic_meters_total * 40; // 40 is the factor provided by PrimX
     estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_amount_needed / 1250); // dc comes in packages of 1250 kg, need to round up
     estimate.primx_dc_total_order_quantity = estimate.primx_dc_packages_needed * 1250;
@@ -122,7 +123,7 @@ export default function useCombineEstimateCalculations(estimate) {
     estimate.primx_dc_total_cost_estimate = estimate.primx_dc_calculated_shipping_estimate + estimate.primx_dc_total_materials_price;
 
     // calculate values for PrimX steel fibers
-    estimate.primx_steel_fibers_total_amount_needed = estimate.design_cubic_meters_total * estimate.primx_steel_fibers_dosage_kgs;
+    // estimate.primx_steel_fibers_total_amount_needed = estimate.design_cubic_meters_total * estimate.primx_steel_fibers_dosage_kgs;
     // steel fibers comes in packages of 19200 kg, need to round up
     estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_amount_needed / 19200);
     estimate.primx_steel_fibers_total_order_quantity = estimate.primx_steel_fibers_packages_needed * 19200;
@@ -133,7 +134,7 @@ export default function useCombineEstimateCalculations(estimate) {
     estimate.primx_steel_fibers_total_cost_estimate = estimate.primx_steel_fibers_calculated_shipping_estimate + estimate.primx_steel_fibers_total_materials_price;
 
     // calculate values for PrimX Ultracure Blankets
-    estimate.primx_ultracure_blankets_total_amount_needed = estimate.square_meters * 1.2; // 1.2 is the factor provided by PrimX
+    // estimate.primx_ultracure_blankets_total_amount_needed = estimate.square_meters * 1.2; // 1.2 is the factor provided by PrimX
     // blankets come in rolls of 600 square meters, need to round up
     estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_amount_needed / 600);
     estimate.primx_ultracure_blankets_total_order_quantity = estimate.primx_ultracure_blankets_packages_needed * 600;
