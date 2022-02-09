@@ -22,6 +22,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import SysAdminRoute from '../ProtectedRoute/SysAdminRoute';
 import AdminRoute from '../ProtectedRoute/AdminRoute';
 import LicenseeRoute from '../ProtectedRoute/LicenseeRoute';
+import LicenseeAccounts from '../AdminUpdates/LicenseeAccounts';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -142,7 +143,7 @@ function App() {
 							</AdminRoute>
 
 							<AdminRoute exact path="/LicenseeAccounts">
-								{/* <AdminOrders /> */}
+								<LicenseeAccounts />
 							</AdminRoute>
 
 							{/* If logged in and user permissions is 1, that makes the super-admin and allows them to see this system admin page */}
