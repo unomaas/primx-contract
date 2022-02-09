@@ -11,6 +11,8 @@ const encryptPassword = (password) => {
   return bcrypt.hashSync(password, salt);
 };
 
+
+
 const comparePassword = (candidatePassword, storedPassword) => {
   /*
   This takes in the candidate password (what the user entered) to check it.

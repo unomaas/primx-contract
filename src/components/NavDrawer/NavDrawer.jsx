@@ -94,7 +94,7 @@ export default function NavDrawer() {
               </ListItem>
 
               {/* Conditional rendering to show system admin portal: */}
-              {user.id == '1' ? (
+              {user.permission_level == '1' && 
                 <>
                   <Divider />
                   <ListItem button onClick={() => history.push(`/systemadmin`)}>
@@ -102,12 +102,7 @@ export default function NavDrawer() {
                     <p>System Admin</p>
                   </ListItem>
                 </>
-              ) : (
-                // If user is NOT system admin (id is anything else):
-                <>
-                </>
-              )}
-              {/* End System Admin conditional rendering. */}
+              } {/* End System Admin conditional rendering. */}
 
               <Divider />
 

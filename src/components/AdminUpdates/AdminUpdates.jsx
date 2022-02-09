@@ -22,24 +22,18 @@ export default function AdminUpdates() {
   }
 
   const renderComponent = () => {
-    setConditionalBool(true);
 
     if (selectedPage == 1) {
-      // setConditionalRender(AdminUpdateLicenses)
       history.push('/AdminUpdateLicenses')
     } else if (selectedPage == 2) {
-      // setConditionalRender(AdminUpdateTypes)
       history.push('/AdminUpdateTypes')
     } else if (selectedPage == 3) {
-      // setConditionalRender(AdminUpdateShipping)
       history.push('/AdminUpdateShipping')
-
     } else if (selectedPage == 4) {
-      // setConditionalRender(AdminUpdateMaterials)
       history.push('/AdminUpdateMaterials')
-
     } else if (selectedPage == 5) {
-      // setConditionalRender(SystemAdmin)
+      history.push('/LicenseeAccounts')
+    } else if (selectedPage == 6) {
       history.push('/SystemAdmin')
     }
   }
@@ -66,16 +60,12 @@ export default function AdminUpdates() {
         <MenuItem key={2} value={2}>Floor & Placement Types</MenuItem>
         <MenuItem key={3} value={3}>Shipping Costs by State</MenuItem>
         <MenuItem key={4} value={4}>Material Costs & Inventory</MenuItem>
+        <MenuItem key={5} value={5}>Manage Licensee Accounts</MenuItem>
         {/* Conditional rendering to show system admin portal: */}
-        {user.id == '1' ? (
-          // If user is system admin (id is 1):
-          <MenuItem key={5} value={5}>System Admin</MenuItem>
-        ) : (
-          // If user is NOT system admin (id is anything else):
-          <div>
-          </div>
-        )}
-        {/* End System Admin conditional rendering. */}
+        {user.permission_level == '1' && (
+          // If user is system admin (permission_level is 1):
+          <MenuItem key={6} value={6}>System Admin</MenuItem>
+        )}{/* End System Admin conditional rendering. */}
       </Select>
       <br />       <br />      <br />
       {/* </FormControl> */}
