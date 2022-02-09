@@ -7,7 +7,11 @@ const { useRadioGroup } = require('@material-ui/core');
 //Get Route
 router.get('/', rejectUnauthenticated, (req, res) => {
   //query to grab all users and their info
-  const queryText = `SELECT * FROM "user" ORDER BY username ASC;`;
+  const queryText = `
+		SELECT * FROM "user" 
+		WHERE permission_level = 2
+		ORDER BY username ASC;
+	`;
   pool.query(queryText).then((result) => {
     res.send(result.rows);
   }).catch((error) => {
@@ -18,7 +22,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 
 //Delete Route - Delete an admin user
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
-  if (req.user.id == '1') {
+  if (req.user.permission_level == '1') {
     const queryText = `DELETE FROM "user" WHERE "id" = $1;`;
     pool.query(queryText, [req.params.id])
       .then(result => {

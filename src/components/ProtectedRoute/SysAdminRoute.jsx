@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import AdminLoginPage from '../AdminLoginPage/AdminLoginPage';
+import Error404Page from './Error404Page';
 import {useSelector} from 'react-redux';
 
 // A Custom Wrapper Component -- This will keep our code DRY.
@@ -13,7 +13,7 @@ import {useSelector} from 'react-redux';
 // by checking req.isAuthenticated for authentication
 // and by checking req.user for authorization
 
-function ProtectedRoute(props) {
+function SysAdminRoute(props) {
   const user = useSelector((store) => store.user);
 
   // Using destructuring, this takes ComponentToProtect from component
@@ -29,14 +29,15 @@ function ProtectedRoute(props) {
 
   let ComponentToShow;
 
-  if (user.id) {
+  if (user.id && user.permission_level <= "1") {
     // if the user is logged in (only logged in users have ids)
     // show the component that is protected
     ComponentToShow = ComponentToProtect;
   } else {
     // if they are not logged in, check the loginMode on Redux State
     // if the mode is 'login', show the LoginPage
-    ComponentToShow = AdminLoginPage;
+    // ComponentToShow = LoginPage;
+    ComponentToShow = Error404Page;
   }
 
 
@@ -60,4 +61,4 @@ function ProtectedRoute(props) {
   );
 }
 
-export default ProtectedRoute;
+export default SysAdminRoute;
