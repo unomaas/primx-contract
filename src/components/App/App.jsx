@@ -18,13 +18,13 @@ import SystemAdmin from '../AdminUpdates/SystemAdmin';
 import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
 import MuiBackdropManager from '../MuiBackdropManager/MuiBackdropManager';
 import Error404Page from '../ProtectedRoute/Error404Page';
-
-// ⬇ Dependent Functionality:
-import React, { useEffect } from 'react';
-import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import SysAdminRoute from '../ProtectedRoute/SysAdminRoute';
 import AdminRoute from '../ProtectedRoute/AdminRoute';
+import LicenseeRoute from '../ProtectedRoute/LicenseeRoute';
+// ⬇ Dependent Functionality:
+import React, { useEffect } from 'react';
+import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
@@ -141,7 +141,7 @@ function App() {
 								<AdminOrders />
 							</AdminRoute>
 
-							<AdminRoute exact path="/AdminOrders">
+							<AdminRoute exact path="/LicenseeAccounts">
 								{/* <AdminOrders /> */}
 							</AdminRoute>
 
