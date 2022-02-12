@@ -33,6 +33,8 @@ export default function LicenseeRegisterForm() {
 			payload: {
 				username: username,
 				password: password,
+				// permission_level: 3,
+				licensees_id: licensees_id,
 			},
 		});
 		// TODO: Build and change this API call. 

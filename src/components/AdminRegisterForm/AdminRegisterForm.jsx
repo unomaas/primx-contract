@@ -37,6 +37,7 @@ function AdminRegisterForm() {
       payload: {
         username: username,
         password: password,
+				// permission_level: 2,
       },
     });
     dispatch({ type: 'FETCH_ADMIN_INFO' });

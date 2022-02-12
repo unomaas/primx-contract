@@ -24,7 +24,7 @@ router.post('/register', rejectUnauthenticated, (req, res, next) => {
 			const password = encryptLib.encryptPassword(req.body.password);
 
 			const queryText = `INSERT INTO "user" (username, password, permission_level)
-			VALUES ($1, $2, 2) RETURNING id`;
+			VALUES ($1, $2, $3) RETURNING id`;
 			pool
 				.query(queryText, [username, password])
 				.then(() => res.sendStatus(201))
@@ -40,8 +40,34 @@ router.post('/register', rejectUnauthenticated, (req, res, next) => {
 		console.error('Error Registering');
 		res.sendStatus(403);
 	}
-
 });
+
+router.post('/register_licensee', rejectUnauthenticated, (req, res, next) => {
+	try {
+		if (req.user.permission_level == '1' || req.user.permission_level == '2') {
+			const username = req.body.username;
+			const password = encryptLib.encryptPassword(req.body.password);
+			const licensees_id = req.body.licensees_id;
+
+			const queryText = `INSERT INTO "user" (username, password, permission_level, licensees_id)
+			VALUES ($1, $2, 3, $3) RETURNING id`;
+			pool
+				.query(queryText, [username, password, licensees_id])
+				.then(() => res.sendStatus(201))
+				.catch((error) => {
+					console.error('User registration failed: ', error);
+					res.sendStatus(500);
+				});
+		} else {
+			console.error('unable to register unless you are an admin');
+			res.sendStatus(403);
+		}
+	} catch {
+		console.error('Error Registering');
+		res.sendStatus(403);
+	}
+});
+
 
 // Handles login form authenticate/login POST
 // userStrategy.authenticate('local') is middleware that we run on this route

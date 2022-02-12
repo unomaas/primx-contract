@@ -4,6 +4,13 @@ import {
   takeEvery
 } from 'redux-saga/effects';
 
+function* userInfoSaga() {
+  yield takeEvery('FETCH_ADMIN_INFO', fetchAllUsers);
+  yield takeEvery('DELETE_ADMIN', deleteAdmin);
+  // yield takeEvery('FETCH_LICENSEE_INFO', fetchAllLicensees);
+  // yield takeEvery('DELETE_LICENSEE', deleteLicensee);
+}
+
 //worker saga to get all user info of all users
 function* fetchAllUsers() {
   try {
@@ -35,9 +42,7 @@ function* deleteAdmin(action) {
 
 // TODO: Build functions for fetching and deleting licensee accounts. 
 
-function* userInfoSaga() {
-  yield takeEvery('FETCH_ADMIN_INFO', fetchAllUsers);
-  yield takeEvery('DELETE_ADMIN', deleteAdmin);
-}
+
+
 
 export default userInfoSaga;
