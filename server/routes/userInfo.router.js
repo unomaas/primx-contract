@@ -4,7 +4,7 @@ const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const { useRadioGroup } = require('@material-ui/core');
 
-//Get Route
+//Get Route for Admin Accounts
 router.get('/', rejectUnauthenticated, (req, res) => {
   //query to grab all users and their info
   const queryText = `
@@ -36,5 +36,8 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
     res.sendStatus(403);
   }
 });
+
+// TODO: Build functions for fetching and deleting licensee accounts. 
+
 
 module.exports = router;

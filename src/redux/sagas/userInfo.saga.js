@@ -10,7 +10,7 @@ function* fetchAllUsers() {
     const users = yield axios.get('/api/userInfo');
     //sends the results / info to the reducer
     yield put({
-      type: 'SET_USERINFO',
+      type: 'SET_ADMIN_INFO',
       payload: users.data
     })
   } catch (error) {
@@ -25,15 +25,18 @@ function* deleteAdmin(action) {
     yield axios.delete(`/api/userInfo/${action.payload.id}`)
     //sends results to reducer
     yield put({
-      type: 'FETCH_USERINFO'
+      type: 'FETCH_ADMIN_INFO'
     })
+		dispatch({ type: 'SET_SUCCESS_DELETE_ADMIN' });
   } catch (error) {
     console.error('Error deleting admin in userInfo.SAGA -->', error);
   }
 }
 
+// TODO: Build functions for fetching and deleting licensee accounts. 
+
 function* userInfoSaga() {
-  yield takeEvery('FETCH_USERINFO', fetchAllUsers);
+  yield takeEvery('FETCH_ADMIN_INFO', fetchAllUsers);
   yield takeEvery('DELETE_ADMIN', deleteAdmin);
 }
 
