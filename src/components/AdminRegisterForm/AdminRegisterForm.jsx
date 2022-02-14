@@ -37,16 +37,17 @@ function AdminRegisterForm() {
       payload: {
         username: username,
         password: password,
+				// permission_level: 2,
       },
     });
-    dispatch({ type: 'FETCH_USERINFO' });
+    dispatch({ type: 'FETCH_ADMIN_INFO' });
     setUsername('');
     setPassword('');
   }; // end registerUser
 
   useEffect(() => {
     // GET all users on page load
-    dispatch({ type: 'FETCH_USERINFO' });
+    dispatch({ type: 'FETCH_ADMIN_INFO' });
   }, [])
 
   return (

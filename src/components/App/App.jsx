@@ -22,7 +22,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import SysAdminRoute from '../ProtectedRoute/SysAdminRoute';
 import AdminRoute from '../ProtectedRoute/AdminRoute';
 import LicenseeRoute from '../ProtectedRoute/LicenseeRoute';
-import LicenseeAccounts from '../AdminUpdates/LicenseeAccounts';
+import LicenseeAccounts from '../AdminLicenseeAccounts/LicenseeAccounts';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
