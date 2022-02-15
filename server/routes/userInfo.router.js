@@ -25,11 +25,17 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 router.get('/licensees', rejectUnauthenticated, (req, res) => {
 	//query to grab all users and their info
 	const queryText = `
-		SELECT * FROM "user" 
-		WHERE permission_level = 3
-		ORDER BY username ASC;
+		SELECT 
+			u.id, u.username, u.permission_level, u.licensees_id, 
+			l.licensee_contractor_name
+		FROM "user" AS u
+		LEFT JOIN "licensees" AS l ON u.licensees_id = l.id
+		WHERE u.permission_level = 3
+		ORDER BY u.username ASC;
 	`;
 	pool.query(queryText).then((result) => {
+		console.log('*** RESULT IS', {result});
+		
 		res.send(result.rows);
 	}).catch((error) => {
 		console.error('Error in GET', error);
