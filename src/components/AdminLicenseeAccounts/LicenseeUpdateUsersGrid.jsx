@@ -36,22 +36,20 @@ export default function SystemAdminUpdateUserGrid() {
       )
   }
 
-	// TODO: Adjust the width to fit the page. 
-	// TODO: Add a select dropdown and redo the form to add the licensee company appopriately.
-	// TODO: MAke hte licensee company names display properly somehow from the ID. 
+	// TODO: Add a select dropdown and redo the form to add the licensee company appropriately.
 
   // columns for Data Grid
   const columns = [
     {
       field: 'username',
       headerName: 'Username',
-      width: 300,
+      width: 200,
       headerClassName: classes.header
     },
 		{
       field: 'licensee_contractor_name',
       headerName: 'Company Name',
-      width: 200,
+      width: 300,
       headerClassName: classes.header
     },
     {
