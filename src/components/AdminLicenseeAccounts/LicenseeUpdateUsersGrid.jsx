@@ -14,7 +14,7 @@ export default function SystemAdminUpdateUserGrid() {
   const classes = useStyles();
 
   //grabbing all info of users from reducer
-  const userInfo = useSelector(store => store.userInfoReducer);
+  const userInfo = useSelector(store => store.userInfoReducer.userInfo);
 
   useEffect(() => {
     // GET all user data on page load
