@@ -7,8 +7,8 @@ import {
 function* userInfoSaga() {
   yield takeEvery('FETCH_ADMIN_INFO', fetchAllUsers);
   yield takeEvery('DELETE_ADMIN', deleteAdmin);
-  // yield takeEvery('FETCH_LICENSEE_INFO', fetchAllLicensees);
-  // yield takeEvery('DELETE_LICENSEE', deleteLicensee);
+	yield takeEvery('FETCH_LICENSEE_INFO', fetchAllLicensees);
+	yield takeEvery('DELETE_LICENSEE', deleteLicensee);
 }
 
 //worker saga to get all user info of all users
@@ -41,8 +41,35 @@ function* deleteAdmin(action) {
 }
 
 // TODO: Build functions for fetching and deleting licensee accounts. 
+//worker saga to get all user info of all users
+function* fetchAllLicensees() {
+	try {
+		const response = yield axios.get('/api/userInfo/licensees');
+		console.log('*** in fetchAllLicensees', { response });
+		//sends the results / info to the reducer
+		yield put({
+			type: 'SET_LICENSEE_INFO',
+			payload: response.data,
+		})
+	} catch (error) {
+		console.error('fetchAllUsers get request failed -->', error);
+	}
+}
 
-
+//worker saga to delete users if you are the super admin
+function* deleteLicensee(action) {
+	try {
+		//tells userInfo router to delete a user based on their id#
+		yield axios.delete(`/api/userInfo/licensee/${action.payload.id}`)
+		//sends results to reducer
+		yield put({
+			type: 'FETCH_LICENSEE_INFO'
+		})
+		// dispatch({ type: 'SET_SUCCESS_DELETE_ADMIN' });
+	} catch (error) {
+		console.error('Error deleting admin in userInfo.SAGA -->', error);
+	}
+}
 
 
 export default userInfoSaga;

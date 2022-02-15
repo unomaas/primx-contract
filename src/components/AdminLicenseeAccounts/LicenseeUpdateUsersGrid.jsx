@@ -14,7 +14,7 @@ export default function SystemAdminUpdateUserGrid() {
   const classes = useStyles();
 
   //grabbing all info of users from reducer
-  const userInfo = useSelector(store => store.userInfoReducer);
+  const licenseeInfo = useSelector(store => store.userInfoReducer.licenseeInfo);
 
   useEffect(() => {
     // GET all user data on page load
@@ -36,17 +36,25 @@ export default function SystemAdminUpdateUserGrid() {
       )
   }
 
+	// TODO: Add a select dropdown and redo the form to add the licensee company appropriately.
+
   // columns for Data Grid
   const columns = [
     {
       field: 'username',
       headerName: 'Username',
+      width: 200,
+      headerClassName: classes.header
+    },
+		{
+      field: 'licensee_contractor_name',
+      headerName: 'Company Name',
       width: 300,
       headerClassName: classes.header
     },
     {
       field: '',
-      headerName: 'Delete Admin',
+      headerName: 'Delete',
       width: 170,
       disableClickEventBubbling: true,
       renderCell: renderDeleteButton, // function declared above, creates a button in each row of the pending column
@@ -55,7 +63,7 @@ export default function SystemAdminUpdateUserGrid() {
   ]
 
   //datagrid rows are the information from userInfo reducer
-  let rows = userInfo
+  let rows = licenseeInfo;
 
   // click listener for the process order buttons inside the pending order table
   const handleDeleteAdmin = (params) => {
