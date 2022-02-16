@@ -42,7 +42,7 @@ export default function LicenseeRegisterForm() {
 		setUsername('');
 		setPassword('');
 		setCompany(0);
-		dispatch({ type: 'FETCH_LICENSEE_INFO' });
+		// dispatch({ type: 'FETCH_LICENSEE_INFO' });
 	}; // end registerUser
 
 	useEffect(() => {
