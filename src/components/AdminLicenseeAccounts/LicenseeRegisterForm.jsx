@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 //MUI Imports
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { Button, Select, MenuItem } from '@material-ui/core';
 
 
 export default function LicenseeRegisterForm() {
@@ -13,6 +13,8 @@ export default function LicenseeRegisterForm() {
 	//defining states for sending data to server
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [company, setCompany] = useState(0);
+	const companies = useSelector(store => store.companies);
 	const dispatch = useDispatch();
 	//styles for MUI
 	const useStyles = makeStyles((theme) => ({
@@ -33,20 +35,21 @@ export default function LicenseeRegisterForm() {
 			payload: {
 				username: username,
 				password: password,
-				// permission_level: 3,
-				licensees_id: licensees_id,
+				licensees_id: company,
 			},
 		});
 		// TODO: Build and change this API call. 
 		dispatch({ type: 'FETCH_LICENSEE_INFO' });
 		setUsername('');
 		setPassword('');
+		setCompany(0);
 	}; // end registerUser
 
 	useEffect(() => {
 		// GET all users on page load
 		// TODO: Same here. 
 		dispatch({ type: 'FETCH_LICENSEE_INFO' });
+		dispatch({ type: 'FETCH_FIELD_SELECT' });
 	}, [])
 
 	return (
@@ -60,40 +63,55 @@ export default function LicenseeRegisterForm() {
 					</h3>
 				)}
 
-				<div>
-					<TextField
-						required
-						htmlFor="username"
-						name="username"
-						label="Username"
-						variant="outlined"
-						onChange={(event) => setUsername(event.target.value)}
-						value={username}
-					>
-						Username:
-					</TextField>
-				</div> <br />
+				{/* <div> */}
+				<TextField
+					required
+					htmlFor="username"
+					name="username"
+					label="Username"
+					variant="outlined"
+					onChange={(event) => setUsername(event.target.value)}
+					value={username}
+				>
+					Username:
+				</TextField>
+				{/* </div> <br />
 
-				<div>
-					<TextField
-						required
-						htmlFor="password"
-						name="password"
-						label="Password"
-						variant="outlined"
-						type="password"
-						onChange={(event) => setPassword(event.target.value)}
-						value={password}
-					>
-						Password:
-					</TextField>
+				<div> */}
 
+				<TextField
+					required
+					htmlFor="password"
+					name="password"
+					label="Password"
+					variant="outlined"
+					type="password"
+					onChange={(event) => setPassword(event.target.value)}
+					value={password}
+				>
+					Password:
+				</TextField>
 
-					{/* // TODO: Build a select dropdown for the companies here.  Need an API call for that too.  */}
+				<br /> <br />
 
-				</div> <br />
+				<Select
+					// onChange={event => handleChange('licensee_id', event.target.value)}
+					onChange={(event) => setCompany(event.target.value)}
+					required
+					size="small"
+					value={company}
+					variant="outlined"
+				>
+					<MenuItem key="0" value="0">Please Select</MenuItem>
+					{companies.map(companies => {
+						return (
+							<MenuItem key={companies.id} value={companies.id}>
+								{companies.licensee_contractor_name}
+							</MenuItem>
+						)
+					})}
+				</Select>
 
-				<div>
 					<Button
 						type="submit"
 						// onClick={registerUser}
@@ -105,7 +123,7 @@ export default function LicenseeRegisterForm() {
 					>
 						Register
 					</Button>
-				</div>
+
 			</form>
 		</div>
 

@@ -55,7 +55,7 @@ export default function SystemAdminUpdateUserGrid() {
     {
       field: '',
       headerName: 'Delete',
-      width: 170,
+      width: 148,
       disableClickEventBubbling: true,
       renderCell: renderDeleteButton, // function declared above, creates a button in each row of the pending column
       headerClassName: classes.header
