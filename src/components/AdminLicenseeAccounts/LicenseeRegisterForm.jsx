@@ -39,10 +39,10 @@ export default function LicenseeRegisterForm() {
 			},
 		});
 		// TODO: Build and change this API call. 
-		dispatch({ type: 'FETCH_LICENSEE_INFO' });
 		setUsername('');
 		setPassword('');
 		setCompany(0);
+		dispatch({ type: 'FETCH_LICENSEE_INFO' });
 	}; // end registerUser
 
 	useEffect(() => {
@@ -74,7 +74,7 @@ export default function LicenseeRegisterForm() {
 					value={username}
 				>
 					Username:
-				</TextField>
+				</TextField> &nbsp;&nbsp;
 				{/* </div> <br />
 
 				<div> */}
@@ -112,17 +112,19 @@ export default function LicenseeRegisterForm() {
 					})}
 				</Select>
 
-					<Button
-						type="submit"
-						// onClick={registerUser}
-						variant="contained"
-						color="primary"
-						className="btn"
-						value="Register"
-						className={classes.LexendTeraFont11}
-					>
-						Register
-					</Button>
+				<br /> <br />
+
+				<Button
+					type="submit"
+					// onClick={registerUser}
+					variant="contained"
+					color="primary"
+					className="btn"
+					value="Register"
+					className={classes.LexendTeraFont11}
+				>
+					Register
+				</Button>
 
 			</form>
 		</div>

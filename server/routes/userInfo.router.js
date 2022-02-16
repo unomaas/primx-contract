@@ -34,8 +34,6 @@ router.get('/licensees', rejectUnauthenticated, (req, res) => {
 		ORDER BY u.username ASC;
 	`;
 	pool.query(queryText).then((result) => {
-		console.log('*** RESULT IS', {result});
-		
 		res.send(result.rows);
 	}).catch((error) => {
 		console.error('Error in GET', error);

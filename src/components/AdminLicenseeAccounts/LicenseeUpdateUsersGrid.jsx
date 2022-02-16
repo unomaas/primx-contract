@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
@@ -7,7 +7,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
-export default function SystemAdminUpdateUserGrid() {
+export default function SystemAdminUpdateUsersGrid() {
 
   const dispatch = useDispatch();
 
@@ -15,6 +15,8 @@ export default function SystemAdminUpdateUserGrid() {
 
   //grabbing all info of users from reducer
   const licenseeInfo = useSelector(store => store.userInfoReducer.licenseeInfo);
+  const [pageSize, setPageSize] = useState(10);
+
 
   useEffect(() => {
     // GET all user data on page load
@@ -73,15 +75,18 @@ export default function SystemAdminUpdateUserGrid() {
 
   return (
     <div
-      className={classes.SystemAdminGrid}
+      className={classes.LicenseeGrid}
     >
       <DataGrid
         className={classes.dataGridTables}
         autoHeight
         rows={rows}
         columns={columns}
-        pageSize={10}
+        // pageSize={10}
         rowsPerPageOptions={[10,25,50,100]}
+				pageSize={pageSize}
+				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+				pagination
       />
     </div>
   )

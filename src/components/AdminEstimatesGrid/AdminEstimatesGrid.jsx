@@ -2,7 +2,7 @@
 // ⬇ File Imports: 
 import './AdminEstimatesGrid.css';
 // ⬇ Dependent Functionality:
-import React from 'react';
+import {React, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport } from '@material-ui/data-grid';
@@ -17,6 +17,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
+  const [pageSize, setPageSize] = useState(10);
   // ⬇ Create number formatter.
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -337,8 +338,11 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
         autoHeight
         rows={rows}
         columns={columns}
-        pageSize={10}
+        // pageSize={10}
         rowsPerPageOptions={[10,25,50,100]}
+				pageSize={pageSize}
+				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+				pagination
         checkboxSelection
         onCellEditCommit={handleEditSubmit}
         components={{
