@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
@@ -7,18 +7,19 @@ import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
-export default function SystemAdminUpdateUserGrid() {
+export default function SystemAdminUpdateUsersGrid() {
 
   const dispatch = useDispatch();
 
   const classes = useStyles();
 
   //grabbing all info of users from reducer
-  const userInfo = useSelector(store => store.userInfoReducer);
+  const userInfo = useSelector(store => store.userInfoReducer.userInfo);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     // GET all user data on page load
-    dispatch({ type: 'FETCH_ADMIN_INFO' });
+    // dispatch({ type: 'FETCH_ADMIN_INFO' });
   }, [])
 
   //function to render the delete button in the datagrid
@@ -46,8 +47,8 @@ export default function SystemAdminUpdateUserGrid() {
     },
     {
       field: '',
-      headerName: 'Delete Admin',
-      width: 170,
+      headerName: 'Delete',
+      width: 132,
       disableClickEventBubbling: true,
       renderCell: renderDeleteButton, // function declared above, creates a button in each row of the pending column
       headerClassName: classes.header
@@ -55,14 +56,14 @@ export default function SystemAdminUpdateUserGrid() {
   ]
 
   //datagrid rows are the information from userInfo reducer
-  let rows = userInfo
+  let rows = userInfo;
 
   // click listener for the process order buttons inside the pending order table
   const handleDeleteAdmin = (params) => {
       // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
       dispatch({ type: 'DELETE_ADMIN', payload: params });
   }
-
+	console.log('****', {rows});
   return (
     <div
       className={classes.SystemAdminGrid}
@@ -72,8 +73,10 @@ export default function SystemAdminUpdateUserGrid() {
         autoHeight
         rows={rows}
         columns={columns}
-        pageSize={10}
         rowsPerPageOptions={[10,25,50,100]}
+        pageSize={pageSize}
+				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+				pagination
       />
     </div>
   )

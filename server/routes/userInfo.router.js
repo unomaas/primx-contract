@@ -34,8 +34,6 @@ router.get('/licensees', rejectUnauthenticated, (req, res) => {
 		ORDER BY u.username ASC;
 	`;
 	pool.query(queryText).then((result) => {
-		console.log('*** RESULT IS', {result});
-		
 		res.send(result.rows);
 	}).catch((error) => {
 		console.error('Error in GET', error);
@@ -61,7 +59,7 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
 });
 
 //Delete Route - Delete an admin user
-router.delete('licensee/:id', rejectUnauthenticated, (req, res) => {
+router.delete('/licensees/:id', rejectUnauthenticated, (req, res) => {
 	const queryText = `DELETE FROM "user" WHERE "id" = $1;`;
 	pool.query(queryText, [req.params.id])
 		.then(result => {

@@ -59,6 +59,11 @@ svg {
   color: black;
 }
 
+/* Targets MUI Data Grids */
+.MuiDataGrid-root {
+	font-size: 13px !important;
+	font-family: 'Times New Roman' !important;
+}
 
 
 

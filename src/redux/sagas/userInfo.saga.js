@@ -34,7 +34,7 @@ function* deleteAdmin(action) {
     yield put({
       type: 'FETCH_ADMIN_INFO'
     })
-		dispatch({ type: 'SET_SUCCESS_DELETE_ADMIN' });
+		// dispatch({ type: 'SET_SUCCESS_DELETE_ADMIN' });
   } catch (error) {
     console.error('Error deleting admin in userInfo.SAGA -->', error);
   }
@@ -58,9 +58,11 @@ function* fetchAllLicensees() {
 
 //worker saga to delete users if you are the super admin
 function* deleteLicensee(action) {
+	console.log('***', {action});
+	
 	try {
 		//tells userInfo router to delete a user based on their id#
-		yield axios.delete(`/api/userInfo/licensee/${action.payload.id}`)
+		yield axios.delete(`/api/userInfo/licensees/${action.payload.id}`)
 		//sends results to reducer
 		yield put({
 			type: 'FETCH_LICENSEE_INFO'

@@ -27,18 +27,23 @@ const useStyles = makeStyles({
   },
 
   SystemAdminGrid: {
+    width: 425,
+    margin: 'auto',
+  },
+
+	LicenseeGrid: {
     width: 650,
     margin: 'auto',
   },
 
   TypesGrid: {
-    width: 400,
+    width: 40,
     margin: 'auto',
   },
 
   dataGridTables: {
     fontFamily: 'Times New Roman',
-    fontSize: '1em',
+    fontSize: '13px',
   },
 
   shippingGrid: {
