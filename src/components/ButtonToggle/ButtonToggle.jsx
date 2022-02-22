@@ -66,6 +66,12 @@ export default function ButtonToggle() {
         >
           Combine Estimates
         </ToggleButton>
+
+				<ToggleButton
+          value="LicenseePortal"
+        >
+          Licensee Portal
+        </ToggleButton>
       </ToggleButtonGroup>
     </div>
   );

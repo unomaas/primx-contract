@@ -30,7 +30,7 @@ function AdminRoute(props) {
 
   let ComponentToShow;
 
-  if (user.id && user.permission_level <= "3") {
+  if (user.id && user.permission_level == "3") {
     // if the user is logged in (only logged in users have ids)
     // show the component that is protected
     ComponentToShow = ComponentToProtect;
