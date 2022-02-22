@@ -24,6 +24,7 @@ import AdminRoute from '../ProtectedRoute/AdminRoute';
 import LicenseeRoute from '../ProtectedRoute/LicenseeRoute';
 import LicenseeAccounts from '../AdminLicenseeAccounts/LicenseeAccounts';
 import LicenseePortal from '../LicenseePortal/LicenseePortal';
+import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -104,12 +105,16 @@ function App() {
 							>
 							</Route>
 
-							<Route exact path="/login" >
+							<Route exact path="/Login" >
 								<AdminLoginPage />
 							</Route>
 
 							{/* For protected routes, the view could show one of several things on the same route.  Visiting localhost:3000/user will show the AdminLandingPage if the user is logged in.  If the user is not logged in, the ProtectedRoute will show the LoginPage (component).  Even though it seems like they are different pages, the user is always on localhost:3000/user */}
 							{/* // logged in shows AdminLandingPage else shows LoginPage */}
+
+							<Route exact path="/LoginLicensee" >
+								<LicenseeLoginPage />
+							</Route>
 
 							<LicenseeRoute exact path="/LicenseePortal" >
 								<LicenseePortal />

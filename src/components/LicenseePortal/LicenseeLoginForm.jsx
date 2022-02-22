@@ -30,6 +30,7 @@ function LicenseeLoginForm() {
 	useEffect(() => {
 		// ⬇ Fetch the current companies for drop-down menu options:
 		dispatch({ type: 'FETCH_ACTIVE_COMPANIES' });
+		dispatch({ type: 'SET_BUTTON_STATE', payload: 'LoginPortal' });
 	}, []);
 
 	const login = (event) => {
@@ -40,17 +41,18 @@ function LicenseeLoginForm() {
 		setSelectError("");
 		// ⬇ Select dropdown validation:
 		if (company == 0) {
-      // If they haven't, pop up warning and prevent them:
-      setError(true);
-      setSelectError("Please select a company.");
+			// If they haven't, pop up warning and prevent them:
+			setError(true);
+			setSelectError("Please select a company.");
 		}
 		//loggs in user and sends them to /user page / admin landing page - if incorrect user/password, user is given an error
-		if (company && password) {
+		if (username && password) {
 			dispatch({
 				type: 'LOGIN_LICENSEE',
 				payload: {
-					licensees_id: company,
+					username: username,
 					password: password,
+					// licensees_id: company,
 				},
 			});
 			history.push('/LicenseePortal');
@@ -75,16 +77,35 @@ function LicenseeLoginForm() {
 			<form onSubmit={login}>
 
 				<div>
-					{/* <TextField
-            required
-            htmlFor="username"
-            name="username"
-            label="Username"
-            variant="outlined"
-            onChange={(event) => setUsername(event.target.value)}
-            value={username}>
-            Username:
-          </TextField> */}
+					<TextField
+						required
+						htmlFor="username"
+						name="username"
+						label="Username"
+						variant="outlined"
+						onChange={(event) => setUsername(event.target.value)}
+						value={username}>
+						Username:
+					</TextField>
+				</div>
+
+				<br />
+
+				<div>
+					<TextField
+						required
+						htmlFor="password"
+						name="password"
+						label="Password"
+						variant="outlined"
+						type="password"
+						onChange={(event) => setPassword(event.target.value)}
+						value={password}>
+						Password:
+					</TextField>
+				</div> <br />
+
+				{/* <div>
 					<FormControl error={error}>
 						<Select
 							// onChange={event => handleChange('licensee_id', event.target.value)}
@@ -103,23 +124,7 @@ function LicenseeLoginForm() {
 						</Select>
 						<FormHelperText>{selectError}</FormHelperText>
 					</FormControl>
-				</div>
-
-				<br />
-
-				<div>
-					<TextField
-						required
-						htmlFor="password"
-						name="password"
-						label="Password"
-						variant="outlined"
-						type="password"
-						onChange={(event) => setPassword(event.target.value)}
-						value={password}>
-						Password:
-					</TextField>
-				</div> <br />
+				</div> <br /> */}
 
 				<div>
 					<Button

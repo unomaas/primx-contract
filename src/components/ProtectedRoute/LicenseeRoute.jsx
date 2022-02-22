@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, useHistory } from 'react-router-dom';
 import Error404Page from './Error404Page';
 import AdminLoginPage from '../AdminLoginPage/AdminLoginPage';
 import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
@@ -17,6 +17,8 @@ import {useSelector} from 'react-redux';
 
 function AdminRoute(props) {
   const user = useSelector((store) => store.user);
+  const history = useHistory();
+
 
   // Using destructuring, this takes ComponentToProtect from component
   // prop and grabs all other props to pass them along to Route
@@ -42,12 +44,14 @@ function AdminRoute(props) {
     ComponentToShow = Error404Page;
   } else {
     ComponentToShow = LicenseeLoginPage;
+		// history.push(`/LoginLicensee`);
+
 	}
 
 
   // redirect a logged in user if an authRedirect prop has been provided
   if (user.id && authRedirect != null) {
-    return <Redirect exact from={otherProps.path} to={authRedirect} />;
+    return <Redirect exact from={otherProps.path} to={LicenseeLoginPage} />;
   } else if (!user.id && authRedirect != null) {
     ComponentToShow = ComponentToProtect;
   }
