@@ -40,7 +40,6 @@ function* deleteAdmin(action) {
   }
 }
 
-// TODO: Build functions for fetching and deleting licensee accounts. 
 //worker saga to get all user info of all users
 function* fetchAllLicensees() {
 	try {
@@ -58,8 +57,6 @@ function* fetchAllLicensees() {
 
 //worker saga to delete users if you are the super admin
 function* deleteLicensee(action) {
-	console.log('***', {action});
-	
 	try {
 		//tells userInfo router to delete a user based on their id#
 		yield axios.delete(`/api/userInfo/licensees/${action.payload.id}`)

@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import Error404Page from './Error404Page';
 import AdminLoginPage from '../AdminLoginPage/AdminLoginPage';
+import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
 import {useSelector} from 'react-redux';
 
 // A Custom Wrapper Component -- This will keep our code DRY.
@@ -30,16 +31,18 @@ function AdminRoute(props) {
 
   let ComponentToShow;
 
-  if (user.id && user.permission_level <= "3") {
+  if (user.id && user.permission_level == "3") {
     // if the user is logged in (only logged in users have ids)
     // show the component that is protected
     ComponentToShow = ComponentToProtect;
-  } else {
+  } else if (user.id && user.permission_level == "2") {
     // if they are not logged in, check the loginMode on Redux State
     // if the mode is 'login', show the LoginPage
     // ComponentToShow = AdminLoginPage;
     ComponentToShow = Error404Page;
-  }
+  } else {
+    ComponentToShow = LicenseeLoginPage;
+	}
 
 
   // redirect a logged in user if an authRedirect prop has been provided
