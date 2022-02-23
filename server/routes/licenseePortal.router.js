@@ -5,7 +5,7 @@ const router = express.Router();
 
 // * GET Routes Below: 
 // ⬇ GET :id pulls all of the estimates from the associated Licensee ID passed in.  This is part of the Licensee Portal initial data load.  It will return an indexed data object. 
-router.get('/:id', async (req, res) => {
+router.get('/:id', rejectUnauthenticated, async (req, res) => {
 	try {
 		// ⬇ Destructuring the req.params data: 
 		const { id } = req.params;
@@ -40,7 +40,7 @@ router.get('/:id', async (req, res) => {
 				// ⬇ If it's been marked as Archived by the user, sort here: 
 				archived_orders.push(estimate);
 			} else {
-				// Else it's an open order: 
+				// ⬇ Else it's an Open order: 
 				open_orders.push(estimate);
 			} // End if/else
 		} // End for of loop

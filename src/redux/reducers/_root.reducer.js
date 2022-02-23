@@ -12,6 +12,7 @@ import userInfoReducer from './userInfo.reducer';
 import snackBar from './snack.reducer';
 import combineEstimatesReducer from './combineEstimates.reducer';
 import backdropReducer from './backdrop.reducer';
+import licenseePortalReducer from './licenseePortal.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   snackBar, // Is the reducer data for snackbar alerts. 
   combineEstimatesReducer, // Is the reducer for combining multiple estimates.
   backdropReducer, // Handles the backdrop and loading screen animation. 
+	licenseePortalReducer, // Handles the Licensee Portal data load. 
 });
 
 export default rootReducer;
