@@ -14,7 +14,7 @@ function Footer() {
     <footer className="lexendFont footerPrint">
       <img src="./images/PrimXLogo-Spaced-01.svg" height="60"></img>
       <br/>
-      &copy; 2021 PrīmX NA. All rights reserved.
+      &copy; 2022 PrīmX NA. All rights reserved.
     </footer>
   )
 }

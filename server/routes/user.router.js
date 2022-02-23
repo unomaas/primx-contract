@@ -84,7 +84,7 @@ router.post('/login', userStrategy.authenticate('local'), (req, res) => {
 
 router.post('/login_licensee', userStrategy.authenticate('local'), (req, res) => {
 	
-	console.log('*** Test login_licensee', req.body);
+	// console.log('*** Test login_licensee', req.body);
 	
 	res.sendStatus(200);
 });
