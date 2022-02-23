@@ -6,30 +6,26 @@ const router = express.Router();
 /**
  * GET route template
  */
-router.get('/', (req, res) => {
-  // query text to grab all info from placement types table
-  // const queryText = `SELECT * FROM "placement_types";`;
-  // pool.query(queryText).then((result) => {
-  //     res.send(result.rows);
-  // }).catch((error) => {
-  //     console.error('Error in placement types GET router', error);
-  //     res.sendStatus(500);
-  // })
-});
-
-//Post Route - adds placement type to DB
-router.post('/', rejectUnauthenticated, (req, res) => {
-  // // query text to add a new placement type to the table
-  // queryText = `INSERT INTO "placement_types" ("placement_type")
-  //           VALUES ($1);`;
-  //   pool.query(queryText, [req.body.placement_type])
-  //   .then(result => {
-  //     res.sendStatus(201)
-  //   })
-  //   .catch(error => {
-  //     console.error('Error in placement type post route', error);
-  //     res.sendStatus(500);
-  //   })
-});
+router.get('/:id', async (req, res) => {
+	try {
+		// ⬇ Destructuring the req.params data: 
+		const { id } = req.params;
+		// ⬇ Building the params array: 
+		const params = [id];
+		// ⬇ Pg Query to get all data: 
+		const query = `
+			SELECT * 
+			FROM "estimates"
+			WHERE licensee_id = $1;
+		`; // End query
+		// ⬇ Pulling the data from DB: 
+		const result = await pool.query(query, params);
+		// ⬇ Sending data back: 
+		res.send(result.rows);
+	} catch (error) {
+		console.error('Error in /licenseePortal GET', error)
+		res.sendStatus(500);
+	} // End try/catch
+}); // End GET :id
 
 module.exports = router;

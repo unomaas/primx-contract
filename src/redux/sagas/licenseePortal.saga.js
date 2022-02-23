@@ -7,14 +7,28 @@ function* licenseePortalSaga() {
 }
 
 //worker saga to GET all placement types
-function* initialLoadLicenseePortal() {
+function* initialLoadLicenseePortal(action) {
 	try {
+		console.log('*** in initialLoadLicenseePortal', {action});
+
+		const licensee_id = action.payload;
+		
 		//GET all placement types
 		// const placementTypes = yield axios.get('/api/placementtypes');
 		//send results to placementTypes reducer
 		// yield put({type: 'SET_PLACEMENT_TYPES', payload: placementTypes.data});
+
+
+		// ⬇ Get all the estimates associated with this licensee company:
+		const response = yield axios.get(`/api/licenseePortal/${licensee_id}`);
+
+		console.log('*** result is', {response});
+		
+
+		// ⬇ Send the results to the licenseePortal data reducer: 
+		// yield put({type: 'SET_DATA_LICENSEE_PORTAL', payload: result.data});
 	} catch (error) {
-		alert("Error with loading:", error)
+		alert(`initialLoadLicenseePortal ${error}`)
 		console.error('Error in initialLoadLicenseePortal', error);
 	} // End try/catch
 } // End initialLoadLicenseePortal
