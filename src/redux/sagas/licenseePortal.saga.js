@@ -13,12 +13,15 @@ function* initialLoadLicenseePortal(action) {
 		const licensee_id = action.payload;
 		// ⬇ Get all the estimates associated with this licensee company:
 		const response = yield axios.get(`/api/licenseePortal/${licensee_id}`);
-		console.log('***', {response});
+		console.log('***', response.data);
 		
 
 		// TODO: When you come back, build out the reducer to hold the data.  Also explore how to sort the data on the back-end server before returning, similar to how Nexera does itw ith indices.  
 		// ⬇ Send the results to the licenseePortal data reducer: 
 		// yield put({type: 'SET_DATA_LICENSEE_PORTAL', payload: response.data});
+		// ! Ryan Here, turn off after. 
+		// yield put({ type: 'LOADING_SCREEN_OFF' });
+
 	} catch (error) {
 		alert(`initialLoadLicenseePortal ${error}`);
 		console.error('Error in initialLoadLicenseePortal', error);

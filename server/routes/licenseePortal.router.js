@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 // * GET Routes Below: 
-// ⬇ GET :id pulls all of the estimates from the associated Licensee ID passed in.  This is part of the Licensee Portal initial data load.  
+// ⬇ GET :id pulls all of the estimates from the associated Licensee ID passed in.  This is part of the Licensee Portal initial data load.  It will return an indexed data object. 
 router.get('/:id', async (req, res) => {
 	try {
 		// ⬇ Destructuring the req.params data: 
@@ -19,60 +19,42 @@ router.get('/:id', async (req, res) => {
 		`; // End query
 		// ⬇ Pulling the data from DB: 
 		const result = await pool.query(query, params);
-		// ⬇ Will convert an array of objects into an object indexed by id's: 
-		// const arrayToObjectConverter = (arr, key) => Object.assign({}, ...arr.map(item => ({[item[key]]: item})));
-		// Sorting the result: 
-		// const sorted_result = arrayToObjectConverter(result.rows, 'id');
-
-		// TODO: It's probably better just to do a for of loop, and then do the object loop when absolutely necessary.  
-
+		// ⬇ Empty array containers to push to: 
 		let processed_orders = [];
 		let pending_orders = [];
 		let archived_orders = [];
 		let open_orders = [];
-
-
-		// for (let i in sorted_result) {
+		// ⬇ Sorting the estimates pulled for the licensee: 
 		for (let estimate of result.rows) {
-			console.log('estimate is', estimate);
-
+			// ⬇ If the estimate is marked as ordered by both sides, it's Processed:
 			if (estimate.marked_as_ordered && estimate.ordered_by_licensee) {
 				processed_orders.push(estimate);
-			} // orders are considered pending if they've been ordered_by_licensee by a licensee but not yet marked_as_ordered by an admin
-			else if (estimate.ordered_by_licensee) {
-				// If this estimate was used in a combined, hide it from the GUI: 
+			} else if (estimate.ordered_by_licensee) {
+				// ⬇ If this estimate was used in a combined, hide it from the GUI: 
 				if (estimate.archived) {
 					continue;
-				}
-				pending_orders.push(estimate); 
-			} // orders are considered archived if they have estimate.archived marked true my admin via the archive button
-			else if (estimate.archived){
+				} // End if 
+				// ⬇ Else if it's ready to order by licensee, it's Pending:
+				pending_orders.push(estimate);
+			} else if (estimate.archived) {
+				// ⬇ If it's been marked as Archived by the user, sort here: 
 				archived_orders.push(estimate);
-			} // orders where neither of those are true are considered open
-			else {
+			} else {
+				// Else it's an open order: 
 				open_orders.push(estimate);
-			}
-			
-			// const estimate = sorted_result[i];
-			// if (estimate.marked_as_ordered && estimate.ordered_by_licensee)
-		}
-
-		console.log('***', processed_orders, pending_orders, archived_orders, open_orders	);
-		
-
+			} // End if/else
+		} // End for of loop
+		// ⬇ Will convert an array of objects into an object indexed by id's: 
+		const arrayToObjectConverter = (arr, key) => Object.assign({}, ...arr.map(item => ({ [item[key]]: item })));
+		// ⬇ Organizing the data into an indexed object: 
 		const data = {
-			[processed_orders]: processed_orders,
-			[pending_orders]: pending_orders,
-			[archived_orders]: archived_orders,
-			[open_orders]: open_orders,
-		}
-		console.log('*** data is', data);
-		
+			[`processed_orders`]: arrayToObjectConverter(processed_orders, 'estimate_number'),
+			[`pending_orders`]: arrayToObjectConverter(pending_orders, 'estimate_number'),
+			[`archived_orders`]: arrayToObjectConverter(archived_orders, 'estimate_number'),
+			[`open_orders`]: arrayToObjectConverter(open_orders, 'estimate_number'),
+		} // End data
 		// ⬇ Sending sorted data back: 
-		// res.send(result.rows);
-		// res.send(sorted_result);
 		res.send(data);
-
 	} catch (error) {
 		console.error('Error in /licenseePortal GET', error)
 		res.sendStatus(500);
