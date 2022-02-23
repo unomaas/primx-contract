@@ -3,9 +3,8 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 
-/**
- * GET route template
- */
+// * GET Routes Below: 
+// ⬇ GET :id pulls all of the estimates from the associated Licensee ID passed in.  This is part of the Licensee Portal initial data load.  
 router.get('/:id', async (req, res) => {
 	try {
 		// ⬇ Destructuring the req.params data: 
@@ -20,8 +19,28 @@ router.get('/:id', async (req, res) => {
 		`; // End query
 		// ⬇ Pulling the data from DB: 
 		const result = await pool.query(query, params);
+
+		const arrayToObjectConverter = (arr, key) => Object.assign({}, ...arr.map(item => ({[item[key]]: item})));
+
+		// const arrayToObjectConverter = (arr, key) => {
+		// 	return arr.reduce((obj, item) => {
+		// 		obj[item[key]] = item
+		// 		return obj
+		// 	}, {})
+		// }
+
+		console.log('*** TEST 1', result.rows);
+		
+
+		console.log('*** TEST 2', arrayToObjectConverter(result.rows, 'id'));
+
+		const sorted_result = arrayToObjectConverter(result.rows, 'id');
+
+
 		// ⬇ Sending data back: 
-		res.send(result.rows);
+		// res.send(result.rows);
+		res.send(sorted_result);
+
 	} catch (error) {
 		console.error('Error in /licenseePortal GET', error)
 		res.sendStatus(500);

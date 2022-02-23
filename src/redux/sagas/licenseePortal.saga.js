@@ -9,24 +9,16 @@ function* licenseePortalSaga() {
 //worker saga to GET all placement types
 function* initialLoadLicenseePortal(action) {
 	try {
-		console.log('*** in initialLoadLicenseePortal', {action});
-
+		// ⬇ Save the licensee id: 
 		const licensee_id = action.payload;
-		
-		//GET all placement types
-		// const placementTypes = yield axios.get('/api/placementtypes');
-		//send results to placementTypes reducer
-		// yield put({type: 'SET_PLACEMENT_TYPES', payload: placementTypes.data});
-
-
 		// ⬇ Get all the estimates associated with this licensee company:
 		const response = yield axios.get(`/api/licenseePortal/${licensee_id}`);
-
-		console.log('*** result is', {response});
+		console.log('***', response.data);
 		
 
+		// TODO: When you come back, build out the reducer to hold the data.  Also explore how to sort the data on the back-end server before returning, similar to how Nexera does itw ith indices.  
 		// ⬇ Send the results to the licenseePortal data reducer: 
-		// yield put({type: 'SET_DATA_LICENSEE_PORTAL', payload: result.data});
+		// yield put({type: 'SET_DATA_LICENSEE_PORTAL', payload: response.data});
 	} catch (error) {
 		alert(`initialLoadLicenseePortal ${error}`)
 		console.error('Error in initialLoadLicenseePortal', error);
