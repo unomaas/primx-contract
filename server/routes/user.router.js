@@ -76,7 +76,7 @@ router.post('/register_licensee', rejectUnauthenticated, (req, res, next) => {
 router.post('/login', userStrategy.authenticate('local'), (req, res) => {
 	// console.log('*** Test');
 
-	console.log('*** Test login',req.body);
+	// console.log('*** Test login',req.body);
 
 
 	res.sendStatus(200);
