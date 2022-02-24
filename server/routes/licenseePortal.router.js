@@ -25,7 +25,7 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 		let archived_orders = [];
 		let open_orders = [];
 		// ⬇ Sorting the estimates pulled for the licensee: 
-		for (let estimate of result.rows) {
+		for (const estimate of result.rows) {
 			// ⬇ If the estimate is marked as ordered by both sides, it's Processed:
 			if (estimate.marked_as_ordered && estimate.ordered_by_licensee) {
 				processed_orders.push(estimate);
@@ -44,8 +44,8 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 				open_orders.push(estimate);
 			} // End if/else
 		} // End for of loop
-		// ⬇ Will convert an array of objects into an object indexed by id's: 
-		const arrayToObjectConverter = (arr, key) => Object.assign({}, ...arr.map(item => ({ [item[key]]: item })));
+		// ⬇ Will convert an array of objects into an object indexed by a key: 
+		const arrayToObjectConverter = (array, key) => Object.assign({}, ...array.map(property => ({ [property[key]]: property })));
 		// ⬇ Organizing the data into an indexed object: 
 		const data = {
 			[`processed_orders`]: arrayToObjectConverter(processed_orders, 'estimate_number'),

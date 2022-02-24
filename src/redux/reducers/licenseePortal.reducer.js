@@ -10,19 +10,10 @@ const pageData = (state = {}, action) => {
     } // End switch 
   }; // End pageData
 
-// const productsObject = (state = {}, action) => {
-//   switch (action.type) {
-//     case 'SET_PRODUCTS_OBJECT':
-//       return action.payload;
-//     default:
-//       return state;
-//   }
-// };
   
   // user will be on the redux state at:
   // state.user
   export default combineReducers({
     pageData,
-    // productsObject
   });
   
