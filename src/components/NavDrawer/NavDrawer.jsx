@@ -143,6 +143,11 @@ export default function NavDrawer() {
 								<p>Combine Estimates</p>
 							</ListItem>
 
+							<ListItem button onClick={() => history.push(`/LicenseePortal`)}>
+								<HomeIcon /> &nbsp;
+								<p>Licensee Portal</p>
+							</ListItem>
+
 							<Divider />
 
 							<ListItem button onClick={() => history.push(`/login`)}>
