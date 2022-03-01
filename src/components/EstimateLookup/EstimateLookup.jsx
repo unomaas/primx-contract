@@ -110,7 +110,7 @@ export default function EstimateLookup() {
   return (
     <div className="EstimateCreate-wrapper">
 
-      <section className="removeInPrint">
+      {/* <section className="removeInPrint">
         <ButtonToggle />
 
         <br />
@@ -121,7 +121,6 @@ export default function EstimateLookup() {
             justifyContent="center"
           >
 
-            {/* Grid #1: The Search Bar for Estimate Lookup */}
             <Grid item xs={12}>
               <Paper elevation={3}>
                 <TableContainer >
@@ -181,7 +180,7 @@ export default function EstimateLookup() {
           </Grid>
         </form>
       </section>
-      <br />
+      <br /> */}
       {/* End estimate search form */}
 
       {showLookupTable === 'single' &&
