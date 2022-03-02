@@ -24,6 +24,7 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 		let pending_orders = [];
 		let archived_orders = [];
 		let open_orders = [];
+		// TODO: When I come back, some of the data is missing from these estimates for the Licensee Portal compared to the Admin Portal. Investigate why, including why the times are different. 
 		// ⬇ Sorting the estimates pulled for the licensee: 
 		for (const estimate of result.rows) {
 			// ⬇ If the estimate is marked as ordered by both sides, it's Processed:
@@ -48,10 +49,15 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 		const arrayToObjectConverter = (array, key) => Object.assign({}, ...array.map(property => ({ [property[key]]: property })));
 		// ⬇ Organizing the data into an indexed object: 
 		const data = {
-			[`processed_orders`]: arrayToObjectConverter(processed_orders, 'estimate_number'),
-			[`pending_orders`]: arrayToObjectConverter(pending_orders, 'estimate_number'),
-			[`archived_orders`]: arrayToObjectConverter(archived_orders, 'estimate_number'),
-			[`open_orders`]: arrayToObjectConverter(open_orders, 'estimate_number'),
+			// ! Kind of a bummer that the MUI Data Grid needs arrays, not objects. :( 
+			// [`processed_orders`]: arrayToObjectConverter(processed_orders, 'estimate_number'),
+			// [`pending_orders`]: arrayToObjectConverter(pending_orders, 'estimate_number'),
+			// [`archived_orders`]: arrayToObjectConverter(archived_orders, 'estimate_number'),
+			// [`open_orders`]: arrayToObjectConverter(open_orders, 'estimate_number'),
+			[`open_orders_array`]: open_orders,
+			[`pending_orders_array`]: pending_orders,
+			[`archived_orders_array`]: archived_orders,
+			[`processed_orders_array`]: processed_orders,
 		} // End data
 		// ⬇ Sending sorted data back: 
 		res.send(data);

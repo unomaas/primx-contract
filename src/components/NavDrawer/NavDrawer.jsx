@@ -67,10 +67,10 @@ export default function NavDrawer() {
 								<p>Create New Estimate</p>
 							</ListItem>
 
-							<ListItem button onClick={() => history.push(`/lookup`)}>
+							{/* <ListItem button onClick={() => history.push(`/lookup`)}>
 								<SearchIcon /> &nbsp;
 								<p>Search For Estimate</p>
-							</ListItem>
+							</ListItem> */}
 
 							<ListItem button onClick={() => history.push(`/combine`)}>
 								<StorageIcon /> &nbsp;
@@ -133,10 +133,10 @@ export default function NavDrawer() {
 								<p>Create New Estimate</p>
 							</ListItem>
 
-							<ListItem button onClick={() => history.push(`/lookup`)}>
+							{/* <ListItem button onClick={() => history.push(`/lookup`)}>
 								<SearchIcon /> &nbsp;
 								<p>Search For Estimate</p>
-							</ListItem>
+							</ListItem> */}
 
 							<ListItem button onClick={() => history.push(`/combine`)}>
 								<StorageIcon /> &nbsp;
