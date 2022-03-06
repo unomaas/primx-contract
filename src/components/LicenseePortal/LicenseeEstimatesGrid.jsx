@@ -1,7 +1,7 @@
 //#region ⬇⬇ All document setup, below:
 // ⬇ File Imports: 
 // ⬇ Dependent Functionality:
-import { React, useState } from 'react';
+import { React, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
@@ -159,31 +159,47 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 	const GridToolbarSelectDropdown = () => {
 
 		const options = [
-			"Open Orders",
-			"Pending Orders",
-			"Processed Orders",
-			"Archived Orders"
+			"View Open Orders",
+			"View Pending Orders",
+			"View Processed Orders",
+			"View Archived Orders"
 		];
 
 		const [open, setOpen] = useState(false);
 		const [selectedIndex, setSelectedIndex] = useState(0);
+		const anchorRef = useRef(null);
 
 		const handleClick = () => {
-			console.info(`You clicked ${options[selectedIndex]}`);
+			console.log('*** in handleClick');
+			// console.info(`You clicked ${options[selectedIndex]}`);
 		};
 
 		const handleToggle = (clickAway) => {
+			console.log('*** in handleToggle');
+
 			if (clickAway) {
 				setOpen(false);
 			} else {
-			setOpen(!open);
+				setOpen(!open);
 			}
 		}
 
 		return (
 			<>
-				<ButtonGroup variant="outlined" color="primary" aria-label="split button" style={{ flex: 1, justifyContent: "flex-end", paddingBottom: "4px" }}>
-					<Button onClick={handleClick}>{options[selectedIndex]}</Button>
+				<ButtonGroup
+					variant="outlined"
+					color="primary"
+					aria-label="split button"
+					style={{ flex: 1, justifyContent: "flex-end", paddingBottom: "4px" }}
+					ref={anchorRef}
+				>
+					<Button
+						// onClick={handleClick}
+						// value={}
+						style={{ width: '225px', padding: '5px' }}
+					>
+						{options[selectedIndex]}
+					</Button>
 					<Button
 						color="primary"
 						size="small"
@@ -192,38 +208,41 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 						aria-expanded={open ? 'true' : undefined}
 						aria-label="select merge strategy"
 						aria-haspopup="menu"
-						onClick={handleToggle}
+						onClick={() => handleToggle()}
 					>
 						<ArrowDropDownIcon />
 					</Button>
 				</ButtonGroup>
-
-				<Popper open={open} role={undefined} transition disablePortal>
-					{/* {({ TransitionProps, placement }) => ( */}
-					<Grow
-					// {...TransitionProps}
-					// style={{
-					//   transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-					// }}
-					>
-						<Paper>
-							<ClickAwayListener onClickAway={() => handleToggle('clickAway')}>
-								<MenuList id="split-button-menu">
-									{options.map((option) => (
-										<MenuItem
-											key={option}
-											// disabled={index === 2}
-											// selected={index === selectedIndex}
-											// onClick={(event) => handleMenuItemClick(event, index)}
-										>
-											{option}
-										</MenuItem>
-									))}
-								</MenuList>
-							</ClickAwayListener>
-						</Paper>
-					</Grow>
-          {/* )} */}
+				{/* //TODO, WHEN I COME BACK: Fix this button so it pops out and works properly.  */}
+				<Popper
+					open={open}
+					role={undefined}
+					transition
+					disablePortal
+					anchorEl={anchorRef.current}
+				>
+					{({ TransitionProps }) => (
+						<Grow
+							{...TransitionProps}
+							style={{
+								transformOrigin: 'bottom-end'
+							}}
+						>
+							<Paper>
+								<ClickAwayListener onClickAway={() => handleToggle('clickAway')}>
+									<MenuList id="split-button-menu">
+										{options.map((option) => (
+											<MenuItem
+												key={option}
+											>
+												{option}
+											</MenuItem>
+										))}
+									</MenuList>
+								</ClickAwayListener>
+							</Paper>
+						</Grow>
+					)}
 				</Popper>
 			</>
 		);
@@ -413,7 +432,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 	// ⬇ Rendering below:
 	return (
 		<div
-			className={classes.AdminEstimatesGridwrapper}
+			className={classes.LicenseeEstimatesGridWrapper}
 		>
 			<DataGrid
 				className={classes.dataGridTables}
