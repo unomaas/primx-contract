@@ -14,9 +14,19 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 		const params = [id];
 		// ⬇ Pg Query to get all data: 
 		const query = `
-			SELECT * 
+			SELECT 
+				"estimates".*, 
+				"floor_types".floor_type,
+				"licensees".licensee_contractor_name, 
+				"placement_types".placement_type, 
+				"shipping_costs".ship_to_state_province
 			FROM "estimates"
-			WHERE licensee_id = $1;
+			JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
+			JOIN "licensees" ON "estimates".licensee_id = "licensees".id
+			JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
+			JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
+			WHERE "estimates".licensee_id = $1
+			ORDER BY "estimates".id DESC;
 		`; // End query
 		// ⬇ Pulling the data from DB: 
 		const result = await pool.query(query, params);

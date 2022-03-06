@@ -330,7 +330,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 	let rows = estimatesArray;
 	//#endregion ⬆⬆ MUI Data Grid specifications above. 
 
-
+	console.log('*** in AdminGrid', {estimatesArray});
 	// ⬇ Rendering below:
 	return (
 		<div
@@ -341,7 +341,6 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 				autoHeight
 				rows={rows}
 				columns={columns}
-				// pageSize={10}
 				rowsPerPageOptions={[10, 25, 50, 100]}
 				pageSize={pageSize}
 				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

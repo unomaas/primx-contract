@@ -330,7 +330,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 	// let rows = estimateData;
 	//#endregion ⬆⬆ MUI Data Grid specifications above. 
 
-	console.log('***', { estimateData });
+	console.log('*** in LicenseeGrid', { estimateData });
 
 	// ⬇ Rendering below:
 	return (
@@ -342,7 +342,6 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 				autoHeight
 				rows={estimateData}
 				columns={columns}
-				// pageSize={10}
 				rowsPerPageOptions={[10, 25, 50, 100]}
 				pageSize={pageSize}
 				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
