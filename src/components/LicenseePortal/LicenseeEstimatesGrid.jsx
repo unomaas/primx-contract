@@ -4,7 +4,7 @@
 import { React, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
-import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport } from '@material-ui/data-grid';
+import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button'
 import { useStyles } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
@@ -12,10 +12,7 @@ import swal from 'sweetalert';
 
 // ⬇ Component that renders a Material UI Data Grid, needs an array of estimates as props. gridSource is a string that references which data grid is being created, the current strings are 'pending', 'processed', and 'open':
 export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
-	// if (Object.keys(estimateData).length != 0) {
 
-	// 	console.log('*** In LicenseeEstimatesGrid', { estimateData });
-	// }
 	//#region ⬇⬇ All state variables below:
 	const dispatch = useDispatch();
 	const classes = useStyles();
@@ -161,6 +158,9 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 	const CustomToolbar = () => {
 		return (
 			<GridToolbarContainer>
+				<GridToolbarColumnsButton />
+				<GridToolbarFilterButton />
+				<GridToolbarDensitySelector />
 				<GridToolbarExport />
 			</GridToolbarContainer>
 		)

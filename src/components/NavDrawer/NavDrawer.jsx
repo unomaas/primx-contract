@@ -10,14 +10,14 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 // ⬇ Icons:
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SearchIcon from '@material-ui/icons/Search';
 import UpdateIcon from '@material-ui/icons/Update';
 import StorageIcon from '@material-ui/icons/Storage'
-import HomeIcon from '@material-ui/icons/Home';
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import SaveIcon from '@material-ui/icons/Save';
+
 //#endregion ⬆⬆ Document setup above. 
 
 
@@ -63,7 +63,7 @@ export default function NavDrawer() {
 						<List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
 
 							<ListItem button onClick={() => history.push(`/create`)}>
-								<AddCircleOutlineOutlinedIcon /> &nbsp;
+								<NoteAddIcon /> &nbsp;
 								<p>Create New Estimate</p>
 							</ListItem>
 
@@ -78,8 +78,8 @@ export default function NavDrawer() {
 							</ListItem>
 
 							<ListItem button onClick={() => history.push(`/SavedEstimates`)}>
-								<HomeIcon /> &nbsp;
-								<p>Licensee Portal</p>
+								<SaveIcon /> &nbsp;
+								<p>Saved Estimates</p>
 							</ListItem>
 
 							{/* Conditional rendering to show Admin Links: */}
@@ -129,7 +129,7 @@ export default function NavDrawer() {
 						<List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
 
 							<ListItem button onClick={() => history.push(`/create`)}>
-								<AddCircleOutlineOutlinedIcon /> &nbsp;
+								<NoteAddIcon /> &nbsp;
 								<p>Create New Estimate</p>
 							</ListItem>
 
@@ -144,8 +144,8 @@ export default function NavDrawer() {
 							</ListItem>
 
 							<ListItem button onClick={() => history.push(`/SavedEstimates`)}>
-								<HomeIcon /> &nbsp;
-								<p>Licensee Portal</p>
+								<SaveIcon /> &nbsp;
+								<p>Saved Estimates</p>
 							</ListItem>
 
 							<Divider />
