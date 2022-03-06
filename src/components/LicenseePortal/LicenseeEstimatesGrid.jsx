@@ -5,7 +5,8 @@ import { React, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
-import Button from '@material-ui/core/Button'
+import { Button, ButtonGroup, ClickAwayListener, Grow, Popper, MenuItem, MenuList, Paper } from '@material-ui/core';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
 
@@ -155,13 +156,90 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		})
 	}
 
+	const GridToolbarSelectDropdown = () => {
+
+		const options = [
+			"Open Orders",
+			"Pending Orders",
+			"Processed Orders",
+			"Archived Orders"
+		];
+
+		const [open, setOpen] = useState(false);
+		const [selectedIndex, setSelectedIndex] = useState(0);
+
+		const handleClick = () => {
+			console.info(`You clicked ${options[selectedIndex]}`);
+		};
+
+		const handleToggle = (clickAway) => {
+			if (clickAway) {
+				setOpen(false);
+			} else {
+			setOpen(!open);
+			}
+		}
+
+		return (
+			<>
+				<ButtonGroup variant="outlined" color="primary" aria-label="split button" style={{ flex: 1, justifyContent: "flex-end", paddingBottom: "4px" }}>
+					<Button onClick={handleClick}>{options[selectedIndex]}</Button>
+					<Button
+						color="primary"
+						size="small"
+						variant="outlined"
+						aria-controls={open ? 'split-button-menu' : undefined}
+						aria-expanded={open ? 'true' : undefined}
+						aria-label="select merge strategy"
+						aria-haspopup="menu"
+						onClick={handleToggle}
+					>
+						<ArrowDropDownIcon />
+					</Button>
+				</ButtonGroup>
+
+				<Popper open={open} role={undefined} transition disablePortal>
+					{/* {({ TransitionProps, placement }) => ( */}
+					<Grow
+					// {...TransitionProps}
+					// style={{
+					//   transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+					// }}
+					>
+						<Paper>
+							<ClickAwayListener onClickAway={() => handleToggle('clickAway')}>
+								<MenuList id="split-button-menu">
+									{options.map((option) => (
+										<MenuItem
+											key={option}
+											// disabled={index === 2}
+											// selected={index === selectedIndex}
+											// onClick={(event) => handleMenuItemClick(event, index)}
+										>
+											{option}
+										</MenuItem>
+									))}
+								</MenuList>
+							</ClickAwayListener>
+						</Paper>
+					</Grow>
+          {/* )} */}
+				</Popper>
+			</>
+		);
+
+	}; // End GridToolbarSelectType
+
 	const CustomToolbar = () => {
 		return (
 			<GridToolbarContainer>
+				<GridToolbarExport />
 				<GridToolbarColumnsButton />
 				<GridToolbarFilterButton />
 				<GridToolbarDensitySelector />
-				<GridToolbarExport />
+
+				<GridToolbarSelectDropdown />
+
 			</GridToolbarContainer>
 		)
 	}

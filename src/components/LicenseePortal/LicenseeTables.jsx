@@ -13,12 +13,8 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 
 export default function LicenseeTables({ pageData }) {
 	// bring in custom calculation hook
-	const calculateEstimate = useEstimateCalculations;
-	const dispatch = useDispatch();
 	const classes = useStyles();
 
-	// useSelector looks at the array of estimate objects from adminEstimates reducer
-	const allEstimates = useSelector(store => store.adminEstimates);
 
 	console.log('***', {pageData});
 	return (

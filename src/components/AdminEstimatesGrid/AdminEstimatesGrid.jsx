@@ -158,10 +158,10 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 	const CustomToolbar = () => {
 		return (
 			<GridToolbarContainer>
+				<GridToolbarExport />
 				<GridToolbarColumnsButton />
 				<GridToolbarFilterButton />
 				<GridToolbarDensitySelector />
-				<GridToolbarExport />
 			</GridToolbarContainer>
 		)
 	}
@@ -330,7 +330,6 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 	let rows = estimatesArray;
 	//#endregion ⬆⬆ MUI Data Grid specifications above. 
 
-	console.log('*** in AdminGrid', {estimatesArray});
 	// ⬇ Rendering below:
 	return (
 		<div

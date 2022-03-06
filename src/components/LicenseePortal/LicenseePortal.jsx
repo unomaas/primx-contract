@@ -46,10 +46,7 @@ export default function LicenseePortal() {
 	const onLogin = (event) => {
 		// history.push('/login');
 	};
-	if (Object.keys(pageData).length != 0) {
-		console.log('*** In LicenseePortal', { pageData });
-		console.log('*** Test', Object.keys(pageData).length);
-	}
+
 	return (
 		<div className="EstimateCreate-wrapper">
 
