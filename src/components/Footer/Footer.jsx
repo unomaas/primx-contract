@@ -12,7 +12,7 @@ import './Footer.css';
 function Footer() {
   return (
     <footer className="lexendFont footerPrint">
-      <img src="./images/PrimXLogo-Spaced-01.svg" height="60"></img>
+      <img src="./images/PrimXLogo-Spaced-01.svg" height="55"></img>
       <br/>
       &copy; 2022 PrīmX NA. All rights reserved.
     </footer>

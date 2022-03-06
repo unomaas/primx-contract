@@ -4,18 +4,16 @@
 import { React, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
-import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport } from '@material-ui/data-grid';
-import Button from '@material-ui/core/Button'
+import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
+import { Button, ButtonGroup, ClickAwayListener, Grow, Popper, MenuItem, MenuList, Paper } from '@material-ui/core';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
 
 
 // ⬇ Component that renders a Material UI Data Grid, needs an array of estimates as props. gridSource is a string that references which data grid is being created, the current strings are 'pending', 'processed', and 'open':
 export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
-	// if (Object.keys(estimateData).length != 0) {
 
-	// 	console.log('*** In LicenseeEstimatesGrid', { estimateData });
-	// }
 	//#region ⬇⬇ All state variables below:
 	const dispatch = useDispatch();
 	const classes = useStyles();
@@ -158,10 +156,90 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		})
 	}
 
+	const GridToolbarSelectDropdown = () => {
+
+		const options = [
+			"Open Orders",
+			"Pending Orders",
+			"Processed Orders",
+			"Archived Orders"
+		];
+
+		const [open, setOpen] = useState(false);
+		const [selectedIndex, setSelectedIndex] = useState(0);
+
+		const handleClick = () => {
+			console.info(`You clicked ${options[selectedIndex]}`);
+		};
+
+		const handleToggle = (clickAway) => {
+			if (clickAway) {
+				setOpen(false);
+			} else {
+			setOpen(!open);
+			}
+		}
+
+		return (
+			<>
+				<ButtonGroup variant="outlined" color="primary" aria-label="split button" style={{ flex: 1, justifyContent: "flex-end", paddingBottom: "4px" }}>
+					<Button onClick={handleClick}>{options[selectedIndex]}</Button>
+					<Button
+						color="primary"
+						size="small"
+						variant="outlined"
+						aria-controls={open ? 'split-button-menu' : undefined}
+						aria-expanded={open ? 'true' : undefined}
+						aria-label="select merge strategy"
+						aria-haspopup="menu"
+						onClick={handleToggle}
+					>
+						<ArrowDropDownIcon />
+					</Button>
+				</ButtonGroup>
+
+				<Popper open={open} role={undefined} transition disablePortal>
+					{/* {({ TransitionProps, placement }) => ( */}
+					<Grow
+					// {...TransitionProps}
+					// style={{
+					//   transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+					// }}
+					>
+						<Paper>
+							<ClickAwayListener onClickAway={() => handleToggle('clickAway')}>
+								<MenuList id="split-button-menu">
+									{options.map((option) => (
+										<MenuItem
+											key={option}
+											// disabled={index === 2}
+											// selected={index === selectedIndex}
+											// onClick={(event) => handleMenuItemClick(event, index)}
+										>
+											{option}
+										</MenuItem>
+									))}
+								</MenuList>
+							</ClickAwayListener>
+						</Paper>
+					</Grow>
+          {/* )} */}
+				</Popper>
+			</>
+		);
+
+	}; // End GridToolbarSelectType
+
 	const CustomToolbar = () => {
 		return (
 			<GridToolbarContainer>
 				<GridToolbarExport />
+				<GridToolbarColumnsButton />
+				<GridToolbarFilterButton />
+				<GridToolbarDensitySelector />
+
+				<GridToolbarSelectDropdown />
+
 			</GridToolbarContainer>
 		)
 	}
@@ -330,7 +408,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 	// let rows = estimateData;
 	//#endregion ⬆⬆ MUI Data Grid specifications above. 
 
-	console.log('***', { estimateData });
+	console.log('*** in LicenseeGrid', { estimateData });
 
 	// ⬇ Rendering below:
 	return (
@@ -342,7 +420,6 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 				autoHeight
 				rows={estimateData}
 				columns={columns}
-				// pageSize={10}
 				rowsPerPageOptions={[10, 25, 50, 100]}
 				pageSize={pageSize}
 				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

@@ -116,7 +116,7 @@ function App() {
 								<LicenseeLoginPage />
 							</Route>
 
-							<LicenseeRoute exact path="/LicenseePortal" >
+							<LicenseeRoute exact path="/SavedEstimates" >
 								<LicenseePortal />
 							</LicenseeRoute>
 

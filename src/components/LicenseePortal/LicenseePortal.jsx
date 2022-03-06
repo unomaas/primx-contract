@@ -35,7 +35,6 @@ export default function LicenseePortal() {
 	useEffect(() => {
 
 		// ⬇ Fetch the current companies for drop-down menu options:
-		dispatch({ type: 'SET_BUTTON_STATE', payload: 'LicenseePortal' });
 		dispatch({ type: 'INITIAL_LOAD_LICENSEE_PORTAL', payload: user.licensees_id });
 	}, []);
 
@@ -47,10 +46,7 @@ export default function LicenseePortal() {
 	const onLogin = (event) => {
 		// history.push('/login');
 	};
-	if (Object.keys(pageData).length != 0) {
-		console.log('*** In LicenseePortal', { pageData });
-		console.log('*** Test', Object.keys(pageData).length);
-	}
+
 	return (
 		<div className="EstimateCreate-wrapper">
 
