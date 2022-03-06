@@ -30,7 +30,7 @@ function LicenseeLoginForm() {
 	useEffect(() => {
 		// ⬇ Fetch the current companies for drop-down menu options:
 		dispatch({ type: 'FETCH_ACTIVE_COMPANIES' });
-		dispatch({ type: 'SET_BUTTON_STATE', payload: 'LicenseePortal' });
+		dispatch({ type: 'SET_BUTTON_STATE', payload: 'SavedEstimates' });
 	}, []);
 
 	const login = (event) => {
@@ -55,7 +55,7 @@ function LicenseeLoginForm() {
 					// licensees_id: company,
 				},
 			});
-			history.push('/LicenseePortal');
+			history.push('/SavedEstimates');
 		} else {
 			dispatch({ type: 'LOGIN_INPUT_ERROR' });
 		}

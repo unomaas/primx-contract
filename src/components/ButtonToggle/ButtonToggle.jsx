@@ -68,9 +68,9 @@ export default function ButtonToggle() {
         </ToggleButton>
 
 				<ToggleButton
-          value="LicenseePortal"
+          value="SavedEstimates"
         >
-          Licensee Portal
+          Saved Estimates
         </ToggleButton>
       </ToggleButtonGroup>
     </div>
