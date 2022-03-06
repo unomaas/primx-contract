@@ -60,10 +60,15 @@ const useStyles = makeStyles({
     width: 525,
     margin: 'auto',
   },
+
   AdminEstimatesGridwrapper: {
     width: '95%',
-    margin: 'auto',
+    margin: '0 auto',
   },
+
+	LicenseeEstimatesGridWrapper: {
+		// margin: '0 1em',
+	},
 
   AddLicenseeInput: {
     margin: 10

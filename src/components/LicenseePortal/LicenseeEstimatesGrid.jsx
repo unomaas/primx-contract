@@ -9,6 +9,7 @@ import { Button, ButtonGroup, ClickAwayListener, Grow, Popper, MenuItem, MenuLis
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
+import GridToolbarSelectDropdown from './GridToolbarSelectDropdown';
 
 
 // ⬇ Component that renders a Material UI Data Grid, needs an array of estimates as props. gridSource is a string that references which data grid is being created, the current strings are 'pending', 'processed', and 'open':
@@ -156,87 +157,17 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		})
 	}
 
-	const GridToolbarSelectDropdown = () => {
 
-		const options = [
-			"Open Orders",
-			"Pending Orders",
-			"Processed Orders",
-			"Archived Orders"
-		];
-
-		const [open, setOpen] = useState(false);
-		const [selectedIndex, setSelectedIndex] = useState(0);
-
-		const handleClick = () => {
-			console.info(`You clicked ${options[selectedIndex]}`);
-		};
-
-		const handleToggle = (clickAway) => {
-			if (clickAway) {
-				setOpen(false);
-			} else {
-			setOpen(!open);
-			}
-		}
-
-		return (
-			<>
-				<ButtonGroup variant="outlined" color="primary" aria-label="split button" style={{ flex: 1, justifyContent: "flex-end", paddingBottom: "4px" }}>
-					<Button onClick={handleClick}>{options[selectedIndex]}</Button>
-					<Button
-						color="primary"
-						size="small"
-						variant="outlined"
-						aria-controls={open ? 'split-button-menu' : undefined}
-						aria-expanded={open ? 'true' : undefined}
-						aria-label="select merge strategy"
-						aria-haspopup="menu"
-						onClick={handleToggle}
-					>
-						<ArrowDropDownIcon />
-					</Button>
-				</ButtonGroup>
-
-				<Popper open={open} role={undefined} transition disablePortal>
-					{/* {({ TransitionProps, placement }) => ( */}
-					<Grow
-					// {...TransitionProps}
-					// style={{
-					//   transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
-					// }}
-					>
-						<Paper>
-							<ClickAwayListener onClickAway={() => handleToggle('clickAway')}>
-								<MenuList id="split-button-menu">
-									{options.map((option) => (
-										<MenuItem
-											key={option}
-											// disabled={index === 2}
-											// selected={index === selectedIndex}
-											// onClick={(event) => handleMenuItemClick(event, index)}
-										>
-											{option}
-										</MenuItem>
-									))}
-								</MenuList>
-							</ClickAwayListener>
-						</Paper>
-					</Grow>
-          {/* )} */}
-				</Popper>
-			</>
-		);
-
-	}; // End GridToolbarSelectType
 
 	const CustomToolbar = () => {
 		return (
-			<GridToolbarContainer>
-				<GridToolbarExport />
-				<GridToolbarColumnsButton />
-				<GridToolbarFilterButton />
-				<GridToolbarDensitySelector />
+			<GridToolbarContainer style={{ justifyContent: "space-between" }}>
+				<div>
+					<GridToolbarExport /> &nbsp;
+					<GridToolbarColumnsButton /> &nbsp;
+					<GridToolbarFilterButton /> &nbsp;
+					<GridToolbarDensitySelector /> &nbsp;
+				</div>
 
 				<GridToolbarSelectDropdown />
 
@@ -260,35 +191,35 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		},
 		{ field: 'licensee_contractor_name', headerClassName: classes.header, headerName: 'Licensee/Contractor', width: 175 },
 		{ field: 'date_created', headerClassName: classes.header, headerName: 'Date Created', width: 175 },
-		{ field: 'ship_to_address', headerClassName: classes.header, headerName: 'Ship To Address', width: 175, editable: true },
-		{ field: 'ship_to_city', headerClassName: classes.header, headerName: 'Ship To City', width: 175, editable: true },
+		{ field: 'ship_to_address', headerClassName: classes.header, headerName: 'Ship To Address', width: 175, editable: false },
+		{ field: 'ship_to_city', headerClassName: classes.header, headerName: 'Ship To City', width: 175, editable: false },
 		{ field: 'ship_to_state_province', headerClassName: classes.header, headerName: 'State/Province', width: 175 },
-		{ field: 'zip_postal_code', headerClassName: classes.header, headerName: 'Zip/Postal Code', width: 175, editable: true },
-		{ field: 'country', headerClassName: classes.header, headerName: 'Country', width: 175, editable: true },
-		{ field: 'anticipated_first_pour_date', headerClassName: classes.header, headerName: 'Anticipated First Pour', width: 175, editable: true }, // Need edit validation?
-		{ field: 'project_general_contractor', headerClassName: classes.header, headerName: 'General Contractor', width: 175, editable: true },
-		{ field: 'project_manager_name', headerClassName: classes.header, headerName: 'Project Manager', width: 175, editable: true },
-		{ field: 'project_manager_email', headerClassName: classes.header, headerName: 'Project Manager Email', width: 175, editable: true },
-		{ field: 'project_manager_phone', headerClassName: classes.header, headerName: 'Project Manager Phone', width: 175, editable: true },
-		{ field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: true },
+		{ field: 'zip_postal_code', headerClassName: classes.header, headerName: 'Zip/Postal Code', width: 175, editable: false },
+		{ field: 'country', headerClassName: classes.header, headerName: 'Country', width: 175, editable: false },
+		{ field: 'anticipated_first_pour_date', headerClassName: classes.header, headerName: 'Anticipated First Pour', width: 175, editable: false }, // Need edit validation?
+		{ field: 'project_general_contractor', headerClassName: classes.header, headerName: 'General Contractor', width: 175, editable: false },
+		{ field: 'project_manager_name', headerClassName: classes.header, headerName: 'Project Manager', width: 175, editable: false },
+		{ field: 'project_manager_email', headerClassName: classes.header, headerName: 'Project Manager Email', width: 175, editable: false },
+		{ field: 'project_manager_phone', headerClassName: classes.header, headerName: 'Project Manager Phone', width: 175, editable: false },
+		{ field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: false },
 
 		// ⬇ Technical job details input by licensee
 		{ field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
 		{ field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175 }, // Editable + validation?
 		{ field: 'placement_type', headerClassName: classes.header, headerName: 'Placement Type', width: 175 }, // Editable + validation?
-		{ field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175, editable: true }, // Editable + validation?
-		{ field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175, editable: true }, // Editable + validation?
-		{ field: 'thickness_millimeters', headerClassName: classes.header, headerName: 'Thickness(mm)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'waste_factor_percentage', headerClassName: classes.header, headerName: 'Waste Factor (%)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'primx_flow_dosage_liters', headerClassName: classes.header, headerName: 'Flow Dosage (liters)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'primx_steel_fibers_dosage_lbs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (lbs)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175, editable: true }, // Editable + validation?
-		{ field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175, editable: true }, // Editable + validation?
+		{ field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickness_millimeters', headerClassName: classes.header, headerName: 'Thickness(mm)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'waste_factor_percentage', headerClassName: classes.header, headerName: 'Waste Factor (%)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'primx_flow_dosage_liters', headerClassName: classes.header, headerName: 'Flow Dosage (liters)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'primx_steel_fibers_dosage_lbs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (lbs)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175, editable: false }, // Editable + validation?
 
 		// ⬇ All calculated values are listed below
 		// ⬇ PrimX DC calculated values
@@ -375,7 +306,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		if (dataSource == 'pending' || dataSource == 'processed') {
 			// ⬇ Add the Purchase Order number and the order number to each of the pending and processed tables:
 			columns.push(
-				{ field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175, editable: true }
+				{ field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175, editable: false }
 			)
 		}
 		if (dataSource == 'pending') {
@@ -413,7 +344,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 	// ⬇ Rendering below:
 	return (
 		<div
-			className={classes.AdminEstimatesGridwrapper}
+			className={classes.LicenseeEstimatesGridWrapper}
 		>
 			<DataGrid
 				className={classes.dataGridTables}
