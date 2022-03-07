@@ -160,10 +160,8 @@ export default function EstimateCreate() {
       dispatch({ type: 'SET_EMPTY_ERROR' });
     } // ⬇ Show table:
     else {
-      dispatch({
-        type: 'SET_TABLE_STATE',
-        payload: true
-      }) // End dispatch
+      dispatch({ type: 'SET_TABLE_STATE', payload: true })
+      dispatch({ type: 'SET_EDIT_STATE', payload: false })
     } // End else
   } // End handleSubmit
   //#endregion ⬆⬆ Event handles above. 
@@ -476,7 +474,7 @@ export default function EstimateCreate() {
                         <Button
                           type="submit"
                           // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+                          // onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
                           variant="contained"
                           className={classes.LexendTeraFont11}
                           color="primary"
