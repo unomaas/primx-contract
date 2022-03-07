@@ -15,7 +15,6 @@ export default function GridToolbarSelectDropdown() {
 
 	// ⬇ State variables below: 
 	const classes = useStyles();
-	const [selectedIndex, setSelectedIndex] = useState(0);
 	const anchorRef = useRef(null);
 	const [open, setOpen] = useState(false);
 	const dispatch = useDispatch();
@@ -39,10 +38,6 @@ export default function GridToolbarSelectDropdown() {
 		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;
 		} // End if 
-		// ⬇ If they're selecting a new option, make that the selected index:
-		if (index || index == 0) {
-			setSelectedIndex(index);
-		} // End if
 		// ⬇ Dispatch to the reducer to load the appropriate data: 
 		if (value && value != tableData) {
 			dispatch({ type: 'SET_LICENSEE_PORTAL_TABLE', payload: value });
@@ -78,7 +73,6 @@ export default function GridToolbarSelectDropdown() {
 				onClick={handleToggle}
 				color="primary"
 			>
-				{/* Viewing {options[selectedIndex]} <ArrowDropDownIcon /> */}
 				Viewing {tableData} <ArrowDropDownIcon />
 			</Button>
 			<Popper
@@ -102,7 +96,7 @@ export default function GridToolbarSelectDropdown() {
 										<MenuItem
 											key={option}
 											onClick={event => handleClose(event, index, option)}
-											selected={index === selectedIndex}
+											selected={option == tableData ? true : false}
 										>
 											View {option}
 										</MenuItem>

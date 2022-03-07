@@ -295,7 +295,6 @@ router.put('/process/:id', rejectUnauthenticated, (req, res) => {
 })
 
 // PUT request to archive an estimate
-// ! Ryan Here
 router.put('/archive/:id', rejectUnauthenticated, (req, res) => {
 	// SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
 	const queryText = `
@@ -441,7 +440,6 @@ router.put('/recalculate/:id', (req, res) => {
 
 // *************************** DELETE ROUTES ***************************
 
-// ! Ryan Here
 router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
 
 	const queryText = `
