@@ -69,7 +69,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		}).then((willDelete) => {
 			if (willDelete) {
 				// ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
-				dispatch({ type: 'DELETE_ESTIMATE', payload: params })
+				dispatch({ type: 'DELETE_ESTIMATE_LICENSEE', payload: params })
 				swal(`Estimate has been deleted!`, {
 					icon: 'success',
 				})
@@ -77,19 +77,19 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		});
 	}
 
-	// ⬇ Rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
-	const renderProcessButton = (params) => {
-		return (
-			<Button
-				variant="contained"
-				color="primary"
-				onClick={() => handleProcessOrder(params)}
-				className={classes.LexendTeraFont11}
-			>
-				Process
-			</Button>
-		)
-	}
+	// // ⬇ Rendering function for creating a button inside a data grid cell, to be used on the pending orders grid to process orders
+	// const renderProcessButton = (params) => {
+	// 	return (
+	// 		<Button
+	// 			variant="contained"
+	// 			color="primary"
+	// 			onClick={() => handleProcessOrder(params)}
+	// 			className={classes.LexendTeraFont11}
+	// 		>
+	// 			Process
+	// 		</Button>
+	// 	)
+	// }
 
 	// ⬇ Rendering function for creating a button inside a data grid cell, to be used on the open estimates grid to archive estimates
 	const renderArchiveButton = (params) => {
@@ -117,7 +117,8 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		}).then((willDelete) => {
 			if (willDelete) {
 				// ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
-				dispatch({ type: 'ARCHIVE_ESTIMATE', payload: params })
+				dispatch({ type: 'ARCHIVE_ESTIMATE_LICENSEE', payload: params })
+				// TODO: This doesn't automatically remove the estimate from the open orders table (aka, the page did not re-render). Figure out why it doesn't here vs why it does in Admin Orders.  That means the rest of the buttons might not work either so I gotta figure that out too.  
 				swal('Order has been archived!', {
 					icon: 'success',
 				})
@@ -125,25 +126,25 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		});
 	}
 
-	// ⬇ Click listener for the process order buttons inside the pending order table
-	const handleProcessOrder = (params) => {
-		// ⬇ Open a sweetalert message confirming an order as being processed
-		swal({
-			title: 'Do you want to process this order?',
-			text: 'This marks the order as complete and cannot be undone.',
-			icon: 'warning',
-			buttons: ['Cancel', 'Process Order'],
-			dangerMode: true,
-		}).then((willDelete) => {
-			if (willDelete) {
-				// ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
-				dispatch({ type: 'EDIT_PROCESS_ORDER', payload: params })
-				swal('Order has been processed!', {
-					icon: 'success',
-				})
-			}
-		});
-	}
+	// // ⬇ Click listener for the process order buttons inside the pending order table
+	// const handleProcessOrder = (params) => {
+	// 	// ⬇ Open a sweetalert message confirming an order as being processed
+	// 	swal({
+	// 		title: 'Do you want to process this order?',
+	// 		text: 'This marks the order as complete and cannot be undone.',
+	// 		icon: 'warning',
+	// 		buttons: ['Cancel', 'Process Order'],
+	// 		dangerMode: true,
+	// 	}).then((willDelete) => {
+	// 		if (willDelete) {
+	// 			// ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
+	// 			dispatch({ type: 'EDIT_PROCESS_ORDER', payload: params })
+	// 			swal('Order has been processed!', {
+	// 				icon: 'success',
+	// 			})
+	// 		}
+	// 	});
+	// }
 
 	// ⬇ Submit handler for in-line cell edits on the data grid:
 	const handleEditSubmit = ({ id, field, value }) => {
@@ -190,6 +191,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 			renderCell: renderEstimateNumber // function declared above, creates a div with navigation in each of the estimate number cells
 		},
 		{ field: 'licensee_contractor_name', headerClassName: classes.header, headerName: 'Licensee/Contractor', width: 175 },
+		{ field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: false },
 		{ field: 'date_created', headerClassName: classes.header, headerName: 'Date Created', width: 175 },
 		{ field: 'ship_to_address', headerClassName: classes.header, headerName: 'Ship To Address', width: 175, editable: false },
 		{ field: 'ship_to_city', headerClassName: classes.header, headerName: 'Ship To City', width: 175, editable: false },
@@ -201,7 +203,6 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		{ field: 'project_manager_name', headerClassName: classes.header, headerName: 'Project Manager', width: 175, editable: false },
 		{ field: 'project_manager_email', headerClassName: classes.header, headerName: 'Project Manager Email', width: 175, editable: false },
 		{ field: 'project_manager_phone', headerClassName: classes.header, headerName: 'Project Manager Phone', width: 175, editable: false },
-		{ field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: false },
 
 		// ⬇ Technical job details input by licensee
 		{ field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
@@ -309,19 +310,20 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 				{ field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175, editable: false }
 			)
 		}
-		if (dataSource == 'pending') {
-			// ⬇ Add the process order button to the beginning of the pending table:
-			columns.unshift(
-				{
-					field: 'process_order_buton',
-					headerClassName: classes.header,
-					headerName: 'Process Order',
-					width: 175,
-					disableClickEventBubbling: true,
-					renderCell: renderProcessButton // function declared above, creates a button in each row of the pending column
-				}
-			)
-		} else if (dataSource == 'processed') {
+		// if (dataSource == 'pending') {
+		// 	// ⬇ Add the process order button to the beginning of the pending table:
+		// 	columns.unshift(
+		// 		{
+		// 			field: 'process_order_buton',
+		// 			headerClassName: classes.header,
+		// 			headerName: 'Process Order',
+		// 			width: 175,
+		// 			disableClickEventBubbling: true,
+		// 			renderCell: renderProcessButton // function declared above, creates a button in each row of the pending column
+		// 		}
+		// 	)
+		// } else 
+		if (dataSource == 'processed') {
 			// ⬇ Add the processed by name to the processed table:
 			columns.push(
 				{ field: 'order_number', headerClassName: classes.header, headerName: 'Order Number', width: 175 },
@@ -339,7 +341,6 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 	// let rows = estimateData;
 	//#endregion ⬆⬆ MUI Data Grid specifications above. 
 
-	console.log('*** in LicenseeGrid', { estimateData });
 
 	// ⬇ Rendering below:
 	return (

@@ -297,8 +297,11 @@ router.put('/process/:id', rejectUnauthenticated, (req, res) => {
 // PUT request to archive an estimate
 router.put('/archive/:id', rejectUnauthenticated, (req, res) => {
 	// SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
-	const queryText = `UPDATE "estimates" SET "archived" = TRUE WHERE "id" = $1;`;
-
+	const queryText = `
+		UPDATE "estimates" 
+		SET archived = TRUE 
+		WHERE id = $1;
+	`;
 	pool.query(queryText, [req.params.id])
 		.then(result => res.sendStatus(200))
 		.catch(error => {
@@ -438,12 +441,18 @@ router.put('/recalculate/:id', (req, res) => {
 // *************************** DELETE ROUTES ***************************
 
 router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
-	pool.query('DELETE FROM "estimates" WHERE id=$1', [req.params.id]).then((result) => {
-		res.sendStatus(200);
-	}).catch((error) => {
-		console.error(`Error with /api/estimates/delete/:id for id ${req.params.id}`, error);
-		res.sendStatus(500);
-	})
+
+	const queryText = `
+		DELETE FROM "estimates" 
+		WHERE id = $1
+	`; // End queryText
+
+	pool.query(queryText, [req.params.id])
+		.then(result => res.sendStatus(200))
+		.catch(error => {
+			console.error(`Error with /api/estimates/delete/:id for id ${req.params.id}`, error);
+			res.sendStatus(500);
+		})
 });
 
 // PUT request which allows user to update any form-fillable data from the main estimate creation sheet, follows a very similar workflow to the 

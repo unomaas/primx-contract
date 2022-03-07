@@ -74,18 +74,10 @@ router.post('/register_licensee', rejectUnauthenticated, (req, res, next) => {
 // this middleware will run our POST if successful
 // this middleware will send a 404 if not successful
 router.post('/login', userStrategy.authenticate('local'), (req, res) => {
-	// console.log('*** Test');
-
-	// console.log('*** Test login',req.body);
-
-
 	res.sendStatus(200);
 });
 
 router.post('/login_licensee', userStrategy.authenticate('local'), (req, res) => {
-	
-	// console.log('*** Test login_licensee', req.body);
-	
 	res.sendStatus(200);
 });
 
