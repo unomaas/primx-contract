@@ -47,7 +47,6 @@ function* loginLicensee(action) {
     // send the action.payload as the body
     // the config includes credentials which
     // allow the server session to recognize the user
-		console.log('Testing in the saga,', action.payload);
 		
     yield axios.post('/api/user/login_licensee', action.payload, config);
 

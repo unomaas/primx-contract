@@ -63,7 +63,7 @@ export default function SystemAdminUpdateUsersGrid() {
       // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
       dispatch({ type: 'DELETE_ADMIN', payload: params });
   }
-	console.log('****', {rows});
+	
   return (
     <div
       className={classes.SystemAdminGrid}

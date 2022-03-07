@@ -35,20 +35,17 @@ export default function GridToolbarSelectDropdown() {
 
 	// ⬇ Handles closing and setting the values from the pop-up: 
 	const handleClose = (event, index, value) => {
-		console.log({value});
 		// ⬇ If they're clicking the same item, return: 
 		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;
 		} // End if 
 		// ⬇ If they're selecting a new option, make that the selected index:
-		// if (index || index == 0) {
+		if (index || index == 0) {
 			setSelectedIndex(index);
-		// } // End if
+		} // End if
 		// ⬇ Dispatch to the reducer to load the appropriate data: 
 		if (value && value != tableData) {
-			// TODO: This dispatch causes the app to crash and I'm not sure why. 
-			dispatch({ type: 'SET_TABLE_LICENSEE_PORTAL', payload: value });
-			console.log('*** true');
+			dispatch({ type: 'SET_LICENSEE_PORTAL_TABLE', payload: value });
 		} // End if 
 		// ⬇ Close the pop-up: 
 		setOpen(false);

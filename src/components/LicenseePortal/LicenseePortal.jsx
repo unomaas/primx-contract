@@ -55,6 +55,7 @@ export default function LicenseePortal() {
 			<br />
 
 			<div>
+				{/* Conditional rendering to only show the table once the data is loaded: */}
 				{Object.keys(pageData).length != 0 &&
 					<LicenseeTables pageData={pageData} />
 				}

@@ -44,7 +44,6 @@ function* deleteAdmin(action) {
 function* fetchAllLicensees() {
 	try {
 		const response = yield axios.get('/api/userInfo/licensees');
-		console.log('*** in fetchAllLicensees', { response });
 		//sends the results / info to the reducer
 		yield put({
 			type: 'SET_LICENSEE_INFO',
