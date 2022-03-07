@@ -247,6 +247,7 @@ function* clearAllStaleData(action) {
     yield put({ type: "HIDE_LOOKUP_TABLES" });
     yield put({ type: "HIDE_DATA_TABLE" });
     yield put({ type: "SET_TABLE_STATE", payload: false });
+		yield put({ type: 'SET_EDIT_STATE', payload: false });
   } catch (error) {
     console.error('clearAllStaleData failed', error)
   }

@@ -190,8 +190,8 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 			disableClickEventBubbling: true,
 			renderCell: renderEstimateNumber // function declared above, creates a div with navigation in each of the estimate number cells
 		},
-		{ field: 'licensee_contractor_name', headerClassName: classes.header, headerName: 'Licensee/Contractor', width: 175 },
 		{ field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: false },
+		{ field: 'licensee_contractor_name', headerClassName: classes.header, headerName: 'Licensee/Contractor', width: 175 },
 		{ field: 'date_created', headerClassName: classes.header, headerName: 'Date Created', width: 175 },
 		{ field: 'ship_to_address', headerClassName: classes.header, headerName: 'Ship To Address', width: 175, editable: false },
 		{ field: 'ship_to_city', headerClassName: classes.header, headerName: 'Ship To City', width: 175, editable: false },
