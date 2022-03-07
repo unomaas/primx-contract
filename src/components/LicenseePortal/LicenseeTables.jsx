@@ -1,5 +1,4 @@
-import React from 'react'
-import { useEffect } from 'react';
+import { React, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useEstimateCalculations from '../../hooks/useEstimateCalculations.js';
 
@@ -16,9 +15,44 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 export default function LicenseeTables({ pageData }) {
 	// bring in custom calculation hook
 	const classes = useStyles();
+	const tableData = useSelector(store => store.licenseePortalReducer.tableData);
 
+	let data_to_display = [];
+	let grid_source = "";
+	// let grid_source = useState('')
+	const [data, setData] = useState([]);
+	const [gridSource, setGridSource] = useState('open');
 
-	console.log('***', {pageData});
+	// log
+
+	// Depending on the button state, show the associated data: 
+	// if (tableData == "Open Orders") {
+
+	// } else 
+	if (tableData == "Pending Orders") {
+		data_to_display = pageData.pending_orders_array;
+		grid_source = "pending";
+		// setData(pageData.pending_orders_array);
+		// setGridSource("pending");
+	} else if (tableData == "Processed Orders") {
+		data_to_display = pageData.processed_orders_array;
+		grid_source = "processed";
+
+		// setData(pageData.processed_orders_array);
+		// setGridSource("processed");
+	} else if (tableData == "Archived Orders") {
+		data_to_display = pageData.archived_orders_array;
+		grid_source = "archived";
+		// setData(pageData.archived_orders_array);
+		// setGridSource("archived");
+	} else if (tableData == "Open Orders") {
+		data_to_display = pageData.open_orders_array;
+		grid_source = "open";
+		// setData(pageData.open_orders_array);
+		// setGridSource("open");
+	}
+
+	console.log('***', { pageData }, { tableData }, { data_to_display });
 	return (
 		<Paper>
 			{/* <br /> */}
@@ -31,8 +65,8 @@ export default function LicenseeTables({ pageData }) {
 				Open Orders
 			</Typography> */}
 			<LicenseeEstimatesGrid
-				estimateData={pageData.open_orders_array} 
-				gridSource={'open'} 
+				estimateData={data_to_display}
+				gridSource={grid_source}
 			/>
 
 

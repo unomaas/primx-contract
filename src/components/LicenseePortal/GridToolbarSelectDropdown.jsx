@@ -2,7 +2,7 @@
 // ⬇ File Imports: 
 // ⬇ Dependent Functionality:
 import { React, useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu } from '@material-ui/core';
@@ -18,6 +18,8 @@ export default function GridToolbarSelectDropdown() {
 	const [selectedIndex, setSelectedIndex] = useState(0);
 	const anchorRef = useRef(null);
 	const [open, setOpen] = useState(false);
+	const dispatch = useDispatch();
+	const tableData = useSelector(store => store.licenseePortalReducer.tableData);
 	// ⬇ Options for the drop-down menus: 
 	const options = [
 		"Open Orders",
@@ -33,19 +35,21 @@ export default function GridToolbarSelectDropdown() {
 
 	// ⬇ Handles closing and setting the values from the pop-up: 
 	const handleClose = (event, index, value) => {
-		console.log('in handleClose', { event }, { index }, {value});
+		console.log({value});
 		// ⬇ If they're clicking the same item, return: 
 		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;
 		} // End if 
 		// ⬇ If they're selecting a new option, make that the selected index:
-		if (index || index == 0) {
+		// if (index || index == 0) {
 			setSelectedIndex(index);
-		} // End if
+		// } // End if
 		// ⬇ Dispatch to the reducer to load the appropriate data: 
-		if (value) {
-			// TODO: add a reducer and the logic a couple components up to switch the data appropraitely.  
-		}
+		if (value && value != tableData) {
+			// TODO: This dispatch causes the app to crash and I'm not sure why. 
+			dispatch({ type: 'SET_TABLE_LICENSEE_PORTAL', payload: value });
+			console.log('*** true');
+		} // End if 
 		// ⬇ Close the pop-up: 
 		setOpen(false);
 	}; // End handleClose
@@ -77,7 +81,8 @@ export default function GridToolbarSelectDropdown() {
 				onClick={handleToggle}
 				color="primary"
 			>
-				Viewing {options[selectedIndex]} <ArrowDropDownIcon />
+				{/* Viewing {options[selectedIndex]} <ArrowDropDownIcon /> */}
+				Viewing {tableData} <ArrowDropDownIcon />
 			</Button>
 			<Popper
 				open={open}

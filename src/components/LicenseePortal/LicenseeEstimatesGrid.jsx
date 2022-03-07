@@ -118,6 +118,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 			if (willDelete) {
 				// ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
 				dispatch({ type: 'ARCHIVE_ESTIMATE', payload: params })
+				// TODO: This doesn't automatically remove the estimate from the open orders table (aka, the page did not re-render). Figure out why it doesn't here vs why it does in Admin Orders.  That means the rest of the buttons might not work either so I gotta figure that out too.  
 				swal('Order has been archived!', {
 					icon: 'success',
 				})
@@ -190,6 +191,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 			renderCell: renderEstimateNumber // function declared above, creates a div with navigation in each of the estimate number cells
 		},
 		{ field: 'licensee_contractor_name', headerClassName: classes.header, headerName: 'Licensee/Contractor', width: 175 },
+		{ field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: false },
 		{ field: 'date_created', headerClassName: classes.header, headerName: 'Date Created', width: 175 },
 		{ field: 'ship_to_address', headerClassName: classes.header, headerName: 'Ship To Address', width: 175, editable: false },
 		{ field: 'ship_to_city', headerClassName: classes.header, headerName: 'Ship To City', width: 175, editable: false },
@@ -201,7 +203,6 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		{ field: 'project_manager_name', headerClassName: classes.header, headerName: 'Project Manager', width: 175, editable: false },
 		{ field: 'project_manager_email', headerClassName: classes.header, headerName: 'Project Manager Email', width: 175, editable: false },
 		{ field: 'project_manager_phone', headerClassName: classes.header, headerName: 'Project Manager Phone', width: 175, editable: false },
-		{ field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: false },
 
 		// ⬇ Technical job details input by licensee
 		{ field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
