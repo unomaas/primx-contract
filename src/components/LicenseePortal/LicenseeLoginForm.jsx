@@ -30,7 +30,6 @@ function LicenseeLoginForm() {
 	useEffect(() => {
 		// ⬇ Fetch the current companies for drop-down menu options:
 		dispatch({ type: 'FETCH_ACTIVE_COMPANIES' });
-		dispatch({ type: 'SET_BUTTON_STATE', payload: 'SavedEstimates' });
 	}, []);
 
 	const login = (event) => {
@@ -131,7 +130,6 @@ function LicenseeLoginForm() {
 						type="submit"
 						variant="contained"
 						color="primary"
-						className="btn"
 						value="Log In"
 						className={classes.LexendTeraFont11}
 					>
