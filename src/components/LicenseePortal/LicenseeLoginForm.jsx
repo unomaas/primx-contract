@@ -60,8 +60,6 @@ function LicenseeLoginForm() {
 		}
 	}; // end login
 
-	// TODO WHEN YOU COME BACK: Update the Licensee Login page to have it's own URL cause right now I can't push them to anything when they login.  Check to see how the Admin Login Portal does it. 
-
 	return (
 		<div>
 

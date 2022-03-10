@@ -69,7 +69,6 @@ router.delete('/licensees/:id', rejectUnauthenticated, (req, res) => {
 			console.error('Error in admin DELETE in server', error);
 		});
 });
-// TODO: Build functions for fetching and deleting licensee accounts. 
 
 
 module.exports = router;

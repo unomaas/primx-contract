@@ -38,9 +38,6 @@ export default function SystemAdminUpdateUsersGrid() {
       )
   }
 
-	// TODO: Add a select dropdown and redo the form to add the licensee company appropriately.
-
-  // columns for Data Grid
   const columns = [
     {
       field: 'username',
