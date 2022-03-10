@@ -38,7 +38,6 @@ export default function LicenseeRegisterForm() {
 				licensees_id: company,
 			},
 		});
-		// TODO: Build and change this API call. 
 		setUsername('');
 		setPassword('');
 		setCompany(0);
@@ -47,7 +46,6 @@ export default function LicenseeRegisterForm() {
 
 	useEffect(() => {
 		// GET all users on page load
-		// TODO: Same here. 
 		dispatch({ type: 'FETCH_LICENSEE_INFO' });
 		dispatch({ type: 'FETCH_FIELD_SELECT' });
 	}, [])

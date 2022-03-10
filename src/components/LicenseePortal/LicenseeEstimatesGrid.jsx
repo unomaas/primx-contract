@@ -118,7 +118,6 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 			if (willDelete) {
 				// ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
 				dispatch({ type: 'ARCHIVE_ESTIMATE_LICENSEE', payload: params })
-				// TODO: This doesn't automatically remove the estimate from the open orders table (aka, the page did not re-render). Figure out why it doesn't here vs why it does in Admin Orders.  That means the rest of the buttons might not work either so I gotta figure that out too.  
 				swal('Order has been archived!', {
 					icon: 'success',
 				})
