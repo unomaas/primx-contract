@@ -62,11 +62,22 @@ export default function EstimateCreate() {
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
 	const handleChange = (key, value) => {
-		// ⬇ Sends the keys/values to the estimate reducer object: 
-		dispatch({
-			type: 'SET_ESTIMATE',
-			payload: { key: key, value: value }
-		});
+		console.log('***', { key }, { value });
+		// ⬇ If they're toggling Materials On-Hand, send the opposite bool: 
+		if (key === 'materials_on_hand') {
+			// ⬇ Converts our string input bool to a true bool for the reducer: 
+			const bool_value = (value === 'false');
+			// ⬇ Sends the keys/values to the estimate reducer object: 
+			dispatch({
+				type: 'SET_ESTIMATE',
+				payload: { key: key, value: bool_value }
+			});
+		} else { // ⬇ Else it's every other input, handle accordingly: 
+			dispatch({
+				type: 'SET_ESTIMATE',
+				payload: { key: key, value: value }
+			});
+		} // End if/else 
 	} // End handleChange
 
 	/** ⬇ handleShipping:
@@ -474,9 +485,13 @@ export default function EstimateCreate() {
 												<Switch
 													// checked={state.checkedB}
 													// onChange={handleChange}
-													name="checkedB"
+													// value="on_hand"
+													onChange={event => handleChange('materials_on_hand', event.target.value)}
+													checked={estimateData.materials_on_hand}
+													value={estimateData.materials_on_hand}
+													// name="checkedB"
 													color="primary"
-													size="large"
+												// size="large"
 												/>
 												<b>Have Materials On Hand?</b>
 											</TableCell>
