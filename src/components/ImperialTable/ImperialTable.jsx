@@ -565,7 +565,7 @@ export default function ImperialTable() {
 										</TableRow>
 
 										<TableRow hover={true}>
-											<TableCell><b>Total Amount:</b></TableCell>
+											<TableCell><b>Total Project Amount:</b></TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
@@ -595,7 +595,7 @@ export default function ImperialTable() {
 										</TableRow>
 
 										<TableRow hover={true}>
-											<TableCell><b>Total Order Quantity:</b></TableCell>
+											<TableCell><b>Final Order Quantity:</b></TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_order_quantity}</TableCell>
