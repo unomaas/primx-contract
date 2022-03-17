@@ -39,14 +39,14 @@ export const estimatesReducer = (state = {
 	waste_factor_percentage: 5,
 	// ⬇ Materials on-hand inputs:
 	materials_on_hand: false,
-	on_hand_primx_dc_lbs: 0,
-	on_hand_primx_dc_kgs: 0,
-	on_hand_primx_flow_ltrs: 0,
-	on_hand_primx_steel_fibers_lbs: 0,
-	on_hand_primx_steel_fibers_kgs: 0,
-	on_hand_primx_blankets_sq_ft: 0,
-	on_hand_primx_blankets_sq_m: 0,
-	on_hand_primx_cpea_ltrs: 0,
+	primx_dc_on_hand_lbs: 0,
+	primx_dc_on_hand_kgs: 0,
+	primx_flow_on_hand_ltrs: 0,
+	primx_steel_fibers_on_hand_lbs: 0,
+	primx_steel_fibers_on_hand_kgs: 0,
+	primx_blankets_on_hand_sq_ft: 0,
+	primx_blankets_on_hand_sq_m: 0,
+	primx_cpea_on_hand_ltrs: 0,
 }, action) => {
 	switch (action.type) {
 		case 'SET_ESTIMATE':
@@ -95,14 +95,14 @@ export const estimatesReducer = (state = {
 				waste_factor_percentage: 5,
 				// ⬇ Materials on-hand inputs:
 				materials_on_hand: false,
-				on_hand_primx_dc_lbs: 0,
-				on_hand_primx_dc_kgs: 0,
-				on_hand_primx_flow_ltrs: 0,
-				on_hand_primx_steel_fibers_lbs: 0,
-				on_hand_primx_steel_fibers_kgs: 0,
-				on_hand_primx_blankets_sq_ft: 0,
-				on_hand_primx_blankets_sq_m: 0,
-				on_hand_primx_cpea_ltrs: 0,
+				primx_dc_on_hand_lbs: 0,
+				primx_dc_on_hand_kgs: 0,
+				primx_flow_on_hand_ltrs: 0,
+				primx_steel_fibers_on_hand_lbs: 0,
+				primx_steel_fibers_on_hand_kgs: 0,
+				primx_blankets_on_hand_sq_ft: 0,
+				primx_blankets_on_hand_sq_m: 0,
+				primx_cpea_on_hand_ltrs: 0,
 			};
 		default:
 			return state;

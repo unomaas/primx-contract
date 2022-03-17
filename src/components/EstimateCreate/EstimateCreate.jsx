@@ -62,7 +62,6 @@ export default function EstimateCreate() {
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
 	const handleChange = (key, value) => {
-		console.log('***', { key }, { value });
 		// ⬇ If they're toggling Materials On-Hand, send the opposite bool: 
 		if (key === 'materials_on_hand') {
 			// ⬇ Converts our string input bool to a true bool for the reducer: 
@@ -71,12 +70,12 @@ export default function EstimateCreate() {
 			dispatch({
 				type: 'SET_ESTIMATE',
 				payload: { key: key, value: bool_value }
-			});
+			}); // End dispatch
 		} else { // ⬇ Else it's every other input, handle accordingly: 
 			dispatch({
 				type: 'SET_ESTIMATE',
 				payload: { key: key, value: value }
-			});
+			}); // End dispatch
 		} // End if/else 
 	} // End handleChange
 
