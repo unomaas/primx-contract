@@ -547,43 +547,13 @@ export default function MetricTable() {
 
 										<TableRow hover={true}>
 											<TableCell><b>Total Project Amount:</b></TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_dc_total_project_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_flow_total_project_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_cpea_total_project_amount?.toLocaleString('en-US')}</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
-
-										{/* //! Ryan Here, add the table rows below . */}
-										{/* Conditional rendering for materials on hand rows: */}
-										{estimateData.materials_on_hand &&
-											<>
-												<TableRow hover={true}>
-													<TableCell><b>Materials On Hand:</b></TableCell>
-													<TableCell>{calculatedDisplayObject?.primx_dc_on_hand_kgs?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{calculatedDisplayObject?.primx_flow_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{calculatedDisplayObject?.primx_steel_fibers_on_hand_kgs?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{calculatedDisplayObject?.primx_blankets_on_hand_sq_m?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{calculatedDisplayObject?.primx_cpea_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
-													<TableCell></TableCell>
-												</TableRow>
-
-												{/* // TODO: Figure out how to manage the calculations below:  */}
-												<TableRow hover={true}>
-													<TableCell><b>Total Order Amount:</b></TableCell>
-													{/* <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell> */}
-													{/* <TableCell>{(calculatedDisplayObject?.primx_dc_total_amount_needed - calculatedDisplayObject?.primx_dc_on_hand_lbs).toLocaleString('en-US')}</TableCell> */}
-													{/* //TODO: This might be better done in the math calculations. */}
-
-													<TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-													<TableCell></TableCell>
-												</TableRow>
-											</>
-										} {/* End materials on hand conditional rendering. */}
 
 										<TableRow hover={true}>
 											<TableCell><b>Packaging Capacity:</b></TableCell>
@@ -607,11 +577,11 @@ export default function MetricTable() {
 
 										<TableRow hover={true}>
 											<TableCell><b>Final Order Amount:</b></TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_order_quantity}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_order_quantity}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_cpea_total_order_quantity}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_dc_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_flow_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_cpea_final_order_amount}</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
 

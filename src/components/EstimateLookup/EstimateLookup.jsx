@@ -12,7 +12,6 @@ import { useParams, useLocation } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import EstimateLookupTable from './EstimateLookupTable';
 import EstimateCombineTable from '../EstimateCombine/EstimateCombineTable';
-import queryString from 'query-string';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -206,7 +205,8 @@ export default function EstimateLookup() {
 					// searchResult={searchResult}
 					/>
 					<h3>
-						Your estimate number is: <b style={{ color: 'red' }}>{searchResult?.estimate_number}</b>
+						{/* //! Ryan Here - Change this to be combined estimate number. */}
+						Your estimate number is: <b style={{ color: 'red' }}>{calcCombinedEstimate?.estimate_number}</b>
 					</h3>
 				</>
 			}

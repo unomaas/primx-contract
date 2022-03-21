@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router';
 import useCalculateCostPerMeasurement from '../../hooks/useCalculateCostPerMeasurement';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
+import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
 
@@ -543,14 +543,41 @@ export default function EstimateLookupTable() {
 
 									{/* Total amounts share key names between imperial and metric */}
 									<TableRow hover={true}>
-										<TableCell><b>Total Amount:</b></TableCell>
-										<TableCell>{searchResult?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{searchResult?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{searchResult?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{searchResult?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{searchResult?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+										<TableCell><b>Total Project Amount:</b></TableCell>
+										<TableCell>{searchResult?.primx_dc_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{searchResult?.primx_flow_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{searchResult?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{searchResult?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{searchResult?.primx_cpea_total_project_amount?.toLocaleString('en-US')}</TableCell>
 										<TableCell></TableCell>
 									</TableRow>
+
+									{/* //! Ryan Here, add the table rows below . */}
+									{/* Conditional rendering for materials on hand rows: */}
+									{searchResult?.materials_on_hand &&
+										<>
+											<TableRow hover={true}>
+												<TableCell><b>Materials On Hand:</b></TableCell>
+												<TableCell>{searchResult?.primx_dc_on_hand_lbs?.toLocaleString('en-US')}</TableCell>
+												<TableCell>{searchResult?.primx_flow_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+												<TableCell>{searchResult?.primx_steel_fibers_on_hand_lbs?.toLocaleString('en-US')}</TableCell>
+												<TableCell>{searchResult?.primx_blankets_on_hand_sq_ft?.toLocaleString('en-US')}</TableCell>
+												<TableCell>{searchResult?.primx_cpea_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+												<TableCell></TableCell>
+											</TableRow>
+
+											{/* // TODO: Figure out how to manage the calculations below:  */}
+											{/* <TableRow hover={true}>
+													<TableCell><b>Total Order Amount:</b></TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_dc_total_project_amount?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_flow_total_project_amount?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_cpea_total_project_amount?.toLocaleString('en-US')}</TableCell>
+													<TableCell></TableCell>
+												</TableRow> */}
+										</>
+									} {/* End materials on hand conditional rendering. */}
 
 									<TableRow hover={true}>
 										<TableCell><b>Packaging Capacity:</b></TableCell>
@@ -586,12 +613,12 @@ export default function EstimateLookupTable() {
 									</TableRow>
 
 									<TableRow hover={true}>
-										<TableCell><b>Total Order Quantity:</b></TableCell>
-										<TableCell>{searchResult?.primx_dc_total_order_quantity}</TableCell>
-										<TableCell>{searchResult?.primx_flow_total_order_quantity}</TableCell>
-										<TableCell>{searchResult?.primx_steel_fibers_total_order_quantity}</TableCell>
-										<TableCell>{searchResult?.primx_ultracure_blankets_total_order_quantity}</TableCell>
-										<TableCell>{searchResult?.primx_cpea_total_order_quantity}</TableCell>
+										<TableCell><b>Final Order Amount:</b></TableCell>
+										<TableCell>{searchResult?.primx_dc_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{searchResult?.primx_flow_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{searchResult?.primx_steel_fibers_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{searchResult?.primx_ultracure_blankets_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{searchResult?.primx_cpea_final_order_amount?.toLocaleString('en-US')}</TableCell>
 										<TableCell></TableCell>
 									</TableRow>
 
@@ -672,7 +699,16 @@ export default function EstimateLookupTable() {
 									{!searchResult.ordered_by_licensee &&
 										<>
 											<TableRow hover={true}>
-												<TableCell colSpan={7} align="right">
+												<TableCell align="left">
+													<Switch
+														// onChange={event => handleChange('materials_on_hand', event.target.value)}
+														checked={searchResult?.materials_on_hand}
+														value={searchResult?.materials_on_hand}
+														color="primary"
+													/>
+													<b>Have Materials On Hand?</b>
+												</TableCell>
+												<TableCell colSpan={6} align="right">
 													<section className="removeInPrint">
 														{/* Edit Estimate Button: */}
 														<Button

@@ -406,7 +406,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{firstEstimate?.primx_dc_dosage_lbs?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_dc_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -416,7 +416,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{firstEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_flow_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -426,7 +426,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{firstEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -436,7 +436,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													N/A
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -446,7 +446,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{firstEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -594,7 +594,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{secondEstimate?.primx_dc_dosage_lbs?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_dc_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -604,7 +604,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{secondEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_flow_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -614,7 +614,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{secondEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -624,7 +624,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													N/A
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -634,7 +634,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{secondEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -787,7 +787,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															{thirdEstimate?.primx_dc_dosage_lbs?.toLocaleString('en-US')}
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_dc_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 
@@ -797,7 +797,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															{thirdEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_flow_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 
@@ -807,7 +807,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															{thirdEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 
@@ -817,7 +817,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															N/A
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 
@@ -827,7 +827,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															{thirdEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 												</TableBody>
@@ -981,7 +981,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{firstEstimate?.primx_dc_dosage_kgs?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_dc_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -991,7 +991,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{firstEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_flow_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -1001,7 +1001,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{firstEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -1011,7 +1011,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													N/A
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -1021,7 +1021,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{firstEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{firstEstimate?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}
+													{firstEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -1169,7 +1169,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{secondEstimate?.primx_dc_dosage_kgs?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_dc_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -1179,7 +1179,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{secondEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_flow_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -1189,7 +1189,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{secondEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -1199,7 +1199,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													N/A
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 
@@ -1209,7 +1209,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{secondEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
 												</TableCell>
 												<TableCell>
-													{secondEstimate?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}
+													{secondEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -1361,7 +1361,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															{thirdEstimate?.primx_dc_dosage_kgs?.toLocaleString('en-US')}
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_dc_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 
@@ -1371,7 +1371,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															{thirdEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_flow_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 
@@ -1381,7 +1381,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															{thirdEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 
@@ -1391,7 +1391,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															N/A
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 
@@ -1401,7 +1401,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															{thirdEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
 														</TableCell>
 														<TableCell>
-															{thirdEstimate?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}
+															{thirdEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
 														</TableCell>
 													</TableRow>
 												</TableBody>
@@ -1447,12 +1447,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 								<TableBody>
 									{/* Total amounts share key names between imperial and metric */}
 									<TableRow hover={true}>
-										<TableCell><b>Total Amount:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+										<TableCell><b>Total Project Amount:</b></TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}</TableCell>
 										<TableCell></TableCell>
 									</TableRow>
 
@@ -1490,12 +1490,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									</TableRow>
 
 									<TableRow hover={true}>
-										<TableCell><b>Total Order Quantity:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_total_order_quantity?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_total_order_quantity?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_total_order_quantity?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_total_order_quantity?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_total_order_quantity?.toLocaleString('en-US')}</TableCell>
+										<TableCell><b>Final Order Amount:</b></TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_dc_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_flow_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell>{calcCombinedEstimate?.primx_cpea_final_order_amount?.toLocaleString('en-US')}</TableCell>
 										<TableCell></TableCell>
 									</TableRow>
 
