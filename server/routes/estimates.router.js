@@ -485,11 +485,13 @@ router.put('/clientupdates/:id', (req, res) => {
 		thickened_edge_perimeter_lineal_feet,
 		thickened_edge_construction_joint_lineal_feet,
 		primx_steel_fibers_dosage_lbs,
+		primx_dc_dosage_lbs,
 		square_meters,
 		thickness_millimeters,
 		thickened_edge_perimeter_lineal_meters,
 		thickened_edge_construction_joint_lineal_meters,
-		primx_steel_fibers_dosage_kgs
+		primx_steel_fibers_dosage_kgs,
+		primx_dc_dosage_kgs,
 	} = req.body
 
 	// save the values array using the destructured data from client
@@ -512,63 +514,65 @@ router.put('/clientupdates/:id', (req, res) => {
 		placement_types_id,
 		primx_flow_dosage_liters,
 		primx_cpea_dosage_liters,
-		waste_factor_percentage
+		waste_factor_percentage,
 	]
 
 	// start the query text with shared values
 	let queryText = `
-    UPDATE "estimates" SET
-    "measurement_units" = $1,
-    "country" = $2,
-    "project_name" = $3,
-    "licensee_id" = $4,
-    "project_general_contractor" = $5,
-    "ship_to_address" = $6,
-    "ship_to_city" = $7,
-    "shipping_costs_id" = $8,
-    "zip_postal_code" = $9,
-    "anticipated_first_pour_date" = $10,
-    "project_manager_name" = $11,
-    "project_manager_email" = $12,
-    "project_manager_phone" = $13,
-    "floor_types_id" = $14,
-    "placement_types_id" = $15,
-    "primx_flow_dosage_liters" = $16,
-    "primx_cpea_dosage_liters" = $17,
-    "waste_factor_percentage" = $18,
-  `
+    UPDATE "estimates" 
+		SET
+			"measurement_units" = $1,
+			"country" = $2,
+			"project_name" = $3,
+			"licensee_id" = $4,
+			"project_general_contractor" = $5,
+			"ship_to_address" = $6,
+			"ship_to_city" = $7,
+			"shipping_costs_id" = $8,
+			"zip_postal_code" = $9,
+			"anticipated_first_pour_date" = $10,
+			"project_manager_name" = $11,
+			"project_manager_email" = $12,
+			"project_manager_phone" = $13,
+			"floor_types_id" = $14,
+			"placement_types_id" = $15,
+			"primx_flow_dosage_liters" = $16,
+			"primx_cpea_dosage_liters" = $17,
+			"waste_factor_percentage" = $18,
+  `; // End queryText
+
 	// Add in the imperial or metric specific values based on unit choice
 	if (req.body.measurement_units == 'imperial') {
 		// append the imperial specific data to the SQL query
 		queryText += `
-      "square_feet"= $19,
-      "thickness_inches"= $20,
-      "thickened_edge_perimeter_lineal_feet"= $21,
-      "thickened_edge_construction_joint_lineal_feet"= $22,
-      "primx_steel_fibers_dosage_lbs"= $23
-      WHERE "id" = $24;
-    `
+			"square_feet"= $19,
+			"thickness_inches"= $20,
+			"thickened_edge_perimeter_lineal_feet"= $21,
+			"thickened_edge_construction_joint_lineal_feet"= $22,
+			"primx_steel_fibers_dosage_lbs"= $23,
+			"primx_dc_dosage_lbs" = $24
+		WHERE "id" = $25;
+	`; // End queryText
 		// add the imperial values to values array
 		values.push(
-			square_feet, thickness_inches, thickened_edge_perimeter_lineal_feet, thickened_edge_construction_joint_lineal_feet, primx_steel_fibers_dosage_lbs
-		)
-
-	}
-	else if (req.body.measurement_units == 'metric') {
+			square_feet, thickness_inches, thickened_edge_perimeter_lineal_feet, thickened_edge_construction_joint_lineal_feet, primx_steel_fibers_dosage_lbs, primx_dc_dosage_lbs
+		); // End push
+	} else if (req.body.measurement_units == 'metric') {
 		// append the metric specific data to the SQL query
 		queryText += `
       "square_meters" = $19,
       "thickness_millimeters" = $20,
       "thickened_edge_perimeter_lineal_meters" = $21,
       "thickened_edge_construction_joint_lineal_meters" = $22,
-      "primx_steel_fibers_dosage_kgs" = $23
-      WHERE "id" = $24;
-    `
+      "primx_steel_fibers_dosage_kgs" = $23,
+			"primx_dc_dosage_kgs" = $24
+      WHERE "id" = $25;
+    `; // End 
 		// add the metric values to the values array
 		values.push(
-			square_meters, thickness_millimeters, thickened_edge_perimeter_lineal_meters, thickened_edge_construction_joint_lineal_meters, primx_steel_fibers_dosage_kgs
-		)
-	}
+			square_meters, thickness_millimeters, thickened_edge_perimeter_lineal_meters, thickened_edge_construction_joint_lineal_meters, primx_steel_fibers_dosage_kgs, primx_dc_dosage_kgs
+		); // End push
+	} // End if/else if
 
 	// add id to the values array
 	values.push(req.params.id);

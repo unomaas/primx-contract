@@ -1,5 +1,7 @@
 // Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays
 export default function useEstimateCalculations(estimate) {
+	console.log('***', {estimate});
+	
   // set a default value for waste factor percentage if one wasn't entered
   if (!estimate.waste_factor_percentage) {
     estimate.waste_factor_percentage = 5;

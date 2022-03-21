@@ -115,7 +115,7 @@ export default function MetricTable() {
 								<Table size="small">
 
 									<TableHead>
-										<TableRow hover={true}>
+										<TableRow>
 											<TableCell align="center" colSpan={2}>
 												<h3>Project Quantity Inputs</h3>
 											</TableCell>
@@ -194,7 +194,7 @@ export default function MetricTable() {
 								<Table size="small">
 
 									<TableHead>
-										<TableRow hover={true}>
+										<TableRow>
 											<TableCell align="center" colSpan={2}>
 												<h3>Materials Required Inputs</h3>
 											</TableCell>
@@ -286,6 +286,9 @@ export default function MetricTable() {
 						</Paper>
 					</Grid>
 
+					{/* // ! Ryan Here, add the new input table here.  */}
+
+
 					{/* Input Table #3: Thickened Edge */}
 					<Grid item xs={4}>
 						<Paper elevation={3}>
@@ -293,7 +296,7 @@ export default function MetricTable() {
 								<Table size="small">
 
 									<TableHead>
-										<TableRow hover={true}>
+										<TableRow>
 											<TableCell align="center" colSpan={2}>
 												<h3>Thickened Edge Inputs</h3>
 											</TableCell>
@@ -543,7 +546,7 @@ export default function MetricTable() {
 										</TableRow>
 
 										<TableRow hover={true}>
-											<TableCell><b>Total Amount:</b></TableCell>
+											<TableCell><b>Total Project Amount:</b></TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
@@ -551,6 +554,36 @@ export default function MetricTable() {
 											<TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
+
+										{/* //! Ryan Here, add the table rows below . */}
+										{/* Conditional rendering for materials on hand rows: */}
+										{estimateData.materials_on_hand &&
+											<>
+												<TableRow hover={true}>
+													<TableCell><b>Materials On Hand:</b></TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_dc_on_hand_kgs?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_flow_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_steel_fibers_on_hand_kgs?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_blankets_on_hand_sq_m?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_cpea_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+													<TableCell></TableCell>
+												</TableRow>
+
+												{/* // TODO: Figure out how to manage the calculations below:  */}
+												<TableRow hover={true}>
+													<TableCell><b>Total Order Amount:</b></TableCell>
+													{/* <TableCell>{calculatedDisplayObject?.primx_dc_total_amount_needed?.toLocaleString('en-US')}</TableCell> */}
+													{/* <TableCell>{(calculatedDisplayObject?.primx_dc_total_amount_needed - calculatedDisplayObject?.primx_dc_on_hand_lbs).toLocaleString('en-US')}</TableCell> */}
+													{/* //TODO: This might be better done in the math calculations. */}
+
+													<TableCell>{calculatedDisplayObject?.primx_flow_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_cpea_total_amount_needed?.toLocaleString('en-US')}</TableCell>
+													<TableCell></TableCell>
+												</TableRow>
+											</>
+										} {/* End materials on hand conditional rendering. */}
 
 										<TableRow hover={true}>
 											<TableCell><b>Packaging Capacity:</b></TableCell>
@@ -573,7 +606,7 @@ export default function MetricTable() {
 										</TableRow>
 
 										<TableRow hover={true}>
-											<TableCell><b>Total Order Quantity:</b></TableCell>
+											<TableCell><b>Final Order Amount:</b></TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_dc_total_order_quantity}</TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_flow_total_order_quantity}</TableCell>
 											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_order_quantity}</TableCell>
