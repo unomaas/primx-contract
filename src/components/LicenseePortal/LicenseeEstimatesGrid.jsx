@@ -223,43 +223,43 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 
 		// ⬇ All calculated values are listed below
 		// ⬇ PrimX DC calculated values
-		{ field: 'primx_dc_total_amount_needed', headerClassName: classes.header, headerName: 'DC Total Amount Needed', width: 175 },
+		{ field: 'primx_dc_total_project_amount', headerClassName: classes.header, headerName: 'DC Total Amount Needed', width: 175 },
 		{ field: 'primx_dc_packages_needed', headerClassName: classes.header, headerName: 'DC Packages Needed', width: 175 },
-		{ field: 'primx_dc_total_order_quantity', headerClassName: classes.header, headerName: 'DC Total Order Quantity', width: 175 },
+		{ field: 'primx_dc_final_order_amount', headerClassName: classes.header, headerName: 'DC Total Order Quantity', width: 175 },
 		{ field: 'primx_dc_total_materials_price', headerClassName: classes.header, headerName: 'DC Total Material Price', width: 175 },
 		{ field: 'primx_dc_containers_needed', headerClassName: classes.header, headerName: 'DC Containers Needed', width: 175 },
 		{ field: 'primx_dc_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'DC Shipping Estimate', width: 175 },
 		{ field: 'primx_dc_total_cost_estimate', headerClassName: classes.header, headerName: 'DC Total Cost', width: 175 },
 
 		// ⬇ PrimX Flow calculated values
-		{ field: 'primx_flow_total_amount_needed', headerClassName: classes.header, headerName: 'Flow Total Amount Needed', width: 175 },
+		{ field: 'primx_flow_total_project_amount', headerClassName: classes.header, headerName: 'Flow Total Amount Needed', width: 175 },
 		{ field: 'primx_flow_packages_needed', headerClassName: classes.header, headerName: 'Flow Packages Needed', width: 175 },
-		{ field: 'primx_flow_total_order_quantity', headerClassName: classes.header, headerName: 'Flow Total Order Quantity', width: 175 },
+		{ field: 'primx_flow_final_order_amount', headerClassName: classes.header, headerName: 'Flow Total Order Quantity', width: 175 },
 		{ field: 'primx_flow_total_materials_price', headerClassName: classes.header, headerName: 'Flow Total Material Price', width: 175 },
 		{ field: 'primx_flow_containers_needed', headerClassName: classes.header, headerName: 'Flow Containers Needed', width: 175 },
 		{ field: 'primx_flow_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'Flow Shipping Estimate', width: 175 },
 		{ field: 'primx_flow_total_cost_estimate', headerClassName: classes.header, headerName: 'Flow Total Cost', width: 175 },
 
 		// ⬇ PrimX Steel Fibers calculated values
-		{ field: 'primx_steel_fibers_total_amount_needed', headerClassName: classes.header, headerName: 'Steel Fibers Total Amount Needed', width: 175 },
+		{ field: 'primx_steel_fibers_total_project_amount', headerClassName: classes.header, headerName: 'Steel Fibers Total Amount Needed', width: 175 },
 		{ field: 'primx_steel_fibers_packages_needed', headerClassName: classes.header, headerName: 'Steel Fibers Packages Needed', width: 175 },
-		{ field: 'primx_steel_fibers_total_order_quantity', headerClassName: classes.header, headerName: 'Steel Fibers Total Order Quantity', width: 175 },
+		{ field: 'primx_steel_fibers_final_order_amount', headerClassName: classes.header, headerName: 'Steel Fibers Total Order Quantity', width: 175 },
 		{ field: 'primx_steel_fibers_total_materials_price', headerClassName: classes.header, headerName: 'Steel Fibers Total Material Price', width: 175 },
 		{ field: 'primx_steel_fibers_containers_needed', headerClassName: classes.header, headerName: 'Steel Fibers Containers Needed', width: 175 },
 		{ field: 'primx_steel_fibers_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'Steel Fibers Shipping Estimate', width: 175 },
 		{ field: 'primx_steel_fibers_total_cost_estimate', headerClassName: classes.header, headerName: 'Steel Fibers Total Cost', width: 175 },
 
 		// PrimX Ultracure Blankets calculated values
-		{ field: 'primx_ultracure_blankets_total_amount_needed', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Amount Needed', width: 175 },
+		{ field: 'primx_ultracure_blankets_total_project_amount', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Amount Needed', width: 175 },
 		{ field: 'primx_ultracure_blankets_packages_needed', headerClassName: classes.header, headerName: 'Ultracure Blankets Packages Needed', width: 175 },
-		{ field: 'primx_ultracure_blankets_total_order_quantity', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Order Quantity', width: 175 },
+		{ field: 'primx_ultracure_blankets_final_order_amount', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Order Quantity', width: 175 },
 		{ field: 'primx_ultracure_blankets_total_materials_price', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Material Price', width: 175 },
 		{ field: 'primx_ultracure_blankets_total_cost_estimate', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Cost', width: 175 },
 
 		// PrimX CPEA calculated values
-		{ field: 'primx_cpea_total_amount_needed', headerClassName: classes.header, headerName: 'CPEA Total Amount Needed', width: 175 },
+		{ field: 'primx_cpea_total_project_amount', headerClassName: classes.header, headerName: 'CPEA Total Amount Needed', width: 175 },
 		{ field: 'primx_cpea_packages_needed', headerClassName: classes.header, headerName: 'CPEA Packages Needed', width: 175 },
-		{ field: 'primx_cpea_total_order_quantity', headerClassName: classes.header, headerName: 'CPEA Total Order Quantity', width: 175 },
+		{ field: 'primx_cpea_final_order_amount', headerClassName: classes.header, headerName: 'CPEA Total Order Quantity', width: 175 },
 		{ field: 'primx_cpea_total_materials_price', headerClassName: classes.header, headerName: 'CPEA Total Material Price', width: 175 },
 		{ field: 'primx_cpea_containers_needed', headerClassName: classes.header, headerName: 'CPEA Containers Needed', width: 175 },
 		{ field: 'primx_cpea_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'CPEA Shipping Estimate', width: 175 },

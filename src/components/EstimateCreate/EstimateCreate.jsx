@@ -481,18 +481,14 @@ export default function EstimateCreate() {
 
 										<TableRow hover={true}>
 											<TableCell align="left">
-												<Switch
-													// checked={state.checkedB}
-													// onChange={handleChange}
-													// value="on_hand"
-													onChange={event => handleChange('materials_on_hand', event.target.value)}
-													checked={estimateData.materials_on_hand}
-													value={estimateData.materials_on_hand}
-													// name="checkedB"
-													color="primary"
-												// size="large"
-												/>
 												<b>Have Materials On Hand?</b>
+												<Switch
+													onChange={event => handleChange('materials_on_hand', event.target.value)}
+													// checked={estimateData?.materials_on_hand}
+													value={estimateData?.materials_on_hand}
+													color="primary"
+												/>
+
 											</TableCell>
 											<TableCell
 												// colSpan={2} 

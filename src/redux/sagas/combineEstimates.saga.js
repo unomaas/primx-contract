@@ -72,21 +72,21 @@ function* fetchManyEstimatesQuery(action) {
     } // End if 
     // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
     const totalsObjectHolder = {
-      primx_cpea_total_amount_needed: 0,
-      primx_dc_total_amount_needed: 0,
-      primx_flow_total_amount_needed: 0,
-      primx_steel_fibers_total_amount_needed: 0,
-      primx_ultracure_blankets_total_amount_needed: 0,
+      primx_cpea_total_project_amount: 0,
+      primx_dc_total_project_amount: 0,
+      primx_flow_total_project_amount: 0,
+      primx_steel_fibers_total_project_amount: 0,
+      primx_ultracure_blankets_total_project_amount: 0,
 			square_feet: 0,
 			square_meters: 0, 
     }; // End totalsObjectHolder
     // ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
     for (let estimate of estimatesArray) {
-      totalsObjectHolder.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
-      totalsObjectHolder.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
-      totalsObjectHolder.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
-      totalsObjectHolder.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
-      totalsObjectHolder.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+      totalsObjectHolder.primx_cpea_total_project_amount += estimate.primx_cpea_total_project_amount;
+      totalsObjectHolder.primx_dc_total_project_amount += estimate.primx_dc_total_project_amount;
+      totalsObjectHolder.primx_flow_total_project_amount += estimate.primx_flow_total_project_amount;
+      totalsObjectHolder.primx_steel_fibers_total_project_amount += estimate.primx_steel_fibers_total_project_amount;
+      totalsObjectHolder.primx_ultracure_blankets_total_project_amount += estimate.primx_ultracure_blankets_total_project_amount;
 			totalsObjectHolder.square_feet += estimate.square_feet;
       totalsObjectHolder.square_meters += estimate.square_meters;
     } // End for loop
@@ -94,11 +94,11 @@ function* fetchManyEstimatesQuery(action) {
     // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
     let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
     // ⬇ Setting the tallied amount to the object to feed through the math machine: 
-    talliedCombinedEstimate.primx_cpea_total_amount_needed = totalsObjectHolder.primx_cpea_total_amount_needed;
-    talliedCombinedEstimate.primx_dc_total_amount_needed = totalsObjectHolder.primx_dc_total_amount_needed;
-    talliedCombinedEstimate.primx_flow_total_amount_needed = totalsObjectHolder.primx_flow_total_amount_needed;
-    talliedCombinedEstimate.primx_steel_fibers_total_amount_needed = totalsObjectHolder.primx_steel_fibers_total_amount_needed;
-    talliedCombinedEstimate.primx_ultracure_blankets_total_amount_needed = totalsObjectHolder.primx_ultracure_blankets_total_amount_needed;
+    talliedCombinedEstimate.primx_cpea_total_project_amount = totalsObjectHolder.primx_cpea_total_project_amount;
+    talliedCombinedEstimate.primx_dc_total_project_amount = totalsObjectHolder.primx_dc_total_project_amount;
+    talliedCombinedEstimate.primx_flow_total_project_amount = totalsObjectHolder.primx_flow_total_project_amount;
+    talliedCombinedEstimate.primx_steel_fibers_total_project_amount = totalsObjectHolder.primx_steel_fibers_total_project_amount;
+    talliedCombinedEstimate.primx_ultracure_blankets_total_project_amount = totalsObjectHolder.primx_ultracure_blankets_total_project_amount;
 		talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
     talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
     // ⬇ Run the timestamp removal function on the returned array of estimates:
@@ -174,21 +174,21 @@ function* fetchCombinedEstimatesQuery(action) {
     } // End if 
     // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
     const totalsObjectHolder = {
-      primx_cpea_total_amount_needed: 0,
-      primx_dc_total_amount_needed: 0,
-      primx_flow_total_amount_needed: 0,
-      primx_steel_fibers_total_amount_needed: 0,
-      primx_ultracure_blankets_total_amount_needed: 0,
+      primx_cpea_total_project_amount: 0,
+      primx_dc_total_project_amount: 0,
+      primx_flow_total_project_amount: 0,
+      primx_steel_fibers_total_project_amount: 0,
+      primx_ultracure_blankets_total_project_amount: 0,
 			square_feet: 0,
 			square_meters: 0, 
     }; // End totalsObjectHolder
     // ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
     for (let estimate of estimatesArray) {
-      totalsObjectHolder.primx_cpea_total_amount_needed += estimate.primx_cpea_total_amount_needed;
-      totalsObjectHolder.primx_dc_total_amount_needed += estimate.primx_dc_total_amount_needed;
-      totalsObjectHolder.primx_flow_total_amount_needed += estimate.primx_flow_total_amount_needed;
-      totalsObjectHolder.primx_steel_fibers_total_amount_needed += estimate.primx_steel_fibers_total_amount_needed;
-      totalsObjectHolder.primx_ultracure_blankets_total_amount_needed += estimate.primx_ultracure_blankets_total_amount_needed;
+      totalsObjectHolder.primx_cpea_total_project_amount += estimate.primx_cpea_total_project_amount;
+      totalsObjectHolder.primx_dc_total_project_amount += estimate.primx_dc_total_project_amount;
+      totalsObjectHolder.primx_flow_total_project_amount += estimate.primx_flow_total_project_amount;
+      totalsObjectHolder.primx_steel_fibers_total_project_amount += estimate.primx_steel_fibers_total_project_amount;
+      totalsObjectHolder.primx_ultracure_blankets_total_project_amount += estimate.primx_ultracure_blankets_total_project_amount;
       totalsObjectHolder.square_feet += estimate.square_feet;
       totalsObjectHolder.square_meters += estimate.square_meters;
     } // End for loop
@@ -196,11 +196,11 @@ function* fetchCombinedEstimatesQuery(action) {
     // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
     let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
     // ⬇ Setting the tallied amount to the object to feed through the math machine: 
-    talliedCombinedEstimate.primx_cpea_total_amount_needed = totalsObjectHolder.primx_cpea_total_amount_needed;
-    talliedCombinedEstimate.primx_dc_total_amount_needed = totalsObjectHolder.primx_dc_total_amount_needed;
-    talliedCombinedEstimate.primx_flow_total_amount_needed = totalsObjectHolder.primx_flow_total_amount_needed;
-    talliedCombinedEstimate.primx_steel_fibers_total_amount_needed = totalsObjectHolder.primx_steel_fibers_total_amount_needed;
-    talliedCombinedEstimate.primx_ultracure_blankets_total_amount_needed = totalsObjectHolder.primx_ultracure_blankets_total_amount_needed;
+    talliedCombinedEstimate.primx_cpea_total_project_amount = totalsObjectHolder.primx_cpea_total_project_amount;
+    talliedCombinedEstimate.primx_dc_total_project_amount = totalsObjectHolder.primx_dc_total_project_amount;
+    talliedCombinedEstimate.primx_flow_total_project_amount = totalsObjectHolder.primx_flow_total_project_amount;
+    talliedCombinedEstimate.primx_steel_fibers_total_project_amount = totalsObjectHolder.primx_steel_fibers_total_project_amount;
+    talliedCombinedEstimate.primx_ultracure_blankets_total_project_amount = totalsObjectHolder.primx_ultracure_blankets_total_project_amount;
     talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
     talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
     // ⬇ Run the timestamp removal function on the returned array of estimates:
