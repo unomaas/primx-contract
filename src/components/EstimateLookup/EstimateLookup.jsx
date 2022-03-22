@@ -48,7 +48,6 @@ export default function EstimateLookup() {
 	// ⬇ Run on estimate search complete:
 	useEffect(() => {
 		// ⬇ If the user got here with params, either by searching from the lookup view or by clicking a link in the admin table view, dispatch the data in the url params to run a GET request to the DB.
-		// if (estimate_number_searched) {
 		if (estimate_number_searched?.charAt(estimate_number_searched?.length - 1) === "C") {
 			dispatch({
 				type: "FETCH_COMBINED_ESTIMATE_QUERY",
@@ -202,10 +201,8 @@ export default function EstimateLookup() {
 						secondEstimate={secondEstimate}
 						thirdEstimate={thirdEstimate}
 						calcCombinedEstimate={calcCombinedEstimate}
-					// searchResult={searchResult}
 					/>
 					<h3>
-						{/* //! Ryan Here - Change this to be combined estimate number. */}
 						Your estimate number is: <b style={{ color: 'red' }}>{calcCombinedEstimate?.estimate_number}</b>
 					</h3>
 				</>

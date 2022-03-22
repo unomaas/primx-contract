@@ -23,6 +23,7 @@ export default function ImperialTable() {
 	const calculatedDisplayObject = useSelector(store => store.estimatesReducer.setCalcEstimate);
 	const [saveButton, setSaveButton] = useState(false);
 	const editState = useSelector(store => store.estimatesReducer.editState);
+	const [tableSize, setTableSize] = useState(4);
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
 		if (estimateData.square_feet && estimateData.thickness_inches && estimateData.thickened_edge_construction_joint_lineal_feet &&
@@ -95,7 +96,18 @@ export default function ImperialTable() {
 		// dispatch({ type: 'SET_EDIT_STATE', payload: false });
 		// dispatch({ type: 'SET_TABLE_STATE', payload: false });
 	} // End handleEdit
-	//#endregion ⬆⬆ Event handles above. 
+
+	/** ⬇ Table Size Validation:
+	 * The user has the option of stating whether or not they have materials on hand.  If true (aka, they have materials), then the table size will adjust to accommodate these new input fields. 
+	 */
+	useEffect(() => {
+		if (estimateData.materials_on_hand) {
+			setTableSize(3);
+		} else if (!estimateData.materials_on_hand) {
+			setTableSize(4);
+		} // End if/else
+	}, [estimateData.materials_on_hand]);
+		//#endregion ⬆⬆ Event handles above. 
 
 
 	// ⬇ Rendering:
@@ -110,7 +122,7 @@ export default function ImperialTable() {
 				>
 
 					{/* Input Table #1: Quantity Inputs */}
-					<Grid item xs={4}>
+					<Grid item xs={tableSize}>
 						<Paper elevation={3}>
 							<TableContainer>
 								<Table size="small">
@@ -177,7 +189,7 @@ export default function ImperialTable() {
 													}}
 													fullWidth
 													value={estimateData.waste_factor_percentage}
-													onClick={event => dispatch({ type: 'GET_WASTE_FACTOR' })}
+													onClick={() => dispatch({ type: 'GET_WASTE_FACTOR' })}
 												>
 												</TextField>
 											</TableCell>
@@ -189,7 +201,7 @@ export default function ImperialTable() {
 					</Grid>
 
 					{/* Input Table #2: Materials Required */}
-					<Grid item xs={4}>
+					<Grid item xs={tableSize}>
 						<Paper elevation={3}>
 							<TableContainer>
 								<Table size="small">
@@ -289,11 +301,109 @@ export default function ImperialTable() {
 
 
 					{/* // ! Ryan Here, add the new input table here.  */}
+					{/* Input Table #4: Materials On Hand */}
+					{estimateData.materials_on_hand &&
+						<Grid item xs={tableSize}>
+							<Paper elevation={3}>
+								<TableContainer>
+									<Table size="small">
 
+										<TableHead>
+											<TableRow>
+												<TableCell align="center" colSpan={2}>
+													<h3>Materials On Hand Inputs</h3>
+												</TableCell>
+											</TableRow>
+										</TableHead>
 
+										<TableBody>
+										<TableRow hover={true}>
+											<TableCell>
+												<b>PrīmX Flow:</b>
+											</TableCell>
+											<TableCell>
+												<TextField
+													onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
+													required
+													type="number"
+													size="small"
+													InputProps={{
+														endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
+													}}
+													fullWidth
+													value={estimateData.primx_flow_on_hand_ltrs}
+													onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
+												/>
+											</TableCell>
+										</TableRow>
+
+										<TableRow hover={true}>
+											<TableCell>
+												<b>PrīmX Steel Fibers:</b>
+											</TableCell>
+											<TableCell>
+												<TextField
+													onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
+													required
+													type="number"
+													size="small"
+													InputProps={{
+														endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+													}}
+													fullWidth
+													value={estimateData.primx_steel_fibers_on_hand_lbs}
+													onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_LBS' })}
+												/>
+											</TableCell>
+										</TableRow>
+
+										<TableRow hover={true}>
+											<TableCell>
+												<b>PrīmX CPEA:</b>
+											</TableCell>
+											<TableCell>
+												<TextField
+													onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
+													required
+													type="number"
+													size="small"
+													InputProps={{
+														endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
+													}}
+													fullWidth
+													value={estimateData.primx_cpea_on_hand_ltrs}
+												/>
+											</TableCell>
+										</TableRow>
+
+										<TableRow hover={true}>
+											<TableCell>
+												<b>PrīmX DC:</b>
+											</TableCell>
+											<TableCell>
+												<TextField
+													onChange={event => handleChange('primx_dc_dosage_lbs', event.target.value)}
+													required
+													type="number"
+													size="small"
+													InputProps={{
+														endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+													}}
+													fullWidth
+													value={estimateData.primx_dc_on_hand_lbs}
+												/>
+											</TableCell>
+										</TableRow>
+
+										</TableBody>
+									</Table>
+								</TableContainer>
+							</Paper>
+						</Grid>
+					}
 
 					{/* Input Table #3: Thickened Edge */}
-					<Grid item xs={4}>
+					<Grid item xs={tableSize}>
 						<Paper elevation={3}>
 							<TableContainer>
 								<Table size="small">
@@ -400,6 +510,7 @@ export default function ImperialTable() {
 							</TableContainer>
 						</Paper>
 					</Grid>
+
 
 					<Grid item xs={4}>
 						<Paper elevation={3}>

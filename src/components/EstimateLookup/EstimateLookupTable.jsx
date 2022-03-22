@@ -699,16 +699,8 @@ export default function EstimateLookupTable() {
 									{!searchResult.ordered_by_licensee &&
 										<>
 											<TableRow hover={true}>
-												<TableCell align="left">
-													<Switch
-														// onChange={event => handleChange('materials_on_hand', event.target.value)}
-														checked={searchResult?.materials_on_hand}
-														value={searchResult?.materials_on_hand}
-														color="primary"
-													/>
-													<b>Have Materials On Hand?</b>
-												</TableCell>
-												<TableCell colSpan={6} align="right">
+
+												<TableCell colSpan={7} align="right">
 													<section className="removeInPrint">
 														{/* Edit Estimate Button: */}
 														<Button
