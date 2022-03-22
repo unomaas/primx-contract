@@ -395,6 +395,25 @@ export default function ImperialTable() {
 												</TableCell>
 											</TableRow>
 
+											<TableRow hover={true}>
+												<TableCell>
+													<b>PrīmX UltraCure Blankets:</b>
+												</TableCell>
+												<TableCell>
+													<TextField
+														onChange={event => handleChange('primx_blankets_on_hand_sq_ft', event.target.value)}
+														required
+														type="number"
+														size="small"
+														InputProps={{
+															endAdornment: <InputAdornment position="end">ft²</InputAdornment>,
+														}}
+														fullWidth
+														value={estimateData.primx_blankets_on_hand_sq_ft}
+													/>
+												</TableCell>
+											</TableRow>
+
 										</TableBody>
 									</Table>
 								</TableContainer>
@@ -685,6 +704,7 @@ export default function ImperialTable() {
 											<TableCell></TableCell>
 										</TableRow>
 
+															{/* // ! Ryan Here */}
 										{estimateData.materials_on_hand &&
 											<>
 												<TableRow hover={true}>
@@ -699,11 +719,11 @@ export default function ImperialTable() {
 
 												<TableRow hover={true}>
 													<TableCell><b>Total Order Amount:</b></TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_dc_total_project_amount - estimateData.primx_dc_on_hand_lbs) || null}</TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_flow_total_project_amount - estimateData.primx_flow_on_hand_ltrs) || null}</TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_steel_fibers_total_project_amount - estimateData.primx_steel_fibers_on_hand_lbs) || null}</TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_ultracure_blankets_total_project_amount - estimateData.primx_blankets_on_hand_sq_ft) || null}</TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_cpea_total_project_amount - estimateData.primx_cpea_on_hand_ltrs) || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_dc_total_project_amount - estimateData.primx_dc_on_hand_lbs).toLocaleString('en-US') || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_flow_total_project_amount - estimateData.primx_flow_on_hand_ltrs).toLocaleString('en-US') || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_steel_fibers_total_project_amount - estimateData.primx_steel_fibers_on_hand_lbs).toLocaleString('en-US') || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_ultracure_blankets_total_project_amount - estimateData.primx_blankets_on_hand_sq_ft).toLocaleString('en-US') || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_cpea_total_project_amount - estimateData.primx_cpea_on_hand_ltrs).toLocaleString('en-US') || null}</TableCell>
 													<TableCell></TableCell>
 												</TableRow>
 											</>
@@ -731,11 +751,11 @@ export default function ImperialTable() {
 
 										<TableRow hover={true}>
 											<TableCell><b>Final Order Amount:</b></TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_dc_final_order_amount}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_flow_final_order_amount}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_final_order_amount}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_final_order_amount}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_cpea_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_dc_final_order_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_flow_final_order_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_final_order_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_final_order_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_cpea_final_order_amount?.toLocaleString('en-US')}</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
 

@@ -74,7 +74,16 @@ export default function useEstimateCalculations(estimate) {
 
     // calculate amounts and prices of materials that are measured in pounds and square feet, start with DC
     estimate.primx_dc_total_project_amount = Math.ceil(estimate.design_cubic_yards_total * estimate.primx_dc_dosage_lbs); // 67 is the factor provided by PrimX
+
+		// TODO: When I come back, I need to figure out a clever way to add in the materials on hand calculations.  Either we swap out two lines of code, or we create a new generic key that will allow both calculations.  Then we need to remove the Math.ceil's and the toLocaleString's so that the logic below can handle it.  Then maybe move it to it's own hook. 
+
+		if (estimate.materials_on_hand) {
+
+		}
+
     estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_project_amount / 2756); // dc comes in packages of 2756 lbs, need to round up
+
+
     estimate.primx_dc_final_order_amount = estimate.primx_dc_packages_needed * 2756;
     estimate.primx_dc_total_materials_price = estimate.primx_dc_final_order_amount * estimate.primx_dc_unit_price;
     // Every shipping container can hold 14 packages of DC, need to round up
@@ -163,7 +172,7 @@ export default function useEstimateCalculations(estimate) {
   // at. Works for both metric and imperial units since PrimX Flow and CPEA are measured in liters no matter what.
   function calculateFlowAndCpea(designVolume) {
     // start by adding calculations data for PrimX Flow
-    estimate.primx_flow_total_project_amount = designVolume * estimate.primx_flow_dosage_liters; // Dosage liters is input by licensee
+    estimate.primx_flow_total_project_amount = Math.ceil(designVolume * estimate.primx_flow_dosage_liters); // Dosage liters is input by licensee
     // flow comes in packages of 1000 liters, need to round up
     estimate.primx_flow_packages_needed = Math.ceil(estimate.primx_flow_total_project_amount / 1000);
     estimate.primx_flow_final_order_amount = estimate.primx_flow_packages_needed * 1000;
@@ -198,6 +207,37 @@ export default function useEstimateCalculations(estimate) {
 
   estimate.design_total_price_estimate = estimate.design_total_shipping_estimate + estimate.design_total_materials_price;
 
+	// ! Ryan Here, add the new math for the materials on hand. 
+
+	// Calculating the Materials On Hand requirements: 
+	if (estimate.materials_on_hand) {
+
+		// materials_on_hand: false,
+		// primx_dc_on_hand_lbs: 0,
+		// primx_dc_on_hand_kgs: 0,
+		// primx_flow_on_hand_ltrs: 0,
+		// primx_steel_fibers_on_hand_lbs: 0,
+		// primx_steel_fibers_on_hand_kgs: 0,
+		// primx_blankets_on_hand_sq_ft: 0,
+		// primx_blankets_on_hand_sq_m: 0,
+		// primx_cpea_on_hand_ltrs: 0,
+
+		if (estimate.measurement_units == "imperial") {
+			estimate.primx_dc_total_order_amount = estimate.primx_dc_total_project_amount - estimate.primx_dc_on_hand_lbs;
+			estimate.primx_flow_total_order_amount = estimate.primx_flow_total_project_amount - estimate.primx_flow_on_hand_ltrs;
+			estimate.primx_steel_fibers_total_order_amount = estimate.primx_steel_fibers_total_project_amount - estimate.primx_steel_fibers_on_hand_lbs;
+			estimate.primx_ultracure_blankets_total_order_amount = estimate.primx_ultracure_blankets_total_project_amount - estimate.primx_blankets_on_hand_sq_ft;
+			estimate.primx_cpea_total_order_amount = estimate.primx_cpea_total_project_amount - estimate.primx_cpea_on_hand_ltrs;
+		} else if (estimate.measurement_units == "metric") {
+			estimate.primx_dc_total_order_amount = estimate.primx_dc_total_project_amount - estimate.primx_dc_on_hand_kgs;
+			estimate.primx_flow_total_order_amount = estimate.primx_flow_total_project_amount - estimate.primx_flow_on_hand_ltrs;
+			estimate.primx_steel_fibers_total_order_amount = estimate.primx_steel_fibers_total_project_amount - estimate.primx_steel_fibers_on_hand_kgs;
+			estimate.primx_ultracure_blankets_total_order_amount = estimate.primx_ultracure_blankets_total_project_amount - estimate.primx_blankets_on_hand_sq_m;
+			estimate.primx_cpea_total_order_amount = estimate.primx_cpea_total_project_amount - estimate.primx_cpea_on_hand_ltrs;
+		}
+
+
+	}
 
 
   // Create our number formatter to format our money quantities back into standard looking currency values.
@@ -213,6 +253,8 @@ export default function useEstimateCalculations(estimate) {
 
   // before returning the estimate object, do any necessary rounding on given numbers to match the needs of the various grid displays
   // loop over all key/value pairs in the mutated estimate object, doing rounding based on shared key names
+	// TODO: Ryan Here.  At a later point, take out all of the math.ceil above and toLocaleStrings in the front-end and make them happen here. 
+	// * Take out this whole logic block into a separate hook, because we're going to need it in both combined estimates and here. 
   for (let property in estimate) {
     let value = estimate[property];
     // cubic volumes and total amounts of physical materials are always rounded up if they're decimals after being calculated
