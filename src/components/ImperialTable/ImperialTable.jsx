@@ -107,7 +107,7 @@ export default function ImperialTable() {
 			setTableSize(4);
 		} // End if/else
 	}, [estimateData.materials_on_hand]);
-		//#endregion ⬆⬆ Event handles above. 
+	//#endregion ⬆⬆ Event handles above. 
 
 
 	// ⬇ Rendering:
@@ -317,83 +317,83 @@ export default function ImperialTable() {
 										</TableHead>
 
 										<TableBody>
-										<TableRow hover={true}>
-											<TableCell>
-												<b>PrīmX Flow:</b>
-											</TableCell>
-											<TableCell>
-												<TextField
-													onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
-													required
-													type="number"
-													size="small"
-													InputProps={{
-														endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
-													}}
-													fullWidth
-													value={estimateData.primx_flow_on_hand_ltrs}
-													onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
-												/>
-											</TableCell>
-										</TableRow>
+											<TableRow hover={true}>
+												<TableCell>
+													<b>PrīmX Flow:</b>
+												</TableCell>
+												<TableCell>
+													<TextField
+														onChange={event => handleChange('primx_flow_on_hand_ltrs', event.target.value)}
+														required
+														type="number"
+														size="small"
+														InputProps={{
+															endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
+														}}
+														fullWidth
+														value={estimateData.primx_flow_on_hand_ltrs}
+														onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
+													/>
+												</TableCell>
+											</TableRow>
 
-										<TableRow hover={true}>
-											<TableCell>
-												<b>PrīmX Steel Fibers:</b>
-											</TableCell>
-											<TableCell>
-												<TextField
-													onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
-													required
-													type="number"
-													size="small"
-													InputProps={{
-														endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
-													}}
-													fullWidth
-													value={estimateData.primx_steel_fibers_on_hand_lbs}
-													onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_LBS' })}
-												/>
-											</TableCell>
-										</TableRow>
+											<TableRow hover={true}>
+												<TableCell>
+													<b>PrīmX Steel Fibers:</b>
+												</TableCell>
+												<TableCell>
+													<TextField
+														onChange={event => handleChange('primx_steel_fibers_on_hand_lbs', event.target.value)}
+														required
+														type="number"
+														size="small"
+														InputProps={{
+															endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+														}}
+														fullWidth
+														value={estimateData.primx_steel_fibers_on_hand_lbs}
+														onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_LBS' })}
+													/>
+												</TableCell>
+											</TableRow>
 
-										<TableRow hover={true}>
-											<TableCell>
-												<b>PrīmX CPEA:</b>
-											</TableCell>
-											<TableCell>
-												<TextField
-													onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
-													required
-													type="number"
-													size="small"
-													InputProps={{
-														endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
-													}}
-													fullWidth
-													value={estimateData.primx_cpea_on_hand_ltrs}
-												/>
-											</TableCell>
-										</TableRow>
+											<TableRow hover={true}>
+												<TableCell>
+													<b>PrīmX CPEA:</b>
+												</TableCell>
+												<TableCell>
+													<TextField
+														onChange={event => handleChange('primx_cpea_on_hand_ltrs', event.target.value)}
+														required
+														type="number"
+														size="small"
+														InputProps={{
+															endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
+														}}
+														fullWidth
+														value={estimateData.primx_cpea_on_hand_ltrs}
+													/>
+												</TableCell>
+											</TableRow>
 
-										<TableRow hover={true}>
-											<TableCell>
-												<b>PrīmX DC:</b>
-											</TableCell>
-											<TableCell>
-												<TextField
-													onChange={event => handleChange('primx_dc_dosage_lbs', event.target.value)}
-													required
-													type="number"
-													size="small"
-													InputProps={{
-														endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
-													}}
-													fullWidth
-													value={estimateData.primx_dc_on_hand_lbs}
-												/>
-											</TableCell>
-										</TableRow>
+											<TableRow hover={true}>
+												<TableCell>
+													<b>PrīmX DC:</b>
+												</TableCell>
+												<TableCell>
+													<TextField
+														onChange={event => handleChange('primx_dc_on_hand_lbs', event.target.value)}
+														required
+														type="number"
+														size="small"
+														InputProps={{
+															endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
+														}}
+														fullWidth
+														value={estimateData.primx_dc_on_hand_lbs}
+													/>
+												</TableCell>
+											</TableRow>
 
 										</TableBody>
 									</Table>
@@ -684,6 +684,30 @@ export default function ImperialTable() {
 											<TableCell>{calculatedDisplayObject?.primx_cpea_total_project_amount?.toLocaleString('en-US')}</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
+
+										{estimateData.materials_on_hand &&
+											<>
+												<TableRow hover={true}>
+													<TableCell><b>Materials On Hand:</b></TableCell>
+													<TableCell>{estimateData?.primx_dc_on_hand_lbs?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{estimateData?.primx_flow_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{estimateData?.primx_steel_fibers_on_hand_lbs?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{estimateData?.primx_blankets_on_hand_sq_ft?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{estimateData?.primx_cpea_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+													<TableCell></TableCell>
+												</TableRow>
+
+												<TableRow hover={true}>
+													<TableCell><b>Total Order Amount:</b></TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_dc_total_project_amount - estimateData.primx_dc_on_hand_lbs) || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_flow_total_project_amount - estimateData.primx_flow_on_hand_ltrs) || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_steel_fibers_total_project_amount - estimateData.primx_steel_fibers_on_hand_lbs) || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_ultracure_blankets_total_project_amount - estimateData.primx_blankets_on_hand_sq_ft) || null}</TableCell>
+													<TableCell>{(calculatedDisplayObject.primx_cpea_total_project_amount - estimateData.primx_cpea_on_hand_ltrs) || null}</TableCell>
+													<TableCell></TableCell>
+												</TableRow>
+											</>
+										} {/* End Materials On Hand Conditional Rendering */}
 
 										<TableRow hover={true}>
 											<TableCell><b>Packaging Capacity:</b></TableCell>
