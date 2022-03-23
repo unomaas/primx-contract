@@ -75,9 +75,10 @@ export default function useEstimateCalculations(estimate) {
     // calculate amounts and prices of materials that are measured in pounds and square feet, start with DC
     estimate.primx_dc_total_project_amount = Math.ceil(estimate.design_cubic_yards_total * estimate.primx_dc_dosage_lbs); // 67 is the factor provided by PrimX
 
-		// TODO: When I come back, I need to figure out a clever way to add in the materials on hand calculations.  Either we swap out two lines of code, or we create a new generic key that will allow both calculations.  Then we need to remove the Math.ceil's and the toLocaleString's so that the logic below can handle it.  Then maybe move it to it's own hook. 
+		// TODO: When I come back, I need to figure out a clever way to add in the materials on hand calculations.  Either we swap out two lines of code, or we create a new generic key that will allow both calculations.  Then we need to remove the Math.ceil's and the toLocaleString's so that the logic below can handle it.  Then maybe move it to it's own hook.  Then probably move the cost per sq ft in here as well. 
 
 		if (estimate.materials_on_hand) {
+			estimate.primx_dc_total_order_amount = estimate.primx_dc_total_project_amount - estimate.primx_dc_on_hand_lbs;
 
 		}
 
@@ -85,6 +86,7 @@ export default function useEstimateCalculations(estimate) {
 
 
     estimate.primx_dc_final_order_amount = estimate.primx_dc_packages_needed * 2756;
+
     estimate.primx_dc_total_materials_price = estimate.primx_dc_final_order_amount * estimate.primx_dc_unit_price;
     // Every shipping container can hold 14 packages of DC, need to round up
     estimate.primx_dc_containers_needed = Math.ceil(estimate.primx_dc_packages_needed / 14);
