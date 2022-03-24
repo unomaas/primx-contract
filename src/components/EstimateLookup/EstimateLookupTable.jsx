@@ -559,10 +559,10 @@ export default function EstimateLookupTable() {
 											<TableRow hover={true}>
 												<TableCell><b>Materials On Hand:</b></TableCell>
 												<TableCell>{searchResult?.primx_dc_on_hand_lbs?.toLocaleString('en-US')}</TableCell>
-												<TableCell>{searchResult?.primx_flow_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+												<TableCell>{searchResult?.primx_flow_on_hand_liters?.toLocaleString('en-US')}</TableCell>
 												<TableCell>{searchResult?.primx_steel_fibers_on_hand_lbs?.toLocaleString('en-US')}</TableCell>
-												<TableCell>{searchResult?.primx_blankets_on_hand_sq_ft?.toLocaleString('en-US')}</TableCell>
-												<TableCell>{searchResult?.primx_cpea_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+												<TableCell>{searchResult?.primx_ultracure_blankets_on_hand_sq_ft?.toLocaleString('en-US')}</TableCell>
+												<TableCell>{searchResult?.primx_cpea_on_hand_liters?.toLocaleString('en-US')}</TableCell>
 												<TableCell></TableCell>
 											</TableRow>
 

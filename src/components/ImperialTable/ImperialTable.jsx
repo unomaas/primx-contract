@@ -323,7 +323,7 @@ export default function ImperialTable() {
 												</TableCell>
 												<TableCell>
 													<TextField
-														onChange={event => handleChange('primx_flow_on_hand_ltrs', event.target.value)}
+														onChange={event => handleChange('primx_flow_on_hand_liters', event.target.value)}
 														required
 														type="number"
 														size="small"
@@ -331,7 +331,7 @@ export default function ImperialTable() {
 															endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
 														}}
 														fullWidth
-														value={estimateData.primx_flow_on_hand_ltrs}
+														value={estimateData.primx_flow_on_hand_liters}
 														onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
 													/>
 												</TableCell>
@@ -363,7 +363,7 @@ export default function ImperialTable() {
 												</TableCell>
 												<TableCell>
 													<TextField
-														onChange={event => handleChange('primx_cpea_on_hand_ltrs', event.target.value)}
+														onChange={event => handleChange('primx_cpea_on_hand_liters', event.target.value)}
 														required
 														type="number"
 														size="small"
@@ -371,7 +371,7 @@ export default function ImperialTable() {
 															endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
 														}}
 														fullWidth
-														value={estimateData.primx_cpea_on_hand_ltrs}
+														value={estimateData.primx_cpea_on_hand_liters}
 													/>
 												</TableCell>
 											</TableRow>
@@ -401,7 +401,7 @@ export default function ImperialTable() {
 												</TableCell>
 												<TableCell>
 													<TextField
-														onChange={event => handleChange('primx_blankets_on_hand_sq_ft', event.target.value)}
+														onChange={event => handleChange('primx_ultracure_blankets_on_hand_sq_ft', event.target.value)}
 														required
 														type="number"
 														size="small"
@@ -409,7 +409,7 @@ export default function ImperialTable() {
 															endAdornment: <InputAdornment position="end">ft²</InputAdornment>,
 														}}
 														fullWidth
-														value={estimateData.primx_blankets_on_hand_sq_ft}
+														value={estimateData.primx_ultracure_blankets_on_hand_sq_ft}
 													/>
 												</TableCell>
 											</TableRow>
@@ -541,28 +541,28 @@ export default function ImperialTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Square Feet:</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.square_feet?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.square_feet_display}
 											</TableCell>
 										</TableRow>
 
 										<TableRow hover={true}>
 											<TableCell><b>Thickness (in):</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.thickness_inches}
+												{calculatedDisplayObject?.thickness_inches_display}
 											</TableCell>
 										</TableRow>
 
 										<TableRow hover={true}>
 											<TableCell><b>Cubic Yards:</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.cubic_yards?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.cubic_yards}
 											</TableCell>
 										</TableRow>
 
 										<TableRow hover={true}>
 											<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.perimeter_thickening_cubic_yards}
 											</TableCell>
 										</TableRow>
 
@@ -576,21 +576,21 @@ export default function ImperialTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Subtotal:</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.cubic_yards_subtotal?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.cubic_yards_subtotal}
 											</TableCell>
 										</TableRow>
 
 										<TableRow hover={true}>
 											<TableCell><b>Waste Factor (yd³):</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.waste_factor_cubic_yards?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.waste_factor_cubic_yards}
 											</TableCell>
 										</TableRow>
 
 										<TableRow hover={true}>
 											<TableCell><b>Total Cubic Yards:</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.design_cubic_yards_total?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.design_cubic_yards_total}
 											</TableCell>
 										</TableRow>
 
@@ -612,10 +612,10 @@ export default function ImperialTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Lineal Feet:</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.thickened_edge_perimeter_lineal_feet_display}
 											</TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.thickened_edge_construction_joint_lineal_feet}
+												{calculatedDisplayObject?.thickened_edge_construction_joint_lineal_feet_display}
 											</TableCell>
 										</TableRow>
 
@@ -642,10 +642,10 @@ export default function ImperialTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Cubic Yards:</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.perimeter_thickening_cubic_yards}
 											</TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.construction_joint_thickening_cubic_yards}
 											</TableCell>
 										</TableRow>
 
@@ -678,29 +678,29 @@ export default function ImperialTable() {
 												<b>Dosage Rate per yd³:</b>
 											</TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.primx_dc_dosage_lbs}
+												{calculatedDisplayObject?.primx_dc_dosage_lbs_display}
 											</TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.primx_flow_dosage_liters}
+												{calculatedDisplayObject?.primx_flow_dosage_liters_display}
 											</TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.primx_steel_fibers_dosage_lbs}
+												{calculatedDisplayObject?.primx_steel_fibers_dosage_lbs_display}
 
 											</TableCell>
 											<TableCell>N/A</TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.primx_cpea_dosage_liters}
+												{calculatedDisplayObject?.primx_cpea_dosage_liters_display}
 											</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
 
 										<TableRow hover={true}>
 											<TableCell><b>Total Project Amount:</b></TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_dc_total_project_amount?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_flow_total_project_amount?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_cpea_total_project_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_dc_total_project_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_flow_total_project_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_total_project_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_total_project_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_cpea_total_project_amount}</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
 
@@ -709,21 +709,21 @@ export default function ImperialTable() {
 											<>
 												<TableRow hover={true}>
 													<TableCell><b>Materials On Hand:</b></TableCell>
-													<TableCell>{estimateData?.primx_dc_on_hand_lbs?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{estimateData?.primx_flow_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{estimateData?.primx_steel_fibers_on_hand_lbs?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{estimateData?.primx_blankets_on_hand_sq_ft?.toLocaleString('en-US')}</TableCell>
-													<TableCell>{estimateData?.primx_cpea_on_hand_ltrs?.toLocaleString('en-US')}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_dc_on_hand_lbs_display}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_flow_on_hand_liters_display}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_steel_fibers_on_hand_lbs_display}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_on_hand_sq_ft_display}</TableCell>
+													<TableCell>{calculatedDisplayObject?.primx_cpea_on_hand_liters_display}</TableCell>
 													<TableCell></TableCell>
 												</TableRow>
 
 												<TableRow hover={true}>
 													<TableCell><b>Total Order Amount:</b></TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_dc_total_project_amount - estimateData.primx_dc_on_hand_lbs).toLocaleString('en-US') || null}</TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_flow_total_project_amount - estimateData.primx_flow_on_hand_ltrs).toLocaleString('en-US') || null}</TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_steel_fibers_total_project_amount - estimateData.primx_steel_fibers_on_hand_lbs).toLocaleString('en-US') || null}</TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_ultracure_blankets_total_project_amount - estimateData.primx_blankets_on_hand_sq_ft).toLocaleString('en-US') || null}</TableCell>
-													<TableCell>{(calculatedDisplayObject.primx_cpea_total_project_amount - estimateData.primx_cpea_on_hand_ltrs).toLocaleString('en-US') || null}</TableCell>
+													<TableCell>{calculatedDisplayObject.primx_dc_total_order_amount}</TableCell>
+													<TableCell>{calculatedDisplayObject.primx_flow_total_order_amount}</TableCell>
+													<TableCell>{calculatedDisplayObject.primx_steel_fibers_total_order_amount}</TableCell>
+													<TableCell>{calculatedDisplayObject.primx_ultracure_blankets_total_order_amount}</TableCell>
+													<TableCell>{calculatedDisplayObject.primx_cpea_total_order_amount}</TableCell>
 													<TableCell></TableCell>
 												</TableRow>
 											</>
@@ -741,21 +741,21 @@ export default function ImperialTable() {
 
 										<TableRow hover={true}>
 											<TableCell><b>Packages Needed:</b></TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_dc_packages_needed}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_flow_packages_needed}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_packages_needed}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_cpea_packages_needed}</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
 
 										<TableRow hover={true}>
 											<TableCell><b>Final Order Amount:</b></TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_dc_final_order_amount?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_flow_final_order_amount?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_final_order_amount?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_final_order_amount?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_cpea_final_order_amount?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_dc_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_flow_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_ultracure_blankets_final_order_amount}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_cpea_final_order_amount}</TableCell>
 											<TableCell></TableCell>
 										</TableRow>
 
@@ -781,13 +781,13 @@ export default function ImperialTable() {
 
 										<TableRow hover={true}>
 											<TableCell><b>Containers:</b></TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_dc_containers_needed}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_flow_containers_needed}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_steel_fibers_containers_needed}</TableCell>
 											<TableCell>0</TableCell>
-											<TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
+											<TableCell>{calculatedDisplayObject?.primx_cpea_containers_needed}</TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.design_total_containers?.toLocaleString('en-US')}
+												{calculatedDisplayObject?.design_total_containers}
 											</TableCell>
 										</TableRow>
 
@@ -814,22 +814,22 @@ export default function ImperialTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Cost per ft²:</b></TableCell>
 											<TableCell>
-												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_dc_total_cost_estimate, calculatedDisplayObject?.square_feet)}
+												{calculatedDisplayObject?.primx_dc_cost_per_sq_ft}
 											</TableCell>
 											<TableCell>
-												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_flow_total_cost_estimate, calculatedDisplayObject?.square_feet)}
+												{calculatedDisplayObject?.primx_flow_cost_per_sq_ft}
 											</TableCell>
 											<TableCell>
-												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate, calculatedDisplayObject?.square_feet)}
+												{calculatedDisplayObject?.primx_steel_fibers_cost_per_sq_ft}
 											</TableCell>
 											<TableCell>
-												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate, calculatedDisplayObject?.square_feet)}
+												{calculatedDisplayObject?.primx_ultracure_blankets_cost_per_sq_ft}
 											</TableCell>
 											<TableCell>
-												{useCalculateCostPerMeasurement(calculatedDisplayObject?.primx_cpea_total_cost_estimate, calculatedDisplayObject?.square_feet)}
+												{calculatedDisplayObject?.primx_cpea_cost_per_sq_ft}
 											</TableCell>
 											<TableCell>
-												{useCalculateCostPerMeasurement(calculatedDisplayObject?.design_total_price_estimate, calculatedDisplayObject?.square_feet)}
+												{calculatedDisplayObject?.primx_design_total_cost_per_sq_ft}
 											</TableCell>
 										</TableRow>
 
