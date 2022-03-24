@@ -321,12 +321,12 @@ export default function useEstimateCalculations(estimate) {
 		estimate.primx_cpea_cost_per_sq_ft = estimate.primx_cpea_total_cost_estimate / estimate.square_feet 
 		estimate.primx_design_total_cost_per_sq_ft = estimate.design_total_price_estimate / estimate.square_feet 
 	// ⬇ Do the Cost Per Square Measurement calculations, Metric:
-		estimate.primx_dc_cost_per_sq_m = estimate.primx_dc_total_cost_estimate / estimate.square_meters 
-		estimate.primx_flow_cost_per_sq_m = estimate.primx_flow_total_cost_estimate / estimate.square_meters 
-		estimate.primx_steel_fibers_cost_per_sq_m = estimate.primx_steel_fibers_total_cost_estimate / estimate.square_meters 
-		estimate.primx_ultracure_blankets_cost_per_sq_m = estimate.primx_ultracure_blankets_total_cost_estimate / estimate.square_meters 
-		estimate.primx_cpea_cost_per_sq_m = estimate.primx_cpea_total_cost_estimate / estimate.square_meters 
-		estimate.primx_design_total_cost_per_sq_m = estimate.design_total_price_estimate / estimate.square_meters 
+		estimate.primx_dc_cost_per_sq_m = estimate.primx_dc_total_cost_estimate / estimate.square_meters; 
+		estimate.primx_flow_cost_per_sq_m = estimate.primx_flow_total_cost_estimate / estimate.square_meters; 
+		estimate.primx_steel_fibers_cost_per_sq_m = estimate.primx_steel_fibers_total_cost_estimate / estimate.square_meters;
+		estimate.primx_ultracure_blankets_cost_per_sq_m = estimate.primx_ultracure_blankets_total_cost_estimate / estimate.square_meters;
+		estimate.primx_cpea_cost_per_sq_m = estimate.primx_cpea_total_cost_estimate / estimate.square_meters;
+		estimate.primx_design_total_cost_per_sq_m = estimate.design_total_price_estimate / estimate.square_meters;
 
 
 	// ⬇ The input values can't be displayed as localeStrings, so we need to transform them into numbers first with parseFloat, save them to a unique key (_display), and then they'll be picked up in the value formatter to beautify on the DOM: 

@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { Button, MenuItem, TextField, Select, Radio, RadioGroup, FormControl, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Grid, FormHelperText, Switch, FormGroup } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
-import ImperialTable from '../ImperialTable/ImperialTable';
-import MetricTable from '../MetricTable/MetricTable';
+import ImperialTable from '../LegacyComponents/ImperialTable/ImperialTable';
+import EstimateCreateTable from './EstimateCreateTable';
+import MetricTable from '../LegacyComponents/MetricTable/MetricTable';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
@@ -518,19 +519,10 @@ export default function EstimateCreate() {
 			<br />
 
 			{/* Conditional rendering to show or hide tables based off submit button: */}
-			{showTables ? (
-				<>
-					{/* Conditional rendering to show Imperial or Metric Table: */}
-					{estimateData.measurement_units == "imperial" ? (
-						// If they select Imperial, show Imperial Table: 
-						<ImperialTable />
-					) : (
-						// If they select Metric, show Metric Table: 
-						<MetricTable />
-					)}
-				</>
-			) : (<></>)}
-			{/* End conditional rendering. */}
+			{showTables &&
+				<EstimateCreateTable />
+			}
+
 
 		</div >
 	)
