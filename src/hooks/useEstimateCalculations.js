@@ -53,8 +53,6 @@ export default function useEstimateCalculations(estimate) {
 
 
 	// ⬇ Begin adding new calculated keys to the estimate, first by adding in keys specific to the unit of measurement that's being worked with.
-
-
 	// ⬇ Imperial calculations below: 
 	if (estimate.measurement_units == 'imperial') {
 		// ⬇ Cubic yards base: original formula given to us for cubic yards divided quantity first by 12, then by 27:
@@ -75,8 +73,6 @@ export default function useEstimateCalculations(estimate) {
 		estimate.cubic_yards_subtotal = estimate.cubic_yards + estimate.perimeter_thickening_cubic_yards + estimate.construction_joint_thickening_cubic_yards;
 		estimate.waste_factor_cubic_yards = estimate.cubic_yards_subtotal * (estimate.waste_factor_percentage / 100);
 		estimate.design_cubic_yards_total = estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards;
-
-		// TODO: When I come back, I need to figure out a clever way to add in the materials on hand calculations.  Either we swap out two lines of code, or we create a new generic key that will allow both calculations.  Then we need to remove the Math.ceil's and the toLocaleString's so that the logic below can handle it.  Then maybe move it to it's own hook.  Then probably move the cost per sq ft in here as well. Make sure they can't save a negative cost. 
 
 		//#region - ⬇⬇ Imperial DC calculations below:
 		// ⬇ Calculate amounts and prices of materials that are measured in pounds and square feet:
@@ -362,9 +358,6 @@ export default function useEstimateCalculations(estimate) {
 	for (let property in estimate) {
 		// ⬇ Run each value through our formatter hook to return a pretty number: 
 		useValueFormatter(property, estimate);
-
-		// TODO: Make number copies of the following properties: primx_dc_dosage_lbs, primx_dc_dosage_kgs, primx_flow_dosage_liters, primx_steel_fibers_dosage_lbs, primx_steel_fibers_dosage_kgs, primx_cpea_dosage_liters, square_feet, square_meters, thickness_inches, thickness_millimeters, primx_dc_on_hand_lbs, primx_dc_on_hand_kgs, primx_flow_on_hand_liters, primx_steel_fibers_on_hand_lbs, primx_steel_fibers_on_hand_kgs, primx_ultracure_blankets_on_hand_sq_ft, primx_ultracure_blankets_on_hand_sq_m, primx_cpea_on_hand_liters
-
 	} // End for loop
 
 	return estimate;
