@@ -49,3 +49,5 @@ export default function useValueFormatter(property, estimate) {
 	} // End if/else
 
 }
+
+// TODO WHEN I COME BACK: Update the Lookup tables to handle these new values (aka take out all of the toLocaleStrings and resolve the NaN's.)  Then test the edits with these new inputs.  Then setup the Combine Estimates to null anything when POST'ing. 
