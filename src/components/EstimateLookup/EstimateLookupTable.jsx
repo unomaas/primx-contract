@@ -231,14 +231,14 @@ export default function EstimateLookupTable() {
 											<TableRow hover={true}>
 												<TableCell><b>Square Feet:</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.square_feet}
+													{searchResult?.square_feet_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickness (in):</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.thickness_inches}
+													{searchResult?.thickness_inches_display}
 												</TableCell>
 											</TableRow>
 
@@ -303,10 +303,10 @@ export default function EstimateLookupTable() {
 											<TableRow hover={true}>
 												<TableCell><b>Lineal Feet:</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.thickened_edge_perimeter_lineal_feet}
+													{searchResult?.thickened_edge_perimeter_lineal_feet_display}
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.thickened_edge_construction_joint_lineal_feet}
+													{searchResult?.thickened_edge_construction_joint_lineal_feet_display}
 												</TableCell>
 											</TableRow>
 
@@ -362,14 +362,14 @@ export default function EstimateLookupTable() {
 											<TableRow hover={true}>
 												<TableCell><b>Square Meters:</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.square_meters}
+													{searchResult?.square_meters_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickness (mm):</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.thickness_millimeters}
+													{searchResult?.thickness_millimeters_display}
 												</TableCell>
 											</TableRow>
 
@@ -434,10 +434,10 @@ export default function EstimateLookupTable() {
 											<TableRow hover={true}>
 												<TableCell><b>Lineal Meters:</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.thickened_edge_perimeter_lineal_meters}
+													{searchResult?.thickened_edge_perimeter_lineal_meters_display}
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.thickened_edge_construction_joint_lineal_meters}
+													{searchResult?.thickened_edge_construction_joint_lineal_meters_display}
 												</TableCell>
 											</TableRow>
 
@@ -519,37 +519,37 @@ export default function EstimateLookupTable() {
 													<b>Dosage Rate (per yd³):</b>
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.primx_dc_dosage_lbs}
+													{searchResult?.primx_dc_dosage_lbs_display}
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.primx_flow_dosage_liters}
+													{searchResult?.primx_flow_dosage_liters_display}
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.primx_steel_fibers_dosage_lbs}
+													{searchResult?.primx_steel_fibers_dosage_lbs_display}
 												</TableCell>
 												<TableCell align="right">
 													N/A
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.primx_cpea_dosage_liters}
+													{searchResult?.primx_cpea_dosage_liters_display}
 												</TableCell>
 											</> : <>
 												<TableCell>
 													<b>Dosage Rate (per m³):</b>
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.primx_dc_dosage_kgs}
+													{searchResult?.primx_dc_dosage_kgs_display}
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.primx_flow_dosage_liters}
+													{searchResult?.primx_flow_dosage_liters_display}
 												</TableCell>
 												<TableCell align="right">
-													{searchResult?.primx_steel_fibers_dosage_kgs}
+													{searchResult?.primx_steel_fibers_dosage_kgs_display}
 												</TableCell>
 												<TableCell align="right">
 													N/A</TableCell>
 												<TableCell align="right">
-													{searchResult?.primx_cpea_dosage_liters}
+													{searchResult?.primx_cpea_dosage_liters_display}
 												</TableCell>
 											</>
 										} {/* End conditionally rendered dosages*/}
