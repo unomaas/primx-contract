@@ -277,57 +277,57 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 											<TableRow hover={true}>
 												<TableCell><b>Square Feet:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.square_feet?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.square_feet_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickness (in):</b></TableCell>
-												<TableCell>
-													{parseInt(firstEstimate?.thickness_inches)?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.thickness_inches_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.cubic_yards}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.perimeter_thickening_cubic_yards}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.construction_joint_thickening_cubic_yards}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.cubic_yards_subtotal}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.waste_factor_cubic_yards}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Total Cubic Yards:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.design_cubic_yards_total}
 												</TableCell>
 											</TableRow>
 
@@ -341,49 +341,49 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableHead>
 											<TableRow hover={true}>
 												<TableCell></TableCell>
-												<TableCell><b>Perimeter</b></TableCell>
-												<TableCell><b>Construction Joint</b></TableCell>
+												<TableCell align="right"><b>Perimeter</b></TableCell>
+												<TableCell align="right"><b>Construction Joint</b></TableCell>
 											</TableRow>
 										</TableHead>
 
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>Lineal Feet:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.thickened_edge_perimeter_lineal_feet_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.thickened_edge_construction_joint_lineal_feet?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.thickened_edge_construction_joint_lineal_feet_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Width (yd³):</b></TableCell>
-												<TableCell>
+												<TableCell align="right">
 													5
 												</TableCell>
-												<TableCell>
+												<TableCell align="right">
 													10
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Additional Thickness (in):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.additional_thickness_inches}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.additional_thickness_inches}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.perimeter_thickening_cubic_yards}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.construction_joint_thickening_cubic_yards}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -394,59 +394,59 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableHead>
 											<TableRow hover={true}>
 												<TableCell></TableCell>
-												<TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-												<TableCell><b>Amount Needed</b></TableCell>
+												<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
+												<TableCell align="right"><b>Amount Needed</b></TableCell>
 											</TableRow>
 										</TableHead>
 
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX DC (lbs):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.primx_dc_dosage_lbs?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_dc_dosage_lbs_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_dc_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_flow_dosage_liters_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_flow_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_steel_fibers_dosage_lbs_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_steel_fibers_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
-												<TableCell>
+												<TableCell align="right">
 													N/A
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_ultracure_blankets_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_cpea_dosage_liters_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_cpea_total_project_amount}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -465,57 +465,57 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 											<TableRow hover={true}>
 												<TableCell><b>Square Feet:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.square_feet?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.square_feet_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickness (in):</b></TableCell>
-												<TableCell>
-													{parseInt(secondEstimate?.thickness_inches)?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.thickness_inches_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.cubic_yards}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.perimeter_thickening_cubic_yards}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.construction_joint_thickening_cubic_yards}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.cubic_yards_subtotal}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Waste Factor @ {secondEstimate?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.waste_factor_cubic_yards}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Total Cubic Yards:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.design_cubic_yards_total}
 												</TableCell>
 											</TableRow>
 
@@ -529,49 +529,49 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableHead>
 											<TableRow hover={true}>
 												<TableCell></TableCell>
-												<TableCell><b>Perimeter</b></TableCell>
-												<TableCell><b>Construction Joint</b></TableCell>
+												<TableCell align="right"><b>Perimeter</b></TableCell>
+												<TableCell align="right"><b>Construction Joint</b></TableCell>
 											</TableRow>
 										</TableHead>
 
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>Lineal Feet:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.thickened_edge_perimeter_lineal_feet_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.thickened_edge_construction_joint_lineal_feet?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.thickened_edge_construction_joint_lineal_feet_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Width (yd³):</b></TableCell>
-												<TableCell>
+												<TableCell align="right">
 													5
 												</TableCell>
-												<TableCell>
+												<TableCell align="right">
 													10
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Additional Thickness (in):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.additional_thickness_inches}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.additional_thickness_inches}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.perimeter_thickening_cubic_yards}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.construction_joint_thickening_cubic_yards}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -582,59 +582,59 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableHead>
 											<TableRow hover={true}>
 												<TableCell></TableCell>
-												<TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-												<TableCell><b>Amount Needed</b></TableCell>
+												<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
+												<TableCell align="right"><b>Amount Needed</b></TableCell>
 											</TableRow>
 										</TableHead>
 
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX DC (lbs):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.primx_dc_dosage_lbs?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_dc_dosage_lbs_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_dc_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_flow_dosage_liters_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_flow_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_steel_fibers_dosage_lbs_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_steel_fibers_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
-												<TableCell>
+												<TableCell align="right">
 													N/A
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_ultracure_blankets_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_cpea_dosage_liters_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_cpea_total_project_amount}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -657,57 +657,57 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 													<TableRow hover={true}>
 														<TableCell><b>Square Feet:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.square_feet?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.square_feet_display}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Thickness (in):</b></TableCell>
-														<TableCell>
-															{parseInt(thirdEstimate?.thickness_inches)?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.thickness_inches_display}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Cubic Yards:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.cubic_yards?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.cubic_yards}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.perimeter_thickening_cubic_yards}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.construction_joint_thickening_cubic_yards}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Subtotal:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.cubic_yards_subtotal?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.cubic_yards_subtotal}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage}%:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.waste_factor_cubic_yards?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.waste_factor_cubic_yards}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Total Cubic Yards:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.design_cubic_yards_total?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.design_cubic_yards_total}
 														</TableCell>
 													</TableRow>
 
@@ -721,49 +721,49 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<TableHead>
 													<TableRow hover={true}>
 														<TableCell></TableCell>
-														<TableCell><b>Perimeter</b></TableCell>
-														<TableCell><b>Construction Joint</b></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
 													</TableRow>
 												</TableHead>
 
 												<TableBody>
 													<TableRow hover={true}>
 														<TableCell><b>Lineal Feet:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.thickened_edge_perimeter_lineal_feet?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.thickened_edge_perimeter_lineal_feet_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.thickened_edge_construction_joint_lineal_feet?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.thickened_edge_construction_joint_lineal_feet_display}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Width (yd³):</b></TableCell>
-														<TableCell>
+														<TableCell align="right">
 															5
 														</TableCell>
-														<TableCell>
+														<TableCell align="right">
 															10
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Additional Thickness (in):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.additional_thickness_inches}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.additional_thickness_inches?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.additional_thickness_inches}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Cubic Yards:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.perimeter_thickening_cubic_yards?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.perimeter_thickening_cubic_yards}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.construction_joint_thickening_cubic_yards?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.construction_joint_thickening_cubic_yards}
 														</TableCell>
 													</TableRow>
 
@@ -775,59 +775,59 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<TableHead>
 													<TableRow hover={true}>
 														<TableCell></TableCell>
-														<TableCell><b>Dosage Rate (per yd³)</b></TableCell>
-														<TableCell><b>Amount Needed</b></TableCell>
+														<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
+														<TableCell align="right"><b>Amount Needed</b></TableCell>
 													</TableRow>
 												</TableHead>
 
 												<TableBody>
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX DC (lbs):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_dc_dosage_lbs?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_dc_dosage_lbs_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_dc_total_project_amount}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_flow_dosage_liters_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_flow_total_project_amount}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_steel_fibers_dosage_lbs?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_steel_fibers_dosage_lbs_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_steel_fibers_total_project_amount}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
-														<TableCell>
+														<TableCell align="right">
 															N/A
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_ultracure_blankets_total_project_amount}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_cpea_dosage_liters_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_cpea_total_project_amount}
 														</TableCell>
 													</TableRow>
 												</TableBody>
@@ -852,57 +852,57 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 											<TableRow hover={true}>
 												<TableCell><b>Square Meters:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.square_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.square_meters_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickness (mm):</b></TableCell>
-												<TableCell>
-													{parseInt(firstEstimate?.thickness_inches)?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.thickness_inches_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.cubic_meters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.perimeter_thickening_cubic_meters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.construction_joint_thickening_cubic_meters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.cubic_meters_subtotal}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.waste_factor_cubic_meters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Total Cubic Meters:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.design_cubic_meters_total}
 												</TableCell>
 											</TableRow>
 
@@ -916,49 +916,49 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableHead>
 											<TableRow hover={true}>
 												<TableCell></TableCell>
-												<TableCell><b>Perimeter</b></TableCell>
-												<TableCell><b>Construction Joint</b></TableCell>
+												<TableCell align="right"><b>Perimeter</b></TableCell>
+												<TableCell align="right"><b>Construction Joint</b></TableCell>
 											</TableRow>
 										</TableHead>
 
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>Lineal Meters:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.thickened_edge_perimeter_lineal_meters_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.thickened_edge_construction_joint_lineal_meters_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Width (m³):</b></TableCell>
-												<TableCell>
+												<TableCell align="right">
 													1.5
 												</TableCell>
-												<TableCell>
+												<TableCell align="right">
 													3.0
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Additional Thickness (mm):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.additional_thickness_millimeters}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.additional_thickness_millimeters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell>
-													{firstEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.perimeter_thickening_cubic_meters}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.construction_joint_thickening_cubic_meters}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -969,59 +969,59 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableHead>
 											<TableRow hover={true}>
 												<TableCell></TableCell>
-												<TableCell><b>Dosage Rate (per m³)</b></TableCell>
-												<TableCell><b>Amount Needed</b></TableCell>
+												<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
+												<TableCell align="right"><b>Amount Needed</b></TableCell>
 											</TableRow>
 										</TableHead>
 
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX DC (kgs):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.primx_dc_dosage_kgs?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_dc_dosage_kgs_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_dc_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_flow_dosage_liters_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_flow_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_steel_fibers_dosage_kgs_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_steel_fibers_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
-												<TableCell>
+												<TableCell align="right">
 													N/A
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_ultracure_blankets_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-												<TableCell>
-													{firstEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_cpea_dosage_liters_display}
 												</TableCell>
-												<TableCell>
-													{firstEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{firstEstimate?.primx_cpea_total_project_amount}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -1040,57 +1040,57 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 											<TableRow hover={true}>
 												<TableCell><b>Square Meters:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.square_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.square_meters_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickness (mm):</b></TableCell>
-												<TableCell>
-													{parseInt(secondEstimate?.thickness_inches)?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.thickness_inches_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.cubic_meters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.perimeter_thickening_cubic_meters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.construction_joint_thickening_cubic_meters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.cubic_meters_subtotal}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.waste_factor_cubic_meters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Total Cubic Meters:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.design_cubic_meters_total}
 												</TableCell>
 											</TableRow>
 
@@ -1104,49 +1104,49 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableHead>
 											<TableRow hover={true}>
 												<TableCell></TableCell>
-												<TableCell><b>Perimeter</b></TableCell>
-												<TableCell><b>Construction Joint</b></TableCell>
+												<TableCell align="right"><b>Perimeter</b></TableCell>
+												<TableCell align="right"><b>Construction Joint</b></TableCell>
 											</TableRow>
 										</TableHead>
 
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>Lineal Meters:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.thickened_edge_perimeter_lineal_meters_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.thickened_edge_construction_joint_lineal_meters_display}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Width (m³):</b></TableCell>
-												<TableCell>
+												<TableCell align="right">
 													1.5
 												</TableCell>
-												<TableCell>
+												<TableCell align="right">
 													3.0
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Additional Thickness (mm):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.additional_thickness_millimeters}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.additional_thickness_millimeters}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell>
-													{secondEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.perimeter_thickening_cubic_meters}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.construction_joint_thickening_cubic_meters}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -1157,59 +1157,59 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableHead>
 											<TableRow hover={true}>
 												<TableCell></TableCell>
-												<TableCell><b>Dosage Rate (per m³)</b></TableCell>
-												<TableCell><b>Amount Needed</b></TableCell>
+												<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
+												<TableCell align="right"><b>Amount Needed</b></TableCell>
 											</TableRow>
 										</TableHead>
 
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX DC (kgs):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.primx_dc_dosage_kgs?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_dc_dosage_kgs_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_dc_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_flow_dosage_liters_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_flow_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_steel_fibers_dosage_kgs_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_steel_fibers_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
-												<TableCell>
+												<TableCell align="right">
 													N/A
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_ultracure_blankets_total_project_amount}
 												</TableCell>
 											</TableRow>
 
 											<TableRow hover={true}>
 												<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-												<TableCell>
-													{secondEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_cpea_dosage_liters_display}
 												</TableCell>
-												<TableCell>
-													{secondEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
+												<TableCell align="right">
+													{secondEstimate?.primx_cpea_total_project_amount}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -1231,57 +1231,57 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 													<TableRow hover={true}>
 														<TableCell><b>Square Meters:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.square_meters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.square_meters_display}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Thickness (mm):</b></TableCell>
-														<TableCell>
-															{parseInt(thirdEstimate?.thickness_inches)?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.thickness_inches_display}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Cubic Meters:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.cubic_meters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.cubic_meters}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.perimeter_thickening_cubic_meters}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.construction_joint_thickening_cubic_meters}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Subtotal:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.cubic_meters_subtotal?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.cubic_meters_subtotal}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
-														<TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage?.toLocaleString('en-US')}%:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.waste_factor_cubic_meters?.toLocaleString('en-US')}
+														<TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage}%:</b></TableCell>
+														<TableCell align="right">
+															{thirdEstimate?.waste_factor_cubic_meters}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Total Cubic Meters:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.design_cubic_meters_total?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.design_cubic_meters_total}
 														</TableCell>
 													</TableRow>
 
@@ -1295,49 +1295,49 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<TableHead>
 													<TableRow hover={true}>
 														<TableCell></TableCell>
-														<TableCell><b>Perimeter</b></TableCell>
-														<TableCell><b>Construction Joint</b></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
 													</TableRow>
 												</TableHead>
 
 												<TableBody>
 													<TableRow hover={true}>
 														<TableCell><b>Lineal Meters:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.thickened_edge_perimeter_lineal_meters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.thickened_edge_perimeter_lineal_meters_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.thickened_edge_construction_joint_lineal_meters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.thickened_edge_construction_joint_lineal_meters_display}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Width (m³):</b></TableCell>
-														<TableCell>
+														<TableCell align="right">
 															1.5
 														</TableCell>
-														<TableCell>
+														<TableCell align="right">
 															3.0
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Additional Thickness (mm):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.additional_thickness_millimeters}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.additional_thickness_millimeters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.additional_thickness_millimeters}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>Cubic Meters:</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.perimeter_thickening_cubic_meters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.perimeter_thickening_cubic_meters}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.construction_joint_thickening_cubic_meters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.construction_joint_thickening_cubic_meters}
 														</TableCell>
 													</TableRow>
 
@@ -1349,59 +1349,59 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<TableHead>
 													<TableRow hover={true}>
 														<TableCell></TableCell>
-														<TableCell><b>Dosage Rate (per m³)</b></TableCell>
-														<TableCell><b>Amount Needed</b></TableCell>
+														<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
+														<TableCell align="right"><b>Amount Needed</b></TableCell>
 													</TableRow>
 												</TableHead>
 
 												<TableBody>
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX DC (kgs):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_dc_dosage_kgs?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_dc_dosage_kgs_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_dc_total_project_amount}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_flow_dosage_liters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_flow_dosage_liters_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_flow_total_project_amount}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_steel_fibers_dosage_kgs?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_steel_fibers_dosage_kgs_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_steel_fibers_total_project_amount}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
-														<TableCell>
+														<TableCell align="right">
 															N/A
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_ultracure_blankets_total_project_amount}
 														</TableCell>
 													</TableRow>
 
 													<TableRow hover={true}>
 														<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_cpea_dosage_liters?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_cpea_dosage_liters_display}
 														</TableCell>
-														<TableCell>
-															{thirdEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}
+														<TableCell align="right">
+															{thirdEstimate?.primx_cpea_total_project_amount}
 														</TableCell>
 													</TableRow>
 												</TableBody>
@@ -1427,17 +1427,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										{/* Conditionally render either imperial or metric table headings */}
 										{calcCombinedEstimate.measurement_units == 'imperial' ?
 											<>
-												<TableCell><b>PrīmX DC (lbs)</b></TableCell>
-												<TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
-												<TableCell><b>PrīmX Steel Fibers (lbs)</b></TableCell>
-												<TableCell><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
-												<TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
+												<TableCell align="right"><b>PrīmX DC (lbs)</b></TableCell>
+												<TableCell align="right"><b>PrīmX Flow (ltrs)</b></TableCell>
+												<TableCell align="right"><b>PrīmX Steel Fibers (lbs)</b></TableCell>
+												<TableCell align="right"><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
+												<TableCell align="right"><b>PrīmX CPEA (ltrs)</b></TableCell>
 											</> : <>
-												<TableCell><b>PrīmX DC (kgs)</b></TableCell>
-												<TableCell><b>PrīmX Flow (ltrs)</b></TableCell>
-												<TableCell><b>PrīmX Steel Fibers (kgs)</b></TableCell>
-												<TableCell><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
-												<TableCell><b>PrīmX CPEA (ltrs)</b></TableCell>
+												<TableCell align="right"><b>PrīmX DC (kgs)</b></TableCell>
+												<TableCell align="right"><b>PrīmX Flow (ltrs)</b></TableCell>
+												<TableCell align="right"><b>PrīmX Steel Fibers (kgs)</b></TableCell>
+												<TableCell align="right"><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
+												<TableCell align="right"><b>PrīmX CPEA (ltrs)</b></TableCell>
 											</>
 										} {/* End conditionally rendered table headings*/}
 										<TableCell></TableCell>
@@ -1448,31 +1448,106 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									{/* Total amounts share key names between imperial and metric */}
 									<TableRow hover={true}>
 										<TableCell><b>Total Project Amount:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_total_project_amount?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_total_project_amount?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_total_project_amount?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_total_project_amount?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_total_project_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_dc_total_project_amount}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_flow_total_project_amount}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_steel_fibers_total_project_amount}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_ultracure_blankets_total_project_amount}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_cpea_total_project_amount}
+										</TableCell>
 										<TableCell></TableCell>
 									</TableRow>
+
+									{calcCombinedEstimate?.materials_on_hand &&
+										<>
+											{calcCombinedEstimate.measurement_units == "imperial" ?
+												<TableRow hover={true}>
+													<TableCell><b>Materials On Hand:</b></TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_dc_on_hand_lbs_display}
+													</TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_flow_on_hand_liters_display}
+													</TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_steel_fibers_on_hand_lbs_display}
+													</TableCell>
+													<TableCell align="right"
+													>{calcCombinedEstimate?.primx_ultracure_blankets_on_hand_sq_ft_display}
+													</TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_cpea_on_hand_liters_display}
+													</TableCell>
+													<TableCell align="right"></TableCell>
+												</TableRow>
+												:	// Else measurement_units == 'metric', below: 
+												<TableRow hover={true}>
+													<TableCell><b>Materials On Hand:</b></TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_dc_on_hand_kgs_display}
+													</TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_flow_on_hand_liters_display}
+													</TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_steel_fibers_on_hand_kgs_display}</TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_ultracure_blankets_on_hand_sq_m_display}
+													</TableCell>
+													<TableCell align="right">
+														{calcCombinedEstimate?.primx_cpea_on_hand_liters_display}
+													</TableCell>
+													<TableCell align="right"></TableCell>
+												</TableRow>
+											} {/* End imperial/metric conditional rendering */}
+											{/* These rows are shared for both imperial and metric, but only shown if Materials On Hand is checked: */}
+											<TableRow hover={true}>
+												<TableCell><b>Total Order Amount:</b></TableCell>
+												<TableCell align="right">
+													{calcCombinedEstimate.primx_dc_total_order_amount}
+												</TableCell>
+												<TableCell align="right">
+													{calcCombinedEstimate.primx_flow_total_order_amount}
+												</TableCell>
+												<TableCell align="right">
+													{calcCombinedEstimate.primx_steel_fibers_total_order_amount}
+												</TableCell>
+												<TableCell align="right">
+													{calcCombinedEstimate.primx_ultracure_blankets_total_order_amount}
+												</TableCell>
+												<TableCell align="right">
+													{calcCombinedEstimate.primx_cpea_total_order_amount}
+												</TableCell>
+												<TableCell align="right"></TableCell>
+											</TableRow>
+										</>
+									} {/* End Materials On Hand Conditional Rendering */}
 
 									<TableRow hover={true}>
 										<TableCell><b>Packaging Capacity:</b></TableCell>
 										{/* Conditionally render either imperial or metric packaging capacity numbers */}
 										{calcCombinedEstimate.measurement_units == 'imperial' ?
 											<>
-												<TableCell>2,756</TableCell>
-												<TableCell>1,000</TableCell>
-												<TableCell>42,329</TableCell>
-												<TableCell>6,458</TableCell>
-												<TableCell>1,000</TableCell>
+												<TableCell align="right">2,756</TableCell>
+												<TableCell align="right">1,000</TableCell>
+												<TableCell align="right">42,329</TableCell>
+												<TableCell align="right">6,458</TableCell>
+												<TableCell align="right">1,000</TableCell>
 											</> :
 											<>
-												<TableCell>1,250</TableCell>
-												<TableCell>1,000</TableCell>
-												<TableCell>19,200</TableCell>
-												<TableCell>600</TableCell>
-												<TableCell>1,000</TableCell>
+												<TableCell align="right">1,250</TableCell>
+												<TableCell align="right">1,000</TableCell>
+												<TableCell align="right">19,200</TableCell>
+												<TableCell align="right">600</TableCell>
+												<TableCell align="right">1,000</TableCell>
 											</>
 										} {/* End conditionally rendered packaging capacity numbers*/}
 										<TableCell></TableCell>
@@ -1481,96 +1556,197 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									{/* All following table data has shared key names between both metric and imperial */}
 									<TableRow hover={true}>
 										<TableCell><b>Packages Needed:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_packages_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_packages_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_packages_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_packages_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_packages_needed?.toLocaleString('en-US')}</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_dc_packages_needed}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_flow_packages_needed}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_steel_fibers_packages_needed}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_ultracure_blankets_packages_needed}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_cpea_packages_needed}
+										</TableCell>
 										<TableCell></TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Final Order Amount:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_final_order_amount?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_final_order_amount?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_final_order_amount?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_final_order_amount?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_final_order_amount?.toLocaleString('en-US')}</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_dc_final_order_amount}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_flow_final_order_amount}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_steel_fibers_final_order_amount}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_ultracure_blankets_final_order_amount}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_cpea_final_order_amount}
+										</TableCell>
 										<TableCell></TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Materials Price:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_unit_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_unit_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_unit_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_unit_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_unit_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell><b>Totals:</b></TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_dc_unit_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_flow_unit_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_steel_fibers_unit_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_ultracure_blankets_unit_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_cpea_unit_price}
+										</TableCell>
+										<TableCell align="right">
+											<b>Totals</b>
+										</TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Total Materials Price:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_total_materials_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_total_materials_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_total_materials_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_ultracure_blankets_total_materials_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_total_materials_price?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.design_total_materials_price?.toLocaleString('en-US')}</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_dc_total_materials_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_flow_total_materials_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_steel_fibers_total_materials_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_ultracure_blankets_total_materials_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_cpea_total_materials_price}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.design_total_materials_price}
+										</TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Containers:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_containers_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_containers_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_containers_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>0</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_containers_needed?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.design_total_containers?.toLocaleString('en-US')}</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_dc_containers_needed}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_flow_containers_needed}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_steel_fibers_containers_needed}
+										</TableCell>
+										<TableCell align="right">
+											0</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_cpea_containers_needed}
+										</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.design_total_containers}
+										</TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Shipping Estimate:</b></TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_dc_calculated_shipping_estimate?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_flow_calculated_shipping_estimate?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_steel_fibers_calculated_shipping_estimate?.toLocaleString('en-US')}</TableCell>
-										<TableCell>0</TableCell>
-										<TableCell>{calcCombinedEstimate?.primx_cpea_calculated_shipping_estimate?.toLocaleString('en-US')}</TableCell>
-										<TableCell>{calcCombinedEstimate?.design_total_shipping_estimate?.toLocaleString('en-US')}</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_dc_calculated_shipping_estimate}
+											</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_flow_calculated_shipping_estimate}
+											</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_steel_fibers_calculated_shipping_estimate}
+											</TableCell>
+										<TableCell align="right">
+											0</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.primx_cpea_calculated_shipping_estimate}
+											</TableCell>
+										<TableCell align="right">
+											{calcCombinedEstimate?.design_total_shipping_estimate}
+											</TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Total Cost:</b></TableCell>
-										<TableCell><b>{calcCombinedEstimate?.primx_dc_total_cost_estimate?.toLocaleString('en-US')}</b></TableCell>
-										<TableCell><b>{calcCombinedEstimate?.primx_flow_total_cost_estimate?.toLocaleString('en-US')}</b></TableCell>
-										<TableCell><b>{calcCombinedEstimate?.primx_steel_fibers_total_cost_estimate?.toLocaleString('en-US')}</b></TableCell>
-										<TableCell><b>{calcCombinedEstimate?.primx_ultracure_blankets_total_cost_estimate?.toLocaleString('en-US')}</b></TableCell>
-										<TableCell><b>{calcCombinedEstimate?.primx_cpea_total_cost_estimate?.toLocaleString('en-US')}</b></TableCell>
-										<TableCell><b>{calcCombinedEstimate?.design_total_price_estimate?.toLocaleString('en-US')}</b></TableCell>
+										<TableCell align="right">
+											<b>{calcCombinedEstimate?.primx_dc_total_cost_estimate}</b>
+											</TableCell>
+										<TableCell align="right">
+											<b>{calcCombinedEstimate?.primx_flow_total_cost_estimate}</b>
+											</TableCell>
+										<TableCell align="right">
+											<b>{calcCombinedEstimate?.primx_steel_fibers_total_cost_estimate}</b>
+											</TableCell>
+										<TableCell align="right">
+											<b>{calcCombinedEstimate?.primx_ultracure_blankets_total_cost_estimate}</b>
+											</TableCell>
+										<TableCell align="right">
+											<b>{calcCombinedEstimate?.primx_cpea_total_cost_estimate}</b>
+											</TableCell>
+										<TableCell align="right">
+											<b>{calcCombinedEstimate?.design_total_price_estimate}</b>
+											</TableCell>
 									</TableRow>
 
-									<TableRow hover={true}>
-										{/* Conditionally render either imperial or metric cost per square measurement */}
-										{calcCombinedEstimate.measurement_units == 'imperial' ?
-											<>
-												<TableCell><b>Cost per ft²:</b></TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_dc_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_flow_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_steel_fibers_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_ultracure_blankets_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_cpea_total_cost_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.design_total_price_estimate, calcCombinedEstimate?.square_feet)}</TableCell>
-											</> : <>
-												<TableCell><b>Cost per m²:</b></TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_dc_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_flow_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_steel_fibers_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_ultracure_blankets_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.primx_cpea_total_cost_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
-												<TableCell>{useCalculateCostPerMeasurement(calcCombinedEstimate?.design_total_price_estimate, calcCombinedEstimate?.square_meters)}</TableCell>
-											</>
-										} {/* End conditionally rendered costs calc*/}
-									</TableRow>
+									{calcCombinedEstimate.measurement_units == "imperial" ?
+										<TableRow hover={true}>
+											<TableCell><b>Cost per ft²:</b></TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_dc_cost_per_sq_ft}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_flow_cost_per_sq_ft}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_steel_fibers_cost_per_sq_ft}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_ultracure_blankets_cost_per_sq_ft}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_cpea_cost_per_sq_ft}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_design_total_cost_per_sq_ft}
+											</TableCell>
+										</TableRow>
+										: // Else measurement_units == 'metric', below: 
+										<TableRow hover={true}>
+											<TableCell><b>Cost per m²:</b></TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_dc_cost_per_sq_m}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_flow_cost_per_sq_m}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_steel_fibers_cost_per_sq_m}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_ultracure_blankets_cost_per_sq_m}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_cpea_cost_per_sq_m}
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.primx_design_total_cost_per_sq_m}
+											</TableCell>
+										</TableRow>
+									}
 
 									{/* Render the following table row for any orders that haven't been placed yet */}
 									{!calcCombinedEstimate?.ordered_by_licensee &&

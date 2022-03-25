@@ -578,7 +578,7 @@ export default function EstimateLookupTable() {
 									</TableRow>
 
 									{/* //! Ryan Here, test this is working later.  */}
-									{searchResult.materials_on_hand &&
+									{searchResult?.materials_on_hand &&
 										<>
 											{searchResult.measurement_units == "imperial" ?
 												<TableRow hover={true}>
@@ -912,8 +912,7 @@ export default function EstimateLookupTable() {
 																>
 																	Place Order
 																</Button>
-															</> :
-															<>
+															</> : <>
 																<Button
 																	variant="contained"
 																	disabled
