@@ -5,8 +5,6 @@ import {
 import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import useCombineEstimateCalculations from '../../hooks/useCombineEstimateCalculations';
-import removeTimestamps from '../../hooks/removeTimestamps';
-import { ExpansionPanelActions } from '@material-ui/core';
 
 
 // Saga Worker to create a a new combined estimated quote: 
@@ -40,24 +38,22 @@ function* fetchManyEstimatesQuery(action) {
           licenseeId: licenseeId
         } // End params
       }) // End response      
-      // ⬇ Run the timestamp removal function on the returned array of estimates:
-      const estimateWithoutTimestamps = removeTimestamps(response.data);
       // ⬇ If a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it:
-      const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
-      // ⬇ Save it to the estimatesArray for later use. 
+      const calculatedResponse = yield useEstimateCalculations(response.data[0]);
+      // ⬇ Save it to the estimatesArray for later use:
       estimatesArray.push(calculatedResponse);
     } // End for loop
     // ⬇ Saving the estimates from the array to variables: 
     const firstEstimate = estimatesArray[0];		
     const secondEstimate = estimatesArray[1];
     if (firstEstimate.estimate_number_combined_1) {
-      // If this estimate has already been saved in a combined estimate: 
+      // ⬇ If this estimate has already been saved in a combined estimate: 
       if (firstEstimate.estimate_number_combined_1.charAt(firstEstimate.estimate_number_combined_1.length - 1) === "C") {
-        // And they're both the same estimate number: 
+        // ⬇ And they're both the same estimate number: 
         if (firstEstimate.estimate_number_combined_1 === secondEstimate.estimate_number_combined_1) {
-          // Push them to that estimate:
+          // ⬇ Push them to that estimate:
           history.push(`/lookup/${firstEstimate.licensee_id}/${firstEstimate.estimate_number_combined_1}`)
-          // And stop this code block:
+          // ⬇ And stop this code block:
           return;
         } // End if 
       } // End if
@@ -82,13 +78,13 @@ function* fetchManyEstimatesQuery(action) {
     }; // End totalsObjectHolder
     // ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
     for (let estimate of estimatesArray) {
-      totalsObjectHolder.primx_cpea_total_project_amount += estimate.primx_cpea_total_project_amount;
-      totalsObjectHolder.primx_dc_total_project_amount += estimate.primx_dc_total_project_amount;
-      totalsObjectHolder.primx_flow_total_project_amount += estimate.primx_flow_total_project_amount;
-      totalsObjectHolder.primx_steel_fibers_total_project_amount += estimate.primx_steel_fibers_total_project_amount;
-      totalsObjectHolder.primx_ultracure_blankets_total_project_amount += estimate.primx_ultracure_blankets_total_project_amount;
-			totalsObjectHolder.square_feet += estimate.square_feet;
-      totalsObjectHolder.square_meters += estimate.square_meters;
+      totalsObjectHolder.primx_cpea_total_project_amount += parseInt(estimate.primx_cpea_total_project_amount);
+      totalsObjectHolder.primx_dc_total_project_amount += parseInt(estimate.primx_dc_total_project_amount);
+      totalsObjectHolder.primx_flow_total_project_amount += parseInt(estimate.primx_flow_total_project_amount);
+      totalsObjectHolder.primx_steel_fibers_total_project_amount += parseInt(estimate.primx_steel_fibers_total_project_amount);
+      totalsObjectHolder.primx_ultracure_blankets_total_project_amount += parseInt(estimate.primx_ultracure_blankets_total_project_amount);
+			totalsObjectHolder.square_feet += parseInt(estimate.square_feet);
+      totalsObjectHolder.square_meters += parseInt(estimate.square_meters);
     } // End for loop
     // ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
     // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
@@ -101,10 +97,8 @@ function* fetchManyEstimatesQuery(action) {
     talliedCombinedEstimate.primx_ultracure_blankets_total_project_amount = totalsObjectHolder.primx_ultracure_blankets_total_project_amount;
 		talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
     talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
-    // ⬇ Run the timestamp removal function on the returned array of estimates:
-    const estimateWithoutTimestamps = removeTimestamps([talliedCombinedEstimate]);
-    // ⬇ If a response came back successfully, there is one estimate object in an array. Run the updated Combine Estimates Calc on it:
-    const calculatedResponse = yield useCombineEstimateCalculations(estimateWithoutTimestamps[0]);
+    // ⬇ Run the updated Combine Estimates Calc on it:
+    const calculatedResponse = yield useCombineEstimateCalculations(talliedCombinedEstimate);
     // ⬇ Send that data to the reducer, and set the show table to true:
     yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });
     yield put({ type: "SHOW_DATA_TABLE" });
@@ -154,10 +148,8 @@ function* fetchCombinedEstimatesQuery(action) {
           licenseeId: licenseeId
         } // End params
       }) // End response      
-      // ⬇ Run the timestamp removal function on the returned array of estimates:
-      const estimateWithoutTimestamps = removeTimestamps(response.data);
       // ⬇ If a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it:
-      const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+      const calculatedResponse = yield useEstimateCalculations(response.data[0]);
       // ⬇ Save it to the estimatesArray for later use. 
       estimatesArray.push(calculatedResponse);
     } // End for loop
@@ -184,13 +176,13 @@ function* fetchCombinedEstimatesQuery(action) {
     }; // End totalsObjectHolder
     // ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
     for (let estimate of estimatesArray) {
-      totalsObjectHolder.primx_cpea_total_project_amount += estimate.primx_cpea_total_project_amount;
-      totalsObjectHolder.primx_dc_total_project_amount += estimate.primx_dc_total_project_amount;
-      totalsObjectHolder.primx_flow_total_project_amount += estimate.primx_flow_total_project_amount;
-      totalsObjectHolder.primx_steel_fibers_total_project_amount += estimate.primx_steel_fibers_total_project_amount;
-      totalsObjectHolder.primx_ultracure_blankets_total_project_amount += estimate.primx_ultracure_blankets_total_project_amount;
-      totalsObjectHolder.square_feet += estimate.square_feet;
-      totalsObjectHolder.square_meters += estimate.square_meters;
+      totalsObjectHolder.primx_cpea_total_project_amount += parseInt(estimate.primx_cpea_total_project_amount);
+      totalsObjectHolder.primx_dc_total_project_amount += parseInt(estimate.primx_dc_total_project_amount);
+      totalsObjectHolder.primx_flow_total_project_amount += parseInt(estimate.primx_flow_total_project_amount);
+      totalsObjectHolder.primx_steel_fibers_total_project_amount += parseInt(estimate.primx_steel_fibers_total_project_amount);
+      totalsObjectHolder.primx_ultracure_blankets_total_project_amount += parseInt(estimate.primx_ultracure_blankets_total_project_amount);
+			totalsObjectHolder.square_feet += parseInt(estimate.square_feet);
+      totalsObjectHolder.square_meters += parseInt(estimate.square_meters);
     } // End for loop
     // ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing:
     // ⬇ The JSON.parse(JSON.stringify) will rip apart and create a new object copy.  Only works with objects. 
@@ -203,15 +195,13 @@ function* fetchCombinedEstimatesQuery(action) {
     talliedCombinedEstimate.primx_ultracure_blankets_total_project_amount = totalsObjectHolder.primx_ultracure_blankets_total_project_amount;
     talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
     talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
-    // ⬇ Run the timestamp removal function on the returned array of estimates:
-    const estimateWithoutTimestamps = removeTimestamps([talliedCombinedEstimate]);
-    // ⬇ If a response came back successfully, there is one estimate object in an array. Run the updated Combine Estimates Calc on it:
-    const calculatedResponse = yield useCombineEstimateCalculations(estimateWithoutTimestamps[0]);
+    // ⬇ Run the updated Combine Estimates Calc on it:
+    const calculatedResponse = yield useCombineEstimateCalculations(talliedCombinedEstimate);
     // ⬇ Send that data to the reducer, and set the show table to true:
     yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });
     yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedResponse });
     yield put({ type: "SHOW_COMBINED_ESTIMATE" });
-    yield put({ type: "LOADING_SCREEN_OFF" });
+    // yield put({ type: "LOADING_SCREEN_OFF" });
   } catch (error) {
     console.error('fetchCombinedEstimatesQuery failed:', error);
   } // End try/catch
