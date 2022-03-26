@@ -462,8 +462,6 @@ export default function EstimateCreateTable() {
 						</Paper>
 					</Grid>
 
-
-					{/* // ! Ryan Here, add the new input table here.  */}
 					{/* Input Table #4: Materials On Hand */}
 					{estimateData.materials_on_hand &&
 						<Grid item xs={tableSize}>
@@ -800,9 +798,6 @@ export default function EstimateCreateTable() {
 						</Paper>
 					</Grid>
 
-					{/* // ! Ryan Here, table inputs above.  */}
-
-
 					<Grid item xs={4}>
 						<Paper elevation={3}>
 							<TableContainer>
@@ -1123,7 +1118,6 @@ export default function EstimateCreateTable() {
 											<TableCell align="right"></TableCell>
 										</TableRow>
 
-										{/* // ! Ryan Here */}
 										{estimateData.materials_on_hand &&
 											<>
 												{calculatedDisplayObject.measurement_units == "imperial" ?

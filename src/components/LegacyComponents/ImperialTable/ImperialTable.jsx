@@ -300,7 +300,6 @@ export default function ImperialTable() {
 					</Grid>
 
 
-					{/* // ! Ryan Here, add the new input table here.  */}
 					{/* Input Table #4: Materials On Hand */}
 					{estimateData.materials_on_hand &&
 						<Grid item xs={tableSize}>
@@ -704,7 +703,6 @@ export default function ImperialTable() {
 											<TableCell></TableCell>
 										</TableRow>
 
-															{/* // ! Ryan Here */}
 										{estimateData.materials_on_hand &&
 											<>
 												<TableRow hover={true}>

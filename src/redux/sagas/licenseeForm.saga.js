@@ -4,7 +4,6 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-import removeTimestamps from '../../hooks/removeTimestamps';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
 // import swal from 'sweetalert';
 
@@ -19,11 +18,8 @@ function* fetchEstimateQuery(action) {
         licenseeId: licenseeId
       } // End params
     }) // End response
-    // run the timestamp removal function on the returned array of estimates
-    const estimateWithoutTimestamps = removeTimestamps(response.data);
-    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it
-    // before sending it to the reducer
-    const calculatedResponse = yield useEstimateCalculations(estimateWithoutTimestamps[0]);
+    // if a response came back successfully, there is one estimate object in an array. Run the estimate calculations function on it before sending it to the reducer
+    const calculatedResponse = yield useEstimateCalculations(response.data[0]);
     // Depending on if the estimate is a combined or single, it will push the appropriate data and show the correct table: 
     if (estimateNumber?.charAt(estimateNumber?.length - 1) === "C") {
       yield put({ type: "SHOW_COMBINED_ESTIMATE" });
@@ -50,11 +46,17 @@ function* fetchEstimateQuery(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
   try {
+		console.log('*** in AddEstimate, action.payload', action.payload);
+
+		// TODO: When I come back, make a new custom hook to calculate estimates to use in combined estimates.  We want to remove anything the sends them to locale string.  It's messing up the post here.  
+
     const response = yield axios.post('/api/estimates', action.payload);
     // ⬇ action.payload contains the history object from useHistory:
-    const history = action.payload.history
+    const history = action.payload.history;
     // ⬇ Saving the response and action.payload to variables for easier reading:
     const returnedEstimate = response.data;
+		console.log('*** in AddEstimate, response.data', response.data);
+		
     // ⬇ If we just saved a combined estimate:
     if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
       // ⬇ Update the calc combined object with the new estimate number: 

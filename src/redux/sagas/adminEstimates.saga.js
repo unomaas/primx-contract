@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
-import removeTimestamps from '../../hooks/removeTimestamps';
 
 // worker saga to GET all estimates
 function* fetchAllEstimates() {

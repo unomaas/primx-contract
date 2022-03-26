@@ -292,7 +292,6 @@ export default function MetricTable() {
 						</Paper>
 					</Grid>
 
-					{/* // ! Ryan Here, add the new input table here.  */}
 
 
 					{/* Input Table #3: Thickened Edge */}

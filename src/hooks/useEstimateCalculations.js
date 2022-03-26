@@ -1,7 +1,11 @@
 import useValueFormatter from "./useValueFormatter";
 
-// Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays
+// ⬇ Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays:
 export default function useEstimateCalculations(estimate) {
+	
+	// ⬇ Remove the Time Stamps first: 
+	estimate.date_created = estimate.date_created.split('T')[0];
+	estimate.anticipated_first_pour_date = estimate.anticipated_first_pour_date.split('T')[0];
 
 	// ⬇ Setup for Materials On Hand. If false, make sure the values are zero:
 	if (!estimate.materials_on_hand) {
@@ -299,11 +303,11 @@ export default function useEstimateCalculations(estimate) {
 		estimate.primx_cpea_containers_needed = Math.ceil(estimate.primx_cpea_packages_needed / 10);
 		estimate.primx_cpea_calculated_shipping_estimate = estimate.primx_cpea_containers_needed * estimate.primx_cpea_shipping_estimate;
 		estimate.primx_cpea_total_cost_estimate = estimate.primx_cpea_calculated_shipping_estimate + estimate.primx_cpea_total_materials_price;
-		//#endregion - Flow calculations above. 
+		//#endregion - CPEA calculations above. 
 	} // End calculateFlowAndCpea
 
 
-	// ⬇ Add in the last few shared calculated values between both types of units for pricing totals
+	// ⬇ Add in the last few shared calculated values between both types of units for pricing totals:
 	estimate.design_total_materials_price = estimate.primx_dc_total_materials_price + estimate.primx_flow_total_materials_price +
 		estimate.primx_steel_fibers_total_materials_price + estimate.primx_ultracure_blankets_total_materials_price + estimate.primx_cpea_total_materials_price;
 	estimate.design_total_containers = estimate.primx_dc_containers_needed + estimate.primx_steel_fibers_containers_needed +
@@ -314,19 +318,19 @@ export default function useEstimateCalculations(estimate) {
 
 
 	// ⬇ Do the Cost Per Square Measurement calculations, Imperial:
-		estimate.primx_dc_cost_per_sq_ft = estimate.primx_dc_total_cost_estimate / estimate.square_feet;
-		estimate.primx_flow_cost_per_sq_ft = estimate.primx_flow_total_cost_estimate / estimate.square_feet 
-		estimate.primx_steel_fibers_cost_per_sq_ft = estimate.primx_steel_fibers_total_cost_estimate / estimate.square_feet 
-		estimate.primx_ultracure_blankets_cost_per_sq_ft = estimate.primx_ultracure_blankets_total_cost_estimate / estimate.square_feet 
-		estimate.primx_cpea_cost_per_sq_ft = estimate.primx_cpea_total_cost_estimate / estimate.square_feet 
-		estimate.primx_design_total_cost_per_sq_ft = estimate.design_total_price_estimate / estimate.square_feet 
+	estimate.primx_dc_cost_per_sq_ft = estimate.primx_dc_total_cost_estimate / estimate.square_feet;
+	estimate.primx_flow_cost_per_sq_ft = estimate.primx_flow_total_cost_estimate / estimate.square_feet
+	estimate.primx_steel_fibers_cost_per_sq_ft = estimate.primx_steel_fibers_total_cost_estimate / estimate.square_feet
+	estimate.primx_ultracure_blankets_cost_per_sq_ft = estimate.primx_ultracure_blankets_total_cost_estimate / estimate.square_feet
+	estimate.primx_cpea_cost_per_sq_ft = estimate.primx_cpea_total_cost_estimate / estimate.square_feet
+	estimate.primx_design_total_cost_per_sq_ft = estimate.design_total_price_estimate / estimate.square_feet
 	// ⬇ Do the Cost Per Square Measurement calculations, Metric:
-		estimate.primx_dc_cost_per_sq_m = estimate.primx_dc_total_cost_estimate / estimate.square_meters; 
-		estimate.primx_flow_cost_per_sq_m = estimate.primx_flow_total_cost_estimate / estimate.square_meters; 
-		estimate.primx_steel_fibers_cost_per_sq_m = estimate.primx_steel_fibers_total_cost_estimate / estimate.square_meters;
-		estimate.primx_ultracure_blankets_cost_per_sq_m = estimate.primx_ultracure_blankets_total_cost_estimate / estimate.square_meters;
-		estimate.primx_cpea_cost_per_sq_m = estimate.primx_cpea_total_cost_estimate / estimate.square_meters;
-		estimate.primx_design_total_cost_per_sq_m = estimate.design_total_price_estimate / estimate.square_meters;
+	estimate.primx_dc_cost_per_sq_m = estimate.primx_dc_total_cost_estimate / estimate.square_meters;
+	estimate.primx_flow_cost_per_sq_m = estimate.primx_flow_total_cost_estimate / estimate.square_meters;
+	estimate.primx_steel_fibers_cost_per_sq_m = estimate.primx_steel_fibers_total_cost_estimate / estimate.square_meters;
+	estimate.primx_ultracure_blankets_cost_per_sq_m = estimate.primx_ultracure_blankets_total_cost_estimate / estimate.square_meters;
+	estimate.primx_cpea_cost_per_sq_m = estimate.primx_cpea_total_cost_estimate / estimate.square_meters;
+	estimate.primx_design_total_cost_per_sq_m = estimate.design_total_price_estimate / estimate.square_meters;
 
 
 	// ⬇ The input values can't be displayed as localeStrings, so we need to transform them into numbers first with parseFloat, save them to a unique key (_display), and then they'll be picked up in the value formatter to beautify on the DOM: 

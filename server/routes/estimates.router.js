@@ -311,7 +311,7 @@ router.post('/', async (req, res) => {
 	}
 });
 
-// TODO: When I come back, we need to make sure the PUT route works with editing the new values.  Then we need to update the Lookup Estimate to handle the new values.  Then we need to update the Combine Estimate to be the same as Lookup, and make sure that we wipe anything on hand when combining.  Then I think we're done? Oh and update all the tables to be right aligned.  Also make sure the Admin and Licensee Data Grid Tables have these new columns to display.  
+
 
 
 // *************************** PUT ROUTES ***************************
@@ -527,7 +527,6 @@ router.put('/clientupdates/:id', (req, res) => {
 		primx_flow_dosage_liters,
 		primx_cpea_dosage_liters,
 		waste_factor_percentage,
-
 		materials_on_hand,
 		primx_flow_on_hand_liters,
 		primx_cpea_on_hand_liters,
@@ -538,22 +537,18 @@ router.put('/clientupdates/:id', (req, res) => {
 		thickened_edge_construction_joint_lineal_feet,
 		primx_steel_fibers_dosage_lbs,
 		primx_dc_dosage_lbs,
-
 		primx_dc_on_hand_lbs,
 		primx_steel_fibers_on_hand_lbs,
 		primx_ultracure_blankets_on_hand_sq_ft,
-
 		square_meters,
 		thickness_millimeters,
 		thickened_edge_perimeter_lineal_meters,
 		thickened_edge_construction_joint_lineal_meters,
 		primx_steel_fibers_dosage_kgs,
 		primx_dc_dosage_kgs,
-
 		primx_dc_on_hand_kgs,
 		primx_steel_fibers_on_hand_kgs,
 		primx_ultracure_blankets_on_hand_sq_m,
-		// TODO: Keep updating this PUT route. 
 	} = req.body
 
 	// save the values array using the destructured data from client
@@ -577,7 +572,6 @@ router.put('/clientupdates/:id', (req, res) => {
 		primx_flow_dosage_liters,
 		primx_cpea_dosage_liters,
 		waste_factor_percentage,
-
 		materials_on_hand,
 		primx_flow_on_hand_liters,
 		primx_cpea_on_hand_liters,
