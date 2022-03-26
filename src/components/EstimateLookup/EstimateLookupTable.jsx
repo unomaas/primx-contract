@@ -577,7 +577,6 @@ export default function EstimateLookupTable() {
 										<TableCell></TableCell>
 									</TableRow>
 
-									{/* //! Ryan Here, test this is working later.  */}
 									{searchResult?.materials_on_hand &&
 										<>
 											{searchResult.measurement_units == "imperial" ?

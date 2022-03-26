@@ -116,7 +116,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 					{/* 4 if doesn't exist, or 6 if does */}
 					<Paper elevation={3}>
 						<TableContainer>
-							<h3>Estimate {firstEstimate.estimate_number}</h3>
+							<h3>Estimate {calcCombinedEstimate.estimate_number}</h3>
 							<h4>Licensee & Project Information</h4>
 							<Table size="small">
 								<TableBody>
@@ -339,7 +339,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<Table size="small">
 
 										<TableHead>
-											<TableRow hover={true}>
+											<TableRow>
 												<TableCell></TableCell>
 												<TableCell align="right"><b>Perimeter</b></TableCell>
 												<TableCell align="right"><b>Construction Joint</b></TableCell>
@@ -392,7 +392,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<h4>Materials Table</h4>
 									<Table size="small">
 										<TableHead>
-											<TableRow hover={true}>
+											<TableRow>
 												<TableCell></TableCell>
 												<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
 												<TableCell align="right"><b>Amount Needed</b></TableCell>
@@ -527,7 +527,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<Table size="small">
 
 										<TableHead>
-											<TableRow hover={true}>
+											<TableRow>
 												<TableCell></TableCell>
 												<TableCell align="right"><b>Perimeter</b></TableCell>
 												<TableCell align="right"><b>Construction Joint</b></TableCell>
@@ -580,7 +580,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<h4>Materials Table</h4>
 									<Table size="small">
 										<TableHead>
-											<TableRow hover={true}>
+											<TableRow>
 												<TableCell></TableCell>
 												<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
 												<TableCell align="right"><b>Amount Needed</b></TableCell>
@@ -719,7 +719,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<Table size="small">
 
 												<TableHead>
-													<TableRow hover={true}>
+													<TableRow>
 														<TableCell></TableCell>
 														<TableCell align="right"><b>Perimeter</b></TableCell>
 														<TableCell align="right"><b>Construction Joint</b></TableCell>
@@ -773,7 +773,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<h4>Materials Table</h4>
 											<Table size="small">
 												<TableHead>
-													<TableRow hover={true}>
+													<TableRow>
 														<TableCell></TableCell>
 														<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
 														<TableCell align="right"><b>Amount Needed</b></TableCell>
@@ -860,7 +860,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<TableRow hover={true}>
 												<TableCell><b>Thickness (mm):</b></TableCell>
 												<TableCell align="right">
-													{firstEstimate?.thickness_inches_display}
+													{firstEstimate?.thickness_millimeters_display}
 												</TableCell>
 											</TableRow>
 
@@ -914,7 +914,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<Table size="small">
 
 										<TableHead>
-											<TableRow hover={true}>
+											<TableRow>
 												<TableCell></TableCell>
 												<TableCell align="right"><b>Perimeter</b></TableCell>
 												<TableCell align="right"><b>Construction Joint</b></TableCell>
@@ -967,7 +967,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<h3>Estimate #1 Materials Table</h3>
 									<Table size="small">
 										<TableHead>
-											<TableRow hover={true}>
+											<TableRow>
 												<TableCell></TableCell>
 												<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
 												<TableCell align="right"><b>Amount Needed</b></TableCell>
@@ -1048,7 +1048,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<TableRow hover={true}>
 												<TableCell><b>Thickness (mm):</b></TableCell>
 												<TableCell align="right">
-													{secondEstimate?.thickness_inches_display}
+													{secondEstimate?.thickness_millimeters_display}
 												</TableCell>
 											</TableRow>
 
@@ -1102,7 +1102,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<Table size="small">
 
 										<TableHead>
-											<TableRow hover={true}>
+											<TableRow>
 												<TableCell></TableCell>
 												<TableCell align="right"><b>Perimeter</b></TableCell>
 												<TableCell align="right"><b>Construction Joint</b></TableCell>
@@ -1155,7 +1155,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<h3>Estimate #2 Materials Table</h3>
 									<Table size="small">
 										<TableHead>
-											<TableRow hover={true}>
+											<TableRow>
 												<TableCell></TableCell>
 												<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
 												<TableCell align="right"><b>Amount Needed</b></TableCell>
@@ -1239,7 +1239,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													<TableRow hover={true}>
 														<TableCell><b>Thickness (mm):</b></TableCell>
 														<TableCell align="right">
-															{thirdEstimate?.thickness_inches_display}
+															{thirdEstimate?.thickness_millimeters_display}
 														</TableCell>
 													</TableRow>
 
@@ -1293,7 +1293,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<Table size="small">
 
 												<TableHead>
-													<TableRow hover={true}>
+													<TableRow>
 														<TableCell></TableCell>
 														<TableCell align="right"><b>Perimeter</b></TableCell>
 														<TableCell align="right"><b>Construction Joint</b></TableCell>
@@ -1347,7 +1347,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<h3>Estimate #3 Materials Table</h3>
 											<Table size="small">
 												<TableHead>
-													<TableRow hover={true}>
+													<TableRow>
 														<TableCell></TableCell>
 														<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
 														<TableCell align="right"><b>Amount Needed</b></TableCell>
