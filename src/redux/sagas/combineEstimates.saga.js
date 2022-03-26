@@ -78,21 +78,14 @@ function* fetchManyEstimatesQuery(action) {
 		}; // End totalsObjectHolder
 		// ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
 		for (let estimate of estimatesArray) {
-			console.log('*** pre loop', estimate.primx_dc_total_project_amount);
-
 			totalsObjectHolder.primx_cpea_total_project_amount += parseFloat(estimate?.primx_cpea_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.primx_dc_total_project_amount += parseFloat(estimate?.primx_dc_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.primx_flow_total_project_amount += parseFloat(estimate?.primx_flow_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.primx_steel_fibers_total_project_amount += parseFloat(estimate?.primx_steel_fibers_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.primx_ultracure_blankets_total_project_amount += parseFloat(estimate?.primx_ultracure_blankets_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.square_feet += parseFloat(estimate?.square_feet?.replaceAll(',', ''));
-			totalsObjectHolder.square_meters += parseFloat(estimate?.square_meter?.replaceAll(',', ''));
-
-			console.log('*** post loop', totalsObjectHolder.primx_dc_total_project_amount);
-
+			totalsObjectHolder.square_meters += parseFloat(estimate?.square_meters?.replaceAll(',', ''));
 		} // End for loop
-		console.log('***', { estimatesArray });
-
 		// ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing. The JSON.parse(JSON.stringify) will rip apart and create a new object copy. Only works with objects: 
 		let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
 		// ⬇ Setting the tallied amount to the object to feed through the math machine: 
@@ -104,8 +97,6 @@ function* fetchManyEstimatesQuery(action) {
 		talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
 		talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
 		// ⬇ Run the updated Combine Estimates Calc on it:
-		console.log('*** in fetchManyEstimatesQuery', { talliedCombinedEstimate });
-
 		const calculatedResponse = yield useCombineEstimateCalculations(talliedCombinedEstimate);
 		// ⬇ Send that data to the reducer, and set the show table to true:
 		yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });

@@ -2,8 +2,6 @@ import useValueFormatter from "./useValueFormatter";
 
 // ⬇Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays: 
 export default function useCombineEstimateCalculations(estimate) {
-console.log('*** in useCombineEstimateCalculations', {estimate});
-
 
 	// ⬇ Remove the Time Stamps first: 
 	estimate.date_created = estimate.date_created.split('T')[0];
