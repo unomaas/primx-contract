@@ -46,11 +46,17 @@ function* fetchEstimateQuery(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
   try {
+		console.log('*** in AddEstimate, action.payload', action.payload);
+
+		// TODO: When I come back, make a new custom hook to calculate estimates to use in combined estimates.  We want to remove anything the sends them to locale string.  It's messing up the post here.  
+
     const response = yield axios.post('/api/estimates', action.payload);
     // ⬇ action.payload contains the history object from useHistory:
-    const history = action.payload.history
+    const history = action.payload.history;
     // ⬇ Saving the response and action.payload to variables for easier reading:
     const returnedEstimate = response.data;
+		console.log('*** in AddEstimate, response.data', response.data);
+		
     // ⬇ If we just saved a combined estimate:
     if (returnedEstimate.estimate_number.charAt(returnedEstimate.estimate_number.length - 1) === "C") {
       // ⬇ Update the calc combined object with the new estimate number: 
