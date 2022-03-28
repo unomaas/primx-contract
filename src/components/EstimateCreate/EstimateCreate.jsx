@@ -485,7 +485,7 @@ export default function EstimateCreate() {
 												<b>Have Materials On Hand?</b>
 												<Switch
 													onChange={event => handleChange('materials_on_hand', event.target.value)}
-													// checked={estimateData?.materials_on_hand}
+													checked={estimateData?.materials_on_hand}
 													value={estimateData?.materials_on_hand}
 													color="primary"
 												/>

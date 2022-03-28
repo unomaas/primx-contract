@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
-import useCalculateCostPerMeasurement from '../../hooks/useCalculateCostPerMeasurement';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -1422,7 +1421,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 							<Table size="small">
 
 								<TableHead>
-									<TableRow hover={true}>
+									<TableRow>
 										<TableCell></TableCell>
 										{/* Conditionally render either imperial or metric table headings */}
 										{calcCombinedEstimate.measurement_units == 'imperial' ?

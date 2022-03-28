@@ -4,7 +4,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router';
-import useCalculateCostPerMeasurement from '../../hooks/useCalculateCostPerMeasurement';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';

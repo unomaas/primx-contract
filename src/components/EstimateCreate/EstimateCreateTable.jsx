@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-import useCalculateCostPerMeasurement from '../../hooks/useCalculateCostPerMeasurement';
 import { Alert } from '@material-ui/lab';
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
@@ -493,7 +492,6 @@ export default function EstimateCreateTable() {
 														}}
 														fullWidth
 														value={estimateData.primx_flow_on_hand_liters}
-														onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
 													/>
 												</TableCell>
 											</TableRow>
@@ -514,7 +512,6 @@ export default function EstimateCreateTable() {
 															}}
 															fullWidth
 															value={estimateData.primx_steel_fibers_on_hand_lbs}
-															onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_LBS' })}
 														/>
 													</TableCell>
 												</TableRow>
@@ -534,7 +531,6 @@ export default function EstimateCreateTable() {
 															}}
 															fullWidth
 															value={estimateData.primx_steel_fibers_on_hand_kgs}
-															onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_KGS' })}
 														/>
 													</TableCell>
 												</TableRow>

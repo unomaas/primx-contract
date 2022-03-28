@@ -216,10 +216,21 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		{ field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
 		{ field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
 		{ field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'primx_dc_dosage_lbs', headerClassName: classes.header, headerName: 'DC Dosage (lbs)', width: 175, editable: true }, // Editable + validation?
+		{ field: 'primx_dc_dosage_kgs', headerClassName: classes.header, headerName: 'DC Dosage (kgs)', width: 175, editable: true }, // Editable + validation?
 		{ field: 'primx_flow_dosage_liters', headerClassName: classes.header, headerName: 'Flow Dosage (liters)', width: 175, editable: false }, // Editable + validation?
 		{ field: 'primx_steel_fibers_dosage_lbs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (lbs)', width: 175, editable: false }, // Editable + validation?
 		{ field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175, editable: false }, // Editable + validation?
 		{ field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'materials_on_hand', headerClassName: classes.header, headerName: 'Materials On Hand', width: 175, editable: true },
+		{ field: 'primx_dc_on_hand_lbs', headerClassName: classes.header, headerName: 'DC On Hand (lbs)', width: 175, editable: true },
+		{ field: 'primx_dc_on_hand_kgs', headerClassName: classes.header, headerName: 'DC On Hand (kgs)', width: 175, editable: true },
+		{ field: 'primx_flow_on_hand_liters', headerClassName: classes.header, headerName: 'Flow On Hand (ltrs)', width: 175, editable: true },
+		{ field: 'primx_steel_fibers_on_hand_lbs', headerClassName: classes.header, headerName: 'Steel Fibers On Hand (lbs)', width: 175, editable: true },
+		{ field: 'primx_steel_fibers_on_hand_kgs', headerClassName: classes.header, headerName: 'Steel Fibers On Hand (kgs)', width: 175, editable: true },
+		{ field: 'primx_ultracure_blankets_on_hand_sq_ft', headerClassName: classes.header, headerName: 'Ultracure Blankets On Hand (sq ft)', width: 175, editable: true },
+		{ field: 'primx_ultracure_blankets_on_hand_sq_m', headerClassName: classes.header, headerName: 'Ultracure Blankets On Hand (sq m)', width: 175, editable: true },
+		{ field: 'primx_cpea_on_hand_liters', headerClassName: classes.header, headerName: 'CPEA On Hand (ltrs)', width: 175, editable: true },
 
 		// ⬇ All calculated values are listed below
 		// ⬇ PrimX DC calculated values
