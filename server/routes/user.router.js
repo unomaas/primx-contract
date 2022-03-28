@@ -22,14 +22,17 @@ router.post('/register', rejectUnauthenticated, (req, res, next) => {
 		if (req.user.permission_level == '1') {
 			const username = req.body.username;
 			const password = encryptLib.encryptPassword(req.body.password);
-
-			const queryText = `INSERT INTO "user" (username, password, permission_level)
-			VALUES ($1, $2, $3) RETURNING id`;
+			const queryText = `
+				INSERT INTO "user" 
+					(username, password, permission_level)
+				VALUES ($1, $2, 2) 
+				RETURNING id;
+			`; // End queryText 
 			pool
 				.query(queryText, [username, password])
 				.then(() => res.sendStatus(201))
 				.catch((error) => {
-					console.error('User registration failed: ', error);
+					console.error('Admin registration failed: ', error);
 					res.sendStatus(500);
 				});
 		} else {
@@ -48,14 +51,17 @@ router.post('/register_licensee', rejectUnauthenticated, (req, res, next) => {
 			const username = req.body.username;
 			const password = encryptLib.encryptPassword(req.body.password);
 			const licensees_id = req.body.licensees_id;
-
-			const queryText = `INSERT INTO "user" (username, password, permission_level, licensees_id)
-			VALUES ($1, $2, 3, $3) RETURNING id`;
+			const queryText = `
+				INSERT INTO "user" 
+					(username, password, permission_level, licensees_id)
+				VALUES ($1, $2, 3, $3) 
+				RETURNING id;
+			`; // End queryText
 			pool
 				.query(queryText, [username, password, licensees_id])
 				.then(() => res.sendStatus(201))
 				.catch((error) => {
-					console.error('User registration failed: ', error);
+					console.error('Licensee registration failed: ', error);
 					res.sendStatus(500);
 				});
 		} else {
