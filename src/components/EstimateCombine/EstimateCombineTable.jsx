@@ -1421,7 +1421,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 							<Table size="small">
 
 								<TableHead>
-									<TableRow hover={true}>
+									<TableRow>
 										<TableCell></TableCell>
 										{/* Conditionally render either imperial or metric table headings */}
 										{calcCombinedEstimate.measurement_units == 'imperial' ?

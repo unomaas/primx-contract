@@ -2,7 +2,7 @@ import useValueFormatter from "./useValueFormatter";
 
 // ⬇ Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays:
 export default function useEstimateCalculations(estimate) {
-	
+
 	// ⬇ Remove the Time Stamps first: 
 	estimate.date_created = estimate.date_created.split('T')[0];
 	estimate.anticipated_first_pour_date = estimate.anticipated_first_pour_date.split('T')[0];
@@ -81,6 +81,8 @@ export default function useEstimateCalculations(estimate) {
 		//#region - ⬇⬇ Imperial DC calculations below:
 		// ⬇ Calculate amounts and prices of materials that are measured in pounds and square feet:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_yards_total * estimate.primx_dc_dosage_lbs; // 67 is the factor provided by PrimX
+		// ⬇ Dc comes in packages of 2756 lbs, need to round up:
+		estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_project_amount / 2756);
 		// ⬇ If they have materials on hand, calculate the new values: 
 		if (estimate.materials_on_hand) {
 			// ⬇ Total order amount is a new amount to display: 
@@ -91,10 +93,7 @@ export default function useEstimateCalculations(estimate) {
 			} // End if 
 			// ⬇ Dc comes in packages of 2756 lbs, need to round up:
 			estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_order_amount / 2756);
-		} else { // ⬇ Else do the calculations as normal (no materials on hand):
-			// ⬇ Dc comes in packages of 2756 lbs, need to round up:
-			estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_project_amount / 2756);
-		} // End if/else
+		} // End if
 		estimate.primx_dc_final_order_amount = estimate.primx_dc_packages_needed * 2756;
 		estimate.primx_dc_total_materials_price = estimate.primx_dc_final_order_amount * estimate.primx_dc_unit_price;
 		// ⬇ Every shipping container can hold 14 packages of DC, need to round up:
@@ -106,6 +105,8 @@ export default function useEstimateCalculations(estimate) {
 		//#region - ⬇⬇ Imperial Steel Fiber calculations below:
 		// ⬇ Calculate amounts and prices of materials that are measured in pounds and square feet:
 		estimate.primx_steel_fibers_total_project_amount = estimate.design_cubic_yards_total * estimate.primx_steel_fibers_dosage_lbs;
+		// ⬇ Steel fibers comes in packages of 42329 lbs, need to round up:
+		estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount / 42329);
 		// ⬇ If they have materials on hand, calculate the new values: 
 		if (estimate.materials_on_hand) {
 			// ⬇ Total order amount is a new amount to display: 
@@ -116,10 +117,7 @@ export default function useEstimateCalculations(estimate) {
 			} // End if 
 			// ⬇ Steel fibers comes in packages of 42329 lbs, need to round up:
 			estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_order_amount / 42329);
-		} else { // ⬇ Else do the calculations as normal (no materials on hand):
-			// ⬇ Steel fibers comes in packages of 42329 lbs, need to round up:
-			estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount / 42329);
-		} // End if/else
+		} // End if
 		estimate.primx_steel_fibers_final_order_amount = estimate.primx_steel_fibers_packages_needed * 42329;
 		estimate.primx_steel_fibers_total_materials_price = estimate.primx_steel_fibers_final_order_amount * estimate.primx_steel_fibers_unit_price;
 		// ⬇ Every shipping container can only hold 1 package of steel fibers:
@@ -131,6 +129,8 @@ export default function useEstimateCalculations(estimate) {
 		//#region - ⬇⬇ Imperial Ultracure Blankets calculations below:
 		// ⬇ Calculate values for PrimX Ultracure Blankets:
 		estimate.primx_ultracure_blankets_total_project_amount = estimate.square_feet * 1.2; // 1.2 is the factor provided by PrimX
+		// ⬇ Blankets come in rolls of 6458 sq feet, need to round up:
+		estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 6458);
 		// ⬇ If they have materials on hand, calculate the new values: 
 		if (estimate.materials_on_hand) {
 			// ⬇ Total order amount is a new amount to display: 
@@ -141,10 +141,7 @@ export default function useEstimateCalculations(estimate) {
 			} // End if 
 			// ⬇ Blankets come in rolls of 6458 sq feet, need to round up:
 			estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_order_amount / 6458);
-		} else { // ⬇ Else do the calculations as normal (no materials on hand):
-			// ⬇ Blankets come in rolls of 6458 sq feet, need to round up:
-			estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 6458);
-		} // End if/else
+		} // End if
 		estimate.primx_ultracure_blankets_final_order_amount = estimate.primx_ultracure_blankets_packages_needed * 6458;
 		estimate.primx_ultracure_blankets_total_materials_price = estimate.primx_ultracure_blankets_final_order_amount * estimate.primx_ultracure_blankets_unit_price;
 		// ⬇ Blankets don't get charged shipping and don't have container limitations:
@@ -178,20 +175,19 @@ export default function useEstimateCalculations(estimate) {
 		//#region - ⬇⬇ Metric DC calculations below:
 		// ⬇ Calculate amounts and prices of materials that are measured in kgs and square meters:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_meters_total * estimate.primx_dc_dosage_kgs; // 40 is the factor provided by PrimX
+		// ⬇ DC comes in packages of 1250 kg, need to round up
+		estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_project_amount / 1250);
 		// ⬇ If they have materials on hand, calculate the new values: 
 		if (estimate.materials_on_hand) {
 			// ⬇ Total order amount is a new amount to display: 
-			estimate.primx_dc_total_order_amount = estimate.primx_dc_total_project_amount - estimate.primx_dc_on_hand_lbs;
+			estimate.primx_dc_total_order_amount = estimate.primx_dc_total_project_amount - estimate.primx_dc_on_hand_kgs;
 			// ⬇ Validation to disallow negative numbers: 
 			if (estimate.primx_dc_total_order_amount < 0) {
 				estimate.primx_dc_total_order_amount = 0;
 			} // End if 
 			// ⬇ DC comes in packages of 1250 kg, need to round up
-			estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_order_amount / 2756);
-		} else { // ⬇ Else do the calculations as normal (no materials on hand):
-			// ⬇ DC comes in packages of 1250 kg, need to round up
-			estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_project_amount / 1250);
-		} // End if/else
+			estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_order_amount / 1250);
+		} // End if 
 		estimate.primx_dc_final_order_amount = estimate.primx_dc_packages_needed * 1250;
 		estimate.primx_dc_total_materials_price = estimate.primx_dc_final_order_amount * estimate.primx_dc_unit_price;
 		// ⬇ Every shipping container can hold 14 packages of DC, need to round up:
@@ -203,6 +199,8 @@ export default function useEstimateCalculations(estimate) {
 		//#region - ⬇⬇ Metric Steel Fiber calculations below:
 		// ⬇ Calculate values for PrimX steel fibers:
 		estimate.primx_steel_fibers_total_project_amount = estimate.design_cubic_meters_total * estimate.primx_steel_fibers_dosage_kgs;
+		// ⬇ Steel fibers comes in packages of 19200 kg, need to round up:
+		estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount / 19200);
 		// ⬇ If they have materials on hand, calculate the new values: 
 		if (estimate.materials_on_hand) {
 			// ⬇ Total order amount is a new amount to display: 
@@ -213,10 +211,7 @@ export default function useEstimateCalculations(estimate) {
 			} // End if 
 			// ⬇ Steel fibers comes in packages of 19200 kg, need to round up:
 			estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount / 19200);
-		} else { // ⬇ Else do the calculations as normal (no materials on hand):
-			// ⬇ Steel fibers comes in packages of 19200 kg, need to round up:
-			estimate.primx_steel_fibers_packages_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount / 19200);
-		} // End if/else
+		} // End if 
 		estimate.primx_steel_fibers_final_order_amount = estimate.primx_steel_fibers_packages_needed * 19200;
 		estimate.primx_steel_fibers_total_materials_price = estimate.primx_steel_fibers_final_order_amount * estimate.primx_steel_fibers_unit_price;
 		// ⬇ Every shipping container can only hold 1 package of steel fibers:
@@ -228,6 +223,8 @@ export default function useEstimateCalculations(estimate) {
 		//#region - ⬇⬇ Metric Ultracure Blankets calculations below:
 		// ⬇ Calculate values for PrimX Ultracure Blankets:
 		estimate.primx_ultracure_blankets_total_project_amount = estimate.square_meters * 1.2; // 1.2 is the factor provided by PrimX
+		// ⬇ Blankets come in rolls of 600 square meters, need to round up:
+		estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 600);
 		// ⬇ If they have materials on hand, calculate the new values: 
 		if (estimate.materials_on_hand) {
 			// ⬇ Total order amount is a new amount to display: 
@@ -238,10 +235,7 @@ export default function useEstimateCalculations(estimate) {
 			} // End if 
 			// ⬇ Blankets come in rolls of 600 square meters, need to round up:
 			estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 600);
-		} else { // ⬇ Else do the calculations as normal (no materials on hand):
-			// ⬇ Blankets come in rolls of 600 square meters, need to round up:
-			estimate.primx_ultracure_blankets_packages_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 600);
-		} // End if/else
+		} // End if 
 		estimate.primx_ultracure_blankets_final_order_amount = estimate.primx_ultracure_blankets_packages_needed * 600;
 		estimate.primx_ultracure_blankets_total_materials_price = estimate.primx_ultracure_blankets_final_order_amount * estimate.primx_ultracure_blankets_unit_price;
 		// Blankets don't get charged shipping and don't have container limitations
@@ -258,6 +252,8 @@ export default function useEstimateCalculations(estimate) {
 		//#region - ⬇⬇ Flow calculations below:
 		// ⬇ Start by adding calculations data for PrimX Flow:
 		estimate.primx_flow_total_project_amount = designVolume * estimate.primx_flow_dosage_liters; // Dosage liters is input by licensee
+		// ⬇ Flow comes in packages of 1000 liters, need to round up:
+		estimate.primx_flow_packages_needed = Math.ceil(estimate.primx_flow_total_project_amount / 1000);
 		// ⬇ If they have materials on hand, calculate the new values: 
 		if (estimate.materials_on_hand) {
 			// ⬇ Total order amount is a new amount to display: 
@@ -268,10 +264,7 @@ export default function useEstimateCalculations(estimate) {
 			} // End if 
 			// ⬇ Flow comes in packages of 1000 liters, need to round up:
 			estimate.primx_flow_packages_needed = Math.ceil(estimate.primx_flow_total_project_amount / 1000);
-		} else { // ⬇ Else do the calculations as normal (no materials on hand):
-			// ⬇ Flow comes in packages of 1000 liters, need to round up:
-			estimate.primx_flow_packages_needed = Math.ceil(estimate.primx_flow_total_project_amount / 1000);
-		} // End if/else
+		} // End if 
 		estimate.primx_flow_final_order_amount = estimate.primx_flow_packages_needed * 1000;
 		estimate.primx_flow_total_materials_price = estimate.primx_flow_final_order_amount * estimate.primx_flow_unit_price;
 		// ⬇ Every shipping container can hold 10 packages of flow, need to round up:
@@ -283,6 +276,8 @@ export default function useEstimateCalculations(estimate) {
 		//#region - ⬇⬇ CPEA calculations below:
 		// ⬇ Add calculations data for PrimX CPEA:
 		estimate.primx_cpea_total_project_amount = designVolume * estimate.primx_cpea_dosage_liters;
+		// ⬇ Cpea comes in packages of 1000 liters, need to round up:
+		estimate.primx_cpea_packages_needed = Math.ceil(estimate.primx_cpea_total_project_amount / 1000);
 		// ⬇ If they have materials on hand, calculate the new values: 
 		if (estimate.materials_on_hand) {
 			// ⬇ Total order amount is a new amount to display: 
@@ -293,10 +288,7 @@ export default function useEstimateCalculations(estimate) {
 			} // End if 
 			// ⬇ Cpea comes in packages of 1000 liters, need to round up:
 			estimate.primx_cpea_packages_needed = Math.ceil(estimate.primx_cpea_total_project_amount / 1000);
-		} else { // ⬇ Else do the calculations as normal (no materials on hand):
-			// ⬇ Cpea comes in packages of 1000 liters, need to round up:
-			estimate.primx_cpea_packages_needed = Math.ceil(estimate.primx_cpea_total_project_amount / 1000);
-		} // End if/else
+		} // End if
 		estimate.primx_cpea_final_order_amount = estimate.primx_cpea_packages_needed * 1000;
 		estimate.primx_cpea_total_materials_price = estimate.primx_cpea_final_order_amount * estimate.primx_cpea_unit_price;
 		// ⬇ Every shipping container can hold 10 packages of cpea, need to round up:
