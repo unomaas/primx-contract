@@ -23,7 +23,7 @@ function* registerUser(action) {
     // set to 'login' mode so they see the login screen
     // after registration or after they log out
     yield put({
-      type: 'FETCH_USER_INFO'
+      type: 'FETCH_ADMIN_INFO'
     });
     yield put({
       type: 'SET_SUCCESS_REGISTER_ADMIN'
