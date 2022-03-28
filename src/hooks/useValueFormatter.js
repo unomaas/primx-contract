@@ -38,9 +38,8 @@ export default function useValueFormatter(property, estimate) {
 		// ⬇ Properties we want formatted with commas, below: 
 		property.includes('packages_needed') ||
 		property.includes('_containers') ||
-		// property.includes('square_') ||
 		property.includes('thickness_') ||
-		property.includes('on_hand_') ||
+		// property.includes('on_hand_') ||
 		property.includes('dosage_') ||
 		property.includes('_display')
 	) {
