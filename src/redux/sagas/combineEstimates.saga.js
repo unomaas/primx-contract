@@ -83,8 +83,8 @@ function* fetchManyEstimatesQuery(action) {
 			totalsObjectHolder.primx_flow_total_project_amount += parseFloat(estimate?.primx_flow_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.primx_steel_fibers_total_project_amount += parseFloat(estimate?.primx_steel_fibers_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.primx_ultracure_blankets_total_project_amount += parseFloat(estimate?.primx_ultracure_blankets_total_project_amount?.replaceAll(',', ''));
-			totalsObjectHolder.square_feet += parseFloat(estimate?.square_feet?.replaceAll(',', ''));
-			totalsObjectHolder.square_meters += parseFloat(estimate?.square_meters?.replaceAll(',', ''));
+			totalsObjectHolder.square_feet += parseFloat(estimate?.square_feet);
+			totalsObjectHolder.square_meters += parseFloat(estimate?.square_meters);
 		} // End for loop
 		// ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing. The JSON.parse(JSON.stringify) will rip apart and create a new object copy. Only works with objects: 
 		let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
@@ -180,8 +180,8 @@ function* fetchCombinedEstimatesQuery(action) {
 			totalsObjectHolder.primx_flow_total_project_amount += parseFloat(estimate?.primx_flow_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.primx_steel_fibers_total_project_amount += parseFloat(estimate?.primx_steel_fibers_total_project_amount?.replaceAll(',', ''));
 			totalsObjectHolder.primx_ultracure_blankets_total_project_amount += parseFloat(estimate?.primx_ultracure_blankets_total_project_amount?.replaceAll(',', ''));
-			totalsObjectHolder.square_feet += parseFloat(estimate?.square_feet?.replaceAll(',', ''));
-			totalsObjectHolder.square_meters += parseFloat(estimate?.square_meters?.replaceAll(',', ''));
+			totalsObjectHolder.square_feet += parseFloat(estimate?.square_feet);
+			totalsObjectHolder.square_meters += parseFloat(estimate?.square_meters);
 		} // End for loop
 		// ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing. The JSON.parse(JSON.stringify) will rip apart and create a new object copy. Only works with objects: 
 		let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
@@ -195,6 +195,7 @@ function* fetchCombinedEstimatesQuery(action) {
 		talliedCombinedEstimate.primx_ultracure_blankets_total_project_amount = totalsObjectHolder.primx_ultracure_blankets_total_project_amount;
 		talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
 		talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
+
 		// ⬇ Run the updated Combine Estimates Calc on it:
 		const calculatedResponse = yield useCombineEstimateCalculations(talliedCombinedEstimate);
 		// ⬇ Send that data to the reducer, and set the show table to true:

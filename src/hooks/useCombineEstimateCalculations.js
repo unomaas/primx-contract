@@ -156,7 +156,6 @@ export default function useCombineEstimateCalculations(estimate) {
 		estimate.primx_steel_fibers_calculated_shipping_estimate + estimate.primx_cpea_calculated_shipping_estimate;
 	estimate.design_total_price_estimate = estimate.design_total_shipping_estimate + estimate.design_total_materials_price;
 
-
 	// ⬇ Do the Cost Per Square Measurement calculations, Imperial:
 	estimate.primx_dc_cost_per_sq_ft = estimate.primx_dc_total_cost_estimate / estimate.square_feet;
 	estimate.primx_flow_cost_per_sq_ft = estimate.primx_flow_total_cost_estimate / estimate.square_feet
@@ -171,7 +170,6 @@ export default function useCombineEstimateCalculations(estimate) {
 	estimate.primx_ultracure_blankets_cost_per_sq_m = estimate.primx_ultracure_blankets_total_cost_estimate / estimate.square_meters;
 	estimate.primx_cpea_cost_per_sq_m = estimate.primx_cpea_total_cost_estimate / estimate.square_meters;
 	estimate.primx_design_total_cost_per_sq_m = estimate.design_total_price_estimate / estimate.square_meters;
-
 
 	// ⬇ The input values can't be displayed as localeStrings, so we need to transform them into numbers first with parseFloat, save them to a unique key (_display), and then they'll be picked up in the value formatter to beautify on the DOM: 
 	estimate.primx_dc_dosage_lbs_display = parseFloat(estimate.primx_dc_dosage_lbs);
@@ -197,7 +195,7 @@ export default function useCombineEstimateCalculations(estimate) {
 	estimate.thickened_edge_construction_joint_lineal_feet_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_feet);
 	estimate.thickened_edge_construction_joint_lineal_meters_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_meters);
 
-
+	
 	// ⬇ Before returning the estimate object, do any necessary rounding on given numbers to match the needs of the various grid displays.  Loop over all key/value pairs in the mutated estimate object, doing rounding based on shared key names:
 	for (let property in estimate) {
 		// ⬇ Run each value through our formatter hook to return a pretty number: 

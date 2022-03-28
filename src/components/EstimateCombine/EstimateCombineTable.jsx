@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
-import useCalculateCostPerMeasurement from '../../hooks/useCalculateCostPerMeasurement';
 //#endregion ⬆⬆ All document setup above.
 
 
