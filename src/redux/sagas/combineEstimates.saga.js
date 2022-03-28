@@ -123,7 +123,7 @@ function* fetchManyEstimatesQuery(action) {
 			// ⬇ Set the tallied totals to the new estimate object: 
 			talliedCombinedEstimate.primx_dc_on_hand_lbs = totalsObjectHolder.primx_dc_on_hand_lbs;
 			talliedCombinedEstimate.primx_dc_on_hand_kgs = totalsObjectHolder.primx_dc_on_hand_kgs;
-			talliedCombinedEstimate.primx_flow_on_hand_liters = totalsObjectHolder.sqprimx_flow_on_hand_litersuare_meters;
+			talliedCombinedEstimate.primx_flow_on_hand_liters = totalsObjectHolder.primx_flow_on_hand_liters;
 			talliedCombinedEstimate.primx_steel_fibers_on_hand_lbs = totalsObjectHolder.primx_steel_fibers_on_hand_lbs;
 			talliedCombinedEstimate.primx_steel_fibers_on_hand_kgs = totalsObjectHolder.primx_steel_fibers_on_hand_kgs;
 			talliedCombinedEstimate.primx_ultracure_blankets_on_hand_sq_ft = totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_ft;

@@ -251,7 +251,7 @@ export default function useEstimateCalculations(estimate) {
 	function calculateFlowAndCpea(designVolume) {
 		//#region - ⬇⬇ Flow calculations below:
 		// ⬇ Start by adding calculations data for PrimX Flow:
-		estimate.primx_flow_total_project_amount = designVolume * estimate.primx_flow_dosage_liters; // Dosage liters is input by licensee
+		estimate.primx_flow_total_project_amount = designVolume * estimate.primx_flow_dosage_liters;
 		// ⬇ Flow comes in packages of 1000 liters, need to round up:
 		estimate.primx_flow_packages_needed = Math.ceil(estimate.primx_flow_total_project_amount / 1000);
 		// ⬇ If they have materials on hand, calculate the new values: 

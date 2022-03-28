@@ -7,18 +7,6 @@ export default function useCombineEstimateCalculations(estimate) {
 	estimate.date_created = estimate.date_created.split('T')[0];
 	estimate.anticipated_first_pour_date = estimate.anticipated_first_pour_date.split('T')[0];
 
-	// // ⬇ Setup for Materials On Hand. If false, make sure the values are zero:
-	// if (!estimate.materials_on_hand) {
-	// 	estimate.primx_dc_on_hand_lbs = 0;
-	// 	estimate.primx_dc_on_hand_kgs = 0;
-	// 	estimate.primx_flow_on_hand_liters = 0;
-	// 	estimate.primx_steel_fibers_on_hand_lbs = 0;
-	// 	estimate.primx_steel_fibers_on_hand_kgs = 0;
-	// 	estimate.primx_ultracure_blankets_on_hand_sq_ft = 0;
-	// 	estimate.primx_ultracure_blankets_on_hand_sq_m = 0;
-	// 	estimate.primx_cpea_on_hand_liters = 0;
-	// }; // End if
-
 
 	// ⬇ Set a default value for waste factor percentage if one wasn't entered:
 	if (!estimate.waste_factor_percentage) {
