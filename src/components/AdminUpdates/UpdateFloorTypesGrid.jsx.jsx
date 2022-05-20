@@ -8,7 +8,7 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 export default function UpdateFloorTypesGrid({ floorTypes }) {
 	//Material UI classes for data grid
 	const classes = useStyles();
-  const [pageSize, setPageSize] = useState(10);
+	const [pageSize, setPageSize] = useState(10);
 
 
 	// columns for Data Grid

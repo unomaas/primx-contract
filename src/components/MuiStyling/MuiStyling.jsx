@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
 
   TypesGrid: {
-    width: 40,
+    width: 405,
     margin: 'auto',
   },
 
