@@ -20,7 +20,7 @@ function Nav() {
     text: 'Login / Register',
   };
 
-  if (user.id != null) {
+  if (user.user_id != null) {
     loginLinkData.path = '/home';
     loginLinkData.text = 'Home';
   }

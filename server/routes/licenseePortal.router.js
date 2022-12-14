@@ -19,14 +19,14 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 				"floor_types".floor_type,
 				"licensees".licensee_contractor_name, 
 				"placement_types".placement_type, 
-				"shipping_costs".ship_to_state_province
+				"shipping_costs".shipping_cost
 			FROM "estimates"
-			JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
-			JOIN "licensees" ON "estimates".licensee_id = "licensees".id
-			JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
-			JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
+			JOIN "floor_types" ON "estimates".floor_type_id = "floor_types".floor_type_id
+			JOIN "licensees" ON "estimates".licensee_id = "licensees".licensee_id
+			JOIN "placement_types" ON "estimates".placement_type_id = "placement_types".placement_type_id
+			JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".destination_id
 			WHERE "estimates".licensee_id = $1
-			ORDER BY "estimates".id DESC;
+			ORDER BY "estimates".estimate_id DESC;
 		`; // End query
 		// ⬇ Pulling the data from DB: 
 		const result = await pool.query(query, params);

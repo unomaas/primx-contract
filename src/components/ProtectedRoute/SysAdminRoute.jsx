@@ -29,7 +29,7 @@ function SysAdminRoute(props) {
 
   let ComponentToShow;
 
-  if (user.id && user.permission_level <= "1") {
+  if (user.user_id && user.permission_level <= "1") {
     // if the user is logged in (only logged in users have ids)
     // show the component that is protected
     ComponentToShow = ComponentToProtect;
@@ -42,9 +42,9 @@ function SysAdminRoute(props) {
 
 
   // redirect a logged in user if an authRedirect prop has been provided
-  if (user.id && authRedirect != null) {
+  if (user.user_id && authRedirect != null) {
     return <Redirect exact from={otherProps.path} to={authRedirect} />;
-  } else if (!user.id && authRedirect != null) {
+  } else if (!user.user_id && authRedirect != null) {
     ComponentToShow = ComponentToProtect;
   }
 

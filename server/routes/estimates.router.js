@@ -20,16 +20,23 @@ router.get('/lookup/:estimate', (req, res) => {
 
 	// SQL query to GET a specific estimate along the floor type names, licensee names, placement type names, and shipping state/province names
 	const queryText = `
-    SELECT "estimates".*, "floor_types".floor_type, "licensees".licensee_contractor_name, "placement_types".placement_type, "shipping_costs".ship_to_state_province FROM "estimates"
-    JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
-    JOIN "licensees" ON "estimates".licensee_id = "licensees".id
-    JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
-    JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
+    SELECT 
+			"estimates".*, 
+			"floor_types".floor_type_label, 
+			"licensees".licensee_contractor_name, 
+			"placement_types".placement_type_label, 
+			"shipping_costs".shipping_cost 
+		FROM "estimates"
+    JOIN "floor_types" ON "estimates".floor_type_id = "floor_types".floor_type_id
+    JOIN "licensees" ON "estimates".licensee_id = "licensees".licensee_id
+    JOIN "placement_types" ON "estimates".placement_type_id = "placement_types".placement_type_id
+    JOIN "shipping_costs" ON "estimates".destination_id = "shipping_costs".destination_id
     WHERE "estimate_number" = $1 AND "licensee_id" = $2
-    ORDER BY "estimates".id DESC;
+    ORDER BY "estimates".estimate_id DESC;
   `;
 	pool.query(queryText, [estimateNumber, licenseeId])
 		.then(result => {
+
 			res.send(result.rows);
 		})
 		.catch(error => {
@@ -41,12 +48,18 @@ router.get('/lookup/:estimate', (req, res) => {
 // GET request to get all estimates data from the database
 router.get('/all', rejectUnauthenticated, (req, res) => {
 	// SQL query to GET all estimates along the floor type names, licensee names, placement type names, and shipping state/province names
-	const queryText = `SELECT "estimates".*, "floor_types".floor_type, "licensees".licensee_contractor_name, "placement_types".placement_type, "shipping_costs".ship_to_state_province FROM "estimates"
-                     JOIN "floor_types" ON "estimates".floor_types_id = "floor_types".id
-                     JOIN "licensees" ON "estimates".licensee_id = "licensees".id
-                     JOIN "placement_types" ON "estimates".placement_types_id = "placement_types".id
-                     JOIN "shipping_costs" ON "estimates".shipping_costs_id = "shipping_costs".id
-                     ORDER BY "estimates".id DESC;`;
+	const queryText = `
+		SELECT "estimates".*, 
+			"floor_types".floor_type_label, 
+			"licensees".licensee_contractor_name, 
+			"placement_types".placement_type_label, 
+			"shipping_costs".shipping_cost 
+		FROM "estimates"
+		JOIN "floor_types" ON "estimates".floor_type_id = "floor_types".floor_type_id
+		JOIN "licensees" ON "estimates".licensee_id = "licensees".licensee_id
+		JOIN "placement_types" ON "estimates".placement_type_id = "placement_types".placement_type_id
+		JOIN "shipping_costs" ON "estimates".destination_id = "shipping_costs".destination_id
+		ORDER BY "estimates".estimate_id DESC;`;
 
 	pool.query(queryText)
 		.then((result) => res.send(result.rows))
@@ -80,8 +93,8 @@ router.post('/', async (req, res) => {
 		project_manager_name,
 		project_manager_email,
 		project_manager_phone,
-		floor_types_id,
-		placement_types_id,
+		floor_type_id,
+		placement_type_id,
 		primx_flow_dosage_liters,
 		primx_cpea_dosage_liters,
 		waste_factor_percentage,
@@ -147,8 +160,8 @@ router.post('/', async (req, res) => {
 		project_manager_name,
 		project_manager_email,
 		project_manager_phone,
-		floor_types_id,
-		placement_types_id,
+		floor_type_id,
+		placement_type_id,
 		primx_flow_dosage_liters,
 		primx_cpea_dosage_liters,
 		primx_dc_unit_price,
@@ -187,8 +200,8 @@ router.post('/', async (req, res) => {
 			"project_manager_name",
 			"project_manager_email",
 			"project_manager_phone",
-			"floor_types_id",
-			"placement_types_id",
+			"floor_type_id",
+			"placement_type_id",
 			"primx_flow_dosage_liters",
 			"primx_cpea_dosage_liters",
 			"primx_dc_unit_price",
@@ -448,7 +461,7 @@ router.put('/recalculate/:id', (req, res) => {
       "primx_ultracure_blankets_unit_price" = $7, 
       "primx_cpea_unit_price" = $8, 
       "primx_cpea_shipping_estimate" = $9
-    WHERE "estimates".id = $10;
+    WHERE "estimates".estimate_id = $10;
   `;
 
 	// destructure data received from saga which contains an object with current updated pricing
@@ -522,8 +535,8 @@ router.put('/clientupdates/:id', (req, res) => {
 		project_manager_name,
 		project_manager_email,
 		project_manager_phone,
-		floor_types_id,
-		placement_types_id,
+		floor_type_id,
+		placement_type_id,
 		primx_flow_dosage_liters,
 		primx_cpea_dosage_liters,
 		waste_factor_percentage,
@@ -567,8 +580,8 @@ router.put('/clientupdates/:id', (req, res) => {
 		project_manager_name,
 		project_manager_email,
 		project_manager_phone,
-		floor_types_id,
-		placement_types_id,
+		floor_type_id,
+		placement_type_id,
 		primx_flow_dosage_liters,
 		primx_cpea_dosage_liters,
 		waste_factor_percentage,
@@ -594,8 +607,8 @@ router.put('/clientupdates/:id', (req, res) => {
 			"project_manager_name" = $11,
 			"project_manager_email" = $12,
 			"project_manager_phone" = $13,
-			"floor_types_id" = $14,
-			"placement_types_id" = $15,
+			"floor_type_id" = $14,
+			"placement_type_id" = $15,
 			"primx_flow_dosage_liters" = $16,
 			"primx_cpea_dosage_liters" = $17,
 			"waste_factor_percentage" = $18,

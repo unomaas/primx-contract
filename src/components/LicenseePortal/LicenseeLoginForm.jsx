@@ -60,6 +60,10 @@ function LicenseeLoginForm() {
 		}
 	}; // end login
 
+	let test_var = "test";
+
+	console.log('test_var:', test_var);
+
 	return (
 		<div>
 
