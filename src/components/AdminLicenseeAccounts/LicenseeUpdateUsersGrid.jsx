@@ -78,7 +78,8 @@ export default function SystemAdminUpdateUsersGrid() {
         className={classes.dataGridTables}
         autoHeight
         rows={rows}
-        columns={columns}
+					getRowId={(row) => row.user_id}
+					columns={columns}
         // pageSize={10}
         rowsPerPageOptions={[10,25,50,100]}
 				pageSize={pageSize}

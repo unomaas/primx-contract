@@ -8,7 +8,9 @@ const { useRadioGroup } = require('@material-ui/core');
 router.get('/', rejectUnauthenticated, (req, res) => {
   //query to grab all users and their info
   const queryText = `
-		SELECT * FROM "users" 
+		SELECT
+			user_id, username, permission_level
+		FROM "users" 
 		WHERE permission_level = 2
 		ORDER BY username ASC;
 	`;

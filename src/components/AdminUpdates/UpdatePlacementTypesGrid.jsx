@@ -15,7 +15,7 @@ export default function UpdatePlacementTypesGrid({ placementTypes }) {
 	const placementColumns = [
 
 		{
-			field: 'placement_type',
+			field: 'placement_type_label',
 			headerName: 'Placement Type',
 			width: 400,
 			headerClassName: classes.header
@@ -33,6 +33,7 @@ export default function UpdatePlacementTypesGrid({ placementTypes }) {
 				className={classes.dataGridTables}
 				autoHeight
 				rows={placementRows}
+				getRowId={(row) => row.placement_type_id}
 				columns={placementColumns}
 				pageSize={10}
 				rowsPerPageOptions={[10, 25, 50, 100]}

@@ -50,15 +50,15 @@ router.post('/register_licensee', rejectUnauthenticated, (req, res, next) => {
 		if (req.user.permission_level == '1' || req.user.permission_level == '2') {
 			const username = req.body.username;
 			const password = encryptLib.encryptPassword(req.body.password);
-			const licensees_id = req.body.licensees_id;
+			const licensee_id = req.body.licensee_id;
 			const queryText = `
 				INSERT INTO "users" 
-					(username, password, permission_level, licensees_id)
+					(username, password, permission_level, licensee_id)
 				VALUES ($1, $2, 3, $3) 
-				RETURNING id;
+				RETURNING user_id;
 			`; // End queryText
 			pool
-				.query(queryText, [username, password, licensees_id])
+				.query(queryText, [username, password, licensee_id])
 				.then(() => res.sendStatus(201))
 				.catch((error) => {
 					console.error('Licensee registration failed: ', error);

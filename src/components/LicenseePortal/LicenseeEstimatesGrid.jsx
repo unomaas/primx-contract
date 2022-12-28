@@ -361,6 +361,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 				className={classes.dataGridTables}
 				autoHeight
 				rows={estimateData}
+				getRowId={(row) => row.estimate_id}
 				columns={columns}
 				rowsPerPageOptions={[10, 25, 50, 100]}
 				pageSize={pageSize}

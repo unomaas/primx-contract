@@ -40,9 +40,10 @@ function* fetchProductsObject() {
 }
 
 function* updateProduct(action) {
+	console.log(`Ryan Here: updateProduct`, {action});
   try {
     // takes payload to database to update product
-    yield axios.put(`/api/products/${action.payload.id}`, action.payload);
+    yield axios.put(`/api/products/${action.payload.product_id}`, action.payload);
     // fetches products
     yield put({
       type: 'FETCH_PRODUCTS_ARRAY'

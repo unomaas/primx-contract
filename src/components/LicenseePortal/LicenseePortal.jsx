@@ -34,7 +34,7 @@ export default function LicenseePortal() {
 	// ⬇ Run on page load:
 	useEffect(() => {
 		// ⬇ Fetch the current companies for drop-down menu options:
-		dispatch({ type: 'INITIAL_LOAD_LICENSEE_PORTAL', payload: user.licensees_id });
+		dispatch({ type: 'INITIAL_LOAD_LICENSEE_PORTAL', payload: user.licensee_id });
 		// ⬇ Set the page button state: 
 		dispatch({ type: 'SET_BUTTON_STATE', payload: 'SavedEstimates' });
 

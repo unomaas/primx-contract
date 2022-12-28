@@ -349,6 +349,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 				className={classes.dataGridTables}
 				autoHeight
 				rows={rows}
+				getRowId={(row) => row.estimate_id}
 				columns={columns}
 				rowsPerPageOptions={[10, 25, 50, 100]}
 				pageSize={pageSize}

@@ -65,9 +65,9 @@ passport.use(
 // Does actual work of logging in
 passport.use(
 	'licensee',
-	new LocalStrategy((licensees_id, password, done) => {
+	new LocalStrategy((licensee_id, password, done) => {
 		pool
-			.query('SELECT * FROM "users" WHERE licensees_id = $1', [licensees_id])
+			.query('SELECT * FROM "users" WHERE licensee_id = $1', [licensee_id])
 			.then((result) => {
 				const user = result && result.rows && result.rows[0];
 				if (user && encryptLib.comparePassword(password, user.password)) {

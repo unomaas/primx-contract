@@ -5,15 +5,35 @@ const router = express.Router();
 const format = require('pg-format');
 
 // GET route - gets shipping costs
-router.get('/', (req, res) => {
-  //query to grab al info from the shipping_costs table
-  const queryText = `SELECT * FROM "shipping_costs" ORDER BY ship_to_state_province ASC;`;
-  pool.query(queryText).then((result) => {
-      res.send(result.rows);
-  }).catch((error) => {
-      console.error('Error in shipping costs GET router', error);
-      res.sendStatus(500);
-  })
+router.get('/', async (req, res) => {
+
+	try {
+		const sql = `
+			SELECT 
+				"sc".shipping_cost_id,
+				"p".product_label,
+				"c".container_length_ft, 
+				"sd".destination_name,
+				"c".container_destination,
+				"sc".shipping_cost
+			FROM "shipping_costs" AS "sc"
+			JOIN "shipping_destinations" AS "sd"
+				ON "sd".destination_id = "sc".destination_id
+			JOIN "product_containers" AS "pc"
+				ON "pc".product_container_id = "sc".product_container_id
+			JOIN "products" AS "p"
+				ON "p".product_id = "pc".product_id
+			JOIN "containers" AS "c"
+					ON "pc".container_id = "c".container_id
+			WHERE "sd".destination_active = TRUE
+			ORDER BY "sc".shipping_cost_id ASC;
+		`; // End sql
+		const result = await pool.query(sql);
+		res.send(result.rows);
+	} catch (error) {
+		console.error('Error in shipping costs GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
 });
 
 //Post Route - adds shipping cost

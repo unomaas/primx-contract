@@ -7,6 +7,7 @@ import floorTypes from './floorTypes.reducer';
 import placementTypes from './placementTypes.reducer';
 import products from './products.reducer';
 import shippingCosts from './shippingCosts.reducer';
+import shippingDestinations from './shippingDestinations.reducer';
 import estimatesReducer from './estimates.reducer';
 import userInfoReducer from './userInfo.reducer';
 import snackBar from './snack.reducer';
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   combineEstimatesReducer, // Is the reducer for combining multiple estimates.
   backdropReducer, // Handles the backdrop and loading screen animation. 
 	licenseePortalReducer, // Handles the Licensee Portal data load. 
+	shippingDestinations, // Contains the shipping destinations for the Licensee Portal.
 });
 
 export default rootReducer;

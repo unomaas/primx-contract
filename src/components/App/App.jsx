@@ -10,6 +10,7 @@ import EstimateLookup from '../EstimateLookup/EstimateLookup';
 import EstimateCombine from '../EstimateCombine/EstimateCombine';
 import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
+import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx'; 
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
 import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
@@ -126,6 +127,9 @@ function App() {
 
 							<AdminRoute exact path="/AdminUpdates" >
 								<AdminUpdates />
+								{/* <AdminUpdatesIndex /> */}
+								{/* //! Ryan Here */}
+
 							</AdminRoute>
 
 							<AdminRoute exact path="/AdminOrders" >
