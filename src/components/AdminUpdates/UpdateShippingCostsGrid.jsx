@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
 import { useStyles } from '../MuiStyling/MuiStyling';
-import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
+import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions } from '@material-ui/data-grid';
 import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -27,8 +27,7 @@ export default function UpdateShippingCostsGrid() {
 	for (let row of shippingCosts) {
 		if (stateFilter && stateFilter.destination_name !== row.destination_name) continue;
 		rows.push(row);
-	}
-
+	}; // End for of loop
 
 	const rowsToDisplay = rows.slice(page * rowsPerPage, page * rowsPerPage + parseInt(rowsPerPage));
 
@@ -124,7 +123,17 @@ export default function UpdateShippingCostsGrid() {
 
 		const [anchorEl, setAnchorEl] = useState(null);
 
+		const CustomGridToolbarExport = () => {
+			return (
+				<GridToolbarContainer>
+					<GridToolbarExport />
+					{/* <GridToolbarExport />, */}
+				</GridToolbarContainer>
+			);
+		}; // End CustomGridToolbarExport
+
 		const menuItems = [
+			// <CustomGridToolbarExport />,
 			<GridToolbarExport />,
 			<GridToolbarFilterButton />,
 			<GridToolbarColumnsButton />,
@@ -285,16 +294,46 @@ export default function UpdateShippingCostsGrid() {
 				// hideFooterRowCount
 				hideFooterSelectedRowCount
 				// hideFooterPagination
-				onSelectionModelChange={(id_array) => {
-					const shippingCostId = id_array[0];
-					const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
+
+				// onSelectionModelChange={(id_array) => {
+				// 	const shippingCostId = id_array[0];
+				// 	const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
+				// 	setSelectedRow(selectedData[0]);
+				// }}
+
+				onCellClick={(event) => {
+					console.log(`Ryan Here: `, { event });
+					// ⬇ If the selected row is clicked again, deselect it:
+					// if (event.row.shipping_cost_id === selectedRow?.shipping_cost_id) {
+					// 	setSelectedRow(null);
+					// 	return;
+					// }
+
+					// if (event.row.isSelected) {
+					// 	event.component.clearSelection();
+					// }
+
+					const selectedData = rows.filter((row) => row.shipping_cost_id === event.row.shipping_cost_id);
 					setSelectedRow(selectedData[0]);
 				}}
+
+
+
+				// checkboxSelection={true}
+
 				components={{
 					Toolbar: CustomToolbar,
 					Footer: CustomFooter,
 				}}
+
+			// componentsProps={{
+			// 	toolbar: {
+			// 		csvOptions: { getRowsToExport: () => rows }
+			// 	}
+			// }}
 			/>
 		</div>
 	)
 }
+
+
