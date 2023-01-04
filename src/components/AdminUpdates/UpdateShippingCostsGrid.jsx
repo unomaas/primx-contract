@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
 import { useStyles } from '../MuiStyling/MuiStyling';
-import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions } from '@material-ui/data-grid';
+import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions, useGridSlotComponentProps } from '@material-ui/data-grid';
 import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete, Pagination } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
@@ -209,52 +209,49 @@ export default function UpdateShippingCostsGrid() {
 		); // End return
 	}; // End CustomToolbar
 
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
-	}; // End handleChangePage
+	const CustomPagination = () => {
+		const { state, apiRef } = useGridSlotComponentProps();
+		// const classes = useStyles();
 
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10));
-		setPage(0);
-	}; // End handleChangeRowsPerPage
+		return (
+			<Pagination
+				// className={classes.root}
+				color="primary"
+				count={state.pagination.pageCount}
+				page={state.pagination.page + 1}
+				onChange={(event, value) => apiRef.current.setPage(value - 1)}
+			/>
+		);
+	}
 
+	const CustomFooter = () => {
 
-	// const PaginationComponent = () => (
-	// 	<div style={{
-	// 		flex: "1",
-	// 		display: "flex",
-	// 		justifyContent: "flex-end",
-	// 	}}>
-	// 		<TablePagination
-	// 			component="div"
-	// 			count={rows.length}
-	// 			page={page}
-	// 			onPageChange={handleChangePage}
-	// 			rowsPerPage={rowsPerPage}
-	// 			onRowsPerPageChange={handleChangeRowsPerPage}
-	// 			rowsPerPageOptions={rowsPerPageOptions}
+		return (
+			<>
+				<Button>
+					test
+				</Button>
 
-	// 		// pageSize={pageSize}
-	// 		// onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-	// 		// rowsPerPageOptions={[8, 16, 24, 48, 100]}
-	// 		/>
-	// 	</div>
-	// ); // End PaginationComponent
+				<CustomPagination />
+			</>
 
-	// const CustomFooter = () => {
+		);
+	}; // End CustomFooter
 
 
-	// 	return (
-	// 		<div style={{
-	// 			flex: "1",
-	// 			display: "flex",
-	// 			justifyContent: "flex-start",
-	// 		}}>
-	// 			<PaginationComponent />
-	// 		</div>
-	// 	); // End return
-	// }; // End CustomFooter
 
+	// ⬇ Handles the selection and deselection of a row:
+	const handleSelectionModelChange = (id_array) => {
+		// ⬇ If the selected row is clicked again, deselect it:
+		if (id_array.length > 0 && id_array[0] === selectedRow?.shipping_cost_id) {
+			id_array.length = 0;
+			setSelectedRow(null);
+		} else {
+			const shippingCostId = id_array[0];
+			const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
+			setSelectedRow(selectedData[0]);
+		}; // End if	
+	}; // End handleSelectionModelChange
 
 
 	return (
@@ -276,30 +273,13 @@ export default function UpdateShippingCostsGrid() {
 				// onCellEditCommit={handleEditSubmit}
 				// hideFooter
 				// hideFooterRowCount
-				hideFooterSelectedRowCount
+				// hideFooterSelectedRowCount
 				// hideFooterPagination
 
-				// onSelectionModelChange={(id_array) => {
-				// 	const shippingCostId = id_array[0];
-				// 	const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
-				// 	setSelectedRow(selectedData[0]);
-				// }}
+				onSelectionModelChange={(id_array) => handleSelectionModelChange(id_array)}
 
-				onCellClick={(event) => {
-					console.log(`Ryan Here: `, { event });
-					// ⬇ If the selected row is clicked again, deselect it:
-					// if (event.row.shipping_cost_id === selectedRow?.shipping_cost_id) {
-					// 	setSelectedRow(null);
-					// 	return;
-					// }
-
-					// if (event.row.isSelected) {
-					// 	event.component.clearSelection();
-					// }
-
-					const selectedData = rows.filter((row) => row.shipping_cost_id === event.row.shipping_cost_id);
-					setSelectedRow(selectedData[0]);
-				}}
+				// onCellClick={(event) => handleCellClick(event)}
+				// onRowClick={(event) => handleRowClick(event)}
 
 
 
@@ -307,8 +287,8 @@ export default function UpdateShippingCostsGrid() {
 
 				components={{
 					Toolbar: CustomToolbar,
-					// Footer: CustomFooter,
-					// Pagination: TablePagination,
+					Footer: CustomFooter,
+					Pagination: CustomPagination,
 				}}
 
 			// componentsProps={{
