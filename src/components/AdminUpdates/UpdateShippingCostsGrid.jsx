@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
 import { useStyles } from '../MuiStyling/MuiStyling';
-import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions, useGridSlotComponentProps } from '@material-ui/data-grid';
+import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions, useGridSlotComponentProps, useGridApiRef } from '@material-ui/data-grid';
 import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination } from '@material-ui/core';
 import { Autocomplete, Pagination } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -18,10 +18,7 @@ export default function UpdateShippingCostsGrid() {
 	const shippingDestinations = useSelector(store => store.shippingDestinations);
 	const [stateFilter, setStateFilter] = useState(null);
 	const [selectedRow, setSelectedRow] = useState(null);
-	const rowsPerPageOptions = [8, 16, 24, 48, 100];
-	// const [page, setPage] = useState(0);
-	// const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-	const [pageSize, setPageSize] = useState(rowsPerPageOptions[0]);
+
 
 	//rows are from the shipping costs reducer
 	let rows = [];
@@ -210,33 +207,63 @@ export default function UpdateShippingCostsGrid() {
 	}; // End CustomToolbar
 
 	const CustomPagination = () => {
+		const rowsPerPageOptions = [8, 16, 24, 48, 100];
 		const { state, apiRef } = useGridSlotComponentProps();
-		// const classes = useStyles();
+		const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+
+		const handleOnPageChange = (value) => {
+			apiRef.current.setPage(value);
+		}; // End handleOnPageChange
+
+		const handleOnRowsPerPageChange = (size) => {
+			apiRef.current.setPageSize(size.props.value);
+			setRowsPerPage(size.props.value);
+			handleOnPageChange(0);
+		}; // End handleOnRowsPerPageChange
+
+		// ⬇ We only want the page size to be set once, on initial render (otherwise it defaults to 100):
+		useEffect(() => {
+			apiRef.current.setPageSize(rowsPerPageOptions[0]);
+		}, []); // End useEffect
 
 		return (
-			<Pagination
-				// className={classes.root}
-				color="primary"
-				count={state.pagination.pageCount}
-				page={state.pagination.page + 1}
-				onChange={(event, value) => apiRef.current.setPage(value - 1)}
-			/>
-		);
-	}
+			<div style={{
+				flex: "1",
+				display: "flex",
+				justifyContent: "flex-end",
+			}}>
+				<TablePagination
+					count={state.rows.totalRowCount}
+					page={state.pagination.page}
+					onPageChange={(event, value) => handleOnPageChange(value)}
+					rowsPerPageOptions={rowsPerPageOptions}
+					rowsPerPage={rowsPerPage}
+					onRowsPerPageChange={(event, size) => handleOnRowsPerPageChange(size)}
+				/>
+			</div>
+		); // End return
+	}; // End PaginationComponent
 
 	const CustomFooter = () => {
 
 		return (
-			<>
-				<Button>
-					test
-				</Button>
+			<div style={{
+				flex: "1",
+				display: "flex",
+				justifyContent: "flex-start",
+			}}>
+				{selectedRow &&
+					// ⬇ Only show this button if a row is selected:
+					<Button>
+						test
+					</Button>
+				}
 
 				<CustomPagination />
-			</>
-
-		);
+			</div>
+		); // End return
 	}; // End CustomFooter
+
 
 
 
@@ -254,6 +281,8 @@ export default function UpdateShippingCostsGrid() {
 	}; // End handleSelectionModelChange
 
 
+	console.log(`Ryan Here: `, { selectedRow });
+
 	return (
 		<div
 			className={classes.shippingGrid}
@@ -264,11 +293,13 @@ export default function UpdateShippingCostsGrid() {
 				rows={rows}
 				getRowId={(row) => row.shipping_cost_id}
 				autoHeight
+
 				// ⬇ Pagination Setup: 
 				pagination
-				pageSize={pageSize}
-				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-				rowsPerPageOptions={[8, 16, 24, 48, 100]}
+				// pageSize={pageSize}
+				// onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+				// rowsPerPageOptions={[8, 16, 24, 48, 100]}
+
 				// ⬇ Selection Setup:
 				// onCellEditCommit={handleEditSubmit}
 				// hideFooter
@@ -288,7 +319,7 @@ export default function UpdateShippingCostsGrid() {
 				components={{
 					Toolbar: CustomToolbar,
 					Footer: CustomFooter,
-					Pagination: CustomPagination,
+					// Pagination: CustomPagination,
 				}}
 
 			// componentsProps={{
