@@ -19,8 +19,9 @@ export default function UpdateShippingCostsGrid() {
 	const [stateFilter, setStateFilter] = useState(null);
 	const [selectedRow, setSelectedRow] = useState(null);
 	const rowsPerPageOptions = [8, 16, 24, 48, 100];
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+	// const [page, setPage] = useState(0);
+	// const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+	const [pageSize, setPageSize] = useState(rowsPerPageOptions[0]);
 
 	//rows are from the shipping costs reducer
 	let rows = [];
@@ -29,7 +30,7 @@ export default function UpdateShippingCostsGrid() {
 		rows.push(row);
 	}; // End for of loop
 
-	const rowsToDisplay = rows.slice(page * rowsPerPage, page * rowsPerPage + parseInt(rowsPerPage));
+	// const rowsToDisplay = rows.slice(page * rowsPerPage, page * rowsPerPage + parseInt(rowsPerPage));
 
 
 
@@ -118,19 +119,9 @@ export default function UpdateShippingCostsGrid() {
 
 		const handleStateFilter = (value) => {
 			setStateFilter(value);
-			setPage(0);
 		}; // End handleStateFilter
 
 		const [anchorEl, setAnchorEl] = useState(null);
-
-		const CustomGridToolbarExport = () => {
-			return (
-				<GridToolbarContainer>
-					<GridToolbarExport />
-					{/* <GridToolbarExport />, */}
-				</GridToolbarContainer>
-			);
-		}; // End CustomGridToolbarExport
 
 		const menuItems = [
 			// <CustomGridToolbarExport />,
@@ -218,60 +209,53 @@ export default function UpdateShippingCostsGrid() {
 		); // End return
 	}; // End CustomToolbar
 
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage);
+	}; // End handleChangePage
+
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(parseInt(event.target.value, 10));
+		setPage(0);
+	}; // End handleChangeRowsPerPage
 
 
-	const CustomFooter = () => {
+	// const PaginationComponent = () => (
+	// 	<div style={{
+	// 		flex: "1",
+	// 		display: "flex",
+	// 		justifyContent: "flex-end",
+	// 	}}>
+	// 		<TablePagination
+	// 			component="div"
+	// 			count={rows.length}
+	// 			page={page}
+	// 			onPageChange={handleChangePage}
+	// 			rowsPerPage={rowsPerPage}
+	// 			onRowsPerPageChange={handleChangeRowsPerPage}
+	// 			rowsPerPageOptions={rowsPerPageOptions}
 
-		const handleChangePage = (event, newPage) => {
-			setPage(newPage);
-		}; // End handleChangePage
+	// 		// pageSize={pageSize}
+	// 		// onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+	// 		// rowsPerPageOptions={[8, 16, 24, 48, 100]}
+	// 		/>
+	// 	</div>
+	// ); // End PaginationComponent
 
-		const handleChangeRowsPerPage = (event) => {
-			setRowsPerPage(parseInt(event.target.value, 10));
-			setPage(0);
-		}; // End handleChangeRowsPerPage
-
-
-		const PaginationComponent = () => (
-			<div style={{
-				flex: "1",
-				display: "flex",
-				justifyContent: "flex-end",
-				// fontSize: "11px",
-				// fontFamily: "Lexend Tera",
-			}}>
-				<TablePagination
-					component="div"
-					count={rows.length}
-					page={page}
-					onPageChange={handleChangePage}
-					rowsPerPage={rowsPerPage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-					rowsPerPageOptions={rowsPerPageOptions}
-
-				// pageSize={pageSize}
-				// onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-				// rowsPerPageOptions={[8, 16, 24, 48, 100]}
-				/>
-			</div>
-		); // End PaginationComponent
+	// const CustomFooter = () => {
 
 
+	// 	return (
+	// 		<div style={{
+	// 			flex: "1",
+	// 			display: "flex",
+	// 			justifyContent: "flex-start",
+	// 		}}>
+	// 			<PaginationComponent />
+	// 		</div>
+	// 	); // End return
+	// }; // End CustomFooter
 
 
-		return (
-			<div style={{
-				flex: "1",
-				display: "flex",
-				justifyContent: "flex-start",
-			}}>
-				<PaginationComponent />
-			</div>
-		); // End return
-	}; // End CustomFooter
-
-
-	console.log(`Ryan Here 2: `, { selectedRow, shippingDestinations, stateFilter, rows, rowsToDisplay });
 
 	return (
 		<div
@@ -280,14 +264,14 @@ export default function UpdateShippingCostsGrid() {
 			<DataGrid
 				className={classes.dataGridTables}
 				columns={columns}
-				rows={rowsToDisplay}
+				rows={rows}
 				getRowId={(row) => row.shipping_cost_id}
 				autoHeight
 				// ⬇ Pagination Setup: 
-				// pagination
-				// pageSize={pageSize}
-				// onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-				// rowsPerPageOptions={[8, 16, 24, 48, 100]}
+				pagination
+				pageSize={pageSize}
+				onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+				rowsPerPageOptions={[8, 16, 24, 48, 100]}
 				// ⬇ Selection Setup:
 				// onCellEditCommit={handleEditSubmit}
 				// hideFooter
@@ -323,7 +307,8 @@ export default function UpdateShippingCostsGrid() {
 
 				components={{
 					Toolbar: CustomToolbar,
-					Footer: CustomFooter,
+					// Footer: CustomFooter,
+					// Pagination: TablePagination,
 				}}
 
 			// componentsProps={{
