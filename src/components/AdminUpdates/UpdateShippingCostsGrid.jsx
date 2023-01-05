@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../MuiStyling/MuiStyling';
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions, useGridSlotComponentProps, useGridApiRef } from '@material-ui/data-grid';
-import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination } from '@material-ui/core';
+import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination, Modal, Backdrop } from '@material-ui/core';
 import { Autocomplete, Pagination } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function UpdateShippingCostsGrid() {
 	// ⬇ State Variables:
+	//#region - State Variables Below: 
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const shippingCosts = useSelector(store => store.shippingCosts);
@@ -19,17 +20,11 @@ export default function UpdateShippingCostsGrid() {
 	const [stateFilter, setStateFilter] = useState(null);
 	const [selectedRow, setSelectedRow] = useState(null);
 
+	const rowsPerPageOptions = [8, 16, 24, 48, 100];
+	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
-	//rows are from the shipping costs reducer
-	let rows = [];
-	for (let row of shippingCosts) {
-		if (stateFilter && stateFilter.destination_name !== row.destination_name) continue;
-		rows.push(row);
-	}; // End for of loop
-
-	// const rowsToDisplay = rows.slice(page * rowsPerPage, page * rowsPerPage + parseInt(rowsPerPage));
-
-
+	// ⬇ Logic to handle setting the table rows on first load: 
+	const [tableMounted, setTableMounted] = useState(false);
 
 	// columns for Data Grid
 	const columns = [
@@ -83,18 +78,33 @@ export default function UpdateShippingCostsGrid() {
 				}).format(params.value);
 			},
 		},
+	]; // End columns
+	//#endregion - End State Variables.
 
-	]; // End 
+	//#region - Table Setup Below:
+	//rows are from the shipping costs reducer
+	let rows = [];
+	for (let row of shippingCosts) {
+		if (stateFilter && stateFilter.destination_name !== row.destination_name) continue;
+		rows.push(row);
+	}; // End for of loop
+
+	// const rowsToDisplay = rows.slice(page * rowsPerPage, page * rowsPerPage + parseInt(rowsPerPage));
 
 
 
 
 
 
+
+
+
+	//#region - Action Handlers Below: 
 	useEffect(() => {
 		// GET shipping cost data on page load
 		dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
 			dispatch({ type: 'FETCH_SHIPPING_DESTINATIONS' })
+		// setIsTableLoaded(true)
 	}, [])
 
 	// submit handler for in-line cell edits on the data grid
@@ -106,20 +116,29 @@ export default function UpdateShippingCostsGrid() {
 				dbColumn: field,
 				newValue: value
 			}
-		})
-	}
+		}); // End dispatch
+	}; // End handleEditSubmit
+
+	// ⬇ Handles the selection and deselection of a row:
+	const handleSelectionModelChange = (id_array) => {
+		// ⬇ If the selected row is clicked again, deselect it:
+		if (id_array.length > 0 && id_array[0] === selectedRow?.shipping_cost_id) {
+			id_array.length = 0;
+			setSelectedRow(null);
+		} else {
+			const shippingCostId = id_array[0];
+			const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
+			setSelectedRow(selectedData[0]);
+		}; // End if	
+	}; // End handleSelectionModelChange
+	//#endregion - End Action Handlers.
 
 
-
+	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
-
-		const handleStateFilter = (value) => {
-			setStateFilter(value);
-		}; // End handleStateFilter
-
+		// ⬇ State Variables:
 		const [anchorEl, setAnchorEl] = useState(null);
-
 		const menuItems = [
 			// <CustomGridToolbarExport />,
 			<GridToolbarExport />,
@@ -127,6 +146,11 @@ export default function UpdateShippingCostsGrid() {
 			<GridToolbarColumnsButton />,
 			<GridToolbarDensitySelector />,
 		]; // End menuItems
+
+		// ⬇ Action Handlers: 
+		const handleStateFilter = (value) => {
+			setStateFilter(value);
+		}; // End handleStateFilter
 
 		return (
 			<GridToolbarContainer >
@@ -207,9 +231,17 @@ export default function UpdateShippingCostsGrid() {
 	}; // End CustomToolbar
 
 	const CustomPagination = () => {
-		const rowsPerPageOptions = [8, 16, 24, 48, 100];
+		// ⬇ State Variables: 
 		const { state, apiRef } = useGridSlotComponentProps();
-		const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+
+		//#region - Pagination Action Handlers:
+		// ⬇ We only want the page size to be set once, on initial render (otherwise it defaults to 100):
+		useEffect(() => {
+			if (tableMounted === false) {
+				apiRef.current.setPageSize(rowsPerPageOptions[0]);
+				setTableMounted(true);
+			}; // End if
+		}, []); // End useEffect
 
 		const handleOnPageChange = (value) => {
 			apiRef.current.setPage(value);
@@ -220,11 +252,7 @@ export default function UpdateShippingCostsGrid() {
 			setRowsPerPage(size.props.value);
 			handleOnPageChange(0);
 		}; // End handleOnRowsPerPageChange
-
-		// ⬇ We only want the page size to be set once, on initial render (otherwise it defaults to 100):
-		useEffect(() => {
-			apiRef.current.setPageSize(rowsPerPageOptions[0]);
-		}, []); // End useEffect
+		//#endregion - Pagination Action Handlers.
 
 		return (
 			<div style={{
@@ -233,6 +261,7 @@ export default function UpdateShippingCostsGrid() {
 				justifyContent: "flex-end",
 			}}>
 				<TablePagination
+					component='div'
 					count={state.rows.totalRowCount}
 					page={state.pagination.page}
 					onPageChange={(event, value) => handleOnPageChange(value)}
@@ -254,8 +283,11 @@ export default function UpdateShippingCostsGrid() {
 			}}>
 				{selectedRow &&
 					// ⬇ Only show this button if a row is selected:
-					<Button>
-						test
+					<Button
+						color="primary"
+						size="small"
+					>
+						Edit {selectedRow.destination_name}
 					</Button>
 				}
 
@@ -263,26 +295,48 @@ export default function UpdateShippingCostsGrid() {
 			</div>
 		); // End return
 	}; // End CustomFooter
+	//#endregion - Custom Table Components.
+
+	//#region - Table Edit Modal: 
+	const ShippingCostsEditModal = () => {
+
+		return (
+			<Modal
+				aria-labelledby="transition-modal-title"
+				aria-describedby="transition-modal-description"
+				// className={classes.modal}
+				open={open}
+				onClose={handleClose}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 500,
+				}}
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}
+			>
+				<Fade in={open}>
+					<div style={{
+						// backgroundColor: theme.palette.background.paper,
+						border: '2px solid #000',
+						// boxShadow: theme.shadows[5],
+						// padding: theme.spacing(2, 4, 3),
+					}}>
+						<h2 id="transition-modal-title">Transition modal</h2>
+						<p id="transition-modal-description">react-transition-group animates me.</p>
+					</div>
+				</Fade>
+			</Modal>
+		); // End return
+	}; // End ShippingCostsEditModal
+	//#endregion - Table Edit Modal.
 
 
 
-
-	// ⬇ Handles the selection and deselection of a row:
-	const handleSelectionModelChange = (id_array) => {
-		// ⬇ If the selected row is clicked again, deselect it:
-		if (id_array.length > 0 && id_array[0] === selectedRow?.shipping_cost_id) {
-			id_array.length = 0;
-			setSelectedRow(null);
-		} else {
-			const shippingCostId = id_array[0];
-			const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
-			setSelectedRow(selectedData[0]);
-		}; // End if	
-	}; // End handleSelectionModelChange
-
-
-	console.log(`Ryan Here: `, { selectedRow });
-
+	// ⬇ Rendering below: 
 	return (
 		<div
 			className={classes.shippingGrid}
@@ -331,5 +385,4 @@ export default function UpdateShippingCostsGrid() {
 		</div>
 	)
 }
-
 
