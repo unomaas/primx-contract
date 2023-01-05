@@ -21,6 +21,7 @@ export default function UpdateShippingCostsGrid() {
 	const [selectedRow, setSelectedRow] = useState(null);
 	const rowsPerPageOptions = [8, 16, 24, 48, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+	const [showEditModal, setShowEditModal] = useState(false);
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
@@ -273,6 +274,7 @@ export default function UpdateShippingCostsGrid() {
 					<Button
 						color="primary"
 						size="small"
+						onClick={() => setShowEditModal(true)}
 					>
 						Edit {selectedRow.destination_name}
 					</Button>
@@ -293,8 +295,8 @@ export default function UpdateShippingCostsGrid() {
 				aria-labelledby="transition-modal-title"
 				aria-describedby="transition-modal-description"
 				// className={classes.modal}
-				open={open}
-				onClose={handleClose}
+				open={showEditModal}
+				onClose={() => setShowEditModal(false)}
 				closeAfterTransition
 				BackdropComponent={Backdrop}
 				BackdropProps={{
@@ -340,6 +342,8 @@ export default function UpdateShippingCostsGrid() {
 					Footer: CustomFooter,
 				}}
 			/>
+
+			<ShippingCostsEditModal />
 		</div>
 	)
 }
