@@ -19,13 +19,10 @@ export default function UpdateShippingCostsGrid() {
 	const shippingDestinations = useSelector(store => store.shippingDestinations);
 	const [stateFilter, setStateFilter] = useState(null);
 	const [selectedRow, setSelectedRow] = useState(null);
-
 	const rowsPerPageOptions = [8, 16, 24, 48, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
-
 	// columns for Data Grid
 	const columns = [
 		{
@@ -88,16 +85,6 @@ export default function UpdateShippingCostsGrid() {
 		if (stateFilter && stateFilter.destination_name !== row.destination_name) continue;
 		rows.push(row);
 	}; // End for of loop
-
-	// const rowsToDisplay = rows.slice(page * rowsPerPage, page * rowsPerPage + parseInt(rowsPerPage));
-
-
-
-
-
-
-
-
 
 	//#region - Action Handlers Below: 
 	useEffect(() => {
@@ -296,6 +283,7 @@ export default function UpdateShippingCostsGrid() {
 		); // End return
 	}; // End CustomFooter
 	//#endregion - Custom Table Components.
+	//#endregion - Table Setup. 
 
 	//#region - Table Edit Modal: 
 	const ShippingCostsEditModal = () => {
@@ -334,8 +322,6 @@ export default function UpdateShippingCostsGrid() {
 	}; // End ShippingCostsEditModal
 	//#endregion - Table Edit Modal.
 
-
-
 	// ⬇ Rendering below: 
 	return (
 		<div
@@ -347,40 +333,12 @@ export default function UpdateShippingCostsGrid() {
 				rows={rows}
 				getRowId={(row) => row.shipping_cost_id}
 				autoHeight
-
-				// ⬇ Pagination Setup: 
 				pagination
-				// pageSize={pageSize}
-				// onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-				// rowsPerPageOptions={[8, 16, 24, 48, 100]}
-
-				// ⬇ Selection Setup:
-				// onCellEditCommit={handleEditSubmit}
-				// hideFooter
-				// hideFooterRowCount
-				// hideFooterSelectedRowCount
-				// hideFooterPagination
-
 				onSelectionModelChange={(id_array) => handleSelectionModelChange(id_array)}
-
-				// onCellClick={(event) => handleCellClick(event)}
-				// onRowClick={(event) => handleRowClick(event)}
-
-
-
-				// checkboxSelection={true}
-
 				components={{
 					Toolbar: CustomToolbar,
 					Footer: CustomFooter,
-					// Pagination: CustomPagination,
 				}}
-
-			// componentsProps={{
-			// 	toolbar: {
-			// 		csvOptions: { getRowsToExport: () => rows }
-			// 	}
-			// }}
 			/>
 		</div>
 	)
