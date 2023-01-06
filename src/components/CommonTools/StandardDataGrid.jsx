@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../MuiStyling/MuiStyling';
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions, useGridSlotComponentProps, useGridApiRef } from '@material-ui/data-grid';
-import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment } from '@material-ui/core';
+import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination, Modal, Backdrop } from '@material-ui/core';
 import { Autocomplete, Pagination } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-// component that renders a Material UI Data Grid, needs an array of shipping costs as props.
-export default function UpdateShippingCostsGrid() {
+export default function StandardDataGrid(options) {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
 	const classes = useStyles();
@@ -25,64 +24,13 @@ export default function UpdateShippingCostsGrid() {
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
-	const columns = [
-		{
-			field: 'product_label',
-			headerName: 'Product',
-			flex: 1,
-			editable: false,
-			headerClassName: classes.header
-		},
-		{
-			field: 'container_length_ft',
-			headerName: 'Container Length (ft)',
-			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
-			headerClassName: classes.header,
-			valueFormatter: (params) => {
-				return `${params.value}"`;
-			},
-		},
-		{
-			field: 'destination_name',
-			headerName: 'Destination',
-			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
-			headerClassName: classes.header
-		},
-		{
-			field: 'container_destination',
-			headerName: 'Country',
-			flex: 0.75,
-			disableColumnMenu: true,
-			editable: false,
-			headerClassName: classes.header
-		},
-		{
-			field: 'shipping_cost',
-			type: 'number',
-			// align: 'right',
-			headerName: 'Cost',
-			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
-			headerClassName: classes.header,
-			valueFormatter: (params) => {
-				return new Intl.NumberFormat('en-US', {
-					style: 'currency',
-					currency: 'USD',
-				}).format(params.value);
-			},
-		},
-	]; // End columns
+	
 	//#endregion - End State Variables.
 
 	//#region - Table Setup Below:
 	//rows are from the shipping costs reducer
-	let rows = [];
-	for (let row of shippingCosts) {
+	// let rows = [];
+	for (let row of options.rows) {
 		if (stateFilter && stateFilter.destination_name !== row.destination_name) continue;
 		rows.push(row);
 	}; // End for of loop
@@ -120,7 +68,6 @@ export default function UpdateShippingCostsGrid() {
 		}; // End if	
 	}; // End handleSelectionModelChange
 	//#endregion - End Action Handlers.
-
 
 	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
@@ -287,148 +234,16 @@ export default function UpdateShippingCostsGrid() {
 	//#endregion - Custom Table Components.
 	//#endregion - Table Setup. 
 
-	//#region - Table Edit Modal: 
-	const ShippingCostsEditModal = () => {
 
 
-		const costsByDestinationArray = shippingCosts.filter(cost => cost.destination_name === selectedRow?.destination_name);
-
-		console.log(`Ryan Here \n costsByDestinationArray`, { selectedRow, costsByDestinationArray });
-
-
-		return (
-			<Modal
-				aria-labelledby="transition-modal-title"
-				aria-describedby="transition-modal-description"
-				// className={classes.modal}
-				open={showEditModal}
-				onClose={() => setShowEditModal(false)}
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{
-					timeout: 500,
-				}}
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-				}}
-			>
-				<Fade in={showEditModal}>
-					<div style={{
-						backgroundColor: 'white',
-						// border: '2px solid #000',
-						borderRadius: '1rem',
-						boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
-						padding: '1rem',
-						width: 'auto',
-						height: 'auto',
-						maxWidth: '50%',
-						maxHeight: '50%',
-						minWidth: '415px',
-						minHeight: '345px',
-					}}>
-						<div
-							style={{
-								// display: 'flex',
-								// alignSelf: 'center',
-								margin: '0px auto 10px auto',
-								// fontSize: "12px",
-								fontSize: "1.1rem",
-								letterSpacing: "0.5px",
-								padding: "0.25rem",
-								borderBottom: "1px solid #000",
-								fontFamily: "Lexend Tera",
-							}}
-						>
-							{selectedRow?.destination_name} Shipping Costs
-						</div>
-						<div>
-							{costsByDestinationArray.map(cost => {
-								// ⬇ Create a Number Input for each item in the array, with the value set to the shipping_cost index:
-								return (
-									<div
-										style={{
-											display: 'flex',
-											justifyContent: 'space-between',
-											alignItems: 'center',
-										}}
-									>
-										<div
-											key={cost.shipping_cost_id}
-											style={{
-												padding: "0.6rem",
-											}}
-										>
-											{cost.product_label} for {cost.container_length_ft}' Container:
-										</div>
-										<div
-											style={{
-												width: '90px',
-											}}
-										>
-											<TextField
-												value={cost.shipping_cost}
-												// onChange={(event) => handleShippingCostChange(event, cost.shipping_cost_id)}
-												// fullWidth
-												// type="number"
-												size="small"
-												// variant="outlined"
-
-												// label={`${cost.product_label} for ${cost.container_length_ft}' Container:`}
-												// type="number"
-												InputLabelProps={{
-													// shrink: true,
-													startAdornment: <InputAdornment position="start">$</InputAdornment>,
-												}}
-
-											/>
-										</div>
-									</div>
-								);
-							})}
-						</div>
-						<div>
-							{/* // ⬇ Create two buttons in a flex and put space between them.  The left will button will be color: danger with Cancel text and the right button will be color: primary with Submit text.  */}
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									marginTop: '1rem',
-								}}
-							>
-								<Button
-									variant="contained"
-									color="secondary"
-									onClick={() => handleCancel()}
-								>
-									Cancel
-								</Button>
-								<Button
-									variant="contained"
-									color="primary"
-									onClick={() => handleSubmit()}
-								>
-									Submit
-								</Button>
-							</div>
-						</div>
-					</div>
-				</Fade>
-			</Modal>
-		); // End return
-	}; // End ShippingCostsEditModal
-	//#endregion - Table Edit Modal.
-
-	// ⬇ Rendering below: 
 	return (
 		<div
 			className={classes.shippingGrid}
 		>
 			<DataGrid
 				className={classes.dataGridTables}
-				columns={columns}
-				rows={rows}
+				columns={options.headers}
+				rows={option.rows}
 				getRowId={(row) => row.shipping_cost_id}
 				autoHeight
 				pagination
@@ -439,10 +254,6 @@ export default function UpdateShippingCostsGrid() {
 				}}
 			/>
 
-			{selectedRow &&
-				<ShippingCostsEditModal />
-			}
 		</div>
 	)
 }
-
