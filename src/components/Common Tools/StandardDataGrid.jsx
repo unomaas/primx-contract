@@ -9,8 +9,7 @@ import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, M
 import { Autocomplete, Pagination } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-// component that renders a Material UI Data Grid, needs an array of shipping costs as props.
-export default function UpdateShippingCostsGrid() {
+export default function StandardDataGrid(options) {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
 	const classes = useStyles();
@@ -120,7 +119,6 @@ export default function UpdateShippingCostsGrid() {
 		}; // End if	
 	}; // End handleSelectionModelChange
 	//#endregion - End Action Handlers.
-
 
 	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
@@ -325,7 +323,7 @@ export default function UpdateShippingCostsGrid() {
 	}; // End ShippingCostsEditModal
 	//#endregion - Table Edit Modal.
 
-	// ⬇ Rendering below: 
+
 	return (
 		<div
 			className={classes.shippingGrid}
@@ -348,4 +346,3 @@ export default function UpdateShippingCostsGrid() {
 		</div>
 	)
 }
-
