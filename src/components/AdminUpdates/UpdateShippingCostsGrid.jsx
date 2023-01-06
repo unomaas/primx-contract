@@ -317,7 +317,6 @@ export default function UpdateShippingCostsGrid() {
 				<Fade in={showEditModal}>
 					<div style={{
 						backgroundColor: 'white',
-						// border: '2px solid #000',
 						borderRadius: '1rem',
 						boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
 						padding: '1rem',
@@ -330,28 +329,25 @@ export default function UpdateShippingCostsGrid() {
 					}}>
 						<div
 							style={{
-								// display: 'flex',
-								// alignSelf: 'center',
 								margin: '0px auto 10px auto',
-								// fontSize: "12px",
 								fontSize: "1.1rem",
 								letterSpacing: "0.5px",
-								padding: "0.25rem",
 								borderBottom: "1px solid #000",
 								fontFamily: "Lexend Tera",
+								paddingBottom: '10px',
 							}}
 						>
 							{selectedRow?.destination_name} Shipping Costs
 						</div>
-						<div>
+						<div style={{marginBottom: '10px'}}>
 							{costsByDestinationArray.map(cost => {
 								// ⬇ Create a Number Input for each item in the array, with the value set to the shipping_cost index:
 								return (
 									<div
 										style={{
 											display: 'flex',
-											justifyContent: 'space-between',
-											alignItems: 'center',
+											justifyContent: 'flex-end',
+											alignItems: 'flex-end',
 										}}
 									>
 										<div
@@ -369,45 +365,41 @@ export default function UpdateShippingCostsGrid() {
 										>
 											<TextField
 												value={cost.shipping_cost}
+												// TODO: Change this:
 												// onChange={(event) => handleShippingCostChange(event, cost.shipping_cost_id)}
-												// fullWidth
-												// type="number"
 												size="small"
-												// variant="outlined"
-
-												// label={`${cost.product_label} for ${cost.container_length_ft}' Container:`}
-												// type="number"
-												InputLabelProps={{
-													// shrink: true,
-													startAdornment: <InputAdornment position="start">$</InputAdornment>,
+												InputProps={{
+													startAdornment: <InputAdornment>$</InputAdornment>,
 												}}
-
 											/>
 										</div>
 									</div>
 								);
 							})}
 						</div>
-						<div>
+						<div style={{borderTop: "1px solid #000"}}>
 							{/* // ⬇ Create two buttons in a flex and put space between them.  The left will button will be color: danger with Cancel text and the right button will be color: primary with Submit text.  */}
 							<div
 								style={{
 									display: 'flex',
 									justifyContent: 'space-between',
-									marginTop: '1rem',
+									marginTop: '10px',
+									
 								}}
 							>
 								<Button
 									variant="contained"
 									color="secondary"
-									onClick={() => handleCancel()}
+								// TODO: Change this: 
+								// onClick={() => handleCancel()}
 								>
 									Cancel
 								</Button>
 								<Button
 									variant="contained"
 									color="primary"
-									onClick={() => handleSubmit()}
+								// TODO: Change this: 
+								// onClick={() => handleSubmit()}
 								>
 									Submit
 								</Button>
