@@ -15,13 +15,18 @@ export default function UpdateShippingCostsGrid() {
 	//#region - State Variables Below: 
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const shippingCosts = useSelector(store => store.shippingCosts);
+	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
 	const shippingDestinations = useSelector(store => store.shippingDestinations);
+	const showEditModal = useSelector(store => store.shippingCosts.showEditModal);
+
+	console.log(`Ryan Here \n showEditModal`, showEditModal,);
+
+
 	const [stateFilter, setStateFilter] = useState(null);
 	const [selectedRow, setSelectedRow] = useState(null);
 	const rowsPerPageOptions = [8, 16, 24, 48, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-	const [showEditModal, setShowEditModal] = useState(false);
+	// const [showEditModal, setShowEditModal] = useState(false);
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
@@ -233,12 +238,14 @@ export default function UpdateShippingCostsGrid() {
 
 		const handleOnPageChange = (value) => {
 			apiRef.current.setPage(value);
+			setSelectedRow(null);
 		}; // End handleOnPageChange
 
 		const handleOnRowsPerPageChange = (size) => {
 			apiRef.current.setPageSize(size.props.value);
 			setRowsPerPage(size.props.value);
 			handleOnPageChange(0);
+			setSelectedRow(null);
 		}; // End handleOnRowsPerPageChange
 		//#endregion - Pagination Action Handlers.
 
@@ -274,7 +281,7 @@ export default function UpdateShippingCostsGrid() {
 					<Button
 						color="primary"
 						size="small"
-						onClick={() => setShowEditModal(true)}
+						onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: true })}
 					>
 						Edit {selectedRow.destination_name}
 					</Button>
@@ -289,11 +296,35 @@ export default function UpdateShippingCostsGrid() {
 
 	//#region - Table Edit Modal: 
 	const ShippingCostsEditModal = () => {
-
-
+		// const [editData, setEditData] = useState({});
+		const editData = {};
 		const costsByDestinationArray = shippingCosts.filter(cost => cost.destination_name === selectedRow?.destination_name);
+		// const selectedDestination = shippingDestinations.find(destination => destination.destination_name === selectedRow?.destination_name);
 
-		console.log(`Ryan Here \n costsByDestinationArray`, { selectedRow, costsByDestinationArray });
+		const handleEditModal = useSelector(store => store.shippingCosts.handleEditModal);
+		// ⬇ Set a useEffect to monitor the handleEditModal state:
+		useEffect(() => {
+			if (handleEditModal === true) { setSelectedRow(false) }
+		}, [handleEditModal]);
+
+
+		console.log(`Ryan Here ShippingCostsEditModal \n `, { selectedRow, costsByDestinationArray });
+
+		const handleShippingCostChange = (value, id) => {
+
+			editData[id] = {
+				shipping_cost_id: id,
+				shipping_cost: value,
+			}
+
+			console.log(`Ryan Here: editData`, { editData, value, id });
+		}; // End handleShippingCostChange
+
+		const handleSubmit = () => {
+			console.log(`Ryan Here: handleSubmit`, { editData });
+
+			dispatch({ type: 'UPDATE_SHIPPING_COSTS', payload: editData })
+		}; // End handleSubmit
 
 
 		return (
@@ -302,7 +333,7 @@ export default function UpdateShippingCostsGrid() {
 				aria-describedby="transition-modal-description"
 				// className={classes.modal}
 				open={showEditModal}
-				onClose={() => setShowEditModal(false)}
+				onClose={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
 				closeAfterTransition
 				BackdropComponent={Backdrop}
 				BackdropProps={{
@@ -339,11 +370,12 @@ export default function UpdateShippingCostsGrid() {
 						>
 							{selectedRow?.destination_name} Shipping Costs
 						</div>
-						<div style={{marginBottom: '10px'}}>
+						<div style={{ marginBottom: '10px' }}>
 							{costsByDestinationArray.map(cost => {
 								// ⬇ Create a Number Input for each item in the array, with the value set to the shipping_cost index:
 								return (
 									<div
+										key={cost.shipping_cost_id}
 										style={{
 											display: 'flex',
 											justifyContent: 'flex-end',
@@ -351,7 +383,6 @@ export default function UpdateShippingCostsGrid() {
 										}}
 									>
 										<div
-											key={cost.shipping_cost_id}
 											style={{
 												padding: "0.6rem",
 											}}
@@ -360,16 +391,16 @@ export default function UpdateShippingCostsGrid() {
 										</div>
 										<div
 											style={{
-												width: '90px',
+												width: '97px',
 											}}
 										>
 											<TextField
-												value={cost.shipping_cost}
-												// TODO: Change this:
-												// onChange={(event) => handleShippingCostChange(event, cost.shipping_cost_id)}
+												defaultValue={cost.shipping_cost}
+												type="number"
+												onChange={(event) => handleShippingCostChange(event.target.value, cost.shipping_cost_id, cost.product_label)}
 												size="small"
 												InputProps={{
-													startAdornment: <InputAdornment>$</InputAdornment>,
+													startAdornment: <InputAdornment position="start">$</InputAdornment>,
 												}}
 											/>
 										</div>
@@ -377,29 +408,26 @@ export default function UpdateShippingCostsGrid() {
 								);
 							})}
 						</div>
-						<div style={{borderTop: "1px solid #000"}}>
-							{/* // ⬇ Create two buttons in a flex and put space between them.  The left will button will be color: danger with Cancel text and the right button will be color: primary with Submit text.  */}
+						<div style={{ borderTop: "1px solid #000" }}>
 							<div
 								style={{
 									display: 'flex',
 									justifyContent: 'space-between',
 									marginTop: '10px',
-									
+
 								}}
 							>
 								<Button
 									variant="contained"
 									color="secondary"
-								// TODO: Change this: 
-								// onClick={() => handleCancel()}
+									onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
 								>
 									Cancel
 								</Button>
 								<Button
 									variant="contained"
 									color="primary"
-								// TODO: Change this: 
-								// onClick={() => handleSubmit()}
+									onClick={() => handleSubmit()}
 								>
 									Submit
 								</Button>

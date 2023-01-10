@@ -5,6 +5,12 @@ import {
     takeEvery
 } from 'redux-saga/effects';
 
+function* shippingCostsSaga() {
+	yield takeLatest('FETCH_SHIPPING_COSTS', fetchShippingCosts);
+	yield takeEvery('ADD_SHIPPING_COSTS', postShippingCosts);
+	yield takeLatest('UPDATE_SHIPPING_COSTS', updateShippingCosts);
+}
+
 //worker saga to GET all shipping costs
 function* fetchShippingCosts() {
     try {
@@ -41,18 +47,18 @@ function* postShippingCosts(action) {
 
 //worker saga to update shipping costs
 function* updateShippingCosts(action) {
+	console.log(`Ryan Here: updateShippingCosts`, {payload: action.payload});
+	yield put({
+		type: 'HANDLE_EDIT_MODAL',
+		payload: true,
+});
     try {
         //update shipping cost
-        yield axios.put(`/api/shippingcosts/edit/${action.payload.id}`, action.payload);
+        // yield axios.put(`/api/shippingcosts/edit/${action.payload.id}`, action.payload);
     } catch (error) {
-        console.error('Error in updateShippingCosts saga', error);
+        // console.error('Error in updateShippingCosts saga', error);
     }
 }
 
-function* shippingCostsSaga() {
-    yield takeLatest('FETCH_SHIPPING_COSTS', fetchShippingCosts);
-    yield takeEvery('ADD_SHIPPING_COSTS', postShippingCosts);
-    yield takeLatest('UPDATE_SHIPPING_COSTS', updateShippingCosts);
-}
 
 export default shippingCostsSaga;
