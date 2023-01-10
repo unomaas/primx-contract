@@ -118,7 +118,7 @@ export default function UpdateShippingCostsGrid() {
 		if (id_array.length > 0 && id_array[0] === selectedRow?.shipping_cost_id) {
 			id_array.length = 0;
 			setSelectedRow(null);
-		} else {
+		} else { // ⬇ Else set it as normal:
 			const shippingCostId = id_array[0];
 			const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
 			setSelectedRow(selectedData[0]);
@@ -301,11 +301,11 @@ export default function UpdateShippingCostsGrid() {
 		const costsByDestinationArray = shippingCosts.filter(cost => cost.destination_name === selectedRow?.destination_name);
 		// const selectedDestination = shippingDestinations.find(destination => destination.destination_name === selectedRow?.destination_name);
 
-		const handleEditModal = useSelector(store => store.shippingCosts.handleEditModal);
-		// ⬇ Set a useEffect to monitor the handleEditModal state:
-		useEffect(() => {
-			if (handleEditModal === true) { setSelectedRow(false) }
-		}, [handleEditModal]);
+		// const handleEditModal = useSelector(store => store.shippingCosts.handleEditModal);
+		// // ⬇ Set a useEffect to monitor the handleEditModal state:
+		// useEffect(() => {
+		// 	if (handleEditModal === true) { setSelectedRow(false) }
+		// }, [handleEditModal]);
 
 
 		console.log(`Ryan Here ShippingCostsEditModal \n `, { selectedRow, costsByDestinationArray });
@@ -314,16 +314,23 @@ export default function UpdateShippingCostsGrid() {
 
 			editData[id] = {
 				shipping_cost_id: id,
-				shipping_cost: value,
+				shipping_cost: parseInt(value),
 			}
 
 			console.log(`Ryan Here: editData`, { editData, value, id });
 		}; // End handleShippingCostChange
 
 		const handleSubmit = () => {
-			console.log(`Ryan Here: handleSubmit`, { editData });
+			if (!editData || Object.keys(editData).length === 0) {
+				alert('Please make changes to submit first.');
+				return;
+			}; // End if
 
-			dispatch({ type: 'UPDATE_SHIPPING_COSTS', payload: editData })
+
+			// console.log(`Ryan Here: handleSubmit`, Object.values(editData));
+
+
+			dispatch({ type: 'UPDATE_SHIPPING_COSTS', payload: Object.values(editData) })
 		}; // End handleSubmit
 
 

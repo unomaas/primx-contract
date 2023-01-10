@@ -74,7 +74,6 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 // *************************** POST ROUTES ***************************
 
 // POST Route for Licensee Information -> Includes both Metric and Imperial Inputs
-// ! Ryan HEre
 router.post('/', async (req, res) => {
 	// set the values sent from licensee by destructuring req.body
 	let {

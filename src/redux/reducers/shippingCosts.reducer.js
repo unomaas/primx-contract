@@ -15,7 +15,6 @@ export const shippingCostsArray = (state = [], action) => {
 
 export const showEditModal = (state = false, action) => {
 	switch (action.type) {
-		// TODO: set the state of the modal to be this instead of local. 
 		case 'SHIPPING_COSTS_SHOW_EDIT_MODAL':
 			return action.payload;
 		default:
