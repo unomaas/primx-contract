@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
 import { useStyles } from '../MuiStyling/MuiStyling';
-import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions, useGridSlotComponentProps, useGridApiRef } from '@material-ui/data-grid';
-import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment } from '@material-ui/core';
-import { Autocomplete, Pagination } from '@material-ui/lab';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
+import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
@@ -18,9 +18,6 @@ export default function UpdateShippingCostsGrid() {
 	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
 	const shippingDestinations = useSelector(store => store.shippingDestinations);
 	const showEditModal = useSelector(store => store.shippingCosts.showEditModal);
-
-	console.log(`Ryan Here \n showEditModal`, showEditModal,);
-
 
 	const [stateFilter, setStateFilter] = useState(null);
 	const [selectedRow, setSelectedRow] = useState(null);
@@ -100,18 +97,6 @@ export default function UpdateShippingCostsGrid() {
 		// setIsTableLoaded(true)
 	}, [])
 
-	// submit handler for in-line cell edits on the data grid
-	const handleEditSubmit = ({ id, field, value }) => {
-		// id argument is the db id of the row being edited, field is the column name, and value is the new value after submitting the edit
-		dispatch({
-			type: 'UPDATE_SHIPPING_COSTS', payload: {
-				id: id,
-				dbColumn: field,
-				newValue: value
-			}
-		}); // End dispatch
-	}; // End handleEditSubmit
-
 	// ⬇ Handles the selection and deselection of a row:
 	const handleSelectionModelChange = (id_array) => {
 		// ⬇ If the selected row is clicked again, deselect it:
@@ -165,7 +150,7 @@ export default function UpdateShippingCostsGrid() {
 						anchorEl={anchorEl}
 						keepMounted
 						open={Boolean(anchorEl)}
-						onClose={event => setAnchorEl(null)}
+						onClose={() => setAnchorEl(null)}
 						elevation={0}
 						getContentAnchorEl={null}
 						anchorOrigin={{
@@ -181,7 +166,7 @@ export default function UpdateShippingCostsGrid() {
 							return (
 								<MenuItem
 									key={index}
-									onClick={event => setAnchorEl(null)}
+									onClick={() => setAnchorEl(null)}
 								>
 									{item}
 								</MenuItem>
@@ -283,7 +268,7 @@ export default function UpdateShippingCostsGrid() {
 						size="small"
 						onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: true })}
 					>
-						Edit {selectedRow.destination_name}
+						Edit {selectedRow.destination_name}'s Costs
 					</Button>
 				}
 
@@ -296,41 +281,25 @@ export default function UpdateShippingCostsGrid() {
 
 	//#region - Table Edit Modal: 
 	const ShippingCostsEditModal = () => {
-		// const [editData, setEditData] = useState({});
 		const editData = {};
 		const costsByDestinationArray = shippingCosts.filter(cost => cost.destination_name === selectedRow?.destination_name);
-		// const selectedDestination = shippingDestinations.find(destination => destination.destination_name === selectedRow?.destination_name);
 
-		// const handleEditModal = useSelector(store => store.shippingCosts.handleEditModal);
-		// // ⬇ Set a useEffect to monitor the handleEditModal state:
-		// useEffect(() => {
-		// 	if (handleEditModal === true) { setSelectedRow(false) }
-		// }, [handleEditModal]);
-
-
-		console.log(`Ryan Here ShippingCostsEditModal \n `, { selectedRow, costsByDestinationArray });
 
 		const handleShippingCostChange = (value, id) => {
-
 			editData[id] = {
 				shipping_cost_id: id,
 				shipping_cost: parseInt(value),
-			}
-
-			console.log(`Ryan Here: editData`, { editData, value, id });
+			}; // End editData
 		}; // End handleShippingCostChange
+
 
 		const handleSubmit = () => {
 			if (!editData || Object.keys(editData).length === 0) {
 				alert('Please make changes to submit first.');
 				return;
 			}; // End if
-
-
-			// console.log(`Ryan Here: handleSubmit`, Object.values(editData));
-
-
-			dispatch({ type: 'UPDATE_SHIPPING_COSTS', payload: Object.values(editData) })
+			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+			dispatch({ type: 'UPDATE_SHIPPING_COSTS', payload: Object.values(editData) });
 		}; // End handleSubmit
 
 
@@ -469,6 +438,8 @@ export default function UpdateShippingCostsGrid() {
 			{selectedRow &&
 				<ShippingCostsEditModal />
 			}
+
+
 		</div>
 	)
 }

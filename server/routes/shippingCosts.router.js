@@ -67,8 +67,7 @@ router.put('/edit-shipping-costs', rejectUnauthenticated, async (req, res) => {
 		// ⬇ Add the closing parentheses:
 		sql += `
 			) AS v(shipping_cost_id, shipping_cost)
-			WHERE v.shipping_cost_id = sc.shipping_cost_id
-			RETURNING true;
+			WHERE v.shipping_cost_id = sc.shipping_cost_id;
 		`; // End sql
 		// ⬇ Send the query to the database:
 		const result = await pool.query(sql);
@@ -78,16 +77,6 @@ router.put('/edit-shipping-costs', rejectUnauthenticated, async (req, res) => {
 		console.error('Error with shipping costs edit: ', error);
 		res.sendStatus(500);
 	}; // End try/catch
-
-
-	// const queryText =  format(`UPDATE "shipping_costs" SET %I = $1 WHERE "id" = $2;`, req.body.dbColumn);
-	// pool.query(queryText, [req.body.newValue, req.params.id])
-	// .then(result => {
-	// res.sendStatus(202);
-	// }).catch ((error) => {
-	//   console.error('Error in shipping costs PUT route -->', error);
-	//   res.sendStatus(500);
-	// });
 });
 
 module.exports = router;

@@ -50,10 +50,11 @@ function* updateShippingCosts(action) {
 	try {
 		// ⬇ Update the shipping costs: 
 		yield axios.put(`/api/shippingcosts/edit-shipping-costs`, action.payload);
-		// ⬇ Close the edit modal:
-		yield put({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false });
-		// ⬇ Send success toast: 
-		yield put({ type: 'SHIPPING_COSTS_EDIT_SUCCESS', payload: false });
+		// ⬇ Close the edit modal, hide the loading div, show the success message, and refresh the data:
+		yield put({ type: 'FETCH_SHIPPING_COSTS' });
+		yield put({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false },);
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+		yield put({ type: 'SHIPPING_COSTS_EDIT_SUCCESS' });
 	} catch (error) {
 		console.error('Error in updateShippingCosts saga', error);
 		yield put({ type: 'SHIPPING_COSTS_EDIT_ERROR', payload: false });
