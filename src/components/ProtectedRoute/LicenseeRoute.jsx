@@ -33,11 +33,11 @@ function AdminRoute(props) {
 
   let ComponentToShow;
 
-  if (user.id && user.permission_level == "3") {
+  if (user.user_id && user.permission_level == "3") {
     // if the user is logged in (only logged in users have ids)
     // show the component that is protected
     ComponentToShow = ComponentToProtect;
-  } else if (user.id && user.permission_level == "2") {
+  } else if (user.user_id && user.permission_level == "2") {
     // if they are not logged in, check the loginMode on Redux State
     // if the mode is 'login', show the LoginPage
     // ComponentToShow = AdminLoginPage;
@@ -50,9 +50,9 @@ function AdminRoute(props) {
 
 
   // redirect a logged in user if an authRedirect prop has been provided
-  if (user.id && authRedirect != null) {
+  if (user.user_id && authRedirect != null) {
     return <Redirect exact from={otherProps.path} to={LicenseeLoginPage} />;
-  } else if (!user.id && authRedirect != null) {
+  } else if (!user.user_id && authRedirect != null) {
     ComponentToShow = ComponentToProtect;
   }
 

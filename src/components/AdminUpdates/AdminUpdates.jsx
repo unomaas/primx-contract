@@ -35,6 +35,8 @@ export default function AdminUpdates() {
       history.push('/LicenseeAccounts')
     } else if (selectedPage == 6) {
       history.push('/SystemAdmin')
+    } else if (selectedPage == 7) {
+      history.push('/AdminUpdateDestinations')
     }
   }
 
@@ -58,7 +60,8 @@ export default function AdminUpdates() {
         <MenuItem key={0} value={0}>Please Select a Category Here</MenuItem>
         <MenuItem key={1} value={1}>Licensees by Company</MenuItem>
         <MenuItem key={2} value={2}>Floor & Placement Types</MenuItem>
-        <MenuItem key={3} value={3}>Shipping Costs by State</MenuItem>
+        <MenuItem key={7} value={7}>Shipping Destinations</MenuItem>
+        <MenuItem key={3} value={3}>Shipping Costs by Destination</MenuItem>
         <MenuItem key={4} value={4}>Material Costs & Inventory</MenuItem>
         <MenuItem key={5} value={5}>Manage Licensee Accounts</MenuItem>
         {/* Conditional rendering to show system admin portal: */}

@@ -51,7 +51,7 @@ function LicenseeLoginForm() {
 				payload: {
 					username: username,
 					password: password,
-					// licensees_id: company,
+					// licensee_id: company,
 				},
 			});
 			history.push('/SavedEstimates');
@@ -115,7 +115,7 @@ function LicenseeLoginForm() {
 						>
 							<MenuItem key="0" value="0">Please Select</MenuItem>
 							{companies.map(companies => {
-								return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+								return (<MenuItem key={companies.licensee_id} value={companies.licensee_id}>{companies.licensee_contractor_name}</MenuItem>)
 							}
 							)}
 						</Select>

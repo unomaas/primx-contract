@@ -58,7 +58,7 @@ export default function NavDrawer() {
 					<Divider />
 
 					{/* Conditioning rendering for what menu options are: */}
-					{user.id ? (
+					{user.user_id ? (
 						// If user is logged in:
 						<List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
 

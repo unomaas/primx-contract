@@ -13,14 +13,17 @@ const useStyles = makeStyles({
     color: 'white',
     fontSize: '1.75em'
   },
+	
   // ⬇ Makes the Data Grid Tables in a normal font: 
   LexendTeraFont: {
     fontFamily: 'Lexend Tera',
   },
+
   LexendTeraFont11: {
     fontFamily: 'Lexend Tera',
     fontSize: '12px',
   },
+
   OrdersHeaders: {
     fontFamily: 'Lexend Tera',
     marginBottom: '.3em',
@@ -48,6 +51,11 @@ const useStyles = makeStyles({
 
   shippingGrid: {
     width: 800,
+    margin: 'auto',
+  },
+
+	destinationGrid: {
+    width: 685,
     margin: 'auto',
   },
 

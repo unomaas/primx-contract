@@ -167,7 +167,7 @@ export default function EstimateCreate() {
 			setError(true);
 			setRadioError("Please select a value.");
 		} // ⬇ Dropdown menu validation:
-		else if (!estimateData.licensee_id || !estimateData.floor_types_id || !estimateData.placement_types_id || !estimateData.shipping_costs_id || !estimateData.country) {
+		else if (!estimateData.licensee_id || !estimateData.floor_type_id || !estimateData.placement_type_id || !estimateData.shipping_costs_id || !estimateData.country) {
 			dispatch({ type: 'SET_EMPTY_ERROR' });
 		} // ⬇ Show table:
 		else {
@@ -227,7 +227,7 @@ export default function EstimateCreate() {
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{companies.map(companies => {
-														return (<MenuItem key={companies.id} value={companies.id}>{companies.licensee_contractor_name}</MenuItem>)
+														return (<MenuItem key={companies.licensee_id} value={companies.licensee_id}>{companies.licensee_contractor_name}</MenuItem>)
 													}
 													)}
 												</Select>
@@ -295,11 +295,11 @@ export default function EstimateCreate() {
 											<TableCell><b>Floor Type:</b></TableCell>
 											<TableCell>
 												<Select
-													onChange={event => handleChange('floor_types_id', event.target.value)}
+													onChange={event => handleChange('floor_type_id', event.target.value)}
 													required
 													size="small"
 													fullWidth
-													value={estimateData.floor_types_id}
+													value={estimateData.floor_type_id}
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{floorTypes.map(types => {
@@ -313,11 +313,11 @@ export default function EstimateCreate() {
 											<TableCell><b>Placement Type:</b></TableCell>
 											<TableCell>
 												<Select
-													onChange={event => handleChange('placement_types_id', event.target.value)}
+													onChange={event => handleChange('placement_type_id', event.target.value)}
 													required
 													size="small"
 													fullWidth
-													value={estimateData.placement_types_id}
+													value={estimateData.placement_type_id}
 												>
 													<MenuItem value="0">Please Select</MenuItem>
 													{placementTypes.map(placementTypes => {

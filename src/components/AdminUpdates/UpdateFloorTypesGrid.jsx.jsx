@@ -15,7 +15,7 @@ export default function UpdateFloorTypesGrid({ floorTypes }) {
 	const floorColumns = [
 
 		{
-			field: 'floor_type',
+			field: 'floor_type_label',
 			headerName: 'Floor Type',
 			width: 400,
 			headerClassName: classes.header
@@ -33,6 +33,7 @@ export default function UpdateFloorTypesGrid({ floorTypes }) {
 				className={classes.dataGridTables}
 				autoHeight
 				rows={floorRows}
+				getRowId={(row) => row.floor_type_id}
 				columns={floorColumns}
 				// pageSize={10}
 				rowsPerPageOptions={[10, 25, 50, 100]}

@@ -11,7 +11,7 @@ const format = require('pg-format');
  */
  router.get('/', (req, res) => {
     // GET route code here
-    const queryText = `SELECT * FROM "products" ORDER BY id ASC`;
+    const queryText = `SELECT * FROM "products" ORDER BY product_id ASC`;
     pool.query(queryText)
         .then((results) => res.send(results.rows))
         .catch((error) => {
@@ -23,10 +23,10 @@ const format = require('pg-format');
   /**
    * EDIT route template
    */
-  router.put('/:id',rejectUnauthenticated, (req, res) => {
+  router.put('/:product_id',rejectUnauthenticated, (req, res) => {
     // EDIT route code here
-    const queryText = format(`UPDATE "products" SET %I =$1 WHERE "id" = $2;`, req.body.dbColumn);
-    pool.query(queryText, [req.body.newValue, req.params.id])
+    const queryText = format(`UPDATE "products" SET %I =$1 WHERE "product_id" = $2;`, req.body.dbColumn);
+    pool.query(queryText, [req.body.newValue, req.params.product_id])
       .then(() => { res.sendStatus(200); })
       .catch((error) => {
         console.error('Error completeing UPDATE Product query', error)

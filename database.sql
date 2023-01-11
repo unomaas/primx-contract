@@ -19,7 +19,7 @@ CREATE TABLE "estimates" (
 	"project_manager_name" varchar(50) NOT NULL,
 	"project_manager_email" varchar(100) NOT NULL,
 	"project_manager_phone" varchar(25) NOT NULL,
-	"floor_types_id" int NOT NULL,
+	"floor_type_id" int NOT NULL,
 	"placement_types_id" int NOT NULL,
 	"square_feet" int DEFAULT NULL,
 	"square_meters" int DEFAULT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE "products" (
 -- add foreign key constraints
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk0" FOREIGN KEY ("licensee_id") REFERENCES "licensees"("id");
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk1" FOREIGN KEY ("shipping_costs_id") REFERENCES "shipping_costs"("id");
-ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk2" FOREIGN KEY ("floor_types_id") REFERENCES "floor_types"("id");
+ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk2" FOREIGN KEY ("floor_type_id") REFERENCES "floor_types"("id");
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk3" FOREIGN KEY ("placement_types_id") REFERENCES "placement_types"("id");
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk4" FOREIGN KEY ("processed_by") REFERENCES "user"("username") ON DELETE SET NULL;
 
@@ -164,7 +164,7 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 -- -- Imperial dummy data starter
 -- INSERT INTO "estimates" 
 -- 	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
--- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_types_id","placement_types_id","square_feet",
+-- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_type_id","placement_types_id","square_feet",
 -- 	"thickness_inches","thickened_edge_perimeter_lineal_feet","thickened_edge_construction_joint_lineal_feet",
 -- 	"primx_flow_dosage_liters","primx_steel_fibers_dosage_lbs","primx_cpea_dosage_liters",
 -- 	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",
@@ -175,7 +175,7 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 -- -- Metric dummy data starter
 -- INSERT INTO "estimates" 
 -- 	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
--- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_types_id","placement_types_id","square_meters",
+-- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_type_id","placement_types_id","square_meters",
 -- 	"thickness_millimeters","thickened_edge_perimeter_lineal_meters","thickened_edge_construction_joint_lineal_meters",
 -- 	"primx_flow_dosage_liters","primx_steel_fibers_dosage_kgs","primx_cpea_dosage_liters",
 -- 	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",

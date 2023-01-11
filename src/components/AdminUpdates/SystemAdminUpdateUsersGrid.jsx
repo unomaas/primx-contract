@@ -58,6 +58,9 @@ export default function SystemAdminUpdateUsersGrid() {
   //datagrid rows are the information from userInfo reducer
   let rows = userInfo;
 
+  console.log(`Ryan Here \n userInfo`, userInfo);
+
+
   // click listener for the process order buttons inside the pending order table
   const handleDeleteAdmin = (params) => {
       // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
@@ -72,6 +75,7 @@ export default function SystemAdminUpdateUsersGrid() {
         className={classes.dataGridTables}
         autoHeight
         rows={rows}
+				getRowId={(row) => row.user_id}
         columns={columns}
         rowsPerPageOptions={[10,25,50,100]}
         pageSize={pageSize}

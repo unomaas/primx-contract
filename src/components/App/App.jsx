@@ -10,6 +10,7 @@ import EstimateLookup from '../EstimateLookup/EstimateLookup';
 import EstimateCombine from '../EstimateCombine/EstimateCombine';
 import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
+import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx'; 
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
 import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
@@ -25,6 +26,8 @@ import LicenseeRoute from '../ProtectedRoute/LicenseeRoute';
 import LicenseeAccounts from '../AdminLicenseeAccounts/LicenseeAccounts';
 import LicenseePortal from '../LicenseePortal/LicenseePortal';
 import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
+import TopLoadingDiv from '../MuiBackdropManager/TopLoadingDiv';
+import AdminUpdateDestinations from '../../pages/AdminUpdates/ShippingDestinations/index.jsx'
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -53,6 +56,7 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<Router>
 				<MuiBackdropManager />
+				<TopLoadingDiv />
 
 				<div className="App">
 
@@ -126,6 +130,7 @@ function App() {
 
 							<AdminRoute exact path="/AdminUpdates" >
 								<AdminUpdates />
+
 							</AdminRoute>
 
 							<AdminRoute exact path="/AdminOrders" >
@@ -142,6 +147,10 @@ function App() {
 
 							<AdminRoute exact path="/AdminUpdateMaterials" >
 								<AdminUpdateMaterials />
+							</AdminRoute>
+
+							<AdminRoute exact path="/AdminUpdateDestinations" >
+								<AdminUpdateDestinations />
 							</AdminRoute>
 
 							<AdminRoute exact path="/AdminUpdateShipping" >

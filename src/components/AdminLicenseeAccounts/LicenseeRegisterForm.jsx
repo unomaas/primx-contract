@@ -35,7 +35,7 @@ export default function LicenseeRegisterForm() {
 			payload: {
 				username: username,
 				password: password,
-				licensees_id: company,
+				licensee_id: company,
 			},
 		});
 		setUsername('');
@@ -103,7 +103,7 @@ export default function LicenseeRegisterForm() {
 					<MenuItem key="0" value="0">Please Select</MenuItem>
 					{companies.map(companies => {
 						return (
-							<MenuItem key={companies.id} value={companies.id}>
+							<MenuItem key={companies.licensee_id} value={companies.licensee_id}>
 								{companies.licensee_contractor_name}
 							</MenuItem>
 						)
@@ -117,9 +117,9 @@ export default function LicenseeRegisterForm() {
 					// onClick={registerUser}
 					variant="contained"
 					color="primary"
-					className="btn"
+					// className="btn"
 					value="Register"
-					className={classes.LexendTeraFont11}
+					className={`${classes.LexendTeraFont11} btn`}
 				>
 					Register
 				</Button>

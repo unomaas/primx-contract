@@ -8,6 +8,7 @@ import floorTypesSaga from './floorTypes.saga';
 import placementTypesSaga from './placementTypes.saga';
 import productsSaga from './products.saga';
 import shippingCostsSaga from './shippingCosts.saga';
+import shippingDestinationsSaga from './shippingDestinations.saga';
 import licenseeFormSaga from './licenseeForm.saga';
 import userInfoSaga from './userInfo.saga';
 import fieldSelectSaga from './fieldSelect.saga'
@@ -37,5 +38,6 @@ export default function* rootSaga() {
     fieldSelectSaga(),
     combineEstimatesSaga(),
 		licenseePortalSaga(),
+		shippingDestinationsSaga(),
   ]);
 }

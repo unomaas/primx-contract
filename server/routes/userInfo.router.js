@@ -8,7 +8,9 @@ const { useRadioGroup } = require('@material-ui/core');
 router.get('/', rejectUnauthenticated, (req, res) => {
   //query to grab all users and their info
   const queryText = `
-		SELECT * FROM "user" 
+		SELECT
+			user_id, username, permission_level
+		FROM "users" 
 		WHERE permission_level = 2
 		ORDER BY username ASC;
 	`;
@@ -26,10 +28,10 @@ router.get('/licensees', rejectUnauthenticated, (req, res) => {
 	//query to grab all users and their info
 	const queryText = `
 		SELECT 
-			u.id, u.username, u.permission_level, u.licensees_id, 
+			u.user_id, u.username, u.permission_level, u.licensee_id, 
 			l.licensee_contractor_name
-		FROM "user" AS u
-		LEFT JOIN "licensees" AS l ON u.licensees_id = l.id
+		FROM "users" AS u
+		LEFT JOIN "licensees" AS l ON u.licensee_id = l.licensee_id
 		WHERE u.permission_level = 3
 		ORDER BY u.username ASC;
 	`;
@@ -44,7 +46,7 @@ router.get('/licensees', rejectUnauthenticated, (req, res) => {
 //Delete Route - Delete an admin user
 router.delete('/:id', rejectUnauthenticated, (req, res) => {
   if (req.user.permission_level == '1') {
-    const queryText = `DELETE FROM "user" WHERE "id" = $1;`;
+    const queryText = `DELETE FROM "users" WHERE "user_id" = $1;`;
     pool.query(queryText, [req.params.id])
       .then(result => {
         res.sendStatus(200)
@@ -60,7 +62,7 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
 
 //Delete Route - Delete an admin user
 router.delete('/licensees/:id', rejectUnauthenticated, (req, res) => {
-	const queryText = `DELETE FROM "user" WHERE "id" = $1;`;
+	const queryText = `DELETE FROM "users" WHERE "user_id" = $1;`;
 	pool.query(queryText, [req.params.id])
 		.then(result => {
 			res.sendStatus(200)

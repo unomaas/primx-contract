@@ -87,9 +87,8 @@ function AdminLoginForm() {
             type="submit"
             variant="contained"
             color="primary"
-            className="btn"
             value="Log In"
-            className={classes.LexendTeraFont11}
+            className={`${classes.LexendTeraFont11} btn`}
           >
             Log in
           </Button>
