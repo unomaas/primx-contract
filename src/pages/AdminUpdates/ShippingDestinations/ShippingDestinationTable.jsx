@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, MenuItem, Menu, TablePagination } from '@material-ui/core';
+import { Button, MenuItem, Menu, TablePagination, Divider } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
@@ -51,7 +51,7 @@ export default function ShippingDestinationTable() {
 			headerClassName: classes.header,
 			renderCell: (params) => {
 				if (params.value == true) {
-					return <CheckCircleIcon style={{ color: 'green' }} /> 
+					return <CheckCircleIcon style={{ color: 'green' }} />
 				} else {
 					return <IndeterminateCheckBoxIcon style={{ color: 'red' }} />
 				}
@@ -96,10 +96,12 @@ export default function ShippingDestinationTable() {
 		// ⬇ State Variables:
 		const [anchorEl, setAnchorEl] = useState(null);
 		const menuItems = [
-			// <CustomGridToolbarExport />,
 			<GridToolbarExport />,
+			<Divider />,
 			<GridToolbarFilterButton />,
+			<Divider />,
 			<GridToolbarColumnsButton />,
+			<Divider />,
 			<GridToolbarDensitySelector />,
 		]; // End menuItems
 
@@ -110,22 +112,24 @@ export default function ShippingDestinationTable() {
 					flex: "1",
 					display: "flex",
 					justifyContent: "flex-start",
+					height: "45px"
 				}}>
 					<Button
 						aria-controls="customized-menu"
 						aria-haspopup="true"
 						color="primary"
 						size="small"
+						style={{ marginBottom: "4px" }}
 						onClick={event => setAnchorEl(event.currentTarget)}
 					>
-						<ArrowDropDownIcon /> Table Options
+						<ArrowDropDownIcon /> Options
 					</Button>
 					<Menu
 						anchorEl={anchorEl}
 						keepMounted
 						open={Boolean(anchorEl)}
 						onClose={() => setAnchorEl(null)}
-						elevation={0}
+						elevation={3}
 						getContentAnchorEl={null}
 						anchorOrigin={{
 							vertical: 'bottom',
@@ -137,14 +141,15 @@ export default function ShippingDestinationTable() {
 						}}
 					>
 						{menuItems.map((item, index) => {
-							return (
-								<MenuItem
-									key={index}
-									onClick={() => setAnchorEl(null)}
-								>
-									{item}
-								</MenuItem>
-							)
+							if (item.type === Divider) {
+								return <Divider variant="middle" key={index} />
+							} else {
+								return (
+									<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
+										{item}
+									</MenuItem>
+								)
+							}
 						})}
 					</Menu>
 				</div>
@@ -166,8 +171,6 @@ export default function ShippingDestinationTable() {
 					fontSize: "11px",
 					fontFamily: "Lexend Tera",
 				}}>
-
-
 				</div>
 			</GridToolbarContainer>
 		); // End return

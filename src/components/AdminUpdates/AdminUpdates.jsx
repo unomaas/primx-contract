@@ -62,7 +62,7 @@ export default function AdminUpdates() {
         <MenuItem key={2} value={2}>Floor & Placement Types</MenuItem>
         <MenuItem key={7} value={7}>Shipping Destinations</MenuItem>
         <MenuItem key={3} value={3}>Shipping Costs by Destination</MenuItem>
-        <MenuItem key={4} value={4}>Material Costs & Inventory</MenuItem>
+        <MenuItem key={4} value={4}>Material Costs & Markup</MenuItem>
         <MenuItem key={5} value={5}>Manage Licensee Accounts</MenuItem>
         {/* Conditional rendering to show system admin portal: */}
         {user.permission_level == '1' && (

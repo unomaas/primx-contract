@@ -1,12 +1,10 @@
-import { React, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import AdminUpdates from './AdminUpdates';
-// Material-UI components
+
+//material ui imports
 import { useStyles } from '../MuiStyling/MuiStyling';
-import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import { DataGrid } from '@material-ui/data-grid';
 
 
 export default function AdminUpdateMaterials() {
