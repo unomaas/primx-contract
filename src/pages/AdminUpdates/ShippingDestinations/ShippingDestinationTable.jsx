@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { Button, MenuItem, Menu, TablePagination } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
@@ -17,17 +16,12 @@ export default function ShippingDestinationTable() {
 	//#region - State Variables Below: 
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
 	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingAllDestinations);
-	const showEditModal = useSelector(store => store.shippingCosts.showEditModal);
 
 	const [selectedRow, setSelectedRow] = useState(null);
 
-	console.log(`Ryan Here \n selectedRow`, selectedRow);
-
 	const rowsPerPageOptions = [10, 25, 50, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-	// const [showEditModal, setShowEditModal] = useState(false);
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
@@ -57,7 +51,7 @@ export default function ShippingDestinationTable() {
 			headerClassName: classes.header,
 			renderCell: (params) => {
 				if (params.value == true) {
-					return <CheckCircleIcon style={{ color: 'green' }} />
+					return <CheckCircleIcon style={{ color: 'green' }} /> 
 				} else {
 					return <IndeterminateCheckBoxIcon style={{ color: 'red' }} />
 				}
