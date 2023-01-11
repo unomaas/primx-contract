@@ -39,7 +39,7 @@ export default function StandardDataGrid(options) {
 	useEffect(() => {
 		// GET shipping cost data on page load
 		dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
-			dispatch({ type: 'FETCH_SHIPPING_DESTINATIONS' })
+			dispatch({ type: 'FETCH_ACTIVE_SHIPPING_DESTINATIONS' })
 		// setIsTableLoaded(true)
 	}, [])
 

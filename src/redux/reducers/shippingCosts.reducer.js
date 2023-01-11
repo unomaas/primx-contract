@@ -12,7 +12,7 @@ export const shippingCostsArray = (state = [], action) => {
 			return state;
 	}
 }
-
+ 
 export const showEditModal = (state = false, action) => {
 	switch (action.type) {
 		case 'SHIPPING_COSTS_SHOW_EDIT_MODAL':

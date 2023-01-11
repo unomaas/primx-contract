@@ -54,6 +54,11 @@ const useStyles = makeStyles({
     margin: 'auto',
   },
 
+	destinationGrid: {
+    width: 685,
+    margin: 'auto',
+  },
+
   productsGrid: {
     width: 475,
     margin: 'auto',

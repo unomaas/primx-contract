@@ -27,6 +27,7 @@ import LicenseeAccounts from '../AdminLicenseeAccounts/LicenseeAccounts';
 import LicenseePortal from '../LicenseePortal/LicenseePortal';
 import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
 import TopLoadingDiv from '../MuiBackdropManager/TopLoadingDiv';
+import AdminUpdateDestinations from '../../pages/AdminUpdates/ShippingDestinations/index.jsx'
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -149,7 +150,7 @@ function App() {
 							</AdminRoute>
 
 							<AdminRoute exact path="/AdminUpdateDestinations" >
-								<AdminUpdateShipping />
+								<AdminUpdateDestinations />
 							</AdminRoute>
 
 							<AdminRoute exact path="/AdminUpdateShipping" >

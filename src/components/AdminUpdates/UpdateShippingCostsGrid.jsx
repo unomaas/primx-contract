@@ -16,7 +16,7 @@ export default function UpdateShippingCostsGrid() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
-	const shippingDestinations = useSelector(store => store.shippingDestinations);
+	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
 	const showEditModal = useSelector(store => store.shippingCosts.showEditModal);
 
 	const [stateFilter, setStateFilter] = useState(null);
@@ -59,7 +59,6 @@ export default function UpdateShippingCostsGrid() {
 			headerName: 'Country',
 			flex: 0.75,
 			disableColumnMenu: true,
-			editable: false,
 			headerClassName: classes.header
 		},
 		{
@@ -69,7 +68,6 @@ export default function UpdateShippingCostsGrid() {
 			headerName: 'Cost',
 			flex: 1,
 			disableColumnMenu: true,
-			editable: false,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {
 				return new Intl.NumberFormat('en-US', {
@@ -93,13 +91,13 @@ export default function UpdateShippingCostsGrid() {
 	useEffect(() => {
 		// GET shipping cost data on page load
 		dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
-			dispatch({ type: 'FETCH_SHIPPING_DESTINATIONS' })
+			dispatch({ type: 'FETCH_ACTIVE_SHIPPING_DESTINATIONS' })
 		// setIsTableLoaded(true)
 	}, [])
 
 	// ⬇ Handles the selection and deselection of a row:
 	const handleSelectionModelChange = (id_array) => {
-		// ⬇ If the selected row is clicked again, deselect it:
+		// ⬇ If the selected row is clicked again, deselect it:a
 		if (id_array.length > 0 && id_array[0] === selectedRow?.shipping_cost_id) {
 			id_array.length = 0;
 			setSelectedRow(null);

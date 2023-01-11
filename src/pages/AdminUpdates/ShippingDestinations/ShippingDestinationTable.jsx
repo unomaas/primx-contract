@@ -3,79 +3,64 @@ import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
-import { useStyles } from '../MuiStyling/MuiStyling';
-import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, GridApi, GridExportCsvOptions, useGridSlotComponentProps, useGridApiRef } from '@material-ui/data-grid';
-import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu, TextField, TablePagination, Modal, Backdrop } from '@material-ui/core';
-import { Autocomplete, Pagination } from '@material-ui/lab';
+import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
+import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-
-import { StandardDataGrid } from '../CommonTools/StandardDataGrid';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
-export default function UpdateShippingCostsGrid() {
+export default function ShippingDestinationTable() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const shippingCosts = useSelector(store => store.shippingCosts);
-	const shippingDestinations = useSelector(store => store.shippingDestinations);
-	const [stateFilter, setStateFilter] = useState(null);
+	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
+	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingAllDestinations);
+	const showEditModal = useSelector(store => store.shippingCosts.showEditModal);
+
 	const [selectedRow, setSelectedRow] = useState(null);
-	const rowsPerPageOptions = [8, 16, 24, 48, 100];
+
+	console.log(`Ryan Here \n selectedRow`, selectedRow);
+
+	const rowsPerPageOptions = [10, 25, 50, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-	const [showEditModal, setShowEditModal] = useState(false);
+	// const [showEditModal, setShowEditModal] = useState(false);
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
 	const columns = [
 		{
-			field: 'product_label',
-			headerName: 'Product',
-			flex: 1,
-			editable: false,
-			headerClassName: classes.header
-		},
-		{
-			field: 'container_length_ft',
-			headerName: 'Container Length (ft)',
-			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
-			headerClassName: classes.header,
-			valueFormatter: (params) => {
-				return `${params.value}"`;
-			},
-		},
-		{
 			field: 'destination_name',
 			headerName: 'Destination',
 			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
 			headerClassName: classes.header
 		},
 		{
-			field: 'container_destination',
+			field: 'destination_country',
 			headerName: 'Country',
-			flex: 0.75,
-			disableColumnMenu: true,
-			editable: false,
-			headerClassName: classes.header
-		},
-		{
-			field: 'shipping_cost',
-			type: 'number',
-			// align: 'right',
-			headerName: 'Cost',
 			flex: 1,
 			disableColumnMenu: true,
 			editable: false,
 			headerClassName: classes.header,
-			valueFormatter: (params) => {
-				return new Intl.NumberFormat('en-US', {
-					style: 'currency',
-					currency: 'USD',
-				}).format(params.value);
+		},
+		{
+			field: 'destination_active',
+			headerName: 'Active',
+			align: 'right',
+			flex: 1,
+			disableColumnMenu: true,
+			editable: false,
+			headerAlign: 'right',
+			headerClassName: classes.header,
+			renderCell: (params) => {
+				if (params.value == true) {
+					return <CheckCircleIcon style={{ color: 'green' }} />
+				} else {
+					return <IndeterminateCheckBoxIcon style={{ color: 'red' }} />
+				}
 			},
 		},
 	]; // End columns
@@ -84,40 +69,27 @@ export default function UpdateShippingCostsGrid() {
 	//#region - Table Setup Below:
 	//rows are from the shipping costs reducer
 	let rows = [];
-	for (let row of shippingCosts) {
-		if (stateFilter && stateFilter.destination_name !== row.destination_name) continue;
+	for (let row of shippingDestinations) {
+
 		rows.push(row);
 	}; // End for of loop
 
 	//#region - Action Handlers Below: 
 	useEffect(() => {
 		// GET shipping cost data on page load
-		dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
-			dispatch({ type: 'FETCH_ACTIVE_SHIPPING_DESTINATIONS' })
+		dispatch({ type: 'FETCH_ALL_SHIPPING_DESTINATIONS' });
 		// setIsTableLoaded(true)
 	}, [])
 
-	// submit handler for in-line cell edits on the data grid
-	const handleEditSubmit = ({ id, field, value }) => {
-		// id argument is the db id of the row being edited, field is the column name, and value is the new value after submitting the edit
-		dispatch({
-			type: 'UPDATE_SHIPPING_COSTS', payload: {
-				id: id,
-				dbColumn: field,
-				newValue: value
-			}
-		}); // End dispatch
-	}; // End handleEditSubmit
-
 	// ⬇ Handles the selection and deselection of a row:
 	const handleSelectionModelChange = (id_array) => {
-		// ⬇ If the selected row is clicked again, deselect it:
-		if (id_array.length > 0 && id_array[0] === selectedRow?.shipping_cost_id) {
+		// ⬇ If the selected row is clicked again, deselect it:a
+		if (id_array.length > 0 && id_array[0] === selectedRow?.destination_id) {
 			id_array.length = 0;
 			setSelectedRow(null);
-		} else {
-			const shippingCostId = id_array[0];
-			const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
+		} else { // ⬇ Else set it as normal:
+			const selectedId = id_array[0];
+			const selectedData = rows.filter((row) => row.destination_id === selectedId);
 			setSelectedRow(selectedData[0]);
 		}; // End if	
 	}; // End handleSelectionModelChange
@@ -137,10 +109,6 @@ export default function UpdateShippingCostsGrid() {
 			<GridToolbarDensitySelector />,
 		]; // End menuItems
 
-		// ⬇ Action Handlers: 
-		const handleStateFilter = (value) => {
-			setStateFilter(value);
-		}; // End handleStateFilter
 
 		return (
 			<GridToolbarContainer >
@@ -162,7 +130,7 @@ export default function UpdateShippingCostsGrid() {
 						anchorEl={anchorEl}
 						keepMounted
 						open={Boolean(anchorEl)}
-						onClose={event => setAnchorEl(null)}
+						onClose={() => setAnchorEl(null)}
 						elevation={0}
 						getContentAnchorEl={null}
 						anchorOrigin={{
@@ -178,7 +146,7 @@ export default function UpdateShippingCostsGrid() {
 							return (
 								<MenuItem
 									key={index}
-									onClick={event => setAnchorEl(null)}
+									onClick={() => setAnchorEl(null)}
 								>
 									{item}
 								</MenuItem>
@@ -194,7 +162,7 @@ export default function UpdateShippingCostsGrid() {
 					fontSize: "12px",
 					fontFamily: "Lexend Tera",
 				}}>
-					Current Shipping Costs
+					All Destinations
 				</div>
 
 				<div style={{
@@ -205,15 +173,6 @@ export default function UpdateShippingCostsGrid() {
 					fontFamily: "Lexend Tera",
 				}}>
 
-					<Autocomplete
-						options={shippingDestinations.sort((a, b) => -b.destination_name.localeCompare(a.destination_name))}
-						getOptionLabel={(option) => option.destination_name}
-						getOptionSelected={(option, value) => option.destination_name === value.destination_name}
-						style={{ width: 175 }}
-						renderInput={(params) => <TextField {...params} label="Destination Filter" InputLabelProps={{ shrink: true }} />}
-						onChange={(event, value) => handleStateFilter(value || null)}
-						value={stateFilter}
-					/>
 
 				</div>
 			</GridToolbarContainer>
@@ -235,12 +194,14 @@ export default function UpdateShippingCostsGrid() {
 
 		const handleOnPageChange = (value) => {
 			apiRef.current.setPage(value);
+			setSelectedRow(null);
 		}; // End handleOnPageChange
 
 		const handleOnRowsPerPageChange = (size) => {
 			apiRef.current.setPageSize(size.props.value);
 			setRowsPerPage(size.props.value);
 			handleOnPageChange(0);
+			setSelectedRow(null);
 		}; // End handleOnRowsPerPageChange
 		//#endregion - Pagination Action Handlers.
 
@@ -265,6 +226,16 @@ export default function UpdateShippingCostsGrid() {
 
 	const CustomFooter = () => {
 
+		const toggleActiveSubmit = () => {
+			console.log('⬇ selectedRow:', selectedRow);
+			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+			dispatch({ type: 'TOGGLE_SHIPPING_DESTINATION_ACTIVE', payload: selectedRow.destination_id })
+			setSelectedRow({
+				...selectedRow,
+				destination_active: !selectedRow.destination_active
+			})
+		}; // End handleActiveSubmit
+
 		return (
 			<div style={{
 				flex: "1",
@@ -274,14 +245,16 @@ export default function UpdateShippingCostsGrid() {
 				{selectedRow &&
 					// ⬇ Only show this button if a row is selected:
 					<Button
-						color="primary"
+						color={selectedRow.destination_active === true ? "secondary" : "primary"}
 						size="small"
-						onClick={() => setShowEditModal(true)}
+						onClick={() => toggleActiveSubmit()}
 					>
-						Edit {selectedRow.destination_name}
+						{selectedRow.destination_active === true
+							? `Set ${selectedRow.destination_name} Inactive`
+							: `Set ${selectedRow.destination_name} Active`
+						}
 					</Button>
 				}
-
 				<CustomPagination />
 			</div>
 		); // End return
@@ -289,54 +262,18 @@ export default function UpdateShippingCostsGrid() {
 	//#endregion - Custom Table Components.
 	//#endregion - Table Setup. 
 
-	//#region - Table Edit Modal: 
-	const ShippingCostsEditModal = () => {
 
-		return (
-			<Modal
-				aria-labelledby="transition-modal-title"
-				aria-describedby="transition-modal-description"
-				// className={classes.modal}
-				open={showEditModal}
-				onClose={() => setShowEditModal(false)}
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{
-					timeout: 500,
-				}}
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-				}}
-			>
-				<Fade in={showEditModal}>
-					<div style={{
-						// backgroundColor: theme.palette.background.paper,
-						backgroundColor: 'white',
-						border: '2px solid #000',
-						// boxShadow: theme.shadows[5],
-						// padding: theme.spacing(2, 4, 3),
-					}}>
-						<h2 id="transition-modal-title">Transition modal</h2>
-						<p id="transition-modal-description">react-transition-group animates me.</p>
-					</div>
-				</Fade>
-			</Modal>
-		); // End return
-	}; // End ShippingCostsEditModal
-	//#endregion - Table Edit Modal.
 
 	// ⬇ Rendering below: 
 	return (
 		<div
-			className={classes.shippingGrid}
+			className={classes.destinationGrid}
 		>
 			<DataGrid
 				className={classes.dataGridTables}
 				columns={columns}
 				rows={rows}
-				getRowId={(row) => row.shipping_cost_id}
+				getRowId={(row) => row.destination_id}
 				autoHeight
 				pagination
 				onSelectionModelChange={(id_array) => handleSelectionModelChange(id_array)}
@@ -345,8 +282,6 @@ export default function UpdateShippingCostsGrid() {
 					Footer: CustomFooter,
 				}}
 			/>
-
-			<ShippingCostsEditModal />
 		</div>
 	)
 }

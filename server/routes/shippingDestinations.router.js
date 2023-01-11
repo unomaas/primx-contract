@@ -5,7 +5,7 @@ const router = express.Router();
 const format = require('pg-format');
 
 // GET route - gets shipping destinations
-router.get('/', async (req, res) => {
+router.get('/active', async (req, res) => {
 	try {
 		const sql = `
 			SELECT * 
@@ -21,58 +21,75 @@ router.get('/', async (req, res) => {
 	}; // End try/catch
 }); // End GET route
 
-//Post Route - adds shipping destination
-router.post('/', rejectUnauthenticated, async (req, res) => {
+// GET route - gets shipping destinations
+router.get('/all', async (req, res) => {
 	try {
-		const { destination_name, destination_country } = req.body;
-		const params = [
-			destination_name,
-			destination_country,
-		]; // End params
 		const sql = `
-			INSERT INTO "shipping_destinations" 
-				("destination_name", "destination_country", "destination_active")
-			VALUES ($1, $2, TRUE)
-			RETURNING destination_id;
+			SELECT * 
+			FROM "shipping_destinations"
+			ORDER BY destination_id ASC;
 		`; // End sql
-		const result = await pool.query(sql, params);
-		if (result) res.sendStatus(201);
+		const {rows} = await pool.query(sql);
+		res.send(rows);
 	} catch (error) {
-		console.error('Error in shipping destinations POST route', error);
+		console.error('Error in shipping destinations GET router', error);
 		res.sendStatus(500);
 	}; // End try/catch
-}); // End POST route
+}); // End GET route
+
+// //Post Route - adds shipping destination
+// router.post('/', rejectUnauthenticated, async (req, res) => {
+// 	try {
+// 		const { destination_name, destination_country } = req.body;
+// 		const params = [
+// 			destination_name,
+// 			destination_country,
+// 		]; // End params
+// 		const sql = `
+// 			INSERT INTO "shipping_destinations" 
+// 				("destination_name", "destination_country", "destination_active")
+// 			VALUES ($1, $2, TRUE)
+// 			RETURNING destination_id;
+// 		`; // End sql
+// 		const result = await pool.query(sql, params);
+// 		if (result) res.sendStatus(201);
+// 	} catch (error) {
+// 		console.error('Error in shipping destinations POST route', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// }); // End POST route
 
 //PUT route - updates shipping active status
-router.put('/edit/:id', rejectUnauthenticated, async (req, res) => {
+router.put('/toggle-active/:destinationId', rejectUnauthenticated, async (req, res) => {
 	try {
+		const { destinationId } = req.params;
+
 		const sql = `
 			UPDATE "shipping_destinations" 
 			SET "destination_active" = NOT "destination_active"
-			WHERE "destination_id" = $1
-			RETURNING destination_id;
+			WHERE "destination_id" = $1;
 		`; // End sql
-		const result = await pool.query(sql, req.body.destination_id);
-		if (result) res.sendStatus(201);
+		pool.query(sql, [destinationId]);
+		res.sendStatus(202);
 	} catch (error) {
-		console.error('Error in shipping costs PUT route -->', error);
+		console.error('Error in shipping destinations PUT route -->', error);
 		res.sendStatus(500);
 	}; // End try/catch
 }); // End PUT route
 
-router.delete('/delete/:id', rejectUnauthenticated, async (req, res) => {
-	try {
-		const sql = `
-			DELETE FROM "shipping_destinations"
-			WHERE destination_id = $1
-			RETURNING TRUE;
-		`; // End sql
-		const result = await pool.query(sql, req.body.destination_id);
-		if (result) res.sendStatus(201);
-	} catch (error) {
-		console.error('Error in shipping costs DELETE route -->', error);
-		res.sendStatus(500);
-	}; // End try/catch
-});
+// router.delete('/delete/:id', rejectUnauthenticated, async (req, res) => {
+// 	try {
+// 		const sql = `
+// 			DELETE FROM "shipping_destinations"
+// 			WHERE destination_id = $1
+// 			RETURNING TRUE;
+// 		`; // End sql
+// 		const result = await pool.query(sql, req.body.destination_id);
+// 		if (result) res.sendStatus(201);
+// 	} catch (error) {
+// 		console.error('Error in shipping costs DELETE route -->', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// });
 
 module.exports = router;

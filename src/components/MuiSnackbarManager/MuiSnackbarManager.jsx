@@ -33,6 +33,7 @@ export default function MuiSnackbarManager() {
     <Snackbar
       open={snack.open}
       autoHideDuration={6000}
+			disableWindowBlurListener={true}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >

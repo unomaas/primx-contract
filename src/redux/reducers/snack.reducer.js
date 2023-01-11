@@ -1,5 +1,14 @@
-const snackReducer = (state = { open: false, message: '', severity: "success" }, action) => {
+const snackReducer = (state = {
+	open: false,
+	message: '',
+	severity: "success"
+}, action) => {
 	switch (action.type) {
+		case 'SET_CLOSE':
+			return {
+				...state,
+				open: false
+			}
 		case 'SET_SUCCESS_COMPANY':
 			return {
 				open: true,
@@ -56,8 +65,7 @@ const snackReducer = (state = { open: false, message: '', severity: "success" },
 				severity: "info",
 				variant: "filled"
 			}
-		case 'SET_CLOSE':
-			return { ...state, open: false }
+
 		case 'SET_EMPTY_ERROR':
 			return {
 				open: true,
