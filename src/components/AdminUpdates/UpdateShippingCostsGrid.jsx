@@ -9,6 +9,7 @@ import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdr
 import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import HelpIcon from '@material-ui/icons/Help';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function UpdateShippingCostsGrid() {
@@ -117,6 +118,22 @@ export default function UpdateShippingCostsGrid() {
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
 		// ⬇ State Variables:
+		const TableInstructions = () => {
+			return (
+				<Tooltip
+					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To change the costs for any destination, the user first must select a row, and save all current costs to the pricing history log for this month.  The user will be able to save the current costs multiple times, but only the latest save will overwrite all prior saves for this month.</p>}
+					placement="right-start"
+					arrow
+				>
+					<Button
+						color="primary"
+						size="small"
+					>
+						<HelpIcon style={{ marginRight: "8px", marginLeft: "-2px" }} /> Help
+					</Button>
+				</Tooltip>
+			)
+		}; // End TableInstructions
 		const [anchorEl, setAnchorEl] = useState(null);
 		const menuItems = [
 			<GridToolbarExport />,
@@ -126,6 +143,8 @@ export default function UpdateShippingCostsGrid() {
 			<GridToolbarColumnsButton />,
 			<Divider />,
 			<GridToolbarDensitySelector />,
+			<Divider />,
+			<TableInstructions />,
 		]; // End menuItems
 
 		// ⬇ Action Handlers: 

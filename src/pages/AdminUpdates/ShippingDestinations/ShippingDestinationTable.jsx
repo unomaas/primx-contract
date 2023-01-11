@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, MenuItem, Menu, TablePagination, Divider } from '@material-ui/core';
+import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import HelpIcon from '@material-ui/icons/Help';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function ShippingDestinationTable() {
@@ -94,6 +95,22 @@ export default function ShippingDestinationTable() {
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
 		// ⬇ State Variables:
+		const TableInstructions = () => {
+			return (
+				<Tooltip
+					title={<p>This table shows all of the shipping destinations currently saved to the database, and their active status.<br /><br />If a destination is active, it will have a green check mark, and will be shown in other areas of the app (for example, active destinations will appear in the "Current Shipping Costs" table).<br /><br />If a destination is inactive, it will have a red minus box, and will not be shown in other areas of the app.<br /><br />The user must first select a row to be able to toggle the active status.</p>}
+					placement="right-start"
+					arrow
+				>
+					<Button
+						color="primary"
+						size="small"
+					>
+						<HelpIcon style={{ marginRight: "8px", marginLeft: "-2px" }} /> Help
+					</Button>
+				</Tooltip>
+			)
+		}; // End TableInstructions
 		const [anchorEl, setAnchorEl] = useState(null);
 		const menuItems = [
 			<GridToolbarExport />,
@@ -103,6 +120,8 @@ export default function ShippingDestinationTable() {
 			<GridToolbarColumnsButton />,
 			<Divider />,
 			<GridToolbarDensitySelector />,
+			<Divider />,
+			<TableInstructions />,
 		]; // End menuItems
 
 
@@ -133,11 +152,11 @@ export default function ShippingDestinationTable() {
 						getContentAnchorEl={null}
 						anchorOrigin={{
 							vertical: 'bottom',
-							horizontal: 'center',
+							horizontal: 'left',
 						}}
 						transformOrigin={{
 							vertical: 'top',
-							horizontal: 'center',
+							horizontal: 'left',
 						}}
 					>
 						{menuItems.map((item, index) => {
