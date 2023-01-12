@@ -43,7 +43,7 @@ function AdminLandingPage() {
       </Button>
 
       {/* navigate to the admin updates page */}
-      <h3>Update Pricing Items</h3>
+      <h3>Update Items</h3>
       <Button
         onClick={goToAdminUpdates}
         variant="contained"

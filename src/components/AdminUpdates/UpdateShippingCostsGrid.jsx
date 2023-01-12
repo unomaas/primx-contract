@@ -26,7 +26,6 @@ export default function UpdateShippingCostsGrid() {
 	const [selectedRow, setSelectedRow] = useState(null);
 	const rowsPerPageOptions = [8, 16, 24, 48, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-	// const [showEditModal, setShowEditModal] = useState(false);
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
@@ -121,7 +120,7 @@ export default function UpdateShippingCostsGrid() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To change the costs for any destination, the user first must select a row, and save all current costs to the pricing history log for this month.  The user will be able to save the current costs multiple times, but only the latest save will overwrite all prior saves for this month.</p>}
+					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />Click a row to select it.  Click again to deselect.  Exporting with a row selected will only export that single row.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To save the current costs to the Pricing History Log for this month, first select a row and then click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but only the latest save will overwrite all prior saves for this month.<br /><br />To change the costs for any destination, a row must be selected and costs must be saved for this month already. Enter in the new costs and click "Submit".<br /><br />The Destination Filter in the top-right will narrow the results to just the selected destination.</p>}
 					placement="right-start"
 					arrow
 				>

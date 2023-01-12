@@ -98,7 +98,7 @@ export default function ShippingDestinationTable() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows all of the shipping destinations currently saved to the database, and their active status.<br /><br />If a destination is active, it will have a green check mark, and will be shown in other areas of the app (for example, active destinations will appear in the "Current Shipping Costs" table).<br /><br />If a destination is inactive, it will have a red minus box, and will not be shown in other areas of the app.<br /><br />The user must first select a row to be able to toggle the active status.</p>}
+					title={<p>This table shows all of the shipping destinations currently saved to the database, and their active status.<br /><br />If a destination is active, it will have a green check mark, and will be shown in other areas of the app (for example, active destinations will appear in the "Current Shipping Costs" table).<br /><br />If a destination is inactive, it will have a red minus box, and will not be shown in other areas of the app.<br /><br />You must first select a row to be able to toggle the active status.</p>}
 					placement="right-start"
 					arrow
 				>
