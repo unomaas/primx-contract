@@ -5,6 +5,17 @@ import {
 import axios from 'axios';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
 
+// companies saga to fetch companies
+function* productsSaga() {
+  yield takeLatest('FETCH_PRODUCTS_ARRAY', fetchProductsArray);
+  yield takeLatest('FETCH_PRODUCTS_OBJECT', fetchProductsObject)
+  // yield takeLatest('UPDATE_PRODUCT', updateProduct);
+  yield takeLatest('ADD_PRODUCT', addProduct);
+  yield takeLatest('FETCH_PRODUCT_COST_HISTORY_RECENT', fetchProductCostRecent);
+  yield takeLatest('PRODUCT_COSTS_SAVE_HISTORY_LOG', saveProductCostHistoryLog);
+  yield takeLatest('UPDATE_PRODUCT_COSTS', updateProductCosts);
+}; // end productsSaga
+
 // fetchProducts generator to get the array of all products data from the DB
 function* fetchProductsArray() {
   try {
@@ -40,7 +51,6 @@ function* fetchProductsObject() {
 }
 
 function* updateProduct(action) {
-	console.log(`Ryan Here: updateProduct`, {action});
   try {
     // takes payload to database to update product
     yield axios.put(`/api/products/${action.payload.product_id}`, action.payload);
@@ -66,12 +76,51 @@ function* addProduct(action) {
   }
 }
 
-// companies saga to fetch companies
-function* productsSaga() {
-  yield takeLatest('FETCH_PRODUCTS_ARRAY', fetchProductsArray);
-  yield takeLatest('FETCH_PRODUCTS_OBJECT', fetchProductsObject)
-  yield takeLatest('UPDATE_PRODUCT', updateProduct);
-  yield takeLatest('ADD_PRODUCT', addProduct);
-}
+//worker saga to get shipping cost history
+function* fetchProductCostRecent() {
+	try {
+		const productCostHistoryRecent = yield axios.get(`/api/products/get-recent-product-cost-history`);
+		//send results to shippingCosts reducer
+		yield put({ type: 'SET_PRODUCT_COST_HISTORY_RECENT', payload: productCostHistoryRecent.data });
+	} catch (error) {
+		console.error('Error with fetchProductCostRecent in products saga', error);
+	} // End try/catch
+} // End fetchProductCostRecent
+
+
+//worker saga to get shipping cost history
+function* saveProductCostHistoryLog(action) {
+	try {
+		const productsArray = action.payload;
+		const result = yield axios.post(`/api/products/submit-product-cost-history`, productsArray);
+		if (result.status === 201) {
+			// ⬇ Refresh the cost history recent data:
+			yield put({ type: 'FETCH_SHIPPING_COST_HISTORY_RECENT' });
+			yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+		} // End if 
+	} catch (error) {
+		console.error('Error with saveProductCostHistoryLog in shippingCosts saga', error);
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	} // End try/catch
+} // End saveProductCostHistoryLog
+
+//worker saga to update shipping costs
+function* updateProductCosts(action) {
+	try {
+
+		console.log(`Ryan Here: in the saga`, action.payload);
+		// ⬇ Update the shipping costs: 
+		yield axios.post(`/api/products/edit-products-costs`, action.payload);
+		// ⬇ Close the edit modal, hide the loading div, show the success message, and refresh the data:
+		yield put({ type: 'FETCH_PRODUCTS_ARRAY' });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+		yield put({ type: 'PRODUCT_COSTS_EDIT_SUCCESS' });
+	} catch (error) {
+		console.error('Error in updateShippingCosts saga', error);
+		yield put({ type: 'COSTS_EDIT_ERROR' });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	} // End try/catch
+} // End updateShippingCosts
+
 
 export default productsSaga;

@@ -58,8 +58,6 @@ export default function SystemAdminUpdateUsersGrid() {
   //datagrid rows are the information from userInfo reducer
   let rows = userInfo;
 
-  console.log(`Ryan Here \n userInfo`, userInfo);
-
 
   // click listener for the process order buttons inside the pending order table
   const handleDeleteAdmin = (params) => {

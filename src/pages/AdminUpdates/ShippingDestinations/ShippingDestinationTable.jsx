@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip } from '@material-ui/core';
+import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
@@ -37,17 +37,13 @@ export default function ShippingDestinationTable() {
 			field: 'destination_country',
 			headerName: 'Country',
 			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
 			headerClassName: classes.header,
 		},
 		{
 			field: 'destination_active',
 			headerName: 'Active',
 			align: 'right',
-			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
+			flex: .5,
 			headerAlign: 'right',
 			headerClassName: classes.header,
 			renderCell: (params) => {
@@ -282,7 +278,8 @@ export default function ShippingDestinationTable() {
 
 	// ⬇ Rendering below: 
 	return (
-		<div
+		<Paper
+			elevation={3}
 			className={classes.destinationGrid}
 		>
 			<DataGrid
@@ -298,7 +295,7 @@ export default function ShippingDestinationTable() {
 					Footer: CustomFooter,
 				}}
 			/>
-		</div>
+		</Paper>
 	)
 }
 

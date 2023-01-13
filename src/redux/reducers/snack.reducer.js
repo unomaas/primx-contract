@@ -129,11 +129,18 @@ const snackReducer = (state = {
 				severity: 'success',
 				variant: 'filled'
 			}
-		case 'SHIPPING_COSTS_EDIT_ERROR':
+		case 'COSTS_EDIT_ERROR':
 			return {
 				open: true,
 				message: `Sorry, something went wrong with that request.  Please try again later.`,
 				severity: 'warning',
+				variant: 'filled'
+			}
+		case 'PRODUCT_COSTS_EDIT_SUCCESS':
+			return {
+				open: true,
+				message: `The edits to the products have been saved!`,
+				severity: 'success',
 				variant: 'filled'
 			}
 		default:

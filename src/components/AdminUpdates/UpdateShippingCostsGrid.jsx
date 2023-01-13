@@ -1,11 +1,10 @@
 
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-
 // Material-UI components
 import { useStyles } from '../MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment, Divider, Tooltip } from '@material-ui/core';
+import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
@@ -68,7 +67,7 @@ export default function UpdateShippingCostsGrid() {
 			type: 'number',
 			// align: 'right',
 			headerName: 'Cost',
-			flex: 1,
+			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {
@@ -120,7 +119,7 @@ export default function UpdateShippingCostsGrid() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />Click a row to select it.  Click again to deselect.  Exporting with a row selected will only export that single row.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To save the current costs to the Pricing History Log for this month, first select a row and then click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but only the latest save will overwrite all prior saves for this month.<br /><br />To change the costs for any destination, a row must be selected and costs must be saved for this month already. Enter in the new costs and click "Submit".<br /><br />The Destination Filter in the top-right will narrow the results to just the selected destination.</p>}
+					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />Click a row to select it.  Click again to deselect.  Exporting with a row selected will only export that single row.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To save the current costs to the Pricing History Log for this month, first select a row and then click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but the latest save will overwrite all prior saves for this month.<br /><br />To change the costs for any destination, a row must be selected and costs must be saved for this month already. Enter in the new costs and click "Submit".<br /><br />The Destination Filter in the top-right will narrow the results to just the selected destination.</p>}
 					placement="right-start"
 					arrow
 				>
@@ -529,7 +528,8 @@ export default function UpdateShippingCostsGrid() {
 
 	// ⬇ Rendering below: 
 	return (
-		<div
+		<Paper
+			elevation={3}
 			className={classes.shippingGrid}
 		>
 			<DataGrid
@@ -551,7 +551,7 @@ export default function UpdateShippingCostsGrid() {
 			}
 
 
-		</div>
+		</Paper>
 	)
 }
 

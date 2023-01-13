@@ -70,7 +70,7 @@ router.put('/edit-shipping-costs', rejectUnauthenticated, async (req, res) => {
 			WHERE v.shipping_cost_id = sc.shipping_cost_id;
 		`; // End sql
 		// ⬇ Send the query to the database:
-		const result = await pool.query(sql);
+		await pool.query(sql);
 		// ⬇ Send the response:
 		res.sendStatus(202);
 	} catch (error) {

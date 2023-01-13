@@ -60,7 +60,8 @@ function* updateShippingCosts(action) {
 		yield put({ type: 'SHIPPING_COSTS_EDIT_SUCCESS' });
 	} catch (error) {
 		console.error('Error in updateShippingCosts saga', error);
-		yield put({ type: 'SHIPPING_COSTS_EDIT_ERROR', payload: false });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+		yield put({ type: 'COSTS_EDIT_ERROR', payload: false });
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} // End try/catch
 } // End updateShippingCosts
@@ -70,7 +71,6 @@ function* fetchAllShippingCostHistory() {
 	try {
 		//GET shipping cost history
 		const shippingCostHistory = yield axios.get(`/api/shippingcosts/get-all-shipping-cost-history`);
-		console.log(`*** Ryan Here: `, { shippingCostHistory });
 		//send results to shippingCosts reducer
 		yield put({ type: 'SET_SHIPPING_COST_HISTORY_ALL', payload: shippingCostHistory.data });
 	} catch (error) {
@@ -83,7 +83,6 @@ function* fetchRecentShippingCostHistory() {
 	try {
 		//GET shipping cost history
 		const shippingCostHistory = yield axios.get(`/api/shippingcosts/get-recent-shipping-cost-history`);
-		console.log(`*** Ryan Here: `, { shippingCostHistory });
 		//send results to shippingCosts reducer
 		yield put({ type: 'SET_SHIPPING_COST_HISTORY_RECENT', payload: shippingCostHistory.data });
 	} catch (error) {
