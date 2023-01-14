@@ -57,11 +57,11 @@ function* updateShippingCosts(action) {
 		yield put({ type: 'FETCH_SHIPPING_COSTS' });
 		yield put({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false });
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
-		yield put({ type: 'SHIPPING_COSTS_EDIT_SUCCESS' });
+		yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
 	} catch (error) {
 		console.error('Error in updateShippingCosts saga', error);
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
-		yield put({ type: 'COSTS_EDIT_ERROR', payload: false });
+		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR', payload: false });
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} // End try/catch
 } // End updateShippingCosts

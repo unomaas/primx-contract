@@ -119,7 +119,7 @@ export default function UpdateShippingCostsGrid() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />Click a row to select it.  Click again to deselect.  Exporting with a row selected will only export that single row.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To save the current costs to the Pricing History Log for this month, first select a row and then click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but the latest save will overwrite all prior saves for this month.<br /><br />To change the costs for any destination, a row must be selected and costs must be saved for this month already. Enter in the new costs and click "Submit".<br /><br />The Destination Filter in the top-right will narrow the results to just the selected destination.</p>}
+					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />Click a row to select it.  Click again to deselect.  Exporting with a row selected will only export that single row.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To save the current costs to the Pricing History Log for this month, first select a row and then click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but please be aware this will create two entries for this month.<br /><br />To change the costs for any destination, a row must be selected and costs must be saved for this month already. Enter in the new costs and click "Submit".<br /><br />The Destination Filter in the top-right will narrow the results to just the selected destination.</p>}
 					placement="right-start"
 					arrow
 				>
@@ -298,7 +298,7 @@ export default function UpdateShippingCostsGrid() {
 				shippingCostHistoryRecent.length > 0 &&
 				shippingCostHistoryRecent[0].date_saved.slice(0, 7) === today
 			) {
-				if (window.confirm(`Costs have already been saved for this month.  If you continue, the saved costs for this month will be overwritten with the currently shown costs.  Click "OK" to continue.`)) {
+				if (window.confirm(`Costs have already been saved for this month.  If you continue, two entries will be saved for this month.  Click "OK" to continue.`)) {
 					dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
 					dispatch({ type: 'SHIPPING_COSTS_SAVE_HISTORY_LOG', payload: shippingCosts })
 				}; // End if

@@ -60,8 +60,15 @@ const useStyles = makeStyles({
   },
 
   productsGrid: {
-    width: 475,
-    margin: 'auto',
+    width: 450,
+    // margin: 'auto',
+		marginRight: '20px',
+  },
+
+	markupGrid: {
+    width: 300,
+		height: 211,
+    // margin: 'auto',
   },
 
   licenseeGrid: {

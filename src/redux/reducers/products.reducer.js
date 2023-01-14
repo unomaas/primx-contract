@@ -28,10 +28,35 @@ const productCostHistoryRecent = (state = [], action) => {
 	}
 };
 
+// ⬇ Set the current markup margin:
+const currentMarkupMargin = (state = [], action) => {
+	switch (action.type) {
+		case 'SET_MARKUP_MARGIN':
+			return action.payload;
+		default:
+			return state;
+	}
+};
+
+const markupHistoryRecent = (state = [], action) => {
+	switch (action.type) {
+		case 'SET_MARKUP_HISTORY_RECENT':
+			return action.payload;
+		default:
+			return state;
+	}
+};
+
+
+
+
 // user will be on the redux state at:
 // state.user
 export default combineReducers({
 	productsArray,
 	productsObject,
-	productCostHistoryRecent
+	productCostHistoryRecent,
+	currentMarkupMargin,
+	markupHistoryRecent,
+
 });
