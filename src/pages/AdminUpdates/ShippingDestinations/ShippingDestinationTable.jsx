@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
+import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import HelpIcon from '@material-ui/icons/Help';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function ShippingDestinationTable() {
@@ -17,17 +17,12 @@ export default function ShippingDestinationTable() {
 	//#region - State Variables Below: 
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
 	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingAllDestinations);
-	const showEditModal = useSelector(store => store.shippingCosts.showEditModal);
 
 	const [selectedRow, setSelectedRow] = useState(null);
 
-	console.log(`Ryan Here \n selectedRow`, selectedRow);
-
 	const rowsPerPageOptions = [10, 25, 50, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-	// const [showEditModal, setShowEditModal] = useState(false);
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
@@ -42,17 +37,13 @@ export default function ShippingDestinationTable() {
 			field: 'destination_country',
 			headerName: 'Country',
 			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
 			headerClassName: classes.header,
 		},
 		{
 			field: 'destination_active',
 			headerName: 'Active',
 			align: 'right',
-			flex: 1,
-			disableColumnMenu: true,
-			editable: false,
+			flex: .5,
 			headerAlign: 'right',
 			headerClassName: classes.header,
 			renderCell: (params) => {
@@ -100,13 +91,33 @@ export default function ShippingDestinationTable() {
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
 		// ⬇ State Variables:
+		const TableInstructions = () => {
+			return (
+				<Tooltip
+					title={<p>This table shows all of the shipping destinations currently saved to the database, and their active status.<br /><br />If a destination is active, it will have a green check mark, and will be shown in other areas of the app (for example, active destinations will appear in the "Current Shipping Costs" table).<br /><br />If a destination is inactive, it will have a red minus box, and will not be shown in other areas of the app.<br /><br />You must first select a row to be able to toggle the active status.</p>}
+					placement="right-start"
+					arrow
+				>
+					<Button
+						color="primary"
+						size="small"
+					>
+						<HelpIcon style={{ marginRight: "8px", marginLeft: "-2px" }} /> Help
+					</Button>
+				</Tooltip>
+			)
+		}; // End TableInstructions
 		const [anchorEl, setAnchorEl] = useState(null);
 		const menuItems = [
-			// <CustomGridToolbarExport />,
 			<GridToolbarExport />,
+			<Divider />,
 			<GridToolbarFilterButton />,
+			<Divider />,
 			<GridToolbarColumnsButton />,
+			<Divider />,
 			<GridToolbarDensitySelector />,
+			<Divider />,
+			<TableInstructions />,
 		]; // End menuItems
 
 
@@ -116,41 +127,44 @@ export default function ShippingDestinationTable() {
 					flex: "1",
 					display: "flex",
 					justifyContent: "flex-start",
+					height: "45px"
 				}}>
 					<Button
 						aria-controls="customized-menu"
 						aria-haspopup="true"
 						color="primary"
 						size="small"
+						style={{ marginBottom: "4px" }}
 						onClick={event => setAnchorEl(event.currentTarget)}
 					>
-						<ArrowDropDownIcon /> Table Options
+						<ArrowDropDownIcon /> Options
 					</Button>
 					<Menu
 						anchorEl={anchorEl}
 						keepMounted
 						open={Boolean(anchorEl)}
 						onClose={() => setAnchorEl(null)}
-						elevation={0}
+						elevation={3}
 						getContentAnchorEl={null}
 						anchorOrigin={{
 							vertical: 'bottom',
-							horizontal: 'center',
+							horizontal: 'left',
 						}}
 						transformOrigin={{
 							vertical: 'top',
-							horizontal: 'center',
+							horizontal: 'left',
 						}}
 					>
 						{menuItems.map((item, index) => {
-							return (
-								<MenuItem
-									key={index}
-									onClick={() => setAnchorEl(null)}
-								>
-									{item}
-								</MenuItem>
-							)
+							if (item.type === Divider) {
+								return <Divider variant="middle" key={index} />
+							} else {
+								return (
+									<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
+										{item}
+									</MenuItem>
+								)
+							}
 						})}
 					</Menu>
 				</div>
@@ -172,8 +186,6 @@ export default function ShippingDestinationTable() {
 					fontSize: "11px",
 					fontFamily: "Lexend Tera",
 				}}>
-
-
 				</div>
 			</GridToolbarContainer>
 		); // End return
@@ -266,7 +278,8 @@ export default function ShippingDestinationTable() {
 
 	// ⬇ Rendering below: 
 	return (
-		<div
+		<Paper
+			elevation={3}
 			className={classes.destinationGrid}
 		>
 			<DataGrid
@@ -282,7 +295,7 @@ export default function ShippingDestinationTable() {
 					Footer: CustomFooter,
 				}}
 			/>
-		</div>
+		</Paper>
 	)
 }
 

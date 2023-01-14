@@ -20,9 +20,25 @@ export const showEditModal = (state = false, action) => {
 		default:
 			return state;
 	} // End switch
-}; // End handleEditModal
+}; // End 
 
+export const shippingCostHistoryAllArray = (state = [], action) => {
+	switch (action.type) {
+		case 'SET_SHIPPING_COST_HISTORY_ALL':
+			return action.payload;
+		default:
+			return state;
+	} // End switch
+}; // End 
 
+export const shippingCostHistoryRecentArray = (state = [], action) => {
+	switch (action.type) {
+		case 'SET_SHIPPING_COST_HISTORY_RECENT':
+			return action.payload;
+		default:
+			return state;
+	} // End switch
+}; // End 
 
 
 // export default shippingCostsReducer;
@@ -30,4 +46,6 @@ export const showEditModal = (state = false, action) => {
 export default combineReducers({
 	shippingCostsArray,
 	showEditModal,
+	shippingCostHistoryAllArray,
+	shippingCostHistoryRecentArray
 });

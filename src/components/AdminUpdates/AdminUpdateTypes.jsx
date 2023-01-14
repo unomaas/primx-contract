@@ -24,7 +24,6 @@ export default function AdminUpdateTypes() {
 	//useSelector for array of floor types
 	const floorTypes = useSelector(store => store.floorTypes);
 	const placementTypes = useSelector(store => store.placementTypes);
-	console.log(`Ryan Here: `, {floorTypes, placementTypes});
 
 	//defining classes for MUI
 	const classes = useStyles();

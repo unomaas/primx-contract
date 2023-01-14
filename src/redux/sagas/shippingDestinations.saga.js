@@ -42,16 +42,14 @@ function* fetchAllShippingDestinations() {
 }
 
 function* toggleShippingDestinationActive(action) {
-
-
 	try {
 		const destinationId = action.payload;
 
 		//GET all shipping costs
 		const response = yield axios.put(`/api/shippingDestinations/toggle-active/${destinationId}`);
 		if (response) {
-			console.log(`Ryan Here: Saga toggleShippingDestinationActive`, { response });
-			yield put({ type: "FETCH_ALL_SHIPPING_DESTINATIONS" })
+			// ⬇ Refresh shipping destinations and hide loading div:
+			yield put({ type: "FETCH_ALL_SHIPPING_DESTINATIONS" });
 			yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 		}
 	} catch (error) {

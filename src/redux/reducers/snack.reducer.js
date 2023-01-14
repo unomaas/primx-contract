@@ -122,14 +122,14 @@ const snackReducer = (state = {
 				severity: 'info',
 				variant: 'filled'
 			}
-		case 'SHIPPING_COSTS_EDIT_SUCCESS':
+		case 'SNACK_GENERIC_REQUEST_SUCCESS':
 			return {
 				open: true,
-				message: `The edits to that destination have been saved!`,
+				message: `Your request has been saved successfully!`,
 				severity: 'success',
 				variant: 'filled'
 			}
-		case 'SHIPPING_COSTS_EDIT_ERROR':
+		case 'SNACK_GENERIC_REQUEST_ERROR':
 			return {
 				open: true,
 				message: `Sorry, something went wrong with that request.  Please try again later.`,

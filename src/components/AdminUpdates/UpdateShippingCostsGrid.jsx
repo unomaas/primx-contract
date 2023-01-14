@@ -1,13 +1,14 @@
 
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-
 // Material-UI components
 import { useStyles } from '../MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment } from '@material-ui/core';
+import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import HelpIcon from '@material-ui/icons/Help';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function UpdateShippingCostsGrid() {
@@ -16,6 +17,7 @@ export default function UpdateShippingCostsGrid() {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
+	const shippingCostHistoryRecent = useSelector(store => store.shippingCosts.shippingCostHistoryRecentArray);
 	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
 	const showEditModal = useSelector(store => store.shippingCosts.showEditModal);
 
@@ -23,7 +25,6 @@ export default function UpdateShippingCostsGrid() {
 	const [selectedRow, setSelectedRow] = useState(null);
 	const rowsPerPageOptions = [8, 16, 24, 48, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
-	// const [showEditModal, setShowEditModal] = useState(false);
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
@@ -66,7 +67,7 @@ export default function UpdateShippingCostsGrid() {
 			type: 'number',
 			// align: 'right',
 			headerName: 'Cost',
-			flex: 1,
+			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {
@@ -91,7 +92,8 @@ export default function UpdateShippingCostsGrid() {
 	useEffect(() => {
 		// GET shipping cost data on page load
 		dispatch({ type: 'FETCH_SHIPPING_COSTS' }),
-			dispatch({ type: 'FETCH_ACTIVE_SHIPPING_DESTINATIONS' })
+			dispatch({ type: 'FETCH_ACTIVE_SHIPPING_DESTINATIONS' }),
+			dispatch({ type: 'FETCH_SHIPPING_COST_HISTORY_RECENT' })
 		// setIsTableLoaded(true)
 	}, [])
 
@@ -114,13 +116,33 @@ export default function UpdateShippingCostsGrid() {
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
 		// ⬇ State Variables:
+		const TableInstructions = () => {
+			return (
+				<Tooltip
+					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />Click a row to select it.  Click again to deselect.  Exporting with a row selected will only export that single row.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To save the current costs to the Pricing History Log for this month, first select a row and then click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but please be aware this will create two entries for this month.<br /><br />To change the costs for any destination, a row must be selected and costs must be saved for this month already. Enter in the new costs and click "Submit".<br /><br />The Destination Filter in the top-right will narrow the results to just the selected destination.</p>}
+					placement="right-start"
+					arrow
+				>
+					<Button
+						color="primary"
+						size="small"
+					>
+						<HelpIcon style={{ marginRight: "8px", marginLeft: "-2px" }} /> Help
+					</Button>
+				</Tooltip>
+			)
+		}; // End TableInstructions
 		const [anchorEl, setAnchorEl] = useState(null);
 		const menuItems = [
-			// <CustomGridToolbarExport />,
 			<GridToolbarExport />,
+			<Divider />,
 			<GridToolbarFilterButton />,
+			<Divider />,
 			<GridToolbarColumnsButton />,
+			<Divider />,
 			<GridToolbarDensitySelector />,
+			<Divider />,
+			<TableInstructions />,
 		]; // End menuItems
 
 		// ⬇ Action Handlers: 
@@ -134,41 +156,44 @@ export default function UpdateShippingCostsGrid() {
 					flex: "1",
 					display: "flex",
 					justifyContent: "flex-start",
+					height: "45px"
 				}}>
 					<Button
 						aria-controls="customized-menu"
 						aria-haspopup="true"
 						color="primary"
 						size="small"
+						style={{ marginBottom: "4px" }}
 						onClick={event => setAnchorEl(event.currentTarget)}
 					>
-						<ArrowDropDownIcon /> Table Options
+						<ArrowDropDownIcon /> Options
 					</Button>
 					<Menu
 						anchorEl={anchorEl}
 						keepMounted
 						open={Boolean(anchorEl)}
 						onClose={() => setAnchorEl(null)}
-						elevation={0}
+						elevation={3}
 						getContentAnchorEl={null}
 						anchorOrigin={{
 							vertical: 'bottom',
-							horizontal: 'center',
+							horizontal: 'left',
 						}}
 						transformOrigin={{
 							vertical: 'top',
-							horizontal: 'center',
+							horizontal: 'left',
 						}}
 					>
 						{menuItems.map((item, index) => {
-							return (
-								<MenuItem
-									key={index}
-									onClick={() => setAnchorEl(null)}
-								>
-									{item}
-								</MenuItem>
-							)
+							if (item.type === Divider) {
+								return <Divider variant="middle" key={index} />
+							} else {
+								return (
+									<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
+										{item}
+									</MenuItem>
+								)
+							}
 						})}
 					</Menu>
 				</div>
@@ -224,6 +249,7 @@ export default function UpdateShippingCostsGrid() {
 			setSelectedRow(null);
 		}; // End handleOnPageChange
 
+
 		const handleOnRowsPerPageChange = (size) => {
 			apiRef.current.setPageSize(size.props.value);
 			setRowsPerPage(size.props.value);
@@ -253,6 +279,62 @@ export default function UpdateShippingCostsGrid() {
 
 	const CustomFooter = () => {
 
+
+		//#region - Info for the Save Costs to History Log button:
+		// ⬇ Get today's date in YYYY-MM format;
+		const today = new Date().toISOString().slice(0, 7);
+		let disabled = true;
+		let tooltipText = <p>The current costs have not been saved yet for this month.  Please click the "Save Costs to History Log" button to save the current costs for this month first.</p>;
+		if (
+			shippingCostHistoryRecent.length > 0 &&
+			shippingCostHistoryRecent[0].date_saved.slice(0, 7) === today
+		) {
+			disabled = false;
+			tooltipText = "";
+		};
+
+		const handleSaveHistoryLogSubmit = () => {
+			if (
+				shippingCostHistoryRecent.length > 0 &&
+				shippingCostHistoryRecent[0].date_saved.slice(0, 7) === today
+			) {
+				if (window.confirm(`Costs have already been saved for this month.  If you continue, two entries will be saved for this month.  Click "OK" to continue.`)) {
+					dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+					dispatch({ type: 'SHIPPING_COSTS_SAVE_HISTORY_LOG', payload: shippingCosts })
+				}; // End if
+			} else {
+				dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+				dispatch({ type: 'SHIPPING_COSTS_SAVE_HISTORY_LOG', payload: shippingCosts })
+			}; // End if
+		}; // End handleSaveHistoryLogSubmit
+		//#endregion - Info for the Save Costs to History Log button.
+
+		const [anchorEl, setAnchorEl] = useState(null);
+		const menuItems = [
+			<Button
+				color="primary"
+				size="small"
+				onClick={() => handleSaveHistoryLogSubmit()}
+			>
+				Save Costs to History Log
+			</Button>,
+			<Divider />,
+			<Tooltip title={tooltipText} placement="right-end" arrow>
+				<span>
+					<Button
+						color="primary"
+						size="small"
+						onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: true })}
+						disabled={disabled}
+					>
+						Edit {selectedRow?.destination_name}'s Costs
+					</Button>
+				</span>
+			</Tooltip>,
+
+		]; // End menuItems
+
+
 		return (
 			<div style={{
 				flex: "1",
@@ -260,16 +342,46 @@ export default function UpdateShippingCostsGrid() {
 				justifyContent: "flex-start",
 			}}>
 				{selectedRow &&
-					// ⬇ Only show this button if a row is selected:
-					<Button
-						color="primary"
-						size="small"
-						onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: true })}
-					>
-						Edit {selectedRow.destination_name}'s Costs
-					</Button>
+					<>
+						<Button
+							aria-controls="customized-menu"
+							aria-haspopup="true"
+							color="primary"
+							size="small"
+							onClick={event => setAnchorEl(event.currentTarget)}
+						>
+							<ArrowDropUpIcon /> Actions
+						</Button>
+						<Menu
+							anchorEl={anchorEl}
+							keepMounted
+							open={Boolean(anchorEl)}
+							onClose={() => setAnchorEl(null)}
+							elevation={3}
+							getContentAnchorEl={null}
+							anchorOrigin={{
+								vertical: 'top',
+								horizontal: 'left',
+							}}
+							transformOrigin={{
+								vertical: 'bottom',
+								horizontal: 'left',
+							}}
+						>
+							{menuItems.map((item, index) => {
+								if (item.type === Divider) {
+									return <Divider variant="middle" key={index} />
+								} else {
+									return (
+										<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
+											{item}
+										</MenuItem>
+									)
+								}
+							})}
+						</Menu>
+					</>
 				}
-
 				<CustomPagination />
 			</div>
 		); // End return
@@ -416,7 +528,8 @@ export default function UpdateShippingCostsGrid() {
 
 	// ⬇ Rendering below: 
 	return (
-		<div
+		<Paper
+			elevation={3}
 			className={classes.shippingGrid}
 		>
 			<DataGrid
@@ -438,7 +551,7 @@ export default function UpdateShippingCostsGrid() {
 			}
 
 
-		</div>
+		</Paper>
 	)
 }
 
