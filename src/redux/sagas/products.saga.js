@@ -157,7 +157,6 @@ function* fetchRecentMarkupHistory() {
 function* editMarkupMargin(action) {
 	try {
 		// ⬇ Update the markup margin:
-		console.log(`Ryan Here editMarkupMargin \n action.payload`, action.payload);
 		yield axios.post(`/api/products/edit-markup-margin`, action.payload[0]);
 		// ⬇ Close the edit modal, hide the loading div, show the success message, and refresh the data:
 		yield put({ type: 'FETCH_MARKUP_MARGIN' });

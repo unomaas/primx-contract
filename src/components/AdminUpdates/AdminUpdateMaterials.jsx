@@ -66,7 +66,7 @@ export default function AdminUpdateMaterials() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied product self costs.<br /><br />To edit the product self costs, first you must save the current costs to the Pricing History Log for this month.<br /><br />To do that, click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but please be aware this will create two entries for this month.</p>}
+					title={<p>This table shows the currently applied product self costs.<br /><br />To edit the product self costs, first you must save the current costs to the Pricing History Log for this month.<br /><br />To do that, click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but please be aware this will create more than one entry in the Pricing History Log for this month.</p>}
 					placement="right-start"
 					arrow
 				>

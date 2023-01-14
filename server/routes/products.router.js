@@ -177,10 +177,7 @@ router.get('/get-all-markup-history', async (req, res) => {
 }); // End GET route
 
 router.post('/edit-markup-margin', rejectUnauthenticated, async (req, res) => {
-	// ! Ryan Here, something's wrong with this route.  Keeps throwing a SQL error. 
-
 	try {
-		console.log(`**** Ryan Here: \n\n `, {reqBody: req.body, reqParams: req.params});
 		const sql = `
 			UPDATE "markup" AS m
 			SET "margin_applied" = ${format('%L::decimal', req.body.margin_applied)}
