@@ -1,62 +1,93 @@
 
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
+
 // Material-UI components
-import { useStyles } from '../MuiStyling/MuiStyling';
-import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
+import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
 import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
-import AdminUpdates from './AdminUpdates';
-import AdminUpdateMarkup from './AdminUpdateMarkup';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
-export default function AdminUpdateMaterials() {
+export default function CustomsDutiesTable() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const productsArray = useSelector(store => store.products.productsArray);
-	const productCostHistoryRecent = useSelector(store => store.products.productCostHistoryRecent);
-	const [showEditModal, setShowEditModal] = useState(false);
+	const customsDuties = useSelector(store => store.customsDuties.customsDutiesArray);
+	const customsDutiesHistoryRecent = useSelector(store => store.customsDuties.customsDutiesHistoryRecentArray);
 
+	const [showEditModal, setShowEditModal] = useState(false);
+	const rowsPerPageOptions = [10, 25, 50, 100];
+	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 	// ⬇ Logic to handle setting the table rows on first load: 
+	// const [tableMounted, setTableMounted] = useState(false);
+	// columns for Data Grid
 	const columns = [
 		{
-			field: 'product_label',
-			headerName: 'Product',
-			flex: 2,
+			field: 'duty_label',
+			headerName: 'Duty Label',
+			flex: 2.5,
+			editable: false,
 			headerClassName: classes.header
 		},
 		{
-			field: 'product_self_cost',
-			type: 'number',
-			headerName: 'Price',
+			field: 'USA_percent',
+			headerName: 'USA',
 			flex: 1,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {
-				return new Intl.NumberFormat('en-US', {
-					style: 'currency',
-					currency: 'USD',
-				}).format(params.value);
+				// ⬇ Return value as a percentage:
+				return `${(params.value * 100)}%`;
 			},
+			disableColumnMenu: true,
+			type: 'number',
 		},
-	];
+		{
+			field: 'CAN_percent',
+			headerName: 'Canada',
+			flex: 1,
+			headerClassName: classes.header,
+			valueFormatter: (params) => {
+				// ⬇ Return value as a percentage:
+				return `${(params.value * 100)}%`;
+			},
+			disableColumnMenu: true,
+			type: 'number',
+		},
+	]; // End columns
 	//#endregion - End State Variables.
 
 	//#region - Table Setup Below:
-	let rows = productsArray;
-
+	//rows are from the shipping costs reducer
+	let rows = customsDuties;
+	// for (let row of customsDuties) {
+	// 	if (stateFilter && stateFilter.destination_name !== row.destination_name) continue;
+	// 	rows.push(row);
+	// }; // End for of loop
 
 	//#region - Action Handlers Below: 
 	useEffect(() => {
 		// GET shipping cost data on page load
-		dispatch({ type: 'FETCH_PRODUCTS_ARRAY' });
-		dispatch({ type: 'FETCH_PRODUCT_COST_HISTORY_RECENT' });
-		dispatch({ type: 'FETCH_MARKUP_MARGIN' });
-		dispatch({ type: 'FETCH_MARKUP_HISTORY_RECENT' });
+		dispatch({ type: 'FETCH_CUSTOMS_DUTIES' }),
+			dispatch({ type: 'FETCH_CUSTOMS_DUTIES_HISTORY_RECENT' })
 	}, [])
+
+	// ⬇ Handles the selection and deselection of a row:
+	// const handleSelectionModelChange = (id_array) => {
+	// 	// ⬇ If the selected row is clicked again, deselect it:a
+	// 	if (id_array.length > 0 && id_array[0] === selectedRow?.shipping_cost_id) {
+	// 		id_array.length = 0;
+	// 		setSelectedRow(null);
+	// 	} else { // ⬇ Else set it as normal:
+	// 		const shippingCostId = id_array[0];
+	// 		const selectedData = rows.filter((row) => row.shipping_cost_id === shippingCostId);
+	// 		setSelectedRow(selectedData[0]);
+	// 	}; // End if	
+	// }; // End handleSelectionModelChange
+	//#endregion - End Action Handlers.
 
 
 	//#region - Custom Table Components Below: 
@@ -66,7 +97,7 @@ export default function AdminUpdateMaterials() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied product self costs.<br /><br />To edit the product self costs, first you must save the current costs to the Pricing History Log for this month.<br /><br />To do that, click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but please be aware this will create more than one entry in the Pricing History Log for this month.</p>}
+					title={<p>This table shows the currently applied custom duties percentages.<br /><br />To save the current customs duties to the Pricing History Log for this month, click "Actions", then click "Save Customs To History Log".  You will be able to save the current customs multiple times, but please be aware this will create more than one entry in the Pricing History Log for this month.</p>}
 					placement="right-start"
 					arrow
 				>
@@ -147,7 +178,7 @@ export default function AdminUpdateMaterials() {
 					fontSize: "12px",
 					fontFamily: "Lexend Tera",
 				}}>
-					Current Product Self Costs
+					Current Customs Duties
 				</div>
 
 				<div style={{
@@ -157,22 +188,60 @@ export default function AdminUpdateMaterials() {
 					fontSize: "11px",
 					fontFamily: "Lexend Tera",
 				}}>
-
 				</div>
 			</GridToolbarContainer>
 		); // End return
 	}; // End CustomToolbar
 
+	const CustomPagination = () => {
+		// ⬇ State Variables: 
+		const { state, apiRef } = useGridSlotComponentProps();
+
+		//#region - Pagination Action Handlers:
+		const handleOnPageChange = (value) => {
+			apiRef.current.setPage(value);
+			setSelectedRow(null);
+		}; // End handleOnPageChange
+
+
+		const handleOnRowsPerPageChange = (size) => {
+			apiRef.current.setPageSize(size.props.value);
+			setRowsPerPage(size.props.value);
+			handleOnPageChange(0);
+			setSelectedRow(null);
+		}; // End handleOnRowsPerPageChange
+		//#endregion - Pagination Action Handlers.
+
+		return (
+			<div style={{
+				flex: "1",
+				display: "flex",
+				justifyContent: "flex-end",
+			}}>
+				<TablePagination
+					component='div'
+					count={state.rows.totalRowCount}
+					page={state.pagination.page}
+					onPageChange={(event, value) => handleOnPageChange(value)}
+					rowsPerPageOptions={rowsPerPageOptions}
+					rowsPerPage={rowsPerPage}
+					onRowsPerPageChange={(event, size) => handleOnRowsPerPageChange(size)}
+				/>
+			</div>
+		); // End return
+	}; // End PaginationComponent
 
 	const CustomFooter = () => {
+
+
 		//#region - Info for the Save Costs to History Log button:
 		// ⬇ Get today's date in YYYY-MM format;
 		const today = new Date().toISOString().slice(0, 7);
 		let disabled = true;
-		let tooltipText = <p>The current costs have not been saved yet for this month.  Please click the "Save Costs to History Log" button to save the current costs for this month first.</p>;
+		let tooltipText = <p>The current customs duties have not been saved yet for this month.  Please click the "Save Customs to History Log" button to save the current costs for this month first.</p>;
 		if (
-			productCostHistoryRecent.length > 0 &&
-			productCostHistoryRecent[0].date_saved.slice(0, 7) === today
+			customsDutiesHistoryRecent.length > 0 &&
+			customsDutiesHistoryRecent[0].date_saved.slice(0, 7) === today
 		) {
 			disabled = false;
 			tooltipText = "";
@@ -180,16 +249,16 @@ export default function AdminUpdateMaterials() {
 
 		const handleSaveHistoryLogSubmit = () => {
 			if (
-				productCostHistoryRecent.length > 0 &&
-				productCostHistoryRecent[0].date_saved.slice(0, 7) === today
+				customsDutiesHistoryRecent.length > 0 &&
+				customsDutiesHistoryRecent[0].date_saved.slice(0, 7) === today
 			) {
-				if (window.confirm(`Costs have already been saved for this month.  If you continue, two entries will be saved for this month.  Click "OK" to continue.`)) {
+				if (window.confirm(`Customs have already been saved for this month.  If you continue, two entries will be saved for this month.  Click "OK" to continue.`)) {
 					dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-					dispatch({ type: 'PRODUCT_COSTS_SAVE_HISTORY_LOG', payload: productsArray })
+					dispatch({ type: 'CUSTOMS_DUTIES_SAVE_HISTORY_LOG', payload: customsDuties })
 				}; // End if
 			} else {
 				dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-				dispatch({ type: 'PRODUCT_COSTS_SAVE_HISTORY_LOG', payload: productsArray })
+				dispatch({ type: 'CUSTOMS_DUTIES_SAVE_HISTORY_LOG', payload: customsDuties })
 			}; // End if
 		}; // End handleSaveHistoryLogSubmit
 		//#endregion - Info for the Save Costs to History Log button.
@@ -201,7 +270,7 @@ export default function AdminUpdateMaterials() {
 				size="small"
 				onClick={() => handleSaveHistoryLogSubmit()}
 			>
-				Save Costs to History Log
+				Save Customs to History Log
 			</Button>,
 			<Divider />,
 			<Tooltip title={tooltipText} placement="right-end" arrow>
@@ -212,7 +281,7 @@ export default function AdminUpdateMaterials() {
 						onClick={() => setShowEditModal(true)}
 						disabled={disabled}
 					>
-						Edit Product Costs
+						Edit Customs Duties
 					</Button>
 				</span>
 			</Tooltip>,
@@ -258,11 +327,7 @@ export default function AdminUpdateMaterials() {
 								return <Divider variant="middle" key={index} />
 							} else {
 								return (
-									<MenuItem
-										key={index}
-										disableGutters
-										onClick={() => setAnchorEl(null)}
-									>
+									<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
 										{item}
 									</MenuItem>
 								)
@@ -270,6 +335,7 @@ export default function AdminUpdateMaterials() {
 						})}
 					</Menu>
 				</>
+				{/* <CustomPagination /> */}
 			</div>
 		); // End return
 	}; // End CustomFooter
@@ -277,15 +343,20 @@ export default function AdminUpdateMaterials() {
 	//#endregion - Table Setup. 
 
 	//#region - Table Edit Modal: 
-	const CostsEditModal = () => {
+	const TableEditModal = () => {
+		// ⬇ Convert the customsDuties array to an object indexed by the custom_duty_id:
+		const editData = customsDuties.reduce((acc, curr) => {
+			acc[curr.custom_duty_id] = curr;
+			return acc;
+		}, {});
 
-		const editData = {};
-		const handleCostChange = (value, id) => {
+
+		const handleRowChange = (value, id, label) => {
 			editData[id] = {
-				product_id: id,
-				product_self_cost: parseFloat(value),
+				...editData[id],
+				[label]: parseFloat(value / 100).toFixed(4),
 			}; // End editData
-		}; // End handleCostChange
+		} // End handleRowChange
 
 		const handleSubmit = () => {
 			if (!editData || Object.keys(editData).length === 0) {
@@ -293,10 +364,9 @@ export default function AdminUpdateMaterials() {
 				return;
 			}; // End if
 			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-			dispatch({ type: 'UPDATE_PRODUCT_COSTS', payload: Object.values(editData) });
+			dispatch({ type: 'EDIT_CUSTOMS_DUTIES', payload: Object.values(editData) });
 			setShowEditModal(false);
 		}; // End handleSubmit
-
 
 		return (
 			<Modal
@@ -304,7 +374,6 @@ export default function AdminUpdateMaterials() {
 				aria-describedby="transition-modal-description"
 				// className={classes.modal}
 				open={showEditModal}
-				// onClose={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
 				onClose={() => setShowEditModal(false)}
 				closeAfterTransition
 				BackdropComponent={Backdrop}
@@ -340,14 +409,40 @@ export default function AdminUpdateMaterials() {
 								paddingBottom: '10px',
 							}}
 						>
-							Edit Product Self Cost
+							Customs Duties Percentages
 						</div>
 						<div style={{ marginBottom: '10px' }}>
-							{productsArray.map(cost => {
+							{/* Create a div of headers that float right and read "USA" and "CAN" */}
+							<div
+								style={{
+									display: 'flex',
+									justifyContent: 'flex-end',
+									alignItems: 'flex-end',
+								}}
+							>
+								<div
+									style={{
+										fontSize: "16px",
+										marginRight: "66px",
+									}}
+								>
+									USA
+								</div>
+								<div
+									style={{
+										fontSize: "16px",
+										marginRight: "23px",
+									}}
+								>
+									Canada
+								</div>
+							</div>
+							{/* ⬇ Map through the customsDuties array and create a div for each item in the array: */}
+							{customsDuties.map(cost => {
 								// ⬇ Create a Number Input for each item in the array, with the value set to the shipping_cost index:
 								return (
 									<div
-										key={cost.product_id}
+										key={cost.custom_duty_id}
 										style={{
 											display: 'flex',
 											justifyContent: 'flex-end',
@@ -359,20 +454,36 @@ export default function AdminUpdateMaterials() {
 												padding: "0.6rem",
 											}}
 										>
-											{cost.product_label}:
+											{cost.duty_label}:
 										</div>
 										<div
 											style={{
-												width: '97px',
+												width: '75px',
+												marginRight: "20px",
 											}}
 										>
 											<TextField
-												defaultValue={Number(cost.product_self_cost).toFixed(2)}
+												defaultValue={(cost.USA_percent) * 100}
 												type="number"
-												onChange={(event) => handleCostChange(event.target.value, cost.product_id)}
+												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'USA_percent')}
 												size="small"
 												InputProps={{
-													startAdornment: <InputAdornment position="start">$</InputAdornment>,
+													endAdornment: <InputAdornment position="end">%</InputAdornment>,
+												}}
+											/>
+										</div>
+										<div
+											style={{
+												width: '75px',
+											}}
+										>
+											<TextField
+												defaultValue={(cost.CAN_percent) * 100}
+												type="number"
+												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'CAN_percent')}
+												size="small"
+												InputProps={{
+													endAdornment: <InputAdornment position="end">%</InputAdornment>,
 												}}
 											/>
 										</div>
@@ -392,7 +503,6 @@ export default function AdminUpdateMaterials() {
 								<Button
 									variant="contained"
 									color="secondary"
-									// onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
 									onClick={() => setShowEditModal(false)}
 								>
 									Cancel
@@ -410,46 +520,33 @@ export default function AdminUpdateMaterials() {
 				</Fade>
 			</Modal>
 		); // End return
-	}; // End CostsEditModal
+	}; // End TableEditModal
 	//#endregion - Table Edit Modal.
 
 	// ⬇ Rendering below: 
 	return (
-		<div>
-			<AdminUpdates />
-			<div
-				style={{
-					display: 'flex',
-					justifyContent: 'center',
+		<Paper
+			elevation={3}
+			className={classes.customsGrid}
+		>
+			<DataGrid
+				className={classes.dataGridTables}
+				columns={columns}
+				rows={rows}
+				disableSelectionOnClick
+				getRowId={(row) => row.custom_duty_id}
+				autoHeight
+				pagination
+				// onSelectionModelChange={(id_array) => handleSelectionModelChange(id_array)}
+				components={{
+					Toolbar: CustomToolbar,
+					Footer: CustomFooter,
 				}}
-			>
-				<Paper
-					elevation={3}
-					className={classes.productsGrid}
-				// style={{ float: "left" }}
-				>
-					<DataGrid
-						className={classes.dataGridTables}
-						disableSelectionOnClick
-						columns={columns}
-						rows={rows}
-						getRowId={(row) => row.product_id}
-						autoHeight
-						pagination
-						components={{
-							Toolbar: CustomToolbar,
-							Footer: CustomFooter,
-						}}
-					/>
+			/>
 
-					<CostsEditModal />
+			<TableEditModal />
 
-				</Paper>
-
-				<AdminUpdateMarkup />
-
-			</div>
-		</div>
+		</Paper>
 	)
 }
 

@@ -111,7 +111,7 @@ export default function useCombineEstimateCalculations(estimate) {
     // estimate.design_cubic_meters_total = estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters;
 
     // calculate amounts and prices of materials that are measured in kgs and square meters, start with DC
-		// ! Ryan Here. Went to come patch the math machine for combined, found that Imperial DC Dosage of 67 is turned off, but Metric DC Dosage of 40 was not. I *think* it's an error that the dosage should be off for both, but am not sure. Test combining 2 or 3 metric estimates later and see what happens. 
+		// ! Went to come patch the math machine for combined, found that Imperial DC Dosage of 67 is turned off, but Metric DC Dosage of 40 was not. I *think* it's an error that the dosage should be off for both, but am not sure. Test combining 2 or 3 metric estimates later and see what happens. 
 		// ! More notes... it looks like none of the metric stuff was commented out the same as the imperial.  This could be bad. 
     // estimate.primx_dc_total_project_amount = estimate.design_cubic_meters_total * 40; // 40 is the factor provided by PrimX
     estimate.primx_dc_packages_needed = Math.ceil(estimate.primx_dc_total_project_amount / 1250); // dc comes in packages of 1250 kg, need to round up

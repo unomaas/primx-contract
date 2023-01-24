@@ -15,7 +15,6 @@ function* productsSaga() {
 	yield takeLatest('PRODUCT_COSTS_SAVE_HISTORY_LOG', saveProductCostHistoryLog);
 	yield takeLatest('UPDATE_PRODUCT_COSTS', updateProductCosts);
 
-
 	yield takeLatest('FETCH_MARKUP_MARGIN', fetchMarkupMargin);
 	yield takeLatest('FETCH_MARKUP_HISTORY_RECENT', fetchRecentMarkupHistory);
 	yield takeLatest('EDIT_MARKUP_MARGIN', editMarkupMargin);

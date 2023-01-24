@@ -1,0 +1,123 @@
+const express = require('express');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const pool = require('../modules/pool');
+const router = express.Router();
+const format = require('pg-format');
+
+// GET route - gets shipping costs
+router.get('/fetch-customs-duties', async (req, res) => {
+	try {
+		const sql = `
+			SELECT *
+			FROM "customs_duties" AS "cd"
+			ORDER BY "cd".custom_duty_id ASC;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in customs duties GET', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
+
+//PUT route - updates shipping costs
+router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
+	try {
+		let sql = `
+			UPDATE "customs_duties" AS cd 
+			SET 
+				"USA_percent" = v.USA_percent,
+				"CAN_percent" = v.CAN_percent
+			FROM (VALUES 
+		`; // End sql
+		// ⬇ Loop through the req.body array to build the query:
+		for (let cost of req.body) {
+			sql += format(
+				`(%L::int, %L::decimal, %L::decimal), `,
+				cost.custom_duty_id, cost.USA_percent, cost.CAN_percent
+			); // End format
+		}; // End for loop
+		// ⬇ Remove the last comma and space:
+		sql = sql.slice(0, -2);
+		// ⬇ Add the closing parentheses:
+		sql += `
+			) AS v(custom_duty_id, USA_percent, CAN_percent)
+			WHERE v.custom_duty_id = cd.custom_duty_id;
+		`; // End sql
+		// ⬇ Send the query to the database:
+		await pool.query(sql);
+		// ⬇ Send the response:
+		res.sendStatus(202);
+	} catch (error) {
+		console.error('Error with customs duties edit: ', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+//#endregion - Shipping Cost routes baove. 
+
+//#region - Shipping Cost History routes below:
+// GET route - gets shipping cost history
+router.get('/get-all-customs-duties-history', async (req, res) => {
+	try {
+		const sql = `
+			SELECT *
+			FROM "customs_duties_history" AS "cdh"
+			ORDER BY "cdh".shipping_cost_history_id ASC;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in customs dutie GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
+router.get('/get-recent-customs-duties-history', async (req, res) => {
+	try {
+		const sql = `
+			SELECT *
+			FROM "customs_duties_history" AS "cdh"
+			ORDER BY "cdh".custom_duty_history_id DESC
+			LIMIT 6;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in customs duties GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
+// ⬇ POST route - adds shipping cost history
+router.post('/submit-customs-duties-history', rejectUnauthenticated, async (req, res) => {
+	try {
+		// ⬇ Today's date in YYYY-MM-DD format: 
+		const today = new Date().toISOString().slice(0, 10);
+		let sql = `
+			INSERT INTO "customs_duties_history" (
+				"custom_duty_id", "USA_percent", "CAN_percent", "date_saved"
+			)
+			VALUES
+		`; // End sql
+		// ⬇ Loop through the req.body array to build the query:
+		for (let cost of req.body) {
+			sql += format(
+				`(%L::int, %L::decimal, %L::decimal, %L::date), `,
+				cost.custom_duty_id, cost.USA_percent, cost.CAN_percent, today
+			); // End format
+		}; // End for loop
+		// ⬇ Remove the last comma and space:
+		sql = sql.slice(0, -2);
+		sql += `;`;
+		// ⬇ Send the query to the database:
+		await pool.query(sql);
+		// ⬇ Send the response:
+		res.sendStatus(201);
+	} catch (error) {
+		console.error('Error in customs duties history POST route', error);
+		res.sendStatus(500);
+	}; // End try/catch
+}); // End POST route
+
+module.exports = router;
