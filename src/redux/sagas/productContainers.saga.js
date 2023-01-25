@@ -23,6 +23,7 @@ function* fetchProductContainers() {
 
 function* editProductContainers(action) {
 	try {
+		yield put({ type: 'SHOW_TOP_LOADING_DIV' });
 		yield axios.put(`/api/productcontainer/edit-product-container`, action.payload);
 		yield put({ type: 'FETCH_PRODUCT_CONTAINERS' });
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
