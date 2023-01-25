@@ -50,7 +50,7 @@ export default function UpdateShippingCostsGrid() {
 		{
 			field: 'destination_name',
 			headerName: 'Destination',
-			flex: 1,
+			flex: .75,
 			disableColumnMenu: true,
 			editable: false,
 			headerClassName: classes.header
@@ -67,7 +67,7 @@ export default function UpdateShippingCostsGrid() {
 			type: 'number',
 			// align: 'right',
 			headerName: 'Cost',
-			flex: .75,
+			flex: .5,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {

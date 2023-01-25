@@ -38,7 +38,11 @@ export default function AdminUpdates() {
 		{
 			text: 'Customs Duties',
 			url: '/AdminUpdateCustoms',
-		}
+		},
+		{
+			text: 'Product Containers',
+			url: '/ProductContainers',
+		},
 	];
 
 	menuItems.sort((a, b) => a.text.localeCompare(b.text));

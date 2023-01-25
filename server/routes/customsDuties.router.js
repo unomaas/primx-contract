@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 const format = require('pg-format');
 
-// GET route - gets shipping costs
+
 router.get('/fetch-customs-duties', async (req, res) => {
 	try {
 		const sql = `
@@ -21,7 +21,6 @@ router.get('/fetch-customs-duties', async (req, res) => {
 });
 
 
-//PUT route - updates shipping costs
 router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
 	try {
 		let sql = `

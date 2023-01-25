@@ -16,6 +16,7 @@ const placementTypesRouter = require('./routes/placementTypes.router');
 const productsRouter = require('./routes/products.router');
 const shippingCostsRouter = require('./routes/shippingCosts.router');
 const customsDutiesRouter = require('./routes/customsDuties.router');
+const productContainerRouter = require('./routes/productContainer.router');
 const shippingDestinationsRouter = require('./routes/shippingDestinations.router');
 const companiesRouter = require('./routes/companies.router');
 const userInfoRouter = require('./routes/userInfo.router');
@@ -45,6 +46,7 @@ app.use('/api/shippingdestinations', shippingDestinationsRouter);
 app.use('/api/companies', companiesRouter);
 app.use('/api/userinfo', userInfoRouter);
 app.use('/api/licenseePortal', licenseePortalRouter);
+app.use('/api/productContainer', productContainerRouter);
 
 // Serve static files
 app.use(express.static('build'));

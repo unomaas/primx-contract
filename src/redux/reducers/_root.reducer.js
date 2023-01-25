@@ -15,6 +15,7 @@ import combineEstimatesReducer from './combineEstimates.reducer';
 import backdropReducer from './backdrop.reducer';
 import licenseePortalReducer from './licenseePortal.reducer';
 import customsDuties from './customsDuties.reducer';
+import productContainers from './productContainers.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
 	licenseePortalReducer, // Handles the Licensee Portal data load. 
 	shippingDestinations, // Contains the shipping destinations for the Licensee Portal.
 	customsDuties, // Contains the customs duties for the admin portal
+	productContainers, // Contains the product containers for the admin portal
 });
 
 export default rootReducer;

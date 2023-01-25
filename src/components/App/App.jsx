@@ -29,6 +29,7 @@ import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
 import TopLoadingDiv from '../MuiBackdropManager/TopLoadingDiv';
 import AdminUpdateDestinations from '../../pages/AdminUpdates/ShippingDestinations/index.jsx'
 import AdminUpdateCustoms from '../../pages/AdminUpdates/CustomsDuties/index.jsx'
+import ProductContainers from '../../pages/AdminUpdates/ProductContainers/index.jsx';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -168,6 +169,10 @@ function App() {
 
 							<AdminRoute exact path="/LicenseeAccounts">
 								<LicenseeAccounts />
+							</AdminRoute>
+
+							<AdminRoute exact path="/ProductContainers">
+								<ProductContainers />
 							</AdminRoute>
 
 							{/* If logged in and user permissions is 1, that makes the super-admin and allows them to see this system admin page */}
