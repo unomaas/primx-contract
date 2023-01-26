@@ -26,15 +26,15 @@ export default function DosageRatesTable() {
 	// columns for Data Grid
 	const columns = [
 		{
-			field: 'product_name',
-			headerName: 'Product Name',
+			field: 'product_label',
+			headerName: 'Product',
 			flex: 2.5,
 			editable: false,
 			headerClassName: classes.header
 		},
 		{
 			field: 'lbs_y3',
-			headerName: 'Lbs Y³',
+			headerName: 'Lbs y³',
 			flex: 1,
 			headerClassName: classes.header,
 			disableColumnMenu: true,
@@ -42,7 +42,7 @@ export default function DosageRatesTable() {
 		},
 		{
 			field: 'kg_m3',
-			headerName: 'Kg M³',
+			headerName: 'Kg m³',
 			flex: 1,
 			headerClassName: classes.header,
 			disableColumnMenu: true,
@@ -87,7 +87,7 @@ export default function DosageRatesTable() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied dosage rates for each product.<br /><br />To save the current customs duties to the Pricing History Log for this month, click "Actions", then click "Save Customs To History Log".  You will be able to save the current customs multiple times, but please be aware this will create more than one entry in the Pricing History Log for this month.</p>}
+					title={<p>This table shows the currently applied dosage rates for each product.<br /><br />These dosage rates are used to calculate price per material needed for one yard or meter cubed of concrete.<br /><br />Please keep the unused fields blank or at 0 (for example, PrimX DC (lbs) should not have an entry for Kg m³).</p>}
 					placement="right-start"
 					arrow
 				>
@@ -262,17 +262,16 @@ export default function DosageRatesTable() {
 			// </Button>,
 			// <Divider />,
 			// <Tooltip title={tooltipText} placement="right-end" arrow>
-			// TODO: Keep going with updating this portal view and migrating the button to be the only one.;
-				<span>
-					<Button
-						color="primary"
-						size="small"
-						onClick={() => setShowEditModal(true)}
-						// disabled={disabled}
-					>
-						Edit Customs Duties
-					</Button>
-				</span>
+			<span>
+				<Button
+					color="primary"
+					size="small"
+					onClick={() => setShowEditModal(true)}
+				// disabled={disabled}
+				>
+					Edit Customs Duties
+				</Button>
+			</span>
 			// </Tooltip>,
 
 		]; // End menuItems
@@ -287,42 +286,13 @@ export default function DosageRatesTable() {
 			}}>
 				<>
 					<Button
-						aria-controls="customized-menu"
-						aria-haspopup="true"
 						color="primary"
 						size="small"
-						onClick={event => setAnchorEl(event.currentTarget)}
+						onClick={() => setShowEditModal(true)}
+					// disabled={disabled}
 					>
-						<ArrowDropUpIcon /> Actions
+						Edit Dosage Rates
 					</Button>
-					<Menu
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={() => setAnchorEl(null)}
-						elevation={3}
-						getContentAnchorEl={null}
-						anchorOrigin={{
-							vertical: 'top',
-							horizontal: 'left',
-						}}
-						transformOrigin={{
-							vertical: 'bottom',
-							horizontal: 'left',
-						}}
-					>
-						{menuItems.map((item, index) => {
-							if (item.type === Divider) {
-								return <Divider variant="middle" key={index} />
-							} else {
-								return (
-									<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
-										{item}
-									</MenuItem>
-								)
-							}
-						})}
-					</Menu>
 				</>
 				{/* <CustomPagination /> */}
 			</div>
@@ -333,22 +303,29 @@ export default function DosageRatesTable() {
 
 	//#region - Table Edit Modal: 
 	const TableEditModal = () => {
-		// ⬇ Convert the dosageRates array to an object indexed by the custom_duty_id:
+		// ⬇ Convert the dosageRates array to an object indexed by the dosage_rate_id:
 		const editData = dosageRates.reduce((acc, curr) => {
-			acc[curr.custom_duty_id] = curr;
+			acc[curr.dosage_rate_id] = curr;
 			return acc;
 		}, {});
 
+		const dataToCompare = dosageRates.reduce((acc, curr) => {
+			acc[curr.dosage_rate_id] = curr;
+			return acc;
+		}, {});
 
 		const handleRowChange = (value, id, label) => {
 			editData[id] = {
 				...editData[id],
-				[label]: parseFloat(value / 100).toFixed(4),
+				[label]: value,
 			}; // End editData
 		} // End handleRowChange
 
 		const handleSubmit = () => {
-			if (!editData || Object.keys(editData).length === 0) {
+			if (
+				JSON.stringify(editData) === JSON.stringify(dataToCompare) ||
+				Object.keys(editData).length === 0
+			) {
 				alert('Please make changes to submit first.');
 				return;
 			}; // End if
@@ -398,7 +375,7 @@ export default function DosageRatesTable() {
 								paddingBottom: '10px',
 							}}
 						>
-							Customs Duties Percentages
+							Dosage Rates
 						</div>
 						<div style={{ marginBottom: '10px' }}>
 							{/* Create a div of headers that float right and read "USA" and "CAN" */}
@@ -412,18 +389,18 @@ export default function DosageRatesTable() {
 								<div
 									style={{
 										fontSize: "16px",
-										marginRight: "66px",
+										marginRight: "52px",
 									}}
 								>
-									USA
+									Lbs y³
 								</div>
 								<div
 									style={{
 										fontSize: "16px",
-										marginRight: "23px",
+										marginRight: "29px",
 									}}
 								>
-									Canada
+									Kg m³
 								</div>
 							</div>
 							{/* ⬇ Map through the dosageRates array and create a div for each item in the array: */}
@@ -431,7 +408,7 @@ export default function DosageRatesTable() {
 								// ⬇ Create a Number Input for each item in the array, with the value set to the shipping_cost index:
 								return (
 									<div
-										key={cost.custom_duty_id}
+										key={cost.dosage_rate_id}
 										style={{
 											display: 'flex',
 											justifyContent: 'flex-end',
@@ -443,7 +420,7 @@ export default function DosageRatesTable() {
 												padding: "0.6rem",
 											}}
 										>
-											{cost.duty_label}:
+											{cost.product_label}:
 										</div>
 										<div
 											style={{
@@ -452,13 +429,10 @@ export default function DosageRatesTable() {
 											}}
 										>
 											<TextField
-												defaultValue={(cost.USA_percent) * 100}
+												defaultValue={cost.lbs_y3}
 												type="number"
-												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'USA_percent')}
+												onChange={(event) => handleRowChange(event.target.value, cost.dosage_rate_id, 'lbs_y3')}
 												size="small"
-												InputProps={{
-													endAdornment: <InputAdornment position="end">%</InputAdornment>,
-												}}
 											/>
 										</div>
 										<div
@@ -467,13 +441,10 @@ export default function DosageRatesTable() {
 											}}
 										>
 											<TextField
-												defaultValue={(cost.CAN_percent) * 100}
+												defaultValue={cost.kg_m3}
 												type="number"
-												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'CAN_percent')}
+												onChange={(event) => handleRowChange(event.target.value, cost.dosage_rate_id, 'kg_m3')}
 												size="small"
-												InputProps={{
-													endAdornment: <InputAdornment position="end">%</InputAdornment>,
-												}}
 											/>
 										</div>
 									</div>
@@ -523,7 +494,7 @@ export default function DosageRatesTable() {
 				columns={columns}
 				rows={rows}
 				disableSelectionOnClick
-				getRowId={(row) => row.custom_duty_id}
+				getRowId={(row) => row.dosage_rate_id}
 				autoHeight
 				pagination
 				// onSelectionModelChange={(id_array) => handleSelectionModelChange(id_array)}
