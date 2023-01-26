@@ -16,6 +16,9 @@ import combineEstimatesSaga from './combineEstimates.saga';
 import licenseePortalSaga from './licenseePortal.saga';
 import customsDutiesSaga from './customsDuties.saga';
 import productContainersSaga from './productContainers.saga';
+import dosageRatesSaga from './dosageRates.saga';
+
+
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -43,5 +46,6 @@ export default function* rootSaga() {
 		shippingDestinationsSaga(),
 		customsDutiesSaga(),
 		productContainersSaga(),
+		dosageRatesSaga(),
   ]);
 }

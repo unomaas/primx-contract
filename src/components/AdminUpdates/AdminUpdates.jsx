@@ -43,6 +43,10 @@ export default function AdminUpdates() {
 			text: 'Product Containers',
 			url: '/ProductContainers',
 		},
+		{
+			text: 'Dosage Rates',
+			url: '/DosageRates',
+		},
 	];
 
 	menuItems.sort((a, b) => a.text.localeCompare(b.text));
