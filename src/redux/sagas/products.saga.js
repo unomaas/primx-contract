@@ -15,7 +15,6 @@ function* productsSaga() {
 	yield takeLatest('PRODUCT_COSTS_SAVE_HISTORY_LOG', saveProductCostHistoryLog);
 	yield takeLatest('UPDATE_PRODUCT_COSTS', updateProductCosts);
 
-
 	yield takeLatest('FETCH_MARKUP_MARGIN', fetchMarkupMargin);
 	yield takeLatest('FETCH_MARKUP_HISTORY_RECENT', fetchRecentMarkupHistory);
 	yield takeLatest('EDIT_MARKUP_MARGIN', editMarkupMargin);
@@ -157,7 +156,6 @@ function* fetchRecentMarkupHistory() {
 function* editMarkupMargin(action) {
 	try {
 		// ⬇ Update the markup margin:
-		console.log(`Ryan Here editMarkupMargin \n action.payload`, action.payload);
 		yield axios.post(`/api/products/edit-markup-margin`, action.payload[0]);
 		// ⬇ Close the edit modal, hide the loading div, show the success message, and refresh the data:
 		yield put({ type: 'FETCH_MARKUP_MARGIN' });

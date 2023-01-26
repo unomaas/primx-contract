@@ -28,6 +28,10 @@ import LicenseePortal from '../LicenseePortal/LicenseePortal';
 import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
 import TopLoadingDiv from '../MuiBackdropManager/TopLoadingDiv';
 import AdminUpdateDestinations from '../../pages/AdminUpdates/ShippingDestinations/index.jsx'
+import AdminUpdateCustoms from '../../pages/AdminUpdates/CustomsDuties/index.jsx'
+import ProductContainers from '../../pages/AdminUpdates/ProductContainers/index.jsx';
+import DosageRates from '../../pages/AdminUpdates/DosageRates/index.jsx';
+
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
@@ -153,6 +157,10 @@ function App() {
 								<AdminUpdateDestinations />
 							</AdminRoute>
 
+							<AdminRoute exact path="/AdminUpdateCustoms" >
+								<AdminUpdateCustoms />
+							</AdminRoute>
+
 							<AdminRoute exact path="/AdminUpdateShipping" >
 								<AdminUpdateShipping />
 							</AdminRoute>
@@ -163,6 +171,14 @@ function App() {
 
 							<AdminRoute exact path="/LicenseeAccounts">
 								<LicenseeAccounts />
+							</AdminRoute>
+
+							<AdminRoute exact path="/ProductContainers">
+								<ProductContainers />
+							</AdminRoute>
+
+							<AdminRoute exact path="/DosageRates">
+								<DosageRates />
 							</AdminRoute>
 
 							{/* If logged in and user permissions is 1, that makes the super-admin and allows them to see this system admin page */}

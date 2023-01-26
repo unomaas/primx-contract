@@ -49,8 +49,18 @@ const useStyles = makeStyles({
     fontSize: '13px',
   },
 
+	productContainersGrid: {
+    width: 900,
+    margin: 'auto',
+  },
+
   shippingGrid: {
     width: 800,
+    margin: 'auto',
+  },
+
+	customsGrid: {
+    width: 485,
     margin: 'auto',
   },
 

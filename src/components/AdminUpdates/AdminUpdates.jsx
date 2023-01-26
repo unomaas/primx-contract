@@ -5,74 +5,84 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
 export default function AdminUpdates() {
-  // defines usehistory
-  const history = useHistory();
-  //holds value of selection to for page render conditionals
-  let [selectedPage, setSelectedPage] = useState("");
-  const user = useSelector((store) => store.user);
+	// defines usehistory
+	const history = useHistory();
+	//holds value of selection to for page render conditionals
+	const user = useSelector((store) => store.user);
 
-  //holds values for conditional render boolean
-  let [conditionalBool, setConditionalBool] = useState(false);
+	const menuItems = [
+		{
+			text: 'Licensees by Company',
+			url: '/AdminUpdateLicenses',
+		},
+		{
+			text: 'Floor & Placement Types',
+			url: '/AdminUpdateTypes',
+		},
+		{
+			text: 'Shipping Destinations',
+			url: '/AdminUpdateDestinations',
+		},
+		{
+			text: 'Shipping Costs by Destination',
+			url: '/AdminUpdateShipping',
+		},
+		{
+			text: 'Material Costs & Markup',
+			url: '/AdminUpdateMaterials',
+		},
+		{
+			text: 'Licensee Accounts',
+			url: '/LicenseeAccounts',
+		},
+		{
+			text: 'Customs Duties',
+			url: '/AdminUpdateCustoms',
+		},
+		{
+			text: 'Product Containers',
+			url: '/ProductContainers',
+		},
+		{
+			text: 'Dosage Rates',
+			url: '/DosageRates',
+		},
+	];
 
+	menuItems.sort((a, b) => a.text.localeCompare(b.text));
 
+	menuItems.unshift({
+		text: 'Please Select a Category Here',
+		url: '0',
+	});
 
-  //handles values of selected page change on event change
-  const handleSelectPage = (event) => {
-    setSelectedPage(event.target.value);
-  }
+	if (user?.permission_level === 1) {
+		menuItems.push({
+			text: 'System Admin',
+			url: '/SystemAdmin',
+		})
+	}
 
-  const renderComponent = () => {
-
-    if (selectedPage == 1) {
-      history.push('/AdminUpdateLicenses')
-    } else if (selectedPage == 2) {
-      history.push('/AdminUpdateTypes')
-    } else if (selectedPage == 3) {
-      history.push('/AdminUpdateShipping')
-    } else if (selectedPage == 4) {
-      history.push('/AdminUpdateMaterials')
-    } else if (selectedPage == 5) {
-      history.push('/LicenseeAccounts')
-    } else if (selectedPage == 6) {
-      history.push('/SystemAdmin')
-    } else if (selectedPage == 7) {
-      history.push('/AdminUpdateDestinations')
-    }
-  }
-
-  // fetches companies on page load for update licenses page
-  useEffect(() => {
-    renderComponent();
-  }, [selectedPage]);
-
-
-  return (
-    <div>
-      <h2>Administrator Update Fields</h2>
-      {/* drop down for page selection */}
-      {/* <FormControl>
-        <InputLabel> Select Page </InputLabel> */}
-      <Select
-        defaultValue={0}
-        // value={selectedPage}
-        onChange={handleSelectPage}
-      >
-        <MenuItem key={0} value={0}>Please Select a Category Here</MenuItem>
-        <MenuItem key={1} value={1}>Licensees by Company</MenuItem>
-        <MenuItem key={2} value={2}>Floor & Placement Types</MenuItem>
-        <MenuItem key={7} value={7}>Shipping Destinations</MenuItem>
-        <MenuItem key={3} value={3}>Shipping Costs by Destination</MenuItem>
-        <MenuItem key={4} value={4}>Material Costs & Markup</MenuItem>
-        <MenuItem key={5} value={5}>Manage Licensee Accounts</MenuItem>
-        {/* Conditional rendering to show system admin portal: */}
-        {user.permission_level == '1' && (
-          // If user is system admin (permission_level is 1):
-          <MenuItem key={6} value={6}>System Admin</MenuItem>
-        )}{/* End System Admin conditional rendering. */}
-      </Select>
-      <br />       <br />      <br />
-      {/* </FormControl> */}
-      {/* {conditionalBool ? conditionalRender : <></>} */}
-    </div>
-  )
+	return (
+		<div>
+			<h2>Administrator Update Fields</h2>
+			<Select
+				defaultValue={0}
+				onChange={event => {
+					if (event.target.value != 0) {
+						history.push(event.target.value)
+					}
+				}}
+			>
+				{menuItems.map((item, index) => {
+					return (
+						<MenuItem key={index} value={item.url}>
+							{item.text}
+						</MenuItem>
+					);
+				})}
+			</Select>
+			<br />       <br />      <br />
+		</div>
+	)
 }
