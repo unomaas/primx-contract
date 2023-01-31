@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper } from '@material-ui/core';
+import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper, TextField } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
 
@@ -18,9 +19,7 @@ export default function PricingLogTable() {
 
 	const pricingLog = useSelector(store => store.pricingLog);
 	const { viewState, dataState } = pricingLog;
-
-
-	console.log(`Ryan Here \n  viewState, dataState`, { viewState, dataState });
+	const [filter, setFilter] = useState({});
 
 
 	const pricingLogTableOptions = {
@@ -37,7 +36,7 @@ export default function PricingLogTable() {
 					flex: 1,
 					headerClassName: classes.header,
 					valueFormatter: (params) => {
-						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "short", day: "numeric" })}`;
+						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
 					},
 				},
 				{
@@ -81,7 +80,7 @@ export default function PricingLogTable() {
 					flex: 1,
 					headerClassName: classes.header,
 					valueFormatter: (params) => {
-						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "short", day: "numeric" })}`;
+						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
 					},
 				},
 				{
@@ -109,7 +108,7 @@ export default function PricingLogTable() {
 					flex: 1,
 					headerClassName: classes.header,
 					valueFormatter: (params) => {
-						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "short", day: "numeric" })}`;
+						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
 					},
 				},
 				{
@@ -146,7 +145,7 @@ export default function PricingLogTable() {
 					flex: 1,
 					headerClassName: classes.header,
 					valueFormatter: (params) => {
-						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "long", year: "numeric", month: "short", day: "numeric" })}`;
+						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
 					},
 				},
 				{
@@ -188,12 +187,9 @@ export default function PricingLogTable() {
 		},
 	}
 
-	const [selectedLog, setSelectedLog] = useState(pricingLogTableOptions.markup_margin);
+	const [selectedLog, setSelectedLog] = useState(pricingLogTableOptions.product_cost);
 
 
-	console.log(`Ryan Here: `, { selectedLog, values: Object.values(pricingLogTableOptions) },);
-	// const [showEditModal, setShowEditModal] = useState(false);
-	// const [selectedProduct, setSelectedProduct] = useState(null);
 
 	// const [selectedRow, setSelectedRow] = useState(null);
 	const rowsPerPageOptions = [10, 25, 50, 100];
@@ -204,7 +200,12 @@ export default function PricingLogTable() {
 	const columns = selectedLog.columns;
 
 
-	let rows = selectedLog.rows;
+	// let rows = selectedLog.rows;
+	let rows = [];
+	for (let row of selectedLog.rows) {
+		if (Object.values(filter).length > 0 && filter.value !== row.date_saved) continue;
+		rows.push(row);
+	}; // End for of loop
 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
@@ -237,6 +238,18 @@ export default function PricingLogTable() {
 			<Divider />,
 			<TableInstructions />,
 		]; // End menuItems
+
+		const handleFilter = (value) => {
+			setFilter(value)
+		}; // End handleFilter
+
+		let autocompleteOptions = {};
+		selectedLog.rows.forEach((row) => {
+			autocompleteOptions[row.date_saved] = {
+				value: row.date_saved,
+				label: `${new Date(row.date_saved).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`,
+			}
+		});
 
 		return (
 			<GridToolbarContainer >
@@ -297,7 +310,8 @@ export default function PricingLogTable() {
 					fontSize: "12px",
 					fontFamily: "Lexend Tera",
 				}}>
-					History Log
+					<GridToolbarSelectDropdown />
+
 				</div>
 
 				<div style={{
@@ -308,7 +322,21 @@ export default function PricingLogTable() {
 					fontFamily: "Lexend Tera",
 				}}>
 
-					<GridToolbarSelectDropdown />
+					<Autocomplete
+						options={Object.values(autocompleteOptions)}
+						getOptionLabel={(option) => option.label || ""}
+						getOptionSelected={(option, value) => option.label == value.label}
+						style={{ width: 190 }}
+						renderInput={(params) =>
+							<TextField
+								{...params}
+								label="Date Filter"
+								InputLabelProps={{ shrink: true }}
+							/>
+						}
+						onChange={(event, value) => handleFilter(value || {})}
+						value={Object.keys(filter).length > 0 ? filter : null}
+					/>
 
 				</div>
 			</GridToolbarContainer>
@@ -323,6 +351,7 @@ export default function PricingLogTable() {
 		const handleLogViewSelection = (key) => {
 			setAnchorEl(null);
 			setSelectedLog(pricingLogTableOptions[key]);
+			setFilter({});
 		}; // End handleLogViewSelection
 
 		// ⬇ Rendering below:
