@@ -65,7 +65,6 @@ export default function UpdateShippingCostsGrid() {
 		{
 			field: 'shipping_cost',
 			type: 'number',
-			// align: 'right',
 			headerName: 'Cost',
 			flex: .5,
 			disableColumnMenu: true,

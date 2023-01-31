@@ -17,7 +17,7 @@ import licenseePortalSaga from './licenseePortal.saga';
 import customsDutiesSaga from './customsDuties.saga';
 import productContainersSaga from './productContainers.saga';
 import dosageRatesSaga from './dosageRates.saga';
-
+import pricingLogSaga from './pricingLog.saga';
 
 
 // rootSaga is the primary saga.
@@ -47,5 +47,6 @@ export default function* rootSaga() {
 		customsDutiesSaga(),
 		productContainersSaga(),
 		dosageRatesSaga(),
+		pricingLogSaga(),
   ]);
 }

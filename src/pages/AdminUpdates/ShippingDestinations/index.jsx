@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import AdminUpdates from '../../../components/AdminUpdates/AdminUpdates';
 import ShippingDestinationTable from './ShippingDestinationTable';
 

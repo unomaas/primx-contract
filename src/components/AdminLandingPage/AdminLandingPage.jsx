@@ -53,6 +53,16 @@ function AdminLandingPage() {
         Go
       </Button>
 
+			<h3>View Pricing Log</h3>
+      <Button
+        onClick={() => { history.push('./PricingLog') }}
+        variant="contained"
+        color="primary"
+        className={classes.LexendTeraFont11}
+      >
+        Go
+      </Button>
+
     </div>
   );
 }

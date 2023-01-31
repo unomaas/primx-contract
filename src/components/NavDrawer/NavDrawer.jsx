@@ -17,7 +17,7 @@ import StorageIcon from '@material-ui/icons/Storage'
 import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import SaveIcon from '@material-ui/icons/Save';
-
+import HistoryIcon from '@material-ui/icons/History';
 //#endregion ⬆⬆ Document setup above. 
 
 
@@ -100,6 +100,11 @@ export default function NavDrawer() {
 									<ListItem button onClick={() => history.push(`/adminupdates`)}>
 										<UpdateIcon /> &nbsp;
 										<p>Update Items</p>
+									</ListItem>
+
+									<ListItem button onClick={() => history.push(`/pricinglog`)}>
+										<HistoryIcon /> &nbsp;
+										<p>Monthly Pricing Log</p>
 									</ListItem>
 								</>
 							} {/* End Admin conditional rendering. */}
