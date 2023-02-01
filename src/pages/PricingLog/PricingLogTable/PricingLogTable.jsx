@@ -9,9 +9,7 @@ import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
 
-// TODO: When you come back, start working on a date/month filter autocomplete option. 
 
-// component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function PricingLogTable() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
@@ -330,7 +328,7 @@ export default function PricingLogTable() {
 						renderInput={(params) =>
 							<TextField
 								{...params}
-								label="Date Filter"
+								label="Date Saved Filter"
 								InputLabelProps={{ shrink: true }}
 							/>
 						}

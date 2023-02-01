@@ -22,7 +22,7 @@ export default function EstimateCreate() {
 	const classes = useStyles();
 	const today = new Date().toISOString().substring(0, 10);
 	const companies = useSelector(store => store.companies);
-	const shippingCosts = useSelector(store => store.shippingCosts);
+	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
 	const floorTypes = useSelector(store => store.floorTypes);
 	const placementTypes = useSelector(store => store.placementTypes);
 	const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
@@ -496,8 +496,8 @@ export default function EstimateCreate() {
 												align="right">
 												<Button
 													type="submit"
-													// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-													// onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+													// !⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+													onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
 													variant="contained"
 													className={classes.LexendTeraFont11}
 													color="primary"
