@@ -18,6 +18,23 @@ function* fetchActiveShippingDestinations() {
 		//GET all shipping costs
 		const shippingDestinations = yield axios.get('/api/shippingDestinations/active');
 
+		// ⬇ Sort shippingDestinations.data by destination_country descending then destination name ascending:
+		shippingDestinations.data.sort((a, b) => {
+			if (a.destination_country < b.destination_country) {
+				return 1;
+			} else if (a.destination_country > b.destination_country) {
+				return -1;
+			} else {
+				if (a.destination_name < b.destination_name) {
+					return -1;
+				} else if (a.destination_name > b.destination_name) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		});
+
 		//send results to shippingCosts reducer
 		yield put({
 			type: 'SET_ACTIVE_SHIPPING_DESTINATIONS',
@@ -33,6 +50,23 @@ function* fetchAllShippingDestinations() {
 	try {
 		//GET all shipping costs
 		const shippingDestinations = yield axios.get('/api/shippingDestinations/all');
+
+		// ⬇ Sort shippingDestinations.data by destination_country descending then destination name ascending:
+		shippingDestinations.data.sort((a, b) => {
+			if (a.destination_country < b.destination_country) {
+				return 1;
+			} else if (a.destination_country > b.destination_country) {
+				return -1;
+			} else {
+				if (a.destination_name < b.destination_name) {
+					return -1;
+				} else if (a.destination_name > b.destination_name) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		});
 
 		//send results to shippingCosts reducer
 		yield put({ type: 'SET_ALL_SHIPPING_DESTINATIONS', payload: shippingDestinations.data });

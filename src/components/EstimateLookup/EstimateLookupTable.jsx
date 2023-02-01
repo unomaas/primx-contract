@@ -59,9 +59,10 @@ export default function EstimateLookupTable() {
 			//   window.print();
 			// }); // End swal
 			dispatch({
+				// TODO: Test this works.
 				type: 'MARK_ESTIMATE_ORDERED',
 				payload: {
-					id: searchResult.id,
+					id: searchResult.estimate_id,
 					po_number: poNumber,
 					licensee_id: searchResult.licensee_id,
 					estimate_number: searchResult.estimate_number
@@ -142,14 +143,14 @@ export default function EstimateLookupTable() {
 									<TableRow hover={true}>
 										<TableCell><b>Floor Type:</b></TableCell>
 										<TableCell>
-											{searchResult?.floor_type}
+											{searchResult?.floor_type_label}
 										</TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Placement Type:</b></TableCell>
 										<TableCell>
-											{searchResult?.placement_type}
+											{searchResult?.placement_type_label}
 										</TableCell>
 									</TableRow>
 
@@ -191,7 +192,7 @@ export default function EstimateLookupTable() {
 									<TableRow hover={true}>
 										<TableCell><b>Shipping State/Province:</b></TableCell>
 										<TableCell>
-											{searchResult?.ship_to_state_province}
+											{searchResult?.destination_name}
 										</TableCell>
 									</TableRow>
 

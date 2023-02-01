@@ -9,7 +9,7 @@ function* fetchFieldSelect() {
     // fetch the product pricing object
     yield put({type: 'FETCH_PRODUCTS_OBJECT'});
     // fetch the shipping costs for each ship-to state or province
-    yield put({type: 'FETCH_SHIPPING_COSTS'});
+    yield put({type: 'FETCH_ACTIVE_SHIPPING_DESTINATIONS'});
     // fetch the floor types for the estimate create Select menu
     yield put({type: 'FETCH_FLOOR_TYPES'});
 

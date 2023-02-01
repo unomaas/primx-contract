@@ -96,7 +96,7 @@ function* recalculateEstimate(action) {
 
     // Loop through shippingCosts, find the matching id, and update the shipping costs of the current estimate with the current shipping costs
     shippingCosts.data.forEach(shippingState => {
-      if (shippingState.id == currentEstimate.shipping_costs_id) {
+      if (shippingState.shipping_costs_id == currentEstimate.shipping_costs_id) {
         Object.assign(currentEstimate, {
           primx_dc_shipping_estimate: shippingState.dc_price,
           primx_flow_shipping_estimate: shippingState.flow_cpea_price,

@@ -165,14 +165,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<TableRow hover={true}>
 										<TableCell><b>Floor Type:</b></TableCell>
 										<TableCell>
-											{firstEstimate?.floor_type}
+											{firstEstimate?.floor_type_label}
 										</TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Placement Type:</b></TableCell>
 										<TableCell>
-											{firstEstimate?.placement_type}
+											{firstEstimate?.placement_type_label}
 										</TableCell>
 									</TableRow>
 
@@ -214,7 +214,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<TableRow hover={true}>
 										<TableCell><b>Shipping State/Province:</b></TableCell>
 										<TableCell>
-											{firstEstimate?.ship_to_state_province}
+											{firstEstimate?.destination_name}
 										</TableCell>
 									</TableRow>
 

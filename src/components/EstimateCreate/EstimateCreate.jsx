@@ -22,7 +22,7 @@ export default function EstimateCreate() {
 	const classes = useStyles();
 	const today = new Date().toISOString().substring(0, 10);
 	const companies = useSelector(store => store.companies);
-	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
+	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
 	const floorTypes = useSelector(store => store.floorTypes);
 	const placementTypes = useSelector(store => store.placementTypes);
 	const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
@@ -90,8 +90,8 @@ export default function EstimateCreate() {
 			payload: { key: 'shipping_costs_id', value: id }
 		});
 		// ⬇ Add in state shipping costs based off of state id in object:
-		shippingCosts.forEach(shippingState => {
-			if (shippingState.id == id) {
+		shippingDestinations.forEach(shippingState => {
+			if (shippingState.destination_id == id) {
 				// ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
 				for (let keyName in shippingState) {
 					// Ignore the id key for the shipping state, otherwise the edit view will break by changing the estimate id that's being edited
@@ -107,7 +107,7 @@ export default function EstimateCreate() {
 					}
 				}; // End for loop.
 			} // End if statement
-		}) // end shippingCosts forEach
+		}) // end shippingDestinations forEach
 		// If user is in the edit view, recalculate estimate values with new shipping data:
 		if (editState) {
 			dispatch({
@@ -303,7 +303,7 @@ export default function EstimateCreate() {
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{floorTypes.map(types => {
-														return (<MenuItem key={types.id} value={types.id}>{types.floor_type}</MenuItem>)
+														return (<MenuItem key={types.floor_type_id} value={types.floor_type_id}>{types.floor_type_label}</MenuItem>)
 													})}
 												</Select>
 											</TableCell>
@@ -321,7 +321,7 @@ export default function EstimateCreate() {
 												>
 													<MenuItem value="0">Please Select</MenuItem>
 													{placementTypes.map(placementTypes => {
-														return (<MenuItem key={placementTypes.id} value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
+														return (<MenuItem key={placementTypes.placement_type_id} value={placementTypes.placement_type_id}>{placementTypes.placement_type_label}</MenuItem>)
 													})}
 												</Select>
 											</TableCell>
@@ -439,11 +439,11 @@ export default function EstimateCreate() {
 													required
 													size="small"
 													fullWidth
-													value={estimateData.shipping_costs_id}
+													value={estimateData.destination_id}
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
-													{shippingCosts.map(state => {
-														return (<MenuItem key={state.id} value={state.id}>{state.ship_to_state_province}</MenuItem>)
+													{shippingDestinations.map(state => {
+														return (<MenuItem key={state.destination_id} value={state.destination_id}>{state.destination_name}, {state.destination_country}</MenuItem>)
 													})}
 												</Select>
 											</TableCell>
@@ -463,6 +463,7 @@ export default function EstimateCreate() {
 											</TableCell>
 										</TableRow>
 
+										{/* //! Ryan Here, I think this can be removed.  Don't do it until everything else has been tested to be working though.  */}
 										<TableRow hover={true}>
 											<TableCell><b>Shipping Country:</b></TableCell>
 											<TableCell>

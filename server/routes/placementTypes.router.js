@@ -20,9 +20,9 @@ router.get('/', (req, res) => {
 //Post Route - adds placement type to DB
 router.post('/', rejectUnauthenticated, (req, res) => {
   // query text to add a new placement type to the table
-  queryText = `INSERT INTO "placement_types" ("placement_type")
+  queryText = `INSERT INTO "placement_types" ("placement_type_label")
             VALUES ($1);`;
-    pool.query(queryText, [req.body.placement_type])
+    pool.query(queryText, [req.body.placement_type_label])
     .then(result => {
       res.sendStatus(201)
     })

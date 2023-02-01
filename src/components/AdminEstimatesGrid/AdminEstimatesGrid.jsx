@@ -184,7 +184,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 		{ field: 'date_created', headerClassName: classes.header, headerName: 'Date Created', width: 175 },
 		{ field: 'ship_to_address', headerClassName: classes.header, headerName: 'Ship To Address', width: 175, editable: true },
 		{ field: 'ship_to_city', headerClassName: classes.header, headerName: 'Ship To City', width: 175, editable: true },
-		{ field: 'ship_to_state_province', headerClassName: classes.header, headerName: 'State/Province', width: 175 },
+		{ field: 'destination_name', headerClassName: classes.header, headerName: 'State/Province', width: 175 },
 		{ field: 'zip_postal_code', headerClassName: classes.header, headerName: 'Zip/Postal Code', width: 175, editable: true },
 		{ field: 'country', headerClassName: classes.header, headerName: 'Country', width: 175, editable: true },
 		{ field: 'anticipated_first_pour_date', headerClassName: classes.header, headerName: 'Anticipated First Pour', width: 175, editable: true }, // Need edit validation?
@@ -196,8 +196,8 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
 		// ⬇ Technical job details input by licensee
 		{ field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
-		{ field: 'floor_type', headerClassName: classes.header, headerName: 'Floor Type', width: 175 }, // Editable + validation?
-		{ field: 'placement_type', headerClassName: classes.header, headerName: 'Placement Type', width: 175 }, // Editable + validation?
+		{ field: 'floor_type_label', headerClassName: classes.header, headerName: 'Floor Type', width: 175 }, // Editable + validation?
+		{ field: 'placement_type_label', headerClassName: classes.header, headerName: 'Placement Type', width: 175 }, // Editable + validation?
 		{ field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175, editable: true }, // Editable + validation?
 		{ field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175, editable: true }, // Editable + validation?
 		{ field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175, editable: true }, // Editable + validation?
