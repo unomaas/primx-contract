@@ -84,30 +84,36 @@ export default function EstimateCreate() {
 	 * Change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
 	 */
 	const handleShipping = (id) => {
+
+		console.log(`Ryan Here handleShipping \n id`, { id });
+
 		// ⬇ Sends the keys/values to the estimate reducer object: 
 		dispatch({
 			type: 'SET_ESTIMATE',
 			payload: { key: 'shipping_costs_id', value: id }
 		});
-		// ⬇ Add in state shipping costs based off of state id in object:
-		shippingDestinations.forEach(shippingState => {
-			if (shippingState.destination_id == id) {
-				// ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
-				for (let keyName in shippingState) {
-					// Ignore the id key for the shipping state, otherwise the edit view will break by changing the estimate id that's being edited
-					// to the id of the shipping state
-					if (keyName != 'id') {
-						dispatch({
-							type: 'SET_ESTIMATE',
-							payload: {
-								key: keyName,
-								value: shippingState[keyName]
-							} // End payload.
-						}) // End dispatch.
-					}
-				}; // End for loop.
-			} // End if statement
-		}) // end shippingDestinations forEach
+		// // ⬇ Add in state shipping costs based off of state id in object:
+		// shippingDestinations.forEach(shippingState => {
+		// 	if (shippingState.destination_id == id) {
+		// 		// ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
+		// 		for (let keyName in shippingState) {
+
+		// 			console.log(`Ryan Here \n keyName `, {keyName});
+
+		// 			// Ignore the id key for the shipping state, otherwise the edit view will break by changing the estimate id that's being edited
+		// 			// to the id of the shipping state
+		// 			if (keyName != 'id') {
+		// 				dispatch({
+		// 					type: 'SET_ESTIMATE',
+		// 					payload: {
+		// 						key: keyName,
+		// 						value: shippingState[keyName]
+		// 					} // End payload.
+		// 				}) // End dispatch.
+		// 			}
+		// 		}; // End for loop.
+		// 	} // End if statement
+		// }) // end shippingDestinations forEach
 		// If user is in the edit view, recalculate estimate values with new shipping data:
 		if (editState) {
 			dispatch({

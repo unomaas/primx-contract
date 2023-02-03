@@ -11,10 +11,13 @@ router.get('/', async (req, res) => {
 		const sql = `
 			SELECT 
 				"sc".shipping_cost_id,
+				"p".product_id,
 				"p".product_label,
 				"c".container_length_ft, 
+				"sd".destination_id,
 				"sd".destination_name,
 				"c".container_destination,
+				"pc".product_container_id,
 				"sc".shipping_cost
 			FROM "shipping_costs" AS "sc"
 			JOIN "shipping_destinations" AS "sd"
