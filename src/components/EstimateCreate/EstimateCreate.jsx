@@ -36,7 +36,9 @@ export default function EstimateCreate() {
 	useEffect(() => {
 		dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
 			// Fetches and set all fields for dropdown menus
-			dispatch({ type: 'FETCH_FIELD_SELECT' })
+			dispatch({ type: 'FETCH_FIELD_SELECT' }),
+			dispatch({ type: 'FETCH_ALL_FOR_CALCULATE' })
+
 	}, []);
 	//#endregion ⬆⬆ All state variables above. 
 
@@ -84,13 +86,10 @@ export default function EstimateCreate() {
 	 * Change handler for the Shipping State/Province dropdown: gets passed the id of the ship to state
 	 */
 	const handleShipping = (id) => {
-
-		console.log(`Ryan Here handleShipping \n id`, { id });
-
 		// ⬇ Sends the keys/values to the estimate reducer object: 
 		dispatch({
 			type: 'SET_ESTIMATE',
-			payload: { key: 'shipping_costs_id', value: id }
+			payload: { key: 'destination_id', value: id }
 		});
 		// // ⬇ Add in state shipping costs based off of state id in object:
 		// shippingDestinations.forEach(shippingState => {
@@ -441,7 +440,7 @@ export default function EstimateCreate() {
 											<TableCell><b>Shipping State/Province:</b></TableCell>
 											<TableCell>
 												<Select
-													onChange={event => handleShipping(event.target.value)}
+													onChange={event => handleChange('destination_id', event.target.value)}
 													required
 													size="small"
 													fullWidth

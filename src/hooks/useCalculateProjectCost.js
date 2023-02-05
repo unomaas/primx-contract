@@ -3,28 +3,20 @@ import useArrayToObjectConverter from "./useArrayToObjectConverter.js";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { parse } from "pg-protocol";
+import { Alert } from "@material-ui/lab";
 
 export default function useCalculateProjectCost(options) {
 
-
-	// const {
-	// 	estimate,
-	// 	products,
-	// 	shippingDestinations,
-	// 	currentMarkup,
-	// 	shippingCosts,
-	// 	productContainers,
-	// 	dosageRates,
-	// 	customsDuties,
-	// } = options;
-
-	const products = useSelector(store => store.products.productsArray);
-	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
-	const currentMarkup = useSelector(store => store.products.currentMarkupMargin);
-	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
-	const productContainers = useSelector(store => store.productContainers.productContainersArray);
-	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
-	const customsDuties = useSelector(store => store.customsDuties.customsDutiesArray);
+	const {
+		estimate,
+		products,
+		shippingDestinations,
+		currentMarkup,
+		shippingCosts,
+		productContainers,
+		dosageRates,
+		customsDuties,
+	} = options;
 
 	if (
 		products.length === 0 ||
@@ -34,18 +26,10 @@ export default function useCalculateProjectCost(options) {
 		productContainers.length === 0 ||
 		dosageRates.length === 0 ||
 		customsDuties.length === 0
-	) return;
-
-	const estimate = {
-		"estimate_id": 1,
-		"project_name": "Test Project",
-		"destination_id": 4,
-		"destination_name": "California",
-		"destination_country": "USA",
-		"measurement_units": "imperial",
-		// !This won't work because I hard-coded california into the estimate data.  If I want to test with a metric one, I have to remake a new fake estimate data thing.
-		// "measurement_units": "metric",
-	}
+	) {
+		alert('Error in the useCalculateProjectCost hook. One of the required arrays is empty.');
+		return;
+	}; // End if
 
 
 	//#region Step 1 - Determining the data we're using: 
@@ -235,9 +219,7 @@ export default function useCalculateProjectCost(options) {
 
 	//#region Step 9 - Calculate total project cost:
 	// ⬇ Calculate the total project cost:
-	// const totalProjectCost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate[0].project_size);
-	// const totalProjectCost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate[0].project_size);
-	if( estimate.measurement_units == "imperial") {
+	if (estimate.measurement_units == "imperial") {
 		estimate.totalProjectCost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
 		estimate.totalProjectCost_90_60 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
 	} else if (estimate.measurement_units == "metric") {
@@ -246,97 +228,97 @@ export default function useCalculateProjectCost(options) {
 	}; // End if/else
 	//#endregion - Step 9.
 
-	// TODO: When you come back, link this up with the current estimate and then get it working on the Create Estimate page. 
 
+	// TODO: Erase this when done. 
+	// console.log(`End of useCalculateSingleEstimate \n \n `,
+	// 	'Static Data: ',
+	// 	{
+	// 		estimate,
+	// 		Arrays: {
+	// 			shippingDestinations,
+	// 			shippingCosts,
+	// 			products,
+	// 			productContainers,
+	// 			dosageRates,
+	// 			customsDuties,
+	// 			currentMarkup,
+	// 		},
+	// 	},
 
-	console.log(`End of useCalculateSingleEstimate \n \n `,
-		'Static Data: ',
-		{
-			estimate,
-			Arrays: {
-				shippingDestinations,
-				shippingCosts,
-				products,
-				productContainers,
-				dosageRates,
-				customsDuties,
-				currentMarkup,
-			},
-		},
+	// 	'\n \n Calculated Data: ',
+	// 	{
+	// 		"selected Transportation Cost Info": {
+	// 			primxDc20ftCostInfo,
+	// 			primxDc20ftContainerInfo,
+	// 			primxDc40ftCostInfo,
+	// 			primxDc40ftContainerInfo,
+	// 			primxSteelFiber20ftCostInfo,
+	// 			primxSteelFiber20ftContainerInfo,
+	// 			primxSteelFiber40ftCostInfo,
+	// 			primxSteelFiber40ftContainerInfo,
+	// 			primxFlow20ftCostInfo,
+	// 			primxFlow20ftContainerInfo,
+	// 			primxFlow40ftCostInfo,
+	// 			primxFlow40ftContainerInfo,
+	// 			primxCpea20ftCostInfo,
+	// 			primxCpea20ftContainerInfo,
+	// 			primxCpea40ftCostInfo,
+	// 			primxCpea40ftContainerInfo,
+	// 		},
 
-		'\n \n Calculated Data: ',
-		{
-			"selected Transportation Cost Info": {
-				primxDc20ftCostInfo,
-				primxDc20ftContainerInfo,
-				primxDc40ftCostInfo,
-				primxDc40ftContainerInfo,
-				primxSteelFiber20ftCostInfo,
-				primxSteelFiber20ftContainerInfo,
-				primxSteelFiber40ftCostInfo,
-				primxSteelFiber40ftContainerInfo,
-				primxFlow20ftCostInfo,
-				primxFlow20ftContainerInfo,
-				primxFlow40ftCostInfo,
-				primxFlow40ftContainerInfo,
-				primxCpea20ftCostInfo,
-				primxCpea20ftContainerInfo,
-				primxCpea40ftCostInfo,
-				primxCpea40ftContainerInfo,
-			},
+	// 		'Calculated Transportation Price Info: ': {
+	// 			primxDc20ftTransportationCostPerLb,
+	// 			primxDc40ftTransportationCostPerLb,
+	// 			primxSteelFiber20ftTransportationCostPerLb,
+	// 			primxSteelFiber40ftTransportationCostPerLb,
+	// 			primxFlow20ftTransportationCostPerLb,
+	// 			primxFlow40ftTransportationCostPerLb,
+	// 			primxCpea20ftTransportationCostPerLb,
+	// 			primxCpea40ftTransportationCostPerLb,
 
-			'Calculated Transportation Price Info: ': {
-				primxDc20ftTransportationCostPerLb,
-				primxDc40ftTransportationCostPerLb,
-				primxSteelFiber20ftTransportationCostPerLb,
-				primxSteelFiber40ftTransportationCostPerLb,
-				primxFlow20ftTransportationCostPerLb,
-				primxFlow40ftTransportationCostPerLb,
-				primxCpea20ftTransportationCostPerLb,
-				primxCpea40ftTransportationCostPerLb,
+	// 		},
 
-			},
+	// 		'Cheapest Transportation Container Info: ': {
+	// 			cheapestPrimXDcTransportationCostPerLb,
+	// 			cheapestPrimxSteelFiberTransportationCostPerLb,
+	// 			cheapestPrimxFlowTransportationCostPerLb,
+	// 			cheapestPrimxCpeaTransportationCostPerLb,
+	// 		},
 
-			'Cheapest Transportation Container Info: ': {
-				cheapestPrimXDcTransportationCostPerLb,
-				cheapestPrimxSteelFiberTransportationCostPerLb,
-				cheapestPrimxFlowTransportationCostPerLb,
-				cheapestPrimxCpeaTransportationCostPerLb,
-			},
+	// 		'Product Info': {
+	// 			primxDcProductInfo,
+	// 			primxSteelFiberProductInfo,
+	// 			primxFlowProductInfo,
+	// 			primxCpeaProductInfo,
+	// 			primxUltraCureProductInfo,
+	// 		},
 
-			'Product Info': {
-				primxDcProductInfo,
-				primxSteelFiberProductInfo,
-				primxFlowProductInfo,
-				primxCpeaProductInfo,
-				primxUltraCureProductInfo,
-			},
+	// 		'Dosage Rates: ': {
+	// 			primxDcDosageRateInfo,
+	// 			primxSteelFiberDosageRateInfo_75_50,
+	// 			primxSteelFiberDosageRateInfo_90_60,
+	// 			primxFlowDosageRateInfo,
+	// 			primxCpeaDosageRateInfo,
+	// 		},
 
-			'Dosage Rates: ': {
-				primxDcDosageRateInfo,
-				primxSteelFiberDosageRateInfo_75_50,
-				primxSteelFiberDosageRateInfo_90_60,
-				primxFlowDosageRateInfo,
-				primxCpeaDosageRateInfo,
-			},
+	// 		'Calculated Transportation Price + Material Price Info: ': {
+	// 			primxDcTransportationCostPlusMaterialCostPerUnit,
+	// 			primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
+	// 			primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
+	// 			primxFlowTransportationCostPlusMaterialCostPerUnit,
+	// 			primxCpeaTransportationCostPlusMaterialCostPerUnit,
+	// 		},
 
-			'Calculated Transportation Price + Material Price Info: ': {
-				primxDcTransportationCostPlusMaterialCostPerUnit,
-				primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
-				primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
-				primxFlowTransportationCostPlusMaterialCostPerUnit,
-				primxCpeaTransportationCostPlusMaterialCostPerUnit,
-			},
+	// 		'*** Self Cost Calculated: ': {
+	// 			dollarSelfCostPerUnit_75_50,
+	// 			dollarSelfCostPerUnit_90_60,
+	// 			dollarSalesCostPerUnit_75_50,
+	// 			dollarSalesCostPerUnit_90_60,
+	// 		},
 
-			'*** Self Cost Calculated: ': {
-				dollarSelfCostPerUnit_75_50,	
-				dollarSelfCostPerUnit_90_60,
-				dollarSalesCostPerUnit_75_50,
-				dollarSalesCostPerUnit_90_60,
-			},
-
-		},
-		'\n \n'
-	); // End of console.log
+	// 	},
+	// 	'\n \n'
+	// ); // End of console.log
+	
 	return estimate;
 } // End of useCalculateSingleEstimate

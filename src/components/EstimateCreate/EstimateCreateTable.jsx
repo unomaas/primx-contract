@@ -23,6 +23,14 @@ export default function EstimateCreateTable() {
 	const [saveButton, setSaveButton] = useState(false);
 	const editState = useSelector(store => store.estimatesReducer.editState);
 	const [tableSize, setTableSize] = useState(4);
+
+	const products = useSelector(store => store.products.productsArray);
+	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
+	const currentMarkup = useSelector(store => store.products.currentMarkupMargin);
+	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
+	const productContainers = useSelector(store => store.productContainers.productContainersArray);
+	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
+	const customsDuties = useSelector(store => store.customsDuties.customsDutiesArray);
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
 		if (
@@ -36,7 +44,16 @@ export default function EstimateCreateTable() {
 		) {
 			dispatch({
 				type: 'HANDLE_CALCULATED_ESTIMATE',
-				payload: estimateData
+				payload: {
+					estimate: estimateData,
+					products: products,
+					shippingDestinations: shippingDestinations,
+					currentMarkup: currentMarkup,
+					shippingCosts: shippingCosts,
+					productContainers: productContainers,
+					dosageRates: dosageRates,
+					customsDuties: customsDuties,
+				}
 			});
 			setSaveButton(true);
 		} else if (
@@ -120,9 +137,9 @@ export default function EstimateCreateTable() {
 	 */
 	useEffect(() => {
 		if (estimateData.materials_on_hand) {
-			setTableSize(3);
-		} else if (!estimateData.materials_on_hand) {
 			setTableSize(4);
+		} else if (!estimateData.materials_on_hand) {
+			setTableSize(6);
 		} // End if/else
 	}, [estimateData.materials_on_hand]);
 	//#endregion ⬆⬆ Event handles above. 
@@ -281,185 +298,6 @@ export default function EstimateCreateTable() {
 						</Paper>
 					</Grid>
 
-					{/* Input Table #2: Materials Required */}
-					<Grid item xs={tableSize}>
-						<Paper elevation={3}>
-							<TableContainer>
-								<Table size="small">
-
-									<TableHead>
-										<TableRow>
-											<TableCell align="center" colSpan={2}>
-												<h3>Materials Required Inputs</h3>
-											</TableCell>
-										</TableRow>
-									</TableHead>
-
-									{estimateData.measurement_units == "imperial" ?
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell>
-													<b>PrīmX Flow @ Dosage Rate per yd³:</b>
-												</TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
-														required
-														type="number"
-														size="small"
-														InputProps={{
-															endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
-														}}
-														fullWidth
-														value={estimateData.primx_flow_dosage_liters}
-														onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
-													/>
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell>
-													<b>PrīmX Steel Fibers @ Dosage Rate per yd³:</b>
-												</TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('primx_steel_fibers_dosage_lbs', event.target.value)}
-														required
-														type="number"
-														size="small"
-														InputProps={{
-															endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
-														}}
-														fullWidth
-														value={estimateData.primx_steel_fibers_dosage_lbs}
-														onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_LBS' })}
-													/>
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell>
-													<b>PrīmX CPEA @ Dosage Rate per yd³:</b>
-												</TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
-														required
-														type="number"
-														size="small"
-														InputProps={{
-															endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
-														}}
-														fullWidth
-														value={estimateData.primx_cpea_dosage_liters}
-													/>
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell>
-													<b>PrīmX DC @ Dosage Rate per yd³:</b>
-												</TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('primx_dc_dosage_lbs', event.target.value)}
-														required
-														type="number"
-														size="small"
-														InputProps={{
-															endAdornment: <InputAdornment position="end">lbs</InputAdornment>,
-														}}
-														fullWidth
-														value={estimateData.primx_dc_dosage_lbs}
-													/>
-												</TableCell>
-											</TableRow>
-										</TableBody>
-										:
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell>
-													<b>PrīmX Flow @ Dosage Rate per m³:</b>
-												</TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('primx_flow_dosage_liters', event.target.value)}
-														required
-														type="number"
-														size="small"
-														InputProps={{
-															endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
-														}}
-														fullWidth
-														value={estimateData.primx_flow_dosage_liters}
-														onClick={event => dispatch({ type: 'GET_PRIMX_FLOW_LTRS' })}
-													/>
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell>
-													<b>PrīmX Steel Fibers @ Dosage Rate per m³:</b>
-												</TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('primx_steel_fibers_dosage_kgs', event.target.value)}
-														required
-														type="number"
-														size="small"
-														InputProps={{
-															endAdornment: <InputAdornment position="end">kgs</InputAdornment>,
-														}}
-														fullWidth
-														value={estimateData.primx_steel_fibers_dosage_kgs}
-														onClick={event => dispatch({ type: 'GET_PRIMX_STEEL_KGS' })}
-													/>
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell>
-													<b>PrīmX CPEA @ Dosage Rate per m³:</b>
-												</TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('primx_cpea_dosage_liters', event.target.value)}
-														required
-														type="number"
-														size="small"
-														InputProps={{
-															endAdornment: <InputAdornment position="end">ltrs</InputAdornment>,
-														}}
-														fullWidth
-														value={estimateData.primx_cpea_dosage_liters}
-													/>
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell>
-													<b>PrīmX DC @ Dosage Rate per m³:</b>
-												</TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('primx_dc_dosage_kgs', event.target.value)}
-														required
-														type="number"
-														size="small"
-														InputProps={{
-															endAdornment: <InputAdornment position="end">kgs</InputAdornment>,
-														}}
-														fullWidth
-														value={estimateData.primx_dc_dosage_kgs}
-													/>
-												</TableCell>
-											</TableRow>
-										</TableBody>
-									}
-								</Table>
-							</TableContainer>
-						</Paper>
-					</Grid>
 
 					{/* Input Table #4: Materials On Hand */}
 					{estimateData.materials_on_hand &&

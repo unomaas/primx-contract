@@ -4,6 +4,7 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
+import useCalculateProjectCost from '../../hooks/useCalculateProjectCost';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
 // import swal from 'sweetalert';
 
@@ -146,7 +147,10 @@ function* recalculateEstimate(action) {
 
 function* handleCalculatedEstimate(action) {
   // Save a mutated object with the calculation values
-  const calculatedEstimate = useEstimateCalculations(action.payload);
+	const calculatedEstimate = useEstimateCalculations(action.payload);
+
+	
+	console.log(`Ryan Here: `, {calculatedEstimate});
   yield put({
     type: 'SET_CALCULATED_ESTIMATE',
     payload: calculatedEstimate
