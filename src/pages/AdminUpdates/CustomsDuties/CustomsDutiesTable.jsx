@@ -9,7 +9,7 @@ import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornmen
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
-import useCalculateSingleEstimate from '../../../hooks/useCalculateSingleEstimate';
+import useCalculateProjectCost from '../../../hooks/useCalculateProjectCost';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function CustomsDutiesTable() {
@@ -77,7 +77,7 @@ export default function CustomsDutiesTable() {
 			dispatch({ type: 'FETCH_ALL_FOR_CALCULATE' })
 	}, [])
 
-	useCalculateSingleEstimate()
+	useCalculateProjectCost()
 
 
 	// ⬇ Handles the selection and deselection of a row:

@@ -10,6 +10,7 @@ router.get('/fetch-dosage-rates', async (req, res) => {
 		const sql = `
 			SELECT
 				"dr".dosage_rate_id,
+				"p".product_id,
 				"p".product_label,
 				"dr".lbs_y3,
 				"dr".kg_m3
