@@ -57,11 +57,11 @@ export default function EstimateCreateTable() {
 			});
 			setSaveButton(true);
 		} else if (
-			estimateData.square_meters && 
-			estimateData.thickness_millimeters && 
+			estimateData.square_meters &&
+			estimateData.thickness_millimeters &&
 			estimateData.thickened_edge_construction_joint_lineal_meters &&
-			estimateData.thickened_edge_perimeter_lineal_meters && 
-			estimateData.primx_flow_dosage_liters && 
+			estimateData.thickened_edge_perimeter_lineal_meters &&
+			estimateData.primx_flow_dosage_liters &&
 			estimateData.primx_steel_fibers_dosage_kgs &&
 			estimateData.primx_cpea_dosage_liters
 		) {
@@ -636,7 +636,7 @@ export default function EstimateCreateTable() {
 						<Paper elevation={3}>
 							<TableContainer>
 								<h3>Project Quantity Calculations</h3>
-								{calculatedDisplayObject.measurement_units == "imperial" ?
+								{estimateData.measurement_units == "imperial" ?
 									<Table size="small">
 										<TableBody>
 											<TableRow hover={true}>
@@ -759,7 +759,7 @@ export default function EstimateCreateTable() {
 								}
 
 								<h3>Thickened Edge Calculations</h3>
-								{calculatedDisplayObject.measurement_units == "imperial" ?
+								{estimateData.measurement_units == "imperial" ?
 									<Table size="small">
 										<TableHead>
 											<TableRow hover={true}>
@@ -868,389 +868,32 @@ export default function EstimateCreateTable() {
 						<Paper elevation={3}>
 							<TableContainer>
 								<h3>Materials Required Calculations</h3>
+								{/* <h3>PrimX Material Calculations</h3> */}
 								<Table size="small">
-									<TableHead>
-										{calculatedDisplayObject.measurement_units == "imperial" ?
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>PrīmX DC (lbs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX Flow (ltrs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX Steel Fibers (lbs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
-												<TableCell align="right"><b>PrīmX CPEA (ltrs)</b></TableCell>
-												<TableCell align="right"></TableCell>
-											</TableRow>
-											:
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>PrīmX DC (kgs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX Flow (ltrs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX Steel Fibers (kgs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
-												<TableCell align="right"><b>PrīmX CPEA (ltrs)</b></TableCell>
-												<TableCell align="right"></TableCell>
-											</TableRow>
-										}
-									</TableHead>
 
+									{/* <TableHead>
+										<TableRow hover={true}>
+											<TableCell></TableCell>
+											<TableCell align="right"><b>Perimeter</b></TableCell>
+											<TableCell align="right"><b>Construction Joint</b></TableCell>
+										</TableRow>
+									</TableHead> */}
 									<TableBody>
-										{calculatedDisplayObject.measurement_units == "imperial" ?
-											<TableRow hover={true}>
-												<TableCell><b>Dosage Rate per yd³:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_dc_dosage_lbs_display}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_flow_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_steel_fibers_dosage_lbs_display}
-												</TableCell>
-												<TableCell align="right">N/A</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_cpea_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right"></TableCell>
-											</TableRow>
-											:
-											<TableRow hover={true}>
-												<TableCell><b>Dosage Rate per m³:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_dc_dosage_kgs_display}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_flow_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_steel_fibers_dosage_kgs_display}
-												</TableCell>
-												<TableCell align="right">N/A</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_cpea_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right"></TableCell>
-											</TableRow>
-										}
-
 										<TableRow hover={true}>
-											<TableCell><b>Total Project Amount:</b></TableCell>
+
+											<TableCell><b>PrimX  Materials Included:</b></TableCell>
 											<TableCell align="right">
-												{calculatedDisplayObject?.primx_dc_total_project_amount}
+												PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets
 											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_flow_total_project_amount}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_steel_fibers_total_project_amount}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_ultracure_blankets_total_project_amount}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_cpea_total_project_amount}
-											</TableCell>
-											<TableCell align="right"></TableCell>
+
+
 										</TableRow>
-
-										{estimateData.materials_on_hand &&
-											<>
-												{calculatedDisplayObject.measurement_units == "imperial" ?
-													<TableRow hover={true}>
-														<TableCell><b>Materials On Hand:</b></TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_dc_on_hand_lbs_display}
-														</TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_flow_on_hand_liters_display}
-														</TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_steel_fibers_on_hand_lbs_display}
-														</TableCell>
-														<TableCell align="right"
-														>{calculatedDisplayObject?.primx_ultracure_blankets_on_hand_sq_ft_display}
-														</TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_cpea_on_hand_liters_display}
-														</TableCell>
-														<TableCell align="right"></TableCell>
-													</TableRow>
-													:	// Else measurement_units == 'metric', below: 
-													<TableRow hover={true}>
-														<TableCell><b>Materials On Hand:</b></TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_dc_on_hand_kgs_display}
-														</TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_flow_on_hand_liters_display}
-														</TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_steel_fibers_on_hand_kgs_display}</TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_ultracure_blankets_on_hand_sq_m_display}
-														</TableCell>
-														<TableCell align="right">
-															{calculatedDisplayObject?.primx_cpea_on_hand_liters_display}
-														</TableCell>
-														<TableCell align="right"></TableCell>
-													</TableRow>
-												} {/* End imperial/metric conditional rendering */}
-												{/* These rows are shared for both imperial and metric, but only shown if Materials On Hand is checked: */}
-												<TableRow hover={true}>
-													<TableCell><b>Total Order Amount:</b></TableCell>
-													<TableCell align="right">
-														{calculatedDisplayObject.primx_dc_total_order_amount}
-													</TableCell>
-													<TableCell align="right">
-														{calculatedDisplayObject.primx_flow_total_order_amount}
-													</TableCell>
-													<TableCell align="right">
-														{calculatedDisplayObject.primx_steel_fibers_total_order_amount}
-													</TableCell>
-													<TableCell align="right">
-														{calculatedDisplayObject.primx_ultracure_blankets_total_order_amount}
-													</TableCell>
-													<TableCell align="right">
-														{calculatedDisplayObject.primx_cpea_total_order_amount}
-													</TableCell>
-													<TableCell align="right"></TableCell>
-												</TableRow>
-											</>
-										} {/* End Materials On Hand Conditional Rendering */}
-
-										{calculatedDisplayObject.measurement_units == "imperial" ?
-											<TableRow hover={true}>
-												<TableCell><b>Packaging Capacity:</b></TableCell>
-												<TableCell align="right">2,756</TableCell>
-												<TableCell align="right">1,000</TableCell>
-												<TableCell align="right">42,329</TableCell>
-												<TableCell align="right">6,458</TableCell>
-												<TableCell align="right">1,000</TableCell>
-												<TableCell align="right"></TableCell>
-											</TableRow>
-											:
-											<TableRow hover={true}>
-												<TableCell><b>Packaging Capacity:</b></TableCell>
-												<TableCell align="right">1,250</TableCell>
-												<TableCell align="right">1,000</TableCell>
-												<TableCell align="right">19,200</TableCell>
-												<TableCell align="right">600</TableCell>
-												<TableCell align="right">1,000</TableCell>
-												<TableCell align="right"></TableCell>
-											</TableRow>
-										}
-
-										<TableRow hover={true}>
-											<TableCell><b>Packages Needed:</b></TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_dc_packages_needed}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_flow_packages_needed}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_steel_fibers_packages_needed}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_ultracure_blankets_packages_needed}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_cpea_packages_needed}
-											</TableCell>
-											<TableCell align="right"></TableCell>
-										</TableRow>
-
-										<TableRow hover={true}>
-											<TableCell><b>Final Order Amount:</b></TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_dc_final_order_amount}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_flow_final_order_amount}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_steel_fibers_final_order_amount}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_ultracure_blankets_final_order_amount}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_cpea_final_order_amount}
-											</TableCell>
-											<TableCell align="right"></TableCell>
-										</TableRow>
-
-										<TableRow hover={true}>
-											<TableCell><b>Materials Price:</b></TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_dc_unit_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_flow_unit_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_steel_fibers_unit_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_ultracure_blankets_unit_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_cpea_unit_price}
-											</TableCell>
-											<TableCell align="right"><b>Totals</b></TableCell>
-										</TableRow>
-
-										<TableRow hover={true}>
-											<TableCell><b>Total Materials Price:</b></TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_dc_total_materials_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_flow_total_materials_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_steel_fibers_total_materials_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_ultracure_blankets_total_materials_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_cpea_total_materials_price}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.design_total_materials_price}
-											</TableCell>
-										</TableRow>
-
-										<TableRow hover={true}>
-											<TableCell><b>Containers:</b></TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_dc_containers_needed}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_flow_containers_needed}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_steel_fibers_containers_needed}
-											</TableCell>
-											<TableCell align="right">
-												0
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_cpea_containers_needed}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.design_total_containers}
-											</TableCell>
-										</TableRow>
-
-										<TableRow hover={true}>
-											<TableCell><b>Shipping Estimate:</b></TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_dc_calculated_shipping_estimate}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_flow_calculated_shipping_estimate}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_steel_fibers_calculated_shipping_estimate}
-											</TableCell>
-											<TableCell align="right">
-												0
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.primx_cpea_calculated_shipping_estimate}
-											</TableCell>
-											<TableCell align="right">
-												{calculatedDisplayObject?.design_total_shipping_estimate}
-											</TableCell>
-										</TableRow>
-
-										<TableRow hover={true}>
-											<TableCell><b>Total Cost:</b></TableCell>
-											<TableCell align="right"><b>
-												{calculatedDisplayObject?.primx_dc_total_cost_estimate}
-											</b></TableCell>
-											<TableCell align="right"><b>
-												{calculatedDisplayObject?.primx_flow_total_cost_estimate}
-											</b></TableCell>
-											<TableCell align="right"><b>
-												{calculatedDisplayObject?.primx_steel_fibers_total_cost_estimate}
-											</b></TableCell>
-											<TableCell align="right"><b>
-												{calculatedDisplayObject?.primx_ultracure_blankets_total_cost_estimate}
-											</b></TableCell>
-											<TableCell align="right"><b>
-												{calculatedDisplayObject?.primx_cpea_total_cost_estimate}
-											</b></TableCell>
-											<TableCell align="right"><b>
-												{calculatedDisplayObject?.design_total_price_estimate}
-											</b></TableCell>
-										</TableRow>
-
-										{calculatedDisplayObject.measurement_units == "imperial" ?
-											<TableRow hover={true}>
-												<TableCell><b>Cost per ft²:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_dc_cost_per_sq_ft}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_flow_cost_per_sq_ft}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_steel_fibers_cost_per_sq_ft}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_ultracure_blankets_cost_per_sq_ft}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_cpea_cost_per_sq_ft}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_design_total_cost_per_sq_ft}
-												</TableCell>
-											</TableRow>
-											: // Else measurement_units == 'metric', below: 
-											<TableRow hover={true}>
-												<TableCell><b>Cost per m²:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_dc_cost_per_sq_m}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_flow_cost_per_sq_m}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_steel_fibers_cost_per_sq_m}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_ultracure_blankets_cost_per_sq_m}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_cpea_cost_per_sq_m}
-												</TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.primx_design_total_cost_per_sq_m}
-												</TableCell>
-											</TableRow>
-										}
-
-
-										{/* <TableRow hover={true}>
-                      <TableCell colSpan={11} align="right">
-                        <Button
-                          type="submit"
-                          // ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-                          // onClick={event => handleSave(event)}
-                          variant="contained"
-                          className={classes.LexendTeraFont11}
-                          color="secondary"
-                        >
-                          Save Estimate
-                        </Button>
-                      </TableCell>
-                    </TableRow> */}
 
 									</TableBody>
+
 								</Table>
+
+
 							</TableContainer>
 						</Paper>
 					</Grid>

@@ -6,13 +6,6 @@ export default function useEstimateCalculations(options) {
 
 	const {
 		estimate,
-		products,
-		shippingDestinations,
-		currentMarkup,
-		shippingCosts,
-		productContainers,
-		dosageRates,
-		customsDuties,
 	} = options;
 
 	console.log(`Ryan Here: Start of useEstimateCalculations`, {
