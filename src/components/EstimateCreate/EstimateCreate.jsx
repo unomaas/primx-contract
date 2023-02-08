@@ -172,7 +172,7 @@ export default function EstimateCreate() {
 			setError(true);
 			setRadioError("Please select a value.");
 		} // ⬇ Dropdown menu validation:
-		else if (!estimateData.licensee_id || !estimateData.floor_type_id || !estimateData.placement_type_id || !estimateData.shipping_costs_id || !estimateData.country) {
+		else if (!estimateData.licensee_id || !estimateData.floor_type_id || !estimateData.placement_type_id || !estimateData.destination_id) {
 			dispatch({ type: 'SET_EMPTY_ERROR' });
 		} // ⬇ Show table:
 		else {
@@ -469,7 +469,7 @@ export default function EstimateCreate() {
 										</TableRow>
 
 										{/* //! Ryan Here, I think this can be removed.  Don't do it until everything else has been tested to be working though.  */}
-										<TableRow hover={true}>
+										{/* <TableRow hover={true}>
 											<TableCell><b>Shipping Country:</b></TableCell>
 											<TableCell>
 												<Select
@@ -484,7 +484,7 @@ export default function EstimateCreate() {
 													<MenuItem key="Canada" value="Canada">Canada</MenuItem>
 												</Select>
 											</TableCell>
-										</TableRow>
+										</TableRow> */}
 
 										<TableRow hover={true}>
 											<TableCell align="left">

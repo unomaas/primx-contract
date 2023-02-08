@@ -3,14 +3,15 @@ import useCalculateProjectCost from "./useCalculateProjectCost";
 
 // ⬇ Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays:
 export default function useEstimateCalculations(options) {
+	console.log(`Ryan Here: useEstimateCalculations`, { options});
 
 	const {
 		estimate,
 	} = options;
 
-	console.log(`Ryan Here: Start of useEstimateCalculations`, {
-		estimateDeepCopy: JSON.parse(JSON.stringify(estimate)),
-	});
+	// console.log(`Ryan Here: Start of useEstimateCalculations`, {
+	// 	estimateDeepCopy: JSON.parse(JSON.stringify(estimate)),
+	// });
 
 	// ⬇ Remove the Time Stamps first: 
 	estimate.date_created = estimate.date_created.split('T')[0];
@@ -363,6 +364,12 @@ export default function useEstimateCalculations(options) {
 	estimate.thickened_edge_construction_joint_lineal_feet_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_feet);
 	estimate.thickened_edge_construction_joint_lineal_meters_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_meters);
 
+	// ! Ryan here, I think we might want tos kip this when pulling in an estimate that's already been saved. We'll need to test this out.
+	useCalculateProjectCost(options);
+	estimate.price_per_unit_75_50_display = estimate.price_per_unit_75_50;
+	estimate.price_per_unit_90_60_display = estimate.price_per_unit_90_60;
+	estimate.total_project_cost_75_50_display = estimate.total_project_cost_75_50;
+	estimate.total_project_cost_90_60_display = estimate.total_project_cost_90_60;
 
 	// ⬇ Before returning the estimate object, do any necessary rounding on given numbers to match the needs of the various grid displays.  Loop over all key/value pairs in the mutated estimate object, doing rounding based on shared key names:
 	for (let property in estimate) {
@@ -371,12 +378,11 @@ export default function useEstimateCalculations(options) {
 	} // End for loop
 
 
-	useCalculateProjectCost(options);
 
 
-	console.log(`Ryan Here: End of useEstimateCalculations`, {
-		estimateDeepCopy: JSON.parse(JSON.stringify(estimate)),
-	});
+	// console.log(`Ryan Here: End of useEstimateCalculations`, {
+	// 	estimateDeepCopy: JSON.parse(JSON.stringify(estimate)),
+	// });
 
 
 

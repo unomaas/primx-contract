@@ -179,14 +179,22 @@ export default function useCalculateProjectCost(options) {
 	const primxDcTransportationCostPlusMaterialCostPerUnit = cheapestPrimXDcTransportationCostPerLb + primxDcProductPlusCustomDutyPercentage;
 
 	// ⬇ PrimX Steel Fibers:
-	const primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50 = cheapestPrimxSteelFiberTransportationCostPerLb + primxSteelFiberProductPlusCustomDutyPercentage_75_50;
-	const primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = cheapestPrimxSteelFiberTransportationCostPerLb + primxSteelFiberProductPlusCustomDutyPercentage_90_60;
+	let primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50 = cheapestPrimxSteelFiberTransportationCostPerLb + primxSteelFiberProductPlusCustomDutyPercentage_75_50;
+	let primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = cheapestPrimxSteelFiberTransportationCostPerLb + primxSteelFiberProductPlusCustomDutyPercentage_90_60;
 
 	// ⬇ PrimX Flow:
 	const primxFlowTransportationCostPlusMaterialCostPerUnit = cheapestPrimxFlowTransportationCostPerLb + primxFlowProductPlusCustomDutyPercentage;
 
 	// ⬇ PrimX Cpea:
-	const primxCpeaTransportationCostPlusMaterialCostPerUnit = cheapestPrimxCpeaTransportationCostPerLb + primxCpeaProductPlusCustomDutyPercentage;
+	let primxCpeaTransportationCostPlusMaterialCostPerUnit = cheapestPrimxCpeaTransportationCostPerLb + primxCpeaProductPlusCustomDutyPercentage;
+
+	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
+	if (estimate.materials_excluded == "exclude_cpea") {
+		primxCpeaTransportationCostPlusMaterialCostPerUnit = 0;
+	} else if (estimate.materials_excluded == "exclude_fibers") {
+		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50 = 0;
+		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = 0;
+	}; // End if/else
 	//#endregion - Step 6.
 
 
@@ -211,114 +219,117 @@ export default function useCalculateProjectCost(options) {
 
 	//#region Step 8 - Calculate the sales price per unit:
 	// ⬇ Calculate the sales price per unit:
-	const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 + (dollarSelfCostPerUnit_75_50 * parseFloat(currentMarkup[0].margin_applied));
-	const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 + (dollarSelfCostPerUnit_90_60 * parseFloat(currentMarkup[0].margin_applied));
+	const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(currentMarkup[0].margin_applied));
+	const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(currentMarkup[0].margin_applied));
+	// ! Ryan Here, save this number: 379540 square feet by 10 inches thickness to get the numbers shown in their estimate example
 	//#endregion - Step 8. 
 
 
 
 	//#region Step 9 - Calculate total project cost:
 	// ⬇ Calculate the total project cost:
+	estimate.price_per_unit_75_50 = dollarSalesCostPerUnit_75_50;
+	estimate.price_per_unit_90_60 = dollarSalesCostPerUnit_90_60;
 	if (estimate.measurement_units == "imperial") {
-		estimate.totalProjectCost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
-		estimate.totalProjectCost_90_60 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
+		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
+		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.design_cubic_yards_total);
 	} else if (estimate.measurement_units == "metric") {
-		estimate.totalProjectCost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_meters_total);
-		estimate.totalProjectCost_90_60 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_meters_total);
+		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_meters_total);
+		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.design_cubic_meters_total);
 	}; // End if/else
 	//#endregion - Step 9.
 
 
 	// TODO: Erase this when done. 
-	// console.log(`End of useCalculateSingleEstimate \n \n `,
-	// 	'Static Data: ',
-	// 	{
-	// 		estimate,
-	// 		Arrays: {
-	// 			shippingDestinations,
-	// 			shippingCosts,
-	// 			products,
-	// 			productContainers,
-	// 			dosageRates,
-	// 			customsDuties,
-	// 			currentMarkup,
-	// 		},
-	// 	},
+	console.log(`End of useCalculateSingleEstimate \n \n `,
+		'Static Data: ',
+		{
+			estimate,
+			Arrays: {
+				shippingDestinations,
+				shippingCosts,
+				products,
+				productContainers,
+				dosageRates,
+				customsDuties,
+				currentMarkup,
+			},
+		},
 
-	// 	'\n \n Calculated Data: ',
-	// 	{
-	// 		"selected Transportation Cost Info": {
-	// 			primxDc20ftCostInfo,
-	// 			primxDc20ftContainerInfo,
-	// 			primxDc40ftCostInfo,
-	// 			primxDc40ftContainerInfo,
-	// 			primxSteelFiber20ftCostInfo,
-	// 			primxSteelFiber20ftContainerInfo,
-	// 			primxSteelFiber40ftCostInfo,
-	// 			primxSteelFiber40ftContainerInfo,
-	// 			primxFlow20ftCostInfo,
-	// 			primxFlow20ftContainerInfo,
-	// 			primxFlow40ftCostInfo,
-	// 			primxFlow40ftContainerInfo,
-	// 			primxCpea20ftCostInfo,
-	// 			primxCpea20ftContainerInfo,
-	// 			primxCpea40ftCostInfo,
-	// 			primxCpea40ftContainerInfo,
-	// 		},
+		'\n \n Calculated Data: ',
+		{
+			"selected Transportation Cost Info": {
+				primxDc20ftCostInfo,
+				primxDc20ftContainerInfo,
+				primxDc40ftCostInfo,
+				primxDc40ftContainerInfo,
+				primxSteelFiber20ftCostInfo,
+				primxSteelFiber20ftContainerInfo,
+				primxSteelFiber40ftCostInfo,
+				primxSteelFiber40ftContainerInfo,
+				primxFlow20ftCostInfo,
+				primxFlow20ftContainerInfo,
+				primxFlow40ftCostInfo,
+				primxFlow40ftContainerInfo,
+				primxCpea20ftCostInfo,
+				primxCpea20ftContainerInfo,
+				primxCpea40ftCostInfo,
+				primxCpea40ftContainerInfo,
+			},
 
-	// 		'Calculated Transportation Price Info: ': {
-	// 			primxDc20ftTransportationCostPerLb,
-	// 			primxDc40ftTransportationCostPerLb,
-	// 			primxSteelFiber20ftTransportationCostPerLb,
-	// 			primxSteelFiber40ftTransportationCostPerLb,
-	// 			primxFlow20ftTransportationCostPerLb,
-	// 			primxFlow40ftTransportationCostPerLb,
-	// 			primxCpea20ftTransportationCostPerLb,
-	// 			primxCpea40ftTransportationCostPerLb,
+			'Calculated Transportation Price Info: ': {
+				primxDc20ftTransportationCostPerLb,
+				primxDc40ftTransportationCostPerLb,
+				primxSteelFiber20ftTransportationCostPerLb,
+				primxSteelFiber40ftTransportationCostPerLb,
+				primxFlow20ftTransportationCostPerLb,
+				primxFlow40ftTransportationCostPerLb,
+				primxCpea20ftTransportationCostPerLb,
+				primxCpea40ftTransportationCostPerLb,
 
-	// 		},
+			},
 
-	// 		'Cheapest Transportation Container Info: ': {
-	// 			cheapestPrimXDcTransportationCostPerLb,
-	// 			cheapestPrimxSteelFiberTransportationCostPerLb,
-	// 			cheapestPrimxFlowTransportationCostPerLb,
-	// 			cheapestPrimxCpeaTransportationCostPerLb,
-	// 		},
+			'Cheapest Transportation Container Info: ': {
+				cheapestPrimXDcTransportationCostPerLb,
+				cheapestPrimxSteelFiberTransportationCostPerLb,
+				cheapestPrimxFlowTransportationCostPerLb,
+				cheapestPrimxCpeaTransportationCostPerLb,
+			},
 
-	// 		'Product Info': {
-	// 			primxDcProductInfo,
-	// 			primxSteelFiberProductInfo,
-	// 			primxFlowProductInfo,
-	// 			primxCpeaProductInfo,
-	// 			primxUltraCureProductInfo,
-	// 		},
+			'Product Info': {
+				primxDcProductInfo,
+				primxSteelFiberProductInfo,
+				primxFlowProductInfo,
+				primxCpeaProductInfo,
+				primxUltraCureProductInfo,
+			},
 
-	// 		'Dosage Rates: ': {
-	// 			primxDcDosageRateInfo,
-	// 			primxSteelFiberDosageRateInfo_75_50,
-	// 			primxSteelFiberDosageRateInfo_90_60,
-	// 			primxFlowDosageRateInfo,
-	// 			primxCpeaDosageRateInfo,
-	// 		},
+			'Dosage Rates: ': {
+				primxDcDosageRateInfo,
+				primxSteelFiberDosageRateInfo_75_50,
+				primxSteelFiberDosageRateInfo_90_60,
+				primxFlowDosageRateInfo,
+				primxCpeaDosageRateInfo,
+			},
 
-	// 		'Calculated Transportation Price + Material Price Info: ': {
-	// 			primxDcTransportationCostPlusMaterialCostPerUnit,
-	// 			primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
-	// 			primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
-	// 			primxFlowTransportationCostPlusMaterialCostPerUnit,
-	// 			primxCpeaTransportationCostPlusMaterialCostPerUnit,
-	// 		},
+			'Calculated Transportation Price + Material Price Info: ': {
+				primxDcTransportationCostPlusMaterialCostPerUnit,
+				primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
+				primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
+				primxFlowTransportationCostPlusMaterialCostPerUnit,
+				primxCpeaTransportationCostPlusMaterialCostPerUnit,
+			},
 
-	// 		'*** Self Cost Calculated: ': {
-	// 			dollarSelfCostPerUnit_75_50,
-	// 			dollarSelfCostPerUnit_90_60,
-	// 			dollarSalesCostPerUnit_75_50,
-	// 			dollarSalesCostPerUnit_90_60,
-	// 		},
+			'*** Self Cost Calculated: ': {
+				dollarSelfCostPerUnit_75_50,
+				dollarSelfCostPerUnit_90_60,
+				dollarSalesCostPerUnit_75_50,
+				dollarSalesCostPerUnit_90_60,
+			},
 
-	// 	},
-	// 	'\n \n'
-	// ); // End of console.log
-	
+		},
+		'\n \n'
+	); // End of console.log
+
 	return estimate;
 } // End of useCalculateSingleEstimate

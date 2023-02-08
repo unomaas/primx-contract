@@ -47,7 +47,7 @@ function* fetchEstimateQuery(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
   try {
-    const response = yield axios.post('/api/estimates', action.payload);
+    const response = yield axios.post('/api/estimates/add-new-estimate', action.payload);
     // ⬇ action.payload contains the history object from useHistory:
     const history = action.payload.history;
     // ⬇ Saving the response and action.payload to variables for easier reading:
@@ -63,9 +63,10 @@ function* AddEstimate(action) {
     } else {
       yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
     } // End if/else
+		yield put({ type: 'SNACK_SAVE_ESTIMATE_SUCCESS' });
   } catch (error) {
     console.error('AddEstimate POST request failed', error);
-		alert('This estimate failed to save, please try again later.');
+		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
   } // End try/catch
 }
 
