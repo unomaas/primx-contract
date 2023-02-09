@@ -31,7 +31,9 @@ export default function useValueFormatter(property, estimate) {
 		// ⬇ Properties we want formatted as money, below: 
 		property.includes('_price') ||
 		property.includes('_estimate') ||
-		property.includes('_cost_per_sq')
+		property.includes('_cost_per_sq') ||
+		(property.includes('price_per_unit') && property.includes('_display')) ||
+		(property.includes('total_project_cost') && property.includes('_display'))
 	) {
 		estimate[property] = formatter.format(value);
 	} else if (

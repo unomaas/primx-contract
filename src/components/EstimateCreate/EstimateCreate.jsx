@@ -22,7 +22,7 @@ export default function EstimateCreate() {
 	const classes = useStyles();
 	const today = new Date().toISOString().substring(0, 10);
 	const companies = useSelector(store => store.companies);
-	const shippingCosts = useSelector(store => store.shippingCosts);
+	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
 	const floorTypes = useSelector(store => store.floorTypes);
 	const placementTypes = useSelector(store => store.placementTypes);
 	const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
@@ -36,7 +36,9 @@ export default function EstimateCreate() {
 	useEffect(() => {
 		dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
 			// Fetches and set all fields for dropdown menus
-			dispatch({ type: 'FETCH_FIELD_SELECT' })
+			dispatch({ type: 'FETCH_FIELD_SELECT' }),
+			dispatch({ type: 'FETCH_ALL_FOR_CALCULATE' })
+
 	}, []);
 	//#endregion ⬆⬆ All state variables above. 
 
@@ -87,27 +89,30 @@ export default function EstimateCreate() {
 		// ⬇ Sends the keys/values to the estimate reducer object: 
 		dispatch({
 			type: 'SET_ESTIMATE',
-			payload: { key: 'shipping_costs_id', value: id }
+			payload: { key: 'destination_id', value: id }
 		});
-		// ⬇ Add in state shipping costs based off of state id in object:
-		shippingCosts.forEach(shippingState => {
-			if (shippingState.id == id) {
-				// ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
-				for (let keyName in shippingState) {
-					// Ignore the id key for the shipping state, otherwise the edit view will break by changing the estimate id that's being edited
-					// to the id of the shipping state
-					if (keyName != 'id') {
-						dispatch({
-							type: 'SET_ESTIMATE',
-							payload: {
-								key: keyName,
-								value: shippingState[keyName]
-							} // End payload.
-						}) // End dispatch.
-					}
-				}; // End for loop.
-			} // End if statement
-		}) // end shippingCosts forEach
+		// // ⬇ Add in state shipping costs based off of state id in object:
+		// shippingDestinations.forEach(shippingState => {
+		// 	if (shippingState.destination_id == id) {
+		// 		// ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
+		// 		for (let keyName in shippingState) {
+
+		// 			console.log(`Ryan Here \n keyName `, {keyName});
+
+		// 			// Ignore the id key for the shipping state, otherwise the edit view will break by changing the estimate id that's being edited
+		// 			// to the id of the shipping state
+		// 			if (keyName != 'id') {
+		// 				dispatch({
+		// 					type: 'SET_ESTIMATE',
+		// 					payload: {
+		// 						key: keyName,
+		// 						value: shippingState[keyName]
+		// 					} // End payload.
+		// 				}) // End dispatch.
+		// 			}
+		// 		}; // End for loop.
+		// 	} // End if statement
+		// }) // end shippingDestinations forEach
 		// If user is in the edit view, recalculate estimate values with new shipping data:
 		if (editState) {
 			dispatch({
@@ -167,7 +172,7 @@ export default function EstimateCreate() {
 			setError(true);
 			setRadioError("Please select a value.");
 		} // ⬇ Dropdown menu validation:
-		else if (!estimateData.licensee_id || !estimateData.floor_type_id || !estimateData.placement_type_id || !estimateData.shipping_costs_id || !estimateData.country) {
+		else if (!estimateData.licensee_id || !estimateData.floor_type_id || !estimateData.placement_type_id || !estimateData.destination_id) {
 			dispatch({ type: 'SET_EMPTY_ERROR' });
 		} // ⬇ Show table:
 		else {
@@ -303,7 +308,7 @@ export default function EstimateCreate() {
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{floorTypes.map(types => {
-														return (<MenuItem key={types.id} value={types.id}>{types.floor_type}</MenuItem>)
+														return (<MenuItem key={types.floor_type_id} value={types.floor_type_id}>{types.floor_type_label}</MenuItem>)
 													})}
 												</Select>
 											</TableCell>
@@ -321,7 +326,7 @@ export default function EstimateCreate() {
 												>
 													<MenuItem value="0">Please Select</MenuItem>
 													{placementTypes.map(placementTypes => {
-														return (<MenuItem key={placementTypes.id} value={placementTypes.id}>{placementTypes.placement_type}</MenuItem>)
+														return (<MenuItem key={placementTypes.placement_type_id} value={placementTypes.placement_type_id}>{placementTypes.placement_type_label}</MenuItem>)
 													})}
 												</Select>
 											</TableCell>
@@ -435,15 +440,15 @@ export default function EstimateCreate() {
 											<TableCell><b>Shipping State/Province:</b></TableCell>
 											<TableCell>
 												<Select
-													onChange={event => handleShipping(event.target.value)}
+													onChange={event => handleChange('destination_id', event.target.value)}
 													required
 													size="small"
 													fullWidth
-													value={estimateData.shipping_costs_id}
+													value={estimateData.destination_id}
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
-													{shippingCosts.map(state => {
-														return (<MenuItem key={state.id} value={state.id}>{state.ship_to_state_province}</MenuItem>)
+													{shippingDestinations.map(state => {
+														return (<MenuItem key={state.destination_id} value={state.destination_id}>{state.destination_name}, {state.destination_country}</MenuItem>)
 													})}
 												</Select>
 											</TableCell>
@@ -463,7 +468,8 @@ export default function EstimateCreate() {
 											</TableCell>
 										</TableRow>
 
-										<TableRow hover={true}>
+										{/* //! Ryan Here, I think this can be removed.  Don't do it until everything else has been tested to be working though.  */}
+										{/* <TableRow hover={true}>
 											<TableCell><b>Shipping Country:</b></TableCell>
 											<TableCell>
 												<Select
@@ -478,17 +484,18 @@ export default function EstimateCreate() {
 													<MenuItem key="Canada" value="Canada">Canada</MenuItem>
 												</Select>
 											</TableCell>
-										</TableRow>
+										</TableRow> */}
 
 										<TableRow hover={true}>
 											<TableCell align="left">
-												<b>Have Materials On Hand?</b>
+												{/* //! Ryan Here - Disabling this for now as I don't know how to handle it. */}
+												{/* <b>Have Materials On Hand?</b>
 												<Switch
 													onChange={event => handleChange('materials_on_hand', event.target.value)}
 													checked={estimateData?.materials_on_hand}
 													value={estimateData?.materials_on_hand}
 													color="primary"
-												/>
+												/> */}
 
 											</TableCell>
 											<TableCell
@@ -496,8 +503,8 @@ export default function EstimateCreate() {
 												align="right">
 												<Button
 													type="submit"
-													// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-													// onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+													// !⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+													onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
 													variant="contained"
 													className={classes.LexendTeraFont11}
 													color="primary"

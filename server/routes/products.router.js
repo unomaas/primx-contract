@@ -49,7 +49,8 @@ router.get('/get-all-product-cost-history', async (req, res) => {
 		const sql = `
 			SELECT *
 			FROM "product_cost_history" AS "pch"
-			ORDER BY "pch".product_cost_history_id ASC
+			JOIN "products" AS "p" ON "pch".product_id = "p".product_id
+			ORDER BY "pch".product_cost_history_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
@@ -166,7 +167,7 @@ router.get('/get-all-markup-history', async (req, res) => {
 		const sql = `
 			SELECT *
 			FROM "markup_history" AS "mh"
-			ORDER BY "mh".markup_history_id ASC;
+			ORDER BY "mh".markup_history_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);

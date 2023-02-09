@@ -4,9 +4,11 @@ import {
 
 const today = new Date().toISOString().substring(0, 10);
 
+// TODO: When I come back, I need to consider setting up a new reducer to shape the data to send to the back end to add to the table.  That includes re-shaping the table to fit this data, and then having to re-shape the formula to handle calculating costs.  
+
 // ⬇ estimatesReducer:
 export const estimatesReducer = (state = {
-	date_created: today,
+	// ⬇ General Info: 
 	project_name: "",
 	licensee_id: 0,
 	project_general_contractor: "",
@@ -14,29 +16,26 @@ export const estimatesReducer = (state = {
 	project_manager_email: "",
 	project_manager_phone: "",
 	floor_type_id: 0,
-	placement_types_id: 0,
-	measurement_units: "",
+	placement_type_id: 0,
+	measurement_units: "imperial",
+	date_created: today,
 	anticipated_first_pour_date: "",
 	ship_to_address: "",
 	ship_to_city: "",
-	shipping_costs_id: 0,
+	destination_id: 0,
 	zip_postal_code: "",
-	country: 0,
-	square_feet: "",
-	thickened_edge_perimeter_lineal_feet: "0",
-	primx_flow_dosage_liters: "3",
-	thickness_inches: "",
-	thickened_edge_construction_joint_lineal_feet: "0",
-	primx_steel_fibers_dosage_lbs: "60",
-	primx_cpea_dosage_liters: "0",
-	primx_dc_dosage_lbs: "67",
-	primx_dc_dosage_kgs: "40",
-	square_meters: "",
-	thickened_edge_perimeter_lineal_meters: "0",
-	thickness_millimeters: "",
-	thickened_edge_construction_joint_lineal_meters: "0",
-	primx_steel_fibers_dosage_kgs: "40",
 	waste_factor_percentage: 5,
+	materials_excluded: 'none',
+	// ⬇ Imperial: 
+	square_feet: "",
+	thickness_inches: "",
+	thickened_edge_perimeter_lineal_feet: "0",
+	thickened_edge_construction_joint_lineal_feet: "0",
+	// ⬇ Metric:
+	square_meters: "",
+	thickness_millimeters: "",
+	thickened_edge_perimeter_lineal_meters: "0",
+	thickened_edge_construction_joint_lineal_meters: "0",
 	// ⬇ Materials on-hand inputs:
 	materials_on_hand: false,
 	primx_dc_on_hand_lbs: 0,
@@ -62,7 +61,7 @@ export const estimatesReducer = (state = {
 			return action.payload;
 		case 'CLEAR_ESTIMATE':
 			return {
-				date_created: today,
+				// ⬇ General Info: 
 				project_name: "",
 				licensee_id: 0,
 				project_general_contractor: "",
@@ -70,29 +69,26 @@ export const estimatesReducer = (state = {
 				project_manager_email: "",
 				project_manager_phone: "",
 				floor_type_id: 0,
-				placement_types_id: 0,
-				measurement_units: "",
+				placement_type_id: 0,
+				measurement_units: "imperial",
+				date_created: today,
 				anticipated_first_pour_date: "",
 				ship_to_address: "",
 				ship_to_city: "",
-				shipping_costs_id: 0,
+				destination_id: 0,
 				zip_postal_code: "",
-				country: 0,
-				square_feet: "",
-				thickened_edge_perimeter_lineal_feet: "0",
-				primx_flow_dosage_liters: "3",
-				thickness_inches: "",
-				thickened_edge_construction_joint_lineal_feet: "0",
-				primx_steel_fibers_dosage_lbs: "60",
-				primx_cpea_dosage_liters: "0",
-				primx_dc_dosage_lbs: "67",
-				primx_dc_dosage_kgs: "40",
-				square_meters: "",
-				thickened_edge_perimeter_lineal_meters: "0",
-				thickness_millimeters: "",
-				thickened_edge_construction_joint_lineal_meters: "0",
-				primx_steel_fibers_dosage_kgs: "40",
 				waste_factor_percentage: 5,
+				materials_excluded: 'none',
+				// ⬇ Imperial: 
+				square_feet: "",
+				thickness_inches: "",
+				thickened_edge_perimeter_lineal_feet: "0",
+				thickened_edge_construction_joint_lineal_feet: "0",
+				// ⬇ Metric:
+				square_meters: "",
+				thickness_millimeters: "",
+				thickened_edge_perimeter_lineal_meters: "0",
+				thickened_edge_construction_joint_lineal_meters: "0",
 				// ⬇ Materials on-hand inputs:
 				materials_on_hand: false,
 				primx_dc_on_hand_lbs: 0,
@@ -180,6 +176,8 @@ export const setCalcEstimate = (state = {}, action) => {
 	switch (action.type) {
 		case 'SET_CALCULATED_ESTIMATE':
 			return action.payload;
+		case 'CLEAR_CALCULATED_ESTIMATE':
+			return {};
 		default:
 			return state;
 	} // End switch

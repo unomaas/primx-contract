@@ -62,7 +62,8 @@ router.get('/get-all-customs-duties-history', async (req, res) => {
 		const sql = `
 			SELECT *
 			FROM "customs_duties_history" AS "cdh"
-			ORDER BY "cdh".shipping_cost_history_id ASC;
+			JOIN "customs_duties" AS "cd" using ("custom_duty_id") 
+			ORDER BY "cdh".custom_duty_id ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);

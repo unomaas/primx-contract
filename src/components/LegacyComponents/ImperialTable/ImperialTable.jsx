@@ -25,9 +25,15 @@ export default function ImperialTable() {
 	const [tableSize, setTableSize] = useState(4);
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
-		if (estimateData.square_feet && estimateData.thickness_inches && estimateData.thickened_edge_construction_joint_lineal_feet &&
-			estimateData.thickened_edge_perimeter_lineal_feet && estimateData.primx_flow_dosage_liters && estimateData.primx_steel_fibers_dosage_lbs &&
-			estimateData.primx_cpea_dosage_liters) {
+		if (
+			estimateData.square_feet &&
+			estimateData.thickness_inches &&
+			estimateData.thickened_edge_construction_joint_lineal_feet &&
+			estimateData.thickened_edge_perimeter_lineal_feet &&
+			estimateData.primx_flow_dosage_liters &&
+			estimateData.primx_steel_fibers_dosage_lbs &&
+			estimateData.primx_cpea_dosage_liters
+		) {
 			// ⬇ Once all the keys exist, run the calculate estimate function and set the table display state for the calculated values:
 			dispatch({
 				type: 'HANDLE_CALCULATED_ESTIMATE',

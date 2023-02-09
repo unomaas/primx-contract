@@ -4,6 +4,7 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
+import useCalculateProjectCost from '../../hooks/useCalculateProjectCost';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
 // import swal from 'sweetalert';
 
@@ -46,7 +47,7 @@ function* fetchEstimateQuery(action) {
 // Saga Worker to add estimate into table
 function* AddEstimate(action) {
   try {
-    const response = yield axios.post('/api/estimates', action.payload);
+    const response = yield axios.post('/api/estimates/add-new-estimate', action.payload);
     // ⬇ action.payload contains the history object from useHistory:
     const history = action.payload.history;
     // ⬇ Saving the response and action.payload to variables for easier reading:
@@ -62,11 +63,14 @@ function* AddEstimate(action) {
     } else {
       yield history.push(`/lookup/${returnedEstimate.licensee_id}/${returnedEstimate.estimate_number}`);
     } // End if/else
+		yield put({ type: 'SNACK_SAVE_ESTIMATE_SUCCESS' });
   } catch (error) {
     console.error('AddEstimate POST request failed', error);
-		alert('This estimate failed to save, please try again later.');
+		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
   } // End try/catch
 }
+
+//TODO: When I come back, either focus on getting the edit PUT route updated (aka take the date out), and/or work on getting an estimate submitted.
 
 // Saga Worker to edit estimate into table
 function* EditEstimate(action) {
@@ -96,7 +100,7 @@ function* recalculateEstimate(action) {
 
     // Loop through shippingCosts, find the matching id, and update the shipping costs of the current estimate with the current shipping costs
     shippingCosts.data.forEach(shippingState => {
-      if (shippingState.id == currentEstimate.shipping_costs_id) {
+      if (shippingState.shipping_costs_id == currentEstimate.shipping_costs_id) {
         Object.assign(currentEstimate, {
           primx_dc_shipping_estimate: shippingState.dc_price,
           primx_flow_shipping_estimate: shippingState.flow_cpea_price,
@@ -146,7 +150,8 @@ function* recalculateEstimate(action) {
 
 function* handleCalculatedEstimate(action) {
   // Save a mutated object with the calculation values
-  const calculatedEstimate = useEstimateCalculations(action.payload);
+	const calculatedEstimate = useEstimateCalculations(action.payload.estimate, action.payload.options);
+	
   yield put({
     type: 'SET_CALCULATED_ESTIMATE',
     payload: calculatedEstimate

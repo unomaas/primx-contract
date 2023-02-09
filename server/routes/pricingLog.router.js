@@ -4,13 +4,11 @@ const pool = require('../modules/pool');
 const router = express.Router();
 const format = require('pg-format');
 
-
-router.get('/fetch-product-container', async (req, res) => {
+router.get('/fetch-initial-load', rejectUnauthenticated, async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
 				"pc".product_container_id,
-				"pc".product_id,
 				"p".product_label,
 				"c".container_length_ft,
 				"c".container_destination,

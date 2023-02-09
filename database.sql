@@ -20,7 +20,7 @@ CREATE TABLE "estimates" (
 	"project_manager_email" varchar(100) NOT NULL,
 	"project_manager_phone" varchar(25) NOT NULL,
 	"floor_type_id" int NOT NULL,
-	"placement_types_id" int NOT NULL,
+	"placement_type_id" int NOT NULL,
 	"square_feet" int DEFAULT NULL,
 	"square_meters" int DEFAULT NULL,
 	"thickness_inches" DECIMAL DEFAULT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE "estimates" (
 -- create shipping_costs table
 CREATE TABLE "shipping_costs" (
 	"id" serial NOT NULL,
-	"ship_to_state_province" varchar(50) NOT NULL,
+	"destination_name" varchar(50) NOT NULL,
 	"dc_price" money NOT NULL,
 	"flow_cpea_price" money NOT NULL,
 	"fibers_price" money NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE "licensees" (
 -- create floor_types table
 CREATE TABLE "floor_types" (
 	"id" serial NOT NULL,
-	"floor_type" varchar(50) NOT NULL,
+	"floor_type_label" varchar(50) NOT NULL,
 	CONSTRAINT "floor_types_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -93,7 +93,7 @@ CREATE TABLE "floor_types" (
 -- create placement_types table
 CREATE TABLE "placement_types" (
 	"id" serial NOT NULL,
-	"placement_type" varchar(50) NOT NULL,
+	"placement_type_label" varchar(50) NOT NULL,
 	CONSTRAINT "placement_types_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -125,7 +125,7 @@ CREATE TABLE "products" (
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk0" FOREIGN KEY ("licensee_id") REFERENCES "licensees"("id");
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk1" FOREIGN KEY ("shipping_costs_id") REFERENCES "shipping_costs"("id");
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk2" FOREIGN KEY ("floor_type_id") REFERENCES "floor_types"("id");
-ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk3" FOREIGN KEY ("placement_types_id") REFERENCES "placement_types"("id");
+ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk3" FOREIGN KEY ("placement_type_id") REFERENCES "placement_types"("id");
 ALTER TABLE "estimates" ADD CONSTRAINT "estimates_fk4" FOREIGN KEY ("processed_by") REFERENCES "user"("username") ON DELETE SET NULL;
 
 -- starting values for products table
@@ -135,10 +135,10 @@ VALUES ('PrīmX DC (lbs)', .40, 0, 'dc_lbs'), ('PrīmX DC (kgs)', .88, 0, 'dc_kg
 ('PrīmX UltraCure Blankets (metersq)', .86, 0, 'blankets_sqmeters'), ('PrīmX CPEA (liters)', 3.55, 0, 'cpea_liters');
 
 -- starting values for placement_types table
-INSERT INTO "placement_types" ("placement_type") VALUES ('Truck Discharge'), ('Pump'), ('Buggy'), ('Conveyor');
+INSERT INTO "placement_types" ("placement_type_label") VALUES ('Truck Discharge'), ('Pump'), ('Buggy'), ('Conveyor');
 
 -- starting values for floor_types
-INSERT INTO "floor_types" ("floor_type") VALUES ('Slab on Grade - Interior'), ('Slab on Grade - Exterior'), ('Slab on Insulation'), ('Slab on Piles - Interior'), ('Slab on Piles - Exterior');
+INSERT INTO "floor_types" ("floor_type_label") VALUES ('Slab on Grade - Interior'), ('Slab on Grade - Exterior'), ('Slab on Insulation'), ('Slab on Piles - Interior'), ('Slab on Piles - Exterior');
 
 -- starting values for licensees
 INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete Construction'), ('Alphacon'), ('Gesick Concrete'), ('Belmont Concrete Finishing'), ('Lewis Construction'),
@@ -149,7 +149,7 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 -- STOP HERE -- 
 
 -- Import the Shipping Source CSV into the shipping_costs table at this point. The CSV headers to DB columns to match up are as follows:
-	-- Shiping Source => ship_to_state_province
+	-- Shiping Source => destination_name
 	-- DC => dc_price
 	-- Flow => flow_cpea_price
 	-- Fibers => fibers_price
@@ -164,7 +164,7 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 -- -- Imperial dummy data starter
 -- INSERT INTO "estimates" 
 -- 	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
--- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_type_id","placement_types_id","square_feet",
+-- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_type_id","placement_type_id","square_feet",
 -- 	"thickness_inches","thickened_edge_perimeter_lineal_feet","thickened_edge_construction_joint_lineal_feet",
 -- 	"primx_flow_dosage_liters","primx_steel_fibers_dosage_lbs","primx_cpea_dosage_liters",
 -- 	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",
@@ -175,7 +175,7 @@ INSERT INTO "licensees" ("licensee_contractor_name") VALUES ('All-Phase Concrete
 -- -- Metric dummy data starter
 -- INSERT INTO "estimates" 
 -- 	("measurement_units","country","date_created","project_name","licensee_id","project_general_contractor","ship_to_address","ship_to_city","shipping_costs_id","zip_postal_code",
--- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_type_id","placement_types_id","square_meters",
+-- 	"anticipated_first_pour_date","project_manager_name","project_manager_email","project_manager_phone","floor_type_id","placement_type_id","square_meters",
 -- 	"thickness_millimeters","thickened_edge_perimeter_lineal_meters","thickened_edge_construction_joint_lineal_meters",
 -- 	"primx_flow_dosage_liters","primx_steel_fibers_dosage_kgs","primx_cpea_dosage_liters",
 -- 	"primx_dc_unit_price","primx_dc_shipping_estimate","primx_flow_unit_price","primx_flow_shipping_estimate","primx_steel_fibers_unit_price",

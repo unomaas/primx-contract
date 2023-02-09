@@ -42,7 +42,7 @@ export default function AdminUpdateTypes() {
 			dispatch({ type: 'SET_EMPTY_ERROR' })
 		} else {
 			//sends newFloorType to reducer to add floor type to DB
-			dispatch({ type: "ADD_FLOOR_TYPE", payload: { floor_type: newFloorType } })
+			dispatch({ type: "ADD_FLOOR_TYPE", payload: { floor_type_label: newFloorType } })
 			//empty input field after it is submitted
 			setNewFloorType('')
 		}
@@ -54,7 +54,7 @@ export default function AdminUpdateTypes() {
 			dispatch({ type: 'SET_EMPTY_ERROR' })
 		} else {
 			//sends newPlacementType to reducer to add floor type to DB
-			dispatch({ type: "ADD_PLACEMENT_TYPE", payload: { placement_type: newPlacementType } })
+			dispatch({ type: "ADD_PLACEMENT_TYPE", payload: { placement_type_label: newPlacementType } })
 			//empty input field after it is submitted
 			setNewPlacementType('')
 		}

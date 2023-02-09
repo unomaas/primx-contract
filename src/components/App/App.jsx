@@ -10,7 +10,7 @@ import EstimateLookup from '../EstimateLookup/EstimateLookup';
 import EstimateCombine from '../EstimateCombine/EstimateCombine';
 import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
-import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx'; 
+import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx';
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
 import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
@@ -31,10 +31,10 @@ import AdminUpdateDestinations from '../../pages/AdminUpdates/ShippingDestinatio
 import AdminUpdateCustoms from '../../pages/AdminUpdates/CustomsDuties/index.jsx'
 import ProductContainers from '../../pages/AdminUpdates/ProductContainers/index.jsx';
 import DosageRates from '../../pages/AdminUpdates/DosageRates/index.jsx';
-
+import PricingLog from '../../pages/PricingLog/index.jsx';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
-import { HashRouter as Router, Route, Redirect, Switch, } from 'react-router-dom';
+import { HashRouter as Router, Route, Redirect, Switch, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
@@ -179,6 +179,10 @@ function App() {
 
 							<AdminRoute exact path="/DosageRates">
 								<DosageRates />
+							</AdminRoute>
+
+							<AdminRoute exact path="/pricinglog">
+								<PricingLog />
 							</AdminRoute>
 
 							{/* If logged in and user permissions is 1, that makes the super-admin and allows them to see this system admin page */}

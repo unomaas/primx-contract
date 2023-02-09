@@ -75,6 +75,8 @@ export default function CustomsDutiesTable() {
 			dispatch({ type: 'FETCH_CUSTOMS_DUTIES_HISTORY_RECENT' })
 	}, [])
 
+
+
 	// ⬇ Handles the selection and deselection of a row:
 	// const handleSelectionModelChange = (id_array) => {
 	// 	// ⬇ If the selected row is clicked again, deselect it:a
@@ -350,6 +352,10 @@ export default function CustomsDutiesTable() {
 			return acc;
 		}, {});
 
+		const dataToCompare = customsDuties.reduce((acc, curr) => {
+			acc[curr.custom_duty_id] = curr;
+			return acc;
+		}, {});
 
 		const handleRowChange = (value, id, label) => {
 			editData[id] = {
@@ -359,7 +365,10 @@ export default function CustomsDutiesTable() {
 		} // End handleRowChange
 
 		const handleSubmit = () => {
-			if (!editData || Object.keys(editData).length === 0) {
+			if (
+				JSON.stringify(editData) === JSON.stringify(dataToCompare) ||
+				Object.keys(editData).length === 0
+			) {
 				alert('Please make changes to submit first.');
 				return;
 			}; // End if

@@ -43,7 +43,8 @@ export default function EstimateLookup() {
 		dispatch({ type: 'SET_BUTTON_STATE', payload: 'lookup' }),
 			// ⬇ Fetch the current companies for drop-down menu options:
 			dispatch({ type: 'FETCH_ACTIVE_COMPANIES' }),
-			dispatch({ type: 'SET_RECALCULATED_FALSE' })
+			dispatch({ type: 'SET_RECALCULATED_FALSE' }),
+			dispatch({ type: 'FETCH_DOSAGE_RATES' })
 	}, []);
 	// ⬇ Run on estimate search complete:
 	useEffect(() => {
@@ -191,6 +192,11 @@ export default function EstimateLookup() {
 					<h3>
 						Your estimate number is: <b style={{ color: 'red' }}>{searchResult?.estimate_number}</b>
 					</h3>
+					<b>Price Guarantee Disclaimer:</b>
+					<br /> The prices shown above are guaranteed to be eligible for three months from {searchResult?.date_created}. 
+					{/* Format the searchResult?.date_created from YYYY-MM-DD to Month, Date, Year */}
+
+					{/* <br /> The prices shown above are guaranteed to be eligible for three months from {moment(searchResult?.date_created).format('MMMM Do, YYYY')}. */}
 				</>
 			}
 

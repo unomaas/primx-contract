@@ -32,7 +32,7 @@ export default function AdminUpdateMaterials() {
 		{
 			field: 'product_self_cost',
 			type: 'number',
-			headerName: 'Price',
+			headerName: 'Self Cost',
 			flex: 1,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {

@@ -11,10 +11,13 @@ router.get('/', async (req, res) => {
 		const sql = `
 			SELECT 
 				"sc".shipping_cost_id,
+				"p".product_id,
 				"p".product_label,
 				"c".container_length_ft, 
+				"sd".destination_id,
 				"sd".destination_name,
 				"c".container_destination,
+				"pc".product_container_id,
 				"sc".shipping_cost
 			FROM "shipping_costs" AS "sc"
 			JOIN "shipping_destinations" AS "sd"
@@ -39,9 +42,9 @@ router.get('/', async (req, res) => {
 // //Post Route - adds shipping cost
 // router.post('/', rejectUnauthenticated, (req, res) => {
 // 	//query to add a new lane to the shipping costs table
-// 	const queryText = `INSERT INTO "shipping_costs" ("ship_to_state_province", "dc_price", "flow_cpea_price", "fibers_price")
+// 	const queryText = `INSERT INTO "shipping_costs" ("destination_name", "dc_price", "flow_cpea_price", "fibers_price")
 //             VALUES ($1, $2, $3, $4);`;
-// 	pool.query(queryText, [req.body.ship_to_state_province, req.body.dc_price, req.body.flow_cpea_price, req.body.fibers_price])
+// 	pool.query(queryText, [req.body.destination_name, req.body.dc_price, req.body.flow_cpea_price, req.body.fibers_price])
 // 		.then(result => {
 // 			res.sendStatus(201)
 // 		}).catch((error) => {

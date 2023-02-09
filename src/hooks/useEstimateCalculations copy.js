@@ -1,8 +1,7 @@
 import useValueFormatter from "./useValueFormatter";
-import useCalculateProjectCost from "./useCalculateProjectCost";
 
 // ⬇ Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays:
-export default function useEstimateCalculations(estimate, options = null) {
+export default function useEstimateCalculations(estimate) {
 
 	// ⬇ Remove the Time Stamps first: 
 	estimate.date_created = estimate.date_created.split('T')[0];
@@ -29,17 +28,16 @@ export default function useEstimateCalculations(estimate, options = null) {
 
 	// TODO: This probably isn't accurate anymore. To flesh more thoughts out, anything in here that deals with pricing probably isn't accurate anymore.  What I want this updated hook to do is figure out the total yards or meters of the project to feed into the new project cost hook.  
 	
-	// // ⬇ Shipping prices come in with keys linked to the shipping_costs table if they're being calculated from the estimate creation view.  We need to change them to match the keys saved on the estimate table.  If estimates are being calculated from DB data, these keys already exist, since estimates all contain snapshots of the prices necessary for estimate calculations at the time the estimate was made:
-	// if (!estimate.primx_dc_shipping_estimate) {
-	// 	estimate.primx_dc_shipping_estimate = estimate.dc_price;
-	// 	estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
-	// 	estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
-	// 	estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
-	// }; // End if 
+	// ⬇ Shipping prices come in with keys linked to the shipping_costs table if they're being calculated from the estimate creation view.  We need to change them to match the keys saved on the estimate table.  If estimates are being calculated from DB data, these keys already exist, since estimates all contain snapshots of the prices necessary for estimate calculations at the time the estimate was made:
+	if (!estimate.primx_dc_shipping_estimate) {
+		estimate.primx_dc_shipping_estimate = estimate.dc_price;
+		estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
+		estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
+		estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
+	}; // End if 
 
 
 	// ⬇ This block checks to see if a price estimate exists already, indicating that the calculations are being done on the edit view between Estimate.  Lookup and EstimateCreate. estimate.dc_price only exists if a new shipping state has been selected from the dropdown menu in EstimateCreate.  If both these conditions are met, it means a user is editing an estimate and is changing their desired shipping state. When this happens, set the shipping estimate keys to match the new keys set by the change in ship-to state or province.
-	// TODO: We probably want to save this for the edit portion, but not sure we want dc_price as a check on it.  Come back later. 
 	if (estimate.design_total_price_estimate && estimate.dc_price) {
 		estimate.primx_dc_shipping_estimate = estimate.dc_price;
 		estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
@@ -48,7 +46,6 @@ export default function useEstimateCalculations(estimate, options = null) {
 	}; // End if 
 
 
-	// TODO: I don't think this is necessary anymore either, as I'm not saving dollar signs to the DB anymore (for this reason). 
 	// ⬇ Start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database:
 	for (let property in estimate) {
 		// ⬇ Save the value of property being looped over:
@@ -61,7 +58,6 @@ export default function useEstimateCalculations(estimate, options = null) {
 	}; // End if 
 
 
-	// TODO: This is where the meat and potatoes happens, we want to save these calculations. Though after looking through them, I'm not sure I need *all* of them.  I think I can get away with just the total cubic yards and total cubic meters.  I'll have to come back to this.
 	// ⬇ Begin adding new calculated keys to the estimate, first by adding in keys specific to the unit of measurement that's being worked with.
 	// ⬇ Imperial calculations below: 
 	if (estimate.measurement_units == 'imperial') {
@@ -355,28 +351,12 @@ export default function useEstimateCalculations(estimate, options = null) {
 	estimate.thickened_edge_construction_joint_lineal_feet_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_feet);
 	estimate.thickened_edge_construction_joint_lineal_meters_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_meters);
 
-	// ! Ryan here, I think we might want tos kip this when pulling in an estimate that's already been saved. We'll need to test this out.
-	// ⬇ If the options object is passed in, run the useCalculateProjectCost function to calculate the project cost:
-	if (options) useCalculateProjectCost(estimate, options);
-	estimate.price_per_unit_75_50_display = estimate.price_per_unit_75_50;
-	estimate.price_per_unit_90_60_display = estimate.price_per_unit_90_60;
-	estimate.total_project_cost_75_50_display = estimate.total_project_cost_75_50;
-	estimate.total_project_cost_90_60_display = estimate.total_project_cost_90_60;
 
 	// ⬇ Before returning the estimate object, do any necessary rounding on given numbers to match the needs of the various grid displays.  Loop over all key/value pairs in the mutated estimate object, doing rounding based on shared key names:
 	for (let property in estimate) {
 		// ⬇ Run each value through our formatter hook to return a pretty number: 
 		useValueFormatter(property, estimate);
 	} // End for loop
-
-
-
-
-	// console.log(`Ryan Here: End of useEstimateCalculations`, {
-	// 	estimateDeepCopy: JSON.parse(JSON.stringify(estimate)),
-	// });
-
-
 
 	return estimate;
 }

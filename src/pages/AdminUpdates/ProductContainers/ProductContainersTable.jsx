@@ -375,8 +375,11 @@ export default function ProductContainersTable() {
 			acc[curr.product_container_id] = curr;
 			return acc;
 		}, {});
-		// const costsByDestinationArray = shippingCosts.filter(cost => cost.destination_name === selectedRow?.destination_name);
 
+		const dataToCompare = selectedProduct.reduce((acc, curr) => {
+			acc[curr.product_container_id] = curr;
+			return acc;
+		}, {});
 
 		const handleEdit = (value, id, label) => {
 			editData[id] = {
@@ -387,7 +390,10 @@ export default function ProductContainersTable() {
 
 
 		const handleSubmit = () => {
-			if (!editData || Object.keys(editData).length === 0) {
+			if (
+				JSON.stringify(editData) === JSON.stringify(dataToCompare) ||
+				Object.keys(editData).length === 0
+			) {
 				alert('Please make changes to submit first.');
 				return;
 			}; // End if

@@ -54,6 +54,11 @@ const useStyles = makeStyles({
     margin: 'auto',
   },
 
+	pricingLogGrid: {
+    maxWidth: '90%',
+    margin: 'auto',
+  },
+
   shippingGrid: {
     width: 800,
     margin: 'auto',
@@ -61,6 +66,11 @@ const useStyles = makeStyles({
 
 	customsGrid: {
     width: 485,
+    margin: 'auto',
+  },
+
+	customsDutiesHistoryGrid: {
+    width: 800,
     margin: 'auto',
   },
 

@@ -136,6 +136,13 @@ const snackReducer = (state = {
 				severity: 'warning',
 				variant: 'filled'
 			}
+			case 'SNACK_SAVE_ESTIMATE_SUCCESS':
+				return {
+					open: true,
+					message: `Your estimate has been saved successfully!  Please save the estimate number for future reference.`,
+					severity: 'success',
+					variant: 'filled'
+				}
 		default:
 			return state;
 	}
