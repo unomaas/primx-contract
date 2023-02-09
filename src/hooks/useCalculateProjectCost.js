@@ -5,10 +5,9 @@ import { useEffect } from "react";
 import { parse } from "pg-protocol";
 import { Alert } from "@material-ui/lab";
 
-export default function useCalculateProjectCost(options) {
+export default function useCalculateProjectCost(estimate, options) {
 
 	const {
-		estimate,
 		products,
 		shippingDestinations,
 		currentMarkup,

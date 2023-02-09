@@ -2,16 +2,7 @@ import useValueFormatter from "./useValueFormatter";
 import useCalculateProjectCost from "./useCalculateProjectCost";
 
 // ⬇ Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays:
-export default function useEstimateCalculations(options) {
-	console.log(`Ryan Here: useEstimateCalculations`, { options});
-
-	const {
-		estimate,
-	} = options;
-
-	// console.log(`Ryan Here: Start of useEstimateCalculations`, {
-	// 	estimateDeepCopy: JSON.parse(JSON.stringify(estimate)),
-	// });
+export default function useEstimateCalculations(estimate, options = null) {
 
 	// ⬇ Remove the Time Stamps first: 
 	estimate.date_created = estimate.date_created.split('T')[0];
@@ -365,7 +356,8 @@ export default function useEstimateCalculations(options) {
 	estimate.thickened_edge_construction_joint_lineal_meters_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_meters);
 
 	// ! Ryan here, I think we might want tos kip this when pulling in an estimate that's already been saved. We'll need to test this out.
-	useCalculateProjectCost(options);
+	// ⬇ If the options object is passed in, run the useCalculateProjectCost function to calculate the project cost:
+	if (options) useCalculateProjectCost(estimate, options);
 	estimate.price_per_unit_75_50_display = estimate.price_per_unit_75_50;
 	estimate.price_per_unit_90_60_display = estimate.price_per_unit_90_60;
 	estimate.total_project_cost_75_50_display = estimate.total_project_cost_75_50;

@@ -70,6 +70,8 @@ function* AddEstimate(action) {
   } // End try/catch
 }
 
+//TODO: When I come back, either focus on getting the edit PUT route updated (aka take the date out), and/or work on getting an estimate submitted.
+
 // Saga Worker to edit estimate into table
 function* EditEstimate(action) {
   try {
@@ -148,10 +150,8 @@ function* recalculateEstimate(action) {
 
 function* handleCalculatedEstimate(action) {
   // Save a mutated object with the calculation values
-	const calculatedEstimate = useEstimateCalculations(action.payload);
-
+	const calculatedEstimate = useEstimateCalculations(action.payload.estimate, action.payload.options);
 	
-	console.log(`Ryan Here: `, {calculatedEstimate});
   yield put({
     type: 'SET_CALCULATED_ESTIMATE',
     payload: calculatedEstimate

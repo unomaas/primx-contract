@@ -300,6 +300,7 @@ function* clearAllStaleData(action) {
 	try {
 		yield put({ type: "CLEAR_ESTIMATE" });
 		yield put({ type: "CLEAR_COMBINED_ESTIMATES_DATA" });
+		yield put({ type: 'CLEAR_CALCULATED_ESTIMATE' });
 		yield put({ type: "CLEAR_ESTIMATE_QUERY_RESULT" });
 		yield put({ type: "SET_RECALCULATED_FALSE" });
 		yield put({ type: "HIDE_LOOKUP_TABLES" });

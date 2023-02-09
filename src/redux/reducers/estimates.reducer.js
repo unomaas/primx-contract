@@ -176,6 +176,8 @@ export const setCalcEstimate = (state = {}, action) => {
 	switch (action.type) {
 		case 'SET_CALCULATED_ESTIMATE':
 			return action.payload;
+		case 'CLEAR_CALCULATED_ESTIMATE':
+			return {};
 		default:
 			return state;
 	} // End switch

@@ -48,13 +48,15 @@ export default function EstimateCreateTable() {
 				type: 'HANDLE_CALCULATED_ESTIMATE',
 				payload: {
 					estimate: estimateData,
-					products: products,
-					shippingDestinations: shippingDestinations,
-					currentMarkup: currentMarkup,
-					shippingCosts: shippingCosts,
-					productContainers: productContainers,
-					dosageRates: dosageRates,
-					customsDuties: customsDuties,
+					options: {
+						products: products,
+						shippingDestinations: shippingDestinations,
+						currentMarkup: currentMarkup,
+						shippingCosts: shippingCosts,
+						productContainers: productContainers,
+						dosageRates: dosageRates,
+						customsDuties: customsDuties,
+					}
 				}
 			});
 			setSaveButton(true);
@@ -136,16 +138,16 @@ export default function EstimateCreateTable() {
 		estimateData.history = history;
 		// ⬇ Send the estimate object to be updated:
 		dispatch({ type: 'EDIT_ESTIMATE', payload: estimateData });
-		// ⬇ Sweet Alert to let them know to save the Estimate #:
-		swal({
-			title: "Your edits have been saved!",
-			text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
-			icon: "info",
-			buttons: "I understand",
-		}).then(() => {
-			// ⬇ Pop-up print confirmation:
-			window.print();
-		}); // End swal
+		// // ⬇ Sweet Alert to let them know to save the Estimate #:
+		// swal({
+		// 	title: "Your edits have been saved!",
+		// 	text: "Please print or save your estimate number! You will need it to look up this estimate again, and submit the order for processing.",
+		// 	icon: "info",
+		// 	buttons: "I understand",
+		// }).then(() => {
+		// 	// ⬇ Pop-up print confirmation:
+		// 	window.print();
+		// }); // End swal
 		// ⬇ Triggers to flip the show table state and show edit button state:
 		// dispatch({ type: 'SET_EDIT_STATE', payload: false });
 		// dispatch({ type: 'SET_TABLE_STATE', payload: false });

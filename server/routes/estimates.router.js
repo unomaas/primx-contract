@@ -15,25 +15,29 @@ const axios = require('axios');
 
 // GET request to grab estimate at ID/Estimate number for Lookup view
 router.get('/lookup/:estimate', (req, res) => {
-	const estimateNumber = req.query.estimateNumber
-	const licenseeId = req.query.licenseeId
+	const { estimateNumber, licenseeId } = req.query;
 
 	// SQL query to GET a specific estimate along the floor type names, licensee names, placement type names, and shipping state/province names
 	const queryText = `
     SELECT 
-			"estimates".*, 
-			"floor_types".floor_type_label, 
-			"licensees".licensee_contractor_name, 
-			"placement_types".placement_type_label, 
-			"shipping_costs".shipping_cost 
-		FROM "estimates"
-    JOIN "floor_types" ON "estimates".floor_type_id = "floor_types".floor_type_id
-    JOIN "licensees" ON "estimates".licensee_id = "licensees".licensee_id
-    JOIN "placement_types" ON "estimates".placement_type_id = "placement_types".placement_type_id
-    JOIN "shipping_costs" ON "estimates".destination_id = "shipping_costs".destination_id
-    WHERE "estimate_number" = $1 AND "licensee_id" = $2
-    ORDER BY "estimates".estimate_id DESC;
-  `;
+			e.*, 
+			ft.floor_type_label, 
+			l.licensee_contractor_name, 
+			pt.placement_type_label, 
+			sd.destination_name,
+			sd.destination_country
+		FROM "estimates" AS e
+    JOIN "floor_types" AS ft
+			ON e.floor_type_id = ft.floor_type_id
+    JOIN "licensees" AS l
+			ON e.licensee_id = l.licensee_id
+    JOIN "placement_types" AS pt
+			ON e.placement_type_id = pt.placement_type_id
+    JOIN "shipping_destinations" AS sd
+			ON e.destination_id = sd.destination_id
+    WHERE e.estimate_number = $1 AND l.licensee_id = $2;
+	`;
+	// ORDER BY e.estimate_id DESC;
 	pool.query(queryText, [estimateNumber, licenseeId])
 		.then(result => {
 
@@ -413,7 +417,7 @@ router.post('/add-new-estimate', async (req, res) => {
 		// ⬇ Combined Estimate Numbers:
 		estimate_number_combined_1,
 		estimate_number_combined_2,
-		estimate_number_combined_3, 
+		estimate_number_combined_3,
 		// ⬇ Final Cost Numbers:
 		price_per_unit_75_50,
 		price_per_unit_90_60,
