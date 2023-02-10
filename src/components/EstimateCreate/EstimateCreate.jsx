@@ -445,6 +445,7 @@ export default function EstimateCreate() {
 													size="small"
 													fullWidth
 													value={estimateData.destination_id}
+													disabled={editState ? true : false}
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{shippingDestinations.map(state => {

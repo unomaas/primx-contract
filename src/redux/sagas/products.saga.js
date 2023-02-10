@@ -102,11 +102,13 @@ function* saveProductCostHistoryLog(action) {
 		const result = yield axios.post(`/api/products/submit-product-cost-history`, productsArray);
 		if (result.status === 201) {
 			// ⬇ Refresh the cost history recent data:
-			yield put({ type: 'FETCH_SHIPPING_COST_HISTORY_RECENT' });
+			yield put({ type: 'FETCH_PRODUCT_COST_HISTORY_RECENT' });
 			yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+			yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
 		} // End if 
 	} catch (error) {
 		console.error('Error with saveProductCostHistoryLog in shippingCosts saga', error);
+		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} // End try/catch
 } // End saveProductCostHistoryLog
@@ -185,6 +187,8 @@ function* saveMarkupHistoryLog(action) {
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} // End try/catch
 } // End saveMarkupHistoryLog
+
+
 
 
 //#endregion - Markup Saga Routes above.

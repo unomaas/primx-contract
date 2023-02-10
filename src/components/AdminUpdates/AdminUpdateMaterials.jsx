@@ -179,6 +179,7 @@ export default function AdminUpdateMaterials() {
 		};
 
 		const handleSaveHistoryLogSubmit = () => {
+			console.log(`Ryan Here: handleSaveHistoryLogSubmit \n `, { productCostHistoryRecent });
 			if (
 				productCostHistoryRecent.length > 0 &&
 				productCostHistoryRecent[0].date_saved.slice(0, 7) === today

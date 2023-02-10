@@ -40,7 +40,6 @@ router.get('/lookup/:estimate', (req, res) => {
 	// ORDER BY e.estimate_id DESC;
 	pool.query(queryText, [estimateNumber, licenseeId])
 		.then(result => {
-
 			res.send(result.rows);
 		})
 		.catch(error => {
@@ -341,7 +340,7 @@ router.post('/add-new-estimate', async (req, res) => {
 		floor_type_id,
 		placement_type_id,
 		measurement_units,
-		date_created,
+		// date_created,
 		anticipated_first_pour_date,
 		ship_to_address,
 		ship_to_city,
@@ -400,7 +399,7 @@ router.post('/add-new-estimate', async (req, res) => {
 		floor_type_id,
 		placement_type_id,
 		measurement_units,
-		date_created,
+		// date_created, // 10
 		anticipated_first_pour_date,
 		ship_to_address,
 		ship_to_city,
@@ -422,7 +421,7 @@ router.post('/add-new-estimate', async (req, res) => {
 		price_per_unit_75_50,
 		price_per_unit_90_60,
 		total_project_cost_75_50,
-		total_project_cost_90_60, // 27
+		total_project_cost_90_60, // 26
 	]; // End values
 
 	// start the query text with shared values
@@ -437,7 +436,7 @@ router.post('/add-new-estimate', async (req, res) => {
 			floor_type_id,
 			placement_type_id,
 			measurement_units,
-			date_created,
+			date_created, 
 			anticipated_first_pour_date,
 			ship_to_address,
 			ship_to_city,
@@ -471,7 +470,7 @@ router.post('/add-new-estimate', async (req, res) => {
 			thickened_edge_construction_joint_lineal_feet,
 			primx_dc_on_hand_lbs,
 			primx_steel_fibers_on_hand_lbs,
-			primx_ultracure_blankets_on_hand_sq_ft, // 34 
+			primx_ultracure_blankets_on_hand_sq_ft, // 33
 		); // End values.push
 		// append the imperial specific data to the SQL query
 		queryText += `
@@ -493,7 +492,7 @@ router.post('/add-new-estimate', async (req, res) => {
 			thickened_edge_construction_joint_lineal_meters,
 			primx_dc_on_hand_kgs,
 			primx_steel_fibers_on_hand_kgs,
-			primx_ultracure_blankets_on_hand_sq_m, // 34
+			primx_ultracure_blankets_on_hand_sq_m, // 33
 		); // End values.push
 		// append the metric specific data to the SQL query
 		queryText += `
@@ -511,19 +510,16 @@ router.post('/add-new-estimate', async (req, res) => {
 	// add the values clause to the SQL query 
 	queryText += `
     VALUES (
-      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33
       )
       RETURNING "licensee_id", "estimate_id";
   `; // End queryText
 
-
-
-
 	try {
 		// First DB query: initial POST request with data from the client
 		let { rows } = await pool.query(queryText, values);
-		const licensee_id = rows[0].licensee_id;
-		const estimate_id = rows[0].estimate_id;
+		const { licensee_id, estimate_id } = rows[0];
+		// const estimate_id = rows[0].estimate_id;
 
 		// Second DB query: GET the full name of the licensee from the licensee table since licensee name from the client is stored as licensee_id
 		const secondQueryText = `SELECT licensee_contractor_name 
