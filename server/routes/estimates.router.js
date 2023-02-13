@@ -678,57 +678,34 @@ router.put('/combine-order/:id', async (req, res) => {
 
 // PUT request to take an existing estimate, GET current shipping and materials pricing from the DB, and update the given estimate with the new
 // pricing data
-router.put('/recalculate/:id', (req, res) => {
-	// SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
-	const queryText = `
-    UPDATE "estimates" 
-    SET 
-      "primx_dc_unit_price" = $1, 
-      "primx_dc_shipping_estimate" = $2, 
-      "primx_flow_unit_price" = $3, 
-      "primx_flow_shipping_estimate" = $4, 
-      "primx_steel_fibers_unit_price" = $5, 
-      "primx_steel_fibers_shipping_estimate" = $6,
-      "primx_ultracure_blankets_unit_price" = $7, 
-      "primx_cpea_unit_price" = $8, 
-      "primx_cpea_shipping_estimate" = $9
-    WHERE "estimates".estimate_id = $10;
-  `;
-
-	// destructure data received from saga which contains an object with current updated pricing
-	const {
-		primx_dc_unit_price,
-		primx_dc_shipping_estimate,
-		primx_flow_unit_price,
-		primx_flow_shipping_estimate,
-		primx_steel_fibers_unit_price,
-		primx_steel_fibers_shipping_estimate,
-		primx_ultracure_blankets_unit_price,
-		primx_cpea_unit_price,
-		primx_cpea_shipping_estimate,
-		id
-	} = req.body
-
-	// set the pool query values to equal the destructured values
-	const values = [
-		primx_dc_unit_price,
-		primx_dc_shipping_estimate,
-		primx_flow_unit_price,
-		primx_flow_shipping_estimate,
-		primx_steel_fibers_unit_price,
-		primx_steel_fibers_shipping_estimate,
-		primx_ultracure_blankets_unit_price,
-		primx_cpea_unit_price,
-		primx_cpea_shipping_estimate,
-		id
-	];
-
-	pool.query(queryText, values)
-		.then(result => res.sendStatus(200))
-		.catch(error => {
-			console.error(`Error with /api/estimates/recalculate/:id PUT for id ${req.params.id}:`, error)
-		})
-})
+router.put('/recalculate/:id', async (req, res) => {
+	try {
+		const {
+			estimate_id,
+			price_per_unit_75_50,
+			price_per_unit_90_60,
+			total_project_cost_75_50,
+			total_project_cost_90_60,
+		} = req.body;
+		// SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
+		const sql = `
+			UPDATE "estimates" 
+			SET 
+				"price_per_unit_75_50" = ${format('%L', price_per_unit_75_50)},
+				"price_per_unit_90_60" = ${format('%L', price_per_unit_90_60)},
+				"total_project_cost_75_50" = ${format('%L', total_project_cost_75_50)},
+				"total_project_cost_90_60" = ${format('%L', total_project_cost_90_60)},
+				"date_created" = NOW()
+			WHERE "estimate_id" = ${format('%L', estimate_id)}
+			RETURNING "date_created";
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows[0].date_created);
+	} catch (error) {
+		console.error(`Error with /api/estimates/recalculate:`, error)
+		res.sendStatus(500);
+	}; // End try/catch
+}); // End PUT route
 
 // *************************** DELETE ROUTES ***************************
 
@@ -749,171 +726,128 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
 
 // PUT request which allows user to update any form-fillable data from the main estimate creation sheet, follows a very similar workflow to the 
 // main POST route above
-router.put('/clientupdates/:id', (req, res) => {
-	// destructure data received from saga which contains an object with all editable DB columns 
-	let {
-		// shared values regardless of imperial or metric units
-		measurement_units,
-		country,
-		project_name,
-		licensee_id,
-		project_general_contractor,
-		ship_to_address,
-		ship_to_city,
-		shipping_costs_id,
-		zip_postal_code,
-		anticipated_first_pour_date,
-		project_manager_name,
-		project_manager_email,
-		project_manager_phone,
-		floor_type_id,
-		placement_type_id,
-		primx_flow_dosage_liters,
-		primx_cpea_dosage_liters,
-		waste_factor_percentage,
-		materials_on_hand,
-		primx_flow_on_hand_liters,
-		primx_cpea_on_hand_liters,
-		// unit specific values
-		square_feet,
-		thickness_inches,
-		thickened_edge_perimeter_lineal_feet,
-		thickened_edge_construction_joint_lineal_feet,
-		primx_steel_fibers_dosage_lbs,
-		primx_dc_dosage_lbs,
-		primx_dc_on_hand_lbs,
-		primx_steel_fibers_on_hand_lbs,
-		primx_ultracure_blankets_on_hand_sq_ft,
-		square_meters,
-		thickness_millimeters,
-		thickened_edge_perimeter_lineal_meters,
-		thickened_edge_construction_joint_lineal_meters,
-		primx_steel_fibers_dosage_kgs,
-		primx_dc_dosage_kgs,
-		primx_dc_on_hand_kgs,
-		primx_steel_fibers_on_hand_kgs,
-		primx_ultracure_blankets_on_hand_sq_m,
-	} = req.body
 
-	// save the values array using the destructured data from client
-	const values = [
-		// starting values don't include metric or imperial specific units
-		measurement_units,
-		country,
-		project_name,
-		licensee_id,
-		project_general_contractor,
-		ship_to_address,
-		ship_to_city,
-		shipping_costs_id,
-		zip_postal_code,
-		anticipated_first_pour_date,
-		project_manager_name,
-		project_manager_email,
-		project_manager_phone,
-		floor_type_id,
-		placement_type_id,
-		primx_flow_dosage_liters,
-		primx_cpea_dosage_liters,
-		waste_factor_percentage,
-		materials_on_hand,
-		primx_flow_on_hand_liters,
-		primx_cpea_on_hand_liters,
-	]
+//TODO: When I come back, finish updating this PUT route so that the edit logic is complete.  Then work on Combining Estimates, then testing everything works in each view.  We also want to check and update the "RECALCULATE_COSTS" logic to update the date_created for each estimate, and remove it from wherever it's implemented right now.  We onyl want the date_created to be updated when the prices are changed on the estimate. 
+router.put('/clientupdates/:id', async (req, res) => {
+	try {
 
-	// start the query text with shared values
-	let queryText = `
-    UPDATE "estimates" 
-		SET
-			"measurement_units" = $1,
-			"country" = $2,
-			"project_name" = $3,
-			"licensee_id" = $4,
-			"project_general_contractor" = $5,
-			"ship_to_address" = $6,
-			"ship_to_city" = $7,
-			"shipping_costs_id" = $8,
-			"zip_postal_code" = $9,
-			"anticipated_first_pour_date" = $10,
-			"project_manager_name" = $11,
-			"project_manager_email" = $12,
-			"project_manager_phone" = $13,
-			"floor_type_id" = $14,
-			"placement_type_id" = $15,
-			"primx_flow_dosage_liters" = $16,
-			"primx_cpea_dosage_liters" = $17,
-			"waste_factor_percentage" = $18,
-			"materials_on_hand" = $19, 
-			"primx_flow_on_hand_liters" = $20,
-			"primx_cpea_on_hand_liters" = $21,
-  `; // End queryText
+		const {
+			// ⬇ General Info: 
+			estimate_id,
+			project_name,
+			licensee_id,
+			project_general_contractor,
+			project_manager_name,
+			project_manager_email,
+			project_manager_phone,
+			floor_type_id,
+			placement_type_id,
+			measurement_units,
+			// date_created,
+			anticipated_first_pour_date,
+			ship_to_address,
+			ship_to_city,
+			destination_id,
+			zip_postal_code,
+			waste_factor_percentage,
+			materials_excluded,
 
-	// Add in the imperial or metric specific values based on unit choice
-	if (req.body.measurement_units == 'imperial') {
-		// add the imperial values to values array
-		values.push(
+			// ⬇ Materials On Hand Shared:
+			materials_on_hand,
+			primx_flow_on_hand_liters,
+			primx_cpea_on_hand_liters,
+
+			// ⬇ Combined Estimate Numbers:
+			estimate_number_combined_1,
+			estimate_number_combined_2,
+			estimate_number_combined_3,
+
+			// ⬇ Final Cost Numbers:
+			// price_per_unit_75_50,
+			// price_per_unit_90_60,
+			total_project_cost_75_50,
+			total_project_cost_90_60,
+
+			// ⬇ Imperial: 
 			square_feet,
 			thickness_inches,
 			thickened_edge_perimeter_lineal_feet,
 			thickened_edge_construction_joint_lineal_feet,
-			primx_steel_fibers_dosage_lbs,
-			primx_dc_dosage_lbs,
 			primx_dc_on_hand_lbs,
 			primx_steel_fibers_on_hand_lbs,
 			primx_ultracure_blankets_on_hand_sq_ft,
-		); // End push
-		// append the imperial specific data to the SQL query
-		queryText += `
-			"square_feet"= $22,
-			"thickness_inches"= $23,
-			"thickened_edge_perimeter_lineal_feet"= $24,
-			"thickened_edge_construction_joint_lineal_feet"= $25,
-			"primx_steel_fibers_dosage_lbs"= $26,
-			"primx_dc_dosage_lbs" = $27,
-			"primx_dc_on_hand_lbs" = $28,
-			"primx_steel_fibers_on_hand_lbs" = $29,
-			"primx_ultracure_blankets_on_hand_sq_ft" = $30
-			WHERE "id" = $31;
-		`; // End queryText
-	} else if (req.body.measurement_units == 'metric') {
-		// add the metric values to the values array
-		values.push(
+
+			// ⬇ Metric:
 			square_meters,
 			thickness_millimeters,
 			thickened_edge_perimeter_lineal_meters,
 			thickened_edge_construction_joint_lineal_meters,
-			primx_steel_fibers_dosage_kgs,
-			primx_dc_dosage_kgs,
 			primx_dc_on_hand_kgs,
 			primx_steel_fibers_on_hand_kgs,
 			primx_ultracure_blankets_on_hand_sq_m,
-		); // End push
-		// append the metric specific data to the SQL query
-		queryText += `
-      "square_meters" = $22,
-      "thickness_millimeters" = $23,
-      "thickened_edge_perimeter_lineal_meters" = $24,
-      "thickened_edge_construction_joint_lineal_meters" = $25,
-      "primx_steel_fibers_dosage_kgs" = $26,
-			"primx_dc_dosage_kgs" = $27,
-			"primx_dc_on_hand_kgs" = $28,
-			"primx_steel_fibers_on_hand_kgs" = $29,
-			"primx_ultracure_blankets_on_hand_sq_m" = $30
-      WHERE "id" = $31;
-    `; // End 
-	} // End if/else if
+		} = req.body;
+		let sql = `
+			UPDATE "estimates"
+			SET
+				"project_name" = ${format('%L', project_name)},
+				"licensee_id" = ${format('%L', licensee_id)},
+				"project_general_contractor" = ${format('%L', project_general_contractor)},
+				"project_manager_name" = ${format('%L', project_manager_name)},
+				"project_manager_email" = ${format('%L', project_manager_email)},
+				"project_manager_phone" = ${format('%L', project_manager_phone)},
+				"floor_type_id" = ${format('%L', floor_type_id)},
+				"placement_type_id" = ${format('%L', placement_type_id)},
+				"measurement_units" = ${format('%L', measurement_units)},
+				"anticipated_first_pour_date" = ${format('%L', anticipated_first_pour_date)},
+				"ship_to_address" = ${format('%L', ship_to_address)},
+				"ship_to_city" = ${format('%L', ship_to_city)},
+				"destination_id" = ${format('%L', destination_id)},
+				"zip_postal_code" = ${format('%L', zip_postal_code)},
+				"waste_factor_percentage" = ${format('%L', waste_factor_percentage)},
+				"materials_excluded" = ${format('%L', materials_excluded)},
+				"materials_on_hand" = ${format('%L', materials_on_hand)},
+				"primx_flow_on_hand_liters" = ${format('%L', primx_flow_on_hand_liters)},
+				"primx_cpea_on_hand_liters" = ${format('%L', primx_cpea_on_hand_liters)},
+				"estimate_number_combined_1" = ${format('%L', estimate_number_combined_1)},
+				"estimate_number_combined_2" = ${format('%L', estimate_number_combined_2)},
+				"estimate_number_combined_3" = ${format('%L', estimate_number_combined_3)},
+				"total_project_cost_75_50" = ${format('%L', total_project_cost_75_50)},
+				"total_project_cost_90_60" = ${format('%L', total_project_cost_90_60)},
+		`; // End sql
+		// Add in the imperial or metric specific values based on unit choice
+		if (req.body.measurement_units == 'imperial') {
+			sql += `
+					"square_feet" = ${format('%L', square_feet)},
+					"thickness_inches" = ${format('%L', thickness_inches)},
+					"thickened_edge_perimeter_lineal_feet" = ${format('%L', thickened_edge_perimeter_lineal_feet)},
+					"thickened_edge_construction_joint_lineal_feet" = ${format('%L', thickened_edge_construction_joint_lineal_feet)},
+					"primx_dc_on_hand_lbs" = ${format('%L', primx_dc_on_hand_lbs)},
+					"primx_steel_fibers_on_hand_lbs" = ${format('%L', primx_steel_fibers_on_hand_lbs)},
+					"primx_ultracure_blankets_on_hand_sq_ft" = ${format('%L', primx_ultracure_blankets_on_hand_sq_ft)}
+				WHERE "estimate_id" = ${format('%L', estimate_id)};
+			`; // End sql
+		} else if (req.body.measurement_units == 'metric') {
+			sql += `
+					"square_meters" = ${format('%L', square_meters)},
+					"thickness_millimeters" = ${format('%L', thickness_millimeters)},
+					"thickened_edge_perimeter_lineal_meters" = ${format('%L', thickened_edge_perimeter_lineal_meters)},
+					"thickened_edge_construction_joint_lineal_meters" = ${format('%L', thickened_edge_construction_joint_lineal_meters)},
+					"primx_dc_on_hand_kgs" = ${format('%L', primx_dc_on_hand_kgs)},
+					"primx_steel_fibers_on_hand_kgs" = ${format('%L', primx_steel_fibers_on_hand_kgs)},
+					"primx_ultracure_blankets_on_hand_sq_m" = ${format('%L', primx_ultracure_blankets_on_hand_sq_m)}
+				WHERE "estimate_id" = ${format('%L', estimate_id)};
+			`; // End sql
+		}; // End if/else if
+		await pool.query(sql);
+		res.sendStatus(200);
+	} catch (error) {
+		res.sendStatus(500);
+		console.error('Error in estimate.router PUT', error);
+	}; // End try/catch
+}); // End router.put
 
-	// add id to the values array
-	values.push(req.params.id);
 
-	pool.query(queryText, values)
-		.then(result => {
-			res.sendStatus(200)
-		})
-		.catch(error => {
-			console.error(`Error with /api/estimates/clientupdates/:id PUT for id ${req.params.id}:`, error)
-		})
-})
+
 
 // PUT request for when an individual estimate is saved in a combined estimate, flip it's 'used_in_a_combined_order' key to TRUE: 
 router.put('/usedincombine', async (req, res) => {

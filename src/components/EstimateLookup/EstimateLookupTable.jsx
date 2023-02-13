@@ -5,8 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch } from '@material-ui/core';
+import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch, Tooltip } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
+import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -24,8 +25,6 @@ export default function EstimateLookupTable() {
 	const history = useHistory();
 	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
 
-	console.log(`Ryan Here \n dosageRates`, dosageRates);
-
 	// ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
 	const { licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
 	let cubic_measurement_unit = searchResult?.measurement_units === "imperial" ? "yd³" : "m³";
@@ -41,7 +40,6 @@ export default function EstimateLookupTable() {
 		searchResult.history = history;
 		// ⬇ Needs to GET shipping information and pricing information before recalculating
 		dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult });
-		dispatch({ type: 'GET_RECALCULATE_INFO' });
 	} // End handleRecalculateCosts
 
 	/** ⬇ handlePlaceOrder:
@@ -86,7 +84,6 @@ export default function EstimateLookupTable() {
 		history.push(`/create`);
 	}; // End handleClose
 	//#endregion ⬆⬆ Event handlers above. 
-
 
 	// ⬇ Rendering below:
 	return (
@@ -567,56 +564,45 @@ export default function EstimateLookupTable() {
 													<TableCell colSpan={7} align="right">
 														<section className="removeInPrint">
 															{/* Edit Estimate Button: */}
-															<Button
-																variant="contained"
-																// color="secondary"
-																onClick={handleEdit}
-																className={classes.LexendTeraFont11}
-															>
-																Edit This Estimate
-															</Button>
-															&nbsp; &nbsp;
 
-															{/* Recalculate Costs Button: */}
-															<Button
-																variant="contained"
-																color="primary"
-																onClick={handleRecalculateCosts}
-																className={classes.LexendTeraFont11}
-															>
-																Recalculate Costs
-															</Button>
-															&nbsp; &nbsp;
-															{hasRecalculated ?
-																<>
+															{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 3
+																? <Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
+																	<Button
+																		variant="contained"
+																		color="primary"
+																		onClick={handleRecalculateCosts}
+																		style={{ marginTop: "13px" }}
+																		className={classes.LexendTeraFont11}
+																	>
+																		Recalculate Costs
+																	</Button>
+																</Tooltip>
+																: <>
+																	<Button
+																		variant="contained"
+																		// color="secondary"
+																		onClick={handleEdit}
+																		className={classes.LexendTeraFont11}
+																		style={{ float: "left", marginTop: "13px" }}
+																	>
+																		Edit This Estimate
+																	</Button>
+																	
+
 																	<TextField
 																		onChange={(event) => setPoNumber(event.target.value)}
 																		size="small"
 																		label="PO Number"
 																		helperText={poNumError}
-																	/>
-																</> : <>
-																	Recalculate costs before placing order.
-																</>
-															}
-															&nbsp; &nbsp;
+																	/> &nbsp; &nbsp;
 
-															{/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
-															{hasRecalculated ?
-																<>
 																	<Button
 																		variant="contained"
-																		color="secondary"
+																		color="primary"
 																		onClick={handlePlaceOrder}
 																		className={classes.LexendTeraFont11}
-																	>
-																		Place Order
-																	</Button>
-																</> : <>
-																	<Button
-																		variant="contained"
-																		disabled
-																		className={classes.LexendTeraFont11}
+																		style={{ marginTop: "13px" }}
+																	// disabled={hasRecalculated ? true : false}
 																	>
 																		Place Order
 																	</Button>

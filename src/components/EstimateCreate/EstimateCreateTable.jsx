@@ -8,7 +8,7 @@ import { Alert } from '@material-ui/lab';
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar, Radio, RadioGroup, FormControl, FormControlLabel } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
-import useDifferenceInMonths from '../../hooks/useDifferenceInMonths';
+import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -36,7 +36,7 @@ export default function EstimateCreateTable() {
 	let cubic_measurement_unit = estimateData.measurement_units === "imperial" ? "yd³" : "m³";
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
-		estimateData.difference_in_months = useDifferenceInMonths(new Date(), new Date(estimateData.date_created));
+		estimateData.difference_in_months = useDifferenceBetweenDates(estimateData.date_created).total_months;
 		if (
 			estimateData.square_feet &&
 			estimateData.thickness_inches &&
@@ -94,7 +94,7 @@ export default function EstimateCreateTable() {
 
 		if (key == 'materials_excluded' && editState == true) {
 			estimateData.force_recalculate = true;
-		}; 
+		};
 
 		dispatch({
 			type: 'SET_ESTIMATE',
@@ -118,7 +118,6 @@ export default function EstimateCreateTable() {
 		estimateData.total_project_cost_90_60 = calculatedDisplayObject.total_project_cost_90_60;
 
 		// ⬇ Send the estimate object to be POSTed:
-		console.log(`Ryan Here: handleSave\n `, { estimateData });
 		dispatch({ type: 'ADD_ESTIMATE', payload: estimateData });
 		// // ⬇ Sweet Alert to let them know to save the Estimate #:
 		// swal({
@@ -140,6 +139,8 @@ export default function EstimateCreateTable() {
 		estimateData.history = history;
 		// ⬇ Send the estimate object to be updated:
 		dispatch({ type: 'EDIT_ESTIMATE', payload: estimateData });
+
+
 		// // ⬇ Sweet Alert to let them know to save the Estimate #:
 		// swal({
 		// 	title: "Your edits have been saved!",
@@ -906,7 +907,10 @@ export default function EstimateCreateTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Price Options:</b></TableCell>
 											<TableCell>
-												<FormControl>
+												<FormControl  
+														disabled={editState ? true : false}
+												
+												>
 													<RadioGroup
 														value={estimateData.materials_excluded}
 														style={{ display: 'inline' }}

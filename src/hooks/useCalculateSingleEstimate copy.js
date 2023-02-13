@@ -60,7 +60,6 @@ export default function useCalculateSingleEstimate(options) {
 
 	// ⬇ Step #1: Calculate transportation costs per each material uit for both container sizes, acoording to user destination input (example for Material A - PrimX DC, but the approach for all materials,  based on net pallet weight):
 
-	// ! Ryan Here, array setup is getting clunky.  Switching to objects. 
 	// const selectedDestination = shippingDestinations.find(destination => destination.destination_id === estimate.destination_id);
 	// // ⬇ Reduce the shippingCosts array to only the selected destination:
 	// const selectedShippingCosts = shippingCosts.filter(cost => cost.destination_id === estimate.destination_id);
@@ -173,38 +172,14 @@ export default function useCalculateSingleEstimate(options) {
 	// ⬇ PrimX DC 20ft & 40ft:
 	const primxDc20ftTransportationCostPerLb = parseFloat(primxDc20ftCostInfo.shipping_cost) / (parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet) * parseFloat(primxDc20ftContainerInfo.max_pallets_per_container));
 
-	console.log(`Ryan Here: 1 TESTING LOOK HERE \n`,
-		'\n parseFloat(primxDc20ftCostInfo.shipping_cost)', parseFloat(primxDc20ftCostInfo.shipping_cost),
-		'\n parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet)', parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet),
-		'\n parseFloat(primxDc20ftContainerInfo.max_pallets_per_container)', parseFloat(primxDc20ftContainerInfo.max_pallets_per_container),
-		'\n primxDc20ftTransportationCostPerLb', primxDc20ftTransportationCostPerLb
-	);
-
 	const primxDc40ftTransportationCostPerLb = parseFloat(primxDc40ftCostInfo.shipping_cost) / (parseFloat(primxDc40ftContainerInfo.net_weight_of_pallet) * parseFloat(primxDc40ftContainerInfo.max_pallets_per_container));
 
-	console.log(`Ryan Here: 1.1 TESTING LOOK HERE \n`,
-		'\n parseFloat(primxDc40ftCostInfo.shipping_cost)', parseFloat(primxDc40ftCostInfo.shipping_cost),
-		'\n parseFloat(primxDc40ftContainerInfo.net_weight_of_pallet)', parseFloat(primxDc40ftContainerInfo.net_weight_of_pallet),
-		'\n parseFloat(primxDc40ftContainerInfo.max_pallets_per_container)', parseFloat(primxDc40ftContainerInfo.max_pallets_per_container),
-		'\n primxDc40ftTransportationCostPerLb', primxDc40ftTransportationCostPerLb
-	);
 
 	// ⬇ PrimX Steel Fibers 20ft & 40ft:
 	const primxSteelFiber20ftTransportationCostPerLb = parseFloat(primxSteelFiber20ftCostInfo.shipping_cost) / (parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet) * parseFloat(primxSteelFiber20ftContainerInfo.max_pallets_per_container));
-	console.log(`Ryan Here: 2 TESTING LOOK HERE \n`,
-		'\n parseFloat(primxSteelFiber20ftCostInfo.shipping_cost)', parseFloat(primxSteelFiber20ftCostInfo.shipping_cost),
-		'\n parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet)', parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet),
-		'\n parseFloat(primxSteelFiber20ftContainerInfo.max_pallets_per_container)', parseFloat(primxSteelFiber20ftContainerInfo.max_pallets_per_container),
-		'\n primxSteelFiber20ftTransportationCostPerLb', primxSteelFiber20ftTransportationCostPerLb
-	);
+	
 	const primxSteelFiber40ftTransportationCostPerLb = parseFloat(primxSteelFiber40ftCostInfo.shipping_cost) / (parseFloat(primxSteelFiber40ftContainerInfo.net_weight_of_pallet) * parseFloat(primxSteelFiber40ftContainerInfo.max_pallets_per_container));
-	console.log(`Ryan Here: 2.1 TESTING LOOK HERE \n`,
-		'\n parseFloat(primxSteelFiber40ftCostInfo.shipping_cost)', parseFloat(primxSteelFiber40ftCostInfo.shipping_cost),
-		'\n parseFloat(primxSteelFiber40ftContainerInfo.net_weight_of_pallet)', parseFloat(primxSteelFiber40ftContainerInfo.net_weight_of_pallet),
-		'\n parseFloat(primxSteelFiber40ftContainerInfo.max_pallets_per_container)', parseFloat(primxSteelFiber40ftContainerInfo.max_pallets_per_container),
-		'\n primxSteelFiber40ftTransportationCostPerLb', primxSteelFiber40ftTransportationCostPerLb
-	);
-
+	
 
 
 	// ⬇ PrimX Flow 20ft & 40ft:
@@ -221,11 +196,7 @@ export default function useCalculateSingleEstimate(options) {
 	//#region Step 4 - Compare the Cost Per Lb of 20ft and 40ft containers, and choose the cheapest:
 	// ⬇ PrimX DC:
 	const cheapestPrimXDcTransportationCostPerLb = primxDc20ftTransportationCostPerLb < primxDc40ftTransportationCostPerLb ? primxDc20ftTransportationCostPerLb : primxDc40ftTransportationCostPerLb;
-	console.log(`Ryan Here: 3 TESTING LOOK HERE \n`,
-		'\n primxDc20ftTransportationCostPerLb', primxDc20ftTransportationCostPerLb,
-		'\n primxDc40ftTransportationCostPerLb', primxDc40ftTransportationCostPerLb,
-		'\n cheapestPrimXDcTransportationCostPerLb', cheapestPrimXDcTransportationCostPerLb
-	)
+	
 
 	// ⬇ PrimX Steel Fibers:
 	const cheapestPrimxSteelFiberTransportationCostPerLb = primxSteelFiber20ftTransportationCostPerLb < primxSteelFiber40ftTransportationCostPerLb ? primxSteelFiber20ftTransportationCostPerLb : primxSteelFiber40ftTransportationCostPerLb;
@@ -246,22 +217,10 @@ export default function useCalculateSingleEstimate(options) {
 	// a is... primxDcProductInfo.material_cost_per_unit
 	// y1 is... a new variable, primxDcTransportationCostPlusMaterialCostPerUnit
 	const primxDcTransportationCostPlusMaterialCostPerUnit = cheapestPrimXDcTransportationCostPerLb + parseFloat(primxDcProductInfo.product_self_cost);
-	console.log(`Ryan Here: 4 TESTING LOOK HERE \n`,
-		'\n cheapestPrimXDcTransportationCostPerLb', cheapestPrimXDcTransportationCostPerLb,
-		'\n parseFloat(primxDcProductInfo.product_self_cost)', parseFloat(primxDcProductInfo.product_self_cost),
-		'\n primxDcTransportationCostPlusMaterialCostPerUnit', primxDcTransportationCostPlusMaterialCostPerUnit
-
-	);
-
+	
 	// ⬇ PrimX Steel Fibers:
 	const primxSteelFiberTransportationCostPlusMaterialCostPerUnit = cheapestPrimxSteelFiberTransportationCostPerLb + parseFloat(primxSteelFiberProductInfo.product_self_cost);
 
-	console.log(`Ryan Here: 5 TESTING LOOK HERE \n`,
-
-		'\n cheapestPrimxSteelFiberTransportationCostPerLb', cheapestPrimxSteelFiberTransportationCostPerLb,
-		'\n parseFloat(primxSteelFiberProductInfo.product_self_cost)', parseFloat(primxSteelFiberProductInfo.product_self_cost),
-		'\n primxSteelFiberTransportationCostPlusMaterialCostPerUnit', primxSteelFiberTransportationCostPlusMaterialCostPerUnit
-	);
 
 	// ⬇ PrimX Flow:
 	const primxFlowTransportationCostPlusMaterialCostPerUnit = cheapestPrimxFlowTransportationCostPerLb + parseFloat(primxFlowProductInfo.product_self_cost);
@@ -290,22 +249,6 @@ export default function useCalculateSingleEstimate(options) {
 		(primxCpeaTransportationCostPlusMaterialCostPerUnit * parseFloat(primxCpeaDosageRateInfo.dosage_rate))
 	);
 
-	console.log(`Ryan Here: 6 TESTING LOOK HERE \n`,
-		`\n step 1: `, primxDcTransportationCostPlusMaterialCostPerUnit, ' * ', parseFloat(primxDcDosageRateInfo.dosage_rate),
-		`\n step 1 Result: `, primxDcTransportationCostPlusMaterialCostPerUnit * parseFloat(primxDcDosageRateInfo.dosage_rate),
-
-		`\n step 2: `, primxSteelFiberTransportationCostPlusMaterialCostPerUnit, ' * ', parseFloat(primxSteelFiberDosageRateInfo.dosage_rate),
-		`\n step 2 Result: `, primxSteelFiberTransportationCostPlusMaterialCostPerUnit * parseFloat(primxSteelFiberDosageRateInfo.dosage_rate),
-
-		`\n step 3: `, primxFlowTransportationCostPlusMaterialCostPerUnit, ' * ', parseFloat(primxFlowDosageRateInfo.dosage_rate),
-		`\n step 3 Result: `, primxFlowTransportationCostPlusMaterialCostPerUnit * parseFloat(primxFlowDosageRateInfo.dosage_rate),
-
-		`\n step 4: `, primxCpeaTransportationCostPlusMaterialCostPerUnit, ' * ', parseFloat(primxCpeaDosageRateInfo.dosage_rate),
-		`\n step 4 Result: `, primxCpeaTransportationCostPlusMaterialCostPerUnit * parseFloat(primxCpeaDosageRateInfo.dosage_rate),
-
-		`\n Total: `, dollarSelfCostPerUnit
-
-	);
 	//#endregion - Calculate the self cost per unit for each product.
 
 	// ⬇ Calculate Sales Price (z) based on mark-up:
@@ -317,103 +260,6 @@ export default function useCalculateSingleEstimate(options) {
 
 	// ⬇ Calculate the sales price per unit:
 	const salesPricePerUnit = dollarSelfCostPerUnit / (1 - parseFloat(currentMarkup[0].margin_applied));
-
-	console.log(`Ryan HEre: 7 TESTING LOOK HERE `,
-		`\n dollarSelfCostPerUnit: `, dollarSelfCostPerUnit,
-		`\n currentMarkup[0].margin_applied: `, parseFloat(currentMarkup[0].margin_applied),
-		`\n salesPricePerUnit: `, salesPricePerUnit
-	);
-
-
-	console.log(`End of useCalculateSingleEstimate \n \n `,
-		'Static Data: ',
-		{
-			estimate,
-			Arrays: {
-				shippingDestinations,
-				shippingCosts,
-				products,
-				productContainers,
-				dosageRates,
-				customsDuties,
-				currentMarkup,
-			},
-		},
-
-		'\n \n Calculated Data: ',
-		{
-			'Shipping Shortcuts': {
-				selectedShippingCosts,
-				selectedShippingCostsObject,
-			},
-			"selected Transportation Cost Info": {
-				primxDc20ftCostInfo,
-				primxDc20ftContainerInfo,
-				primxDc40ftCostInfo,
-				primxDc40ftContainerInfo,
-				primxSteelFiber20ftCostInfo,
-				primxSteelFiber20ftContainerInfo,
-				primxSteelFiber40ftCostInfo,
-				primxSteelFiber40ftContainerInfo,
-				primxFlow20ftCostInfo,
-				primxFlow20ftContainerInfo,
-				primxFlow40ftCostInfo,
-				primxFlow40ftContainerInfo,
-				primxCpea20ftCostInfo,
-				primxCpea20ftContainerInfo,
-				primxCpea40ftCostInfo,
-				primxCpea40ftContainerInfo,
-			},
-
-			'Calculated Transportation Price Info: ': {
-				primxDc20ftTransportationCostPerLb,
-				primxDc40ftTransportationCostPerLb,
-				primxSteelFiber20ftTransportationCostPerLb,
-				primxSteelFiber40ftTransportationCostPerLb,
-				primxFlow20ftTransportationCostPerLb,
-				primxFlow40ftTransportationCostPerLb,
-				primxCpea20ftTransportationCostPerLb,
-				primxCpea40ftTransportationCostPerLb,
-
-			},
-
-			'Cheapest Transportation Container Info: ': {
-				cheapestPrimXDcTransportationCostPerLb,
-				cheapestPrimxSteelFiberTransportationCostPerLb,
-				cheapestPrimxFlowTransportationCostPerLb,
-				cheapestPrimxCpeaTransportationCostPerLb,
-			},
-
-			'Product Info': {
-				primxDcProductInfo,
-				primxSteelFiberProductInfo,
-				primxFlowProductInfo,
-				primxCpeaProductInfo,
-				primxUltraCureProductInfo,
-			},
-
-			'Dosage Rates: ': {
-				primxDcDosageRateInfo,
-				primxSteelFiberDosageRateInfo,
-				primxFlowDosageRateInfo,
-				primxCpeaDosageRateInfo,
-			},
-
-			'Calculated Transportation Price + Material Price Info: ': {
-				primxDcTransportationCostPlusMaterialCostPerUnit,
-				primxSteelFiberTransportationCostPlusMaterialCostPerUnit,
-				primxFlowTransportationCostPlusMaterialCostPerUnit,
-				primxCpeaTransportationCostPlusMaterialCostPerUnit,
-			},
-
-			'*** Self Cost Calculated: ': {
-				dollarSelfCostPerUnit,
-				salesPricePerUnit,
-			},
-
-		},
-		'\n \n'
-	);
 
 
 	// const formulaIndex = {

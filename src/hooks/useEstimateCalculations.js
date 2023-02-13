@@ -356,9 +356,7 @@ export default function useEstimateCalculations(estimate, options = null) {
 	estimate.thickened_edge_construction_joint_lineal_feet_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_feet);
 	estimate.thickened_edge_construction_joint_lineal_meters_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_meters);
 
-	// ! Ryan here, I think we might want tos kip this when pulling in an estimate that's already been saved. We'll need to test this out.
 	// ⬇ If the options object is passed in, run the useCalculateProjectCost function to calculate the project cost:
-	console.log(`Ryan Here: useEstimateCalculations `, { estimate, options});
 	if (options) useCalculateProjectCost(estimate, options);
 	estimate.price_per_unit_75_50_display = estimate.price_per_unit_75_50;
 	estimate.price_per_unit_90_60_display = estimate.price_per_unit_90_60;
@@ -372,11 +370,6 @@ export default function useEstimateCalculations(estimate, options = null) {
 	} // End for loop
 
 
-
-
-	// console.log(`Ryan Here: End of useEstimateCalculations`, {
-	// 	estimateDeepCopy: JSON.parse(JSON.stringify(estimate)),
-	// });
 
 
 

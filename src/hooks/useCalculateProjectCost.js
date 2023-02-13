@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { parse } from "pg-protocol";
 import { Alert } from "@material-ui/lab";
-import useDifferenceInMonths from "./useDifferenceInMonths";
+import useDifferenceBetweenDates from "./useDifferenceBetweenDates";
 
 export default function useCalculateProjectCost(estimate, options) {
 
@@ -17,14 +17,6 @@ export default function useCalculateProjectCost(estimate, options) {
 		dosageRates,
 		customsDuties,
 	} = options;
-
-	console.log(`********* Ryan Here: `, {		products,
-		shippingDestinations,
-		currentMarkup,
-		shippingCosts,
-		productContainers,
-		dosageRates,
-		customsDuties,});
 
 	if (
 		products.length === 0 ||
@@ -235,13 +227,18 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	//#region Step 9 - Calculate total project cost:
 	// ⬇ If this is a new estimate, we want to calculate the total project cost.  If it's a saved estimate, we want to use the previously calculated total project cost to respect the price guaranteet:
-	console.log(`\n\n Ryan Here: estimate.difference_in_months`, estimate.difference_in_months, `\n\n estimate.estimate_number`, estimate.estimate_number, 'estimate.force_recalculate', estimate.force_recalculate, '\n\n');
+	console.log(
+		`Ryan Here  inside the end of useCalculateProject Cost: `,
+		`\n estimate.difference_in_months`, estimate.difference_in_months,
+		`\n estimate.estimate_number`, estimate.estimate_number,
+		'\n estimate.force_recalculate', estimate.force_recalculate
+	);
 
 	if (!estimate.estimate_number || options.difference_in_months >= 3 || estimate.force_recalculate) {
 		// ⬇ Calculate the total project cost:
 		estimate.price_per_unit_75_50 = dollarSalesCostPerUnit_75_50;
 		estimate.price_per_unit_90_60 = dollarSalesCostPerUnit_90_60;
-	}; 
+	};
 
 	if (estimate.measurement_units == "imperial") {
 		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
