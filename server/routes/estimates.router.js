@@ -52,16 +52,17 @@ router.get('/lookup/:estimate', (req, res) => {
 router.get('/all', rejectUnauthenticated, (req, res) => {
 	// SQL query to GET all estimates along the floor type names, licensee names, placement type names, and shipping state/province names
 	const queryText = `
-		SELECT "estimates".*, 
+		SELECT 
+			"estimates".*, 
 			"floor_types".floor_type_label, 
 			"licensees".licensee_contractor_name, 
 			"placement_types".placement_type_label, 
-			"shipping_costs".shipping_cost 
+			"shipping_destinations".destination_name
 		FROM "estimates"
 		JOIN "floor_types" ON "estimates".floor_type_id = "floor_types".floor_type_id
 		JOIN "licensees" ON "estimates".licensee_id = "licensees".licensee_id
 		JOIN "placement_types" ON "estimates".placement_type_id = "placement_types".placement_type_id
-		JOIN "shipping_costs" ON "estimates".destination_id = "shipping_costs".destination_id
+		JOIN "shipping_destinations" ON "estimates".destination_id = "shipping_destinations".destination_id
 		ORDER BY "estimates".estimate_id DESC;`;
 
 	pool.query(queryText)
@@ -76,255 +77,6 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 
 // *************************** POST ROUTES ***************************
 
-// // POST Route for Licensee Information -> Includes both Metric and Imperial Inputs
-// router.post('/', async (req, res) => {
-// 	// set the values sent from licensee by destructuring req.body
-// 	let {
-// 		// shared values regardless of imperial or metric units
-// 		measurement_units,
-// 		country,
-// 		date_created,
-// 		project_name,
-// 		licensee_id,
-// 		project_general_contractor,
-// 		ship_to_address,
-// 		ship_to_city,
-// 		shipping_costs_id,
-// 		zip_postal_code,
-// 		anticipated_first_pour_date,
-// 		project_manager_name,
-// 		project_manager_email,
-// 		project_manager_phone,
-// 		floor_type_id,
-// 		placement_type_id,
-// 		primx_flow_dosage_liters,
-// 		primx_cpea_dosage_liters,
-// 		waste_factor_percentage,
-
-// 		primx_dc_unit_price,
-// 		primx_dc_shipping_estimate,
-// 		primx_flow_unit_price,
-// 		primx_flow_shipping_estimate,
-// 		primx_steel_fibers_unit_price,
-// 		primx_steel_fibers_shipping_estimate,
-// 		primx_ultracure_blankets_unit_price,
-// 		primx_cpea_unit_price,
-// 		primx_cpea_shipping_estimate,
-
-// 		materials_on_hand,
-// 		primx_flow_on_hand_liters,
-// 		primx_cpea_on_hand_liters,
-// 		// unit specific values
-// 		square_feet,
-// 		thickness_inches,
-// 		thickened_edge_perimeter_lineal_feet,
-// 		thickened_edge_construction_joint_lineal_feet,
-// 		primx_steel_fibers_dosage_lbs,
-// 		primx_dc_dosage_lbs,
-
-// 		primx_dc_on_hand_lbs,
-// 		primx_steel_fibers_on_hand_lbs,
-// 		primx_ultracure_blankets_on_hand_sq_ft,
-
-// 		square_meters,
-// 		thickness_millimeters,
-// 		thickened_edge_perimeter_lineal_meters,
-// 		thickened_edge_construction_joint_lineal_meters,
-// 		primx_steel_fibers_dosage_kgs,
-// 		primx_dc_dosage_kgs,
-
-// 		primx_dc_on_hand_kgs,
-// 		primx_steel_fibers_on_hand_kgs,
-// 		primx_ultracure_blankets_on_hand_sq_m,
-
-// 		estimate_number_combined_1,
-// 		estimate_number_combined_2,
-// 		estimate_number_combined_3
-// 	} = req.body;
-
-// 	// create a unique UUID estimate number to use for the estimate being sent
-// 	let estimate_number = "";
-
-// 	// set the destructured object values as the values to send with the POST request
-// 	const values = [
-// 		// starting values don't include metric or imperial specific units
-// 		measurement_units,
-// 		country,
-// 		date_created,
-// 		project_name,
-// 		licensee_id,
-// 		project_general_contractor,
-// 		ship_to_address,
-// 		ship_to_city,
-// 		shipping_costs_id,
-// 		zip_postal_code,
-// 		anticipated_first_pour_date,
-// 		project_manager_name,
-// 		project_manager_email,
-// 		project_manager_phone,
-// 		floor_type_id,
-// 		placement_type_id,
-// 		primx_flow_dosage_liters,
-// 		primx_cpea_dosage_liters,
-// 		primx_dc_unit_price,
-// 		primx_dc_shipping_estimate,
-// 		primx_flow_unit_price,
-// 		primx_flow_shipping_estimate,
-// 		primx_steel_fibers_unit_price,
-// 		primx_steel_fibers_shipping_estimate,
-// 		primx_ultracure_blankets_unit_price,
-// 		primx_cpea_unit_price,
-// 		primx_cpea_shipping_estimate,
-// 		estimate_number,
-// 		estimate_number_combined_1,
-// 		estimate_number_combined_2,
-// 		estimate_number_combined_3,
-// 		waste_factor_percentage,
-// 		materials_on_hand,
-// 		primx_flow_on_hand_liters,
-// 		primx_cpea_on_hand_liters, // 35
-// 	]; // End values
-
-// 	// start the query text with shared values
-// 	let queryText = `
-//     INSERT INTO "estimates" (
-// 			"measurement_units",
-// 			"country",
-// 			"date_created",
-// 			"project_name",
-// 			"licensee_id",
-// 			"project_general_contractor",
-// 			"ship_to_address",
-// 			"ship_to_city",
-// 			"shipping_costs_id",
-// 			"zip_postal_code",
-// 			"anticipated_first_pour_date",
-// 			"project_manager_name",
-// 			"project_manager_email",
-// 			"project_manager_phone",
-// 			"floor_type_id",
-// 			"placement_type_id",
-// 			"primx_flow_dosage_liters",
-// 			"primx_cpea_dosage_liters",
-// 			"primx_dc_unit_price",
-// 			"primx_dc_shipping_estimate",
-// 			"primx_flow_unit_price",
-// 			"primx_flow_shipping_estimate",
-// 			"primx_steel_fibers_unit_price",
-// 			"primx_steel_fibers_shipping_estimate",
-// 			"primx_ultracure_blankets_unit_price",
-// 			"primx_cpea_unit_price",
-// 			"primx_cpea_shipping_estimate",
-// 			"estimate_number",
-// 			"estimate_number_combined_1",
-// 			"estimate_number_combined_2",
-// 			"estimate_number_combined_3",
-// 			"waste_factor_percentage",
-// 			"materials_on_hand",
-// 			"primx_flow_on_hand_liters",
-// 			"primx_cpea_on_hand_liters",
-//   `; // End queryText
-
-
-// 	// Add in the imperial or metric specific values based on unit choice
-// 	if (req.body.measurement_units == 'imperial') {
-// 		// add the imperial values to values array
-// 		values.push(
-// 			square_feet,
-// 			thickness_inches,
-// 			thickened_edge_perimeter_lineal_feet,
-// 			thickened_edge_construction_joint_lineal_feet,
-// 			primx_steel_fibers_dosage_lbs,
-// 			primx_dc_dosage_lbs,
-// 			primx_dc_on_hand_lbs,
-// 			primx_steel_fibers_on_hand_lbs,
-// 			primx_ultracure_blankets_on_hand_sq_ft, // 44
-// 		); // End values.push
-// 		// append the imperial specific data to the SQL query
-// 		queryText += `
-//       "square_feet",
-//       "thickness_inches",
-//       "thickened_edge_perimeter_lineal_feet",
-//       "thickened_edge_construction_joint_lineal_feet",
-//       "primx_steel_fibers_dosage_lbs",
-// 			"primx_dc_dosage_lbs",
-// 			"primx_dc_on_hand_lbs",
-// 			"primx_steel_fibers_on_hand_lbs",
-// 			"primx_ultracure_blankets_on_hand_sq_ft"
-//       )
-//     `; // End queryText
-// 	} else if (req.body.measurement_units == 'metric') {
-// 		// add the metric values to the values array
-// 		values.push(
-// 			square_meters,
-// 			thickness_millimeters,
-// 			thickened_edge_perimeter_lineal_meters,
-// 			thickened_edge_construction_joint_lineal_meters,
-// 			primx_steel_fibers_dosage_kgs,
-// 			primx_dc_dosage_kgs,
-// 			primx_dc_on_hand_kgs,
-// 			primx_steel_fibers_on_hand_kgs,
-// 			primx_ultracure_blankets_on_hand_sq_m, // 44
-// 		); // End values.push
-// 		// append the metric specific data to the SQL query
-// 		queryText += `
-//       "square_meters",
-//       "thickness_millimeters",
-//       "thickened_edge_perimeter_lineal_meters",
-//       "thickened_edge_construction_joint_lineal_meters",
-//       "primx_steel_fibers_dosage_kgs",
-// 			"primx_dc_dosage_kgs",
-// 			"primx_dc_on_hand_kgs",
-// 			"primx_steel_fibers_on_hand_kgs",
-// 			"primx_ultracure_blankets_on_hand_sq_m"
-//       )
-//     `; // End queryText
-// 	} // End if/else if
-
-// 	// add the values clause to the SQL query 
-// 	queryText += `
-//     VALUES (
-//       $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39, $40, $41, $42, $43, $44
-//       )
-//       RETURNING "id";
-//   `
-// 	try {
-// 		// First DB query: initial POST request with data from the client
-// 		let { rows } = await pool.query(queryText, values);
-// 		const id = rows[0].id
-
-// 		// Second DB query: GET the full name of the licensee from the licensee table since licensee name from the client is stored as licensee_id
-// 		const secondQueryText = `SELECT licensee_contractor_name 
-//                              FROM "licensees"
-//                              WHERE "id" = $1;
-//                              `;
-// 		const licenseeNameResponse = await pool.query(secondQueryText, [licensee_id]);
-
-// 		// create the specified shorter estimate number using the logic below and the returned id number from the original POST
-// 		const letters = licenseeNameResponse.rows[0].licensee_contractor_name.slice(0, 2);
-// 		let newEstimateNumber = letters.toUpperCase() + (123000 + (id * 3));
-
-// 		// if it's a combined estimate, add a letter C to the estimate number    
-// 		if (estimate_number_combined_1 && estimate_number_combined_2) {
-// 			newEstimateNumber += "-C";
-// 		}
-
-// 		// Third DB query: PUT to update the newly created estimate with the shorter estimate number just created
-// 		const thirdQueryText = `UPDATE "estimates" 
-//                             SET estimate_number = $1 
-//                             WHERE "id" = $2;
-//                             `;
-// 		await pool.query(thirdQueryText, [newEstimateNumber, id]);
-// 		res.send({
-// 			estimate_number: newEstimateNumber,
-// 			licensee_id: licensee_id,
-// 			id: id
-// 		})
-// 	} catch (error) {
-// 		console.error('Problem with estimates POST', error);
-// 		res.sendStatus(500);
-// 	}
-// });
 
 
 router.post('/add-new-estimate', async (req, res) => {
@@ -561,49 +313,61 @@ router.post('/add-new-estimate', async (req, res) => {
 // *************************** PUT ROUTES ***************************
 
 // PUT request to edit a single piece of data on one row of the estimates table
-router.put('/edit/:id', rejectUnauthenticated, (req, res) => {
+router.put('/edit/:estimate_id', rejectUnauthenticated, (req, res) => {
 	// SQL query to update a specific piece of data, use pg-format to sanitize it first since DB column to update comes in from client side
-	const queryText = format(`UPDATE "estimates" SET %I = $1 WHERE "id" = $2;`, req.body.dbColumn);
+	const queryText = format(`UPDATE "estimates" SET %I = $1 WHERE "estimate_id" = $2;`, req.body.dbColumn);
 
-	pool.query(queryText, [req.body.newValue, req.params.id])
+	pool.query(queryText, [req.body.newValue, req.params.estimate_id])
 		.then(result => res.sendStatus(200))
 		.catch(error => {
-			console.error(`Error with /api/estimates/edit PUT for id ${req.params.id}:`, error)
+			console.error(`Error with /api/estimates/edit PUT:`, error)
 		})
 })
 
 // PUT request to mark an estimate flagged for order by licensee to be marked as ordered by an admin, and to add the name of the admin making the request
-router.put('/process/:id', rejectUnauthenticated, (req, res) => {
+router.put('/process/:estimate_id', rejectUnauthenticated, (req, res) => {
+	console.log(`Ryan Here: `, { params: req.params, body: req.body });
+	const {
+		estimate_id,
+		estimate_number,
+		processed_by,
+	} = req.body;
 	// Set an order_number variable to be saved in the database. The order number is an O- followed by the estimate number
-	const order_number = `O-${req.body.estimate_number}`
+	const order_number = `O-${estimate_number}`
 	// SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
-	const queryText = `UPDATE "estimates" SET "marked_as_ordered" = TRUE, "processed_by" = $1, "order_number" = $2 WHERE "id" = $3;`;
-
-	pool.query(queryText, [req.user.username, order_number, req.params.id])
+	const queryText = `
+		UPDATE "estimates" 
+		SET 
+			"marked_as_ordered" = TRUE, 
+			"processed_by" = ${format('%L', processed_by)}, 
+			"order_number" = ${format('%L', order_number)} 
+		WHERE "estimate_id" = ${format('%L', estimate_id)} ;
+	`;
+	pool.query(queryText)
 		.then(result => res.sendStatus(200))
 		.catch(error => {
-			console.error(`Error with /api/estimates/process PUT for id ${req.params.id}:`, error)
+			console.error(`Error with /api/estimates/process PUT :`, error)
 		})
 })
 
 // PUT request to archive an estimate
-router.put('/archive/:id', rejectUnauthenticated, (req, res) => {
+router.put('/archive/:estimate_id', rejectUnauthenticated, (req, res) => {
 	// SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
 	const queryText = `
 		UPDATE "estimates" 
 		SET archived = TRUE 
-		WHERE id = $1;
+		WHERE estimate_id = $1;
 	`;
-	pool.query(queryText, [req.params.id])
+	pool.query(queryText, [req.body.estimate_id])
 		.then(result => res.sendStatus(200))
 		.catch(error => {
-			console.error(`Error with /api/estimates/archive PUT for id ${req.params.id}:`, error)
+			console.error(`Error with /api/estimates/archive:`, error)
 		})
 })
 
 // ! Ryan Here
 // PUT request to mark an estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
-router.put('/order/:id', async (req, res) => {
+router.put('/order/:estimate_id', async (req, res) => {
 	try {
 		const {
 			estimate_id,
@@ -625,11 +389,11 @@ router.put('/order/:id', async (req, res) => {
 		console.error(`Error with /api/estimates/order`, error);
 		res.sendStatus(500);
 	}; // end of try/catch
-}); 
+});
 
 
 // PUT request to mark a combined estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
-router.put('/combine-order/:id', async (req, res) => {
+router.put('/combine-order/:estimate_id', async (req, res) => {
 	// ⬇ Declaring all the variables to hold the data for easier ref: 
 	const po_number = req.body.poNumber;
 	const combinedEstimateNumber = req.body.calcCombinedEstimate.estimate_number;
@@ -688,7 +452,7 @@ router.put('/combine-order/:id', async (req, res) => {
 
 // PUT request to take an existing estimate, GET current shipping and materials pricing from the DB, and update the given estimate with the new
 // pricing data
-router.put('/recalculate/:id', async (req, res) => {
+router.put('/recalculate/:estimate_id', async (req, res) => {
 	try {
 		const {
 			estimate_id,
@@ -719,17 +483,17 @@ router.put('/recalculate/:id', async (req, res) => {
 
 // *************************** DELETE ROUTES ***************************
 
-router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
+router.delete('/delete/:estimate_id', rejectUnauthenticated, (req, res) => {
 
 	const queryText = `
 		DELETE FROM "estimates" 
-		WHERE id = $1
+		WHERE estimate_id = $1
 	`; // End queryText
 
-	pool.query(queryText, [req.params.id])
+	pool.query(queryText, [req.params.estimate_id])
 		.then(result => res.sendStatus(200))
 		.catch(error => {
-			console.error(`Error with /api/estimates/delete/:id for id ${req.params.id}`, error);
+			console.error(`Error with /api/estimates/delete/`, error);
 			res.sendStatus(500);
 		})
 });
@@ -737,8 +501,8 @@ router.delete('/delete/:id', rejectUnauthenticated, (req, res) => {
 // PUT request which allows user to update any form-fillable data from the main estimate creation sheet, follows a very similar workflow to the 
 // main POST route above
 
-//TODO: When I come back, finish updating this PUT route so that the edit logic is complete.  Then work on Combining Estimates, then testing everything works in each view.  We also want to check and update the "RECALCULATE_COSTS" logic to update the date_created for each estimate, and remove it from wherever it's implemented right now.  We onyl want the date_created to be updated when the prices are changed on the estimate. 
-router.put('/clientupdates/:id', async (req, res) => {
+
+router.put('/clientupdates/:estimate_id', async (req, res) => {
 	try {
 
 		const {

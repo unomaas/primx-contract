@@ -3,7 +3,7 @@
 import './AdminEstimatesGrid.css';
 // ⬇ Dependent Functionality:
 import { React, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button'
@@ -17,6 +17,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const history = useHistory();
+	const user = useSelector(store => store.user);
 	const [pageSize, setPageSize] = useState(10);
 	// ⬇ Create number formatter.
 	const formatter = new Intl.NumberFormat('en-US', {
@@ -135,7 +136,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 		}).then((willDelete) => {
 			if (willDelete) {
 				// ⬇ Params has a key of id which contains the db id for the estimate that corresponds to the button clicked
-				dispatch({ type: 'EDIT_PROCESS_ORDER', payload: params })
+				dispatch({ type: 'EDIT_PROCESS_ORDER', payload: { params: params, user: user } })
 				swal('Order has been processed!', {
 					icon: 'success',
 				})
