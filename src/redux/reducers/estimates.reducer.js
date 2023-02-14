@@ -138,6 +138,12 @@ export const searchedEstimate = (state = {}, action) => {
 	switch (action.type) {
 		case 'SET_ESTIMATE_QUERY_RESULT':
 			return action.payload;
+		case 'SET_STEEL_FIBER_SELECTION':
+			console.log(`Ryan Here: inside SearchedEstimate Reducer:`, action.payload );
+			return {
+				...state,
+				selected_steel_fiber_dosage: action.payload,
+			};
 		case 'CLEAR_ESTIMATE_QUERY_RESULT':
 			return {};
 		default:

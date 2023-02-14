@@ -192,15 +192,22 @@ export default function EstimateLookup() {
 					<h3>
 						Your estimate number is: <b style={{ color: 'red' }}>{searchResult?.estimate_number}</b>
 					</h3>
-					<b>Price Guarantee Disclaimer:</b>
-					<br /> The prices shown above are guaranteed to be eligible for three months from {searchResult?.date_created}. 
+					{!searchResult?.ordered_by_licensee &&
+						<>
+							<b>Price Guarantee Disclaimer:</b>
+							< br />
+							The prices shown above are guaranteed to be eligible for three months from {searchResult?.date_created}.
+						</>
+					}
+
 					{/* Format the searchResult?.date_created from YYYY-MM-DD to Month, Date, Year */}
 
 					{/* <br /> The prices shown above are guaranteed to be eligible for three months from {moment(searchResult?.date_created).format('MMMM Do, YYYY')}. */}
 				</>
 			}
 
-			{showLookupTable === 'combined' &&
+			{
+				showLookupTable === 'combined' &&
 				<>
 					<EstimateCombineTable
 						firstEstimate={firstEstimate}
@@ -216,7 +223,8 @@ export default function EstimateLookup() {
 
 			{/* Render messages underneath the table if an estimate has been submitted as an order */}
 			{/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
-			{searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
+			{
+				searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
 				<>
 					<h3>
 						This order is currently being processed. Please contact your PrīmX representative for more details.
@@ -224,7 +232,8 @@ export default function EstimateLookup() {
 				</>
 			}
 			{/* Display this message if an estimate has been processed by an admin */}
-			{searchResult.marked_as_ordered &&
+			{
+				searchResult.marked_as_ordered &&
 				<>
 					<h3>
 						This order has been processed. Please contact your PrīmX representative for more details.
@@ -234,7 +243,8 @@ export default function EstimateLookup() {
 			{/* End full table conditional render*/}
 
 			{/* Conditonally render a failed search message if the search came back with nothing */}
-			{!searchResult.estimate_number && estimate_number_searched &&
+			{
+				!searchResult.estimate_number && estimate_number_searched &&
 				<>
 					<h3>
 						No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.

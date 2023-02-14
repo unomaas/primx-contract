@@ -60,17 +60,17 @@ export default function useDifferenceBetweenDates(pastDate, recentDate = new Dat
 
 	// ⬇ Validation to stop the result from being negative:
 	let return_total_months = 0;
-	if (total_days > 1) return_total_months = Math.round(return_total_months);
+	if (Math.round(total_days) > 1) return_total_months = Math.floor(total_days / 30.417);
 
 	//return the result
 	return {
+		"result": result.trim(),
 		"total_months": return_total_months,
-		"total_days": Math.round(total_days),
 		"total_weeks": Math.round(total_weeks),
+		"total_days": Math.round(total_days),
 		"total_hours": Math.round(total_hours),
 		"total_minutes": Math.round(total_mins),
 		"total_seconds": Math.round(total_secs),
-		"result": result.trim()
 	}
 }
 

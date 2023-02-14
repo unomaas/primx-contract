@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch, Tooltip } from '@material-ui/core';
+import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch, Tooltip, Radio } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 //#endregion ⬆⬆ All document setup above.
@@ -48,30 +48,19 @@ export default function EstimateLookupTable() {
 	const handlePlaceOrder = () => {
 		// ⬇ If they haven't entered a PO number, pop up an error helperText:
 		if (poNumber == "") {
-			setPoNumError("Please enter a P.O. Number.")
-			// ⬇ If they have entered a PO number, proceed with order submission:
-		} else {
-			swal({
-				title: "This order has been submitted! Your PrimX representative will be in touch.",
-				text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
-				icon: "success",
-				buttons: "I understand",
-			}) // End swal
-			// ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
-			// .then(() => {
-			//   window.print();
-			// }); // End swal
-			dispatch({
-				// TODO: Test this works.
-				type: 'MARK_ESTIMATE_ORDERED',
-				payload: {
-					id: searchResult.estimate_id,
-					po_number: poNumber,
-					licensee_id: searchResult.licensee_id,
-					estimate_number: searchResult.estimate_number
-				} // End payload
-			}) // End dispatch
-		} // End if/else.
+			setPoNumError("Please enter a P.O. Number.");
+			return;
+		}
+		dispatch({
+			type: 'MARK_ESTIMATE_ORDERED',
+			payload: {
+				estimate_id: searchResult.estimate_id,
+				po_number: poNumber,
+				licensee_id: searchResult.licensee_id,
+				estimate_number: searchResult.estimate_number,
+				selected_steel_fiber_dosage: searchResult.selected_steel_fiber_dosage,
+			} // End payload
+		}) // End dispatch
 	} // End handlePlaceOrder
 
 	/** ⬇ handleEdit:
@@ -83,6 +72,10 @@ export default function EstimateLookupTable() {
 		dispatch({ type: 'SET_EDIT_STATE', payload: true });
 		history.push(`/create`);
 	}; // End handleClose
+
+	const handleSteelFiberSelection = (value) => {
+		dispatch({ type: 'SET_STEEL_FIBER_SELECTION', payload: value })
+	}; // End handleSteelFiberSelection
 	//#endregion ⬆⬆ Event handlers above. 
 
 	// ⬇ Rendering below:
@@ -501,27 +494,38 @@ export default function EstimateLookupTable() {
 									</TableRow>
 									<br /><br />
 									{searchResult?.materials_excluded != 'exclude_fibers' &&
-										<TableRow hover={true}>
-											<TableCell><b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
+												{/* //! Ryan Here */}
+												{!searchResult?.ordered_by_licensee &&
+													<Radio
+														checked={searchResult?.selected_steel_fiber_dosage == '75_50'}
+														onChange={() => handleSteelFiberSelection('75_50')}
+														value="75_50"
+														disabled={searchResult?.ordered_by_licensee == 'true' ? true : false}
+													/>
+												}
+												<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
 												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
 												: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
 											}
 										</TableRow>
 									}
-									<TableRow hover={true}>
-										<TableCell><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+										<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
 										{searchResult?.measurement_units === 'imperial'
 											? <TableCell align="right">{searchResult?.design_cubic_yards_total}</TableCell>
 											: <TableCell align="right">{searchResult?.design_cubic_meters_total}</TableCell>
 										}
 									</TableRow>
-									<TableRow hover={true}>
-										<TableCell><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+										<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 										<TableCell align="right">{searchResult?.price_per_unit_75_50_display}</TableCell>
 									</TableRow>
-									<TableRow hover={true}>
-										<TableCell><b>Total PrimX Price per Project (USD):</b></TableCell>
+									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+										<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
 										<TableCell align="right">{searchResult?.total_project_cost_75_50_display}</TableCell>
 									</TableRow>
 									<TableRow>
@@ -533,26 +537,36 @@ export default function EstimateLookupTable() {
 							{searchResult?.materials_excluded != 'exclude_fibers' &&
 								<Table size="small">
 									<TableBody>
-										<TableRow hover={true}>
-											<TableCell><b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+											{/* //! Ryan Here */}
+											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
+												{!searchResult?.ordered_by_licensee &&
+													<Radio
+														checked={searchResult?.selected_steel_fiber_dosage == '90_60'}
+														onChange={() => handleSteelFiberSelection('90_60')}
+														value="90_60"
+													/>
+												}
+												<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
 												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
 												: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
 											}
 										</TableRow>
-										<TableRow hover={true}>
-											<TableCell><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
 											{searchResult?.measurement_units === 'imperial'
 												? <TableCell align="right">{searchResult?.design_cubic_yards_total}</TableCell>
 												: <TableCell align="right">{searchResult?.design_cubic_meters_total}</TableCell>
 											}
 										</TableRow>
-										<TableRow hover={true}>
-											<TableCell><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 											<TableCell align="right">{searchResult?.price_per_unit_90_60_display}</TableCell>
 										</TableRow>
-										<TableRow hover={true}>
-											<TableCell><b>Total PrimX Price per Project (USD):</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
 											<TableCell align="right">{searchResult?.total_project_cost_90_60_display}</TableCell>
 										</TableRow>
 
@@ -587,7 +601,7 @@ export default function EstimateLookupTable() {
 																	>
 																		Edit This Estimate
 																	</Button>
-																	
+
 
 																	<TextField
 																		onChange={(event) => setPoNumber(event.target.value)}
@@ -596,16 +610,25 @@ export default function EstimateLookupTable() {
 																		helperText={poNumError}
 																	/> &nbsp; &nbsp;
 
-																	<Button
-																		variant="contained"
-																		color="primary"
-																		onClick={handlePlaceOrder}
-																		className={classes.LexendTeraFont11}
-																		style={{ marginTop: "13px" }}
-																	// disabled={hasRecalculated ? true : false}
+																	<Tooltip
+																		title={searchResult?.selected_steel_fiber_dosage ? '' : 'Please select a Steel Fiber dosage rate before placing an order.'}
+																		placement="top-end"
+																		arrow
 																	>
-																		Place Order
-																	</Button>
+																		<span>
+																			<Button
+																				variant="contained"
+																				color="primary"
+																				onClick={handlePlaceOrder}
+																				className={classes.LexendTeraFont11}
+																				style={{ marginTop: "13px" }}
+																				disabled={searchResult?.selected_steel_fiber_dosage ? false : true}
+																			>
+																				Place Order
+																			</Button>
+
+																		</span>
+																	</Tooltip>
 																</>
 															}
 														</section>

@@ -601,21 +601,31 @@ router.put('/archive/:id', rejectUnauthenticated, (req, res) => {
 		})
 })
 
+// ! Ryan Here
 // PUT request to mark an estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
-router.put('/order/:id', (req, res) => {
-	// SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
-	const queryText = `
-    UPDATE "estimates" 
-    SET "ordered_by_licensee" = TRUE, "po_number" = $1 
-    WHERE "id" = $2;
-  `;
-
-	pool.query(queryText, [req.body.po_number, req.params.id])
-		.then(result => res.sendStatus(200))
-		.catch(error => {
-			console.error(`Error with /api/estimates/order/:id PUT for id ${req.params.id}:`, error)
-		})
-})
+router.put('/order/:id', async (req, res) => {
+	try {
+		const {
+			estimate_id,
+			po_number,
+			selected_steel_fiber_dosage,
+		} = req.body;
+		// SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
+		const queryText = `
+			UPDATE "estimates" 
+			SET 
+				"ordered_by_licensee" = TRUE, 
+				"po_number" = ${format('%L', po_number)},
+				"selected_steel_fiber_dosage" = ${format('%L', selected_steel_fiber_dosage)}
+			WHERE "estimate_id" = ${format('%L', estimate_id)};
+		`;
+		await pool.query(queryText);
+		res.sendStatus(200);
+	} catch (error) {
+		console.error(`Error with /api/estimates/order`, error);
+		res.sendStatus(500);
+	}; // end of try/catch
+}); 
 
 
 // PUT request to mark a combined estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
