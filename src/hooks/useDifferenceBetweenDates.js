@@ -44,9 +44,9 @@ export default function useDifferenceBetweenDates(pastDate, recentDate = new Dat
 	const years_passed = Number(Math.abs(calcFormat[2]) - 1970);
 
 	//Set up custom text
-	const yrsTxt = ["year", "years"];
-	const mnthsTxt = ["month", "months"];
-	const daysTxt = ["day", "days"];
+	const yrsTxt = ["year ", "years "];
+	const mnthsTxt = ["month ", "months "];
+	const daysTxt = ["day ", "days "];
 
 	//Convert to days and sum together
 	const total_days = (years_passed * 365) + (months_passed * 30.417) + days_passed;

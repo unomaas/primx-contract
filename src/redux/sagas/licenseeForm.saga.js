@@ -117,9 +117,39 @@ function* recalculateEstimate(action) {
 		const response = yield axios.put(`/api/estimates/recalculate/${currentEstimate.estimate_id}`, currentEstimate);
 		calculatedEstimate.date_created = response.data.split('T')[0];
 
-		yield put({ type: 'CLEAR_ESTIMATE_QUERY_RESULT' });
+		console.log(`Ryan Here: PRE SWITCH`, { currentEstimate, action });
+		switch (calculatedEstimate?.options?.order) {
+			case 'firstEstimate':
+				console.log(`Ryan Here: SWITCH FIRST`, { calculatedEstimate });
+				yield put({ type: "CLEAR_FIRST_COMBINED_ESTIMATE" });
+				yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: calculatedEstimate });
+				break;
+			case 'secondEstimate':
+				yield put({ type: "CLEAR_SECOND_COMBINED_ESTIMATE" });
+				yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: calculatedEstimate });
+				break;
+			case 'thirdEstimate':
+				yield put({ type: "CLEAR_SECOND_COMBINED_ESTIMATE" });
+				yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: calculatedEstimate });
+				break;
+			default:
+				yield put({ type: 'CLEAR_ESTIMATE_QUERY_RESULT' });
+				yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedEstimate });
+				break;
+		}
+
 		yield put({ type: 'GET_RECALCULATE_INFO' });
-		yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedEstimate });
+
+
+		// if (estimate?.options.order) {
+		// 	if (estimate?.options.order == ) {
+		// 		yield put({ type: 'GET_ORDER_INFO', payload: estimate?.options.order.order_id });
+		// 	}
+
+		// } else {
+		// 	yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedEstimate });
+		// }
+
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} catch (error) {
 		console.error('recalculate estimate failed', error);

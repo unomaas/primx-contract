@@ -4,9 +4,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
+import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Radio, Tooltip } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
+import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -25,6 +26,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
 	// ⬇ Used for handle the state of how many tables to show:
 	const [tableWidth, setTableWidth] = useState(4);
+	let cubic_measurement_unit = firstEstimate?.measurement_units === "imperial" ? "yd³" : "m³";
+	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
+	const firstEstimateAgeInMonths = useDifferenceBetweenDates(firstEstimate?.date_created).total_months;
+	const secondEstimateAgeInMonths = useDifferenceBetweenDates(secondEstimate?.date_created).total_months;
+	const thirdEstimateAgeInMonths = useDifferenceBetweenDates(thirdEstimate?.date_created).total_months;
+
 	// ⬇ Checks if the third estimate is populated, and if so, adjusts the table size to display accordingly:
 	useEffect(() => {
 		if (Object.keys(thirdEstimate).length != 0) {
@@ -40,12 +47,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	/** ⬇ handleRecalculateCosts:
 	 * Click handler for the recalculate costs button. When clicked, runs the calculateEstimate function to get updated cost numbers with current shipping and materials pricing, saves (POSTS) the updates as a new estimate, brings the user to the new estimate view, and allows user to click the submit order button
 	 */
-	const handleRecalculateCosts = () => {
-		// ⬇ Attach history from useHistory to the searchResult object to allow navigation from inside the saga:
-		calcCombinedEstimate.history = history;
+	const handleRecalculateCosts = (estimate, order) => {
+		// ⬇ Attach history from useHistory to the firstEstimate object to allow navigation from inside the saga:
+		estimate.options = { order: order };
 		// ⬇ Needs to GET shipping information and pricing information before recalculating
-		dispatch({ type: 'RECALCULATE_ESTIMATE', payload: calcCombinedEstimate });
-		dispatch({ type: 'GET_RECALCULATE_INFO' });
+		dispatch({ type: 'RECALCULATE_ESTIMATE', payload: estimate });
+		// dispatch({ type: 'GET_RECALCULATE_INFO' });
 	} // End handleRecalculateCosts
 
 	/** ⬇ handleSave:
@@ -100,6 +107,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 			}) // End dispatch
 		} // End if/else.
 	} // End handlePlaceOrder
+
+
+	const handleSteelFiberSelection = (value, order) => {
+		dispatch({ type: `SET_STEEL_FIBER_SELECTION_${order}`, payload: value })
+	}; // End handleSteelFiberSelection
 	//#endregion ⬆⬆ Event handlers above. 
 
 
@@ -225,12 +237,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableCell>
 									</TableRow>
 
-									<TableRow hover={true}>
+									{/* <TableRow hover={true}>
 										<TableCell><b>Shipping Country:</b></TableCell>
 										<TableCell>
 											{firstEstimate?.country}
 										</TableCell>
-									</TableRow>
+									</TableRow> */}
 
 									<TableRow hover={true}>
 										<TableCell><b>First Estimate Number:</b></TableCell>
@@ -261,7 +273,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 					</Paper>
 				</Grid>
 				{/* End Licensee and Project Information table */}
-
 
 				{/* Table #2 Imperial: conditionally render the imperial needs*/}
 				{firstEstimate.measurement_units == 'imperial' &&
@@ -333,123 +344,182 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableBody>
 									</Table>
 
-									<h4>Thickened Edge Calculator</h4>
-									<p>If applicable, for slabs under 6in.</p>
+									{firstEstimate?.thickened_edge_perimeter_lineal_feet > 0 || firstEstimate?.thickened_edge_construction_joint_lineal_feet > 0 &&
+										<>
+											<h4>Thickened Edge Calculator</h4>
+											<p>If applicable, for slabs under 6in.</p>
+											<Table size="small">
+
+												<TableHead>
+													<TableRow>
+														<TableCell></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
+													</TableRow>
+												</TableHead>
+
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Lineal Feet:</b></TableCell>
+														<TableCell align="right">
+															{firstEstimate?.thickened_edge_perimeter_lineal_feet_display}
+														</TableCell>
+														<TableCell align="right">
+															{firstEstimate?.thickened_edge_construction_joint_lineal_feet_display}
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Width (yd³):</b></TableCell>
+														<TableCell align="right">
+															5
+														</TableCell>
+														<TableCell align="right">
+															10
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Additional Thickness (in):</b></TableCell>
+														<TableCell align="right">
+															{firstEstimate?.additional_thickness_inches}
+														</TableCell>
+														<TableCell align="right">
+															{firstEstimate?.additional_thickness_inches}
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Cubic Yards:</b></TableCell>
+														<TableCell align="right">
+															{firstEstimate?.perimeter_thickening_cubic_yards}
+														</TableCell>
+														<TableCell align="right">
+															{firstEstimate?.construction_joint_thickening_cubic_yards}
+														</TableCell>
+													</TableRow>
+												</TableBody>
+											</Table>
+										</>
+									}
+
+									{/* //! Ryan Here 1 */}
+									<h3>PrimX Material Price for the Project</h3>
+									<Table size='small'>
+										<TableRow hover={true}>
+											<TableCell><b>Materials Included:</b></TableCell>
+											<TableCell align="right">
+												{firstEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+												{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+												{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+											</TableCell>
+										</TableRow>
+									</Table>
+									<br /><br />
 									<Table size="small">
-
-										<TableHead>
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Perimeter</b></TableCell>
-												<TableCell align="right"><b>Construction Joint</b></TableCell>
-											</TableRow>
-										</TableHead>
-
 										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Lineal Feet:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.thickened_edge_perimeter_lineal_feet_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.thickened_edge_construction_joint_lineal_feet_display}
-												</TableCell>
+											{firstEstimate?.materials_excluded != 'exclude_fibers' &&
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell>
+														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+															<span>
+																<Radio
+																	checked={firstEstimate?.selected_steel_fiber_dosage == '75_50'}
+																	onChange={() => handleSteelFiberSelection('75_50', 'FIRST')}
+																	value="75_50"
+																	disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																/>
+															</span>
+														</Tooltip>
+														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+													</TableCell>
+													{firstEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+											}
+											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+												{firstEstimate?.measurement_units === 'imperial'
+													? <TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
+													: <TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
+												}
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Width (yd³):</b></TableCell>
-												<TableCell align="right">
-													5
-												</TableCell>
-												<TableCell align="right">
-													10
-												</TableCell>
+											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+												<TableCell align="right">{firstEstimate?.price_per_unit_75_50_display}</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Additional Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.additional_thickness_inches}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.additional_thickness_inches}
-												</TableCell>
+											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+												<TableCell align="right">{firstEstimate?.total_project_cost_75_50_display}</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.perimeter_thickening_cubic_yards}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.construction_joint_thickening_cubic_yards}
-												</TableCell>
+											<TableRow>
 											</TableRow>
 										</TableBody>
 									</Table>
+									<br /> <br />
 
-									<h4>Materials Table</h4>
-									<Table size="small">
-										<TableHead>
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
-												<TableCell align="right"><b>Amount Needed</b></TableCell>
-											</TableRow>
-										</TableHead>
+									{firstEstimate?.materials_excluded != 'exclude_fibers' &&
+										<Table size="small">
+											<TableBody>
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell >
+														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+															<span>
+																<Radio
+																	checked={firstEstimate?.selected_steel_fiber_dosage == '90_60'}
+																	onChange={() => handleSteelFiberSelection('90_60', 'FIRST')}
+																	value="90_60"
+																	disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																/>
+															</span>
+														</Tooltip>
+														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+													</TableCell>
+													{firstEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+													{firstEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
+														: <TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell align="right">{firstEstimate?.price_per_unit_90_60_display}</TableCell>
+												</TableRow>
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell align="right">{firstEstimate?.total_project_cost_90_60_display}</TableCell>
+												</TableRow>
 
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX DC (lbs):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_dc_dosage_lbs_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_dc_total_project_amount}
-												</TableCell>
-											</TableRow>
+												{/* Render the following table row for any orders that haven't been placed yet */}
+												{firstEstimateAgeInMonths >= 3 &&
+													<>
+														<TableRow hover={true}>
 
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_flow_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_flow_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_steel_fibers_dosage_lbs_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_steel_fibers_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
-												<TableCell align="right">
-													N/A
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_ultracure_blankets_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_cpea_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_cpea_total_project_amount}
-												</TableCell>
-											</TableRow>
-										</TableBody>
-									</Table>
+															<TableCell colSpan={7} align="right">
+																<Button
+																	variant="contained"
+																	color="primary"
+																	onClick={() => handleRecalculateCosts(firstEstimate, 'firstEstimate')}
+																	style={{ marginTop: "13px" }}
+																	className={classes.LexendTeraFont11}
+																>
+																	Recalculate Costs
+																</Button>
+															</TableCell>
+														</TableRow>
+													</>
+												}
+											</TableBody>
+										</Table>
+									}
 								</TableContainer>
 							</Paper>
 						</Grid>
@@ -521,124 +591,181 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableBody>
 									</Table>
 
-									<h4>Thickened Edge Calculator</h4>
-									<p>If applicable, for slabs under 6in.</p>
+									{secondEstimate?.thickened_edge_perimeter_lineal_feet > 0 || secondEstimate?.thickened_edge_construction_joint_lineal_feet > 0 &&
+										<>
+											<h4>Thickened Edge Calculator</h4>
+											<p>If applicable, for slabs under 6in.</p>
+											<Table size="small">
+
+												<TableHead>
+													<TableRow>
+														<TableCell></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
+													</TableRow>
+												</TableHead>
+
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Lineal Feet:</b></TableCell>
+														<TableCell align="right">
+															{secondEstimate?.thickened_edge_perimeter_lineal_feet_display}
+														</TableCell>
+														<TableCell align="right">
+															{secondEstimate?.thickened_edge_construction_joint_lineal_feet_display}
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Width (yd³):</b></TableCell>
+														<TableCell align="right">
+															5
+														</TableCell>
+														<TableCell align="right">
+															10
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Additional Thickness (in):</b></TableCell>
+														<TableCell align="right">
+															{secondEstimate?.additional_thickness_inches}
+														</TableCell>
+														<TableCell align="right">
+															{secondEstimate?.additional_thickness_inches}
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Cubic Yards:</b></TableCell>
+														<TableCell align="right">
+															{secondEstimate?.perimeter_thickening_cubic_yards}
+														</TableCell>
+														<TableCell align="right">
+															{secondEstimate?.construction_joint_thickening_cubic_yards}
+														</TableCell>
+													</TableRow>
+												</TableBody>
+											</Table>
+										</>
+									}
+									{/* //! Ryan Here 2 */}
+									<h3>PrimX Material Price for the Project</h3>
+									<Table size='small'>
+										<TableRow hover={true}>
+											<TableCell><b>Materials Included:</b></TableCell>
+											<TableCell align="right">
+												{secondEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+												{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+												{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+											</TableCell>
+										</TableRow>
+									</Table>
+									<br /><br />
 									<Table size="small">
-
-										<TableHead>
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Perimeter</b></TableCell>
-												<TableCell align="right"><b>Construction Joint</b></TableCell>
-											</TableRow>
-										</TableHead>
-
 										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Lineal Feet:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.thickened_edge_perimeter_lineal_feet_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.thickened_edge_construction_joint_lineal_feet_display}
-												</TableCell>
+											{secondEstimate?.materials_excluded != 'exclude_fibers' &&
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell >
+														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+															<span>
+																<Radio
+																	checked={secondEstimate?.selected_steel_fiber_dosage == '75_50'}
+																	onChange={() => handleSteelFiberSelection('75_50', 'SECOND')}
+																	value="75_50"
+																	disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																/>
+															</span>
+														</Tooltip>
+														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+													</TableCell>
+													{secondEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+											}
+											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+												{secondEstimate?.measurement_units === 'imperial'
+													? <TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
+													: <TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
+												}
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Width (yd³):</b></TableCell>
-												<TableCell align="right">
-													5
-												</TableCell>
-												<TableCell align="right">
-													10
-												</TableCell>
+											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+												<TableCell align="right">{secondEstimate?.price_per_unit_75_50_display}</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Additional Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.additional_thickness_inches}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.additional_thickness_inches}
-												</TableCell>
+											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+												<TableCell align="right">{secondEstimate?.total_project_cost_75_50_display}</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.perimeter_thickening_cubic_yards}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.construction_joint_thickening_cubic_yards}
-												</TableCell>
+											<TableRow>
 											</TableRow>
 										</TableBody>
 									</Table>
+									<br /> <br />
 
-									<h4>Materials Table</h4>
-									<Table size="small">
-										<TableHead>
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
-												<TableCell align="right"><b>Amount Needed</b></TableCell>
-											</TableRow>
-										</TableHead>
+									{secondEstimate?.materials_excluded != 'exclude_fibers' &&
+										<Table size="small">
+											<TableBody>
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell >
+														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+															<span>
+																<Radio
+																	checked={secondEstimate?.selected_steel_fiber_dosage == '90_60'}
+																	onChange={() => handleSteelFiberSelection('90_60', 'SECOND')}
+																	value="90_60"
+																	disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																/>
+															</span>
+														</Tooltip>
+														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+													</TableCell>
+													{secondEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+													{secondEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
+														: <TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell align="right">{secondEstimate?.price_per_unit_90_60_display}</TableCell>
+												</TableRow>
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell align="right">{secondEstimate?.total_project_cost_90_60_display}</TableCell>
+												</TableRow>
 
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX DC (lbs):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_dc_dosage_lbs_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_dc_total_project_amount}
-												</TableCell>
-											</TableRow>
+												{/* Render the following table row for any orders that haven't been placed yet */}
+												{secondEstimateAgeInMonths >= 3 &&
+													<>
+														<TableRow hover={true}>
 
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_flow_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_flow_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_steel_fibers_dosage_lbs_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_steel_fibers_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
-												<TableCell align="right">
-													N/A
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_ultracure_blankets_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_cpea_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_cpea_total_project_amount}
-												</TableCell>
-											</TableRow>
-										</TableBody>
-									</Table>
-
+															<TableCell colSpan={7} align="right">
+																<Button
+																	variant="contained"
+																	color="primary"
+																	onClick={() => handleRecalculateCosts(secondEstimate, 'secondEstimate')}
+																	style={{ marginTop: "13px" }}
+																	className={classes.LexendTeraFont11}
+																>
+																	Recalculate Costs
+																</Button>
+															</TableCell>
+														</TableRow>
+													</>
+												}
+											</TableBody>
+										</Table>
+									}
 								</TableContainer>
 							</Paper>
 						</Grid>
@@ -713,124 +840,182 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableBody>
 											</Table>
 
-											<h4>Thickened Edge Calculator</h4>
-											<p>If applicable, for slabs under 6in.</p>
-											<Table size="small">
+											{thirdEstimate?.thickened_edge_perimeter_lineal_feet > 0 || thirdEstimate?.thickened_edge_construction_joint_lineal_feet > 0 &&
+												<>
+													<h4>Thickened Edge Calculator</h4>
+													<p>If applicable, for slabs under 6in.</p>
+													<Table size="small">
 
-												<TableHead>
-													<TableRow>
-														<TableCell></TableCell>
-														<TableCell align="right"><b>Perimeter</b></TableCell>
-														<TableCell align="right"><b>Construction Joint</b></TableCell>
-													</TableRow>
-												</TableHead>
+														<TableHead>
+															<TableRow>
+																<TableCell></TableCell>
+																<TableCell align="right"><b>Perimeter</b></TableCell>
+																<TableCell align="right"><b>Construction Joint</b></TableCell>
+															</TableRow>
+														</TableHead>
 
-												<TableBody>
-													<TableRow hover={true}>
-														<TableCell><b>Lineal Feet:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.thickened_edge_perimeter_lineal_feet_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.thickened_edge_construction_joint_lineal_feet_display}
-														</TableCell>
-													</TableRow>
+														<TableBody>
+															<TableRow hover={true}>
+																<TableCell><b>Lineal Feet:</b></TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.thickened_edge_perimeter_lineal_feet_display}
+																</TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.thickened_edge_construction_joint_lineal_feet_display}
+																</TableCell>
+															</TableRow>
 
-													<TableRow hover={true}>
-														<TableCell><b>Width (yd³):</b></TableCell>
-														<TableCell align="right">
-															5
-														</TableCell>
-														<TableCell align="right">
-															10
-														</TableCell>
-													</TableRow>
+															<TableRow hover={true}>
+																<TableCell><b>Width (yd³):</b></TableCell>
+																<TableCell align="right">
+																	5
+																</TableCell>
+																<TableCell align="right">
+																	10
+																</TableCell>
+															</TableRow>
 
-													<TableRow hover={true}>
-														<TableCell><b>Additional Thickness (in):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.additional_thickness_inches}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.additional_thickness_inches}
-														</TableCell>
-													</TableRow>
+															<TableRow hover={true}>
+																<TableCell><b>Additional Thickness (in):</b></TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.additional_thickness_inches}
+																</TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.additional_thickness_inches}
+																</TableCell>
+															</TableRow>
 
-													<TableRow hover={true}>
-														<TableCell><b>Cubic Yards:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.perimeter_thickening_cubic_yards}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.construction_joint_thickening_cubic_yards}
-														</TableCell>
-													</TableRow>
+															<TableRow hover={true}>
+																<TableCell><b>Cubic Yards:</b></TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.perimeter_thickening_cubic_yards}
+																</TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.construction_joint_thickening_cubic_yards}
+																</TableCell>
+															</TableRow>
+														</TableBody>
+													</Table>
+												</>
+											}
 
-												</TableBody>
+											{/* //! Ryan Here 3 */}
+											<h3>PrimX Material Price for the Project</h3>
+											<Table size='small'>
+												<TableRow hover={true}>
+													<TableCell><b>Materials Included:</b></TableCell>
+													<TableCell align="right">
+														{thirdEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+														{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+														{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+													</TableCell>
+												</TableRow>
 											</Table>
-
-											<h4>Materials Table</h4>
+											<br /><br />
 											<Table size="small">
-												<TableHead>
-													<TableRow>
-														<TableCell></TableCell>
-														<TableCell align="right"><b>Dosage Rate (per yd³)</b></TableCell>
-														<TableCell align="right"><b>Amount Needed</b></TableCell>
-													</TableRow>
-												</TableHead>
-
 												<TableBody>
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX DC (lbs):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_dc_dosage_lbs_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_dc_total_project_amount}
-														</TableCell>
+													{thirdEstimate?.materials_excluded != 'exclude_fibers' &&
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell >
+																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+																	<span>
+																		<Radio
+																			checked={thirdEstimate?.selected_steel_fiber_dosage == '75_50'}
+																			onChange={() => handleSteelFiberSelection('75_50', 'THIRD')}
+																			value="75_50"
+																			disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																		/>
+																	</span>
+																</Tooltip>
+																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+															</TableCell>
+															{thirdEstimate?.measurement_units === 'imperial'
+																? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
+																: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
+															}
+														</TableRow>
+													}
+													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+														<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+														{thirdEstimate?.measurement_units === 'imperial'
+															? <TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
+															: <TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
+														}
 													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_flow_dosage_liters_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_flow_total_project_amount}
-														</TableCell>
+													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+														<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+														<TableCell align="right">{thirdEstimate?.price_per_unit_75_50_display}</TableCell>
 													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX Steel Fibers (lbs):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_steel_fibers_dosage_lbs_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_steel_fibers_total_project_amount}
-														</TableCell>
+													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+														<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+														<TableCell align="right">{thirdEstimate?.total_project_cost_75_50_display}</TableCell>
 													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX UltraCure Blankets (ft²):</b></TableCell>
-														<TableCell align="right">
-															N/A
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_ultracure_blankets_total_project_amount}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_cpea_dosage_liters_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_cpea_total_project_amount}
-														</TableCell>
+													<TableRow>
 													</TableRow>
 												</TableBody>
 											</Table>
+											<br /> <br />
+
+											{thirdEstimate?.materials_excluded != 'exclude_fibers' &&
+												<Table size="small">
+													<TableBody>
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell >
+																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+																	<span>
+																		<Radio
+																			checked={thirdEstimate?.selected_steel_fiber_dosage == '90_60'}
+																			onChange={() => handleSteelFiberSelection('90_60', 'THIRD')}
+																			value="90_60"
+																			disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																		/>
+																	</span>
+																</Tooltip>
+																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+															</TableCell>
+															{thirdEstimate?.measurement_units === 'imperial'
+																? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+																: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+															}
+														</TableRow>
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+															{thirdEstimate?.measurement_units === 'imperial'
+																? <TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
+																: <TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
+															}
+														</TableRow>
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+															<TableCell align="right">{thirdEstimate?.price_per_unit_90_60_display}</TableCell>
+														</TableRow>
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+															<TableCell align="right">{thirdEstimate?.total_project_cost_90_60_display}</TableCell>
+														</TableRow>
+
+														{/* Render the following table row for any orders that haven't been placed yet */}
+														{thirdEstimateAgeInMonths >= 3 &&
+															<>
+																<TableRow hover={true}>
+
+																	<TableCell colSpan={7} align="right">
+																		<Button
+																			variant="contained"
+																			color="primary"
+																			onClick={() => handleRecalculateCosts(thirdEstimate, 'thirdEstimate')}
+																			style={{ marginTop: "13px" }}
+																			className={classes.LexendTeraFont11}
+																		>
+																			Recalculate Costs
+																		</Button>
+																	</TableCell>
+																</TableRow>
+															</>
+														}
+													</TableBody>
+												</Table>
+											}
 										</TableContainer>
 									</Paper>
 								</Grid>
@@ -908,123 +1093,182 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableBody>
 									</Table>
 
-									<h3>Estimate #1 Thickened Edge Calculator</h3>
-									<p>If applicable, for slabs under 150mm.</p>
+									{firstEstimate?.thickened_edge_perimeter_lineal_meters > 0 || firstEstimate?.thickened_edge_construction_joint_lineal_meters > 0 &&
+										<>
+											<h3>Estimate #1 Thickened Edge Calculator</h3>
+											<p>If applicable, for slabs under 150mm.</p>
+											<Table size="small">
+
+												<TableHead>
+													<TableRow>
+														<TableCell></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
+													</TableRow>
+												</TableHead>
+
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Lineal Meters:</b></TableCell>
+														<TableCell align="right">
+															{firstEstimate?.thickened_edge_perimeter_lineal_meters_display}
+														</TableCell>
+														<TableCell align="right">
+															{firstEstimate?.thickened_edge_construction_joint_lineal_meters_display}
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Width (m³):</b></TableCell>
+														<TableCell align="right">
+															1.5
+														</TableCell>
+														<TableCell align="right">
+															3.0
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Additional Thickness (mm):</b></TableCell>
+														<TableCell align="right">
+															{firstEstimate?.additional_thickness_millimeters}
+														</TableCell>
+														<TableCell align="right">
+															{firstEstimate?.additional_thickness_millimeters}
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Cubic Meters:</b></TableCell>
+														<TableCell align="right">
+															{firstEstimate?.perimeter_thickening_cubic_meters}
+														</TableCell>
+														<TableCell align="right">
+															{firstEstimate?.construction_joint_thickening_cubic_meters}
+														</TableCell>
+													</TableRow>
+												</TableBody>
+											</Table>
+										</>
+									}
+									{/* //! RYan here 4 */}
+
+									<h3>PrimX Material Price for the Project</h3>
+									<Table size='small'>
+										<TableRow hover={true}>
+											<TableCell><b>Materials Included:</b></TableCell>
+											<TableCell align="right">
+												{firstEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+												{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+												{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+											</TableCell>
+										</TableRow>
+									</Table>
+									<br /><br />
 									<Table size="small">
-
-										<TableHead>
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Perimeter</b></TableCell>
-												<TableCell align="right"><b>Construction Joint</b></TableCell>
-											</TableRow>
-										</TableHead>
-
 										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Lineal Meters:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.thickened_edge_perimeter_lineal_meters_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.thickened_edge_construction_joint_lineal_meters_display}
-												</TableCell>
+											{firstEstimate?.materials_excluded != 'exclude_fibers' &&
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell>
+														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+															<span>
+																<Radio
+																	checked={firstEstimate?.selected_steel_fiber_dosage == '75_50'}
+																	onChange={() => handleSteelFiberSelection('75_50', 'FIRST')}
+																	value="75_50"
+																	disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																/>
+															</span>
+														</Tooltip>
+														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+													</TableCell>
+													{firstEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+											}
+											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+												{firstEstimate?.measurement_units === 'imperial'
+													? <TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
+													: <TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
+												}
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Width (m³):</b></TableCell>
-												<TableCell align="right">
-													1.5
-												</TableCell>
-												<TableCell align="right">
-													3.0
-												</TableCell>
+											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+												<TableCell align="right">{firstEstimate?.price_per_unit_75_50_display}</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Additional Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.additional_thickness_millimeters}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.additional_thickness_millimeters}
-												</TableCell>
+											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+												<TableCell align="right">{firstEstimate?.total_project_cost_75_50_display}</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.perimeter_thickening_cubic_meters}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.construction_joint_thickening_cubic_meters}
-												</TableCell>
+											<TableRow>
 											</TableRow>
 										</TableBody>
 									</Table>
+									<br /> <br />
 
-									<h3>Estimate #1 Materials Table</h3>
-									<Table size="small">
-										<TableHead>
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
-												<TableCell align="right"><b>Amount Needed</b></TableCell>
-											</TableRow>
-										</TableHead>
+									{firstEstimate?.materials_excluded != 'exclude_fibers' &&
+										<Table size="small">
+											<TableBody>
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell >
+														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+															<span>
+																<Radio
+																	checked={firstEstimate?.selected_steel_fiber_dosage == '90_60'}
+																	onChange={() => handleSteelFiberSelection('90_60', 'FIRST')}
+																	value="90_60"
+																	disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																/>
+															</span>
+														</Tooltip>
+														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+													</TableCell>
+													{firstEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+													{firstEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
+														: <TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell align="right">{firstEstimate?.price_per_unit_90_60_display}</TableCell>
+												</TableRow>
+												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell align="right">{firstEstimate?.total_project_cost_90_60_display}</TableCell>
+												</TableRow>
 
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX DC (kgs):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_dc_dosage_kgs_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_dc_total_project_amount}
-												</TableCell>
-											</TableRow>
+												{/* Render the following table row for any orders that haven't been placed yet */}
+												{firstEstimateAgeInMonths >= 3 &&
+													<>
+														<TableRow hover={true}>
 
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_flow_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_flow_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_steel_fibers_dosage_kgs_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_steel_fibers_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
-												<TableCell align="right">
-													N/A
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_ultracure_blankets_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_cpea_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{firstEstimate?.primx_cpea_total_project_amount}
-												</TableCell>
-											</TableRow>
-										</TableBody>
-									</Table>
+															<TableCell colSpan={7} align="right">
+																<Button
+																	variant="contained"
+																	color="primary"
+																	onClick={() => handleRecalculateCosts(firstEstimate, 'firstEstimate')}
+																	style={{ marginTop: "13px" }}
+																	className={classes.LexendTeraFont11}
+																>
+																	Recalculate Costs
+																</Button>
+															</TableCell>
+														</TableRow>
+													</>
+												}
+											</TableBody>
+										</Table>
+									}
 								</TableContainer>
 							</Paper>
 						</Grid>
@@ -1096,123 +1340,181 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableBody>
 									</Table>
 
-									<h3>Estimate #2 Thickened Edge Calculator</h3>
-									<p>If applicable, for slabs under 150mm.</p>
+									{secondEstimate?.thickened_edge_perimeter_lineal_meters > 0 || secondEstimate?.thickened_edge_construction_joint_lineal_meters > 0 &&
+										<>
+											<h3>Estimate #2 Thickened Edge Calculator</h3>
+											<p>If applicable, for slabs under 150mm.</p>
+											<Table size="small">
+
+												<TableHead>
+													<TableRow>
+														<TableCell></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
+													</TableRow>
+												</TableHead>
+
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Lineal Meters:</b></TableCell>
+														<TableCell align="right">
+															{secondEstimate?.thickened_edge_perimeter_lineal_meters_display}
+														</TableCell>
+														<TableCell align="right">
+															{secondEstimate?.thickened_edge_construction_joint_lineal_meters_display}
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Width (m³):</b></TableCell>
+														<TableCell align="right">
+															1.5
+														</TableCell>
+														<TableCell align="right">
+															3.0
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Additional Thickness (mm):</b></TableCell>
+														<TableCell align="right">
+															{secondEstimate?.additional_thickness_millimeters}
+														</TableCell>
+														<TableCell align="right">
+															{secondEstimate?.additional_thickness_millimeters}
+														</TableCell>
+													</TableRow>
+
+													<TableRow hover={true}>
+														<TableCell><b>Cubic Meters:</b></TableCell>
+														<TableCell align="right">
+															{secondEstimate?.perimeter_thickening_cubic_meters}
+														</TableCell>
+														<TableCell align="right">
+															{secondEstimate?.construction_joint_thickening_cubic_meters}
+														</TableCell>
+													</TableRow>
+												</TableBody>
+											</Table>
+										</>
+									}
+									{/* //! Ryan here 5 */}
+									<h3>PrimX Material Price for the Project</h3>
+									<Table size='small'>
+										<TableRow hover={true}>
+											<TableCell><b>Materials Included:</b></TableCell>
+											<TableCell align="right">
+												{secondEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+												{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+												{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+											</TableCell>
+										</TableRow>
+									</Table>
+									<br /><br />
 									<Table size="small">
-
-										<TableHead>
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Perimeter</b></TableCell>
-												<TableCell align="right"><b>Construction Joint</b></TableCell>
-											</TableRow>
-										</TableHead>
-
 										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Lineal Meters:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.thickened_edge_perimeter_lineal_meters_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.thickened_edge_construction_joint_lineal_meters_display}
-												</TableCell>
+											{secondEstimate?.materials_excluded != 'exclude_fibers' &&
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell >
+														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+															<span>
+																<Radio
+																	checked={secondEstimate?.selected_steel_fiber_dosage == '75_50'}
+																	onChange={() => handleSteelFiberSelection('75_50', 'SECOND')}
+																	value="75_50"
+																	disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																/>
+															</span>
+														</Tooltip>
+														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+													</TableCell>
+													{secondEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+											}
+											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+												{secondEstimate?.measurement_units === 'imperial'
+													? <TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
+													: <TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
+												}
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Width (m³):</b></TableCell>
-												<TableCell align="right">
-													1.5
-												</TableCell>
-												<TableCell align="right">
-													3.0
-												</TableCell>
+											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+												<TableCell align="right">{secondEstimate?.price_per_unit_75_50_display}</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Additional Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.additional_thickness_millimeters}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.additional_thickness_millimeters}
-												</TableCell>
+											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+												<TableCell align="right">{secondEstimate?.total_project_cost_75_50_display}</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.perimeter_thickening_cubic_meters}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.construction_joint_thickening_cubic_meters}
-												</TableCell>
+											<TableRow>
 											</TableRow>
 										</TableBody>
 									</Table>
+									<br /> <br />
 
-									<h3>Estimate #2 Materials Table</h3>
-									<Table size="small">
-										<TableHead>
-											<TableRow>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
-												<TableCell align="right"><b>Amount Needed</b></TableCell>
-											</TableRow>
-										</TableHead>
+									{secondEstimate?.materials_excluded != 'exclude_fibers' &&
+										<Table size="small">
+											<TableBody>
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell >
+														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+															<span>
+																<Radio
+																	checked={secondEstimate?.selected_steel_fiber_dosage == '90_60'}
+																	onChange={() => handleSteelFiberSelection('90_60', 'SECOND')}
+																	value="90_60"
+																	disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																/>
+															</span>
+														</Tooltip>
+														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+													</TableCell>
+													{secondEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+													{secondEstimate?.measurement_units === 'imperial'
+														? <TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
+														: <TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell align="right">{secondEstimate?.price_per_unit_90_60_display}</TableCell>
+												</TableRow>
+												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell align="right">{secondEstimate?.total_project_cost_90_60_display}</TableCell>
+												</TableRow>
 
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX DC (kgs):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_dc_dosage_kgs_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_dc_total_project_amount}
-												</TableCell>
-											</TableRow>
+												{/* Render the following table row for any orders that haven't been placed yet */}
+												{secondEstimateAgeInMonths >= 3 &&
+													<>
+														<TableRow hover={true}>
 
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_flow_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_flow_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_steel_fibers_dosage_kgs_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_steel_fibers_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
-												<TableCell align="right">
-													N/A
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_ultracure_blankets_total_project_amount}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_cpea_dosage_liters_display}
-												</TableCell>
-												<TableCell align="right">
-													{secondEstimate?.primx_cpea_total_project_amount}
-												</TableCell>
-											</TableRow>
-										</TableBody>
-									</Table>
+															<TableCell colSpan={7} align="right">
+																<Button
+																	variant="contained"
+																	color="primary"
+																	onClick={() => handleRecalculateCosts(secondEstimate, 'secondEstimate')}
+																	style={{ marginTop: "13px" }}
+																	className={classes.LexendTeraFont11}
+																>
+																	Recalculate Costs
+																</Button>
+															</TableCell>
+														</TableRow>
+													</>
+												}
+											</TableBody>
+										</Table>
+									}
 								</TableContainer>
 							</Paper>
 						</Grid>
@@ -1287,124 +1589,182 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableBody>
 											</Table>
 
-											<h3>Estimate #3 Thickened Edge Calculator</h3>
-											<p>If applicable, for slabs under 150mm.</p>
-											<Table size="small">
+											{thirdEstimate?.thickened_edge_perimeter_lineal_meters > 0 || thirdEstimate?.thickened_edge_construction_joint_lineal_meters > 0 &&
+												<>
+													<h3>Estimate #3 Thickened Edge Calculator</h3>
+													<p>If applicable, for slabs under 150mm.</p>
+													<Table size="small">
 
-												<TableHead>
-													<TableRow>
-														<TableCell></TableCell>
-														<TableCell align="right"><b>Perimeter</b></TableCell>
-														<TableCell align="right"><b>Construction Joint</b></TableCell>
-													</TableRow>
-												</TableHead>
+														<TableHead>
+															<TableRow>
+																<TableCell></TableCell>
+																<TableCell align="right"><b>Perimeter</b></TableCell>
+																<TableCell align="right"><b>Construction Joint</b></TableCell>
+															</TableRow>
+														</TableHead>
 
-												<TableBody>
-													<TableRow hover={true}>
-														<TableCell><b>Lineal Meters:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.thickened_edge_perimeter_lineal_meters_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.thickened_edge_construction_joint_lineal_meters_display}
-														</TableCell>
-													</TableRow>
+														<TableBody>
+															<TableRow hover={true}>
+																<TableCell><b>Lineal Meters:</b></TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.thickened_edge_perimeter_lineal_meters_display}
+																</TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.thickened_edge_construction_joint_lineal_meters_display}
+																</TableCell>
+															</TableRow>
 
-													<TableRow hover={true}>
-														<TableCell><b>Width (m³):</b></TableCell>
-														<TableCell align="right">
-															1.5
-														</TableCell>
-														<TableCell align="right">
-															3.0
-														</TableCell>
-													</TableRow>
+															<TableRow hover={true}>
+																<TableCell><b>Width (m³):</b></TableCell>
+																<TableCell align="right">
+																	1.5
+																</TableCell>
+																<TableCell align="right">
+																	3.0
+																</TableCell>
+															</TableRow>
 
-													<TableRow hover={true}>
-														<TableCell><b>Additional Thickness (mm):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.additional_thickness_millimeters}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.additional_thickness_millimeters}
-														</TableCell>
-													</TableRow>
+															<TableRow hover={true}>
+																<TableCell><b>Additional Thickness (mm):</b></TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.additional_thickness_millimeters}
+																</TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.additional_thickness_millimeters}
+																</TableCell>
+															</TableRow>
 
-													<TableRow hover={true}>
-														<TableCell><b>Cubic Meters:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.perimeter_thickening_cubic_meters}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.construction_joint_thickening_cubic_meters}
-														</TableCell>
-													</TableRow>
+															<TableRow hover={true}>
+																<TableCell><b>Cubic Meters:</b></TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.perimeter_thickening_cubic_meters}
+																</TableCell>
+																<TableCell align="right">
+																	{thirdEstimate?.construction_joint_thickening_cubic_meters}
+																</TableCell>
+															</TableRow>
 
-												</TableBody>
+														</TableBody>
+													</Table>
+												</>
+											}
+											{/* //! Ryan here 6 */}
+											<h3>PrimX Material Price for the Project</h3>
+											<Table size='small'>
+												<TableRow hover={true}>
+													<TableCell><b>Materials Included:</b></TableCell>
+													<TableCell align="right">
+														{thirdEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+														{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+														{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+													</TableCell>
+												</TableRow>
 											</Table>
-
-											<h3>Estimate #3 Materials Table</h3>
+											<br /><br />
 											<Table size="small">
-												<TableHead>
-													<TableRow>
-														<TableCell></TableCell>
-														<TableCell align="right"><b>Dosage Rate (per m³)</b></TableCell>
-														<TableCell align="right"><b>Amount Needed</b></TableCell>
-													</TableRow>
-												</TableHead>
-
 												<TableBody>
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX DC (kgs):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_dc_dosage_kgs_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_dc_total_project_amount}
-														</TableCell>
+													{thirdEstimate?.materials_excluded != 'exclude_fibers' &&
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell >
+																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+																	<span>
+																		<Radio
+																			checked={thirdEstimate?.selected_steel_fiber_dosage == '75_50'}
+																			onChange={() => handleSteelFiberSelection('75_50', 'THIRD')}
+																			value="75_50"
+																			disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																		/>
+																	</span>
+																</Tooltip>
+																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+															</TableCell>
+															{thirdEstimate?.measurement_units === 'imperial'
+																? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
+																: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
+															}
+														</TableRow>
+													}
+													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+														<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+														{thirdEstimate?.measurement_units === 'imperial'
+															? <TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
+															: <TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
+														}
 													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX Flow (ltrs):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_flow_dosage_liters_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_flow_total_project_amount}
-														</TableCell>
+													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+														<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+														<TableCell align="right">{thirdEstimate?.price_per_unit_75_50_display}</TableCell>
 													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX Steel Fibers (kgs):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_steel_fibers_dosage_kgs_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_steel_fibers_total_project_amount}
-														</TableCell>
+													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+														<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+														<TableCell align="right">{thirdEstimate?.total_project_cost_75_50_display}</TableCell>
 													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX UltraCure Blankets (m²):</b></TableCell>
-														<TableCell align="right">
-															N/A
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_ultracure_blankets_total_project_amount}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>PrīmX CPEA (ltrs):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_cpea_dosage_liters_display}
-														</TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.primx_cpea_total_project_amount}
-														</TableCell>
+													<TableRow>
 													</TableRow>
 												</TableBody>
 											</Table>
+											<br /> <br />
+
+											{thirdEstimate?.materials_excluded != 'exclude_fibers' &&
+												<Table size="small">
+													<TableBody>
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell >
+																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+																	<span>
+																		<Radio
+																			checked={thirdEstimate?.selected_steel_fiber_dosage == '90_60'}
+																			onChange={() => handleSteelFiberSelection('90_60', 'THIRD')}
+																			value="90_60"
+																			disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																		/>
+																	</span>
+																</Tooltip>
+																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+															</TableCell>
+															{thirdEstimate?.measurement_units === 'imperial'
+																? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+																: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+															}
+														</TableRow>
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+															{thirdEstimate?.measurement_units === 'imperial'
+																? <TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
+																: <TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
+															}
+														</TableRow>
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+															<TableCell align="right">{thirdEstimate?.price_per_unit_90_60_display}</TableCell>
+														</TableRow>
+														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+															<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+															<TableCell align="right">{thirdEstimate?.total_project_cost_90_60_display}</TableCell>
+														</TableRow>
+
+														{/* Render the following table row for any orders that haven't been placed yet */}
+														{thirdEstimateAgeInMonths >= 3 &&
+															<>
+																<TableRow hover={true}>
+
+																	<TableCell colSpan={7} align="right">
+																		<Button
+																			variant="contained"
+																			color="primary"
+																			onClick={() => handleRecalculateCosts(thirdEstimate, 'thirdEstimate')}
+																			style={{ marginTop: "13px" }}
+																			className={classes.LexendTeraFont11}
+																		>
+																			Recalculate Costs
+																		</Button>
+																	</TableCell>
+																</TableRow>
+															</>
+														}
+													</TableBody>
+												</Table>
+											}
 										</TableContainer>
 									</Paper>
 								</Grid>
@@ -1662,43 +2022,43 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableCell><b>Shipping Estimate:</b></TableCell>
 										<TableCell align="right">
 											{calcCombinedEstimate?.primx_dc_calculated_shipping_estimate}
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											{calcCombinedEstimate?.primx_flow_calculated_shipping_estimate}
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											{calcCombinedEstimate?.primx_steel_fibers_calculated_shipping_estimate}
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											0</TableCell>
 										<TableCell align="right">
 											{calcCombinedEstimate?.primx_cpea_calculated_shipping_estimate}
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											{calcCombinedEstimate?.design_total_shipping_estimate}
-											</TableCell>
+										</TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
 										<TableCell><b>Total Cost:</b></TableCell>
 										<TableCell align="right">
 											<b>{calcCombinedEstimate?.primx_dc_total_cost_estimate}</b>
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											<b>{calcCombinedEstimate?.primx_flow_total_cost_estimate}</b>
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											<b>{calcCombinedEstimate?.primx_steel_fibers_total_cost_estimate}</b>
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											<b>{calcCombinedEstimate?.primx_ultracure_blankets_total_cost_estimate}</b>
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											<b>{calcCombinedEstimate?.primx_cpea_total_cost_estimate}</b>
-											</TableCell>
+										</TableCell>
 										<TableCell align="right">
 											<b>{calcCombinedEstimate?.design_total_price_estimate}</b>
-											</TableCell>
+										</TableCell>
 									</TableRow>
 
 									{calcCombinedEstimate.measurement_units == "imperial" ?

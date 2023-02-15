@@ -326,7 +326,6 @@ router.put('/edit/:estimate_id', rejectUnauthenticated, (req, res) => {
 
 // PUT request to mark an estimate flagged for order by licensee to be marked as ordered by an admin, and to add the name of the admin making the request
 router.put('/process/:estimate_id', rejectUnauthenticated, (req, res) => {
-	console.log(`Ryan Here: `, { params: req.params, body: req.body });
 	const {
 		estimate_id,
 		estimate_number,

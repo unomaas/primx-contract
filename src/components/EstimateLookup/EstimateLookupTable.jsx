@@ -74,7 +74,7 @@ export default function EstimateLookupTable() {
 	}; // End handleClose
 
 	const handleSteelFiberSelection = (value) => {
-		dispatch({ type: 'SET_STEEL_FIBER_SELECTION', payload: value })
+		dispatch({ type: 'SET_STEEL_FIBER_SELECTION_QUERY', payload: value })
 	}; // End handleSteelFiberSelection
 	//#endregion ⬆⬆ Event handlers above. 
 
@@ -214,7 +214,7 @@ export default function EstimateLookupTable() {
 
 
 				{/* Table #2 Imperial: conditionally render the imperial needs*/}
-				{searchResult.measurement_units == 'imperial' &&
+				{searchResult?.measurement_units == 'imperial' &&
 					<>
 						<Grid item xs={6}>
 							<Paper elevation={3}>
@@ -282,61 +282,65 @@ export default function EstimateLookupTable() {
 										</TableBody>
 									</Table>
 
-									<h3>Thickened Edge Calculator</h3>
-									<p>If applicable, for slabs under 6in.</p>
-									<Table size="small">
+									{searchResult?.thickened_edge_perimeter_lineal_feet > 0 || searchResult?.thickened_edge_construction_joint_lineal_feet > 0 &&
+										<>
+											<h3>Thickened Edge Calculator</h3>
+											<p>If applicable, for slabs under 6in.</p>
+											<Table size="small">
 
-										<TableHead>
-											<TableRow hover={true}>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Perimeter</b></TableCell>
-												<TableCell align="right"><b>Construction Joint</b></TableCell>
-											</TableRow>
-										</TableHead>
+												<TableHead>
+													<TableRow hover={true}>
+														<TableCell></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
+													</TableRow>
+												</TableHead>
 
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Lineal Feet:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.thickened_edge_perimeter_lineal_feet_display}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.thickened_edge_construction_joint_lineal_feet_display}
-												</TableCell>
-											</TableRow>
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Lineal Feet:</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.thickened_edge_perimeter_lineal_feet_display}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.thickened_edge_construction_joint_lineal_feet_display}
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Width (yd³):</b></TableCell>
-												<TableCell align="right">
-													5
-												</TableCell>
-												<TableCell align="right">
-													10
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Width (yd³):</b></TableCell>
+														<TableCell align="right">
+															5
+														</TableCell>
+														<TableCell align="right">
+															10
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Additional Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.additional_thickness_inches}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.additional_thickness_inches}
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Additional Thickness (in):</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.additional_thickness_inches}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.additional_thickness_inches}
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.perimeter_thickening_cubic_yards}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.construction_joint_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Cubic Yards:</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.perimeter_thickening_cubic_yards}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.construction_joint_thickening_cubic_yards}
+														</TableCell>
+													</TableRow>
 
-										</TableBody>
-									</Table>
+												</TableBody>
+											</Table>
+										</>
+									}
 								</TableContainer>
 							</Paper>
 						</Grid>
@@ -413,61 +417,65 @@ export default function EstimateLookupTable() {
 										</TableBody>
 									</Table>
 
-									<h3>Thickened Edge Calculator</h3>
-									<p>If applicable, for slabs under 150mm.</p>
-									<Table size="small">
+									{searchResult?.thickened_edge_perimeter_lineal_meters > 0 || searchResult?.thickened_edge_construction_joint_lineal_meters > 0 &&
+										<>
+											<h3>Thickened Edge Calculator</h3>
+											<p>If applicable, for slabs under 150mm.</p>
+											<Table size="small">
 
-										<TableHead>
-											<TableRow hover={true}>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Perimeter</b></TableCell>
-												<TableCell align="right"><b>Construction Joint</b></TableCell>
-											</TableRow>
-										</TableHead>
+												<TableHead>
+													<TableRow hover={true}>
+														<TableCell></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
+													</TableRow>
+												</TableHead>
 
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Lineal Meters:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.thickened_edge_perimeter_lineal_meters_display}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.thickened_edge_construction_joint_lineal_meters_display}
-												</TableCell>
-											</TableRow>
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Lineal Meters:</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.thickened_edge_perimeter_lineal_meters_display}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.thickened_edge_construction_joint_lineal_meters_display}
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Width (m³):</b></TableCell>
-												<TableCell align="right">
-													1.5
-												</TableCell>
-												<TableCell align="right">
-													3.0
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Width (m³):</b></TableCell>
+														<TableCell align="right">
+															1.5
+														</TableCell>
+														<TableCell align="right">
+															3.0
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Additional Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.additional_thickness_millimeters}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.additional_thickness_millimeters}
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Additional Thickness (mm):</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.additional_thickness_millimeters}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.additional_thickness_millimeters}
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.perimeter_thickening_cubic_meters}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.construction_joint_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Cubic Meters:</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.perimeter_thickening_cubic_meters}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.construction_joint_thickening_cubic_meters}
+														</TableCell>
+													</TableRow>
 
-										</TableBody>
-									</Table>
+												</TableBody>
+											</Table>
+										</>
+									}
 								</TableContainer>
 							</Paper>
 						</Grid>
@@ -480,23 +488,22 @@ export default function EstimateLookupTable() {
 					<Paper elevation={3}>
 						<TableContainer>
 							<h3>PrimX Material Price for the Project</h3>
+							<Table size='small'>
+								<TableRow hover={true}>
+									<TableCell><b>Materials Included:</b></TableCell>
+									<TableCell align="right">
+										{searchResult?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+										{searchResult?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+										{searchResult?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+									</TableCell>
+								</TableRow>
+							</Table>
+							<br /><br />
 							<Table size="small">
-
 								<TableBody>
-									<TableRow hover={true}>
-
-										<TableCell><b>Materials Included:</b></TableCell>
-										<TableCell align="right">
-											{searchResult?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-											{searchResult?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-											{searchResult?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
-										</TableCell>
-									</TableRow>
-									<br /><br />
 									{searchResult?.materials_excluded != 'exclude_fibers' &&
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
-												{/* //! Ryan Here */}
 												{!searchResult?.ordered_by_licensee &&
 													<Radio
 														checked={searchResult?.selected_steel_fiber_dosage == '75_50'}
@@ -538,7 +545,6 @@ export default function EstimateLookupTable() {
 								<Table size="small">
 									<TableBody>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-											{/* //! Ryan Here */}
 											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
 												{!searchResult?.ordered_by_licensee &&
 													<Radio
