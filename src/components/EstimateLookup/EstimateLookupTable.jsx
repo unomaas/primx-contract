@@ -5,8 +5,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch } from '@material-ui/core';
+import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch, Tooltip, Radio } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
+import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -24,8 +25,6 @@ export default function EstimateLookupTable() {
 	const history = useHistory();
 	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
 
-	console.log(`Ryan Here \n dosageRates`, dosageRates);
-
 	// ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
 	const { licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
 	let cubic_measurement_unit = searchResult?.measurement_units === "imperial" ? "yd³" : "m³";
@@ -41,7 +40,6 @@ export default function EstimateLookupTable() {
 		searchResult.history = history;
 		// ⬇ Needs to GET shipping information and pricing information before recalculating
 		dispatch({ type: 'RECALCULATE_ESTIMATE', payload: searchResult });
-		dispatch({ type: 'GET_RECALCULATE_INFO' });
 	} // End handleRecalculateCosts
 
 	/** ⬇ handlePlaceOrder:
@@ -50,30 +48,19 @@ export default function EstimateLookupTable() {
 	const handlePlaceOrder = () => {
 		// ⬇ If they haven't entered a PO number, pop up an error helperText:
 		if (poNumber == "") {
-			setPoNumError("Please enter a P.O. Number.")
-			// ⬇ If they have entered a PO number, proceed with order submission:
-		} else {
-			swal({
-				title: "This order has been submitted! Your PrimX representative will be in touch.",
-				text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
-				icon: "success",
-				buttons: "I understand",
-			}) // End swal
-			// ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
-			// .then(() => {
-			//   window.print();
-			// }); // End swal
-			dispatch({
-				// TODO: Test this works.
-				type: 'MARK_ESTIMATE_ORDERED',
-				payload: {
-					id: searchResult.estimate_id,
-					po_number: poNumber,
-					licensee_id: searchResult.licensee_id,
-					estimate_number: searchResult.estimate_number
-				} // End payload
-			}) // End dispatch
-		} // End if/else.
+			setPoNumError("Please enter a P.O. Number.");
+			return;
+		}
+		dispatch({
+			type: 'MARK_ESTIMATE_ORDERED',
+			payload: {
+				estimate_id: searchResult.estimate_id,
+				po_number: poNumber,
+				licensee_id: searchResult.licensee_id,
+				estimate_number: searchResult.estimate_number,
+				selected_steel_fiber_dosage: searchResult.selected_steel_fiber_dosage,
+			} // End payload
+		}) // End dispatch
 	} // End handlePlaceOrder
 
 	/** ⬇ handleEdit:
@@ -85,8 +72,11 @@ export default function EstimateLookupTable() {
 		dispatch({ type: 'SET_EDIT_STATE', payload: true });
 		history.push(`/create`);
 	}; // End handleClose
-	//#endregion ⬆⬆ Event handlers above. 
 
+	const handleSteelFiberSelection = (value) => {
+		dispatch({ type: 'SET_STEEL_FIBER_SELECTION_QUERY', payload: value })
+	}; // End handleSteelFiberSelection
+	//#endregion ⬆⬆ Event handlers above. 
 
 	// ⬇ Rendering below:
 	return (
@@ -224,7 +214,7 @@ export default function EstimateLookupTable() {
 
 
 				{/* Table #2 Imperial: conditionally render the imperial needs*/}
-				{searchResult.measurement_units == 'imperial' &&
+				{searchResult?.measurement_units == 'imperial' &&
 					<>
 						<Grid item xs={6}>
 							<Paper elevation={3}>
@@ -292,61 +282,65 @@ export default function EstimateLookupTable() {
 										</TableBody>
 									</Table>
 
-									<h3>Thickened Edge Calculator</h3>
-									<p>If applicable, for slabs under 6in.</p>
-									<Table size="small">
+									{searchResult?.thickened_edge_perimeter_lineal_feet > 0 || searchResult?.thickened_edge_construction_joint_lineal_feet > 0 &&
+										<>
+											<h3>Thickened Edge Calculator</h3>
+											<p>If applicable, for slabs under 6in.</p>
+											<Table size="small">
 
-										<TableHead>
-											<TableRow hover={true}>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Perimeter</b></TableCell>
-												<TableCell align="right"><b>Construction Joint</b></TableCell>
-											</TableRow>
-										</TableHead>
+												<TableHead>
+													<TableRow hover={true}>
+														<TableCell></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
+													</TableRow>
+												</TableHead>
 
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Lineal Feet:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.thickened_edge_perimeter_lineal_feet_display}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.thickened_edge_construction_joint_lineal_feet_display}
-												</TableCell>
-											</TableRow>
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Lineal Feet:</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.thickened_edge_perimeter_lineal_feet_display}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.thickened_edge_construction_joint_lineal_feet_display}
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Width (yd³):</b></TableCell>
-												<TableCell align="right">
-													5
-												</TableCell>
-												<TableCell align="right">
-													10
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Width (yd³):</b></TableCell>
+														<TableCell align="right">
+															5
+														</TableCell>
+														<TableCell align="right">
+															10
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Additional Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.additional_thickness_inches}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.additional_thickness_inches}
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Additional Thickness (in):</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.additional_thickness_inches}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.additional_thickness_inches}
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.perimeter_thickening_cubic_yards}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.construction_joint_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Cubic Yards:</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.perimeter_thickening_cubic_yards}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.construction_joint_thickening_cubic_yards}
+														</TableCell>
+													</TableRow>
 
-										</TableBody>
-									</Table>
+												</TableBody>
+											</Table>
+										</>
+									}
 								</TableContainer>
 							</Paper>
 						</Grid>
@@ -423,61 +417,65 @@ export default function EstimateLookupTable() {
 										</TableBody>
 									</Table>
 
-									<h3>Thickened Edge Calculator</h3>
-									<p>If applicable, for slabs under 150mm.</p>
-									<Table size="small">
+									{searchResult?.thickened_edge_perimeter_lineal_meters > 0 || searchResult?.thickened_edge_construction_joint_lineal_meters > 0 &&
+										<>
+											<h3>Thickened Edge Calculator</h3>
+											<p>If applicable, for slabs under 150mm.</p>
+											<Table size="small">
 
-										<TableHead>
-											<TableRow hover={true}>
-												<TableCell></TableCell>
-												<TableCell align="right"><b>Perimeter</b></TableCell>
-												<TableCell align="right"><b>Construction Joint</b></TableCell>
-											</TableRow>
-										</TableHead>
+												<TableHead>
+													<TableRow hover={true}>
+														<TableCell></TableCell>
+														<TableCell align="right"><b>Perimeter</b></TableCell>
+														<TableCell align="right"><b>Construction Joint</b></TableCell>
+													</TableRow>
+												</TableHead>
 
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Lineal Meters:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.thickened_edge_perimeter_lineal_meters_display}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.thickened_edge_construction_joint_lineal_meters_display}
-												</TableCell>
-											</TableRow>
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Lineal Meters:</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.thickened_edge_perimeter_lineal_meters_display}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.thickened_edge_construction_joint_lineal_meters_display}
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Width (m³):</b></TableCell>
-												<TableCell align="right">
-													1.5
-												</TableCell>
-												<TableCell align="right">
-													3.0
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Width (m³):</b></TableCell>
+														<TableCell align="right">
+															1.5
+														</TableCell>
+														<TableCell align="right">
+															3.0
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Additional Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.additional_thickness_millimeters}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.additional_thickness_millimeters}
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Additional Thickness (mm):</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.additional_thickness_millimeters}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.additional_thickness_millimeters}
+														</TableCell>
+													</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.perimeter_thickening_cubic_meters}
-												</TableCell>
-												<TableCell align="right">
-													{searchResult?.construction_joint_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
+													<TableRow hover={true}>
+														<TableCell><b>Cubic Meters:</b></TableCell>
+														<TableCell align="right">
+															{searchResult?.perimeter_thickening_cubic_meters}
+														</TableCell>
+														<TableCell align="right">
+															{searchResult?.construction_joint_thickening_cubic_meters}
+														</TableCell>
+													</TableRow>
 
-										</TableBody>
-									</Table>
+												</TableBody>
+											</Table>
+										</>
+									}
 								</TableContainer>
 							</Paper>
 						</Grid>
@@ -490,41 +488,51 @@ export default function EstimateLookupTable() {
 					<Paper elevation={3}>
 						<TableContainer>
 							<h3>PrimX Material Price for the Project</h3>
+							<Table size='small'>
+								<TableRow hover={true}>
+									<TableCell><b>Materials Included:</b></TableCell>
+									<TableCell align="right">
+										{searchResult?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+										{searchResult?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+										{searchResult?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+									</TableCell>
+								</TableRow>
+							</Table>
+							<br /><br />
 							<Table size="small">
-
 								<TableBody>
-									<TableRow hover={true}>
-
-										<TableCell><b>Materials Included:</b></TableCell>
-										<TableCell align="right">
-											{searchResult?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-											{searchResult?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-											{searchResult?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
-										</TableCell>
-									</TableRow>
-									<br /><br />
 									{searchResult?.materials_excluded != 'exclude_fibers' &&
-										<TableRow hover={true}>
-											<TableCell><b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
+												{!searchResult?.ordered_by_licensee &&
+													<Radio
+														checked={searchResult?.selected_steel_fiber_dosage == '75_50'}
+														onChange={() => handleSteelFiberSelection('75_50')}
+														value="75_50"
+														disabled={searchResult?.ordered_by_licensee == 'true' ? true : false}
+													/>
+												}
+												<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
 												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
 												: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
 											}
 										</TableRow>
 									}
-									<TableRow hover={true}>
-										<TableCell><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+										<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
 										{searchResult?.measurement_units === 'imperial'
 											? <TableCell align="right">{searchResult?.design_cubic_yards_total}</TableCell>
 											: <TableCell align="right">{searchResult?.design_cubic_meters_total}</TableCell>
 										}
 									</TableRow>
-									<TableRow hover={true}>
-										<TableCell><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+										<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 										<TableCell align="right">{searchResult?.price_per_unit_75_50_display}</TableCell>
 									</TableRow>
-									<TableRow hover={true}>
-										<TableCell><b>Total PrimX Price per Project (USD):</b></TableCell>
+									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
+										<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
 										<TableCell align="right">{searchResult?.total_project_cost_75_50_display}</TableCell>
 									</TableRow>
 									<TableRow>
@@ -536,26 +544,35 @@ export default function EstimateLookupTable() {
 							{searchResult?.materials_excluded != 'exclude_fibers' &&
 								<Table size="small">
 									<TableBody>
-										<TableRow hover={true}>
-											<TableCell><b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
+												{!searchResult?.ordered_by_licensee &&
+													<Radio
+														checked={searchResult?.selected_steel_fiber_dosage == '90_60'}
+														onChange={() => handleSteelFiberSelection('90_60')}
+														value="90_60"
+													/>
+												}
+												<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
 												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
 												: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
 											}
 										</TableRow>
-										<TableRow hover={true}>
-											<TableCell><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
 											{searchResult?.measurement_units === 'imperial'
 												? <TableCell align="right">{searchResult?.design_cubic_yards_total}</TableCell>
 												: <TableCell align="right">{searchResult?.design_cubic_meters_total}</TableCell>
 											}
 										</TableRow>
-										<TableRow hover={true}>
-											<TableCell><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 											<TableCell align="right">{searchResult?.price_per_unit_90_60_display}</TableCell>
 										</TableRow>
-										<TableRow hover={true}>
-											<TableCell><b>Total PrimX Price per Project (USD):</b></TableCell>
+										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
+											<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
 											<TableCell align="right">{searchResult?.total_project_cost_90_60_display}</TableCell>
 										</TableRow>
 
@@ -567,59 +584,57 @@ export default function EstimateLookupTable() {
 													<TableCell colSpan={7} align="right">
 														<section className="removeInPrint">
 															{/* Edit Estimate Button: */}
-															<Button
-																variant="contained"
-																// color="secondary"
-																onClick={handleEdit}
-																className={classes.LexendTeraFont11}
-															>
-																Edit This Estimate
-															</Button>
-															&nbsp; &nbsp;
 
-															{/* Recalculate Costs Button: */}
-															<Button
-																variant="contained"
-																color="primary"
-																onClick={handleRecalculateCosts}
-																className={classes.LexendTeraFont11}
-															>
-																Recalculate Costs
-															</Button>
-															&nbsp; &nbsp;
-															{hasRecalculated ?
-																<>
+															{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 3
+																? <Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
+																	<Button
+																		variant="contained"
+																		color="primary"
+																		onClick={handleRecalculateCosts}
+																		style={{ marginTop: "13px" }}
+																		className={classes.LexendTeraFont11}
+																	>
+																		Recalculate Costs
+																	</Button>
+																</Tooltip>
+																: <>
+																	<Button
+																		variant="contained"
+																		// color="secondary"
+																		onClick={handleEdit}
+																		className={classes.LexendTeraFont11}
+																		style={{ float: "left", marginTop: "13px" }}
+																	>
+																		Edit This Estimate
+																	</Button>
+
+
 																	<TextField
 																		onChange={(event) => setPoNumber(event.target.value)}
 																		size="small"
 																		label="PO Number"
 																		helperText={poNumError}
-																	/>
-																</> : <>
-																	Recalculate costs before placing order.
-																</>
-															}
-															&nbsp; &nbsp;
+																	/> &nbsp; &nbsp;
 
-															{/* Submit Order Button, shows up as grey if user hasn't recalculated with current pricing yet */}
-															{hasRecalculated ?
-																<>
-																	<Button
-																		variant="contained"
-																		color="secondary"
-																		onClick={handlePlaceOrder}
-																		className={classes.LexendTeraFont11}
+																	<Tooltip
+																		title={searchResult?.selected_steel_fiber_dosage ? '' : 'Please select a Steel Fiber dosage rate before placing an order.'}
+																		placement="top-end"
+																		arrow
 																	>
-																		Place Order
-																	</Button>
-																</> : <>
-																	<Button
-																		variant="contained"
-																		disabled
-																		className={classes.LexendTeraFont11}
-																	>
-																		Place Order
-																	</Button>
+																		<span>
+																			<Button
+																				variant="contained"
+																				color="primary"
+																				onClick={handlePlaceOrder}
+																				className={classes.LexendTeraFont11}
+																				style={{ marginTop: "13px" }}
+																				disabled={searchResult?.selected_steel_fiber_dosage ? false : true}
+																			>
+																				Place Order
+																			</Button>
+
+																		</span>
+																	</Tooltip>
 																</>
 															}
 														</section>

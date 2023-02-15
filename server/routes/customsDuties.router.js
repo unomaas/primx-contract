@@ -89,6 +89,24 @@ router.get('/get-recent-customs-duties-history', async (req, res) => {
 	}; // End try/catch
 });
 
+router.get('/get-specific-customs-duties-history', async (req, res) => {
+	const { date_saved } = req.query;
+	try {
+		const sql = `
+			SELECT * 
+			FROM "customs_duties_history"
+			WHERE "date_saved" <= ${format('%L', date_saved)}
+			ORDER BY "date_saved" DESC
+			LIMIT 6;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in customs duties GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
 // ⬇ POST route - adds shipping cost history
 router.post('/submit-customs-duties-history', rejectUnauthenticated, async (req, res) => {
 	try {
@@ -103,8 +121,8 @@ router.post('/submit-customs-duties-history', rejectUnauthenticated, async (req,
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of req.body) {
 			sql += format(
-				`(%L::int, %L::decimal, %L::decimal, %L::date), `,
-				cost.custom_duty_id, cost.USA_percent, cost.CAN_percent, today
+				`(%L::int, %L::decimal, %L::decimal, NOW()), `,
+				cost.custom_duty_id, cost.USA_percent, cost.CAN_percent
 			); // End format
 		}; // End for loop
 		// ⬇ Remove the last comma and space:

@@ -55,7 +55,7 @@ router.get('/get-all-product-cost-history', async (req, res) => {
 		const { rows } = await pool.query(sql);
 		res.send(rows);
 	} catch (error) {
-		console.error('Error in shipping costs GET router', error);
+		console.error('Error in products GET router', error);
 		res.sendStatus(500);
 	}; // End try/catch
 });
@@ -72,7 +72,26 @@ router.get('/get-recent-product-cost-history', async (req, res) => {
 		const { rows } = await pool.query(sql);
 		res.send(rows);
 	} catch (error) {
-		console.error('Error in shipping costs GET router', error);
+		console.error('Error in products GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
+
+router.get('/get-specific-product-cost-history', async (req, res) => {
+	const { date_saved } = req.query;
+	try {
+		const sql = `
+			SELECT * 
+			FROM "product_cost_history"
+			WHERE "date_saved" <= ${format('%L', date_saved)}
+			ORDER BY "date_saved" DESC
+			LIMIT 8;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in GET router', error);
 		res.sendStatus(500);
 	}; // End try/catch
 });
@@ -89,7 +108,7 @@ router.post('/submit-product-cost-history', rejectUnauthenticated, async (req, r
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of req.body) {
-			sql += format(`(%L::int, %L::decimal, %L::date), `, cost.product_id, cost.product_self_cost, today);
+			sql += format(`(%L::int, %L::decimal, NOW()), `, cost.product_id, cost.product_self_cost);
 		}; // End for loop
 		// ⬇ Remove the last comma and space:
 		sql = sql.slice(0, -2);
@@ -99,7 +118,7 @@ router.post('/submit-product-cost-history', rejectUnauthenticated, async (req, r
 		// ⬇ Send the response:
 		res.sendStatus(201);
 	} catch (error) {
-		console.error('Error in shipping costs history POST route', error);
+		console.error('Error in products history POST route', error);
 		res.sendStatus(500);
 	}; // End try/catch
 }); // End POST route
@@ -177,6 +196,24 @@ router.get('/get-all-markup-history', async (req, res) => {
 	}; // End try/catch
 }); // End GET route
 
+router.get('/get-specific-markup-history', async (req, res) => {
+	const { date_saved } = req.query;
+	try {
+		const sql = `
+			SELECT * 
+			FROM "markup_history"
+			WHERE "date_saved" <= ${format('%L', date_saved)}
+			ORDER BY "date_saved" DESC
+			LIMIT 1;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in all markup history GET', error);
+		res.sendStatus(500);
+	}; // End try/catch
+}); // End GET route
+
 router.post('/edit-markup-margin', rejectUnauthenticated, async (req, res) => {
 	try {
 		const sql = `
@@ -202,7 +239,7 @@ router.post('/submit-markup-history', rejectUnauthenticated, async (req, res) =>
 			INSERT INTO "markup_history" (
 				"margin_applied", "date_saved"
 			) VALUES (
-				${format('%L::decimal', req.body.margin_applied)}, ${format('%L::date', today)}
+				${format('%L::decimal', req.body.margin_applied)}, NOW()
 			);
 		`; // End sql
 		// ⬇ Send the query to the database:

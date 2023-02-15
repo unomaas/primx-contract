@@ -8,6 +8,7 @@ import { Alert } from '@material-ui/lab';
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar, Radio, RadioGroup, FormControl, FormControlLabel } from '@material-ui/core';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
+import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -35,14 +36,12 @@ export default function EstimateCreateTable() {
 	let cubic_measurement_unit = estimateData.measurement_units === "imperial" ? "yd³" : "m³";
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
+		estimateData.difference_in_months = useDifferenceBetweenDates(estimateData.date_created).total_months;
 		if (
 			estimateData.square_feet &&
 			estimateData.thickness_inches &&
 			estimateData.thickened_edge_construction_joint_lineal_feet &&
-			estimateData.thickened_edge_perimeter_lineal_feet 
-			// estimateData.primx_flow_dosage_liters &&
-			// estimateData.primx_steel_fibers_dosage_lbs &&
-			// estimateData.primx_cpea_dosage_liters
+			estimateData.thickened_edge_perimeter_lineal_feet
 		) {
 			dispatch({
 				type: 'HANDLE_CALCULATED_ESTIMATE',
@@ -55,7 +54,7 @@ export default function EstimateCreateTable() {
 						shippingCosts: shippingCosts,
 						productContainers: productContainers,
 						dosageRates: dosageRates,
-						customsDuties: customsDuties,
+						customsDuties: customsDuties
 					}
 				}
 			});
@@ -64,10 +63,7 @@ export default function EstimateCreateTable() {
 			estimateData.square_meters &&
 			estimateData.thickness_millimeters &&
 			estimateData.thickened_edge_construction_joint_lineal_meters &&
-			estimateData.thickened_edge_perimeter_lineal_meters 
-			// estimateData.primx_flow_dosage_liters &&
-			// estimateData.primx_steel_fibers_dosage_kgs &&
-			// estimateData.primx_cpea_dosage_liters
+			estimateData.thickened_edge_perimeter_lineal_meters
 		) {
 			dispatch({
 				type: 'HANDLE_CALCULATED_ESTIMATE',
@@ -80,6 +76,7 @@ export default function EstimateCreateTable() {
 					productContainers: productContainers,
 					dosageRates: dosageRates,
 					customsDuties: customsDuties,
+					editState: editState,
 				}
 			});
 			setSaveButton(true);
@@ -94,6 +91,11 @@ export default function EstimateCreateTable() {
 	 */
 	const handleChange = (key, value) => {
 		// setNewEstimate({ ...newEstimate, [key]: value });
+
+		if (key == 'materials_excluded' && editState == true) {
+			estimateData.force_recalculate = true;
+		};
+
 		dispatch({
 			type: 'SET_ESTIMATE',
 			payload: { key: key, value: value }
@@ -116,7 +118,6 @@ export default function EstimateCreateTable() {
 		estimateData.total_project_cost_90_60 = calculatedDisplayObject.total_project_cost_90_60;
 
 		// ⬇ Send the estimate object to be POSTed:
-		console.log(`Ryan Here: handleSave\n `, { estimateData });
 		dispatch({ type: 'ADD_ESTIMATE', payload: estimateData });
 		// // ⬇ Sweet Alert to let them know to save the Estimate #:
 		// swal({
@@ -138,6 +139,8 @@ export default function EstimateCreateTable() {
 		estimateData.history = history;
 		// ⬇ Send the estimate object to be updated:
 		dispatch({ type: 'EDIT_ESTIMATE', payload: estimateData });
+
+
 		// // ⬇ Sweet Alert to let them know to save the Estimate #:
 		// swal({
 		// 	title: "Your edits have been saved!",
@@ -627,7 +630,7 @@ export default function EstimateCreateTable() {
 																variant="contained"
 																className={classes.LexendTeraFont11}
 																color="secondary"
-																// style={{backgroundColor: "green"}}
+															// style={{backgroundColor: "green"}}
 															>
 																Save Estimate
 															</Button>
@@ -904,7 +907,10 @@ export default function EstimateCreateTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Price Options:</b></TableCell>
 											<TableCell>
-												<FormControl>
+												<FormControl  
+														disabled={editState ? true : false}
+												
+												>
 													<RadioGroup
 														value={estimateData.materials_excluded}
 														style={{ display: 'inline' }}

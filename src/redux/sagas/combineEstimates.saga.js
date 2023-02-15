@@ -7,6 +7,15 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import useCombineEstimateCalculations from '../../hooks/useCombineEstimateCalculations';
 
 
+// Combined estimate saga to fetch estimate for combined cost
+function* combineEstimatesSaga() {
+	yield takeLatest('FETCH_MANY_ESTIMATES_QUERY', fetchManyEstimatesQuery);
+	yield takeLatest('FETCH_COMBINED_ESTIMATE_QUERY', fetchCombinedEstimatesQuery);
+	yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markCombinedEstimateOrdered);
+	yield takeLatest('CLEAR_ALL_STALE_DATA', clearAllStaleData);
+} // End combineEstimatesSaga //
+
+
 // Saga Worker to create a a new combined estimated quote: 
 function* fetchManyEstimatesQuery(action) {
 	// Saving history for navigation:
@@ -311,14 +320,5 @@ function* clearAllStaleData(action) {
 		console.error('clearAllStaleData failed', error)
 	}
 }
-
-// Combined estimate saga to fetch estimate for combined cost
-function* combineEstimatesSaga() {
-	yield takeLatest('FETCH_MANY_ESTIMATES_QUERY', fetchManyEstimatesQuery);
-	yield takeLatest('FETCH_COMBINED_ESTIMATE_QUERY', fetchCombinedEstimatesQuery);
-	yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markCombinedEstimateOrdered);
-	yield takeLatest('CLEAR_ALL_STALE_DATA', clearAllStaleData);
-} // End combineEstimatesSaga //
-
 
 export default combineEstimatesSaga;

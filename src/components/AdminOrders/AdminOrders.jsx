@@ -19,6 +19,8 @@ export default function AdminOrders() {
 	// useSelector looks at the array of estimate objects from adminEstimates reducer
 	const allEstimates = useSelector(store => store.adminEstimates);
 
+
+
 	// create holding arrays to be filled with estimate objects, then passed as props to create the needed Data Grids
 	const [pendingOrders, processedOrders, openEstimates, archivedEstimates] = [[], [], [], []];
 
@@ -52,6 +54,7 @@ export default function AdminOrders() {
 		dispatch({ type: 'FETCH_ALL_ESTIMATES' });
 	}, [])
 
+	console.log(`Ryan Here \n`, {allEstimates, pendingOrders, processedOrders, openEstimates, archivedEstimates});
 
 	return (
 		<div>

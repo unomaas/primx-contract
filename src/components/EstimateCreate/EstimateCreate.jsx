@@ -65,6 +65,9 @@ export default function EstimateCreate() {
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
 	const handleChange = (key, value) => {
+		if (key == 'destination_id' && editState == true) {
+			estimateData.force_recalculate = true;
+		}; 
 		// ⬇ If they're toggling Materials On-Hand, send the opposite bool: 
 		if (key === 'materials_on_hand') {
 			// ⬇ Converts our string input bool to a true bool for the reducer: 
@@ -97,7 +100,6 @@ export default function EstimateCreate() {
 		// 		// ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
 		// 		for (let keyName in shippingState) {
 
-		// 			console.log(`Ryan Here \n keyName `, {keyName});
 
 		// 			// Ignore the id key for the shipping state, otherwise the edit view will break by changing the estimate id that's being edited
 		// 			// to the id of the shipping state
@@ -335,7 +337,7 @@ export default function EstimateCreate() {
 										<TableRow hover={true}>
 											<TableCell><b>Unit of Measurement:</b></TableCell>
 											<TableCell>
-												<FormControl error={error}>
+												<FormControl error={error} disabled={editState ? true : false} >
 													<RadioGroup
 														value={estimateData.measurement_units}
 														style={{ display: 'inline' }}
@@ -445,6 +447,7 @@ export default function EstimateCreate() {
 													size="small"
 													fullWidth
 													value={estimateData.destination_id}
+													disabled={editState ? true : false}
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{shippingDestinations.map(state => {
@@ -508,6 +511,7 @@ export default function EstimateCreate() {
 													variant="contained"
 													className={classes.LexendTeraFont11}
 													color="primary"
+													disabled={showTables ? true : false}
 												>
 													Next
 												</Button>

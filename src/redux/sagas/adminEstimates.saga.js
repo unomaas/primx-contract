@@ -35,10 +35,15 @@ function* editEstimateData(action) {
 
 // worker saga to make a PUT request to mark a pending order as processed, and assign the estimate the name of the admin who clicked the button
 function* editProcessOrder(action) {
+	console.log(`Ryan Here: editProcessOrder`, { action });
 	try {
 		// action.payload is an object with various details about the data grid row, including the id of the estimate to be changed. action.payload.row
 		// contains all the data involved for the estimate being processed
-		yield axios.put(`/api/estimates/process/${action.payload.id}`, action.payload.row);
+		yield axios.put(`/api/estimates/process/${action.payload.params.id}`, {
+			estimate_id: action.payload.params.row.estimate_id,
+			estimate_number: action.payload.params.row.estimate_number,
+			processed_by: action.payload.user.user_id,
+		});
 		// update data grids now that data in DB has changed
 		yield put({ type: 'FETCH_ALL_ESTIMATES' });
 	}
@@ -49,8 +54,8 @@ function* editProcessOrder(action) {
 
 function* archiveEstimate(action) {
 	try {
-
-		yield axios.put(`/api/estimates/archive/${action.payload.id}`, action.payload.row)
+		console.log(`Ryan Here: archiveEstimate`, { action });
+		yield axios.put(`/api/estimates/archive/${action.payload.row.estimate_id}`, action.payload.row)
 
 		// update data grids now that data in DB has changed
 		yield put({ type: 'FETCH_ALL_ESTIMATES' });
@@ -63,7 +68,7 @@ function* archiveEstimate(action) {
 // worker saga to make a DELETE request at for estimates
 function* deleteEstimate(action) {
 	try {
-		yield axios.delete(`/api/estimates/delete/${action.payload.id}`, { params: { id: action.payload.id } })
+		yield axios.delete(`/api/estimates/delete/${action.payload.row.estimate_id}`, { params: { estimate_id: action.payload.row.estimate_id } })
 		// update data grids now that data in DB has changed
 		yield put({ type: 'FETCH_ALL_ESTIMATES' });
 	}

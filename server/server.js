@@ -22,7 +22,7 @@ const companiesRouter = require('./routes/companies.router');
 const userInfoRouter = require('./routes/userInfo.router');
 const licenseePortalRouter = require('./routes/licenseePortal.router')
 const dosageRatesRouter = require('./routes/dosageRates.router')
-const pricingLogRouter = require('./routes/dosageRates.router')
+const pricingLogRouter = require('./routes/pricingLog.router')
 
 
 // Body parser middleware

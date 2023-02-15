@@ -154,6 +154,44 @@ router.get('/get-recent-shipping-cost-history', async (req, res) => {
 	}; // End try/catch
 });
 
+router.get('/get-specific-shipping-cost-history', async (req, res) => {
+	const { date_saved, destination_id } = req.query;
+	try {
+		const sql = `
+			SELECT
+				"sch".shipping_cost_history_id,
+				"sch".shipping_cost_id,
+				"sch".shipping_cost,
+				"sch".date_saved,
+				"p".product_label,
+				"c".container_length_ft, 
+				"sd".destination_name,
+				"c".container_destination
+			FROM "shipping_cost_history" AS "sch"
+			JOIN "shipping_costs" AS "sc"
+				ON "sc".shipping_cost_id = "sch".shipping_cost_id
+			JOIN "shipping_destinations" AS "sd"
+				ON "sd".destination_id = "sc".destination_id
+			JOIN "product_containers" AS "pc"
+				ON "pc".product_container_id = "sc".product_container_id
+			JOIN "products" AS "p"
+				ON "p".product_id = "pc".product_id
+			JOIN "containers" AS "c"
+				ON "pc".container_id = "c".container_id
+			WHERE 
+				"date_saved" <= ${format('%L', date_saved)} AND 
+				"sd".destination_id = ${format('%L', destination_id)}
+			ORDER BY "date_saved" DESC
+			LIMIT 8;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in shipping costs GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
 // ⬇ POST route - adds shipping cost history
 router.post('/submit-shipping-cost-history', rejectUnauthenticated, async (req, res) => {
 	try {
@@ -167,7 +205,10 @@ router.post('/submit-shipping-cost-history', rejectUnauthenticated, async (req, 
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of req.body) {
-			sql += format(`(%L::int, %L::decimal, %L::date), `, cost.shipping_cost_id, cost.shipping_cost, today);
+			sql += format(
+				`(%L::int, %L::decimal, NOW()), `,
+				cost.shipping_cost_id, cost.shipping_cost
+			);
 		}; // End for loop
 		// ⬇ Remove the last comma and space:
 		sql = sql.slice(0, -2);
