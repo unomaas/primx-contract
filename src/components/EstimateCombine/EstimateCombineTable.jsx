@@ -1777,332 +1777,170 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 				<Grid item xs={12}>
 					<Paper elevation={3}>
 						<TableContainer>
-							<h3>Total Combined Materials Table</h3>
+							<h3>Summary Per Project</h3>
 							<Table size="small">
 
 								<TableHead>
 									<TableRow>
-										<TableCell></TableCell>
-										{/* Conditionally render either imperial or metric table headings */}
-										{calcCombinedEstimate.measurement_units == 'imperial' ?
-											<>
-												<TableCell align="right"><b>PrīmX DC (lbs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX Flow (ltrs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX Steel Fibers (lbs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX UltraCure Blankets (ft²)</b></TableCell>
-												<TableCell align="right"><b>PrīmX CPEA (ltrs)</b></TableCell>
-											</> : <>
-												<TableCell align="right"><b>PrīmX DC (kgs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX Flow (ltrs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX Steel Fibers (kgs)</b></TableCell>
-												<TableCell align="right"><b>PrīmX UltraCure Blankets (m²)</b></TableCell>
-												<TableCell align="right"><b>PrīmX CPEA (ltrs)</b></TableCell>
+										<TableCell><b>Estimate #</b></TableCell>
+										<TableCell><b>Floor Type</b></TableCell>
+										{calcCombinedEstimate.measurement_units == 'imperial'
+											? <>
+												<TableCell align="right"><b>Area, ft²</b></TableCell>
+												<TableCell align="right"><b>Concrete Amt, yd³</b></TableCell>
 											</>
-										} {/* End conditionally rendered table headings*/}
-										<TableCell></TableCell>
+											: <>
+												<TableCell align="right"><b>Area, m²</b></TableCell>
+												<TableCell align="right"><b>Concrete Amt, m³</b></TableCell>
+											</>
+										}
+										<TableCell><b>Materials Included</b></TableCell>
+										<TableCell align="right"><b>Steel Fiber Dosage</b></TableCell>
+										{calcCombinedEstimate.measurement_units == 'imperial'
+											? <TableCell align="right"><b>Price Per yd³</b></TableCell>
+											: <TableCell align="right"><b>Price Per m³</b></TableCell>
+										}
+										<TableCell align="right"><b>Total Per Floor (USD)</b></TableCell>
 									</TableRow>
 								</TableHead>
 
 								<TableBody>
-									{/* Total amounts share key names between imperial and metric */}
 									<TableRow hover={true}>
-										<TableCell><b>Total Project Amount:</b></TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_dc_total_project_amount}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_flow_total_project_amount}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_steel_fibers_total_project_amount}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_ultracure_blankets_total_project_amount}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_cpea_total_project_amount}
-										</TableCell>
-										<TableCell></TableCell>
-									</TableRow>
-
-									{calcCombinedEstimate?.materials_on_hand &&
-										<>
-											{calcCombinedEstimate.measurement_units == "imperial" ?
-												<TableRow hover={true}>
-													<TableCell><b>Materials On Hand:</b></TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_dc_on_hand_lbs_display}
-													</TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_flow_on_hand_liters_display}
-													</TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_steel_fibers_on_hand_lbs_display}
-													</TableCell>
-													<TableCell align="right"
-													>{calcCombinedEstimate?.primx_ultracure_blankets_on_hand_sq_ft_display}
-													</TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_cpea_on_hand_liters_display}
-													</TableCell>
-													<TableCell align="right"></TableCell>
-												</TableRow>
-												:	// Else measurement_units == 'metric', below: 
-												<TableRow hover={true}>
-													<TableCell><b>Materials On Hand:</b></TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_dc_on_hand_kgs_display}
-													</TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_flow_on_hand_liters_display}
-													</TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_steel_fibers_on_hand_kgs_display}</TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_ultracure_blankets_on_hand_sq_m_display}
-													</TableCell>
-													<TableCell align="right">
-														{calcCombinedEstimate?.primx_cpea_on_hand_liters_display}
-													</TableCell>
-													<TableCell align="right"></TableCell>
-												</TableRow>
-											} {/* End imperial/metric conditional rendering */}
-											{/* These rows are shared for both imperial and metric, but only shown if Materials On Hand is checked: */}
-											<TableRow hover={true}>
-												<TableCell><b>Total Order Amount:</b></TableCell>
-												<TableCell align="right">
-													{calcCombinedEstimate.primx_dc_total_order_amount}
-												</TableCell>
-												<TableCell align="right">
-													{calcCombinedEstimate.primx_flow_total_order_amount}
-												</TableCell>
-												<TableCell align="right">
-													{calcCombinedEstimate.primx_steel_fibers_total_order_amount}
-												</TableCell>
-												<TableCell align="right">
-													{calcCombinedEstimate.primx_ultracure_blankets_total_order_amount}
-												</TableCell>
-												<TableCell align="right">
-													{calcCombinedEstimate.primx_cpea_total_order_amount}
-												</TableCell>
-												<TableCell align="right"></TableCell>
-											</TableRow>
-										</>
-									} {/* End Materials On Hand Conditional Rendering */}
-
-									<TableRow hover={true}>
-										<TableCell><b>Packaging Capacity:</b></TableCell>
-										{/* Conditionally render either imperial or metric packaging capacity numbers */}
-										{calcCombinedEstimate.measurement_units == 'imperial' ?
-											<>
-												<TableCell align="right">2,756</TableCell>
-												<TableCell align="right">1,000</TableCell>
-												<TableCell align="right">42,329</TableCell>
-												<TableCell align="right">6,458</TableCell>
-												<TableCell align="right">1,000</TableCell>
-											</> :
-											<>
-												<TableCell align="right">1,250</TableCell>
-												<TableCell align="right">1,000</TableCell>
-												<TableCell align="right">19,200</TableCell>
-												<TableCell align="right">600</TableCell>
-												<TableCell align="right">1,000</TableCell>
+										<TableCell>{firstEstimate?.estimate_number}</TableCell>
+										<TableCell>{firstEstimate?.floor_type_label}</TableCell>
+										{firstEstimate.measurement_units == 'imperial'
+											? <>
+												<TableCell align="right">{firstEstimate?.square_feet_display}</TableCell>
+												<TableCell align="right">{firstEstimate?.cubic_yards}</TableCell>
 											</>
-										} {/* End conditionally rendered packaging capacity numbers*/}
-										<TableCell></TableCell>
-									</TableRow>
-
-									{/* All following table data has shared key names between both metric and imperial */}
-									<TableRow hover={true}>
-										<TableCell><b>Packages Needed:</b></TableCell>
+											: <>
+												<TableCell align="right">{firstEstimate?.square_meters_display}</TableCell>
+												<TableCell align="right">{firstEstimate?.cubic_meters}</TableCell>
+											</>
+										}
+										<TableCell>{firstEstimate?.materials_excluded == "none" ? "All" : firstEstimate?.materials_excluded == "exclude_cpea" ? "Exclude CPEA" : "Exclude Fibers"}</TableCell>
 										<TableCell align="right">
-											{calcCombinedEstimate?.primx_dc_packages_needed}
+											{firstEstimate.measurement_units == 'imperial' && firstEstimate.selected_steel_fiber_dosage == "75_50" &&
+												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</>
+											}
+											{firstEstimate.measurement_units == 'imperial' && firstEstimate.selected_steel_fiber_dosage == "90_60" &&
+												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</>
+											}
+											{firstEstimate.measurement_units == 'metric' && firstEstimate.selected_steel_fiber_dosage == "75_50" &&
+												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}lbs</>
+											}
+											{firstEstimate.measurement_units == 'metric' && firstEstimate.selected_steel_fiber_dosage == "90_60" &&
+												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}lbs</>
+											}
 										</TableCell>
 										<TableCell align="right">
-											{calcCombinedEstimate?.primx_flow_packages_needed}
+											{firstEstimate.selected_steel_fiber_dosage && firstEstimate.selected_steel_fiber_dosage == '75_50' &&
+												<>{firstEstimate.price_per_unit_75_50_display}</>
+											}
+											{firstEstimate.selected_steel_fiber_dosage && firstEstimate.selected_steel_fiber_dosage == '90_60' &&
+												<>{firstEstimate.price_per_unit_90_60_display}</>
+											}
 										</TableCell>
 										<TableCell align="right">
-											{calcCombinedEstimate?.primx_steel_fibers_packages_needed}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_ultracure_blankets_packages_needed}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_cpea_packages_needed}
-										</TableCell>
-										<TableCell></TableCell>
-									</TableRow>
-
-									<TableRow hover={true}>
-										<TableCell><b>Final Order Amount:</b></TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_dc_final_order_amount}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_flow_final_order_amount}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_steel_fibers_final_order_amount}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_ultracure_blankets_final_order_amount}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_cpea_final_order_amount}
-										</TableCell>
-										<TableCell></TableCell>
-									</TableRow>
-
-									<TableRow hover={true}>
-										<TableCell><b>Materials Price:</b></TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_dc_unit_price}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_flow_unit_price}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_steel_fibers_unit_price}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_ultracure_blankets_unit_price}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_cpea_unit_price}
-										</TableCell>
-										<TableCell align="right">
-											<b>Totals</b>
+											{firstEstimate.selected_steel_fiber_dosage && firstEstimate.selected_steel_fiber_dosage == '75_50' &&
+												<>{firstEstimate.total_project_cost_75_50_display}</>
+											}
+											{firstEstimate.selected_steel_fiber_dosage && firstEstimate.selected_steel_fiber_dosage == '90_60' &&
+												<>{firstEstimate.total_project_cost_90_60_display}</>
+											}
 										</TableCell>
 									</TableRow>
 
 									<TableRow hover={true}>
-										<TableCell><b>Total Materials Price:</b></TableCell>
+										<TableCell>{secondEstimate?.estimate_number}</TableCell>
+										<TableCell>{secondEstimate?.floor_type_label}</TableCell>
+										{firstEstimate.measurement_units == 'imperial'
+											? <>
+												<TableCell align="right">{secondEstimate?.square_feet_display}</TableCell>
+												<TableCell align="right">{secondEstimate?.cubic_yards}</TableCell>
+											</>
+											: <>
+												<TableCell align="right">{secondEstimate?.square_meters_display}</TableCell>
+												<TableCell align="right">{secondEstimate?.cubic_meters}</TableCell>
+											</>
+										}
+										<TableCell>{secondEstimate?.materials_excluded == "none" ? "All" : secondEstimate?.materials_excluded == "exclude_cpea" ? "Exclude CPEA" : "Exclude Fibers"}</TableCell>
 										<TableCell align="right">
-											{calcCombinedEstimate?.primx_dc_total_materials_price}
+											{firstEstimate.measurement_units == 'imperial' && secondEstimate.selected_steel_fiber_dosage == "75_50" &&
+												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</>
+											}
+											{firstEstimate.measurement_units == 'imperial' && secondEstimate.selected_steel_fiber_dosage == "90_60" &&
+												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</>
+											}
+											{firstEstimate.measurement_units == 'metric' && secondEstimate.selected_steel_fiber_dosage == "75_50" &&
+												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}lbs</>
+											}
+											{firstEstimate.measurement_units == 'metric' && secondEstimate.selected_steel_fiber_dosage == "90_60" &&
+												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}lbs</>
+											}
 										</TableCell>
 										<TableCell align="right">
-											{calcCombinedEstimate?.primx_flow_total_materials_price}
+											{secondEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage == '75_50' &&
+												<>{secondEstimate.price_per_unit_75_50_display}</>
+											}
+											{secondEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage == '90_60' &&
+												<>{secondEstimate.price_per_unit_90_60_display}</>
+											}
 										</TableCell>
 										<TableCell align="right">
-											{calcCombinedEstimate?.primx_steel_fibers_total_materials_price}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_ultracure_blankets_total_materials_price}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_cpea_total_materials_price}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.design_total_materials_price}
-										</TableCell>
-									</TableRow>
-
-									<TableRow hover={true}>
-										<TableCell><b>Containers:</b></TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_dc_containers_needed}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_flow_containers_needed}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_steel_fibers_containers_needed}
-										</TableCell>
-										<TableCell align="right">
-											0</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_cpea_containers_needed}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.design_total_containers}
-										</TableCell>
-									</TableRow>
-
-									<TableRow hover={true}>
-										<TableCell><b>Shipping Estimate:</b></TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_dc_calculated_shipping_estimate}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_flow_calculated_shipping_estimate}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_steel_fibers_calculated_shipping_estimate}
-										</TableCell>
-										<TableCell align="right">
-											0</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.primx_cpea_calculated_shipping_estimate}
-										</TableCell>
-										<TableCell align="right">
-											{calcCombinedEstimate?.design_total_shipping_estimate}
+											{secondEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage == '75_50' &&
+												<>{secondEstimate.total_project_cost_75_50_display}</>
+											}
+											{secondEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage == '90_60' &&
+												<>{secondEstimate.total_project_cost_90_60_display}</>
+											}
 										</TableCell>
 									</TableRow>
 
-									<TableRow hover={true}>
-										<TableCell><b>Total Cost:</b></TableCell>
-										<TableCell align="right">
-											<b>{calcCombinedEstimate?.primx_dc_total_cost_estimate}</b>
-										</TableCell>
-										<TableCell align="right">
-											<b>{calcCombinedEstimate?.primx_flow_total_cost_estimate}</b>
-										</TableCell>
-										<TableCell align="right">
-											<b>{calcCombinedEstimate?.primx_steel_fibers_total_cost_estimate}</b>
-										</TableCell>
-										<TableCell align="right">
-											<b>{calcCombinedEstimate?.primx_ultracure_blankets_total_cost_estimate}</b>
-										</TableCell>
-										<TableCell align="right">
-											<b>{calcCombinedEstimate?.primx_cpea_total_cost_estimate}</b>
-										</TableCell>
-										<TableCell align="right">
-											<b>{calcCombinedEstimate?.design_total_price_estimate}</b>
-										</TableCell>
-									</TableRow>
-
-									{calcCombinedEstimate.measurement_units == "imperial" ?
+									{thirdEstimate &&
 										<TableRow hover={true}>
-											<TableCell><b>Cost per ft²:</b></TableCell>
+											<TableCell>{thirdEstimate?.estimate_number}</TableCell>
+											<TableCell>{thirdEstimate?.floor_type_label}</TableCell>
+											{firstEstimate.measurement_units == 'imperial'
+												? <>
+													<TableCell align="right">{thirdEstimate?.square_feet_display}</TableCell>
+													<TableCell align="right">{thirdEstimate?.cubic_yards}</TableCell>
+												</>
+												: <>
+													<TableCell align="right">{thirdEstimate?.square_meters_display}</TableCell>
+													<TableCell align="right">{thirdEstimate?.cubic_meters}</TableCell>
+												</>
+											}
+											<TableCell>{thirdEstimate?.materials_excluded == "none" ? "All" : thirdEstimate?.materials_excluded == "exclude_cpea" ? "Exclude CPEA" : "Exclude Fibers"}</TableCell>
 											<TableCell align="right">
-												{calcCombinedEstimate?.primx_dc_cost_per_sq_ft}
+												{firstEstimate.measurement_units == 'imperial' && thirdEstimate.selected_steel_fiber_dosage == "75_50" &&
+													<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</>
+												}
+												{firstEstimate.measurement_units == 'imperial' && thirdEstimate.selected_steel_fiber_dosage == "90_60" &&
+													<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</>
+												}
+												{firstEstimate.measurement_units == 'metric' && thirdEstimate.selected_steel_fiber_dosage == "75_50" &&
+													<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}lbs</>
+												}
+												{firstEstimate.measurement_units == 'metric' && thirdEstimate.selected_steel_fiber_dosage == "90_60" &&
+													<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}lbs</>
+												}
 											</TableCell>
 											<TableCell align="right">
-												{calcCombinedEstimate?.primx_flow_cost_per_sq_ft}
+												{thirdEstimate.selected_steel_fiber_dosage && thirdEstimate.selected_steel_fiber_dosage == '75_50' &&
+													<>{thirdEstimate.price_per_unit_75_50_display}</>
+												}
+												{thirdEstimate.selected_steel_fiber_dosage && thirdEstimate.selected_steel_fiber_dosage == '90_60' &&
+													<>{thirdEstimate.price_per_unit_90_60_display}</>
+												}
 											</TableCell>
 											<TableCell align="right">
-												{calcCombinedEstimate?.primx_steel_fibers_cost_per_sq_ft}
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_ultracure_blankets_cost_per_sq_ft}
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_cpea_cost_per_sq_ft}
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_design_total_cost_per_sq_ft}
-											</TableCell>
-										</TableRow>
-										: // Else measurement_units == 'metric', below: 
-										<TableRow hover={true}>
-											<TableCell><b>Cost per m²:</b></TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_dc_cost_per_sq_m}
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_flow_cost_per_sq_m}
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_steel_fibers_cost_per_sq_m}
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_ultracure_blankets_cost_per_sq_m}
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_cpea_cost_per_sq_m}
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.primx_design_total_cost_per_sq_m}
+												{thirdEstimate.selected_steel_fiber_dosage && thirdEstimate.selected_steel_fiber_dosage == '75_50' &&
+													<>{thirdEstimate.total_project_cost_75_50_display}</>
+												}
+												{thirdEstimate.selected_steel_fiber_dosage && thirdEstimate.selected_steel_fiber_dosage == '90_60' &&
+													<>{thirdEstimate.total_project_cost_90_60_display}</>
+												}
 											</TableCell>
 										</TableRow>
 									}
