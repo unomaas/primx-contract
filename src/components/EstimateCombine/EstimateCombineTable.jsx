@@ -72,9 +72,13 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		calcCombinedEstimate.history = history;
 		// Attach the estimate numbers to use inside the POST: 
 		calcCombinedEstimate.estimate_number_combined_1 = firstEstimate.estimate_number;
+		calcCombinedEstimate.estimate_number_combined_1_sf_dosage = firstEstimate.selected_steel_fiber_dosage;
 		calcCombinedEstimate.estimate_number_combined_2 = secondEstimate.estimate_number;
-		calcCombinedEstimate.estimate_number_combined_3 = thirdEstimate.estimate_number;
+		calcCombinedEstimate.estimate_number_combined_2_sf_dosage = secondEstimate.selected_steel_fiber_dosage;
+		calcCombinedEstimate.estimate_number_combined_3 = thirdEstimate?.estimate_number;
+		
 		// ⬇ Send the estimate object to be POSTed:
+		// TODO: When I come back, follow this to make sure hte POST works, and then figure out the logic to submit. 
 		dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
 		// ⬇ Sweet Alert to let them know to save the Estimate #:
 		// swal({

@@ -300,7 +300,7 @@ router.post('/add-new-estimate', async (req, res) => {
 			estimate_number: newEstimateNumber,
 			licensee_id: licensee_id,
 			estimate_id: estimate_id
-		})
+		});
 	} catch (error) {
 		console.error('Problem with estimates POST', error);
 		res.sendStatus(500);
