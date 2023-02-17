@@ -50,9 +50,3 @@ export default function useValueFormatter(property, estimate) {
 	} // End if/else
 
 }
-
-// TODO WHEN I COME BACK: Update the Lookup tables to handle these new values (aka take out all of the toLocaleStrings and resolve the NaN's.)  Then test the edits with these new inputs.  Then setup the Combine Estimates to null anything when POST'ing. 
-
-// TODO: When I come back, we need to make sure the PUT route works with editing the new values.  Then we need to update the Lookup Estimate to handle the new values.  Then we need to update the Combine Estimate to be the same as Lookup, and make sure that we wipe anything on hand when combining.  Then I think we're done? Oh and update all the tables to be right aligned.  Also make sure the Admin and Licensee Data Grid Tables have these new columns to display.  
-
-// TODO: Test metric combine and make sure the tallies are working.  Then figure out how to setup Materials on Hand with a combined estimate.  Then figure out why the Edit estimate isn't working for singles.  

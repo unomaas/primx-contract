@@ -45,6 +45,7 @@ export default function EstimateCombine() {
 			dispatch({ type: 'SET_RECALCULATED_FALSE' }),
 			dispatch({ type: 'FETCH_DOSAGE_RATES' })
 	}, []); // End useEffect
+	
 	// ⬇ Run on estimate search complete:
 	useEffect(() => {
 		// ⬇ If the user got here with params by searching from the lookup view, dispatch the data in the URL params to run a GET request to the DB:

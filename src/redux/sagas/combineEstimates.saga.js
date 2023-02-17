@@ -6,6 +6,15 @@ import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import useCombineEstimateCalculations from '../../hooks/useCombineEstimateCalculations';
 
+// Create our number formatter to format our money quantities back into standard looking currency values.
+const formatter = new Intl.NumberFormat('en-US', {
+	style: 'currency',
+	currency: 'USD',
+
+	// These options are needed to round to whole numbers if that's what you want.
+	//minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+	//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
 
 // Combined estimate saga to fetch estimate for combined cost
 function* combineEstimatesSaga() {
@@ -13,8 +22,75 @@ function* combineEstimatesSaga() {
 	yield takeLatest('FETCH_COMBINED_ESTIMATE_QUERY', fetchCombinedEstimatesQuery);
 	yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markCombinedEstimateOrdered);
 	yield takeLatest('CLEAR_ALL_STALE_DATA', clearAllStaleData);
+	yield takeLatest('COMBINE_ESTIMATE_TOTALS', combineEstimateTotals);
 } // End combineEstimatesSaga //
 
+// Saga Worker to create a a new combined estimated quote: 
+function* combineEstimateTotals(action) {
+	yield put({ type: "SHOW_TOP_LOADING_DIV" });
+
+	const {
+		firstEstimate,
+		secondEstimate,
+		thirdEstimate,
+		combinedEstimate
+	} = action.payload;
+
+	try {
+		// ⬇ Total the estimates' design_cubic measurements:
+		const totalsObjectHolder = {
+			design_cubic_yards_total: 0,
+			design_cubic_meters_total: 0,
+			total_project_cost_75_50: 0,
+			total_project_cost_90_60: 0,
+			combined_total_project_cost: 0,
+		};
+
+		if (firstEstimate.measurement_units === 'imperial') {
+
+			totalsObjectHolder.design_cubic_yards_total += parseFloat(firstEstimate.design_cubic_yards_total);
+			totalsObjectHolder.design_cubic_yards_total += parseFloat(secondEstimate.design_cubic_yards_total);
+			if (thirdEstimate) totalsObjectHolder.design_cubic_yards_total += parseFloat(thirdEstimate.design_cubic_yards_total);
+
+		} else if (firstEstimate.measurement_units === 'metric') {
+			
+			totalsObjectHolder.design_cubic_meters_total += parseFloat(firstEstimate.design_cubic_meters_total);
+			totalsObjectHolder.design_cubic_meters_total += parseFloat(secondEstimate.design_cubic_meters_total);
+			if (thirdEstimate) totalsObjectHolder.design_cubic_meters_total += parseFloat(thirdEstimate.design_cubic_meters_total);
+
+		} // End if/else
+
+		const firstSFDosage = firstEstimate.selected_steel_fiber_dosage;
+		const secondSFDosage = secondEstimate.selected_steel_fiber_dosage;
+		const thirdSFDosage = thirdEstimate?.selected_steel_fiber_dosage;
+
+		totalsObjectHolder.combined_total_project_cost += parseFloat(firstEstimate[`total_project_cost_${firstSFDosage}`]);
+		totalsObjectHolder.combined_total_project_cost += parseFloat(secondEstimate[`total_project_cost_${secondSFDosage}`]);
+		if (thirdEstimate) totalsObjectHolder.combined_total_project_cost += parseFloat(thirdEstimate[`total_project_cost_${thirdSFDosage}`]);
+
+
+		combinedEstimate.total_project_cost_75_50 = totalsObjectHolder.combined_total_project_cost;
+		combinedEstimate.total_project_cost_75_50_display = formatter.format(totalsObjectHolder.combined_total_project_cost);
+
+		combinedEstimate.total_project_cost_90_60 = totalsObjectHolder.combined_total_project_cost;
+		combinedEstimate.total_project_cost_90_60_display = formatter.format(totalsObjectHolder.combined_total_project_cost);
+		combinedEstimate.design_cubic_yards_total = totalsObjectHolder.design_cubic_yards_total;
+		combinedEstimate.design_cubic_yards_total_display = totalsObjectHolder.design_cubic_yards_total.toLocaleString('en-US');
+		combinedEstimate.design_cubic_meters_total = totalsObjectHolder.design_cubic_meters_total;
+		combinedEstimate.design_cubic_meters_total_display = totalsObjectHolder.design_cubic_meters_total.toLocaleString('en-US');
+
+		console.log(`Ryan Here: END OF SAGA \n \n `, { combinedEstimate, totalsObjectHolder });
+		// const calculatedResponse = yield useCombineEstimateCalculations(talliedCombinedEstimate);
+		// ⬇ Send that data to the reducer, and set the show table to true:
+		yield put({ type: "CLEAR_CALCULATED_COMBINED_ESTIMATE",  });
+		yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: combinedEstimate });
+		// yield put({ type: "SHOW_DATA_TABLE" });
+		yield put({ type: "HIDE_TOP_LOADING_DIV" });
+	} catch (error) {
+		console.error('fetchManyEstimatesQuery failed:', error);
+		yield put({ type: "HIDE_TOP_LOADING_DIV" });
+	} // End try/catch
+} // End  Saga
 
 // Saga Worker to create a a new combined estimated quote: 
 function* fetchManyEstimatesQuery(action) {

@@ -364,7 +364,6 @@ router.put('/archive/:estimate_id', rejectUnauthenticated, (req, res) => {
 		})
 })
 
-// ! Ryan Here
 // PUT request to mark an estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
 router.put('/order/:estimate_id', async (req, res) => {
 	try {

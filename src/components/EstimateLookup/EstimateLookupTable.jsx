@@ -73,10 +73,14 @@ export default function EstimateLookupTable() {
 		history.push(`/create`);
 	}; // End handleClose
 
+	
+
 	const handleSteelFiberSelection = (value) => {
 		dispatch({ type: 'SET_STEEL_FIBER_SELECTION_QUERY', payload: value })
 	}; // End handleSteelFiberSelection
 	//#endregion ⬆⬆ Event handlers above. 
+
+	if (searchResult?.materials_excluded == 'exclude_fibers') searchResult.selected_steel_fiber_dosage = '75_50';
 
 	// ⬇ Rendering below:
 	return (
@@ -282,7 +286,7 @@ export default function EstimateLookupTable() {
 										</TableBody>
 									</Table>
 
-									{searchResult?.thickened_edge_perimeter_lineal_feet > 0 || searchResult?.thickened_edge_construction_joint_lineal_feet > 0 &&
+									{(parseInt(searchResult?.thickened_edge_perimeter_lineal_feet) > 0 || parseInt(searchResult?.thickened_edge_construction_joint_lineal_feet) > 0) &&
 										<>
 											<h3>Thickened Edge Calculator</h3>
 											<p>If applicable, for slabs under 6in.</p>
@@ -575,78 +579,81 @@ export default function EstimateLookupTable() {
 											<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
 											<TableCell align="right">{searchResult?.total_project_cost_90_60_display}</TableCell>
 										</TableRow>
-
-										{/* Render the following table row for any orders that haven't been placed yet */}
-										{!searchResult.ordered_by_licensee &&
-											<>
-												<TableRow hover={true}>
-
-													<TableCell colSpan={7} align="right">
-														<section className="removeInPrint">
-															{/* Edit Estimate Button: */}
-
-															{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 3
-																? <Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
-																	<Button
-																		variant="contained"
-																		color="primary"
-																		onClick={handleRecalculateCosts}
-																		style={{ marginTop: "13px" }}
-																		className={classes.LexendTeraFont11}
-																	>
-																		Recalculate Costs
-																	</Button>
-																</Tooltip>
-																: <>
-																	<Button
-																		variant="contained"
-																		// color="secondary"
-																		onClick={handleEdit}
-																		className={classes.LexendTeraFont11}
-																		style={{ float: "left", marginTop: "13px" }}
-																	>
-																		Edit This Estimate
-																	</Button>
-
-
-																	<TextField
-																		onChange={(event) => setPoNumber(event.target.value)}
-																		size="small"
-																		label="PO Number"
-																		helperText={poNumError}
-																	/> &nbsp; &nbsp;
-
-																	<Tooltip
-																		title={searchResult?.selected_steel_fiber_dosage ? '' : 'Please select a Steel Fiber dosage rate before placing an order.'}
-																		placement="top-end"
-																		arrow
-																	>
-																		<span>
-																			<Button
-																				variant="contained"
-																				color="primary"
-																				onClick={handlePlaceOrder}
-																				className={classes.LexendTeraFont11}
-																				style={{ marginTop: "13px" }}
-																				disabled={searchResult?.selected_steel_fiber_dosage ? false : true}
-																			>
-																				Place Order
-																			</Button>
-
-																		</span>
-																	</Tooltip>
-																</>
-															}
-														</section>
-													</TableCell>
-												</TableRow>
-											</>
-										} {/* End conditional render on materials table displaying buttons*/}
-
-
 									</TableBody>
 								</Table>
 							}
+							<Table>
+								<TableBody>
+									{/* Render the following table row for any orders that haven't been placed yet */}
+									{!searchResult.ordered_by_licensee &&
+										<>
+											<TableRow hover={true}>
+
+												<TableCell colSpan={7} align="right">
+													<section className="removeInPrint">
+														{/* Edit Estimate Button: */}
+
+														{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 3
+															? <Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
+																<Button
+																	variant="contained"
+																	color="primary"
+																	onClick={handleRecalculateCosts}
+																	style={{ marginTop: "13px" }}
+																	className={classes.LexendTeraFont11}
+																>
+																	Recalculate Costs
+																</Button>
+															</Tooltip>
+															: <>
+																<Button
+																	variant="contained"
+																	// color="secondary"
+																	onClick={handleEdit}
+																	className={classes.LexendTeraFont11}
+																	style={{ float: "left", marginTop: "13px" }}
+																>
+																	Edit This Estimate
+																</Button>
+
+
+																<TextField
+																	onChange={(event) => setPoNumber(event.target.value)}
+																	size="small"
+																	label="PO Number"
+																	helperText={poNumError}
+																/> &nbsp; &nbsp;
+
+																<Tooltip
+																	title={searchResult?.selected_steel_fiber_dosage ? '' : 'Please select a Steel Fiber dosage rate before placing an order.'}
+																	placement="top-end"
+																	arrow
+																>
+																	<span>
+																		<Button
+																			variant="contained"
+																			color="primary"
+																			onClick={handlePlaceOrder}
+																			className={classes.LexendTeraFont11}
+																			style={{ marginTop: "13px" }}
+																			disabled={searchResult?.selected_steel_fiber_dosage ? false : true}
+																		>
+																			Place Order
+																		</Button>
+
+																	</span>
+																</Tooltip>
+															</>
+														}
+													</section>
+												</TableCell>
+											</TableRow>
+										</>
+									} {/* End conditional render on materials table displaying buttons*/}
+
+
+								</TableBody>
+							</Table>
 						</TableContainer>
 					</Paper>
 				</Grid>

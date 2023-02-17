@@ -33,6 +33,8 @@ export const calcCombinedEstimate = (state = {}, action) => {
 	switch (action.type) {
 		case 'SET_CALCULATED_COMBINED_ESTIMATE':
 			return action.payload;
+		case 'CLEAR_CALCULATED_COMBINED_ESTIMATE':
+			return {};
 		case 'CLEAR_COMBINED_ESTIMATES_DATA':
 			return {};
 		default:

@@ -4,7 +4,6 @@ import {
 
 const today = new Date().toISOString().substring(0, 10);
 
-// TODO: When I come back, I need to consider setting up a new reducer to shape the data to send to the back end to add to the table.  That includes re-shaping the table to fit this data, and then having to re-shape the formula to handle calculating costs.  
 
 // ⬇ estimatesReducer:
 export const estimatesReducer = (state = {
