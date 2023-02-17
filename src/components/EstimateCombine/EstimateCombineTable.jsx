@@ -77,15 +77,15 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		// ⬇ Send the estimate object to be POSTed:
 		dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
 		// ⬇ Sweet Alert to let them know to save the Estimate #:
-		swal({
-			title: "Estimate saved!",
-			text: "NOTE: Your estimate number has changed! Please print or save it, as you will need it to look up this estimate again, and submit the order for processing.",
-			icon: "info",
-			buttons: "I understand",
-		}).then(() => {
-			// ⬇ Pop-up print confirmation:
-			window.print();
-		}); // End swal
+		// swal({
+		// 	title: "Estimate saved!",
+		// 	text: "NOTE: Your estimate number has changed! Please print or save it, as you will need it to look up this estimate again, and submit the order for processing.",
+		// 	icon: "info",
+		// 	buttons: "I understand",
+		// }).then(() => {
+		// 	// ⬇ Pop-up print confirmation:
+		// 	window.print();
+		// }); // End swal
 	} // End handleSave
 
 	/** ⬇ handlePlaceOrder:
@@ -2016,20 +2016,47 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</TableCell>
 										</TableRow>
 
+
+										<TableRow hover={true}>
+											<TableCell colSpan={9} align="right">
+												{((firstEstimate.used_in_a_combined_order == true) &&
+													(secondEstimate.used_in_a_combined_order == true) &&
+													((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.used_in_a_combined_order == true))) ?
+													<>
+														<TextField
+															onChange={(event) => setPoNumber(event.target.value)}
+															size="small"
+															label="PO Number"
+															helperText={poNumError}
+														/>
+														&nbsp; &nbsp;
+														<Button
+															variant="contained"
+															color="secondary"
+															onClick={handlePlaceOrder}
+															className={classes.LexendTeraFont11}
+														>
+															Place Order
+														</Button>
+													</> : <>
+														<section className="removeInPrint">
+
+															<Button
+																variant="contained"
+																color="primary"
+																onClick={handleSave}
+																className={classes.LexendTeraFont11}
+															>
+																Save Estimate
+															</Button>
+														</section>
+													</>
+												}
+
+											</TableCell>
+										</TableRow>
 									</>}
 
-									{!calcCombinedEstimate?.ordered_by_licensee &&
-										<>
-											<section className="removeInPrint">
-												<TableRow hover={true}>
-													<TableCell colSpan={9} align="right">
-
-
-													</TableCell>
-												</TableRow>
-											</section>
-										</>
-									}
 
 								</TableBody>
 							</Table>
