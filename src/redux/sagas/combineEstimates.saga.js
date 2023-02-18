@@ -249,6 +249,7 @@ function* fetchCombinedEstimatesQuery(action) {
 			} // End params
 		}); // End response        
 		const combinedEstimateData = firstResponse.data[0];
+		console.log(`Ryan Here: fetchCombinedEstimatesQuery\ `, {combinedEstimateData});
 		// ⬇ Pulling the estimate numbers from : 
 		const firstEstimateNumber = combinedEstimateData.estimate_number_combined_1;
 		const secondEstimateNumber = combinedEstimateData.estimate_number_combined_2;
@@ -282,77 +283,77 @@ function* fetchCombinedEstimatesQuery(action) {
 			const thirdEstimate = estimatesArray[2];
 			yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: thirdEstimate });
 		} // End if 
-		// ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
-		const totalsObjectHolder = {
-			primx_cpea_total_project_amount: 0,
-			primx_dc_total_project_amount: 0,
-			primx_flow_total_project_amount: 0,
-			primx_steel_fibers_total_project_amount: 0,
-			primx_ultracure_blankets_total_project_amount: 0,
-			square_feet: 0,
-			square_meters: 0,
-			primx_dc_on_hand_lbs: 0,
-			primx_dc_on_hand_kgs: 0,
-			primx_flow_on_hand_liters: 0,
-			primx_steel_fibers_on_hand_lbs: 0,
-			primx_steel_fibers_on_hand_kgs: 0,
-			primx_ultracure_blankets_on_hand_sq_ft: 0,
-			primx_ultracure_blankets_on_hand_sq_m: 0,
-			primx_cpea_on_hand_liters: 0,
-		}; // End totalsObjectHolder
-		// ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
-		for (let estimate of estimatesArray) {
-			totalsObjectHolder.primx_cpea_total_project_amount += parseFloat(estimate?.primx_cpea_total_project_amount?.replaceAll(',', ''));
-			totalsObjectHolder.primx_dc_total_project_amount += parseFloat(estimate?.primx_dc_total_project_amount?.replaceAll(',', ''));
-			totalsObjectHolder.primx_flow_total_project_amount += parseFloat(estimate?.primx_flow_total_project_amount?.replaceAll(',', ''));
-			totalsObjectHolder.primx_steel_fibers_total_project_amount += parseFloat(estimate?.primx_steel_fibers_total_project_amount?.replaceAll(',', ''));
-			totalsObjectHolder.primx_ultracure_blankets_total_project_amount += parseFloat(estimate?.primx_ultracure_blankets_total_project_amount?.replaceAll(',', ''));
-			totalsObjectHolder.square_feet += parseFloat(estimate?.square_feet);
-			totalsObjectHolder.square_meters += parseFloat(estimate?.square_meters);
-			// ⬇ If any of the estimates used in the combine are marked as having Materials On Hand:
-			if (estimate.materials_on_hand) {
-				// ⬇ Tally up the totals: 
-				totalsObjectHolder.primx_dc_on_hand_lbs += parseFloat(estimate.primx_dc_on_hand_lbs);
-				totalsObjectHolder.primx_dc_on_hand_kgs += parseFloat(estimate?.primx_dc_on_hand_kgs);
-				totalsObjectHolder.primx_flow_on_hand_liters += parseFloat(estimate.primx_flow_on_hand_liters);
-				totalsObjectHolder.primx_steel_fibers_on_hand_lbs += parseFloat(estimate.primx_steel_fibers_on_hand_lbs);
-				totalsObjectHolder.primx_steel_fibers_on_hand_kgs += parseFloat(estimate.primx_steel_fibers_on_hand_kgs);
-				totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_ft += parseFloat(estimate.primx_ultracure_blankets_on_hand_sq_ft);
-				totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_m += parseFloat(estimate.primx_ultracure_blankets_on_hand_sq_m);
-				totalsObjectHolder.primx_cpea_on_hand_liters += parseFloat(estimate.primx_cpea_on_hand_liters);
-				// ⬇ Mark the first estimate used as true for having them as well, as that's the one that gets deep cloned and shown on the page: 
-				estimatesArray[0].materials_on_hand = true;
-			} // End if 
-		} // End for loop
-		// ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing. The JSON.parse(JSON.stringify) will rip apart and create a new object copy. Only works with objects: 
-		let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
-		// ⬇ We want the updated "-C" combined estimate number on our deep copy though: 
-		talliedCombinedEstimate.estimate_number = combinedEstimateNumber;
-		// ⬇ Setting the tallied amount to the object to feed through the math machine: 
-		talliedCombinedEstimate.primx_cpea_total_project_amount = totalsObjectHolder.primx_cpea_total_project_amount;
-		talliedCombinedEstimate.primx_dc_total_project_amount = totalsObjectHolder.primx_dc_total_project_amount;
-		talliedCombinedEstimate.primx_flow_total_project_amount = totalsObjectHolder.primx_flow_total_project_amount;
-		talliedCombinedEstimate.primx_steel_fibers_total_project_amount = totalsObjectHolder.primx_steel_fibers_total_project_amount;
-		talliedCombinedEstimate.primx_ultracure_blankets_total_project_amount = totalsObjectHolder.primx_ultracure_blankets_total_project_amount;
-		talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
-		talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
-		// ⬇ If any of the estimates used in the combine are marked as having Materials On Hand:
-		if (talliedCombinedEstimate.materials_on_hand) {
-			// ⬇ Set the tallied totals to the new estimate object: 
-			talliedCombinedEstimate.primx_dc_on_hand_lbs = totalsObjectHolder.primx_dc_on_hand_lbs;
-			talliedCombinedEstimate.primx_dc_on_hand_kgs = totalsObjectHolder.primx_dc_on_hand_kgs;
-			talliedCombinedEstimate.primx_flow_on_hand_liters = totalsObjectHolder.primx_flow_on_hand_liters;
-			talliedCombinedEstimate.primx_steel_fibers_on_hand_lbs = totalsObjectHolder.primx_steel_fibers_on_hand_lbs;
-			talliedCombinedEstimate.primx_steel_fibers_on_hand_kgs = totalsObjectHolder.primx_steel_fibers_on_hand_kgs;
-			talliedCombinedEstimate.primx_ultracure_blankets_on_hand_sq_ft = totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_ft;
-			talliedCombinedEstimate.primx_ultracure_blankets_on_hand_sq_m = totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_m;
-			talliedCombinedEstimate.primx_cpea_on_hand_liters = totalsObjectHolder.primx_cpea_on_hand_liters;
-		} // End if 
-		// ⬇ Run the updated Combine Estimates Calc on it:
-		const calculatedResponse = yield useCombineEstimateCalculations(talliedCombinedEstimate);
+		// // ⬇ Making an empty/zero'd out object to hold the tallies for each total amount needed. 
+		// const totalsObjectHolder = {
+		// 	primx_cpea_total_project_amount: 0,
+		// 	primx_dc_total_project_amount: 0,
+		// 	primx_flow_total_project_amount: 0,
+		// 	primx_steel_fibers_total_project_amount: 0,
+		// 	primx_ultracure_blankets_total_project_amount: 0,
+		// 	square_feet: 0,
+		// 	square_meters: 0,
+		// 	primx_dc_on_hand_lbs: 0,
+		// 	primx_dc_on_hand_kgs: 0,
+		// 	primx_flow_on_hand_liters: 0,
+		// 	primx_steel_fibers_on_hand_lbs: 0,
+		// 	primx_steel_fibers_on_hand_kgs: 0,
+		// 	primx_ultracure_blankets_on_hand_sq_ft: 0,
+		// 	primx_ultracure_blankets_on_hand_sq_m: 0,
+		// 	primx_cpea_on_hand_liters: 0,
+		// }; // End totalsObjectHolder
+		// // ⬇ Looping through the estimatesArray, which is full of estimates from the DB, and tallying those total amounts needed to the object holding container above. 
+		// for (let estimate of estimatesArray) {
+		// 	totalsObjectHolder.primx_cpea_total_project_amount += parseFloat(estimate?.primx_cpea_total_project_amount?.replaceAll(',', ''));
+		// 	totalsObjectHolder.primx_dc_total_project_amount += parseFloat(estimate?.primx_dc_total_project_amount?.replaceAll(',', ''));
+		// 	totalsObjectHolder.primx_flow_total_project_amount += parseFloat(estimate?.primx_flow_total_project_amount?.replaceAll(',', ''));
+		// 	totalsObjectHolder.primx_steel_fibers_total_project_amount += parseFloat(estimate?.primx_steel_fibers_total_project_amount?.replaceAll(',', ''));
+		// 	totalsObjectHolder.primx_ultracure_blankets_total_project_amount += parseFloat(estimate?.primx_ultracure_blankets_total_project_amount?.replaceAll(',', ''));
+		// 	totalsObjectHolder.square_feet += parseFloat(estimate?.square_feet);
+		// 	totalsObjectHolder.square_meters += parseFloat(estimate?.square_meters);
+		// 	// ⬇ If any of the estimates used in the combine are marked as having Materials On Hand:
+		// 	if (estimate.materials_on_hand) {
+		// 		// ⬇ Tally up the totals: 
+		// 		totalsObjectHolder.primx_dc_on_hand_lbs += parseFloat(estimate.primx_dc_on_hand_lbs);
+		// 		totalsObjectHolder.primx_dc_on_hand_kgs += parseFloat(estimate?.primx_dc_on_hand_kgs);
+		// 		totalsObjectHolder.primx_flow_on_hand_liters += parseFloat(estimate.primx_flow_on_hand_liters);
+		// 		totalsObjectHolder.primx_steel_fibers_on_hand_lbs += parseFloat(estimate.primx_steel_fibers_on_hand_lbs);
+		// 		totalsObjectHolder.primx_steel_fibers_on_hand_kgs += parseFloat(estimate.primx_steel_fibers_on_hand_kgs);
+		// 		totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_ft += parseFloat(estimate.primx_ultracure_blankets_on_hand_sq_ft);
+		// 		totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_m += parseFloat(estimate.primx_ultracure_blankets_on_hand_sq_m);
+		// 		totalsObjectHolder.primx_cpea_on_hand_liters += parseFloat(estimate.primx_cpea_on_hand_liters);
+		// 		// ⬇ Mark the first estimate used as true for having them as well, as that's the one that gets deep cloned and shown on the page: 
+		// 		estimatesArray[0].materials_on_hand = true;
+		// 	} // End if 
+		// } // End for loop
+		// // ⬇ Creating a deep copy container to copy the first estimate in the array, which is the one we use for shipping/quote pricing. The JSON.parse(JSON.stringify) will rip apart and create a new object copy. Only works with objects: 
+		// let talliedCombinedEstimate = JSON.parse(JSON.stringify(estimatesArray[0]));
+		// // ⬇ We want the updated "-C" combined estimate number on our deep copy though: 
+		// talliedCombinedEstimate.estimate_number = combinedEstimateNumber;
+		// // ⬇ Setting the tallied amount to the object to feed through the math machine: 
+		// talliedCombinedEstimate.primx_cpea_total_project_amount = totalsObjectHolder.primx_cpea_total_project_amount;
+		// talliedCombinedEstimate.primx_dc_total_project_amount = totalsObjectHolder.primx_dc_total_project_amount;
+		// talliedCombinedEstimate.primx_flow_total_project_amount = totalsObjectHolder.primx_flow_total_project_amount;
+		// talliedCombinedEstimate.primx_steel_fibers_total_project_amount = totalsObjectHolder.primx_steel_fibers_total_project_amount;
+		// talliedCombinedEstimate.primx_ultracure_blankets_total_project_amount = totalsObjectHolder.primx_ultracure_blankets_total_project_amount;
+		// talliedCombinedEstimate.square_feet = totalsObjectHolder.square_feet;
+		// talliedCombinedEstimate.square_meters = totalsObjectHolder.square_meters;
+		// // ⬇ If any of the estimates used in the combine are marked as having Materials On Hand:
+		// if (talliedCombinedEstimate.materials_on_hand) {
+		// 	// ⬇ Set the tallied totals to the new estimate object: 
+		// 	talliedCombinedEstimate.primx_dc_on_hand_lbs = totalsObjectHolder.primx_dc_on_hand_lbs;
+		// 	talliedCombinedEstimate.primx_dc_on_hand_kgs = totalsObjectHolder.primx_dc_on_hand_kgs;
+		// 	talliedCombinedEstimate.primx_flow_on_hand_liters = totalsObjectHolder.primx_flow_on_hand_liters;
+		// 	talliedCombinedEstimate.primx_steel_fibers_on_hand_lbs = totalsObjectHolder.primx_steel_fibers_on_hand_lbs;
+		// 	talliedCombinedEstimate.primx_steel_fibers_on_hand_kgs = totalsObjectHolder.primx_steel_fibers_on_hand_kgs;
+		// 	talliedCombinedEstimate.primx_ultracure_blankets_on_hand_sq_ft = totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_ft;
+		// 	talliedCombinedEstimate.primx_ultracure_blankets_on_hand_sq_m = totalsObjectHolder.primx_ultracure_blankets_on_hand_sq_m;
+		// 	talliedCombinedEstimate.primx_cpea_on_hand_liters = totalsObjectHolder.primx_cpea_on_hand_liters;
+		// } // End if 
+		// // ⬇ Run the updated Combine Estimates Calc on it:
+		// const calculatedResponse = yield useCombineEstimateCalculations(talliedCombinedEstimate);
 		// ⬇ Send that data to the reducer, and set the show table to true:
-		yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calculatedResponse });
-		yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedResponse });
+		yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: combinedEstimateData });
+		yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: combinedEstimateData });
 		yield put({ type: "SHOW_COMBINED_ESTIMATE" });
 		// yield put({ type: "LOADING_SCREEN_OFF" });
 	} catch (error) {
@@ -364,10 +365,10 @@ function* fetchCombinedEstimatesQuery(action) {
 // Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then be processed by an admin user
 function* markCombinedEstimateOrdered(action) {
 	try {
-		const id = action.payload.calcCombinedEstimate.id;
+		const estimate_id = action.payload.calcCombinedEstimate.estimate_id;
 		const calcCombinedEstimate = action.payload.calcCombinedEstimate;
 		// Update all of the estimates as marked ordered and link them together: 
-		yield axios.put(`/api/estimates/combine-order/${id}`, action.payload);
+		yield axios.put(`/api/estimates/combine-order/${estimate_id}`, action.payload);
 		// fetch updated estimate data for the search view to allow for proper conditional rendering once the licensee has placed an order
 		yield put({
 			type: 'FETCH_ESTIMATE_QUERY',
