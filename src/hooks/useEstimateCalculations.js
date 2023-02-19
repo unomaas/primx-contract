@@ -41,16 +41,16 @@ export default function useEstimateCalculations(estimate, options = null) {
 
 	// ⬇ This block checks to see if a price estimate exists already, indicating that the calculations are being done on the edit view between Estimate.  Lookup and EstimateCreate. estimate.dc_price only exists if a new shipping state has been selected from the dropdown menu in EstimateCreate.  If both these conditions are met, it means a user is editing an estimate and is changing their desired shipping state. When this happens, set the shipping estimate keys to match the new keys set by the change in ship-to state or province.
 	// TODO: We probably want to save this for the edit portion, but not sure we want dc_price as a check on it.  Come back later. 
-	if (estimate.design_total_price_estimate && estimate.dc_price) {
-		estimate.primx_dc_shipping_estimate = estimate.dc_price;
-		estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
-		estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
-		estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
-	}; // End if 
+	// if (estimate.design_total_price_estimate && estimate.dc_price) {
+	// 	estimate.primx_dc_shipping_estimate = estimate.dc_price;
+	// 	estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
+	// 	estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
+	// 	estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
+	// }; // End if 
 
 
 	// TODO: I don't think this is necessary anymore either, as I'm not saving dollar signs to the DB anymore (for this reason). 
-	// ⬇ Start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database:
+	// ⬇ Start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database:p
 	for (let property in estimate) {
 		// ⬇ Save the value of property being looped over:
 		let value = estimate[property]

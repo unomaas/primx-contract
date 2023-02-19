@@ -38,10 +38,18 @@ export default function EstimateCreateTable() {
 	useEffect(() => {
 		estimateData.difference_in_months = useDifferenceBetweenDates(estimateData.date_created).total_months;
 		if (
-			estimateData.square_feet &&
-			estimateData.thickness_inches &&
-			estimateData.thickened_edge_construction_joint_lineal_feet &&
-			estimateData.thickened_edge_perimeter_lineal_feet
+			(
+				estimateData.square_feet &&
+				estimateData.thickness_inches &&
+				estimateData.thickened_edge_construction_joint_lineal_feet &&
+				estimateData.thickened_edge_perimeter_lineal_feet
+			) ||
+			(
+				estimateData.square_meters &&
+				estimateData.thickness_millimeters &&
+				estimateData.thickened_edge_construction_joint_lineal_meters &&
+				estimateData.thickened_edge_perimeter_lineal_meters
+			)
 		) {
 			dispatch({
 				type: 'HANDLE_CALCULATED_ESTIMATE',
@@ -59,28 +67,29 @@ export default function EstimateCreateTable() {
 				}
 			});
 			setSaveButton(true);
-		} else if (
-			estimateData.square_meters &&
-			estimateData.thickness_millimeters &&
-			estimateData.thickened_edge_construction_joint_lineal_meters &&
-			estimateData.thickened_edge_perimeter_lineal_meters
-		) {
-			dispatch({
-				type: 'HANDLE_CALCULATED_ESTIMATE',
-				payload: {
-					estimate: estimateData,
-					products: products,
-					shippingDestinations: shippingDestinations,
-					currentMarkup: currentMarkup,
-					shippingCosts: shippingCosts,
-					productContainers: productContainers,
-					dosageRates: dosageRates,
-					customsDuties: customsDuties,
-					editState: editState,
-				}
-			});
-			setSaveButton(true);
-		} // End if/else if
+		} 
+		// else if (
+		// 	estimateData.square_meters &&
+		// 	estimateData.thickness_millimeters &&
+		// 	estimateData.thickened_edge_construction_joint_lineal_meters &&
+		// 	estimateData.thickened_edge_perimeter_lineal_meters
+		// ) {
+		// 	dispatch({
+		// 		type: 'HANDLE_CALCULATED_ESTIMATE',
+		// 		payload: {
+		// 			estimate: estimateData,
+		// 			products: products,
+		// 			shippingDestinations: shippingDestinations,
+		// 			currentMarkup: currentMarkup,
+		// 			shippingCosts: shippingCosts,
+		// 			productContainers: productContainers,
+		// 			dosageRates: dosageRates,
+		// 			customsDuties: customsDuties,
+		// 			editState: editState,
+		// 		}
+		// 	});
+		// 	setSaveButton(true);
+		// } // End if/else if
 	}, [estimateData]); // End useEffect
 	//#endregion ⬆⬆ All state variables above.
 
@@ -907,9 +916,9 @@ export default function EstimateCreateTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Price Options:</b></TableCell>
 											<TableCell>
-												<FormControl  
-														disabled={editState ? true : false}
-												
+												<FormControl
+													disabled={editState ? true : false}
+
 												>
 													<RadioGroup
 														value={estimateData.materials_excluded}

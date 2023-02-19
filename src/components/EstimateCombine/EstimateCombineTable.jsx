@@ -76,7 +76,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		calcCombinedEstimate.estimate_number_combined_3 = thirdEstimate?.estimate_number;
 		calcCombinedEstimate.estimate_number_combined_3_sf_dosage = thirdEstimate?.selected_steel_fiber_dosage;
 		// ⬇ Send the estimate object to be POSTed:
-		// TODO: When I come back, follow this to make sure hte POST works, and then figure out the logic to submit. 
 		dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
 		// ⬇ Sweet Alert to let them know to save the Estimate #:
 		// swal({
@@ -1860,8 +1859,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<TableCell align="right"><b>Concrete Amt (yd³)</b></TableCell>
 											</>
 											: <>
-												<TableCell align="right"><b>Area, (m²)</b></TableCell>
-												<TableCell align="right"><b>Concrete Amt, (m³)</b></TableCell>
+												<TableCell align="right"><b>Area (m²)</b></TableCell>
+												<TableCell align="right"><b>Concrete Amt (m³)</b></TableCell>
 											</>
 										}
 										<TableCell><b>Materials Included</b></TableCell>
@@ -2032,7 +2031,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<br /> <br />
 										<TableRow hover={true}>
 											<TableCell colSpan={8} align="right">
-												<b>Total Concrete Amt (yd<sup>3</sup>):</b>
+												<b>Total Concrete Amt ({cubic_measurement_unit}):</b>
 											</TableCell>
 											<TableCell align="right">
 												{calcCombinedEstimate?.measurement_units == 'imperial'
