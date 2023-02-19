@@ -35,7 +35,6 @@ function* editEstimateData(action) {
 
 // worker saga to make a PUT request to mark a pending order as processed, and assign the estimate the name of the admin who clicked the button
 function* editProcessOrder(action) {
-	console.log(`Ryan Here: editProcessOrder`, { action });
 	try {
 		// action.payload is an object with various details about the data grid row, including the id of the estimate to be changed. action.payload.row
 		// contains all the data involved for the estimate being processed
@@ -54,7 +53,6 @@ function* editProcessOrder(action) {
 
 function* archiveEstimate(action) {
 	try {
-		console.log(`Ryan Here: archiveEstimate`, { action });
 		yield axios.put(`/api/estimates/archive/${action.payload.row.estimate_id}`, action.payload.row)
 
 		// update data grids now that data in DB has changed

@@ -117,10 +117,8 @@ function* recalculateEstimate(action) {
 		const response = yield axios.put(`/api/estimates/recalculate/${currentEstimate.estimate_id}`, currentEstimate);
 		calculatedEstimate.date_created = response.data.split('T')[0];
 
-		console.log(`Ryan Here: PRE SWITCH`, { currentEstimate, action });
 		switch (calculatedEstimate?.options?.order) {
 			case 'firstEstimate':
-				console.log(`Ryan Here: SWITCH FIRST`, { calculatedEstimate });
 				yield put({ type: "CLEAR_FIRST_COMBINED_ESTIMATE" });
 				yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: calculatedEstimate });
 				break;

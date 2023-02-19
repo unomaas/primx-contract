@@ -14,8 +14,6 @@ import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 
 export default function EstimateCombineTable({ firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate }) {
 
-	console.log(`Ryan Here Top of EstimateCombineTable \n `, { firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate });
-
 	//#region ⬇⬇ All state variables below:
 	// ⬇ Deprecated, used for Styling MUI components. 
 	const classes = useStyles();
@@ -142,8 +140,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	if (isThereThirdEstimate && thirdEstimate?.materials_excluded == 'exclude_fibers') thirdEstimate.selected_steel_fiber_dosage = '75_50';
 
 	useEffect(() => {
-		console.log(`Ryan Here in use Effect\n isThirdEstimate`, { isThereThirdEstimate, showFinalCostRow });
-
 		if (showFinalCostRow) {
 			dispatch({
 				type: 'COMBINE_ESTIMATE_TOTALS',
@@ -159,7 +155,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 	const isThisASavedCombinedEstimate = calcCombinedEstimate?.estimate_number?.charAt(calcCombinedEstimate.estimate_number.length - 1) === "C" ? true : false;
 
-	console.log(`Ryan Here \n isThisASavedCombinedEstimate`, isThisASavedCombinedEstimate);
 	if (isThisASavedCombinedEstimate) {
 		firstEstimate.selected_steel_fiber_dosage = calcCombinedEstimate?.estimate_number_combined_1_sf_dosage;
 		secondEstimate.selected_steel_fiber_dosage = calcCombinedEstimate?.estimate_number_combined_2_sf_dosage;
@@ -457,7 +452,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</>
 									}
 
-									{/* //! Ryan Here 1 */}
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableRow hover={true}>
@@ -707,7 +701,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</Table>
 										</>
 									}
-									{/* //! Ryan Here 2 */}
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableRow hover={true}>

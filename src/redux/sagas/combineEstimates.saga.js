@@ -249,7 +249,6 @@ function* fetchCombinedEstimatesQuery(action) {
 			} // End params
 		}); // End response        
 		const combinedEstimateData = firstResponse.data[0];
-		console.log(`Ryan Here: fetchCombinedEstimatesQuery\ `, {combinedEstimateData});
 		// ⬇ Pulling the estimate numbers from : 
 		const firstEstimateNumber = combinedEstimateData.estimate_number_combined_1;
 		const secondEstimateNumber = combinedEstimateData.estimate_number_combined_2;
