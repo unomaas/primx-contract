@@ -29,8 +29,10 @@ function* archiveEstimateLicensee(action) {
 		// ⬇ Save the required ID's for easier ref: 
 		const estimate_id = action.payload.id;
 		const licensee_id = action.payload.row.licensee_id;
+
+		console.log(`Ryan Here: `, {estimate_id, licensee_id});
 		// ⬇ Update the DB to archive the estimate: 
-		yield axios.put(`/api/estimates/archive/${estimate_id}`);
+		yield axios.put(`/api/estimates/archive/${estimate_id}`, action.payload.row);
 		// ⬇ Refresh the page data to stay current: Î
 		yield put({ type: 'INITIAL_LOAD_LICENSEE_PORTAL', payload: licensee_id });
 	} catch (error) {

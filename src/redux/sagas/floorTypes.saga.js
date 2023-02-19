@@ -18,6 +18,7 @@ function* fetchAllFloorTypes() {
 function* postFloorType(action) {
     try {
       //send new floor type
+			console.log(`Ryan Here: postFloorType`, {action});
       yield axios.post(`/api/floortypes`, action.payload);
       //send results to floorTypes reducer
       yield put({type: 'FETCH_FLOOR_TYPES'});

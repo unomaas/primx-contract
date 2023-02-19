@@ -365,6 +365,7 @@ router.put('/process/:estimate_id', rejectUnauthenticated, (req, res) => {
 
 // PUT request to archive an estimate
 router.put('/archive/:estimate_id', rejectUnauthenticated, (req, res) => {
+	console.log(`Ryan Here: `, req.body, req.params);
 	// SQL query to switch the marked_as_ordered boolean to true and set the processed_by column to the name of the current admin username
 	const queryText = `
 		UPDATE "estimates" 
@@ -439,7 +440,6 @@ router.put('/combine-order/:estimate_id', async (req, res) => {
       UPDATE "estimates" 
       SET 
         "ordered_by_licensee" = TRUE, 
-        "archived" = TRUE,
         "po_number" = $1 
       WHERE "estimate_number" in ($2, $3, $4);
     `; // End queryText
@@ -448,7 +448,6 @@ router.put('/combine-order/:estimate_id', async (req, res) => {
       UPDATE "estimates" 
       SET 
         "ordered_by_licensee" = TRUE, 
-        "archived" = TRUE,
         "po_number" = $1 
       WHERE "estimate_number" in ($2, $3);
     `; // End queryText
