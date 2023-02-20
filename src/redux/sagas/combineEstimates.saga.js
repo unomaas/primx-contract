@@ -48,15 +48,15 @@ function* combineEstimateTotals(action) {
 
 		if (firstEstimate.measurement_units === 'imperial') {
 
-			totalsObjectHolder.design_cubic_yards_total += parseFloat(firstEstimate.design_cubic_yards_total.replaceAll(',', ''));
-			totalsObjectHolder.design_cubic_yards_total += parseFloat(secondEstimate.design_cubic_yards_total.replaceAll(',', ''));
-			if (thirdEstimate) totalsObjectHolder.design_cubic_yards_total += parseFloat(thirdEstimate.design_cubic_yards_total.replaceAll(',', ''));
+			totalsObjectHolder.design_cubic_yards_total += parseFloat(firstEstimate.design_cubic_yards_total?.replaceAll(',', ''));
+			totalsObjectHolder.design_cubic_yards_total += parseFloat(secondEstimate.design_cubic_yards_total?.replaceAll(',', ''));
+			if (thirdEstimate) totalsObjectHolder.design_cubic_yards_total += parseFloat(thirdEstimate?.design_cubic_yards_total?.replaceAll(',', ''));
 
 		} else if (firstEstimate.measurement_units === 'metric') {
 
-			totalsObjectHolder.design_cubic_meters_total += parseFloat(firstEstimate.design_cubic_meters_total.replaceAll(',', ''));
-			totalsObjectHolder.design_cubic_meters_total += parseFloat(secondEstimate.design_cubic_meters_total.replaceAll(',', ''));
-			if (thirdEstimate) totalsObjectHolder.design_cubic_meters_total += parseFloat(thirdEstimate.design_cubic_meters_total.replaceAll(',', ''));
+			totalsObjectHolder.design_cubic_meters_total += parseFloat(firstEstimate.design_cubic_meters_total?.replaceAll(',', ''));
+			totalsObjectHolder.design_cubic_meters_total += parseFloat(secondEstimate.design_cubic_meters_total?.replaceAll(',', ''));
+			if (thirdEstimate) totalsObjectHolder.design_cubic_meters_total += parseFloat(thirdEstimate.design_cubic_meters_total?.replaceAll(',', ''));
 
 		} // End if/else
 

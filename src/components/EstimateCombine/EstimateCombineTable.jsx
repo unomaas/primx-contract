@@ -32,6 +32,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	const firstEstimateAgeInMonths = useDifferenceBetweenDates(firstEstimate?.date_created).total_months;
 	const secondEstimateAgeInMonths = useDifferenceBetweenDates(secondEstimate?.date_created).total_months;
 	const thirdEstimateAgeInMonths = useDifferenceBetweenDates(thirdEstimate?.date_created).total_months;
+	const calcEstimateAgeInMonths = useDifferenceBetweenDates(calcCombinedEstimate?.date_created).total_months;
+
 
 	// ⬇ Checks if the third estimate is populated, and if so, adjusts the table size to display accordingly:
 	useEffect(() => {
@@ -2049,6 +2051,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</TableCell>
 										</TableRow>
 
+												{/* //! ryan Here, we don't have a check for if this is older than 3 months.  */}
 										{!calcCombinedEstimate.ordered_by_licensee &&
 											<TableRow hover={true}>
 												<TableCell colSpan={9} align="right">
