@@ -211,7 +211,7 @@ export default function PricingLogTable() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied shipping container stats.<br /><br />Click a row to select it.  Click again to deselect.  Exporting with a row selected will only export that single row.  <br /><br />You will be able to edit each Product's four entries at a time (for example, selecting any of the "PrimX DC" rows will allow you to edit PrimX DC).</p>}
+					title={<p>This table shows the historical pricing log for various items.<br /><br />Row selection is disabled.  Click in the center of the table to select a new pricing history view.  Use the top-right Date Saved filter to narrow down results to a specific date.</p>}
 					placement="right-start"
 					arrow
 				>
