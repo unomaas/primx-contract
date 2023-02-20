@@ -434,7 +434,6 @@ router.put('/combine-order/:estimate_id', async (req, res) => {
 		combinedEstimateNumber, // $2
 	]
 	// ⬇ SQL query to switch the ordered_by_licensee boolean to true and set the po_number column to the input given by the licensee user
-	// ! Ryan Here, decide what to do a bout this "archived" true. 
 	if (thirdEstimateNumber) {
 		// ⬇ If the third estimate number exists, add it to the values and set the SQL text to accommodate: 
 		values1.push(thirdEstimateNumber); // $4

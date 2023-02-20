@@ -33,6 +33,8 @@ export default function EstimateCreateTable() {
 	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
 	const customsDuties = useSelector(store => store.customsDuties.customsDutiesArray);
 
+	const [materialsEditWarning, setMaterialsEditWarning] = useState(false);
+
 	let cubic_measurement_unit = estimateData.measurement_units === "imperial" ? "yd³" : "m³";
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
@@ -67,7 +69,7 @@ export default function EstimateCreateTable() {
 				}
 			});
 			setSaveButton(true);
-		} 
+		}
 		// else if (
 		// 	estimateData.square_meters &&
 		// 	estimateData.thickness_millimeters &&
@@ -100,6 +102,11 @@ export default function EstimateCreateTable() {
 	 */
 	const handleChange = (key, value) => {
 		// setNewEstimate({ ...newEstimate, [key]: value });
+
+		if (editState == true && materialsEditWarning == false) {
+			 if (!window.confirm(`⚠️ WARNING: Editing the materials included on an already saved estimate will force the estimate to be recalculated at today's current rates, resetting the price guarantee.  Please only click "Save Edits" if you are sure you want to do this, as it is not reversible.  If you do not wish to do this, click "Cancel".`)) return;
+			setMaterialsEditWarning(true);
+		}; // End if
 
 		if (key == 'materials_excluded' && editState == true) {
 			estimateData.force_recalculate = true;
@@ -917,8 +924,7 @@ export default function EstimateCreateTable() {
 											<TableCell><b>Price Options:</b></TableCell>
 											<TableCell>
 												<FormControl
-													disabled={editState ? true : false}
-
+												// disabled={editState ? true : false}
 												>
 													<RadioGroup
 														value={estimateData.materials_excluded}

@@ -233,13 +233,6 @@ export default function useCalculateProjectCost(estimate, options) {
 		estimate.price_per_unit_90_60 = dollarSalesCostPerUnit_90_60;
 	};
 
-	console.log(`Ryan Here: testing cost per whatever`,
-		{
-			dollarSalesCostPerUnit_75_50,
-			dollarSalesCostPerUnit_90_60,
-		}
-
-	);
 
 	if (estimate.measurement_units == "imperial") {
 
@@ -253,96 +246,6 @@ export default function useCalculateProjectCost(estimate, options) {
 	//#endregion - Step 9.
 
 
-	// TODO: Erase this when done. 
-	console.log(`End of useCalculateSingleEstimate \n \n `,
-		'Static Data: ',
-		{
-			estimate,
-			Arrays: {
-				shippingDestinations,
-				shippingCosts,
-				products,
-				productContainers,
-				dosageRates,
-				customsDuties,
-				currentMarkup,
-			},
-		},
-
-		'\n \n Calculated Data: ',
-		{
-			"selected Transportation Cost Info": {
-				primxDc20ftCostInfo,
-				primxDc20ftContainerInfo,
-				primxDc40ftCostInfo,
-				primxDc40ftContainerInfo,
-				primxSteelFiber20ftCostInfo,
-				primxSteelFiber20ftContainerInfo,
-				primxSteelFiber40ftCostInfo,
-				primxSteelFiber40ftContainerInfo,
-				primxFlow20ftCostInfo,
-				primxFlow20ftContainerInfo,
-				primxFlow40ftCostInfo,
-				primxFlow40ftContainerInfo,
-				primxCpea20ftCostInfo,
-				primxCpea20ftContainerInfo,
-				primxCpea40ftCostInfo,
-				primxCpea40ftContainerInfo,
-			},
-
-			'Calculated Transportation Price Info: ': {
-				primxDc20ftTransportationCostPerLb,
-				primxDc40ftTransportationCostPerLb,
-				primxSteelFiber20ftTransportationCostPerLb,
-				primxSteelFiber40ftTransportationCostPerLb,
-				primxFlow20ftTransportationCostPerLb,
-				primxFlow40ftTransportationCostPerLb,
-				primxCpea20ftTransportationCostPerLb,
-				primxCpea40ftTransportationCostPerLb,
-
-			},
-
-			'Cheapest Transportation Container Info: ': {
-				cheapestPrimXDcTransportationCostPerLb,
-				cheapestPrimxSteelFiberTransportationCostPerLb,
-				cheapestPrimxFlowTransportationCostPerLb,
-				cheapestPrimxCpeaTransportationCostPerLb,
-			},
-
-			'Product Info': {
-				primxDcProductInfo,
-				primxSteelFiberProductInfo,
-				primxFlowProductInfo,
-				primxCpeaProductInfo,
-				primxUltraCureProductInfo,
-			},
-
-			'Dosage Rates: ': {
-				primxDcDosageRateInfo,
-				primxSteelFiberDosageRateInfo_75_50,
-				primxSteelFiberDosageRateInfo_90_60,
-				primxFlowDosageRateInfo,
-				primxCpeaDosageRateInfo,
-			},
-
-			'Calculated Transportation Price + Material Price Info: ': {
-				primxDcTransportationCostPlusMaterialCostPerUnit,
-				primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
-				primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
-				primxFlowTransportationCostPlusMaterialCostPerUnit,
-				primxCpeaTransportationCostPlusMaterialCostPerUnit,
-			},
-
-			'*** Self Cost Calculated: ': {
-				dollarSelfCostPerUnit_75_50,
-				dollarSelfCostPerUnit_90_60,
-				dollarSalesCostPerUnit_75_50,
-				dollarSalesCostPerUnit_90_60,
-			},
-
-		},
-		'\n \n'
-	); // End of console.log
 
 	return estimate;
 } // End of useCalculateSingleEstimate

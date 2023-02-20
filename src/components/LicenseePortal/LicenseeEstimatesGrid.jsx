@@ -189,50 +189,50 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 			disableClickEventBubbling: true,
 			renderCell: renderEstimateNumber // function declared above, creates a div with navigation in each of the estimate number cells
 		},
-		{ field: 'project_name', headerClassName: classes.header, headerName: 'Project Name', width: 175, editable: false },
-		{ field: 'licensee_contractor_name', headerClassName: classes.header, headerName: 'Licensee/Contractor', width: 175 },
-		{ field: 'date_created', headerClassName: classes.header, headerName: 'Date Created', width: 175 },
-		{ field: 'ship_to_address', headerClassName: classes.header, headerName: 'Ship To Address', width: 175, editable: false },
-		{ field: 'ship_to_city', headerClassName: classes.header, headerName: 'Ship To City', width: 175, editable: false },
-		{ field: 'destination_name', headerClassName: classes.header, headerName: 'State/Province', width: 175 },
-		{ field: 'zip_postal_code', headerClassName: classes.header, headerName: 'Zip/Postal Code', width: 175, editable: false },
-		{ field: 'anticipated_first_pour_date', headerClassName: classes.header, headerName: 'Anticipated First Pour', width: 175, editable: false }, // Need edit validation?
-		{ field: 'project_general_contractor', headerClassName: classes.header, headerName: 'General Contractor', width: 175, editable: false },
-		{ field: 'project_manager_name', headerClassName: classes.header, headerName: 'Project Manager', width: 175, editable: false },
-		{ field: 'project_manager_email', headerClassName: classes.header, headerName: 'Project Manager Email', width: 175, editable: false },
-		{ field: 'project_manager_phone', headerClassName: classes.header, headerName: 'Project Manager Phone', width: 175, editable: false },
+		{ field: 'project_name', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Project Name', width: 175, editable: false },
+		{ field: 'licensee_contractor_name', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Licensee/Contractor', width: 175 },
+		{ field: 'date_created', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Date Created', width: 175 },
+		{ field: 'ship_to_address', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Ship To Address', width: 175, editable: false },
+		{ field: 'ship_to_city', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Ship To City', width: 175, editable: false },
+		{ field: 'destination_name', headerClassName: classes.header, disableColumnMenu: true, headerName: 'State/Province', width: 175 },
+		{ field: 'zip_postal_code', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Zip/Postal Code', width: 175, editable: false },
+		{ field: 'anticipated_first_pour_date', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Anticipated First Pour', width: 175, editable: false }, // Need edit validation?
+		{ field: 'project_general_contractor', headerClassName: classes.header, disableColumnMenu: true, headerName: 'General Contractor', width: 175, editable: false },
+		{ field: 'project_manager_name', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Project Manager', width: 175, editable: false },
+		{ field: 'project_manager_email', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Project Manager Email', width: 175, editable: false },
+		{ field: 'project_manager_phone', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Project Manager Phone', width: 175, editable: false },
 
 		// ⬇ Technical job details input by licensee
-		{ field: 'measurement_units', headerClassName: classes.header, headerName: 'Units', width: 100 }, // Editable + validation?
-		{ field: 'floor_type_label', headerClassName: classes.header, headerName: 'Floor Type', width: 175 }, // Editable + validation?
-		{ field: 'placement_type_label', headerClassName: classes.header, headerName: 'Placement Type', width: 175 }, // Editable + validation?
-		{ field: 'square_feet', headerClassName: classes.header, headerName: 'Square Feet', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickness_inches', headerClassName: classes.header, headerName: 'Thickness(inches)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickness_millimeters', headerClassName: classes.header, headerName: 'Thickness(mm)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'waste_factor_percentage', headerClassName: classes.header, headerName: 'Waste Factor (%)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'measurement_units', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Units', width: 100 }, // Editable + validation?
+		{ field: 'floor_type_label', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Floor Type', width: 175 }, // Editable + validation?
+		{ field: 'placement_type_label', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Placement Type', width: 175 }, // Editable + validation?
+		{ field: 'square_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Square Feet', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickness_inches', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickness(inches)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, disableColumnMenu: true, headerName: 'Square Meters', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickness_millimeters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickness(mm)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'waste_factor_percentage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Waste Factor (%)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
+		{ field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
 
 		// totals and design size
-		{ field: 'design_cubic_yards_total', headerClassName: classes.header, headerName: 'Design Volume (cubic yards)', width: 175 },
-		{ field: 'design_cubic_meters_total', headerClassName: classes.header, headerName: 'Design Volume (cubic meters)', width: 175 },
-		{ field: 'selected_steel_fiber_dosage', headerClassName: classes.header, headerName: 'Selected Steel Fiber Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
+		{ field: 'design_cubic_yards_total', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Design Volume (cubic yards)', width: 175 },
+		{ field: 'design_cubic_meters_total', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Design Volume (cubic meters)', width: 175 },
+		{ field: 'selected_steel_fiber_dosage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Selected Steel Fiber Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
 
-		{ field: 'price_per_unit_75_50', headerClassName: classes.header, headerName: 'Price Per Unit, 75/50 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
-		{ field: 'price_per_unit_90_60', headerClassName: classes.header, headerName: 'Price Per Unit, 90/60 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
+		{ field: 'price_per_unit_75_50', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Price Per Unit, 75/50 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
+		{ field: 'price_per_unit_90_60', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Price Per Unit, 90/60 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
 
-		{ field: 'total_project_cost_75_50', headerClassName: classes.header, headerName: 'Total Project Cost, 75/50 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
-		{ field: 'total_project_cost_90_60', headerClassName: classes.header, headerName: 'Total Project Cost, 90/60 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
+		{ field: 'total_project_cost_75_50', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Total Project Cost, 75/50 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
+		{ field: 'total_project_cost_90_60', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Total Project Cost, 90/60 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
 		
-		{ field: 'estimate_number_combined_1', headerClassName: classes.header, headerName: 'Estimate Number 1', width: 175 },
-		{ field: 'estimate_number_combined_1_sf_dosage', headerClassName: classes.header, headerName: 'Estimate Number 1 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
-		{ field: 'estimate_number_combined_2', headerClassName: classes.header, headerName: 'Estimate Number 2', width: 175 },
-		{ field: 'estimate_number_combined_2_sf_dosage', headerClassName: classes.header, headerName: 'Estimate Number 2 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
-		{ field: 'estimate_number_combined_3', headerClassName: classes.header, headerName: 'Estimate Number 3', width: 175 },
-		{ field: 'estimate_number_combined_3_sf_dosage', headerClassName: classes.header, headerName: 'Estimate Number 3 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
+		{ field: 'estimate_number_combined_1', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 1', width: 175 },
+		{ field: 'estimate_number_combined_1_sf_dosage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 1 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
+		{ field: 'estimate_number_combined_2', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 2', width: 175 },
+		{ field: 'estimate_number_combined_2_sf_dosage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 2 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
+		{ field: 'estimate_number_combined_3', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 3', width: 175 },
+		{ field: 'estimate_number_combined_3_sf_dosage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 3 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
 	]
 
 	// ⬇ Add additional columns based on the data source for the data grid:
@@ -265,7 +265,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		if (dataSource == 'pending' || dataSource == 'processed') {
 			// ⬇ Add the Purchase Order number and the order number to each of the pending and processed tables:
 			columns.push(
-				{ field: 'po_number', headerClassName: classes.header, headerName: 'Purchase Order', width: 175, editable: false }
+				{ field: 'po_number', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Purchase Order', width: 175, editable: false }
 			)
 		}
 		// if (dataSource == 'pending') {
@@ -284,8 +284,8 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		if (dataSource == 'processed') {
 			// ⬇ Add the processed by name to the processed table:
 			columns.push(
-				{ field: 'order_number', headerClassName: classes.header, headerName: 'Order Number', width: 175 },
-				// { field: 'username', headerClassName: classes.header, headerName: 'Processed By', width: 175 }
+				{ field: 'order_number', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Order Number', width: 175 },
+				// { field: 'username', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Processed By', width: 175 }
 			)
 		}
 		// Add and archive button if an open estimate (not pending nor processed)
