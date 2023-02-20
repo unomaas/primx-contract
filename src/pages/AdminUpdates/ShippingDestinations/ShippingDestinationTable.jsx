@@ -239,7 +239,6 @@ export default function ShippingDestinationTable() {
 	const CustomFooter = () => {
 
 		const toggleActiveSubmit = () => {
-			console.log('⬇ selectedRow:', selectedRow);
 			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
 			dispatch({ type: 'TOGGLE_SHIPPING_DESTINATION_ACTIVE', payload: selectedRow.destination_id })
 			setSelectedRow({

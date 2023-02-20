@@ -57,12 +57,14 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 			"floor_types".floor_type_label, 
 			"licensees".licensee_contractor_name, 
 			"placement_types".placement_type_label, 
-			"shipping_destinations".destination_name
+			"shipping_destinations".destination_name, 
+			"users".username
 		FROM "estimates"
 		JOIN "floor_types" ON "estimates".floor_type_id = "floor_types".floor_type_id
 		JOIN "licensees" ON "estimates".licensee_id = "licensees".licensee_id
 		JOIN "placement_types" ON "estimates".placement_type_id = "placement_types".placement_type_id
 		JOIN "shipping_destinations" ON "estimates".destination_id = "shipping_destinations".destination_id
+		LEFT JOIN "users" ON "estimates".processed_by = "users".user_id
 		ORDER BY "estimates".estimate_id DESC;`;
 
 	pool.query(queryText)
@@ -110,6 +112,9 @@ router.post('/add-new-estimate', async (req, res) => {
 		estimate_number_combined_1,
 		estimate_number_combined_2,
 		estimate_number_combined_3,
+		estimate_number_combined_1_sf_dosage,
+		estimate_number_combined_2_sf_dosage,
+		estimate_number_combined_3_sf_dosage,
 
 		// ⬇ Final Cost Numbers:
 		price_per_unit_75_50,
@@ -136,48 +141,8 @@ router.post('/add-new-estimate', async (req, res) => {
 		primx_ultracure_blankets_on_hand_sq_m,
 	} = req.body;
 
-	// create a unique UUID estimate number to use for the estimate being sent
-	let estimate_number = "";
-
-	// set the destructured object values as the values to send with the POST request
-	const values = [
-		// ⬇ General Info: 
-		project_name,
-		licensee_id,
-		project_general_contractor,
-		project_manager_name,
-		project_manager_email,
-		project_manager_phone,
-		floor_type_id,
-		placement_type_id,
-		measurement_units,
-		// date_created, // 10
-		anticipated_first_pour_date,
-		ship_to_address,
-		ship_to_city,
-		destination_id,
-		zip_postal_code,
-		waste_factor_percentage,
-		materials_excluded,
-
-		// ⬇ Materials On Hand Shared:
-		materials_on_hand,
-		primx_flow_on_hand_liters,
-		primx_cpea_on_hand_liters,
-
-		// ⬇ Combined Estimate Numbers:
-		estimate_number_combined_1,
-		estimate_number_combined_2,
-		estimate_number_combined_3,
-		// ⬇ Final Cost Numbers:
-		price_per_unit_75_50,
-		price_per_unit_90_60,
-		total_project_cost_75_50,
-		total_project_cost_90_60, // 26
-	]; // End values
-
 	// start the query text with shared values
-	let queryText = `
+	let sql = `
     INSERT INTO "estimates" (
 			project_name,
 			licensee_id,
@@ -209,45 +174,32 @@ router.post('/add-new-estimate', async (req, res) => {
 			price_per_unit_90_60,
 			total_project_cost_75_50,
 			total_project_cost_90_60,
-		`; // End queryText
+	`; // End sql
 
+	if (estimate_number_combined_1 && estimate_number_combined_2) {
+		sql += `
+			estimate_number_combined_1_sf_dosage,
+			estimate_number_combined_2_sf_dosage,
+			estimate_number_combined_3_sf_dosage,
+		`; // End sql
+	}; // End if
 
 	// Add in the imperial or metric specific values based on unit choice
 	if (measurement_units == 'imperial') {
-		// add the imperial values to values array
-		values.push(
-			square_feet,
-			thickness_inches,
-			thickened_edge_perimeter_lineal_feet,
-			thickened_edge_construction_joint_lineal_feet,
-			primx_dc_on_hand_lbs,
-			primx_steel_fibers_on_hand_lbs,
-			primx_ultracure_blankets_on_hand_sq_ft, // 33
-		); // End values.push
 		// append the imperial specific data to the SQL query
-		queryText += `
-			square_feet,
-			thickness_inches,
-			thickened_edge_perimeter_lineal_feet,
-			thickened_edge_construction_joint_lineal_feet,
-			primx_dc_on_hand_lbs,
-			primx_steel_fibers_on_hand_lbs,
-			primx_ultracure_blankets_on_hand_sq_ft
+		sql += `
+				square_feet,
+				thickness_inches,
+				thickened_edge_perimeter_lineal_feet,
+				thickened_edge_construction_joint_lineal_feet,
+				primx_dc_on_hand_lbs,
+				primx_steel_fibers_on_hand_lbs,
+				primx_ultracure_blankets_on_hand_sq_ft
 			)
-    `; // End queryText
+    `; // End sql
 	} else if (req.body.measurement_units == 'metric') {
-		// add the metric values to the values array
-		values.push(
-			square_meters,
-			thickness_millimeters,
-			thickened_edge_perimeter_lineal_meters,
-			thickened_edge_construction_joint_lineal_meters,
-			primx_dc_on_hand_kgs,
-			primx_steel_fibers_on_hand_kgs,
-			primx_ultracure_blankets_on_hand_sq_m, // 33
-		); // End values.push
 		// append the metric specific data to the SQL query
-		queryText += `
+		sql += `
 			square_meters,
 			thickness_millimeters,
 			thickened_edge_perimeter_lineal_meters,
@@ -256,20 +208,84 @@ router.post('/add-new-estimate', async (req, res) => {
 			primx_steel_fibers_on_hand_kgs,
 			primx_ultracure_blankets_on_hand_sq_m
       )
-    `; // End queryText
+    `; // End sql
 	} // End if/else if
 
 	// add the values clause to the SQL query 
-	queryText += `
+	sql += `
     VALUES (
-      $1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33
+			${format('%L', project_name)},
+			${format('%L', licensee_id)},
+			${format('%L', project_general_contractor)},
+			${format('%L', project_manager_name)},
+			${format('%L', project_manager_email)},
+			${format('%L', project_manager_phone)},
+			${format('%L', floor_type_id)},
+			${format('%L', placement_type_id)},
+			${format('%L', measurement_units)},
+			NOW(),
+			${format('%L', anticipated_first_pour_date)},
+			${format('%L', ship_to_address)},
+			${format('%L', ship_to_city)},
+			${format('%L', destination_id)},
+			${format('%L', zip_postal_code)},
+			${format('%L', waste_factor_percentage)},
+			${format('%L', materials_excluded)},
+			${format('%L', materials_on_hand)},
+			${format('%L', primx_flow_on_hand_liters)},
+			${format('%L', primx_cpea_on_hand_liters)},
+			${format('%L', estimate_number_combined_1)},
+			${format('%L', estimate_number_combined_2)},
+			${format('%L', estimate_number_combined_3)},
+			${format('%L', price_per_unit_75_50)},
+			${format('%L', price_per_unit_90_60)},
+			${format('%L', total_project_cost_75_50)},
+			${format('%L', total_project_cost_90_60)},
+	`;
+
+	if (estimate_number_combined_1 && estimate_number_combined_2) {
+		// append the imperial specific data to the SQL query
+		sql += `
+			${format('%L', estimate_number_combined_1_sf_dosage)},
+			${format('%L', estimate_number_combined_2_sf_dosage)},
+			${format('%L', estimate_number_combined_3_sf_dosage)},
+		`; // End sql
+	}
+
+	// Add in the imperial or metric specific values based on unit choice
+	if (measurement_units == 'imperial') {
+		// append the imperial specific data to the SQL query
+		sql += `
+			${format('%L', square_feet)},
+			${format('%L', thickness_inches)},
+			${format('%L', thickened_edge_perimeter_lineal_feet)},
+			${format('%L', thickened_edge_construction_joint_lineal_feet)},
+			${format('%L', primx_dc_on_hand_lbs)},
+			${format('%L', primx_steel_fibers_on_hand_lbs)},
+			${format('%L', primx_ultracure_blankets_on_hand_sq_ft)}
+		`;
+	} else if (req.body.measurement_units == 'metric') {
+		// append the metric specific data to the SQL query
+		sql += `
+			${format('%L', square_meters)},
+			${format('%L', thickness_millimeters)},
+			${format('%L', thickened_edge_perimeter_lineal_meters)},
+			${format('%L', thickened_edge_construction_joint_lineal_meters)},
+			${format('%L', primx_dc_on_hand_kgs)},
+			${format('%L', primx_steel_fibers_on_hand_kgs)},
+			${format('%L', primx_ultracure_blankets_on_hand_sq_m)}
+		`;
+	} // End if/else if
+
+	// add the closing parenthesis to the SQL query
+	sql += `
       )
-      RETURNING "licensee_id", "estimate_id";
-  `; // End queryText
+		RETURNING "licensee_id", "estimate_id";
+  `; // End sql
 
 	try {
 		// First DB query: initial POST request with data from the client
-		let { rows } = await pool.query(queryText, values);
+		let { rows } = await pool.query(sql);
 		const { licensee_id, estimate_id } = rows[0];
 		// const estimate_id = rows[0].estimate_id;
 
@@ -300,7 +316,7 @@ router.post('/add-new-estimate', async (req, res) => {
 			estimate_number: newEstimateNumber,
 			licensee_id: licensee_id,
 			estimate_id: estimate_id
-		})
+		});
 	} catch (error) {
 		console.error('Problem with estimates POST', error);
 		res.sendStatus(500);
@@ -364,7 +380,6 @@ router.put('/archive/:estimate_id', rejectUnauthenticated, (req, res) => {
 		})
 })
 
-// ! Ryan Here
 // PUT request to mark an estimate as ordered by a licensee and add the P.O. number they've supplied to the estimate
 router.put('/order/:estimate_id', async (req, res) => {
 	try {

@@ -33,15 +33,25 @@ export default function EstimateCreateTable() {
 	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
 	const customsDuties = useSelector(store => store.customsDuties.customsDutiesArray);
 
+	const [materialsEditWarning, setMaterialsEditWarning] = useState(false);
+
 	let cubic_measurement_unit = estimateData.measurement_units === "imperial" ? "yd³" : "m³";
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
 		estimateData.difference_in_months = useDifferenceBetweenDates(estimateData.date_created).total_months;
 		if (
-			estimateData.square_feet &&
-			estimateData.thickness_inches &&
-			estimateData.thickened_edge_construction_joint_lineal_feet &&
-			estimateData.thickened_edge_perimeter_lineal_feet
+			(
+				estimateData.square_feet &&
+				estimateData.thickness_inches &&
+				estimateData.thickened_edge_construction_joint_lineal_feet &&
+				estimateData.thickened_edge_perimeter_lineal_feet
+			) ||
+			(
+				estimateData.square_meters &&
+				estimateData.thickness_millimeters &&
+				estimateData.thickened_edge_construction_joint_lineal_meters &&
+				estimateData.thickened_edge_perimeter_lineal_meters
+			)
 		) {
 			dispatch({
 				type: 'HANDLE_CALCULATED_ESTIMATE',
@@ -59,28 +69,29 @@ export default function EstimateCreateTable() {
 				}
 			});
 			setSaveButton(true);
-		} else if (
-			estimateData.square_meters &&
-			estimateData.thickness_millimeters &&
-			estimateData.thickened_edge_construction_joint_lineal_meters &&
-			estimateData.thickened_edge_perimeter_lineal_meters
-		) {
-			dispatch({
-				type: 'HANDLE_CALCULATED_ESTIMATE',
-				payload: {
-					estimate: estimateData,
-					products: products,
-					shippingDestinations: shippingDestinations,
-					currentMarkup: currentMarkup,
-					shippingCosts: shippingCosts,
-					productContainers: productContainers,
-					dosageRates: dosageRates,
-					customsDuties: customsDuties,
-					editState: editState,
-				}
-			});
-			setSaveButton(true);
-		} // End if/else if
+		}
+		// else if (
+		// 	estimateData.square_meters &&
+		// 	estimateData.thickness_millimeters &&
+		// 	estimateData.thickened_edge_construction_joint_lineal_meters &&
+		// 	estimateData.thickened_edge_perimeter_lineal_meters
+		// ) {
+		// 	dispatch({
+		// 		type: 'HANDLE_CALCULATED_ESTIMATE',
+		// 		payload: {
+		// 			estimate: estimateData,
+		// 			products: products,
+		// 			shippingDestinations: shippingDestinations,
+		// 			currentMarkup: currentMarkup,
+		// 			shippingCosts: shippingCosts,
+		// 			productContainers: productContainers,
+		// 			dosageRates: dosageRates,
+		// 			customsDuties: customsDuties,
+		// 			editState: editState,
+		// 		}
+		// 	});
+		// 	setSaveButton(true);
+		// } // End if/else if
 	}, [estimateData]); // End useEffect
 	//#endregion ⬆⬆ All state variables above.
 
@@ -91,6 +102,11 @@ export default function EstimateCreateTable() {
 	 */
 	const handleChange = (key, value) => {
 		// setNewEstimate({ ...newEstimate, [key]: value });
+
+		if (editState == true && materialsEditWarning == false) {
+			 if (!window.confirm(`⚠️ WARNING: Editing the materials included on an already saved estimate will force the estimate to be recalculated at today's current rates, resetting the price guarantee.  Please only click "Save Edits" if you are sure you want to do this, as it is not reversible.  If you do not wish to do this, click "Cancel".`)) return;
+			setMaterialsEditWarning(true);
+		}; // End if
 
 		if (key == 'materials_excluded' && editState == true) {
 			estimateData.force_recalculate = true;
@@ -907,9 +923,8 @@ export default function EstimateCreateTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Price Options:</b></TableCell>
 											<TableCell>
-												<FormControl  
-														disabled={editState ? true : false}
-												
+												<FormControl
+												// disabled={editState ? true : false}
 												>
 													<RadioGroup
 														value={estimateData.materials_excluded}
@@ -965,8 +980,8 @@ export default function EstimateCreateTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
 											{estimateData?.measurement_units === 'imperial'
-												? <TableCell align="right">{calculatedDisplayObject?.design_cubic_yards_total}</TableCell>
-												: <TableCell align="right">{calculatedDisplayObject?.design_cubic_meters_total}</TableCell>
+												? <TableCell align="right">{calculatedDisplayObject?.design_cubic_yards_total_display}</TableCell>
+												: <TableCell align="right">{calculatedDisplayObject?.design_cubic_meters_total_display}</TableCell>
 											}
 										</TableRow>
 										<TableRow hover={true}>

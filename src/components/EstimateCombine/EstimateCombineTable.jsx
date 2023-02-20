@@ -13,6 +13,7 @@ import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 
 
 export default function EstimateCombineTable({ firstEstimate, secondEstimate, thirdEstimate, calcCombinedEstimate }) {
+
 	//#region ⬇⬇ All state variables below:
 	// ⬇ Deprecated, used for Styling MUI components. 
 	const classes = useStyles();
@@ -41,6 +42,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		} // End if/else
 	}, [thirdEstimate]); // End useEffect 
 	//#endregion ⬆⬆ All state variables above. 
+	const formatter = (value) => {
+		return new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: 'USD',
+		}).format(value);
+	}
 
 
 	//#region ⬇⬇ Event handlers below:
@@ -63,20 +70,23 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		calcCombinedEstimate.history = history;
 		// Attach the estimate numbers to use inside the POST: 
 		calcCombinedEstimate.estimate_number_combined_1 = firstEstimate.estimate_number;
+		calcCombinedEstimate.estimate_number_combined_1_sf_dosage = firstEstimate.selected_steel_fiber_dosage;
 		calcCombinedEstimate.estimate_number_combined_2 = secondEstimate.estimate_number;
-		calcCombinedEstimate.estimate_number_combined_3 = thirdEstimate.estimate_number;
+		calcCombinedEstimate.estimate_number_combined_2_sf_dosage = secondEstimate.selected_steel_fiber_dosage;
+		calcCombinedEstimate.estimate_number_combined_3 = thirdEstimate?.estimate_number;
+		calcCombinedEstimate.estimate_number_combined_3_sf_dosage = thirdEstimate?.selected_steel_fiber_dosage;
 		// ⬇ Send the estimate object to be POSTed:
 		dispatch({ type: 'ADD_ESTIMATE', payload: calcCombinedEstimate });
 		// ⬇ Sweet Alert to let them know to save the Estimate #:
-		swal({
-			title: "Estimate saved!",
-			text: "NOTE: Your estimate number has changed! Please print or save it, as you will need it to look up this estimate again, and submit the order for processing.",
-			icon: "info",
-			buttons: "I understand",
-		}).then(() => {
-			// ⬇ Pop-up print confirmation:
-			window.print();
-		}); // End swal
+		// swal({
+		// 	title: "Estimate saved!",
+		// 	text: "NOTE: Your estimate number has changed! Please print or save it, as you will need it to look up this estimate again, and submit the order for processing.",
+		// 	icon: "info",
+		// 	buttons: "I understand",
+		// }).then(() => {
+		// 	// ⬇ Pop-up print confirmation:
+		// 	window.print();
+		// }); // End swal
 	} // End handleSave
 
 	/** ⬇ handlePlaceOrder:
@@ -86,26 +96,28 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		// ⬇ If they haven't entered a PO number, pop up an error helperText:
 		if (poNumber == "") {
 			setPoNumError("Please enter a P.O. Number.")
+			return;
 			// ⬇ If they have entered a PO number, proceed with order submission:
-		} else {
-			swal({
-				title: "This order has been submitted! Your PrimX representative will be in touch.",
-				text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
-				icon: "success",
-				buttons: "I understand",
-			}) // End swal
-			// ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
-			// .then(() => {
-			//   window.print();
-			// }); // End swal
-			dispatch({
-				type: 'MARK_COMBINED_ESTIMATE_ORDERED',
-				payload: {
-					calcCombinedEstimate: calcCombinedEstimate,
-					poNumber: poNumber
-				}
-			}) // End dispatch
-		} // End if/else.
+		}
+		// else {
+		// 	swal({
+		// 		title: "This order has been submitted! Your PrimX representative will be in touch.",
+		// 		text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
+		// 		icon: "success",
+		// 		buttons: "I understand",
+		// 	}) // End swal
+		// 	// ⬇ We're disabling the print confirmation now that the estimate numbers are easier to recall:
+		// 	// .then(() => {
+		// 	//   window.print();
+		// 	// }); // End swal
+		dispatch({
+			type: 'MARK_COMBINED_ESTIMATE_ORDERED',
+			payload: {
+				calcCombinedEstimate: calcCombinedEstimate,
+				poNumber: poNumber
+			}
+		}) // End dispatch
+		// } // End if/else.
 	} // End handlePlaceOrder
 
 
@@ -113,6 +125,42 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		dispatch({ type: `SET_STEEL_FIBER_SELECTION_${order}`, payload: value })
 	}; // End handleSteelFiberSelection
 	//#endregion ⬆⬆ Event handlers above. 
+
+	//#region - Random logic I'm just fast filling for this page to work until I can refactor this site:
+	let isThereThirdEstimate = false;
+	if (JSON.stringify(thirdEstimate) != '{}') isThereThirdEstimate = true;
+
+	let showFinalCostRow = false;
+	if (!isThereThirdEstimate && firstEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage) showFinalCostRow = true;
+	if (isThereThirdEstimate && firstEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage && thirdEstimate.selected_steel_fiber_dosage) showFinalCostRow = true;
+
+	if (firstEstimate?.materials_excluded == 'exclude_fibers') firstEstimate.selected_steel_fiber_dosage = '75_50';
+	if (secondEstimate?.materials_excluded == 'exclude_fibers') secondEstimate.selected_steel_fiber_dosage = '75_50';
+	if (isThereThirdEstimate && thirdEstimate?.materials_excluded == 'exclude_fibers') thirdEstimate.selected_steel_fiber_dosage = '75_50';
+
+	useEffect(() => {
+		if (showFinalCostRow) {
+			dispatch({
+				type: 'COMBINE_ESTIMATE_TOTALS',
+				payload: {
+					firstEstimate: firstEstimate,
+					secondEstimate: secondEstimate,
+					thirdEstimate: thirdEstimate || null,
+					combinedEstimate: calcCombinedEstimate,
+				},
+			}); // End dispatch
+		}; // End if
+	}, [firstEstimate?.selected_steel_fiber_dosage, secondEstimate?.selected_steel_fiber_dosage, thirdEstimate?.selected_steel_fiber_dosage])
+
+	const isThisASavedCombinedEstimate = calcCombinedEstimate?.estimate_number?.charAt(calcCombinedEstimate.estimate_number.length - 1) === "C" ? true : false;
+
+	if (isThisASavedCombinedEstimate) {
+		firstEstimate.selected_steel_fiber_dosage = calcCombinedEstimate?.estimate_number_combined_1_sf_dosage;
+		secondEstimate.selected_steel_fiber_dosage = calcCombinedEstimate?.estimate_number_combined_2_sf_dosage;
+		if (isThereThirdEstimate) thirdEstimate.selected_steel_fiber_dosage = calcCombinedEstimate?.estimate_number_combined_3_sf_dosage;
+	}; // End if
+	//#endregion
+
 
 
 	// ⬇ Rendering below:
@@ -344,7 +392,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableBody>
 									</Table>
 
-									{firstEstimate?.thickened_edge_perimeter_lineal_feet > 0 || firstEstimate?.thickened_edge_construction_joint_lineal_feet > 0 &&
+									{(firstEstimate?.thickened_edge_perimeter_lineal_feet > 0 || firstEstimate?.thickened_edge_construction_joint_lineal_feet > 0) &&
 										<>
 											<h4>Thickened Edge Calculator</h4>
 											<p>If applicable, for slabs under 6in.</p>
@@ -403,7 +451,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</>
 									}
 
-									{/* //! Ryan Here 1 */}
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableRow hover={true}>
@@ -420,15 +467,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableBody>
 											{firstEstimate?.materials_excluded != 'exclude_fibers' &&
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell>
+													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
-																<Radio
-																	checked={firstEstimate?.selected_steel_fiber_dosage == '75_50'}
-																	onChange={() => handleSteelFiberSelection('75_50', 'FIRST')}
-																	value="75_50"
-																	disabled={firstEstimateAgeInMonths >= 3 ? true : false}
-																/>
+																{!isThisASavedCombinedEstimate &&
+																	<Radio
+																		checked={firstEstimate?.selected_steel_fiber_dosage == '75_50'}
+																		onChange={() => handleSteelFiberSelection('75_50', 'FIRST')}
+																		value="75_50"
+																		disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																	/>
+																}
 															</span>
 														</Tooltip>
 														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -464,15 +513,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<Table size="small">
 											<TableBody>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell >
+													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
-																<Radio
-																	checked={firstEstimate?.selected_steel_fiber_dosage == '90_60'}
-																	onChange={() => handleSteelFiberSelection('90_60', 'FIRST')}
-																	value="90_60"
-																	disabled={firstEstimateAgeInMonths >= 3 ? true : false}
-																/>
+																{!isThisASavedCombinedEstimate &&
+																	<Radio
+																		checked={firstEstimate?.selected_steel_fiber_dosage == '90_60'}
+																		onChange={() => handleSteelFiberSelection('90_60', 'FIRST')}
+																		value="90_60"
+																		disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																	/>
+																}
 															</span>
 														</Tooltip>
 														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -591,7 +642,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableBody>
 									</Table>
 
-									{secondEstimate?.thickened_edge_perimeter_lineal_feet > 0 || secondEstimate?.thickened_edge_construction_joint_lineal_feet > 0 &&
+									{(secondEstimate?.thickened_edge_perimeter_lineal_feet > 0 || secondEstimate?.thickened_edge_construction_joint_lineal_feet > 0) &&
 										<>
 											<h4>Thickened Edge Calculator</h4>
 											<p>If applicable, for slabs under 6in.</p>
@@ -649,7 +700,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</Table>
 										</>
 									}
-									{/* //! Ryan Here 2 */}
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableRow hover={true}>
@@ -666,15 +716,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableBody>
 											{secondEstimate?.materials_excluded != 'exclude_fibers' &&
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell >
+													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
-																<Radio
-																	checked={secondEstimate?.selected_steel_fiber_dosage == '75_50'}
-																	onChange={() => handleSteelFiberSelection('75_50', 'SECOND')}
-																	value="75_50"
-																	disabled={secondEstimateAgeInMonths >= 3 ? true : false}
-																/>
+																{!isThisASavedCombinedEstimate &&
+																	<Radio
+																		checked={secondEstimate?.selected_steel_fiber_dosage == '75_50'}
+																		onChange={() => handleSteelFiberSelection('75_50', 'SECOND')}
+																		value="75_50"
+																		disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																	/>
+																}
 															</span>
 														</Tooltip>
 														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -710,15 +762,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<Table size="small">
 											<TableBody>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell >
+													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
-																<Radio
-																	checked={secondEstimate?.selected_steel_fiber_dosage == '90_60'}
-																	onChange={() => handleSteelFiberSelection('90_60', 'SECOND')}
-																	value="90_60"
-																	disabled={secondEstimateAgeInMonths >= 3 ? true : false}
-																/>
+																{!isThisASavedCombinedEstimate &&
+																	<Radio
+																		checked={secondEstimate?.selected_steel_fiber_dosage == '90_60'}
+																		onChange={() => handleSteelFiberSelection('90_60', 'SECOND')}
+																		value="90_60"
+																		disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																	/>
+																}
 															</span>
 														</Tooltip>
 														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -840,7 +894,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableBody>
 											</Table>
 
-											{thirdEstimate?.thickened_edge_perimeter_lineal_feet > 0 || thirdEstimate?.thickened_edge_construction_joint_lineal_feet > 0 &&
+											{(thirdEstimate?.thickened_edge_perimeter_lineal_feet > 0 || thirdEstimate?.thickened_edge_construction_joint_lineal_feet > 0) &&
 												<>
 													<h4>Thickened Edge Calculator</h4>
 													<p>If applicable, for slabs under 6in.</p>
@@ -899,7 +953,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</>
 											}
 
-											{/* //! Ryan Here 3 */}
 											<h3>PrimX Material Price for the Project</h3>
 											<Table size='small'>
 												<TableRow hover={true}>
@@ -916,15 +969,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<TableBody>
 													{thirdEstimate?.materials_excluded != 'exclude_fibers' &&
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-															<TableCell >
+															<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 																	<span>
-																		<Radio
-																			checked={thirdEstimate?.selected_steel_fiber_dosage == '75_50'}
-																			onChange={() => handleSteelFiberSelection('75_50', 'THIRD')}
-																			value="75_50"
-																			disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
-																		/>
+																		{!isThisASavedCombinedEstimate &&
+																			<Radio
+																				checked={thirdEstimate?.selected_steel_fiber_dosage == '75_50'}
+																				onChange={() => handleSteelFiberSelection('75_50', 'THIRD')}
+																				value="75_50"
+																				disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																			/>
+																		}
 																	</span>
 																</Tooltip>
 																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -960,15 +1015,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<Table size="small">
 													<TableBody>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-															<TableCell >
+															<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 																	<span>
-																		<Radio
-																			checked={thirdEstimate?.selected_steel_fiber_dosage == '90_60'}
-																			onChange={() => handleSteelFiberSelection('90_60', 'THIRD')}
-																			value="90_60"
-																			disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
-																		/>
+																		{!isThisASavedCombinedEstimate &&
+																			<Radio
+																				checked={thirdEstimate?.selected_steel_fiber_dosage == '90_60'}
+																				onChange={() => handleSteelFiberSelection('90_60', 'THIRD')}
+																				value="90_60"
+																				disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																			/>
+																		}
 																	</span>
 																</Tooltip>
 																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -1151,7 +1208,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</Table>
 										</>
 									}
-									{/* //! RYan here 4 */}
 
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
@@ -1169,15 +1225,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableBody>
 											{firstEstimate?.materials_excluded != 'exclude_fibers' &&
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell>
+													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
-																<Radio
-																	checked={firstEstimate?.selected_steel_fiber_dosage == '75_50'}
-																	onChange={() => handleSteelFiberSelection('75_50', 'FIRST')}
-																	value="75_50"
-																	disabled={firstEstimateAgeInMonths >= 3 ? true : false}
-																/>
+																{!isThisASavedCombinedEstimate &&
+																	<Radio
+																		checked={firstEstimate?.selected_steel_fiber_dosage == '75_50'}
+																		onChange={() => handleSteelFiberSelection('75_50', 'FIRST')}
+																		value="75_50"
+																		disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																	/>
+																}
 															</span>
 														</Tooltip>
 														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -1213,15 +1271,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<Table size="small">
 											<TableBody>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell >
+													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
-																<Radio
-																	checked={firstEstimate?.selected_steel_fiber_dosage == '90_60'}
-																	onChange={() => handleSteelFiberSelection('90_60', 'FIRST')}
-																	value="90_60"
-																	disabled={firstEstimateAgeInMonths >= 3 ? true : false}
-																/>
+																{!isThisASavedCombinedEstimate &&
+																	<Radio
+																		checked={firstEstimate?.selected_steel_fiber_dosage == '90_60'}
+																		onChange={() => handleSteelFiberSelection('90_60', 'FIRST')}
+																		value="90_60"
+																		disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																	/>
+																}
 															</span>
 														</Tooltip>
 														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -1398,7 +1458,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</Table>
 										</>
 									}
-									{/* //! Ryan here 5 */}
+
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableRow hover={true}>
@@ -1415,15 +1475,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableBody>
 											{secondEstimate?.materials_excluded != 'exclude_fibers' &&
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell >
+													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
-																<Radio
-																	checked={secondEstimate?.selected_steel_fiber_dosage == '75_50'}
-																	onChange={() => handleSteelFiberSelection('75_50', 'SECOND')}
-																	value="75_50"
-																	disabled={secondEstimateAgeInMonths >= 3 ? true : false}
-																/>
+																{!isThisASavedCombinedEstimate &&
+																	<Radio
+																		checked={secondEstimate?.selected_steel_fiber_dosage == '75_50'}
+																		onChange={() => handleSteelFiberSelection('75_50', 'SECOND')}
+																		value="75_50"
+																		disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																	/>
+																}
 															</span>
 														</Tooltip>
 														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -1459,15 +1521,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<Table size="small">
 											<TableBody>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell >
+													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
-																<Radio
-																	checked={secondEstimate?.selected_steel_fiber_dosage == '90_60'}
-																	onChange={() => handleSteelFiberSelection('90_60', 'SECOND')}
-																	value="90_60"
-																	disabled={secondEstimateAgeInMonths >= 3 ? true : false}
-																/>
+																{!isThisASavedCombinedEstimate &&
+																	<Radio
+																		checked={secondEstimate?.selected_steel_fiber_dosage == '90_60'}
+																		onChange={() => handleSteelFiberSelection('90_60', 'SECOND')}
+																		value="90_60"
+																		disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																	/>
+																}
 															</span>
 														</Tooltip>
 														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -1648,7 +1712,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													</Table>
 												</>
 											}
-											{/* //! Ryan here 6 */}
+
 											<h3>PrimX Material Price for the Project</h3>
 											<Table size='small'>
 												<TableRow hover={true}>
@@ -1665,15 +1729,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<TableBody>
 													{thirdEstimate?.materials_excluded != 'exclude_fibers' &&
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-															<TableCell >
+															<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 																	<span>
-																		<Radio
-																			checked={thirdEstimate?.selected_steel_fiber_dosage == '75_50'}
-																			onChange={() => handleSteelFiberSelection('75_50', 'THIRD')}
-																			value="75_50"
-																			disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
-																		/>
+																		{!isThisASavedCombinedEstimate &&
+																			<Radio
+																				checked={thirdEstimate?.selected_steel_fiber_dosage == '75_50'}
+																				onChange={() => handleSteelFiberSelection('75_50', 'THIRD')}
+																				value="75_50"
+																				disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																			/>
+																		}
 																	</span>
 																</Tooltip>
 																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -1709,15 +1775,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												<Table size="small">
 													<TableBody>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-															<TableCell >
+															<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
 																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 																	<span>
-																		<Radio
-																			checked={thirdEstimate?.selected_steel_fiber_dosage == '90_60'}
-																			onChange={() => handleSteelFiberSelection('90_60', 'THIRD')}
-																			value="90_60"
-																			disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
-																		/>
+																		{!isThisASavedCombinedEstimate &&
+																			<Radio
+																				checked={thirdEstimate?.selected_steel_fiber_dosage == '90_60'}
+																				onChange={() => handleSteelFiberSelection('90_60', 'THIRD')}
+																				value="90_60"
+																				disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																			/>
+																		}
 																	</span>
 																</Tooltip>
 																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
@@ -1783,54 +1851,60 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 								<TableHead>
 									<TableRow>
 										<TableCell><b>Estimate #</b></TableCell>
+										<TableCell><b>Project Name</b></TableCell>
 										<TableCell><b>Floor Type</b></TableCell>
 										{calcCombinedEstimate.measurement_units == 'imperial'
 											? <>
-												<TableCell align="right"><b>Area, ft²</b></TableCell>
-												<TableCell align="right"><b>Concrete Amt, yd³</b></TableCell>
+												<TableCell align="right"><b>Area (ft²)</b></TableCell>
+												<TableCell align="right"><b>Concrete Amt (yd³)</b></TableCell>
 											</>
 											: <>
-												<TableCell align="right"><b>Area, m²</b></TableCell>
-												<TableCell align="right"><b>Concrete Amt, m³</b></TableCell>
+												<TableCell align="right"><b>Area (m²)</b></TableCell>
+												<TableCell align="right"><b>Concrete Amt (m³)</b></TableCell>
 											</>
 										}
 										<TableCell><b>Materials Included</b></TableCell>
 										<TableCell align="right"><b>Steel Fiber Dosage</b></TableCell>
 										{calcCombinedEstimate.measurement_units == 'imperial'
-											? <TableCell align="right"><b>Price Per yd³</b></TableCell>
-											: <TableCell align="right"><b>Price Per m³</b></TableCell>
+											? <TableCell align="right"><b>Cost per yd³</b></TableCell>
+											: <TableCell align="right"><b>Cost per m³</b></TableCell>
 										}
-										<TableCell align="right"><b>Total Per Floor (USD)</b></TableCell>
+										<TableCell align="right"><b>Project Total (USD)</b></TableCell>
 									</TableRow>
 								</TableHead>
 
 								<TableBody>
 									<TableRow hover={true}>
 										<TableCell>{firstEstimate?.estimate_number}</TableCell>
+										<TableCell>{firstEstimate?.project_name}</TableCell>
 										<TableCell>{firstEstimate?.floor_type_label}</TableCell>
 										{firstEstimate.measurement_units == 'imperial'
 											? <>
 												<TableCell align="right">{firstEstimate?.square_feet_display}</TableCell>
-												<TableCell align="right">{firstEstimate?.cubic_yards}</TableCell>
+												<TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
 											</>
 											: <>
 												<TableCell align="right">{firstEstimate?.square_meters_display}</TableCell>
-												<TableCell align="right">{firstEstimate?.cubic_meters}</TableCell>
+												<TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
 											</>
 										}
 										<TableCell>{firstEstimate?.materials_excluded == "none" ? "All" : firstEstimate?.materials_excluded == "exclude_cpea" ? "Exclude CPEA" : "Exclude Fibers"}</TableCell>
 										<TableCell align="right">
-											{firstEstimate.measurement_units == 'imperial' && firstEstimate.selected_steel_fiber_dosage == "75_50" &&
+											{firstEstimate.measurement_units == 'imperial' && firstEstimate.selected_steel_fiber_dosage == "75_50" && firstEstimate.materials_excluded != "exclude_fibers" &&
 												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</>
 											}
-											{firstEstimate.measurement_units == 'imperial' && firstEstimate.selected_steel_fiber_dosage == "90_60" &&
+											{firstEstimate.measurement_units == 'imperial' && firstEstimate.selected_steel_fiber_dosage == "90_60" && firstEstimate.materials_excluded != "exclude_fibers" &&
 												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</>
 											}
-											{firstEstimate.measurement_units == 'metric' && firstEstimate.selected_steel_fiber_dosage == "75_50" &&
+
+											{firstEstimate.measurement_units == 'metric' && firstEstimate.selected_steel_fiber_dosage == "75_50" && firstEstimate.materials_excluded != "exclude_fibers" &&
 												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}lbs</>
 											}
-											{firstEstimate.measurement_units == 'metric' && firstEstimate.selected_steel_fiber_dosage == "90_60" &&
+											{firstEstimate.measurement_units == 'metric' && firstEstimate.selected_steel_fiber_dosage == "90_60" && firstEstimate.materials_excluded != "exclude_fibers" &&
 												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}lbs</>
+											}
+											{firstEstimate.materials_excluded == "exclude_fibers" &&
+												<>N/A</>
 											}
 										</TableCell>
 										<TableCell align="right">
@@ -1853,30 +1927,34 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 									<TableRow hover={true}>
 										<TableCell>{secondEstimate?.estimate_number}</TableCell>
+										<TableCell>{secondEstimate?.project_name}</TableCell>
 										<TableCell>{secondEstimate?.floor_type_label}</TableCell>
 										{firstEstimate.measurement_units == 'imperial'
 											? <>
 												<TableCell align="right">{secondEstimate?.square_feet_display}</TableCell>
-												<TableCell align="right">{secondEstimate?.cubic_yards}</TableCell>
+												<TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
 											</>
 											: <>
 												<TableCell align="right">{secondEstimate?.square_meters_display}</TableCell>
-												<TableCell align="right">{secondEstimate?.cubic_meters}</TableCell>
+												<TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
 											</>
 										}
 										<TableCell>{secondEstimate?.materials_excluded == "none" ? "All" : secondEstimate?.materials_excluded == "exclude_cpea" ? "Exclude CPEA" : "Exclude Fibers"}</TableCell>
 										<TableCell align="right">
-											{firstEstimate.measurement_units == 'imperial' && secondEstimate.selected_steel_fiber_dosage == "75_50" &&
+											{firstEstimate.measurement_units == 'imperial' && secondEstimate.selected_steel_fiber_dosage == "75_50" && secondEstimate.materials_excluded != "exclude_fibers" &&
 												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</>
 											}
-											{firstEstimate.measurement_units == 'imperial' && secondEstimate.selected_steel_fiber_dosage == "90_60" &&
+											{firstEstimate.measurement_units == 'imperial' && secondEstimate.selected_steel_fiber_dosage == "90_60" && secondEstimate.materials_excluded != "exclude_fibers" &&
 												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</>
 											}
-											{firstEstimate.measurement_units == 'metric' && secondEstimate.selected_steel_fiber_dosage == "75_50" &&
+											{firstEstimate.measurement_units == 'metric' && secondEstimate.selected_steel_fiber_dosage == "75_50" && secondEstimate.materials_excluded != "exclude_fibers" &&
 												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}lbs</>
 											}
-											{firstEstimate.measurement_units == 'metric' && secondEstimate.selected_steel_fiber_dosage == "90_60" &&
+											{firstEstimate.measurement_units == 'metric' && secondEstimate.selected_steel_fiber_dosage == "90_60" && secondEstimate.materials_excluded != "exclude_fibers" &&
 												<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}lbs</>
+											}
+											{secondEstimate.materials_excluded == "exclude_fibers" &&
+												<>N/A</>
 											}
 										</TableCell>
 										<TableCell align="right">
@@ -1900,30 +1978,34 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									{thirdEstimate &&
 										<TableRow hover={true}>
 											<TableCell>{thirdEstimate?.estimate_number}</TableCell>
+											<TableCell>{thirdEstimate?.project_name}</TableCell>
 											<TableCell>{thirdEstimate?.floor_type_label}</TableCell>
 											{firstEstimate.measurement_units == 'imperial'
 												? <>
 													<TableCell align="right">{thirdEstimate?.square_feet_display}</TableCell>
-													<TableCell align="right">{thirdEstimate?.cubic_yards}</TableCell>
+													<TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
 												</>
 												: <>
 													<TableCell align="right">{thirdEstimate?.square_meters_display}</TableCell>
-													<TableCell align="right">{thirdEstimate?.cubic_meters}</TableCell>
+													<TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
 												</>
 											}
 											<TableCell>{thirdEstimate?.materials_excluded == "none" ? "All" : thirdEstimate?.materials_excluded == "exclude_cpea" ? "Exclude CPEA" : "Exclude Fibers"}</TableCell>
 											<TableCell align="right">
-												{firstEstimate.measurement_units == 'imperial' && thirdEstimate.selected_steel_fiber_dosage == "75_50" &&
+												{firstEstimate.measurement_units == 'imperial' && thirdEstimate.selected_steel_fiber_dosage == "75_50" && thirdEstimate.materials_excluded != "exclude_fibers" &&
 													<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</>
 												}
-												{firstEstimate.measurement_units == 'imperial' && thirdEstimate.selected_steel_fiber_dosage == "90_60" &&
+												{firstEstimate.measurement_units == 'imperial' && thirdEstimate.selected_steel_fiber_dosage == "90_60" && thirdEstimate.materials_excluded != "exclude_fibers" &&
 													<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</>
 												}
-												{firstEstimate.measurement_units == 'metric' && thirdEstimate.selected_steel_fiber_dosage == "75_50" &&
+												{firstEstimate.measurement_units == 'metric' && thirdEstimate.selected_steel_fiber_dosage == "75_50" && thirdEstimate.materials_excluded != "exclude_fibers" &&
 													<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}lbs</>
 												}
-												{firstEstimate.measurement_units == 'metric' && thirdEstimate.selected_steel_fiber_dosage == "90_60" &&
+												{firstEstimate.measurement_units == 'metric' && thirdEstimate.selected_steel_fiber_dosage == "90_60" && thirdEstimate.materials_excluded != "exclude_fibers" &&
 													<>{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}lbs</>
+												}
+												{thirdEstimate.materials_excluded == "exclude_fibers" &&
+													<>N/A</>
 												}
 											</TableCell>
 											<TableCell align="right">
@@ -1945,99 +2027,72 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableRow>
 									}
 
-									{/* Render the following table row for any orders that haven't been placed yet */}
-									{!calcCombinedEstimate?.ordered_by_licensee &&
-										<>
+									{showFinalCostRow && <>
+										<br /> <br />
+										<TableRow hover={true}>
+											<TableCell colSpan={8} align="right">
+												<b>Total Concrete Amt ({cubic_measurement_unit}):</b>
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.measurement_units == 'imperial'
+													? calcCombinedEstimate?.design_cubic_yards_total_display
+													: calcCombinedEstimate?.design_cubic_meters_total_display
+												}
+											</TableCell>
+										</TableRow>
+										<TableRow hover={true}>
+											<TableCell colSpan={8} align="right">
+												<b>Total for All Floors (USD):</b>
+											</TableCell>
+											<TableCell align="right">
+												{calcCombinedEstimate?.total_project_cost_75_50_display}
+											</TableCell>
+										</TableRow>
+
+										{!calcCombinedEstimate.ordered_by_licensee &&
 											<TableRow hover={true}>
-												<TableCell colSpan={7} align="right">
-													<section className="removeInPrint">
+												<TableCell colSpan={9} align="right">
+													{((firstEstimate.used_in_a_combined_order == true) &&
+														(secondEstimate.used_in_a_combined_order == true) &&
+														((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.used_in_a_combined_order == true))) ?
+														<>
+															<TextField
+																onChange={(event) => setPoNumber(event.target.value)}
+																size="small"
+																label="PO Number"
+																helperText={poNumError}
+															/>
+															&nbsp; &nbsp;
+															<Button
+																variant="contained"
+																color="secondary"
+																onClick={handlePlaceOrder}
+																style={{ marginTop: "13px" }}
+																className={classes.LexendTeraFont11}
+															>
+																Place Order
+															</Button>
+														</> : <>
+															<section className="removeInPrint">
 
-														{/* Recalculate Costs Button: */}
-														<Button
-															variant="contained"
-															color="primary"
-															onClick={handleRecalculateCosts}
-															className={classes.LexendTeraFont11}
-														>
-															Recalculate Costs
-														</Button>
+																<Button
+																	variant="contained"
+																	color="primary"
+																	onClick={handleSave}
+																	className={classes.LexendTeraFont11}
+																>
+																	Save Estimate
+																</Button>
+															</section>
+														</>
+													}
 
-														&nbsp; &nbsp;
-
-														{/* Conditional rendering below:
-                          - If recalculated is true, show the next set:
-                          - If these estimate numbers have been saved in an estimate prior, show submit: */}
-														{hasRecalculated ?
-															<>
-																{/* Recalc True ALL: */}
-																{((firstEstimate.used_in_a_combined_order == true) &&
-																	(secondEstimate.used_in_a_combined_order == true) &&
-																	((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.used_in_a_combined_order == true))) ?
-																	<>
-																		{/* Recalc True and Saved True -- Show submit Button */}
-																		<TextField
-																			onChange={(event) => setPoNumber(event.target.value)}
-																			size="small"
-																			label="PO Number"
-																			helperText={poNumError}
-																		/>
-																		&nbsp; &nbsp;
-																		<Button
-																			variant="contained"
-																			color="secondary"
-																			onClick={handlePlaceOrder}
-																			className={classes.LexendTeraFont11}
-																		>
-																			Place Order
-																		</Button>
-																	</> : <>
-																		{/* Recalc True and Saved False -- Show Save Button */}
-																		<Button
-																			variant="contained"
-																			color="secondary"
-																			onClick={handleSave}
-																			className={classes.LexendTeraFont11}
-																		>
-																			Save Estimate
-																		</Button>
-																	</>
-																}
-															</> : <>
-																{/* Recalc False ALL: */}
-																{((firstEstimate.used_in_a_combined_order == true) &&
-																	(secondEstimate.used_in_a_combined_order == true) &&
-																	(JSON.stringify(thirdEstimate) === '{}' || thirdEstimate.used_in_a_combined_order == true)) ?
-																	<>
-																		{/* Realc False and Saved True -- Show grayed out submit */}
-																		Recalculate costs before placing order.
-																		&nbsp; &nbsp;
-																		<Button
-																			variant="contained"
-																			disabled
-																			className={classes.LexendTeraFont11}
-																		>
-																			Place Order
-																		</Button>
-																	</> : <>
-																		{/* Recalc False and Saved False -- Show grayed out Save */}
-																		<Button
-																			variant="contained"
-																			disabled
-																			className={classes.LexendTeraFont11}
-																		>
-																			Save Estimate
-																		</Button>
-																	</>
-																}
-															</>
-														}
-													</section>
 												</TableCell>
 											</TableRow>
-										</>
-									} {/* End conditional render on materials table displaying buttons*/}
+										}
 
-									{/* End Materials Table */}
+									</>}
+
 
 								</TableBody>
 							</Table>

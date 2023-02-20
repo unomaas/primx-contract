@@ -41,16 +41,16 @@ export default function useEstimateCalculations(estimate, options = null) {
 
 	// ⬇ This block checks to see if a price estimate exists already, indicating that the calculations are being done on the edit view between Estimate.  Lookup and EstimateCreate. estimate.dc_price only exists if a new shipping state has been selected from the dropdown menu in EstimateCreate.  If both these conditions are met, it means a user is editing an estimate and is changing their desired shipping state. When this happens, set the shipping estimate keys to match the new keys set by the change in ship-to state or province.
 	// TODO: We probably want to save this for the edit portion, but not sure we want dc_price as a check on it.  Come back later. 
-	if (estimate.design_total_price_estimate && estimate.dc_price) {
-		estimate.primx_dc_shipping_estimate = estimate.dc_price;
-		estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
-		estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
-		estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
-	}; // End if 
+	// if (estimate.design_total_price_estimate && estimate.dc_price) {
+	// 	estimate.primx_dc_shipping_estimate = estimate.dc_price;
+	// 	estimate.primx_flow_shipping_estimate = estimate.flow_cpea_price;
+	// 	estimate.primx_steel_fibers_shipping_estimate = estimate.fibers_price;
+	// 	estimate.primx_cpea_shipping_estimate = estimate.flow_cpea_price;
+	// }; // End if 
 
 
 	// TODO: I don't think this is necessary anymore either, as I'm not saving dollar signs to the DB anymore (for this reason). 
-	// ⬇ Start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database:
+	// ⬇ Start by running a loop on the entire object and removing dollar signs and commas from all money quantities from database:p
 	for (let property in estimate) {
 		// ⬇ Save the value of property being looped over:
 		let value = estimate[property]
@@ -83,7 +83,7 @@ export default function useEstimateCalculations(estimate, options = null) {
 		// ⬇ Calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic yards:
 		estimate.cubic_yards_subtotal = estimate.cubic_yards + estimate.perimeter_thickening_cubic_yards + estimate.construction_joint_thickening_cubic_yards;
 		estimate.waste_factor_cubic_yards = estimate.cubic_yards_subtotal * (estimate.waste_factor_percentage / 100);
-		estimate.design_cubic_yards_total = estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards;
+		estimate.design_cubic_yards_total = Math.ceil(estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards);
 
 		//#region - ⬇⬇ Imperial DC calculations below:
 		// ⬇ Calculate amounts and prices of materials that are measured in pounds and square feet:
@@ -177,7 +177,7 @@ export default function useEstimateCalculations(estimate, options = null) {
 		// ⬇ Calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic meters:
 		estimate.cubic_meters_subtotal = estimate.cubic_meters + estimate.perimeter_thickening_cubic_meters + estimate.construction_joint_thickening_cubic_meters;
 		estimate.waste_factor_cubic_meters = estimate.cubic_meters_subtotal * (estimate.waste_factor_percentage / 100);
-		estimate.design_cubic_meters_total = estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters;
+		estimate.design_cubic_meters_total = Math.ceil(estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters);
 
 		//#region - ⬇⬇ Metric DC calculations below:
 		// ⬇ Calculate amounts and prices of materials that are measured in kgs and square meters:

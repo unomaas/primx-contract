@@ -491,7 +491,7 @@ export default function EstimateCreate() {
 
 										<TableRow hover={true}>
 											<TableCell align="left">
-												{/* //! Ryan Here - Disabling this for now as I don't know how to handle it. */}
+												{/* //! Disabling this for now as I don't know how to handle it. */}
 												{/* <b>Have Materials On Hand?</b>
 												<Switch
 													onChange={event => handleChange('materials_on_hand', event.target.value)}

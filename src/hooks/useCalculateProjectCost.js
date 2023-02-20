@@ -227,22 +227,18 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	//#region Step 9 - Calculate total project cost:
 	// ⬇ If this is a new estimate, we want to calculate the total project cost.  If it's a saved estimate, we want to use the previously calculated total project cost to respect the price guaranteet:
-	console.log(
-		`Ryan Here  inside the end of useCalculateProject Cost: `,
-		`\n estimate.difference_in_months`, estimate.difference_in_months,
-		`\n estimate.estimate_number`, estimate.estimate_number,
-		'\n estimate.force_recalculate', estimate.force_recalculate
-	);
-
 	if (!estimate.estimate_number || options.difference_in_months >= 3 || estimate.force_recalculate) {
 		// ⬇ Calculate the total project cost:
 		estimate.price_per_unit_75_50 = dollarSalesCostPerUnit_75_50;
 		estimate.price_per_unit_90_60 = dollarSalesCostPerUnit_90_60;
 	};
 
+
 	if (estimate.measurement_units == "imperial") {
+
 		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
 		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.design_cubic_yards_total);
+
 	} else if (estimate.measurement_units == "metric") {
 		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_meters_total);
 		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.design_cubic_meters_total);
@@ -250,96 +246,6 @@ export default function useCalculateProjectCost(estimate, options) {
 	//#endregion - Step 9.
 
 
-	// TODO: Erase this when done. 
-	console.log(`End of useCalculateSingleEstimate \n \n `,
-		'Static Data: ',
-		{
-			estimate,
-			Arrays: {
-				shippingDestinations,
-				shippingCosts,
-				products,
-				productContainers,
-				dosageRates,
-				customsDuties,
-				currentMarkup,
-			},
-		},
-
-		'\n \n Calculated Data: ',
-		{
-			"selected Transportation Cost Info": {
-				primxDc20ftCostInfo,
-				primxDc20ftContainerInfo,
-				primxDc40ftCostInfo,
-				primxDc40ftContainerInfo,
-				primxSteelFiber20ftCostInfo,
-				primxSteelFiber20ftContainerInfo,
-				primxSteelFiber40ftCostInfo,
-				primxSteelFiber40ftContainerInfo,
-				primxFlow20ftCostInfo,
-				primxFlow20ftContainerInfo,
-				primxFlow40ftCostInfo,
-				primxFlow40ftContainerInfo,
-				primxCpea20ftCostInfo,
-				primxCpea20ftContainerInfo,
-				primxCpea40ftCostInfo,
-				primxCpea40ftContainerInfo,
-			},
-
-			'Calculated Transportation Price Info: ': {
-				primxDc20ftTransportationCostPerLb,
-				primxDc40ftTransportationCostPerLb,
-				primxSteelFiber20ftTransportationCostPerLb,
-				primxSteelFiber40ftTransportationCostPerLb,
-				primxFlow20ftTransportationCostPerLb,
-				primxFlow40ftTransportationCostPerLb,
-				primxCpea20ftTransportationCostPerLb,
-				primxCpea40ftTransportationCostPerLb,
-
-			},
-
-			'Cheapest Transportation Container Info: ': {
-				cheapestPrimXDcTransportationCostPerLb,
-				cheapestPrimxSteelFiberTransportationCostPerLb,
-				cheapestPrimxFlowTransportationCostPerLb,
-				cheapestPrimxCpeaTransportationCostPerLb,
-			},
-
-			'Product Info': {
-				primxDcProductInfo,
-				primxSteelFiberProductInfo,
-				primxFlowProductInfo,
-				primxCpeaProductInfo,
-				primxUltraCureProductInfo,
-			},
-
-			'Dosage Rates: ': {
-				primxDcDosageRateInfo,
-				primxSteelFiberDosageRateInfo_75_50,
-				primxSteelFiberDosageRateInfo_90_60,
-				primxFlowDosageRateInfo,
-				primxCpeaDosageRateInfo,
-			},
-
-			'Calculated Transportation Price + Material Price Info: ': {
-				primxDcTransportationCostPlusMaterialCostPerUnit,
-				primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
-				primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
-				primxFlowTransportationCostPlusMaterialCostPerUnit,
-				primxCpeaTransportationCostPlusMaterialCostPerUnit,
-			},
-
-			'*** Self Cost Calculated: ': {
-				dollarSelfCostPerUnit_75_50,
-				dollarSelfCostPerUnit_90_60,
-				dollarSalesCostPerUnit_75_50,
-				dollarSalesCostPerUnit_90_60,
-			},
-
-		},
-		'\n \n'
-	); // End of console.log
 
 	return estimate;
 } // End of useCalculateSingleEstimate

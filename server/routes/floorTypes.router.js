@@ -20,8 +20,13 @@ router.get('/', (req, res) => {
 //Post Route - adds floor type to DB
 router.post('/', rejectUnauthenticated, (req, res) => {
   // query text to add a new floor type to the floor_types table
-  queryText = `INSERT INTO "floor_types" ("floor_type_label")
-            VALUES ($1);`;
+  queryText = `
+		INSERT INTO "floor_types" (
+			"floor_type_label"
+		)
+		VALUES (
+			$1
+		);`;
     pool.query(queryText, [req.body.floor_type_label])
     .then(result => {
       res.sendStatus(201)

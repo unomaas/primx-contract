@@ -211,8 +211,8 @@ export default function PricingLogTable() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the historical pricing log for various items.<br /><br />Row selection is disabled.  Click in the center of the table to select a new pricing history view.  Use the top-right Date Saved filter to narrow down results to a specific date.</p>}
-					placement="right-start"
+				title={<p>This table shows the historical pricing log for various items.<br /><br />Row selection is disabled.  Click in the center of the table to select a new pricing history view.  Use the top-right Date Saved filter to narrow down results to a specific date.</p>}
+				placement="right-start"
 					arrow
 				>
 					<Button

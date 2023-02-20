@@ -54,7 +54,6 @@ export default function AdminOrders() {
 		dispatch({ type: 'FETCH_ALL_ESTIMATES' });
 	}, [])
 
-	console.log(`Ryan Here \n`, {allEstimates, pendingOrders, processedOrders, openEstimates, archivedEstimates});
 
 	return (
 		<div>
