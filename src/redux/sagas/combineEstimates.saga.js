@@ -46,13 +46,6 @@ function* combineEstimateTotals(action) {
 			combined_total_project_cost: 0,
 		};
 
-		console.log(`Ryan Here: Top of Combine Estimates Saga`, 
-			firstEstimate.design_cubic_meters_total,
-			secondEstimate.design_cubic_meters_total,
-			thirdEstimate.design_cubic_meters_total,
-			combinedEstimate.design_cubic_meters_total
-		);
-
 		if (firstEstimate.measurement_units === 'imperial') {
 
 			totalsObjectHolder.design_cubic_yards_total += parseFloat(firstEstimate.design_cubic_yards_total.replaceAll(',', ''));
@@ -62,19 +55,10 @@ function* combineEstimateTotals(action) {
 		} else if (firstEstimate.measurement_units === 'metric') {
 
 			totalsObjectHolder.design_cubic_meters_total += parseFloat(firstEstimate.design_cubic_meters_total.replaceAll(',', ''));
-			console.log(`Ryan Here: mid logic check 1`, totalsObjectHolder.design_cubic_meters_total,);
 			totalsObjectHolder.design_cubic_meters_total += parseFloat(secondEstimate.design_cubic_meters_total.replaceAll(',', ''));
-			console.log(`Ryan Here: mid logic check 2`, totalsObjectHolder.design_cubic_meters_total,);
-
 			if (thirdEstimate) totalsObjectHolder.design_cubic_meters_total += parseFloat(thirdEstimate.design_cubic_meters_total.replaceAll(',', ''));
-			console.log(`Ryan Here: mid logic check 3`, totalsObjectHolder.design_cubic_meters_total,);
-			
 
 		} // End if/else
-
-		console.log(`Ryan Here: mid logic check`,
-			totalsObjectHolder.design_cubic_meters_total,
-		);
 
 		const firstSFDosage = firstEstimate.selected_steel_fiber_dosage;
 		const secondSFDosage = secondEstimate.selected_steel_fiber_dosage;
@@ -84,18 +68,16 @@ function* combineEstimateTotals(action) {
 		totalsObjectHolder.combined_total_project_cost += parseFloat(secondEstimate[`total_project_cost_${secondSFDosage}`]);
 		if (thirdEstimate) totalsObjectHolder.combined_total_project_cost += parseFloat(thirdEstimate[`total_project_cost_${thirdSFDosage}`]);
 
+		combinedEstimate.total_project_cost_75_50 = Math.floor(totalsObjectHolder.combined_total_project_cost * 100) / 100;
+		combinedEstimate.total_project_cost_75_50_display = formatter.format(combinedEstimate.total_project_cost_75_50);
 
-		combinedEstimate.total_project_cost_75_50 = totalsObjectHolder.combined_total_project_cost;
-		combinedEstimate.total_project_cost_75_50_display = formatter.format(totalsObjectHolder.combined_total_project_cost);
-
-		combinedEstimate.total_project_cost_90_60 = totalsObjectHolder.combined_total_project_cost;
-		combinedEstimate.total_project_cost_90_60_display = formatter.format(totalsObjectHolder.combined_total_project_cost);
+		combinedEstimate.total_project_cost_90_60 = Math.floor(totalsObjectHolder.combined_total_project_cost * 100) / 100;
+		combinedEstimate.total_project_cost_90_60_display = formatter.format(combinedEstimate.total_project_cost_90_60);
 		combinedEstimate.design_cubic_yards_total = totalsObjectHolder.design_cubic_yards_total;
 		combinedEstimate.design_cubic_yards_total_display = totalsObjectHolder.design_cubic_yards_total.toLocaleString('en-US');
 		combinedEstimate.design_cubic_meters_total = totalsObjectHolder.design_cubic_meters_total;
 		combinedEstimate.design_cubic_meters_total_display = totalsObjectHolder.design_cubic_meters_total.toLocaleString('en-US');
 
-		console.log(`Ryan Here: END OF SAGA \n \n `, { combinedEstimate, totalsObjectHolder });
 		// const calculatedResponse = yield useCombineEstimateCalculations(talliedCombinedEstimate);
 		// ⬇ Send that data to the reducer, and set the show table to true:
 		yield put({ type: "CLEAR_CALCULATED_COMBINED_ESTIMATE", });

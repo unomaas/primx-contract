@@ -185,7 +185,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 			field: 'estimate_number',
 			headerClassName: classes.header,
 			headerName: 'Estimate Number',
-			// width: 200,
+			width: 200,
 			disableClickEventBubbling: true,
 			renderCell: renderEstimateNumber // function declared above, creates a div with navigation in each of the estimate number cells
 		},
@@ -196,7 +196,6 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		{ field: 'ship_to_city', headerClassName: classes.header, headerName: 'Ship To City', width: 175, editable: false },
 		{ field: 'destination_name', headerClassName: classes.header, headerName: 'State/Province', width: 175 },
 		{ field: 'zip_postal_code', headerClassName: classes.header, headerName: 'Zip/Postal Code', width: 175, editable: false },
-		{ field: 'country', headerClassName: classes.header, headerName: 'Country', width: 175, editable: false },
 		{ field: 'anticipated_first_pour_date', headerClassName: classes.header, headerName: 'Anticipated First Pour', width: 175, editable: false }, // Need edit validation?
 		{ field: 'project_general_contractor', headerClassName: classes.header, headerName: 'General Contractor', width: 175, editable: false },
 		{ field: 'project_manager_name', headerClassName: classes.header, headerName: 'Project Manager', width: 175, editable: false },
@@ -216,75 +215,24 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		{ field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
 		{ field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
 		{ field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'primx_dc_dosage_lbs', headerClassName: classes.header, headerName: 'DC Dosage (lbs)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'primx_dc_dosage_kgs', headerClassName: classes.header, headerName: 'DC Dosage (kgs)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'primx_flow_dosage_liters', headerClassName: classes.header, headerName: 'Flow Dosage (liters)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'primx_steel_fibers_dosage_lbs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (lbs)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'primx_steel_fibers_dosage_kgs', headerClassName: classes.header, headerName: 'Steel Fiber Dosage (kgs)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'primx_cpea_dosage_liters', headerClassName: classes.header, headerName: 'CPEA Dosage (liters)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'materials_on_hand', headerClassName: classes.header, headerName: 'Materials On Hand', width: 175, editable: false },
-		{ field: 'primx_dc_on_hand_lbs', headerClassName: classes.header, headerName: 'DC On Hand (lbs)', width: 175, editable: false },
-		{ field: 'primx_dc_on_hand_kgs', headerClassName: classes.header, headerName: 'DC On Hand (kgs)', width: 175, editable: false },
-		{ field: 'primx_flow_on_hand_liters', headerClassName: classes.header, headerName: 'Flow On Hand (ltrs)', width: 175, editable: false },
-		{ field: 'primx_steel_fibers_on_hand_lbs', headerClassName: classes.header, headerName: 'Steel Fibers On Hand (lbs)', width: 175, editable: false },
-		{ field: 'primx_steel_fibers_on_hand_kgs', headerClassName: classes.header, headerName: 'Steel Fibers On Hand (kgs)', width: 175, editable: false },
-		{ field: 'primx_ultracure_blankets_on_hand_sq_ft', headerClassName: classes.header, headerName: 'Ultracure Blankets On Hand (sq ft)', width: 175, editable: false },
-		{ field: 'primx_ultracure_blankets_on_hand_sq_m', headerClassName: classes.header, headerName: 'Ultracure Blankets On Hand (sq m)', width: 175, editable: false },
-		{ field: 'primx_cpea_on_hand_liters', headerClassName: classes.header, headerName: 'CPEA On Hand (ltrs)', width: 175, editable: false },
-
-		// ⬇ All calculated values are listed below
-		// ⬇ PrimX DC calculated values
-		{ field: 'primx_dc_total_project_amount', headerClassName: classes.header, headerName: 'DC Total Amount Needed', width: 175 },
-		{ field: 'primx_dc_packages_needed', headerClassName: classes.header, headerName: 'DC Packages Needed', width: 175 },
-		{ field: 'primx_dc_final_order_amount', headerClassName: classes.header, headerName: 'DC Total Order Quantity', width: 175 },
-		{ field: 'primx_dc_total_materials_price', headerClassName: classes.header, headerName: 'DC Total Material Price', width: 175 },
-		{ field: 'primx_dc_containers_needed', headerClassName: classes.header, headerName: 'DC Containers Needed', width: 175 },
-		{ field: 'primx_dc_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'DC Shipping Estimate', width: 175 },
-		{ field: 'primx_dc_total_cost_estimate', headerClassName: classes.header, headerName: 'DC Total Cost', width: 175 },
-
-		// ⬇ PrimX Flow calculated values
-		{ field: 'primx_flow_total_project_amount', headerClassName: classes.header, headerName: 'Flow Total Amount Needed', width: 175 },
-		{ field: 'primx_flow_packages_needed', headerClassName: classes.header, headerName: 'Flow Packages Needed', width: 175 },
-		{ field: 'primx_flow_final_order_amount', headerClassName: classes.header, headerName: 'Flow Total Order Quantity', width: 175 },
-		{ field: 'primx_flow_total_materials_price', headerClassName: classes.header, headerName: 'Flow Total Material Price', width: 175 },
-		{ field: 'primx_flow_containers_needed', headerClassName: classes.header, headerName: 'Flow Containers Needed', width: 175 },
-		{ field: 'primx_flow_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'Flow Shipping Estimate', width: 175 },
-		{ field: 'primx_flow_total_cost_estimate', headerClassName: classes.header, headerName: 'Flow Total Cost', width: 175 },
-
-		// ⬇ PrimX Steel Fibers calculated values
-		{ field: 'primx_steel_fibers_total_project_amount', headerClassName: classes.header, headerName: 'Steel Fibers Total Amount Needed', width: 175 },
-		{ field: 'primx_steel_fibers_packages_needed', headerClassName: classes.header, headerName: 'Steel Fibers Packages Needed', width: 175 },
-		{ field: 'primx_steel_fibers_final_order_amount', headerClassName: classes.header, headerName: 'Steel Fibers Total Order Quantity', width: 175 },
-		{ field: 'primx_steel_fibers_total_materials_price', headerClassName: classes.header, headerName: 'Steel Fibers Total Material Price', width: 175 },
-		{ field: 'primx_steel_fibers_containers_needed', headerClassName: classes.header, headerName: 'Steel Fibers Containers Needed', width: 175 },
-		{ field: 'primx_steel_fibers_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'Steel Fibers Shipping Estimate', width: 175 },
-		{ field: 'primx_steel_fibers_total_cost_estimate', headerClassName: classes.header, headerName: 'Steel Fibers Total Cost', width: 175 },
-
-		// PrimX Ultracure Blankets calculated values
-		{ field: 'primx_ultracure_blankets_total_project_amount', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Amount Needed', width: 175 },
-		{ field: 'primx_ultracure_blankets_packages_needed', headerClassName: classes.header, headerName: 'Ultracure Blankets Packages Needed', width: 175 },
-		{ field: 'primx_ultracure_blankets_final_order_amount', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Order Quantity', width: 175 },
-		{ field: 'primx_ultracure_blankets_total_materials_price', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Material Price', width: 175 },
-		{ field: 'primx_ultracure_blankets_total_cost_estimate', headerClassName: classes.header, headerName: 'Ultracure Blankets Total Cost', width: 175 },
-
-		// PrimX CPEA calculated values
-		{ field: 'primx_cpea_total_project_amount', headerClassName: classes.header, headerName: 'CPEA Total Amount Needed', width: 175 },
-		{ field: 'primx_cpea_packages_needed', headerClassName: classes.header, headerName: 'CPEA Packages Needed', width: 175 },
-		{ field: 'primx_cpea_final_order_amount', headerClassName: classes.header, headerName: 'CPEA Total Order Quantity', width: 175 },
-		{ field: 'primx_cpea_total_materials_price', headerClassName: classes.header, headerName: 'CPEA Total Material Price', width: 175 },
-		{ field: 'primx_cpea_containers_needed', headerClassName: classes.header, headerName: 'CPEA Containers Needed', width: 175 },
-		{ field: 'primx_cpea_calculated_shipping_estimate', headerClassName: classes.header, headerName: 'CPEA Shipping Estimate', width: 175 },
-		{ field: 'primx_cpea_total_cost_estimate', headerClassName: classes.header, headerName: 'CPEA Total Cost', width: 175 },
 
 		// totals and design size
 		{ field: 'design_cubic_yards_total', headerClassName: classes.header, headerName: 'Design Volume (cubic yards)', width: 175 },
 		{ field: 'design_cubic_meters_total', headerClassName: classes.header, headerName: 'Design Volume (cubic meters)', width: 175 },
-		{ field: 'design_total_materials_price', headerClassName: classes.header, headerName: 'Total Materials Sum', width: 175 },
-		{ field: 'design_total_shipping_estimate', headerClassName: classes.header, headerName: 'Total Shipping Estimate Sum', width: 175 },
-		{ field: 'design_total_price_estimate', headerClassName: classes.header, headerName: 'Total Cost', width: 175 },
+		{ field: 'selected_steel_fiber_dosage', headerClassName: classes.header, headerName: 'Selected Steel Fiber Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
+
+		{ field: 'price_per_unit_75_50', headerClassName: classes.header, headerName: 'Price Per Unit, 75/50 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
+		{ field: 'price_per_unit_90_60', headerClassName: classes.header, headerName: 'Price Per Unit, 90/60 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
+
+		{ field: 'total_project_cost_75_50', headerClassName: classes.header, headerName: 'Total Project Cost, 75/50 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
+		{ field: 'total_project_cost_90_60', headerClassName: classes.header, headerName: 'Total Project Cost, 90/60 SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
+		
 		{ field: 'estimate_number_combined_1', headerClassName: classes.header, headerName: 'Estimate Number 1', width: 175 },
+		{ field: 'estimate_number_combined_1_sf_dosage', headerClassName: classes.header, headerName: 'Estimate Number 1 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
 		{ field: 'estimate_number_combined_2', headerClassName: classes.header, headerName: 'Estimate Number 2', width: 175 },
+		{ field: 'estimate_number_combined_2_sf_dosage', headerClassName: classes.header, headerName: 'Estimate Number 2 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
 		{ field: 'estimate_number_combined_3', headerClassName: classes.header, headerName: 'Estimate Number 3', width: 175 },
+		{ field: 'estimate_number_combined_3_sf_dosage', headerClassName: classes.header, headerName: 'Estimate Number 3 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
 	]
 
 	// ⬇ Add additional columns based on the data source for the data grid:
@@ -337,7 +285,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 			// ⬇ Add the processed by name to the processed table:
 			columns.push(
 				{ field: 'order_number', headerClassName: classes.header, headerName: 'Order Number', width: 175 },
-				{ field: 'processed_by', headerClassName: classes.header, headerName: 'Processed By', width: 175 }
+				// { field: 'username', headerClassName: classes.header, headerName: 'Processed By', width: 175 }
 			)
 		}
 		// Add and archive button if an open estimate (not pending nor processed)

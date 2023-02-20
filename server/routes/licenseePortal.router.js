@@ -20,7 +20,8 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 				"l".licensee_contractor_name, 
 				"pt".placement_type_label, 
 				"sd".destination_name,
-				"sd".destination_country
+				"sd".destination_country,
+				"u".username
 			FROM "estimates" AS "e"
 			JOIN "floor_types" AS "ft"
 				ON "e".floor_type_id = "ft".floor_type_id
@@ -30,6 +31,8 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 				ON "e".placement_type_id = "pt".placement_type_id
 			JOIN "shipping_destinations" AS "sd"
 				ON "e".destination_id = "sd".destination_id
+			LEFT JOIN "users" AS "u"
+				ON "e".processed_by = "u".user_id
 			WHERE "e".licensee_id = $1
 			ORDER BY "e".estimate_id DESC;
 		`; // End query

@@ -57,12 +57,14 @@ router.get('/all', rejectUnauthenticated, (req, res) => {
 			"floor_types".floor_type_label, 
 			"licensees".licensee_contractor_name, 
 			"placement_types".placement_type_label, 
-			"shipping_destinations".destination_name
+			"shipping_destinations".destination_name, 
+			"users".username
 		FROM "estimates"
 		JOIN "floor_types" ON "estimates".floor_type_id = "floor_types".floor_type_id
 		JOIN "licensees" ON "estimates".licensee_id = "licensees".licensee_id
 		JOIN "placement_types" ON "estimates".placement_type_id = "placement_types".placement_type_id
 		JOIN "shipping_destinations" ON "estimates".destination_id = "shipping_destinations".destination_id
+		LEFT JOIN "users" ON "estimates".processed_by = "users".user_id
 		ORDER BY "estimates".estimate_id DESC;`;
 
 	pool.query(queryText)

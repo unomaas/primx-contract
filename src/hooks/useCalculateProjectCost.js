@@ -227,21 +227,22 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	//#region Step 9 - Calculate total project cost:
 	// ⬇ If this is a new estimate, we want to calculate the total project cost.  If it's a saved estimate, we want to use the previously calculated total project cost to respect the price guaranteet:
-	console.log(
-		`Ryan Here  inside the end of useCalculateProject Cost: `,
-		`\n estimate.difference_in_months`, estimate.difference_in_months,
-		`\n estimate.estimate_number`, estimate.estimate_number,
-		'\n estimate.force_recalculate', estimate.force_recalculate
-	);
-
 	if (!estimate.estimate_number || options.difference_in_months >= 3 || estimate.force_recalculate) {
 		// ⬇ Calculate the total project cost:
 		estimate.price_per_unit_75_50 = dollarSalesCostPerUnit_75_50;
 		estimate.price_per_unit_90_60 = dollarSalesCostPerUnit_90_60;
 	};
 
+	console.log(`Ryan Here: testing cost per whatever`,
+		{
+			dollarSalesCostPerUnit_75_50,
+			dollarSalesCostPerUnit_90_60,
+		}
+
+	);
+
 	if (estimate.measurement_units == "imperial") {
-		
+
 		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
 		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.design_cubic_yards_total);
 

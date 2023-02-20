@@ -83,7 +83,7 @@ export default function useEstimateCalculations(estimate, options = null) {
 		// ⬇ Calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic yards:
 		estimate.cubic_yards_subtotal = estimate.cubic_yards + estimate.perimeter_thickening_cubic_yards + estimate.construction_joint_thickening_cubic_yards;
 		estimate.waste_factor_cubic_yards = estimate.cubic_yards_subtotal * (estimate.waste_factor_percentage / 100);
-		estimate.design_cubic_yards_total = estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards;
+		estimate.design_cubic_yards_total = Math.ceil(estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards);
 
 		//#region - ⬇⬇ Imperial DC calculations below:
 		// ⬇ Calculate amounts and prices of materials that are measured in pounds and square feet:
@@ -177,7 +177,7 @@ export default function useEstimateCalculations(estimate, options = null) {
 		// ⬇ Calculate subtotal based on above results, factor in waste factor percentage, and calculate the total design cubic meters:
 		estimate.cubic_meters_subtotal = estimate.cubic_meters + estimate.perimeter_thickening_cubic_meters + estimate.construction_joint_thickening_cubic_meters;
 		estimate.waste_factor_cubic_meters = estimate.cubic_meters_subtotal * (estimate.waste_factor_percentage / 100);
-		estimate.design_cubic_meters_total = estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters;
+		estimate.design_cubic_meters_total = Math.ceil(estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters);
 
 		//#region - ⬇⬇ Metric DC calculations below:
 		// ⬇ Calculate amounts and prices of materials that are measured in kgs and square meters:
