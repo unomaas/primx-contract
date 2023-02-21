@@ -33,6 +33,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	const secondEstimateAgeInMonths = useDifferenceBetweenDates(secondEstimate?.date_created).total_months;
 	const thirdEstimateAgeInMonths = useDifferenceBetweenDates(thirdEstimate?.date_created).total_months;
 	const calcEstimateAgeInMonths = useDifferenceBetweenDates(calcCombinedEstimate?.date_created).total_months;
+	const [editState, setEditState] = useState(false);
 
 
 	// ⬇ Checks if the third estimate is populated, and if so, adjusts the table size to display accordingly:
@@ -97,6 +98,21 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		// }); // End swal
 	} // End handleSave
 
+		/** ⬇ handleSave:
+	 * When clicked, this will post the object to the DB and send the user back to the dashboard. 
+	 */
+		const handleEditSave = event => {
+			// ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
+			calcCombinedEstimate.history = history;
+			// Attach the estimate numbers to use inside the POST: 
+			calcCombinedEstimate.estimate_number_combined_1_sf_dosage = firstEstimate.selected_steel_fiber_dosage;
+			calcCombinedEstimate.estimate_number_combined_2_sf_dosage = secondEstimate.selected_steel_fiber_dosage;
+			calcCombinedEstimate.estimate_number_combined_3_sf_dosage = thirdEstimate?.selected_steel_fiber_dosage;
+			// ⬇ Send the estimate object to be POSTed:
+			dispatch({ type: 'EDIT_COMBINED_ESTIMATE', payload: calcCombinedEstimate });
+			setEditState(false);
+		} // End handleSave
+
 	/** ⬇ handlePlaceOrder:
  * Click handler for the Place Order button. 
  */
@@ -160,7 +176,9 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		}; // End if
 	}, [firstEstimate?.selected_steel_fiber_dosage, secondEstimate?.selected_steel_fiber_dosage, thirdEstimate?.selected_steel_fiber_dosage])
 
-	const isThisASavedCombinedEstimate = calcCombinedEstimate?.estimate_number?.charAt(calcCombinedEstimate.estimate_number.length - 1) === "C" ? true : false;
+	let isThisASavedCombinedEstimate = calcCombinedEstimate?.estimate_number?.charAt(calcCombinedEstimate.estimate_number.length - 1) === "C" ? true : false;
+
+	if (editState) isThisASavedCombinedEstimate = false;
 
 	if (isThisASavedCombinedEstimate) {
 		firstEstimate.selected_steel_fiber_dosage = calcCombinedEstimate?.estimate_number_combined_1_sf_dosage;
@@ -2042,8 +2060,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</TableCell>
 											<TableCell align="right">
 												{calcCombinedEstimate?.measurement_units == 'imperial'
-													? calcCombinedEstimate?.design_cubic_yards_total_display
-													: calcCombinedEstimate?.design_cubic_meters_total_display
+													? calcCombinedEstimate?.design_cubic_yards_total?.toLocaleString('en-US')
+													: calcCombinedEstimate?.design_cubic_meters_total?.toLocaleString('en-US')
 												}
 											</TableCell>
 										</TableRow>
@@ -2057,7 +2075,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableRow>
 
 										{/* //! ryan Here, we don't have a check for if this is older than 3 months.  */}
-										{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths <= 2 &&
+										{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths <= 2 && !editState &&
 											<TableRow hover={true}>
 												<TableCell colSpan={9} align="right">
 													{((firstEstimate.used_in_a_combined_order == true) &&
@@ -2067,6 +2085,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															<Button
 																variant="contained"
 																// onClick={handleEdit}
+																onClick={() => setEditState(!editState)}
 																className={classes.LexendTeraFont11}
 																style={{ float: "left", marginTop: "13px" }}
 															>
@@ -2120,6 +2139,21 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															Recalculate Costs
 														</Button>
 													</Tooltip>
+												</TableCell>
+											</TableRow>
+										}
+
+										{editState &&
+											<TableRow hover={true}>
+												<TableCell colSpan={9} align="right">
+													<Button
+														onClick={handleEditSave}
+														variant="contained"
+														className={classes.LexendTeraFont11}
+														color="primary"
+													>
+														Save Edits
+													</Button>
 												</TableCell>
 											</TableRow>
 										}

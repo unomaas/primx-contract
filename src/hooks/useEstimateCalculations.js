@@ -4,8 +4,6 @@ import useCalculateProjectCost from "./useCalculateProjectCost";
 // ⬇ Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays:
 export default function useEstimateCalculations(estimate, options = null) {
 
-	console.log(`Ryan Here : useEstimateCalculations\n`, { estimate, options});
-
 	// ⬇ Remove the Time Stamps first: 
 	estimate.date_created = estimate.date_created.split('T')[0];
 	estimate.anticipated_first_pour_date = estimate.anticipated_first_pour_date.split('T')[0];

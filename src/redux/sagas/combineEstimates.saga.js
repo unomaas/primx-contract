@@ -23,6 +23,7 @@ function* combineEstimatesSaga() {
 	yield takeLatest('MARK_COMBINED_ESTIMATE_ORDERED', markCombinedEstimateOrdered);
 	yield takeLatest('CLEAR_ALL_STALE_DATA', clearAllStaleData);
 	yield takeLatest('COMBINE_ESTIMATE_TOTALS', combineEstimateTotals);
+	yield takeLatest('EDIT_COMBINED_ESTIMATE', editCombinedEstimate);
 } // End combineEstimatesSaga //
 
 // Saga Worker to create a a new combined estimated quote: 
@@ -375,6 +376,26 @@ function* markCombinedEstimateOrdered(action) {
 
 	} catch (error) {
 		console.error('markEstimateOrdered failed', error)
+	}
+}
+
+// Worker saga that is supplied an estimate id number and a user-created P.O. number that marks an estimate as ordered in the database to then be processed by an admin user
+function* editCombinedEstimate(action) {
+	yield put({ type: 'SHOW_TOP_LOADING_DIV' });
+	try {
+		const estimate_id = action.payload.estimate_id;
+		const calcCombinedEstimate = action.payload;
+		// Update all of the estimates as marked ordered and link them together: 
+		yield axios.put(`/api/estimates/edit-combined-estimate/${estimate_id}`, calcCombinedEstimate);
+
+		yield put({ type: "CLEAR_CALCULATED_COMBINED_ESTIMATE", });
+		yield put({ type: "SET_CALCULATED_COMBINED_ESTIMATE", payload: calcCombinedEstimate });
+		yield put({ type: "HIDE_TOP_LOADING_DIV" });
+		yield put({ type: "SNACK_GENERIC_REQUEST_SUCCESS" })
+	} catch (error) {
+		console.error('editCombinedEstimate failed', error)
+		yield put({ type: "SNACK_GENERIC_REQUEST_ERROR" })
+		yield put({ type: "HIDE_TOP_LOADING_DIV" });
 	}
 }
 

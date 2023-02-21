@@ -340,6 +340,40 @@ router.put('/edit/:estimate_id', rejectUnauthenticated, (req, res) => {
 		})
 })
 
+// PUT request to edit a single piece of data on one row of the estimates table
+router.put('/edit-combined-estimate/:estimate_id', async (req, res) => {
+	const {
+		estimate_id,
+		estimate_number_combined_1_sf_dosage,
+		estimate_number_combined_2_sf_dosage,
+		estimate_number_combined_3_sf_dosage,
+		price_per_unit_75_50,
+		price_per_unit_90_60,
+		total_project_cost_75_50,
+		total_project_cost_90_60,
+	} = req.body;
+	try {
+		let sql = `
+			UPDATE "estimates"
+			SET
+				"estimate_number_combined_1_sf_dosage" = ${format('%L', estimate_number_combined_1_sf_dosage)},
+				"estimate_number_combined_2_sf_dosage" = ${format('%L', estimate_number_combined_2_sf_dosage)},
+				"estimate_number_combined_3_sf_dosage" = ${format('%L', estimate_number_combined_3_sf_dosage)},
+				"price_per_unit_75_50" = ${format('%L', price_per_unit_75_50)},
+				"price_per_unit_90_60" = ${format('%L', price_per_unit_90_60)},
+				"total_project_cost_75_50" = ${format('%L', total_project_cost_75_50)},
+				"total_project_cost_90_60" = ${format('%L', total_project_cost_90_60)}
+			WHERE "estimate_id" = ${format('%L', estimate_id)};
+		`; // End sql
+		await pool.query(sql);
+		res.sendStatus(200);
+	} catch (error) {
+		console.error('Problem with estimates PUT', error);
+		res.sendStatus(500);
+	}
+})
+
+
 // PUT request to mark an estimate flagged for order by licensee to be marked as ordered by an admin, and to add the name of the admin making the request
 router.put('/process/:estimate_id', rejectUnauthenticated, (req, res) => {
 	const {
