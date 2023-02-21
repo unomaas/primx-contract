@@ -238,12 +238,11 @@ function* recalculateCombinedEstimate(action) {
 		}
 
 		const recalculatedCombinedEstimate = useEstimateCalculations(combinedEstimate, options);
-		yield axios.put(`/api/estimates/recalculate/${recalculatedCombinedEstimate.estimate_id}`, recalculatedCombinedEstimate);
+		const response = yield axios.put(`/api/estimates/recalculate/${recalculatedCombinedEstimate.estimate_id}`, recalculatedCombinedEstimate);
 		recalculatedCombinedEstimate.date_created = response.data.split('T')[0];
 
-
-		yield put({ type: 'CLEAR_ESTIMATE_QUERY_RESULT' });
-		yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: recalculatedCombinedEstimate });
+		yield put({ type: 'CLEAR_CALCULATED_COMBINED_ESTIMATE' });
+		yield put({ type: 'SET_CALCULATED_COMBINED_ESTIMATE', payload: recalculatedCombinedEstimate });
 
 		yield put({ type: 'GET_RECALCULATE_INFO' });
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });

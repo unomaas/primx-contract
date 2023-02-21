@@ -29,7 +29,6 @@ export default function useEstimateCalculations(estimate, options = null) {
 	}; // End if 
 
 
-	// TODO: This probably isn't accurate anymore. To flesh more thoughts out, anything in here that deals with pricing probably isn't accurate anymore.  What I want this updated hook to do is figure out the total yards or meters of the project to feed into the new project cost hook.  
 	
 	// // ⬇ Shipping prices come in with keys linked to the shipping_costs table if they're being calculated from the estimate creation view.  We need to change them to match the keys saved on the estimate table.  If estimates are being calculated from DB data, these keys already exist, since estimates all contain snapshots of the prices necessary for estimate calculations at the time the estimate was made:
 	// if (!estimate.primx_dc_shipping_estimate) {
