@@ -2064,6 +2064,15 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														(secondEstimate.used_in_a_combined_order == true) &&
 														((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.used_in_a_combined_order == true))) ?
 														<>
+															<Button
+																variant="contained"
+																// onClick={handleEdit}
+																className={classes.LexendTeraFont11}
+																style={{ float: "left", marginTop: "13px" }}
+															>
+																Edit This Estimate
+															</Button>
+
 															<TextField
 																onChange={(event) => setPoNumber(event.target.value)}
 																size="small"

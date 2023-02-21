@@ -980,8 +980,8 @@ export default function EstimateCreateTable() {
 										<TableRow hover={true}>
 											<TableCell><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
 											{estimateData?.measurement_units === 'imperial'
-												? <TableCell align="right">{calculatedDisplayObject?.design_cubic_yards_total_display}</TableCell>
-												: <TableCell align="right">{calculatedDisplayObject?.design_cubic_meters_total_display}</TableCell>
+												? <TableCell align="right">{calculatedDisplayObject?.design_cubic_yards_total}</TableCell>
+												: <TableCell align="right">{calculatedDisplayObject?.design_cubic_meters_total}</TableCell>
 											}
 										</TableRow>
 										<TableRow hover={true}>
