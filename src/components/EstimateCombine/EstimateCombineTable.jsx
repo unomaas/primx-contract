@@ -60,7 +60,13 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		// ⬇ Attach history from useHistory to the firstEstimate object to allow navigation from inside the saga:
 		estimate.options = { order: order };
 		// ⬇ Needs to GET shipping information and pricing information before recalculating
-		dispatch({ type: 'RECALCULATE_ESTIMATE', payload: estimate });
+		// dispatch({ type: 'RECALCULATE_ESTIMATE', payload: estimate });
+
+		if (order == "calcCombinedEstimate") {
+			dispatch({ type: 'RECALCULATE_COMBINED_ESTIMATE', payload: calcCombinedEstimate });
+		} else {
+			dispatch({ type: 'RECALCULATE_ESTIMATE', payload: estimate });
+		}
 		// dispatch({ type: 'GET_RECALCULATE_INFO' });
 	} // End handleRecalculateCosts
 
@@ -248,7 +254,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<TableRow hover={true}>
 										<TableCell><b>Estimate Creation Date:</b></TableCell>
 										<TableCell>
-											{firstEstimate?.date_created}
+											{calcCombinedEstimate?.date_created?.split('T')[0] || firstEstimate?.date_created?.split('T')[0]}
 										</TableCell>
 									</TableRow>
 
@@ -551,8 +557,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													<TableCell align="right">{firstEstimate?.total_project_cost_90_60_display}</TableCell>
 												</TableRow>
 
-												{/* Render the following table row for any orders that haven't been placed yet */}
-												{firstEstimateAgeInMonths >= 3 &&
+												{firstEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
 													<>
 														<TableRow hover={true}>
 
@@ -801,7 +806,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 
 												{/* Render the following table row for any orders that haven't been placed yet */}
-												{secondEstimateAgeInMonths >= 3 &&
+												{secondEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
 													<>
 														<TableRow hover={true}>
 
@@ -1054,7 +1059,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														</TableRow>
 
 														{/* Render the following table row for any orders that haven't been placed yet */}
-														{thirdEstimateAgeInMonths >= 3 &&
+														{thirdEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
 															<>
 																<TableRow hover={true}>
 
@@ -1310,7 +1315,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 
 												{/* Render the following table row for any orders that haven't been placed yet */}
-												{firstEstimateAgeInMonths >= 3 &&
+												{firstEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
 													<>
 														<TableRow hover={true}>
 
@@ -1560,7 +1565,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 
 												{/* Render the following table row for any orders that haven't been placed yet */}
-												{secondEstimateAgeInMonths >= 3 &&
+												{secondEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
 													<>
 														<TableRow hover={true}>
 
@@ -1814,7 +1819,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														</TableRow>
 
 														{/* Render the following table row for any orders that haven't been placed yet */}
-														{thirdEstimateAgeInMonths >= 3 &&
+														{thirdEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
 															<>
 																<TableRow hover={true}>
 
@@ -2051,8 +2056,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</TableCell>
 										</TableRow>
 
-												{/* //! ryan Here, we don't have a check for if this is older than 3 months.  */}
-										{!calcCombinedEstimate.ordered_by_licensee &&
+										{/* //! ryan Here, we don't have a check for if this is older than 3 months.  */}
+										{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths <= 2 &&
 											<TableRow hover={true}>
 												<TableCell colSpan={9} align="right">
 													{((firstEstimate.used_in_a_combined_order == true) &&
@@ -2077,7 +2082,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															</Button>
 														</> : <>
 															<section className="removeInPrint">
-
 																<Button
 																	variant="contained"
 																	color="primary"
@@ -2089,7 +2093,24 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															</section>
 														</>
 													}
+												</TableCell>
+											</TableRow>
+										}
 
+										{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths >= 3 &&
+											<TableRow hover={true}>
+												<TableCell colSpan={9} align="right">
+													<Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
+														<Button
+															variant="contained"
+															color="primary"
+															onClick={() => handleRecalculateCosts(calcCombinedEstimate, 'calcCombinedEstimate')}
+															style={{ marginTop: "13px" }}
+															className={classes.LexendTeraFont11}
+														>
+															Recalculate Costs
+														</Button>
+													</Tooltip>
 												</TableCell>
 											</TableRow>
 										}

@@ -82,6 +82,7 @@ export default function EstimateLookupTable() {
 
 	if (searchResult?.materials_excluded == 'exclude_fibers') searchResult.selected_steel_fiber_dosage = '75_50';
 
+	console.log(`Ryan Here: useDifferenceBetweenDates(searchResult?.date_created).total_months \n`, useDifferenceBetweenDates(searchResult?.date_created).total_months);
 	// ⬇ Rendering below:
 	return (
 		<div>

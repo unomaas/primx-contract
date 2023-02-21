@@ -9,6 +9,25 @@ import createProductPriceObject from '../../hooks/createProductPriceObject';
 import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 // import swal from 'sweetalert';
 
+
+// companies saga to fetch companies
+function* licenseeFormSaga() {
+	// Makes a POST request for a new estimate
+	yield takeLatest('ADD_ESTIMATE', AddEstimate);
+	// Makes a GET request to get a single estimate from the DB after being searched in the estimate lookup view
+	yield takeLatest('FETCH_ESTIMATE_QUERY', fetchEstimateQuery);
+	// Runs a number of functions to recalculate an old estimate with updated pricing data before creating a new estimate in the DB
+	yield takeLatest('RECALCULATE_ESTIMATE', recalculateEstimate);
+	yield takeLatest('RECALCULATE_COMBINED_ESTIMATE', recalculateCombinedEstimate);
+	// Marks an estimate as ordered in the DB and attaches a supplied P.O. number to it
+	yield takeLatest('MARK_ESTIMATE_ORDERED', markEstimateOrdered);
+	// Will let a licensee edit their previous estimate values:
+	yield takeLatest('EDIT_ESTIMATE', editEstimate);
+	// Takes in a working estimate and runs the calculation function on it before saving the new calculated object in a reducer
+	yield takeLatest('HANDLE_CALCULATED_ESTIMATE', handleCalculatedEstimate);
+}
+
+
 // Saga Worker to create a GET request for Estimate DB at estimate number & licensee ID
 function* fetchEstimateQuery(action) {
 	const licenseeId = action.payload.licensee_id;
@@ -138,16 +157,6 @@ function* recalculateEstimate(action) {
 
 		yield put({ type: 'GET_RECALCULATE_INFO' });
 
-
-		// if (estimate?.options.order) {
-		// 	if (estimate?.options.order == ) {
-		// 		yield put({ type: 'GET_ORDER_INFO', payload: estimate?.options.order.order_id });
-		// 	}
-
-		// } else {
-		// 	yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: calculatedEstimate });
-		// }
-
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} catch (error) {
 		console.error('recalculate estimate failed', error);
@@ -156,6 +165,94 @@ function* recalculateEstimate(action) {
 	}; // End try/catch
 }; // End recalculateEstimate
 
+// to the new estimate page for their new calculation data, and allow them to click the Submit Order button
+function* recalculateCombinedEstimate(action) {
+	yield put({ type: 'SHOW_TOP_LOADING_DIV' });
+	const combinedEstimate = action.payload;
+	const licenseeId = combinedEstimate.licensee_id;
+	combinedEstimate.force_recalculate = true;
+
+	let firstEstimateNumber, secondEstimateNumber, thirdEstimateNumber = null;
+	firstEstimateNumber = combinedEstimate.estimate_number_combined_1;
+	secondEstimateNumber = combinedEstimate.estimate_number_combined_2;
+	if (combinedEstimate.estimate_number_combined_3) thirdEstimateNumber = combinedEstimate.estimate_number_combined_3;
+
+	try {
+		const products = yield axios.get('/api/products');
+		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
+		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
+		const shippingCosts = yield axios.get('/api/shippingcosts');
+		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
+		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
+		const customsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
+
+		const options = {
+			products: products.data,
+			shippingDestinations: shippingDestinations.data,
+			currentMarkup: currentMarkup.data,
+			shippingCosts: shippingCosts.data,
+			productContainers: productContainers.data,
+			dosageRates: dosageRates.data,
+			customsDuties: customsDuties.data,
+		}; // End options
+
+		const firstResponse = yield axios.get('/api/estimates/lookup/:estimates', {
+			params: {
+				estimateNumber: firstEstimateNumber,
+				licenseeId: licenseeId
+			} // End params
+		}); // End response   
+		const firstEstimate = firstResponse.data[0];
+		firstEstimate.force_recalculate = true;
+		const recalculatedFirstEstimate = useEstimateCalculations(firstEstimate, options);
+		yield axios.put(`/api/estimates/recalculate/${recalculatedFirstEstimate.estimate_id}`, recalculatedFirstEstimate);
+		yield put({ type: "CLEAR_FIRST_COMBINED_ESTIMATE" });
+		yield put({ type: "SET_FIRST_COMBINED_ESTIMATE", payload: recalculatedFirstEstimate });
+
+		const secondResponse = yield axios.get('/api/estimates/lookup/:estimates', {
+			params: {
+				estimateNumber: secondEstimateNumber,
+				licenseeId: licenseeId
+			} // End params
+		}); // End response
+		const secondEstimate = secondResponse.data[0];
+		secondResponse.force_recalculate = true;
+		const recalculatedSecondEstimate = useEstimateCalculations(secondEstimate, options);
+		yield axios.put(`/api/estimates/recalculate/${recalculatedSecondEstimate.estimate_id}`, recalculatedSecondEstimate);
+		yield put({ type: "CLEAR_SECOND_COMBINED_ESTIMATE" });
+		yield put({ type: "SET_SECOND_COMBINED_ESTIMATE", payload: recalculatedSecondEstimate });
+
+		if (thirdEstimateNumber) {
+			const thirdResponse = yield axios.get('/api/estimates/lookup/:estimates', {
+				params: {
+					estimateNumber: thirdEstimateNumber,
+					licenseeId: licenseeId
+				} // End params
+			}); // End response
+			const thirdEstimate = thirdResponse.data[0];
+			thirdEstimate.force_recalculate = true;
+			const recalculatedThirdEstimate = useEstimateCalculations(thirdEstimate, options);
+			yield axios.put(`/api/estimates/recalculate/${recalculatedThirdEstimate.estimate_id}`, recalculatedThirdEstimate);
+			yield put({ type: "CLEAR_THIRD_COMBINED_ESTIMATE" });
+			yield put({ type: "SET_THIRD_COMBINED_ESTIMATE", payload: recalculatedThirdEstimate });
+		}
+
+		const recalculatedCombinedEstimate = useEstimateCalculations(combinedEstimate, options);
+		yield axios.put(`/api/estimates/recalculate/${recalculatedCombinedEstimate.estimate_id}`, recalculatedCombinedEstimate);
+		recalculatedCombinedEstimate.date_created = response.data.split('T')[0];
+
+
+		yield put({ type: 'CLEAR_ESTIMATE_QUERY_RESULT' });
+		yield put({ type: 'SET_ESTIMATE_QUERY_RESULT', payload: recalculatedCombinedEstimate });
+
+		yield put({ type: 'GET_RECALCULATE_INFO' });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	} catch (error) {
+		console.error('recalculate estimate failed', error);
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' })
+	}; // End try/catch
+}; // End recalculateEstimate
 // Worker saga to take in an estimate from the estimate lookup view, create a new estimate using updated shipping data, bring the user
 // // to the new estimate page for their new calculation data, and allow them to click the Submit Order button
 // function* recalculateEstimate(action) {
@@ -241,20 +338,6 @@ function* markEstimateOrdered(action) {
 	}
 }
 
-// companies saga to fetch companies
-function* licenseeFormSaga() {
-	// Makes a POST request for a new estimate
-	yield takeLatest('ADD_ESTIMATE', AddEstimate);
-	// Makes a GET request to get a single estimate from the DB after being searched in the estimate lookup view
-	yield takeLatest('FETCH_ESTIMATE_QUERY', fetchEstimateQuery);
-	// Runs a number of functions to recalculate an old estimate with updated pricing data before creating a new estimate in the DB
-	yield takeLatest('RECALCULATE_ESTIMATE', recalculateEstimate);
-	// Marks an estimate as ordered in the DB and attaches a supplied P.O. number to it
-	yield takeLatest('MARK_ESTIMATE_ORDERED', markEstimateOrdered);
-	// Will let a licensee edit their previous estimate values:
-	yield takeLatest('EDIT_ESTIMATE', editEstimate);
-	// Takes in a working estimate and runs the calculation function on it before saving the new calculated object in a reducer
-	yield takeLatest('HANDLE_CALCULATED_ESTIMATE', handleCalculatedEstimate);
-}
+
 
 export default licenseeFormSaga;
