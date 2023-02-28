@@ -74,6 +74,11 @@ const useStyles = makeStyles({
     margin: 'auto',
   },
 
+	shippingCostHistoryGrid: {
+    width: 900,
+    margin: 'auto',
+  },
+
 	destinationGrid: {
     width: 685,
     margin: 'auto',

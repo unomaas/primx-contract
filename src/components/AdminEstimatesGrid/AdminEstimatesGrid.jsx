@@ -203,10 +203,10 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 		{ field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, headerName: 'Square Meters', width: 175, editable: false }, // Editable + validation?
 		{ field: 'thickness_millimeters', headerClassName: classes.header, headerName: 'Thickness(mm)', width: 175, editable: false }, // Editable + validation?
 		{ field: 'waste_factor_percentage', headerClassName: classes.header, headerName: 'Waste Factor (%)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
 
 		// totals and design size
 		{ field: 'design_cubic_yards_total', headerClassName: classes.header, headerName: 'Design Volume (cubic yards)', width: 175 },

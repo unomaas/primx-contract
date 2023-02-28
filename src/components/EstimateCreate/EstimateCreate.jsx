@@ -32,15 +32,18 @@ export default function EstimateCreate() {
 	const [error, setError] = useState(false);
 	const [radioError, setRadioError] = useState("");
 	const [leadTime, setLeadTime] = useState("");
+	const user = useSelector(store => store.user);
+
 	// ⬇ Run on page load:
 	useEffect(() => {
 		dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
 			// Fetches and set all fields for dropdown menus
 			dispatch({ type: 'FETCH_FIELD_SELECT' }),
 			dispatch({ type: 'FETCH_ALL_FOR_CALCULATE' })
-
 	}, []);
 	//#endregion ⬆⬆ All state variables above. 
+
+
 
 
 	//#region ⬇⬇ Event handlers below:
@@ -67,7 +70,7 @@ export default function EstimateCreate() {
 	const handleChange = (key, value) => {
 		if (key == 'destination_id' && editState == true) {
 			estimateData.force_recalculate = true;
-		}; 
+		};
 		// ⬇ If they're toggling Materials On-Hand, send the opposite bool: 
 		if (key === 'materials_on_hand') {
 			// ⬇ Converts our string input bool to a true bool for the reducer: 

@@ -145,12 +145,24 @@ export default function PricingLogTable() {
 					valueFormatter: (params) => {
 						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
 					},
+					
 				},
 				{
 					headerName: 'Product',
 					field: 'product_label',
 					flex: 1,
 					headerClassName: classes.header,
+				},
+				{
+					field: 'container_length_ft',
+					headerName: 'Container Length (ft)',
+					flex: .5,
+					disableColumnMenu: true,
+					editable: false,
+					headerClassName: classes.header,
+					valueFormatter: (params) => {
+						return `${params.value}"`;
+					},
 				},
 				{
 					field: 'destination_name',

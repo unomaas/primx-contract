@@ -200,7 +200,7 @@ export default function EstimateCombine() {
 														className={classes.LexendTeraFont11}
 														color="primary"
 													>
-														Search
+														Combine
 													</Button>
 												</TableCell>
 											</TableRow>
