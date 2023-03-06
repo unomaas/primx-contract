@@ -98,20 +98,20 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		// }); // End swal
 	} // End handleSave
 
-		/** ⬇ handleSave:
-	 * When clicked, this will post the object to the DB and send the user back to the dashboard. 
-	 */
-		const handleEditSave = event => {
-			// ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
-			calcCombinedEstimate.history = history;
-			// Attach the estimate numbers to use inside the POST: 
-			calcCombinedEstimate.estimate_number_combined_1_sf_dosage = firstEstimate.selected_steel_fiber_dosage;
-			calcCombinedEstimate.estimate_number_combined_2_sf_dosage = secondEstimate.selected_steel_fiber_dosage;
-			calcCombinedEstimate.estimate_number_combined_3_sf_dosage = thirdEstimate?.selected_steel_fiber_dosage;
-			// ⬇ Send the estimate object to be POSTed:
-			dispatch({ type: 'EDIT_COMBINED_ESTIMATE', payload: calcCombinedEstimate });
-			setEditState(false);
-		} // End handleSave
+	/** ⬇ handleSave:
+ * When clicked, this will post the object to the DB and send the user back to the dashboard. 
+ */
+	const handleEditSave = event => {
+		// ⬇ Attach history from useHistory to the estimate object to allow navigation from inside the saga:
+		calcCombinedEstimate.history = history;
+		// Attach the estimate numbers to use inside the POST: 
+		calcCombinedEstimate.estimate_number_combined_1_sf_dosage = firstEstimate.selected_steel_fiber_dosage;
+		calcCombinedEstimate.estimate_number_combined_2_sf_dosage = secondEstimate.selected_steel_fiber_dosage;
+		calcCombinedEstimate.estimate_number_combined_3_sf_dosage = thirdEstimate?.selected_steel_fiber_dosage;
+		// ⬇ Send the estimate object to be POSTed:
+		dispatch({ type: 'EDIT_COMBINED_ESTIMATE', payload: calcCombinedEstimate });
+		setEditState(false);
+	} // End handleSave
 
 	/** ⬇ handlePlaceOrder:
  * Click handler for the Place Order button. 
@@ -158,6 +158,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	if (!isThereThirdEstimate && firstEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage) showFinalCostRow = true;
 	if (isThereThirdEstimate && firstEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage && thirdEstimate.selected_steel_fiber_dosage) showFinalCostRow = true;
 
+	console.log(`Ryan Here: by the showFinalCostRow logic \n`, {showFinalCostRow, isThereThirdEstimate, first_selected_steel_fiber_dosage: firstEstimate.selected_steel_fiber_dosage, second_selected_steel_fiber_dosage: secondEstimate.selected_steel_fiber_dosage, thirdestimate_selected_steel_fiber_dosage: thirdEstimate.selected_steel_fiber_dosage});
+
 	if (firstEstimate?.materials_excluded == 'exclude_fibers') firstEstimate.selected_steel_fiber_dosage = '75_50';
 	if (secondEstimate?.materials_excluded == 'exclude_fibers') secondEstimate.selected_steel_fiber_dosage = '75_50';
 	if (isThereThirdEstimate && thirdEstimate?.materials_excluded == 'exclude_fibers') thirdEstimate.selected_steel_fiber_dosage = '75_50';
@@ -188,8 +190,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	//#endregion
 
 
-
 	// ⬇ Rendering below:
+	console.log(`Ryan Here: right before render **** \n \n \n`, {
+		isThereThirdEstimate,
+		showFinalCostRow,
+		ordered_by_licensee: calcCombinedEstimate.ordered_by_licensee,
+		calcEstimateAgeInMonths,
+		editState
+	});
 	return (
 		<>
 			<Grid container
@@ -333,7 +341,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									</TableRow>
 
 									{/* Conditional rendering to only show third estimate number if it exists: */}
-									{thirdEstimate.estimate_number &&
+									{thirdEstimate?.estimate_number &&
 										<TableRow hover={true}>
 											<TableCell><b>Third Estimate Number:</b></TableCell>
 											<TableCell>
@@ -479,14 +487,16 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
-										<TableRow hover={true}>
-											<TableCell><b>Materials Included:</b></TableCell>
-											<TableCell align="right">
-												{firstEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-												{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-												{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
-											</TableCell>
-										</TableRow>
+										<TableBody>
+											<TableRow hover={true}>
+												<TableCell><b>Materials Included:</b></TableCell>
+												<TableCell align="right">
+													{firstEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+												</TableCell>
+											</TableRow>
+										</TableBody>
 									</Table>
 									<br /><br />
 									<Table size="small">
@@ -727,14 +737,16 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									}
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
-										<TableRow hover={true}>
-											<TableCell><b>Materials Included:</b></TableCell>
-											<TableCell align="right">
-												{secondEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-												{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-												{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
-											</TableCell>
-										</TableRow>
+										<TableBody>
+											<TableRow hover={true}>
+												<TableCell><b>Materials Included:</b></TableCell>
+												<TableCell align="right">
+													{secondEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+												</TableCell>
+											</TableRow>
+										</TableBody>
 									</Table>
 									<br /><br />
 									<Table size="small">
@@ -849,13 +861,13 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 							</Paper>
 						</Grid>
 
-						{thirdEstimate && thirdEstimate.measurement_units == 'imperial' &&
+						{isThereThirdEstimate && thirdEstimate.measurement_units == 'imperial' &&
 							<>
 								<Grid item xs={6}>
 									<Paper elevation={3}>
 										<TableContainer>
 
-											<h3>Estimate {thirdEstimate.estimate_number}</h3>
+											<h3>Estimate {thirdEstimate?.estimate_number}</h3>
 											<h4>Quantity Calculations</h4>
 											<Table size="small">
 												<TableBody>
@@ -980,14 +992,16 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 											<h3>PrimX Material Price for the Project</h3>
 											<Table size='small'>
-												<TableRow hover={true}>
-													<TableCell><b>Materials Included:</b></TableCell>
-													<TableCell align="right">
-														{thirdEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-														{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-														{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
-													</TableCell>
-												</TableRow>
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Materials Included:</b></TableCell>
+														<TableCell align="right">
+															{thirdEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+														</TableCell>
+													</TableRow>
+												</TableBody>
 											</Table>
 											<br /><br />
 											<Table size="small">
@@ -1236,14 +1250,16 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
-										<TableRow hover={true}>
-											<TableCell><b>Materials Included:</b></TableCell>
-											<TableCell align="right">
-												{firstEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-												{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-												{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
-											</TableCell>
-										</TableRow>
+										<TableBody>
+											<TableRow hover={true}>
+												<TableCell><b>Materials Included:</b></TableCell>
+												<TableCell align="right">
+													{firstEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+												</TableCell>
+											</TableRow>
+										</TableBody>
 									</Table>
 									<br /><br />
 									<Table size="small">
@@ -1486,14 +1502,16 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 									<h3>PrimX Material Price for the Project</h3>
 									<Table size='small'>
-										<TableRow hover={true}>
-											<TableCell><b>Materials Included:</b></TableCell>
-											<TableCell align="right">
-												{secondEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-												{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-												{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
-											</TableCell>
-										</TableRow>
+										<TableBody>
+											<TableRow hover={true}>
+												<TableCell><b>Materials Included:</b></TableCell>
+												<TableCell align="right">
+													{secondEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+												</TableCell>
+											</TableRow>
+										</TableBody>
 									</Table>
 									<br /><br />
 									<Table size="small">
@@ -1609,7 +1627,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 						</Grid>
 
 
-						{thirdEstimate && thirdEstimate.measurement_units == 'metric' &&
+						{isThereThirdEstimate && thirdEstimate.measurement_units == 'metric' &&
 							<>
 								<Grid item xs={6}>
 									<Paper elevation={3}>
@@ -1740,14 +1758,16 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 											<h3>PrimX Material Price for the Project</h3>
 											<Table size='small'>
-												<TableRow hover={true}>
-													<TableCell><b>Materials Included:</b></TableCell>
-													<TableCell align="right">
-														{thirdEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-														{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-														{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
-													</TableCell>
-												</TableRow>
+												<TableBody>
+													<TableRow hover={true}>
+														<TableCell><b>Materials Included:</b></TableCell>
+														<TableCell align="right">
+															{thirdEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+														</TableCell>
+													</TableRow>
+												</TableBody>
 											</Table>
 											<br /><br />
 											<Table size="small">
@@ -2000,7 +2020,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableCell>
 									</TableRow>
 
-									{thirdEstimate &&
+									{isThereThirdEstimate &&
 										<TableRow hover={true}>
 											<TableCell>{thirdEstimate?.estimate_number}</TableCell>
 											<TableCell>{thirdEstimate?.project_name}</TableCell>
@@ -2074,7 +2094,6 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</TableCell>
 										</TableRow>
 
-										{/* //! ryan Here, we don't have a check for if this is older than 3 months.  */}
 										{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths <= 2 && !editState &&
 											<TableRow hover={true}>
 												<TableCell colSpan={9} align="right">
