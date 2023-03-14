@@ -38,6 +38,9 @@ import { HashRouter as Router, Route, Redirect, Switch, useLocation } from 'reac
 import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
+import { Buffer } from "buffer";
+Buffer.from("anything", "base64");
+window.Buffer = window.Buffer || require("buffer").Buffer; 
 //#endregion ⬆⬆ All document setup above.
 
 
