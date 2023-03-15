@@ -54,8 +54,7 @@ export default function AdminUpdateMaterials() {
 		// GET shipping cost data on page load
 		dispatch({ type: 'FETCH_PRODUCTS_ARRAY' });
 		dispatch({ type: 'FETCH_PRODUCT_COST_HISTORY_RECENT' });
-		dispatch({ type: 'FETCH_MARKUP_MARGIN' });
-		dispatch({ type: 'FETCH_MARKUP_HISTORY_RECENT' });
+
 	}, [])
 
 
@@ -446,7 +445,7 @@ export default function AdminUpdateMaterials() {
 
 				</Paper>
 
-				<AdminUpdateMarkup />
+				{/* <AdminUpdateMarkup /> */}
 
 			</div>
 		</div>

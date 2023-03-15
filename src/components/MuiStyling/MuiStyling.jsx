@@ -91,7 +91,7 @@ const useStyles = makeStyles({
   },
 
 	markupGrid: {
-    width: 300,
+    width: 500,
 		height: 211,
     // margin: 'auto',
   },

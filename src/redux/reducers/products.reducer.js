@@ -47,6 +47,24 @@ const markupHistoryRecent = (state = [], action) => {
 	}
 };
 
+const currentMonthlyMarkupPricing = (state = [], action) => {
+	switch (action.type) {
+		case 'SET_CURRENT_MONTHLY_MARKUP_PRICING':
+			return action.payload;
+		default:
+			return state;
+	}
+};
+
+const previousMonthlyMarkupPricing = (state = [], action) => {
+	switch (action.type) {
+		case 'SET_PREVIOUS_MONTHLY_MARKUP_PRICING':
+			return action.payload;
+		default:
+			return state;
+	}
+};
+
 
 
 
@@ -58,5 +76,6 @@ export default combineReducers({
 	productCostHistoryRecent,
 	currentMarkupMargin,
 	markupHistoryRecent,
+	currentMonthlyMarkupPricing,
 
 });

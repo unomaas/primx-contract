@@ -4,6 +4,7 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
+import useCalculateProjectCost from '../../hooks/useCalculateProjectCost';
 
 // companies saga to fetch companies
 function* productsSaga() {
@@ -19,6 +20,8 @@ function* productsSaga() {
 	yield takeLatest('FETCH_MARKUP_HISTORY_RECENT', fetchRecentMarkupHistory);
 	yield takeLatest('EDIT_MARKUP_MARGIN', editMarkupMargin);
 	yield takeLatest('MARKUP_SAVE_HISTORY_LOG', saveMarkupHistoryLog);
+
+	yield takeLatest('CALCULATE_MONTHLY_MARKUP', calculateMonthlyMarkup);
 
 }; // end productsSaga
 
@@ -188,6 +191,93 @@ function* saveMarkupHistoryLog(action) {
 	} // End try/catch
 } // End saveMarkupHistoryLog
 
+
+// ⬇ Calculate the unit price for all active shipping destinations:
+function* calculateMonthlyMarkup(action) {
+	try {
+		yield put({ type: 'SHOW_TOP_LOADING_DIV' });
+		// yield put({ type: 'FETCH_MARKUP_MARGIN' });
+		// yield put({ type: 'FETCH_MARKUP_HISTORY_RECENT' });
+
+		const markupHistory12Months = yield axios.get(`/api/products/get-recent-markup-history`);
+		const products = yield axios.get('/api/products');
+		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
+		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
+		const shippingCosts = yield axios.get('/api/shippingcosts');
+		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
+		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
+		const customsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
+
+
+		const options = {
+			products: products.data,
+			shippingDestinations: shippingDestinations.data,
+			currentMarkup: currentMarkup.data,
+			shippingCosts: shippingCosts.data,
+			productContainers: productContainers.data,
+			dosageRates: dosageRates.data,
+			customsDuties: customsDuties.data,
+		}; // End options
+
+		console.log(`Ryan Here 1 Pre Calc: calculateMonthlyMarkup saga \n `, {
+			options,
+			markupHistory12Months: markupHistory12Months.data,
+		});
+
+		const monthHolderObject = {};
+
+		// ⬇ Loop through the markupHistory12Months, and for each month, run the second loop to calculate each destination:
+		markupHistory12Months.data.forEach((month) => {
+
+			monthHolderObject[month.date_saved] = {
+				margin_applied: month.margin_applied,
+			}
+
+			// ⬇ Loop through the shippingDestinations, and for each destination, run the useEstimateCalculations function:
+			options.shippingDestinations.forEach((destination) => {
+
+				const estimate = {};
+
+				if (destination.destination_country == "USA") {
+					estimate.measurement_units = "imperial";
+					estimate.design_cubic_yards_total = 100;
+				} else {
+					estimate.measurement_units = "metric";
+					estimate.design_cubic_meters_total = 100;
+				}; // End if/else
+
+				estimate.destination_id = destination.destination_id;
+				estimate.destination_name = destination.destination_name;
+
+				const calculatedEstimate = useCalculateProjectCost(estimate, options);
+
+				monthHolderObject[month.date_saved][destination.destination_id] = {
+					destination_id: calculatedEstimate.destination_id,
+					destination_name: calculatedEstimate.destination_name,
+					measurement_units: calculatedEstimate.measurement_units,
+					price_per_unit_75_50: calculatedEstimate.price_per_unit_75_50,
+					price_per_unit_90_60: calculatedEstimate.price_per_unit_90_60,
+				}; // End monthHolderObject
+
+			}); // End shippingDestinations.forEach
+		}); // End markupHistory12Months.forEach
+
+		console.log(`Ryan Here 2 Post Calc: calculateMonthlyMarkup saga \n `, {
+			options,
+			monthHolderObject,
+		});
+		
+		yield put({ type: 'SET_MONTHLY_MARKUP_PRICING', payload: monthHolderObject });
+		yield put({ type: 'SET_MARKUP_HISTORY_RECENT', payload: markupHistory12Months.data });
+		yield put({ type: 'SET_MARKUP_MARGIN', payload: currentMarkup.data });
+
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	} catch (error) {
+		console.error('Error with calculateMonthlyMarkup in product saga', error);
+		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	}; // End try/catch
+}; // End calculateMonthlyMarkup
 
 
 

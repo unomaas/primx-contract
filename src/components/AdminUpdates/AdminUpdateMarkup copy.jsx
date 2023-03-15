@@ -8,7 +8,6 @@ import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornmen
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HelpIcon from '@material-ui/icons/Help';
-import AdminUpdates from './AdminUpdates';
 
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
@@ -45,14 +44,10 @@ export default function AdminUpdateMarkup() {
 
 
 	//#region - Action Handlers Below: 
-	useEffect(() => {
-		// GET shipping cost data on page load
-		// dispatch({ type: 'FETCH_MARKUP_MARGIN' });
-		// dispatch({ type: 'FETCH_MARKUP_HISTORY_RECENT' });
-		// dispatch({ type: 'FETCH_ALL_FOR_CALCULATE' });
-		dispatch({ type: 'CALCULATE_MONTHLY_MARKUP' });
-	}, [])
+	// useEffect(() => {
+	// 	// GET shipping cost data on page load
 
+	// }, [])
 
 
 	//#region - Custom Table Components Below: 
@@ -139,60 +134,11 @@ export default function AdminUpdateMarkup() {
 				<div style={{
 					flex: "1",
 					display: "flex",
-					justifyContent: "center",
+					justifyContent: "flex-end",
 					fontSize: "12px",
 					fontFamily: "Lexend Tera",
 				}}>
-					<Button
-						aria-controls="customized-menu"
-						aria-haspopup="true"
-						color="primary"
-						size="small"
-						style={{ marginBottom: "4px" }}
-						onClick={event => setAnchorEl(event.currentTarget)}
-					>
-						{/* Viewing {selectedLog.label} <ArrowDropDownIcon /> */}
-						Viewing
-					</Button>
-					<Menu
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={() => setAnchorEl(null)}
-						elevation={3}
-						getContentAnchorEl={null}
-						anchorOrigin={{
-							vertical: 'bottom',
-							horizontal: 'right',
-						}}
-						transformOrigin={{
-							vertical: 'top',
-							horizontal: 'right',
-						}}
-					>
-						{/* {Object.values(pricingLogTableOptions).map((item, index) => {
-							return (
-								<MenuItem
-									key={index}
-									onClick={() => handleLogViewSelection(item.key)}
-									selected={item.key == selectedLog.key ? true : false}
-
-								>
-									View {item.label}
-								</MenuItem>
-							)
-						})} */}
-					</Menu>
-				</div>
-
-				<div style={{
-					flex: "1",
-					display: "flex",
-					justifyContent: "flex-end",
-					fontSize: "11px",
-					fontFamily: "Lexend Tera",
-				}}>
-
+					Current Markup Margin
 				</div>
 
 			</GridToolbarContainer>
@@ -442,38 +388,27 @@ export default function AdminUpdateMarkup() {
 
 	// ⬇ Rendering below: 
 	return (
-		<div>
-			<AdminUpdates />
-			<div
-				style={{
-					display: 'flex',
-					justifyContent: 'center',
+		<Paper
+			elevation={3}
+			className={classes.markupGrid}
+		>
+			<DataGrid
+				className={classes.dataGridTables}
+				disableSelectionOnClick
+				columns={columns}
+				rows={rows}
+				getRowId={(row) => row.markup_id}
+				autoHeight
+				pagination
+				components={{
+					Toolbar: CustomToolbar,
+					Footer: CustomFooter,
 				}}
-			>
-				<Paper
-					elevation={3}
-					className={classes.markupGrid}
-				>
-					<DataGrid
-						className={classes.dataGridTables}
-						disableSelectionOnClick
-						columns={columns}
-						rows={rows}
-						getRowId={(row) => row.markup_id}
-						autoHeight
-						pagination
-						components={{
-							Toolbar: CustomToolbar,
-							Footer: CustomFooter,
-						}}
-					/>
+			/>
 
-					<CostsEditModal />
+			<CostsEditModal />
 
-				</Paper>
-
-			</div>
-		</div>
+		</Paper>
 	)
 }
 

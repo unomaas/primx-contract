@@ -168,10 +168,13 @@ router.get('/get-markup-margin', async (req, res) => {
 router.get('/get-recent-markup-history', async (req, res) => {
 	try {
 		const sql = `
-			SELECT *
+			SELECT 
+				markup_history_id,
+				margin_applied,
+				TO_CHAR(date_saved, 'YYYY-MM-DD') AS date_saved
 			FROM "markup_history" AS "mh"
 			ORDER BY "mh".markup_history_id DESC
-			LIMIT 3;
+			LIMIT 12;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
