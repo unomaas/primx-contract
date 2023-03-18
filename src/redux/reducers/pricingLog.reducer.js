@@ -9,7 +9,6 @@ const pricingLog = (state = {
 	dataState: {}
 }, action) => {
 	switch (action.type) {
-		// request from adminEstimates saga, payload is an array of estimate objects
 		case 'PRICING_LOG_SET_INITIAL_DATA':
 			return {
 				viewState: {
@@ -24,8 +23,7 @@ const pricingLog = (state = {
 					shippingCostHistoryAll: action.payload.shippingCostHistoryAll,
 				},
 			};
-		default:
-			return state;
+		default: return state;
 	}
 }
 

@@ -56,6 +56,15 @@ const markupHistory12Months = (state = [], action) => {
 	}
 };
 
+const markupIsLoading = (state = true, action) => {
+	switch (action.type) {
+		case 'SET_MARKUP_IS_LOADING':
+			return action.payload;
+		default:
+			return state;
+	}
+};
+
 
 
 
@@ -69,5 +78,5 @@ export default combineReducers({
 	currentMarkupMargin,
 	markupHistoryRecent,
 	markupHistory12Months,
-
+	markupIsLoading, 
 });

@@ -235,7 +235,8 @@ function* calculateMonthlyMarkup(action) {
 			monthHolderObject[month.date_saved] = {
 				margin_applied: month.margin_applied,
 				month_year_label: monthLabel,
-			}
+				rows: [],
+			}; 
 
 			// ⬇ Loop through the shippingDestinations, and for each destination, run the useEstimateCalculations function:
 			options.shippingDestinations.forEach((destination) => {
@@ -244,9 +245,11 @@ function* calculateMonthlyMarkup(action) {
 				if (destination.destination_country == "USA") {
 					estimate.measurement_units = "imperial";
 					estimate.design_cubic_yards_total = 100;
+					estimate.units_label = "USD/Cubic Yard";
 				} else {
 					estimate.measurement_units = "metric";
 					estimate.design_cubic_meters_total = 100;
+					estimate.units_label = "USD/Cubic Meter";
 				}; // End if/else
 
 				estimate.destination_id = destination.destination_id;
@@ -254,13 +257,14 @@ function* calculateMonthlyMarkup(action) {
 
 				const calculatedEstimate = useCalculateProjectCost(estimate, options);
 
-				monthHolderObject[month.date_saved][destination.destination_id] = {
+				monthHolderObject[month.date_saved].rows.push({
 					destination_id: calculatedEstimate.destination_id,
 					destination_name: calculatedEstimate.destination_name,
 					measurement_units: calculatedEstimate.measurement_units,
+					units_label: calculatedEstimate.units_label,
 					price_per_unit_75_50: calculatedEstimate.price_per_unit_75_50,
 					price_per_unit_90_60: calculatedEstimate.price_per_unit_90_60,
-				}; // End monthHolderObject
+				}); // End monthHolderObject
 
 			}); // End shippingDestinations.forEach
 		}); // End markupHistory12Months.forEach
@@ -272,7 +276,9 @@ function* calculateMonthlyMarkup(action) {
 
 		yield put({ type: 'SET_MONTHLY_MARKUP_PRICING', payload: monthHolderObject });
 		yield put({ type: 'SET_MARKUP_HISTORY_RECENT', payload: markupHistory12Months.data });
+		yield put({ type: 'SET_ACTIVE_SHIPPING_DESTINATIONS', payload: shippingDestinations.data });
 		yield put({ type: 'SET_MARKUP_MARGIN', payload: currentMarkup.data });
+		yield put({ type: 'SET_MARKUP_IS_LOADING', payload: false });
 
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} catch (error) {

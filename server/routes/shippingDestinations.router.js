@@ -11,7 +11,9 @@ router.get('/active', async (req, res) => {
 			SELECT * 
 			FROM "shipping_destinations"
 			WHERE destination_active = TRUE
-			ORDER BY destination_country DESC;
+			ORDER BY 
+				destination_country DESC,
+				destination_name ASC;
 		`; // End sql
 		const result = await pool.query(sql);
 		res.send(result.rows);
