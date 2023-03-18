@@ -207,18 +207,26 @@ function* calculateMonthlyMarkup(action) {
 		const customsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
 
 		const options = {
-			products: products.data,
-			shippingDestinations: shippingDestinations.data,
-			currentMarkup: currentMarkup.data,
-			shippingCosts: shippingCosts.data,
-			productContainers: productContainers.data,
-			dosageRates: dosageRates.data,
-			customsDuties: customsDuties.data,
+			products: JSON.parse(JSON.stringify(products.data)),
+			shippingDestinations: JSON.parse(JSON.stringify(shippingDestinations.data)),
+			currentMarkup: JSON.parse(JSON.stringify(currentMarkup.data)),
+			shippingCosts: JSON.parse(JSON.stringify(shippingCosts.data)),
+			productContainers: JSON.parse(JSON.stringify(productContainers.data)),
+			dosageRates: JSON.parse(JSON.stringify(dosageRates.data)),
+			customsDuties: JSON.parse(JSON.stringify(customsDuties.data)),
 		}; // End options
+
+
 
 		console.log(`Ryan Here 1 Pre Calc: calculateMonthlyMarkup saga \n `, {
 			options,
 			markupHistory12Months: markupHistory12Months.data,
+		});
+
+		markupHistory12Months.data.unshift({
+			date_saved: 'Current',
+			margin_applied: currentMarkup.data[0].margin_applied,
+			markup_history_id: 0,
 		});
 
 		const monthHolderObject = {};
@@ -232,11 +240,22 @@ function* calculateMonthlyMarkup(action) {
 			const yearMonth = month.date_saved.slice(0, 7);
 			const monthLabel = months[+yearMonth.split('-')[1] - 1] + ', ' + yearMonth.split('-')[0];
 
-			monthHolderObject[month.date_saved] = {
-				margin_applied: month.margin_applied,
-				month_year_label: monthLabel,
-				rows: [],
-			}; 
+			if (month.date_saved !== 'Current') {
+				monthHolderObject[month.date_saved] = {
+					margin_applied: month.margin_applied,
+					month_year_label: monthLabel,
+					rows: [],
+				}; 
+			} else {
+				monthHolderObject[month.date_saved] = {
+					margin_applied: month.margin_applied,
+					month_year_label: 'Current',
+					rows: [],
+				};
+			}
+			
+			// ⬇ Set the 
+			options.currentMarkup[0].margin_applied = month.margin_applied;
 
 			// ⬇ Loop through the shippingDestinations, and for each destination, run the useEstimateCalculations function:
 			options.shippingDestinations.forEach((destination) => {
@@ -274,12 +293,11 @@ function* calculateMonthlyMarkup(action) {
 			monthHolderObject,
 		});
 
+		yield put({ type: 'SET_MARKUP_MARGIN', payload: currentMarkup.data });
 		yield put({ type: 'SET_MONTHLY_MARKUP_PRICING', payload: monthHolderObject });
 		yield put({ type: 'SET_MARKUP_HISTORY_RECENT', payload: markupHistory12Months.data });
 		yield put({ type: 'SET_ACTIVE_SHIPPING_DESTINATIONS', payload: shippingDestinations.data });
-		yield put({ type: 'SET_MARKUP_MARGIN', payload: currentMarkup.data });
 		yield put({ type: 'SET_MARKUP_IS_LOADING', payload: false });
-
 		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} catch (error) {
 		console.error('Error with calculateMonthlyMarkup in product saga', error);
