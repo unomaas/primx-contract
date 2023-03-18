@@ -196,8 +196,6 @@ function* saveMarkupHistoryLog(action) {
 function* calculateMonthlyMarkup(action) {
 	try {
 		yield put({ type: 'SHOW_TOP_LOADING_DIV' });
-		// yield put({ type: 'FETCH_MARKUP_MARGIN' });
-		// yield put({ type: 'FETCH_MARKUP_HISTORY_RECENT' });
 
 		const markupHistory12Months = yield axios.get(`/api/products/get-recent-markup-history`);
 		const products = yield axios.get('/api/products');
@@ -207,7 +205,6 @@ function* calculateMonthlyMarkup(action) {
 		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
 		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
 		const customsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
-
 
 		const options = {
 			products: products.data,
@@ -225,17 +222,23 @@ function* calculateMonthlyMarkup(action) {
 		});
 
 		const monthHolderObject = {};
+		const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 
 		// ⬇ Loop through the markupHistory12Months, and for each month, run the second loop to calculate each destination:
 		markupHistory12Months.data.forEach((month) => {
 
+			// ⬇ Setup for date labels:
+			const yearMonth = month.date_saved.slice(0, 7);
+			const monthLabel = months[+yearMonth.split('-')[1] - 1] + ', ' + yearMonth.split('-')[0];
+
 			monthHolderObject[month.date_saved] = {
 				margin_applied: month.margin_applied,
+				month_year_label: monthLabel,
 			}
 
 			// ⬇ Loop through the shippingDestinations, and for each destination, run the useEstimateCalculations function:
 			options.shippingDestinations.forEach((destination) => {
-
 				const estimate = {};
 
 				if (destination.destination_country == "USA") {
@@ -266,7 +269,7 @@ function* calculateMonthlyMarkup(action) {
 			options,
 			monthHolderObject,
 		});
-		
+
 		yield put({ type: 'SET_MONTHLY_MARKUP_PRICING', payload: monthHolderObject });
 		yield put({ type: 'SET_MARKUP_HISTORY_RECENT', payload: markupHistory12Months.data });
 		yield put({ type: 'SET_MARKUP_MARGIN', payload: currentMarkup.data });

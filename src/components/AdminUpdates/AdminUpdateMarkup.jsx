@@ -19,6 +19,27 @@ export default function AdminUpdateMarkup() {
 	const dispatch = useDispatch();
 	const currentMarkup = useSelector(store => store.products.currentMarkupMargin);
 	const markupHistoryRecent = useSelector(store => store.products.markupHistoryRecent);
+	const markupHistory12Months = useSelector(store => store.products.markupHistory12Months);
+
+	console.log(`Ryan Here \n markupHistory12Months:`, { markupHistory12Months });
+
+	const generateTableData = (data) => {
+		// // ⬇ Variables:
+		// let tableData = [];
+		// // ⬇ Loop through the data:
+		// for (let i = 0; i < data.length; i++) {
+		// 	// ⬇ Create a new object for each row:
+		// 	let row = {
+		// 		id: i,
+		// 		margin_applied: data[i].margin_applied,
+		// 		created_at: data[i].created_at,
+		// 	}; // End row
+		// 	// ⬇ Push the row to the tableData array:
+		// 	tableData.push(row);
+		// } // End for
+		// // ⬇ Return the tableData:
+		// return tableData;
+	}; // End generateTableData
 
 	const [showEditModal, setShowEditModal] = useState(false);
 
@@ -26,7 +47,7 @@ export default function AdminUpdateMarkup() {
 	const columns = [
 		{
 			field: 'margin_applied',
-			headerName: 'Margin Percentage',
+			headerName: `Margin <br> Percentage`,
 			flex: 1,
 			headerClassName: classes.header,
 			disableColumnMenu: true,
@@ -37,6 +58,7 @@ export default function AdminUpdateMarkup() {
 			},
 			type: 'number',
 		},
+
 	];
 	//#endregion - End State Variables.
 
@@ -89,115 +111,160 @@ export default function AdminUpdateMarkup() {
 		]; // End menuItems
 
 		return (
-			<GridToolbarContainer >
-				<div style={{
-					flex: "1",
-					display: "flex",
-					justifyContent: "flex-start",
-					height: "45px"
-				}}>
-					<Button
-						aria-controls="customized-menu"
-						aria-haspopup="true"
-						color="primary"
-						size="small"
-						style={{ marginBottom: "4px" }}
-						onClick={event => setAnchorEl(event.currentTarget)}
-					>
-						<ArrowDropDownIcon /> Options
-					</Button>
-					<Menu
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={() => setAnchorEl(null)}
-						elevation={3}
-						getContentAnchorEl={null}
-						anchorOrigin={{
-							vertical: 'bottom',
-							horizontal: 'left',
-						}}
-						transformOrigin={{
-							vertical: 'top',
-							horizontal: 'left',
+			<GridToolbarContainer style={{ display: "block" }} >
+				<div
+					// className="table-flex-row"
+					style={{
+						display: "flex",
+						flexDirection: "row",
+						flexWrap: "wrap",
+						width: "100%",
+					}}
+				>
+					<div
+						// className="table-flex-column"
+
+						style={{
+							flex: "1",
+							display: "flex",
+							justifyContent: "flex-start",
+							height: "45px"
+
 						}}
 					>
-						{menuItems.map((item, index) => {
-							if (item.type === Divider) {
-								return <Divider variant="middle" key={index} />
-							} else {
-								return (
-									<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
-										{item}
-									</MenuItem>
-								)
-							}
-						})}
-					</Menu>
+						<Button
+							aria-controls="customized-menu"
+							aria-haspopup="true"
+							color="primary"
+							size="small"
+							style={{ marginBottom: "4px" }}
+							onClick={event => setAnchorEl(event.currentTarget)}
+						>
+							<ArrowDropDownIcon /> Options
+						</Button>
+						<Menu
+							anchorEl={anchorEl}
+							keepMounted
+							open={Boolean(anchorEl)}
+							onClose={() => setAnchorEl(null)}
+							elevation={3}
+							getContentAnchorEl={null}
+							anchorOrigin={{
+								vertical: 'bottom',
+								horizontal: 'left',
+							}}
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'left',
+							}}
+						>
+							{menuItems.map((item, index) => {
+								if (item.type === Divider) {
+									return <Divider variant="middle" key={index} />
+								} else {
+									return (
+										<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
+											{item}
+										</MenuItem>
+									)
+								}
+							})}
+						</Menu>
+					</div>
+
+					<div
+						// className="table-flex-column"
+						style={{
+							flex: "1",
+							display: "flex",
+							justifyContent: "center",
+							fontSize: "12px",
+							fontFamily: "Lexend Tera",
+						}}
+					>
+						<GridToolbarSelectDropdown />
+
+					</div>
+
+					<div
+						// className="table-flex-column"
+						style={{
+							flex: "1",
+							display: "flex",
+							justifyContent: "flex-end",
+							fontSize: "11px",
+							fontFamily: "Lexend Tera",
+						}}
+					>
+					</div>
 				</div>
 
-				<div style={{
-					flex: "1",
-					display: "flex",
-					justifyContent: "center",
-					fontSize: "12px",
-					fontFamily: "Lexend Tera",
-				}}>
-					<Button
-						aria-controls="customized-menu"
-						aria-haspopup="true"
-						color="primary"
-						size="small"
-						style={{ marginBottom: "4px" }}
-						onClick={event => setAnchorEl(event.currentTarget)}
-					>
-						{/* Viewing {selectedLog.label} <ArrowDropDownIcon /> */}
-						Viewing
-					</Button>
-					<Menu
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={() => setAnchorEl(null)}
-						elevation={3}
-						getContentAnchorEl={null}
-						anchorOrigin={{
-							vertical: 'bottom',
-							horizontal: 'right',
-						}}
-						transformOrigin={{
-							vertical: 'top',
-							horizontal: 'right',
-						}}
-					>
-						{/* {Object.values(pricingLogTableOptions).map((item, index) => {
-							return (
-								<MenuItem
-									key={index}
-									onClick={() => handleLogViewSelection(item.key)}
-									selected={item.key == selectedLog.key ? true : false}
 
-								>
-									View {item.label}
-								</MenuItem>
-							)
-						})} */}
-					</Menu>
-				</div>
+				{/* <div
+					className="table-flex-row"
+				>
+					teSt
+				</div> */}
 
-				<div style={{
-					flex: "1",
-					display: "flex",
-					justifyContent: "flex-end",
-					fontSize: "11px",
-					fontFamily: "Lexend Tera",
-				}}>
-
-				</div>
-
-			</GridToolbarContainer>
+			</GridToolbarContainer >
 		); // End return
 	}; // End CustomToolbar
+
+	const GridToolbarSelectDropdown = () => {
+
+		const [anchorEl, setAnchorEl] = useState(null);
+
+		const handleLogViewSelection = (key) => {
+			setAnchorEl(null);
+			setSelectedLog(pricingLogTableOptions[key]);
+			setFilter({});
+		}; // End handleLogViewSelection
+
+		// ⬇ Rendering below:
+		return (
+			<>
+				<Button
+					aria-controls="customized-menu"
+					aria-haspopup="true"
+					color="primary"
+					size="small"
+					style={{ marginBottom: "4px" }}
+					onClick={event => setAnchorEl(event.currentTarget)}
+				>
+					Viewing Test <ArrowDropDownIcon />
+				</Button>
+				<Menu
+					anchorEl={anchorEl}
+					keepMounted
+					open={Boolean(anchorEl)}
+					onClose={() => setAnchorEl(null)}
+					elevation={3}
+					getContentAnchorEl={null}
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'right',
+					}}
+					transformOrigin={{
+						vertical: 'top',
+						horizontal: 'right',
+					}}
+				>
+					{/* {Object.values(pricingLogTableOptions).map((item, index) => {
+						return (
+							<MenuItem
+								key={index}
+								onClick={() => handleLogViewSelection(item.key)}
+								selected={item.key == selectedLog.key ? true : false}
+
+							>
+								View {item.label}
+							</MenuItem>
+						)
+					})} */}
+				</Menu>
+			</>
+		); // End return
+	} // End GridToolbarSelectDropdown
 
 
 	const CustomFooter = () => {
@@ -448,6 +515,7 @@ export default function AdminUpdateMarkup() {
 				style={{
 					display: 'flex',
 					justifyContent: 'center',
+					height: '200px',
 				}}
 			>
 				<Paper
@@ -466,6 +534,7 @@ export default function AdminUpdateMarkup() {
 							Toolbar: CustomToolbar,
 							Footer: CustomFooter,
 						}}
+					// height='500px'
 					/>
 
 					<CostsEditModal />
