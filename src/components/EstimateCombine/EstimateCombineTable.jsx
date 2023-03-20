@@ -203,7 +203,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 					{/* 4 if doesn't exist, or 6 if does */}
 					<Paper elevation={3}>
 						<TableContainer>
-							<h3>Estimate {calcCombinedEstimate.estimate_number}</h3>
+							{/* <h3>Estimate {calcCombinedEstimate.estimate_number}</h3> */}
+							{isThisASavedCombinedEstimate && <h3>Estimate {calcCombinedEstimate.estimate_number}</h3>}
 							<h4>Licensee & Project Information</h4>
 							<Table size="small">
 								<TableBody>
