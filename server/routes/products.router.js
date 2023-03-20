@@ -61,6 +61,28 @@ router.get('/get-all-product-cost-history', async (req, res) => {
 });
 
 
+router.get('/get-one-year-of-product-cost-history', async (req, res) => {
+	try {
+		const sql = `
+			SELECT 
+				"pch".product_cost_history_id,
+				"pch".product_id,
+				"pch".product_self_cost,
+				TO_CHAR("pch".date_saved, 'YYYY-MM-DD') AS "date_saved"
+			FROM "product_cost_history" AS "pch"
+			JOIN "products" AS "p" ON "pch".product_id = "p".product_id
+			WHERE "pch".date_saved > NOW() - INTERVAL '1 year'
+			ORDER BY "pch".product_cost_history_id DESC;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in products GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
+
 router.get('/get-recent-product-cost-history', async (req, res) => {
 	try {
 		const sql = `

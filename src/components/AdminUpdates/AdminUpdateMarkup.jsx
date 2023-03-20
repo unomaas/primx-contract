@@ -26,10 +26,9 @@ export default function AdminUpdateMarkup() {
 	const [rightSelectedMonth, setRightSelectedMonth] = useState(null);
 	const [leftSelectedMonth, setLeftSelectedMonth] = useState(null);
 
-	console.log(`Ryan Here: 1 \n:`, { markupHistory12Months, markupHistoryRecent, currentMarkup, rightSelectedMonth, leftSelectedMonth });
-
 	//#region - Action Handlers Below: 
 	useEffect(() => {
+		dispatch({ type: 'SET_MARKUP_IS_LOADING', payload: true });
 		dispatch({ type: 'CALCULATE_MONTHLY_MARKUP' });
 	}, []);
 
@@ -42,6 +41,9 @@ export default function AdminUpdateMarkup() {
 			if (i === 0) {
 				setRightSelectedMonth(date_saved);
 			} else if (i === 1) {
+				// ⬇ SElect the last item in the markupHistoryRecent array:
+				// setLeftSelectedMonth(markupHistoryRecent[markupHistoryRecent.length - 1].date_saved);
+
 				setLeftSelectedMonth(date_saved);
 			}; // End if
 		}; // End for
@@ -52,7 +54,7 @@ export default function AdminUpdateMarkup() {
 
 	// const 
 
-	console.log(`Ryan Here: 2 \n `, {
+	console.log(`Ryan Here: In App 2 \n `, {
 		markupHistory12Months,
 		markupHistoryRecent,
 		currentMarkup,
@@ -87,19 +89,9 @@ export default function AdminUpdateMarkup() {
 		}; // End for
 	}; // End if
 
-	console.log(`Ryan Here: TEST HERE \n \n `, { rows });
 
 
-
-
-
-
-
-
-
-	const AdminUpdateMarkupLeftTable = (props) => {
-
-
+	const AdminUpdateMarkupTable = (props) => {
 		const [showEditModal, setShowEditModal] = useState(false);
 
 		// ⬇ Logic to handle setting the table rows on first load: 
@@ -179,9 +171,6 @@ export default function AdminUpdateMarkup() {
 				headerClassName: classes.header,
 				disableColumnMenu: true,
 				sortable: false,
-				// type: 'number',
-				// valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
-				// valueFormatter: (params) => { return `${(params.value * 100)}%`; },
 			},
 		];
 		//#endregion - End State Variables.
@@ -224,6 +213,18 @@ export default function AdminUpdateMarkup() {
 				<TableInstructions />,
 			]; // End menuItems
 
+			const handleLeftViewSelection = (date_saved) => {
+				setAnchorEl(null);
+				if (leftSelectedMonth == date_saved) return;
+				setLeftSelectedMonth(date_saved);
+			}; // End handleLogViewSelection
+
+			const handleRightViewSelection = (date_saved) => {
+				setAnchorEl(null);
+				if (rightSelectedMonth == date_saved) return;
+				setRightSelectedMonth(date_saved);
+			}; // End handleLogViewSelection
+
 			return (
 				<GridToolbarContainer style={{ display: "block", width: "100%" }} >
 					<div
@@ -234,60 +235,9 @@ export default function AdminUpdateMarkup() {
 							width: "100%",
 						}}
 					>
-						{/* <div
-						style={{
-							flex: "1",
-							display: "flex",
-							justifyContent: "flex-start",
-							height: "45px"
-
-						}}
-					>
-						<Button
-							aria-controls="customized-menu"
-							aria-haspopup="true"
-							color="primary"
-							size="small"
-							style={{ marginBottom: "4px" }}
-							onClick={event => setAnchorEl(event.currentTarget)}
-						>
-							<ArrowDropDownIcon /> Options
-						</Button>
-						<Menu
-							anchorEl={anchorEl}
-							keepMounted
-							open={Boolean(anchorEl)}
-							onClose={() => setAnchorEl(null)}
-							elevation={3}
-							getContentAnchorEl={null}
-							anchorOrigin={{
-								vertical: 'bottom',
-								horizontal: 'left',
-							}}
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'left',
-							}}
-						>
-							{menuItems.map((item, index) => {
-								if (item.type === Divider) {
-									return <Divider variant="middle" key={index} />
-								} else {
-									return (
-										<MenuItem key={index} disableGutters onClick={() => setAnchorEl(null)}>
-											{item}
-										</MenuItem>
-									)
-								}
-							})}
-						</Menu>
-					</div> */}
-
 						<div
 							style={{
 								flex: "0.125",
-								// width: "100%",
-								// display: "flex",
 								justifyContent: "center",
 								fontSize: "12px",
 								fontFamily: "Lexend Tera",
@@ -333,32 +283,27 @@ export default function AdminUpdateMarkup() {
 							</Menu>
 						</div>
 
-
 						<div
 							style={{
 								flex: "0.25",
-								// width: "100%",
-								// display: "flex",
 								justifyContent: "center",
 								fontSize: "12px",
 								fontFamily: "Lexend Tera",
 							}}
 						>
-							<GridToolbarSelectDropdown />
+							<GridToolbarSelectDropdown data={leftTableData} handleViewSelection={handleLeftViewSelection} />
 
 						</div>
 
 						<div
 							style={{
 								flex: "0.25",
-								// width: "100%",
-								// display: "flex",
 								justifyContent: "center",
 								fontSize: "12px",
 								fontFamily: "Lexend Tera",
 							}}
 						>
-							<GridToolbarSelectDropdown />
+							<GridToolbarSelectDropdown data={rightTableData} handleViewSelection={handleRightViewSelection} />
 
 						</div>
 
@@ -374,22 +319,19 @@ export default function AdminUpdateMarkup() {
 					</div> */}
 					</div>
 
-
 				</GridToolbarContainer >
 			); // End return
 		}; // End CustomToolbar
 
-		const GridToolbarSelectDropdown = () => {
+		const GridToolbarSelectDropdown = ({ data, handleViewSelection }) => {
+			const markupHistory12MonthsArray = [];
+			Object.values(markupHistory12Months).sort((a, b) => {
+				return new Date(b.date_saved) - new Date(a.date_saved);
+			}).forEach((item, index) => {
+				markupHistory12MonthsArray.push(item);
+			});
 
 			const [anchorEl, setAnchorEl] = useState(null);
-
-			const handleLogViewSelection = (key) => {
-				setAnchorEl(null);
-				setSelectedLog(pricingLogTableOptions[key]);
-				setFilter({});
-			}; // End handleLogViewSelection
-
-			// ⬇ Rendering below:
 			return (
 				<>
 					<Button
@@ -400,7 +342,7 @@ export default function AdminUpdateMarkup() {
 						style={{ marginBottom: "4px", width: "100%" }}
 						onClick={event => setAnchorEl(event.currentTarget)}
 					>
-						Viewing Test <ArrowDropDownIcon />
+						{data.month_year_label} Markup: {data.margin_applied * 100}% <ArrowDropDownIcon />
 					</Button>
 					<Menu
 						anchorEl={anchorEl}
@@ -411,29 +353,29 @@ export default function AdminUpdateMarkup() {
 						getContentAnchorEl={null}
 						anchorOrigin={{
 							vertical: 'bottom',
-							horizontal: 'right',
+							horizontal: 'center',
 						}}
 						transformOrigin={{
 							vertical: 'top',
-							horizontal: 'right',
+							horizontal: 'center',
 						}}
 					>
-						{/* {Object.values(pricingLogTableOptions).map((item, index) => {
-						return (
-							<MenuItem
-								key={index}
-								onClick={() => handleLogViewSelection(item.key)}
-								selected={item.key == selectedLog.key ? true : false}
-
-							>
-								View {item.label}
-							</MenuItem>
-						)
-					})} */}
+						{markupHistory12MonthsArray.map((item, index) => {
+							return (
+								<MenuItem
+									key={index}
+									onClick={() => handleViewSelection(item.date_saved)}
+									selected={item.date_saved === data.date_saved ? true : false}
+								>
+									View {item.month_year_label} Markup: {item.margin_applied * 100}%
+								</MenuItem>
+							)
+						})}
 					</Menu>
 				</>
 			); // End return
 		} // End GridToolbarSelectDropdown
+
 
 
 		const CustomFooter = () => {
@@ -443,17 +385,18 @@ export default function AdminUpdateMarkup() {
 			let disabled = true;
 			let tooltipText = <p>The current costs have not been saved yet for this month.  Please click the "Save Costs to History Log" button to save the current costs for this month first.</p>;
 			if (
-				markupHistoryRecent.length > 0 &&
-				markupHistoryRecent[0].date_saved.slice(0, 7) === today
+				markupHistoryRecent.length > 1 &&
+				markupHistoryRecent[1].date_saved.slice(0, 7) === today
 			) {
 				disabled = false;
 				tooltipText = "";
 			};
 
+
 			const handleSaveHistoryLogSubmit = () => {
 				if (
-					markupHistoryRecent.length > 0 &&
-					markupHistoryRecent[0].date_saved.slice(0, 7) === today
+					markupHistoryRecent.length > 1 &&
+					markupHistoryRecent[1].date_saved.slice(0, 7) === today
 				) {
 					if (!window.confirm(`Markup margins have already been saved for this month.  If you continue, two entries will be saved for this month.  Click "OK" to continue.`)) return;
 				}; // End if
@@ -545,140 +488,140 @@ export default function AdminUpdateMarkup() {
 		//#endregion - Table Setup. 
 
 		//#region - Table Edit Modal: 
-		// const CostsEditModal = () => {
+		const CostsEditModal = () => {
 
-		// 	const editData = {};
-		// 	const handleCostChange = (value, id) => {
-		// 		editData[id] = {
-		// 			markup_id: id,
-		// 			margin_applied: parseFloat(value / 100),
-		// 		}; // End editData
-		// 	}; // End handleCostChange
+			const editData = {};
+			const handleCostChange = (value, id) => {
+				editData[id] = {
+					markup_id: id,
+					margin_applied: parseFloat(value / 100),
+				}; // End editData
+			}; // End handleCostChange
 
-		// 	const handleSubmit = () => {
-		// 		if (!editData || Object.keys(editData).length === 0) {
-		// 			alert('Please make changes to submit first.');
-		// 			return;
-		// 		}; // End if
-		// 		dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-		// 		dispatch({ type: 'EDIT_MARKUP_MARGIN', payload: Object.values(editData) });
-		// 		setShowEditModal(false);
-		// 	}; // End handleSubmit
+			const handleSubmit = () => {
+				if (!editData || Object.keys(editData).length === 0) {
+					alert('Please make changes to submit first.');
+					return;
+				}; // End if
+
+				dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+				dispatch({ type: 'EDIT_MARKUP_MARGIN', payload: Object.values(editData) });
+				setShowEditModal(false);
+			}; // End handleSubmit
 
 
-		// 	return (
-		// 		<Modal
-		// 			aria-labelledby="transition-modal-title"
-		// 			aria-describedby="transition-modal-description"
-		// 			// className={classes.modal}
-		// 			open={showEditModal}
-		// 			// onClose={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
-		// 			onClose={() => setShowEditModal(false)}
-		// 			closeAfterTransition
-		// 			BackdropComponent={Backdrop}
-		// 			BackdropProps={{
-		// 				timeout: 500,
-		// 			}}
-		// 			style={{
-		// 				display: 'flex',
-		// 				alignItems: 'center',
-		// 				justifyContent: 'center',
-		// 			}}
-		// 		>
-		// 			<Fade in={showEditModal}>
-		// 				<div style={{
-		// 					backgroundColor: 'white',
-		// 					borderRadius: '1rem',
-		// 					boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
-		// 					padding: '1rem',
-		// 					width: 'auto',
-		// 					height: 'auto',
-		// 					maxWidth: '50%',
-		// 					maxHeight: '50%',
-		// 					minWidth: '415px',
-		// 					minHeight: '145px',
-		// 				}}>
-		// 					<div
-		// 						style={{
-		// 							markup: '0px auto 10px auto',
-		// 							fontSize: "1.1rem",
-		// 							letterSpacing: "0.5px",
-		// 							borderBottom: "1px solid #000",
-		// 							fontFamily: "Lexend Tera",
-		// 							paddingBottom: '10px',
-		// 						}}
-		// 					>
-		// 						Edit Markup Margin
-		// 					</div>
-		// 					<div style={{ marginBottom: '10px', height: '59px' }}>
-		// 						<div
-		// 							key={currentMarkup[0]?.markup_id}
-		// 							style={{
-		// 								display: 'flex',
-		// 								justifyContent: 'flex-end',
-		// 								alignItems: 'flex-end',
-		// 								paddingTop: '10px',
-		// 							}}
-		// 						>
-		// 							<div
-		// 								style={{
-		// 									padding: "0.6rem",
-		// 								}}
-		// 							>
-		// 								Margin to Apply:
-		// 							</div>
-		// 							<div
-		// 								style={{
-		// 									width: '75px',
-		// 								}}
-		// 							>
-		// 								<TextField
-		// 									defaultValue={Number(currentMarkup[0]?.margin_applied * 100)}
-		// 									type="number"
-		// 									onChange={(event) => handleCostChange(event.target.value, currentMarkup[0]?.markup_id)}
-		// 									size="small"
-		// 									InputProps={{
-		// 										endAdornment: <InputAdornment position="end">%</InputAdornment>,
-		// 									}}
-		// 								/>
-		// 							</div>
-		// 						</div>
-		// 					</div>
-		// 					<div style={{ borderTop: "1px solid #000" }}>
-		// 						<div
-		// 							style={{
-		// 								display: 'flex',
-		// 								justifyContent: 'space-between',
-		// 								marginTop: '10px',
-		// 							}}
-		// 						>
-		// 							<Button
-		// 								variant="contained"
-		// 								color="secondary"
-		// 								// onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
-		// 								onClick={() => setShowEditModal(false)}
-		// 							>
-		// 								Cancel
-		// 							</Button>
-		// 							<Button
-		// 								variant="contained"
-		// 								color="primary"
-		// 								onClick={() => handleSubmit()}
-		// 							>
-		// 								Submit
-		// 							</Button>
-		// 						</div>
-		// 					</div>
-		// 				</div>
-		// 			</Fade>
-		// 		</Modal>
-		// 	); // End return
-		// }; // End CostsEditModal
+			return (
+				<Modal
+					aria-labelledby="transition-modal-title"
+					aria-describedby="transition-modal-description"
+					// className={classes.modal}
+					open={showEditModal}
+					// onClose={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
+					onClose={() => setShowEditModal(false)}
+					closeAfterTransition
+					BackdropComponent={Backdrop}
+					BackdropProps={{
+						timeout: 500,
+					}}
+					style={{
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}
+				>
+					<Fade in={showEditModal}>
+						<div style={{
+							backgroundColor: 'white',
+							borderRadius: '1rem',
+							boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
+							padding: '1rem',
+							width: 'auto',
+							height: 'auto',
+							maxWidth: '50%',
+							maxHeight: '50%',
+							minWidth: '415px',
+							minHeight: '145px',
+						}}>
+							<div
+								style={{
+									markup: '0px auto 10px auto',
+									fontSize: "1.1rem",
+									letterSpacing: "0.5px",
+									borderBottom: "1px solid #000",
+									fontFamily: "Lexend Tera",
+									paddingBottom: '10px',
+								}}
+							>
+								Edit Markup Margin
+							</div>
+							<div style={{ marginBottom: '10px', height: '59px' }}>
+								<div
+									key={currentMarkup[0]?.markup_id}
+									style={{
+										display: 'flex',
+										justifyContent: 'flex-end',
+										alignItems: 'flex-end',
+										paddingTop: '10px',
+									}}
+								>
+									<div
+										style={{
+											padding: "0.6rem",
+										}}
+									>
+										Margin to Apply:
+									</div>
+									<div
+										style={{
+											width: '75px',
+										}}
+									>
+										<TextField
+											defaultValue={Number(currentMarkup[0]?.margin_applied * 100)}
+											type="number"
+											onChange={(event) => handleCostChange(event.target.value, currentMarkup[0]?.markup_id)}
+											size="small"
+											InputProps={{
+												endAdornment: <InputAdornment position="end">%</InputAdornment>,
+											}}
+										/>
+									</div>
+								</div>
+							</div>
+							<div style={{ borderTop: "1px solid #000" }}>
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'space-between',
+										marginTop: '10px',
+									}}
+								>
+									<Button
+										variant="contained"
+										color="secondary"
+										// onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
+										onClick={() => setShowEditModal(false)}
+									>
+										Cancel
+									</Button>
+									<Button
+										variant="contained"
+										color="primary"
+										onClick={() => handleSubmit()}
+									>
+										Submit
+									</Button>
+								</div>
+							</div>
+						</div>
+					</Fade>
+				</Modal>
+			); // End return
+		}; // End CostsEditModal
 		//#endregion - Table Edit Modal.
 
 		// ⬇ Rendering below: 
 
-		console.log(`Ryan Here: Pre render  \n `, { rows, columns });
 		return (
 
 			<Paper
@@ -703,11 +646,11 @@ export default function AdminUpdateMarkup() {
 
 				/>
 
-				{/* <CostsEditModal /> */}
+				<CostsEditModal />
 			</Paper>
 
 		)
-	}; // End AdminUpdateMarkupLeftTable
+	}; // End AdminUpdateMarkupTable
 
 
 	// ⬇ Rendering below: 
@@ -719,28 +662,9 @@ export default function AdminUpdateMarkup() {
 				style={{
 					display: 'flex',
 					justifyContent: 'center',
-					// backgroundColor: 'blue',
-					// width: '1000px',
-					// height: '600px',
-					// overflow: "scroll",
-					// margin: '0 auto',
 				}}
 			>
-				{/* <Paper
-					elevation={3}
-					// className={classes.markupGrid}
-					style={{
-						backgroundColor: 'red',
-						height: '100%',
-						width: '100%',
-					}}
-				>
-
-
-				</Paper> */}
-
-				<AdminUpdateMarkupLeftTable leftTableData={leftTableData} />
-
+				<AdminUpdateMarkupTable leftTableData={leftTableData} />
 			</div>
 		</div>
 	)

@@ -163,8 +163,10 @@ function* editMarkupMargin(action) {
 		// ⬇ Update the markup margin:
 		yield axios.post(`/api/products/edit-markup-margin`, action.payload[0]);
 		// ⬇ Close the edit modal, hide the loading div, show the success message, and refresh the data:
-		yield put({ type: 'FETCH_MARKUP_MARGIN' });
-		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+		// yield put({ type: 'FETCH_MARKUP_MARGIN' });
+		yield put({ type: 'CALCULATE_MONTHLY_MARKUP' });
+
+		// yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 		yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
 	} catch (error) {
 		console.error('Error in editMarkupMargin saga', error);
@@ -180,9 +182,10 @@ function* saveMarkupHistoryLog(action) {
 		const result = yield axios.post(`/api/products/submit-markup-history`, currentMarkup[0]);
 		if (result.status === 201) {
 			// ⬇ Refresh the markup history recent data:
-			yield put({ type: 'FETCH_MARKUP_HISTORY_RECENT' });
+			// yield put({ type: 'FETCH_MARKUP_HISTORY_RECENT' });
+			// yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+			yield put({ type: 'CALCULATE_MONTHLY_MARKUP' });
 			yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
-			yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 		} // End if
 	} catch (error) {
 		console.error('Error with saveMarkupHistoryLog in markup saga', error);
@@ -198,6 +201,11 @@ function* calculateMonthlyMarkup(action) {
 		yield put({ type: 'SHOW_TOP_LOADING_DIV' });
 
 		const markupHistory12Months = yield axios.get(`/api/products/get-recent-markup-history`);
+		const shippingCostHistory12Months = yield axios.get(`/api/shippingcosts/get-one-year-of-shipping-cost-history`);
+		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
+		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
+		console.log(`Ryan Here 0 top of saga: calculateMonthlyMarkup\n `, { markupHistory12Months, shippingCostHistory12Months, productCostHistory12Months, customsDutiesHistory12Months });
+
 		const products = yield axios.get('/api/products');
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
@@ -224,68 +232,76 @@ function* calculateMonthlyMarkup(action) {
 		});
 
 		markupHistory12Months.data.unshift({
-			date_saved: 'Current',
-			margin_applied: currentMarkup.data[0].margin_applied,
 			markup_history_id: 0,
+			margin_applied: currentMarkup.data[0].margin_applied,
+			date_saved: 'Current',
 		});
 
 		const monthHolderObject = {};
 		const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-
-		// ⬇ Loop through the markupHistory12Months, and for each month, run the second loop to calculate each destination:
 		markupHistory12Months.data.forEach((month) => {
 
 			// ⬇ Setup for date labels:
 			const yearMonth = month.date_saved.slice(0, 7);
 			const monthLabel = months[+yearMonth.split('-')[1] - 1] + ', ' + yearMonth.split('-')[0];
 
-			if (month.date_saved !== 'Current') {
+			if (!monthHolderObject[month.date_saved]) {
 				monthHolderObject[month.date_saved] = {
+					date_saved: month.date_saved,
 					margin_applied: month.margin_applied,
-					month_year_label: monthLabel,
+					month_year_label: month.date_saved === 'Current' ? 'Current' : monthLabel,
 					rows: [],
-				}; 
-			} else {
-				monthHolderObject[month.date_saved] = {
-					margin_applied: month.margin_applied,
-					month_year_label: 'Current',
-					rows: [],
-				};
-			}
-			
-			// ⬇ Set the 
-			options.currentMarkup[0].margin_applied = month.margin_applied;
+				}; // End monthHolderObject
+			}; // End if
 
-			// ⬇ Loop through the shippingDestinations, and for each destination, run the useEstimateCalculations function:
-			options.shippingDestinations.forEach((destination) => {
-				const estimate = {};
 
-				if (destination.destination_country == "USA") {
-					estimate.measurement_units = "imperial";
-					estimate.design_cubic_yards_total = 100;
-					estimate.units_label = "USD/Cubic Yard";
-				} else {
-					estimate.measurement_units = "metric";
-					estimate.design_cubic_meters_total = 100;
-					estimate.units_label = "USD/Cubic Meter";
-				}; // End if/else
+			// if (month.date_saved === 'Current') {
+				// ⬇ Loop through the shippingDestinations, and for each destination, run the useEstimateCalculations function:
+				options.currentMarkup[0].margin_applied = month.margin_applied;
 
-				estimate.destination_id = destination.destination_id;
-				estimate.destination_name = destination.destination_name;
+				shippingDestinations.data.forEach((destination) => {
+					const estimate = {};
 
-				const calculatedEstimate = useCalculateProjectCost(estimate, options);
+					if (destination.destination_country == "USA") {
+						estimate.measurement_units = "imperial";
+						estimate.design_cubic_yards_total = 1000;
+						estimate.units_label = "USD/Cubic Yard";
+					} else {
+						estimate.measurement_units = "metric";
+						estimate.design_cubic_meters_total = 1000;
+						estimate.units_label = "USD/Cubic Meter";
+					}; // End if/else
 
-				monthHolderObject[month.date_saved].rows.push({
-					destination_id: calculatedEstimate.destination_id,
-					destination_name: calculatedEstimate.destination_name,
-					measurement_units: calculatedEstimate.measurement_units,
-					units_label: calculatedEstimate.units_label,
-					price_per_unit_75_50: calculatedEstimate.price_per_unit_75_50,
-					price_per_unit_90_60: calculatedEstimate.price_per_unit_90_60,
-				}); // End monthHolderObject
+					estimate.destination_id = destination.destination_id;
+					estimate.destination_name = destination.destination_name;
 
-			}); // End shippingDestinations.forEach
+					const calculatedEstimate = useCalculateProjectCost(estimate, options);
+
+					monthHolderObject[month.date_saved].rows.push({
+						destination_id: calculatedEstimate.destination_id,
+						destination_name: calculatedEstimate.destination_name,
+						measurement_units: calculatedEstimate.measurement_units,
+						units_label: calculatedEstimate.units_label,
+						price_per_unit_75_50: calculatedEstimate.price_per_unit_75_50,
+						price_per_unit_90_60: calculatedEstimate.price_per_unit_90_60,
+					}); // End monthHolderObject
+				}); // End shippingDestinations.forEach
+
+			// } else {
+				// if (month.date_saved < productCostHistory12Months.data[0].date_saved) {
+				// 	console.log(`Ryan Here: IT IS GREATER \n `, { month, productCostHistory12Months: productCostHistory12Months.data[0] });
+				// }
+
+			// }
+
+			// ⬇ Set the historical costs to calculate the price at the time:
+			// ! Ryan Here.
+			// ! I need to set the historical shipping costs, product costs, and customs duties here.
+
+
+
+
 		}); // End markupHistory12Months.forEach
 
 		console.log(`Ryan Here 2 Post Calc: calculateMonthlyMarkup saga \n `, {

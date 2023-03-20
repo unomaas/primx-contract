@@ -53,7 +53,6 @@ export default function AdminUpdateMarkup() {
 			disableColumnMenu: true,
 			sortable: false,
 			valueFormatter: (params) => {
-				// ⬇ Return value as a percentage:
 				return `${(params.value * 100)}%`;
 			},
 			type: 'number',
