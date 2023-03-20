@@ -191,13 +191,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 
 	// ⬇ Rendering below:
-	console.log(`Ryan Here: right before render **** \n \n \n`, {
-		isThereThirdEstimate,
-		showFinalCostRow,
-		ordered_by_licensee: calcCombinedEstimate.ordered_by_licensee,
-		calcEstimateAgeInMonths,
-		editState
-	});
+
 	return (
 		<>
 			<Grid container
