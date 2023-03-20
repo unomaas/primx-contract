@@ -408,7 +408,7 @@ export default function PricingLogTable() {
 				</Menu>
 			</>
 		); // End return
-	} // End component
+	} // End GridToolbarSelectDropdown
 
 
 	const CustomPagination = () => {

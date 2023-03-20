@@ -14,6 +14,7 @@ import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx';
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
 import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
+import AdminUpdateMarkup from '../AdminUpdates/AdminUpdateMarkup';
 import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
 import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
@@ -38,6 +39,9 @@ import { HashRouter as Router, Route, Redirect, Switch, useLocation } from 'reac
 import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
+import { Buffer } from "buffer";
+Buffer.from("anything", "base64");
+window.Buffer = window.Buffer || require("buffer").Buffer; 
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -151,6 +155,10 @@ function App() {
 
 							<AdminRoute exact path="/AdminUpdateMaterials" >
 								<AdminUpdateMaterials />
+							</AdminRoute>
+
+							<AdminRoute exact path="/AdminUpdateMarkup" >
+								<AdminUpdateMarkup />
 							</AdminRoute>
 
 							<AdminRoute exact path="/AdminUpdateDestinations" >

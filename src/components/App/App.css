@@ -190,3 +190,19 @@ Print Screen Scaling
   }
 
 }
+
+
+/* Table CSS: */
+/* .table-flex-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%
+}
+
+.table-flex-column {
+	display: flex;
+	flex-basis: 100%;
+	flex: 1;
+
+} */

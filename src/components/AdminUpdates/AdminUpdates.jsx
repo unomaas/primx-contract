@@ -28,7 +28,7 @@ export default function AdminUpdates() {
 			url: '/AdminUpdateShipping',
 		},
 		{
-			text: 'Material Costs & Markup',
+			text: 'Material Costs',
 			url: '/AdminUpdateMaterials',
 		},
 		{
@@ -46,6 +46,10 @@ export default function AdminUpdates() {
 		{
 			text: 'Dosage Rates',
 			url: '/DosageRates',
+		},
+		{
+			text: 'Markup Margin',
+			url: '/AdminUpdateMarkup',
 		},
 	];
 

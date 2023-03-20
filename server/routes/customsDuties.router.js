@@ -73,6 +73,25 @@ router.get('/get-all-customs-duties-history', async (req, res) => {
 	}; // End try/catch
 });
 
+router.get('/get-one-year-of-customs-duties-history', async (req, res) => {
+	try {
+		const sql = `
+			SELECT 
+				*,
+				TO_CHAR("cdh".date_saved, 'YYYY-MM-DD') AS "date_saved"
+			FROM "customs_duties_history" AS "cdh"
+			JOIN "customs_duties" AS "cd" using ("custom_duty_id") 
+			WHERE "cdh".date_saved >= NOW() - INTERVAL '1 year'
+			ORDER BY "cdh".custom_duty_id ASC;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in customs duties GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
 router.get('/get-recent-customs-duties-history', async (req, res) => {
 	try {
 		const sql = `

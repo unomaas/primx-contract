@@ -119,6 +119,41 @@ router.get('/get-all-shipping-cost-history', async (req, res) => {
 	}; // End try/catch
 });
 
+router.get('/get-one-year-of-shipping-cost-history', async (req, res) => {
+	try {
+		const sql = `
+			SELECT 
+				"sch".shipping_cost_history_id,
+				"sch".shipping_cost_id,
+				"sch".shipping_cost,
+				TO_CHAR("sch".date_saved, 'MM/DD/YYYY') AS "date_saved",
+				"p".product_label,
+				"c".container_length_ft, 
+				"sd".destination_name,
+				"c".container_destination
+			FROM "shipping_cost_history" AS "sch"
+			JOIN "shipping_costs" AS "sc"
+				ON "sc".shipping_cost_id = "sch".shipping_cost_id
+			JOIN "shipping_destinations" AS "sd"
+				ON "sd".destination_id = "sc".destination_id
+			JOIN "product_containers" AS "pc"
+				ON "pc".product_container_id = "sc".product_container_id
+			JOIN "products" AS "p"
+				ON "p".product_id = "pc".product_id
+			JOIN "containers" AS "c"
+					ON "pc".container_id = "c".container_id
+			WHERE "sd".destination_active = TRUE
+				AND "sch".date_saved > NOW() - INTERVAL '1 year'
+			ORDER BY "sch".shipping_cost_history_id ASC;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in shipping costs GET router', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
 router.get('/get-recent-shipping-cost-history', async (req, res) => {
 	try {
 		const sql = `
