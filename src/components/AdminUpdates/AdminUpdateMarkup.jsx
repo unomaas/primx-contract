@@ -54,15 +54,15 @@ export default function AdminUpdateMarkup() {
 
 	// const 
 
-	console.log(`Ryan Here: In App 2 \n `, {
-		markupHistory12Months,
-		markupHistoryRecent,
-		currentMarkup,
-		rightSelectedMonth,
-		leftSelectedMonth,
-		leftTableData,
-		rightTableData
-	});
+	// console.log(`Ryan Here: In App 2 \n `, {
+	// 	markupHistory12Months,
+	// 	markupHistoryRecent,
+	// 	currentMarkup,
+	// 	rightSelectedMonth,
+	// 	leftSelectedMonth,
+	// 	leftTableData,
+	// 	rightTableData
+	// });
 
 	let rows = [];
 

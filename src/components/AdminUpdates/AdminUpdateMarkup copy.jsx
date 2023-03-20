@@ -21,7 +21,7 @@ export default function AdminUpdateMarkup() {
 	const markupHistoryRecent = useSelector(store => store.products.markupHistoryRecent);
 	const markupHistory12Months = useSelector(store => store.products.markupHistory12Months);
 
-	console.log(`Ryan Here \n markupHistory12Months:`, { markupHistory12Months });
+	// console.log(`Ryan Here \n markupHistory12Months:`, { markupHistory12Months });
 
 	const generateTableData = (data) => {
 		// // ⬇ Variables:

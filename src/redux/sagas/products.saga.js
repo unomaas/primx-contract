@@ -204,7 +204,6 @@ function* calculateMonthlyMarkup(action) {
 		const shippingCostHistory12Months = yield axios.get(`/api/shippingcosts/get-one-year-of-shipping-cost-history`);
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
-		console.log(`Ryan Here 0 top of saga: calculateMonthlyMarkup\n `, { markupHistory12Months, shippingCostHistory12Months, productCostHistory12Months, customsDutiesHistory12Months });
 
 		const products = yield axios.get('/api/products');
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
@@ -224,12 +223,6 @@ function* calculateMonthlyMarkup(action) {
 			customsDuties: JSON.parse(JSON.stringify(customsDuties.data)),
 		}; // End options
 
-
-
-		console.log(`Ryan Here 1 Pre Calc: calculateMonthlyMarkup saga \n `, {
-			options,
-			markupHistory12Months: markupHistory12Months.data,
-		});
 
 		markupHistory12Months.data.unshift({
 			markup_history_id: 0,
@@ -296,18 +289,13 @@ function* calculateMonthlyMarkup(action) {
 			// }
 
 			// ⬇ Set the historical costs to calculate the price at the time:
-			// ! Ryan Here.
-			// ! I need to set the historical shipping costs, product costs, and customs duties here.
+			// ! Ryan Here. I need to set the historical shipping costs, product costs, and customs duties here.
 
 
 
 
 		}); // End markupHistory12Months.forEach
 
-		console.log(`Ryan Here 2 Post Calc: calculateMonthlyMarkup saga \n `, {
-			options,
-			monthHolderObject,
-		});
 
 		yield put({ type: 'SET_MARKUP_MARGIN', payload: currentMarkup.data });
 		yield put({ type: 'SET_MONTHLY_MARKUP_PRICING', payload: monthHolderObject });

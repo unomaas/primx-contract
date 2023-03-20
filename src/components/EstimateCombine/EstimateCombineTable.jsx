@@ -158,7 +158,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	if (!isThereThirdEstimate && firstEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage) showFinalCostRow = true;
 	if (isThereThirdEstimate && firstEstimate.selected_steel_fiber_dosage && secondEstimate.selected_steel_fiber_dosage && thirdEstimate.selected_steel_fiber_dosage) showFinalCostRow = true;
 
-	console.log(`Ryan Here: by the showFinalCostRow logic \n`, {showFinalCostRow, isThereThirdEstimate, first_selected_steel_fiber_dosage: firstEstimate.selected_steel_fiber_dosage, second_selected_steel_fiber_dosage: secondEstimate.selected_steel_fiber_dosage, thirdestimate_selected_steel_fiber_dosage: thirdEstimate.selected_steel_fiber_dosage});
+
 
 	if (firstEstimate?.materials_excluded == 'exclude_fibers') firstEstimate.selected_steel_fiber_dosage = '75_50';
 	if (secondEstimate?.materials_excluded == 'exclude_fibers') secondEstimate.selected_steel_fiber_dosage = '75_50';
