@@ -30,7 +30,6 @@ export default function CustomsDutiesTable() {
 			field: 'duty_label',
 			headerName: 'Duty Label',
 			flex: 2.5,
-			editable: false,
 			headerClassName: classes.header
 		},
 		{
@@ -44,6 +43,7 @@ export default function CustomsDutiesTable() {
 			},
 			disableColumnMenu: true,
 			type: 'number',
+			// editable: true,
 		},
 		{
 			field: 'CAN_percent',
@@ -56,6 +56,7 @@ export default function CustomsDutiesTable() {
 			},
 			disableColumnMenu: true,
 			type: 'number',
+			// editable: true,
 		},
 	]; // End columns
 	//#endregion - End State Variables.
@@ -401,12 +402,9 @@ export default function CustomsDutiesTable() {
 						borderRadius: '1rem',
 						boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
 						padding: '1rem',
-						width: 'auto',
-						height: 'auto',
-						maxWidth: '50%',
-						maxHeight: '50%',
-						minWidth: '415px',
-						minHeight: '345px',
+						width: "fit-content",
+						height: "fit-content",
+						marginTop: "-300px",	
 					}}>
 						<div
 							style={{
