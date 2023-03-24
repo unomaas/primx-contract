@@ -105,7 +105,7 @@ export default function AdminUpdateMarkup() {
 				sortable: false,
 			},
 			{
-				headerName: `75/50 Price: ${leftTableData.month_year_label}`,
+				headerName: `60lbs/35kg ${leftTableData.month_year_label}`,
 				field: 'left_price_per_unit_75_50',
 				flex: 1,
 				headerClassName: classes.header,
@@ -116,7 +116,7 @@ export default function AdminUpdateMarkup() {
 			},
 			{
 				headerName: `90/60 Price: ${leftTableData.month_year_label}`,
-				field: 'left_price_per_unit_90_605',
+				field: 'left_price_per_unit_90_60',
 				flex: 1,
 				headerClassName: classes.header,
 				disableColumnMenu: true,
