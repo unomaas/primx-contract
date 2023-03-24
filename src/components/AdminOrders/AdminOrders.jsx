@@ -38,6 +38,21 @@ export default function AdminOrders() {
 			if (estimate.archived) {
 				return;
 			}
+			if (estimate.selected_steel_fiber_dosage == '75_50') {
+				estimate.final_price_per_unit = estimate.price_per_unit_75_50;
+				estimate.final_total_project_cost = estimate.total_project_cost_75_50;
+			} else if (estimate.selected_steel_fiber_dosage == '90_60') {
+				estimate.final_price_per_unit = estimate.price_per_unit_90_60;
+				estimate.final_total_project_cost = estimate.total_project_cost_90_60;
+			} else {
+				estimate.final_total_project_cost = estimate.total_project_cost_75_50;
+				estimate.selected_steel_fiber_dosage = 'Combined';
+				if (estimate.measurement_units == 'imperial') {
+					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.design_cubic_yards_total.replaceAll(',', ''));
+				} else {
+					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.design_cubic_meters_total.replaceAll(',', ''));
+				}
+			}
 			pendingOrders.push(estimate);
 		} // orders are considered archived if they have estimate.archived marked true my admin via the archive button
 		else if (estimate.archived) {

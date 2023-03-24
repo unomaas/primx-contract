@@ -109,7 +109,7 @@ router.get('/get-all-shipping-cost-history', async (req, res) => {
 			JOIN "containers" AS "c"
 					ON "pc".container_id = "c".container_id
 			WHERE "sd".destination_active = TRUE
-			ORDER BY "sch".shipping_cost_history_id ASC;
+			ORDER BY "sch".date_saved DESC, "sch".shipping_cost_id ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);

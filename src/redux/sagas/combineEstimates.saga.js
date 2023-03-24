@@ -37,6 +37,12 @@ function* combineEstimateTotals(action) {
 		combinedEstimate
 	} = action.payload;
 
+	let isThereThirdEstimate = false;
+
+	if (typeof (thirdEstimate) == 'object' && Object.keys(thirdEstimate).length > 0) {
+		isThereThirdEstimate = true;
+	}; // End if
+
 	try {
 		// ⬇ Total the estimates' design_cubic measurements:
 		const totalsObjectHolder = {
@@ -51,13 +57,13 @@ function* combineEstimateTotals(action) {
 
 			totalsObjectHolder.design_cubic_yards_total += parseFloat(firstEstimate.design_cubic_yards_total?.replaceAll(',', ''));
 			totalsObjectHolder.design_cubic_yards_total += parseFloat(secondEstimate.design_cubic_yards_total?.replaceAll(',', ''));
-			if (thirdEstimate) totalsObjectHolder.design_cubic_yards_total += parseFloat(thirdEstimate?.design_cubic_yards_total?.replaceAll(',', ''));
+			if (isThereThirdEstimate) totalsObjectHolder.design_cubic_yards_total += parseFloat(thirdEstimate?.design_cubic_yards_total?.replaceAll(',', ''));
 
 		} else if (firstEstimate.measurement_units === 'metric') {
 
 			totalsObjectHolder.design_cubic_meters_total += parseFloat(firstEstimate.design_cubic_meters_total?.replaceAll(',', ''));
 			totalsObjectHolder.design_cubic_meters_total += parseFloat(secondEstimate.design_cubic_meters_total?.replaceAll(',', ''));
-			if (thirdEstimate) totalsObjectHolder.design_cubic_meters_total += parseFloat(thirdEstimate.design_cubic_meters_total?.replaceAll(',', ''));
+			if (isThereThirdEstimate) totalsObjectHolder.design_cubic_meters_total += parseFloat(thirdEstimate.design_cubic_meters_total?.replaceAll(',', ''));
 
 		} // End if/else
 
@@ -67,7 +73,7 @@ function* combineEstimateTotals(action) {
 
 		totalsObjectHolder.combined_total_project_cost += parseFloat(firstEstimate[`total_project_cost_${firstSFDosage}`]);
 		totalsObjectHolder.combined_total_project_cost += parseFloat(secondEstimate[`total_project_cost_${secondSFDosage}`]);
-		if (thirdEstimate) totalsObjectHolder.combined_total_project_cost += parseFloat(thirdEstimate[`total_project_cost_${thirdSFDosage}`]);
+		if (isThereThirdEstimate) totalsObjectHolder.combined_total_project_cost += parseFloat(thirdEstimate[`total_project_cost_${thirdSFDosage}`]);
 
 		combinedEstimate.total_project_cost_75_50 = Math.floor(totalsObjectHolder.combined_total_project_cost * 100) / 100;
 		combinedEstimate.total_project_cost_75_50_display = formatter.format(combinedEstimate.total_project_cost_75_50);
