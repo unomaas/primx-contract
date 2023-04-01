@@ -9,7 +9,7 @@ const format = require('pg-format');
 /**
  * GET route template
  */
-router.get('/', (req, res) => {
+router.get('/get-current-products', (req, res) => {
 	// GET route code here
 	const queryText = `SELECT * FROM "products" ORDER BY product_id ASC`;
 	pool.query(queryText)

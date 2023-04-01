@@ -18,6 +18,7 @@ import ViewCarouselIcon from '@material-ui/icons/ViewCarousel';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import SaveIcon from '@material-ui/icons/Save';
 import HistoryIcon from '@material-ui/icons/History';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 //#endregion ⬆⬆ Document setup above. 
 
 
@@ -100,6 +101,11 @@ export default function NavDrawer() {
 									<ListItem button onClick={() => history.push(`/adminupdates`)}>
 										<UpdateIcon /> &nbsp;
 										<p>Update Items</p>
+									</ListItem>
+
+									<ListItem button onClick={() => history.push(`/updatepricing`)}>
+										<AutorenewIcon /> &nbsp;
+										<p>Set New Pricing</p>
 									</ListItem>
 
 									<ListItem button onClick={() => history.push(`/pricinglog`)}>

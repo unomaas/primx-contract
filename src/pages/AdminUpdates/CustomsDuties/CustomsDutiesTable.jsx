@@ -300,7 +300,7 @@ export default function CustomsDutiesTable() {
 				height: "52px",
 			}}>
 				<>
-					<Button
+					{/* <Button
 						aria-controls="customized-menu"
 						aria-haspopup="true"
 						color="primary"
@@ -336,7 +336,15 @@ export default function CustomsDutiesTable() {
 								)
 							}
 						})}
-					</Menu>
+					</Menu> */}
+					<Button
+						color="primary"
+						size="small"
+						onClick={() => setShowEditModal(true)}
+						disabled={disabled}
+					>
+						Edit Customs Duties
+					</Button>
 				</>
 				{/* <CustomPagination /> */}
 			</div>
@@ -404,7 +412,7 @@ export default function CustomsDutiesTable() {
 						padding: '1rem',
 						width: "fit-content",
 						height: "fit-content",
-						marginTop: "-300px",	
+						marginTop: "-300px",
 					}}>
 						<div
 							style={{
@@ -519,7 +527,7 @@ export default function CustomsDutiesTable() {
 									color="primary"
 									onClick={() => handleSubmit()}
 								>
-									Submit
+									Save Changes
 								</Button>
 							</div>
 						</div>

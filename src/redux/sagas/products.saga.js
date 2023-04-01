@@ -29,7 +29,7 @@ function* productsSaga() {
 // fetchProducts generator to get the array of all products data from the DB
 function* fetchProductsArray() {
 	try {
-		const response = yield axios.get('/api/products');
+		const response = yield axios.get('/api/products/get-current-products');
 		// set products used in reducer
 		yield put({
 			type: 'SET_PRODUCTS_ARRAY',
@@ -45,7 +45,7 @@ function* fetchProductsArray() {
 //estimate create and lookup views
 function* fetchProductsObject() {
 	try {
-		const response = yield axios.get('/api/products');
+		const response = yield axios.get('/api/products/get-current-products');
 
 		// use the createProductPriceObject function to convert the returned product array into an object
 		const productObject = createProductPriceObject(response.data);

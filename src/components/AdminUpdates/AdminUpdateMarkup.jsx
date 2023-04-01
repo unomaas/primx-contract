@@ -606,7 +606,7 @@ export default function AdminUpdateMarkup() {
 										color="primary"
 										onClick={() => handleSubmit()}
 									>
-										Submit
+										Save Changes
 									</Button>
 								</div>
 							</div>

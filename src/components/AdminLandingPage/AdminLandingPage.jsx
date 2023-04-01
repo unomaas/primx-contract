@@ -63,6 +63,16 @@ function AdminLandingPage() {
         Go
       </Button>
 
+			<h3>Set New Pricing</h3>
+      <Button
+        onClick={() => { history.push('./UpdatePricing') }}
+        variant="contained"
+        color="primary"
+        className={classes.LexendTeraFont11}
+      >
+        Go
+      </Button>
+
     </div>
   );
 }

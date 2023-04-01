@@ -2,31 +2,42 @@ import {
 	combineReducers
 } from 'redux';
 
-const pricingLog = (state = {
-	viewState: {
-		isLoading: true,
-	},
-	dataState: {}
-}, action) => {
+const defaultViewState = {
+	pricingLogIsLoading: true,
+	updatePricingIsLoading: true,
+	updatePricingStep: 1,
+	newPricingObject: {},
+};
+
+const viewState = (state = { ...defaultViewState }, action) => {
 	switch (action.type) {
-		case 'PRICING_LOG_SET_INITIAL_DATA':
+		case 'SET_PRICING_LOG_VIEW':
 			return {
-				viewState: {
-					...state.viewState,
-					isLoading: false,
-				},
-				dataState: {
-					...state.dataState,
-					customsDutiesHistoryAll: action.payload.customsDutiesHistoryAll,
-					markupHistoryAll: action.payload.markupHistoryAll,
-					productCostHistoryAll: action.payload.productCostHistoryAll,
-					shippingCostHistoryAll: action.payload.shippingCostHistoryAll,
-				},
+				...state,
+				...action.payload,
 			};
 		default: return state;
 	}
 }
 
-export default pricingLog;
+const defaultDataState = {};
+
+const dataState = (state = {...defaultDataState}, action) => {
+	switch (action.type) {
+		case 'SET_PRICING_LOG_DATA':
+			return {
+				...state,
+				...action.payload,
+			};
+		default: return state;
+	}
+}
+
+// export default pricingLog;
+
+export default combineReducers({
+	viewState,
+	dataState,
+});
 
 

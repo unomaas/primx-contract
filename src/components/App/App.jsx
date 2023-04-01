@@ -33,6 +33,7 @@ import AdminUpdateCustoms from '../../pages/AdminUpdates/CustomsDuties/index.jsx
 import ProductContainers from '../../pages/AdminUpdates/ProductContainers/index.jsx';
 import DosageRates from '../../pages/AdminUpdates/DosageRates/index.jsx';
 import PricingLog from '../../pages/PricingLog/index.jsx';
+import UpdatePricing from '../../pages/UpdatePricing/index.jsx';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, useLocation } from 'react-router-dom';
@@ -191,6 +192,10 @@ function App() {
 
 							<AdminRoute exact path="/pricinglog">
 								<PricingLog />
+							</AdminRoute>
+
+							<AdminRoute exact path="/updatepricing">
+								<UpdatePricing />
 							</AdminRoute>
 
 							{/* If logged in and user permissions is 1, that makes the super-admin and allows them to see this system admin page */}

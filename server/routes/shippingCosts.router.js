@@ -6,7 +6,7 @@ const format = require('pg-format');
 
 //#region - Shipping Costs routes below: 
 // GET route - gets shipping costs
-router.get('/', async (req, res) => {
+router.get('/get-current-shipping-costs', async (req, res) => {
 	try {
 		const sql = `
 			SELECT 

@@ -6,6 +6,7 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HelpIcon from '@material-ui/icons/Help';
 import AdminUpdates from './AdminUpdates';
@@ -17,9 +18,15 @@ export default function AdminUpdateMaterials() {
 	//#region - State Variables Below: 
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const productsArray = useSelector(store => store.products.productsArray);
+	// const productsArray = useSelector(store => store.products.productsArray);
+
 	const productCostHistoryRecent = useSelector(store => store.products.productCostHistoryRecent);
-	const [showEditModal, setShowEditModal] = useState(false);
+	// const [showEditModal, setShowEditModal] = useState(false);
+
+	const { viewState, dataState } = useSelector(store => store.pricingLog);
+
+	const productsArray = JSON.parse(JSON.stringify(viewState.newProductCosts));
+	// const productsArray = dataState.currentPricing.currentProductCosts;
 
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const columns = [
@@ -27,7 +34,7 @@ export default function AdminUpdateMaterials() {
 			field: 'product_label',
 			headerName: 'Product',
 			flex: 2,
-			headerClassName: classes.header
+			headerClassName: classes.header,
 		},
 		{
 			field: 'product_self_cost',
@@ -35,6 +42,7 @@ export default function AdminUpdateMaterials() {
 			headerName: 'Self Cost',
 			flex: 1,
 			headerClassName: classes.header,
+			editable: true,
 			valueFormatter: (params) => {
 				return new Intl.NumberFormat('en-US', {
 					style: 'currency',
@@ -50,12 +58,12 @@ export default function AdminUpdateMaterials() {
 
 
 	//#region - Action Handlers Below: 
-	useEffect(() => {
-		// GET shipping cost data on page load
-		dispatch({ type: 'FETCH_PRODUCTS_ARRAY' });
-		dispatch({ type: 'FETCH_PRODUCT_COST_HISTORY_RECENT' });
+	// useEffect(() => {
+	// 	// GET shipping cost data on page load
+	// 	dispatch({ type: 'FETCH_PRODUCTS_ARRAY' });
+	// 	dispatch({ type: 'FETCH_PRODUCT_COST_HISTORY_RECENT' });
 
-	}, [])
+	// }, [])
 
 
 	//#region - Custom Table Components Below: 
@@ -146,7 +154,7 @@ export default function AdminUpdateMaterials() {
 					fontSize: "12px",
 					fontFamily: "Lexend Tera",
 				}}>
-					Current Product Self Costs
+					Product Self Costs
 				</div>
 
 				<div style={{
@@ -195,26 +203,26 @@ export default function AdminUpdateMaterials() {
 
 		const [anchorEl, setAnchorEl] = useState(null);
 		const menuItems = [
-			<Button
-				color="primary"
-				size="small"
-				onClick={() => handleSaveHistoryLogSubmit()}
-			>
-				Save Costs to History Log
-			</Button>,
-			<Divider />,
-			<Tooltip title={tooltipText} placement="right-end" arrow>
-				<span>
-					<Button
-						color="primary"
-						size="small"
-						onClick={() => setShowEditModal(true)}
-						disabled={disabled}
-					>
-						Edit Product Costs
-					</Button>
-				</span>
-			</Tooltip>,
+			// <Button
+			// 	color="primary"
+			// 	size="small"
+			// 	onClick={() => handleSaveHistoryLogSubmit()}
+			// >
+			// 	Save Costs to History Log
+			// </Button>,
+			// <Divider />,
+			// <Tooltip title={tooltipText} placement="right-end" arrow>
+			// 	<span>
+			// 		<Button
+			// 			color="primary"
+			// 			size="small"
+			// 			onClick={() => setShowEditModal(true)}
+			// 			disabled={disabled}
+			// 		>
+			// 			Edit Product Costs
+			// 		</Button>
+			// 	</span>
+			// </Tooltip>,
 
 		]; // End menuItems
 
@@ -223,11 +231,11 @@ export default function AdminUpdateMaterials() {
 			<div style={{
 				flex: "1",
 				display: "flex",
-				justifyContent: "flex-start",
+				justifyContent: "flex-end",
 				height: "52px",
 			}}>
 				<>
-					<Button
+					{/* <Button
 						aria-controls="customized-menu"
 						aria-haspopup="true"
 						color="primary"
@@ -267,7 +275,25 @@ export default function AdminUpdateMaterials() {
 								)
 							}
 						})}
-					</Menu>
+					</Menu> */}
+					{/* <Button
+						color="secondary"
+						size="small"
+					// style={{ float: "right" }}
+					// onClick={() => setShowEditModal(true)}
+					// disabled={disabled}
+					>
+						Previous
+					</Button> */}
+					<Button
+						color="primary"
+						size="small"
+					// style={{ float: "right" }}
+					// onClick={() => setShowEditModal(true)}
+					// disabled={disabled}
+					>
+						Next <ArrowRightIcon />
+					</Button>
 				</>
 			</div>
 		); // End return
@@ -275,144 +301,158 @@ export default function AdminUpdateMaterials() {
 	//#endregion - Custom Table Components.
 	//#endregion - Table Setup. 
 
-	//#region - Table Edit Modal: 
-	const CostsEditModal = () => {
+	// //#region - Table Edit Modal: 
+	// const CostsEditModal = () => {
 
-		const editData = {};
-		const handleCostChange = (value, id) => {
-			editData[id] = {
-				product_id: id,
-				product_self_cost: parseFloat(value),
-			}; // End editData
-		}; // End handleCostChange
+	// 	const editData = {};
+	// 	const handleCostChange = (value, id) => {
+	// 		editData[id] = {
+	// 			product_id: id,
+	// 			product_self_cost: parseFloat(value),
+	// 		}; // End editData
+	// 	}; // End handleCostChange
 
-		const handleSubmit = () => {
-			if (!editData || Object.keys(editData).length === 0) {
-				alert('Please make changes to submit first.');
-				return;
-			}; // End if
-			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-			dispatch({ type: 'UPDATE_PRODUCT_COSTS', payload: Object.values(editData) });
-			setShowEditModal(false);
-		}; // End handleSubmit
+	// 	const handleSubmit = () => {
+	// 		if (!editData || Object.keys(editData).length === 0) {
+	// 			alert('Please make changes to submit first.');
+	// 			return;
+	// 		}; // End if
+	// 		dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+	// 		dispatch({ type: 'UPDATE_PRODUCT_COSTS', payload: Object.values(editData) });
+	// 		setShowEditModal(false);
+	// 	}; // End handleSubmit
 
 
-		return (
-			<Modal
-				aria-labelledby="transition-modal-title"
-				aria-describedby="transition-modal-description"
-				// className={classes.modal}
-				open={showEditModal}
-				// onClose={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
-				onClose={() => setShowEditModal(false)}
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{
-					timeout: 500,
-				}}
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-				}}
-			>
-				<Fade in={showEditModal}>
-					<div style={{
-						backgroundColor: 'white',
-						borderRadius: '1rem',
-						boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
-						padding: '1rem',
-						width: "fit-content",
-						height: "fit-content",
-						marginTop: "-300px",	
-					}}>
-						<div
-							style={{
-								margin: '0px auto 10px auto',
-								fontSize: "1.1rem",
-								letterSpacing: "0.5px",
-								borderBottom: "1px solid #000",
-								fontFamily: "Lexend Tera",
-								paddingBottom: '10px',
-							}}
-						>
-							Edit Product Self Cost
-						</div>
-						<div style={{ marginBottom: '10px' }}>
-							{productsArray.map(cost => {
-								// ⬇ Create a Number Input for each item in the array, with the value set to the shipping_cost index:
-								return (
-									<div
-										key={cost.product_id}
-										style={{
-											display: 'flex',
-											justifyContent: 'flex-end',
-											alignItems: 'flex-end',
-										}}
-									>
-										<div
-											style={{
-												padding: "0.6rem",
-											}}
-										>
-											{cost.product_label}:
-										</div>
-										<div
-											style={{
-												width: '97px',
-											}}
-										>
-											<TextField
-												defaultValue={Number(cost.product_self_cost).toFixed(2)}
-												type="number"
-												onChange={(event) => handleCostChange(event.target.value, cost.product_id)}
-												size="small"
-												InputProps={{
-													startAdornment: <InputAdornment position="start">$</InputAdornment>,
-												}}
-											/>
-										</div>
-									</div>
-								);
-							})}
-						</div>
-						<div style={{ borderTop: "1px solid #000" }}>
-							<div
-								style={{
-									display: 'flex',
-									justifyContent: 'space-between',
-									marginTop: '10px',
+	// 	return (
+	// 		<Modal
+	// 			aria-labelledby="transition-modal-title"
+	// 			aria-describedby="transition-modal-description"
+	// 			// className={classes.modal}
+	// 			open={showEditModal}
+	// 			// onClose={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
+	// 			onClose={() => setShowEditModal(false)}
+	// 			closeAfterTransition
+	// 			BackdropComponent={Backdrop}
+	// 			BackdropProps={{
+	// 				timeout: 500,
+	// 			}}
+	// 			style={{
+	// 				display: 'flex',
+	// 				alignItems: 'center',
+	// 				justifyContent: 'center',
+	// 			}}
+	// 		>
+	// 			<Fade in={showEditModal}>
+	// 				<div style={{
+	// 					backgroundColor: 'white',
+	// 					borderRadius: '1rem',
+	// 					boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
+	// 					padding: '1rem',
+	// 					width: "fit-content",
+	// 					height: "fit-content",
+	// 					marginTop: "-300px",
+	// 				}}>
+	// 					<div
+	// 						style={{
+	// 							margin: '0px auto 10px auto',
+	// 							fontSize: "1.1rem",
+	// 							letterSpacing: "0.5px",
+	// 							borderBottom: "1px solid #000",
+	// 							fontFamily: "Lexend Tera",
+	// 							paddingBottom: '10px',
+	// 						}}
+	// 					>
+	// 						Edit Product Self Cost
+	// 					</div>
+	// 					<div style={{ marginBottom: '10px' }}>
+	// 						{productsArray.map(cost => {
+	// 							// ⬇ Create a Number Input for each item in the array, with the value set to the shipping_cost index:
+	// 							return (
+	// 								<div
+	// 									key={cost.product_id}
+	// 									style={{
+	// 										display: 'flex',
+	// 										justifyContent: 'flex-end',
+	// 										alignItems: 'flex-end',
+	// 									}}
+	// 								>
+	// 									<div
+	// 										style={{
+	// 											padding: "0.6rem",
+	// 										}}
+	// 									>
+	// 										{cost.product_label}:
+	// 									</div>
+	// 									<div
+	// 										style={{
+	// 											width: '97px',
+	// 										}}
+	// 									>
+	// 										<TextField
+	// 											defaultValue={Number(cost.product_self_cost).toFixed(2)}
+	// 											type="number"
+	// 											onChange={(event) => handleCostChange(event.target.value, cost.product_id)}
+	// 											size="small"
+	// 											InputProps={{
+	// 												startAdornment: <InputAdornment position="start">$</InputAdornment>,
+	// 											}}
+	// 										/>
+	// 									</div>
+	// 								</div>
+	// 							);
+	// 						})}
+	// 					</div>
+	// 					<div style={{ borderTop: "1px solid #000" }}>
+	// 						<div
+	// 							style={{
+	// 								display: 'flex',
+	// 								justifyContent: 'space-between',
+	// 								marginTop: '10px',
 
-								}}
-							>
-								<Button
-									variant="contained"
-									color="secondary"
-									// onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
-									onClick={() => setShowEditModal(false)}
-								>
-									Cancel
-								</Button>
-								<Button
-									variant="contained"
-									color="primary"
-									onClick={() => handleSubmit()}
-								>
-									Submit
-								</Button>
-							</div>
-						</div>
-					</div>
-				</Fade>
-			</Modal>
-		); // End return
-	}; // End CostsEditModal
-	//#endregion - Table Edit Modal.
+	// 							}}
+	// 						>
+	// 							<Button
+	// 								variant="contained"
+	// 								color="secondary"
+	// 								// onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: false })}
+	// 								onClick={() => setShowEditModal(false)}
+	// 							>
+	// 								Cancel
+	// 							</Button>
+	// 							<Button
+	// 								variant="contained"
+	// 								color="primary"
+	// 								onClick={() => handleSubmit()}
+	// 							>
+	// 								Save Changes
+	// 							</Button>
+	// 						</div>
+	// 					</div>
+	// 				</div>
+	// 			</Fade>
+	// 		</Modal>
+	// 	); // End return
+	// }; // End CostsEditModal
+	// //#endregion - Table Edit Modal.
+
+	// ⬇ Submit handler for in-line cell edits on the data grid:
+	const handleInCellEditSubmit = ({ id, field, value }) => {
+		console.log(`Ryan Here 1: handleInCellEditSubmit \n `, { id, field, value });
+		// const productsArray = viewState.newPricing.newProductCosts;
+		const product = productsArray.find(product => product.product_id === id);
+		// ⬇ If the value is the same as the original, don't submit the edit:
+		if (product[field] === value) return;
+		// ⬇ If the value is different, modify the product object:
+		product[field] = value;
+		// ⬇ Update the productsArray:
+		// setProductsArray([...productsArray]);
+		console.log(`Ryan Here 2: \n `, { productsArray, product });
+	}
 
 	// ⬇ Rendering below: 
 	return (
 		<div>
-			<AdminUpdates />
+			{/* <AdminUpdates /> */}
 			<div
 				style={{
 					display: 'flex',
@@ -431,6 +471,7 @@ export default function AdminUpdateMaterials() {
 						rows={rows}
 						getRowId={(row) => row.product_id}
 						autoHeight
+						onCellEditCommit={handleInCellEditSubmit}
 						pagination
 						components={{
 							Toolbar: CustomToolbar,
@@ -438,7 +479,7 @@ export default function AdminUpdateMaterials() {
 						}}
 					/>
 
-					<CostsEditModal />
+					{/* <CostsEditModal /> */}
 
 				</Paper>
 
