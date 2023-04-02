@@ -12,7 +12,8 @@ import UpdatePricingSteps from './UpdatePricingComponents/UpdatePricingSteps'
 import NavigationStepper from './UpdatePricingComponents/NavigationStepper';
 import './UpdatePricing.css'
 
-import AdminUpdateMaterials from '../../components/AdminUpdates/AdminUpdateMaterials';
+import UpdateProductCosts from './UpdatePricingComponents/UpdateProductCosts';
+import UpdateShippingCosts from './UpdatePricingComponents/UpdateShippingCosts';
 
 import TopLoadingDiv from '../components/TopLoadingDiv';
 
@@ -21,7 +22,6 @@ export default function index() {
 
 
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
-	// const dataState = useSelector(store => store.pricingLog.dataState);
 
 	useEffect(() => {
 		// GET shipping cost data on page load
@@ -35,7 +35,8 @@ export default function index() {
 		<div className="EstimateCreate-wrapper">
 			<NavigationStepper />
 
-			{viewState.updatePricingStep == '1' && <AdminUpdateMaterials />}
+			{viewState.updatePricingStep == '1' && <UpdateProductCosts />}
+			{viewState.updatePricingStep == '2' && <UpdateShippingCosts />}
 		</div>
 
 

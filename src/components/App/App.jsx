@@ -13,7 +13,7 @@ import AdminUpdates from '../AdminUpdates/AdminUpdates';
 import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx';
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
 import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
-import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
+// import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
 import AdminUpdateMarkup from '../AdminUpdates/AdminUpdateMarkup';
 import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
@@ -154,9 +154,9 @@ function App() {
 								<AdminUpdateLicenses />
 							</AdminRoute>
 
-							<AdminRoute exact path="/AdminUpdateMaterials" >
+							{/* <AdminRoute exact path="/AdminUpdateMaterials" >
 								<AdminUpdateMaterials />
-							</AdminRoute>
+							</AdminRoute> */}
 
 							<AdminRoute exact path="/AdminUpdateMarkup" >
 								<AdminUpdateMarkup />

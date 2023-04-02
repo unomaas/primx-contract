@@ -60,7 +60,7 @@ const useStyles = makeStyles({
   },
 
   shippingGrid: {
-    width: 800,
+    width: 925,
     margin: 'auto',
   },
 

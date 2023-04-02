@@ -205,10 +205,10 @@ function* calculateMonthlyMarkup(action) {
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
 
-		const products = yield axios.get('/api/products');
+		const products = yield axios.get('/api/products/get-current-products');
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
-		const shippingCosts = yield axios.get('/api/shippingcosts');
+		const shippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs');
 		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
 		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
 		const customsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');

@@ -4,7 +4,9 @@ import React from 'react'
 import { Stepper, Step, StepLabel, StepConnector } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-
+import { Button, MenuItem, Menu, Divider, Tooltip, Paper } from '@material-ui/core';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 
 export default function NavigationStepper() {
 
@@ -12,23 +14,9 @@ export default function NavigationStepper() {
 	const { viewState, dataState } = pricingLogData;
 	const dispatch = useDispatch();
 
-	// const classes = useStyles();
-	// const [activeStep, setActiveStep] = useState(1);
-	// const steps = getSteps();
-
-	// const handleNext = () => {
-	//   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-	// };
-
-	// const handleBack = () => {
-	//   setActiveStep((prevActiveStep) => prevActiveStep - 1);
-	// };
-
-	// const handleReset = () => {
-	//   setActiveStep(0);
-	// };
 
 	const stepsObject = {
+
 		1: {
 			step: 1,
 			label: 'Set Product Pricing',
@@ -39,7 +27,7 @@ export default function NavigationStepper() {
 		},
 		3: {
 			step: 3,
-			label: 'Set Tax Rates',
+			label: 'Set Customs Duties',
 		},
 		4: {
 			step: 4,
@@ -49,6 +37,7 @@ export default function NavigationStepper() {
 			step: 5,
 			label: 'Set Product Promotions',
 		},
+
 	};
 
 
@@ -80,30 +69,57 @@ export default function NavigationStepper() {
 
 	const handleStepperClick = (step) => {
 		console.log(`Ryan Here: handleStepperClick \n `, { step });
-		// dispatch({ type: 'UPDATE_PRICING_SET_STEP', payload: step });
-		// dispatch({
-		// 	type: "SET_PRICING_LOG_DATA", payload: { viewState.updatePricingStep = step }
-		// })
+
+		// TODO: Add logic to prevent from going out of range.
+		if (step < 1 || step > 5) return;
+
+		dispatch({ type: 'SET_PRICING_LOG_VIEW', payload: { updatePricingStep: step } });
+
 	}
 
 
-
 	const activeStep = stepsObject[viewState.updatePricingStep];
-	console.log(`Ryan Here: NavigationStepper \n `, { stepsObject, activeStep, viewState });
 
 	return (
-		<div id="wrapper">
-			<Stepper activeStep={activeStep.step - 1} connector={<ColorlibConnector />}>
+		<div id="StepperWrapper">
+			<Stepper
+				activeStep={activeStep.step - 1}
+				connector={<ColorlibConnector />}
+				style={{ padding: "10px" }}
+			>
 				{Object.values(stepsObject).map((step) => (
 					<Step
 						alternativeLabel
 						key={step.label}
-						// onClick={(event) => handleStepperClick(step.step)}
 					>
-						<StepLabel>{step.label}</StepLabel>
+						<StepLabel
+							onClick={(event) => handleStepperClick(step.step)}
+							style={{ cursor: 'pointer' }}
+						>
+							{step.label}
+						</StepLabel>
 					</Step>
 				))}
 			</Stepper>
+			<div id="ButtonsWrapper">
+				<Button
+					color="primary"
+					size="small"
+					disabled={viewState.updatePricingStep == 1}
+					onClick={() => handleStepperClick(viewState.updatePricingStep - 1)}
+				>
+					<ArrowLeftIcon /> Previous
+				</Button>
+				{/* //TODO: Add logic for when the button is at max increment and change it to submit.  */}
+				<Button
+					color="primary"
+					size="small"
+					onClick={() => handleStepperClick(viewState.updatePricingStep + 1)}
+				>
+					Next <ArrowRightIcon />
+				</Button>
+			</div>
+
 		</div>
 	)
 }

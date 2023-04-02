@@ -8,28 +8,40 @@ const format = require('pg-format');
 // GET route - gets shipping costs
 router.get('/get-current-shipping-costs', async (req, res) => {
 	try {
+	// 	{
+	// 		"shipping_cost_id": 4,
+	// 		"destination_id": 4,
+	// 		"dc_20ft": "4050",
+	// 		"dc_40ft": "4800",
+	// 		"fibers_20ft": "10250",
+	// 		"fibers_40ft": 14302,
+	// 		"cpea_20ft": "10250",
+	// 		"cpea_40ft": "14300",
+	// 		"flow_20ft": "10250",
+	// 		"flow_40ft": "14300",
+	// 		"destination_name": "California",
+	// 		"destination_country": "USA"
+	// }
 		const sql = `
 			SELECT 
-				"sc".shipping_cost_id,
-				"p".product_id,
-				"p".product_label,
-				"c".container_length_ft, 
-				"sd".destination_id,
-				"sd".destination_name,
-				"c".container_destination,
-				"pc".product_container_id,
-				"sc".shipping_cost
-			FROM "shipping_costs" AS "sc"
-			JOIN "shipping_destinations" AS "sd"
-				ON "sd".destination_id = "sc".destination_id
-			JOIN "product_containers" AS "pc"
-				ON "pc".product_container_id = "sc".product_container_id
-			JOIN "products" AS "p"
-				ON "p".product_id = "pc".product_id
-			JOIN "containers" AS "c"
-					ON "pc".container_id = "c".container_id
-			WHERE "sd".destination_active = TRUE
-			ORDER BY "sc".shipping_cost_id ASC;
+				sc.shipping_cost_id,
+				sc.destination_id,
+				sc.dc_20ft,
+				sc.dc_40ft,
+				sc.fibers_20ft,
+				sc.fibers_40ft,
+				sc.cpea_20ft,
+				sc.cpea_40ft,
+				sc.flow_20ft,
+				sc.flow_40ft,
+				sd.destination_name,
+				sd.destination_country
+			FROM shipping_costs AS sc
+			JOIN shipping_destinations AS sd USING(destination_id)
+			WHERE sd.destination_active = TRUE
+			ORDER BY
+				sd.destination_country DESC, 
+				sd.destination_name ASC;
 		`; // End sql
 		const result = await pool.query(sql);
 		res.send(result.rows);
