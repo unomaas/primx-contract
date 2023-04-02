@@ -42,6 +42,7 @@ function* updatePricingInitialLoad() {
 		const currentProductCosts = yield axios.get('/api/products/get-current-products');
 		const currentCustomsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
+		const activeShippingDestinations = yield axios.get('/api/shippingdestinations/active');
 
 		yield put({
 			type: 'SET_PRICING_LOG_DATA', payload: {
@@ -49,6 +50,7 @@ function* updatePricingInitialLoad() {
 				currentProductCosts: currentProductCosts.data,
 				currentCustomsDuties: currentCustomsDuties.data,
 				currentMarkup: currentMarkup.data,
+				activeShippingDestinations: activeShippingDestinations.data,
 			}
 		});
 		yield put({

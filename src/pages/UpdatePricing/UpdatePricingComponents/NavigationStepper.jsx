@@ -31,11 +31,11 @@ export default function NavigationStepper() {
 		},
 		4: {
 			step: 4,
-			label: 'Set Product Discounts',
+			label: 'Set Markup Margin',
 		},
 		5: {
 			step: 5,
-			label: 'Set Product Promotions',
+			label: 'Submit',
 		},
 
 	};
@@ -55,7 +55,6 @@ export default function NavigationStepper() {
 			'& $line': {
 				backgroundImage:
 					`linear-gradient( 95deg,rgba(63,81,181,1.0) 0%,rgba(63,81,181,1.0) 50%,rgba(63,81,181,1.0) 100%)`,
-
 			},
 		},
 		line: {
@@ -68,13 +67,8 @@ export default function NavigationStepper() {
 
 
 	const handleStepperClick = (step) => {
-		console.log(`Ryan Here: handleStepperClick \n `, { step });
-
-		// TODO: Add logic to prevent from going out of range.
 		if (step < 1 || step > 5) return;
-
 		dispatch({ type: 'SET_PRICING_LOG_VIEW', payload: { updatePricingStep: step } });
-
 	}
 
 
@@ -110,10 +104,10 @@ export default function NavigationStepper() {
 				>
 					<ArrowLeftIcon /> Previous
 				</Button>
-				{/* //TODO: Add logic for when the button is at max increment and change it to submit.  */}
 				<Button
 					color="primary"
 					size="small"
+					disabled={viewState.updatePricingStep == 5}
 					onClick={() => handleStepperClick(viewState.updatePricingStep + 1)}
 				>
 					Next <ArrowRightIcon />

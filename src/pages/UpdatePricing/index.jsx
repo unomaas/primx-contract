@@ -14,6 +14,7 @@ import './UpdatePricing.css'
 
 import UpdateProductCosts from './UpdatePricingComponents/UpdateProductCosts';
 import UpdateShippingCosts from './UpdatePricingComponents/UpdateShippingCosts';
+import UpdateCustomsDuties from './UpdatePricingComponents/UpdateCustomsDuties';
 
 import TopLoadingDiv from '../components/TopLoadingDiv';
 
@@ -37,6 +38,7 @@ export default function index() {
 
 			{viewState.updatePricingStep == '1' && <UpdateProductCosts />}
 			{viewState.updatePricingStep == '2' && <UpdateShippingCosts />}
+			{viewState.updatePricingStep == '3' && <UpdateCustomsDuties />}
 		</div>
 
 
