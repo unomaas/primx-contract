@@ -60,10 +60,12 @@ router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
 router.get('/get-all-customs-duties-history', async (req, res) => {
 	try {
 		const sql = `
-			SELECT *
+			SELECT 
+				*,
+				TO_CHAR("cdh".date_saved, 'YYYY-MM') AS "date_saved"
 			FROM "customs_duties_history" AS "cdh"
 			JOIN "customs_duties" AS "cd" using ("custom_duty_id") 
-			ORDER BY "cdh".date_saved DESC, "cdh".custom_duty_id ASC;
+			ORDER BY "cdh".date_saved DESC, "cdh".custom_duty_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
@@ -78,14 +80,22 @@ router.get('/get-one-year-of-customs-duties-history', async (req, res) => {
 		const sql = `
 			SELECT 
 				*,
-				TO_CHAR("cdh".date_saved, 'YYYY-MM-DD') AS "date_saved"
+				TO_CHAR("cdh".date_saved, 'YYYY-MM') AS "date_saved"
 			FROM "customs_duties_history" AS "cdh"
 			JOIN "customs_duties" AS "cd" using ("custom_duty_id") 
 			WHERE "cdh".date_saved >= NOW() - INTERVAL '1 year'
-			ORDER BY "cdh".custom_duty_id ASC;
+			ORDER BY "cdh".date_saved DESC, "cdh".custom_duty_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
-		res.send(rows);
+		// ⬇ Make an object of results indexed by date_saved:
+		const results = {};
+		for (let row of rows) {
+			if (!results[row.date_saved]) {
+				results[row.date_saved] = [];
+			}; // End if
+			results[row.date_saved].push(row);
+		}; // End for loop
+		res.send(results);
 	} catch (error) {
 		console.error('Error in customs duties GET router', error);
 		res.sendStatus(500);

@@ -15,7 +15,7 @@ export default function UpdateShippingCosts() {
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
 	const shippingCosts = viewState.newShippingCosts;
 
-	// TODO: Ryan Here.  Need to update the pricing calculator to use the new shipping costs table.  Then need to update the POST for the save history log stuff.  Also need to update the table help descriptions in each new table. Also disable all the old update items in the admin portal. 
+	// TODO: Ryan Here. !!  Need to update the pricing calculator to use the new shipping costs table.  Then need to update the POST for the save history log stuff.  Also need to update the table help descriptions in each new table. Also disable all the old update items in the admin portal. Also need ot update all the shipping cost routes for the history table. Also make it so only one month can be saved at a time for history log. 
 
 
 	const [selectedRow, setSelectedRow] = useState(null);

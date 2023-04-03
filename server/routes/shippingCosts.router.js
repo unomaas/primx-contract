@@ -8,20 +8,6 @@ const format = require('pg-format');
 // GET route - gets shipping costs
 router.get('/get-current-shipping-costs', async (req, res) => {
 	try {
-	// 	{
-	// 		"shipping_cost_id": 4,
-	// 		"destination_id": 4,
-	// 		"dc_20ft": "4050",
-	// 		"dc_40ft": "4800",
-	// 		"fibers_20ft": "10250",
-	// 		"fibers_40ft": 14302,
-	// 		"cpea_20ft": "10250",
-	// 		"cpea_40ft": "14300",
-	// 		"flow_20ft": "10250",
-	// 		"flow_40ft": "14300",
-	// 		"destination_name": "California",
-	// 		"destination_country": "USA"
-	// }
 		const sql = `
 			SELECT 
 				sc.shipping_cost_id,
@@ -101,27 +87,28 @@ router.get('/get-all-shipping-cost-history', async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
-				"sch".shipping_cost_history_id,
-				"sch".shipping_cost_id,
-				"sch".shipping_cost,
-				"sch".date_saved,
-				"p".product_label,
-				"c".container_length_ft, 
-				"sd".destination_name,
-				"c".container_destination
-			FROM "shipping_cost_history" AS "sch"
-			JOIN "shipping_costs" AS "sc"
-				ON "sc".shipping_cost_id = "sch".shipping_cost_id
-			JOIN "shipping_destinations" AS "sd"
-				ON "sd".destination_id = "sc".destination_id
-			JOIN "product_containers" AS "pc"
-				ON "pc".product_container_id = "sc".product_container_id
-			JOIN "products" AS "p"
-				ON "p".product_id = "pc".product_id
-			JOIN "containers" AS "c"
-					ON "pc".container_id = "c".container_id
-			WHERE "sd".destination_active = TRUE
-			ORDER BY "sch".date_saved DESC, "sch".shipping_cost_id ASC;
+				sch.shipping_cost_history_id,
+				sch.shipping_cost_id,
+				sch.dc_20ft,
+				sch.dc_40ft,
+				sch.fibers_20ft,
+				sch.fibers_40ft,
+				sch.cpea_20ft,
+				sch.cpea_40ft,
+				sch.flow_20ft,
+				sch.flow_40ft,
+				TO_CHAR("sch".date_saved, 'YYYY/MM/DD') AS "date_saved",
+				sc.destination_id,
+				sd.destination_name,
+				sd.destination_country
+			FROM shipping_cost_history AS sch
+			JOIN shipping_costs AS sc USING(shipping_cost_id)
+			JOIN shipping_destinations AS sd USING(destination_id)
+			WHERE sd.destination_active = TRUE
+			ORDER BY
+				"sch".date_saved DESC,
+				"sd".destination_country DESC, 
+				"sd".destination_name ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
@@ -135,37 +122,47 @@ router.get('/get-one-year-of-shipping-cost-history', async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
-				"sch".shipping_cost_history_id,
-				"sch".shipping_cost_id,
-				"sch".shipping_cost,
-				TO_CHAR("sch".date_saved, 'MM/DD/YYYY') AS "date_saved",
-				"p".product_label,
-				"c".container_length_ft, 
-				"sd".destination_name,
-				"c".container_destination
-			FROM "shipping_cost_history" AS "sch"
-			JOIN "shipping_costs" AS "sc"
-				ON "sc".shipping_cost_id = "sch".shipping_cost_id
-			JOIN "shipping_destinations" AS "sd"
-				ON "sd".destination_id = "sc".destination_id
-			JOIN "product_containers" AS "pc"
-				ON "pc".product_container_id = "sc".product_container_id
-			JOIN "products" AS "p"
-				ON "p".product_id = "pc".product_id
-			JOIN "containers" AS "c"
-					ON "pc".container_id = "c".container_id
-			WHERE "sd".destination_active = TRUE
+				sch.shipping_cost_history_id,
+				sch.shipping_cost_id,
+				sch.dc_20ft,
+				sch.dc_40ft,
+				sch.fibers_20ft,
+				sch.fibers_40ft,
+				sch.cpea_20ft,
+				sch.cpea_40ft,
+				sch.flow_20ft,
+				sch.flow_40ft,
+				TO_CHAR("sch".date_saved, 'YYYY-MM') AS "date_saved",
+				sc.destination_id,
+				sd.destination_name,
+				sd.destination_country
+			FROM shipping_cost_history AS sch
+			JOIN shipping_costs AS sc USING(shipping_cost_id)
+			JOIN shipping_destinations AS sd USING(destination_id)
+			WHERE sd.destination_active = TRUE
 				AND "sch".date_saved > NOW() - INTERVAL '1 year'
-			ORDER BY "sch".shipping_cost_history_id ASC;
+			ORDER BY
+				"sch".date_saved DESC,
+				"sd".destination_country DESC, 
+				"sd".destination_name ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
-		res.send(rows);
+		// ⬇ Make an object of results indexed by date_saved:
+		const results = {};
+		for (let row of rows) {
+			if (!results[row.date_saved]) {
+				results[row.date_saved] = [];
+			}; // End if
+			results[row.date_saved].push(row);
+		}; // End for loop
+		res.send(results);
 	} catch (error) {
 		console.error('Error in shipping costs GET router', error);
 		res.sendStatus(500);
 	}; // End try/catch
 });
 
+// ! Deprecated. 
 router.get('/get-recent-shipping-cost-history', async (req, res) => {
 	try {
 		const sql = `
@@ -201,6 +198,7 @@ router.get('/get-recent-shipping-cost-history', async (req, res) => {
 	}; // End try/catch
 });
 
+// TODO: Update.
 router.get('/get-specific-shipping-cost-history', async (req, res) => {
 	const { date_saved, destination_id } = req.query;
 	try {
@@ -242,19 +240,28 @@ router.get('/get-specific-shipping-cost-history', async (req, res) => {
 // ⬇ POST route - adds shipping cost history
 router.post('/submit-shipping-cost-history', rejectUnauthenticated, async (req, res) => {
 	try {
-		// ⬇ Today's date in YYYY-MM-DD format: 
-		const today = new Date().toISOString().slice(0, 10);
+		// ⬇ Date in YYYY-MM-DD format: 
+		const date = req.body.date ? req.body.date : new Date().toISOString().slice(0, 10);
 		let sql = `
 			INSERT INTO "shipping_cost_history" (
-				"shipping_cost_id", "shipping_cost", "date_saved"
+				"shipping_cost_id", 
+				"dc_20ft", 
+				"dc_40ft",
+				"fibers_20ft",
+				"fibers_40ft",
+				"cpea_20ft",
+				"cpea_40ft",
+				"flow_20ft",
+				"flow_40ft",
+				"date_saved"
 			)
 			VALUES
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
-		for (let cost of req.body) {
+		for (let cost of req.body.data) {
 			sql += format(
-				`(%L::int, %L::decimal, NOW()), `,
-				cost.shipping_cost_id, cost.shipping_cost
+				`(%L::int, %L::decimal, %L::decimal, %L::decimal, %L::decimal, %L::decimal, %L::decimal, %L::decimal, %L::decimal, %L), `,
+				cost.shipping_cost_id, cost.dc_20ft, cost.dc_40ft, cost.fibers_20ft, cost.fibers_40ft, cost.cpea_20ft, cost.cpea_40ft, cost.flow_20ft, cost.flow_40ft, date
 			);
 		}; // End for loop
 		// ⬇ Remove the last comma and space:

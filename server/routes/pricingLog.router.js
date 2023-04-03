@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 const format = require('pg-format');
 
-router.get('/fetch-initial-load', rejectUnauthenticated, async (req, res) => {
+router.get('/update-pricing-initial-load', rejectUnauthenticated, async (req, res) => {
 	try {
 		const sql = `
 			SELECT 

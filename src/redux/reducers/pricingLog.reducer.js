@@ -6,7 +6,7 @@ const defaultViewState = {
 	pricingLogIsLoading: true,
 	updatePricingIsLoading: true,
 	updatePricingStep: 1,
-	newPricingObject: {},
+	// newPricingObject: {},
 };
 
 const viewState = (state = { ...defaultViewState }, action) => {
