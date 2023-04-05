@@ -1,12 +1,11 @@
 
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useStyles } from '../../../components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
-import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
+import { Button, MenuItem, Menu, TextField, Divider, Tooltip, Paper, InputAdornment } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HelpIcon from '@material-ui/icons/Help';
 import useCalculateProjectCost from '../../../hooks/useCalculateProjectCost';
 // import AdminUpdates from './AdminUpdates';
@@ -18,37 +17,16 @@ export default function UpdateMarkupMargin() {
 	//#region - State Variables Below: 
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	// const currentMarkup = useSelector(store => store.products.currentMarkupMargin);
-	// const markupHistoryRecent = useSelector(store => store.products.markupHistoryRecent);
-	// const markupHistory12Months = useSelector(store => store.products.markupHistory12Months);
-	// const markupIsLoading = useSelector(store => store.products.markupIsLoading);
-	// const shippingActiveDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
+
 
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
 	const { newShippingCosts, newProductCosts, newCustomsDuties, newMarkup, monthOptions } = viewState;
 	const { currentShippingCosts, currentProductCosts, currentCustomsDuties, currentMarkupMargin, shippingDestinations, pricingData12Months, productContainers, dosageRates } = dataState;
-	// const currentMarkup = useSelector(store => store.products.currentMarkupMargin);
-	// const currentMarkup = viewState.newMarkup;
-	// const shippingActiveDestinations = dataState.activeShippingDestinations;
+
 
 	const [rightSelectedMonth, setRightSelectedMonth] = useState(pricingData12Months['new']);
 	const [leftSelectedMonth, setLeftSelectedMonth] = useState(pricingData12Months['current']);
 
-
-
-
-	// if (rightSelectedMonth === null && leftSelectedMonth === null) {
-	// 	console.log(`Ryan Here 1: if check \n `, );
-
-	// 	setLeftSelectedMonth(pricingData12Months['current']);
-	// 	setRightSelectedMonth(pricingData12Months['new']);
-
-	// 	// rightSelectedMonth = pricingData12Months['new'];
-	// 	// leftSelectedMonth = pricingData12Months['current'];
-
-	// }; // End if
-
-	// ⬇ We need to set the 'new' pricing data and compare it against the 'current' pricing data:
 
 
 	function calculateNewPricingData() {
@@ -142,7 +120,7 @@ export default function UpdateMarkupMargin() {
 			sortable: false,
 		},
 		{
-			headerName: `60lbs/35kg Price: ${leftSelectedMonth.month_year_label}`,
+			headerName: `60lbs/35kg: ${leftSelectedMonth.month_year_label}`,
 			field: 'left_price_per_unit_75_50',
 			flex: 1,
 			headerClassName: classes.header,
@@ -152,7 +130,7 @@ export default function UpdateMarkupMargin() {
 			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
 		},
 		{
-			headerName: `68lbs/40kg Price: ${leftSelectedMonth.month_year_label}`,
+			headerName: `68lbs/40kg: ${leftSelectedMonth.month_year_label}`,
 			field: 'left_price_per_unit_90_60',
 			flex: 1,
 			headerClassName: classes.header,
@@ -162,7 +140,7 @@ export default function UpdateMarkupMargin() {
 			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
 		},
 		{
-			headerName: `60lbs/35kg Price: ${rightSelectedMonth.month_year_label}`,
+			headerName: `60lbs/35kg: ${rightSelectedMonth.month_year_label}`,
 			field: 'right_price_per_unit_75_50',
 			flex: 1,
 			headerClassName: classes.header,
@@ -172,7 +150,7 @@ export default function UpdateMarkupMargin() {
 			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
 		},
 		{
-			headerName: `68lbs/40kg Price: ${rightSelectedMonth.month_year_label}`,
+			headerName: `68lbs/40kg: ${rightSelectedMonth.month_year_label}`,
 			field: 'right_price_per_unit_90_60',
 			flex: 1,
 			headerClassName: classes.header,
@@ -261,6 +239,26 @@ export default function UpdateMarkupMargin() {
 			if (rightSelectedMonth.month_year_value == date) return;
 			setRightSelectedMonth(pricingData12Months[date]);
 		}; // End handleLogViewSelection
+
+		// let marginInputValueLabel = (newMarkup[0].margin_applied * 100);
+		// ! Ryan Here
+		// const markupInputRef = useRef(JSON.parse(JSON.stringify(newMarkup[0].margin_applied_label)));
+
+
+		const handleMarkupChange = (event) => {
+			const percentage = event.target.value;
+			const decimal = percentage / 100;
+
+			dispatch({
+				type: 'SET_PRICING_LOG_VIEW', payload: {
+					newMarkup: [{
+						"markup_id": 1,
+						"margin_applied": decimal,
+						"margin_applied_label": percentage,
+					}]
+				}
+			});
+		}; // End handleMarkupChange
 
 		return (
 			<GridToolbarContainer style={{ display: "block", width: "100%" }} >
@@ -354,16 +352,40 @@ export default function UpdateMarkupMargin() {
 
 					</div>
 
-					{/* <div
+					<div
 						style={{
-							flex: "1",
-							display: "flex",
-							justifyContent: "flex-end",
-							fontSize: "11px",
+							flex: "0.375",
+							fontSize: "12px",
 							fontFamily: "Lexend Tera",
 						}}
 					>
-					</div> */}
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+								width: "100%",
+								height: "35px",
+								color: "#3f51b5",
+							}}
+						>
+							Set Markup Margin:
+							<TextField
+								id="markup-input"
+								type="number"
+								color="primary"
+								style={{ width: "80px", marginLeft: "8px", marginTop: "3px" }}
+								InputProps={{
+									endAdornment: <InputAdornment position="end">%</InputAdornment>
+								}}
+								defaultValue={newMarkup[0].margin_applied_label}
+								onBlur={(event) => handleMarkupChange(event)}
+								onKeyPress={(event) => { if (event.key === 'Enter') handleMarkupChange(event); }}
+							/>
+						</div>
+
+
+					</div>
 				</div>
 
 			</GridToolbarContainer >
@@ -489,7 +511,7 @@ export default function UpdateMarkupMargin() {
 			elevation={3}
 			style={{
 				height: 'fit-content',
-				width: "1100px",
+				width: "1200px",
 				margin: "0 auto",
 			}}
 		>
@@ -512,6 +534,9 @@ export default function UpdateMarkupMargin() {
 
 
 const GridToolbarSelectDropdown = ({ month, otherMonth, handleViewSelection, viewState }) => {
+
+	console.log(`Ryan Here \n `, {month, otherMonth, handleViewSelection, viewState});
+
 	const { monthOptions } = viewState;
 	const [anchorEl, setAnchorEl] = useState(null);
 	return (
@@ -521,10 +546,11 @@ const GridToolbarSelectDropdown = ({ month, otherMonth, handleViewSelection, vie
 				aria-haspopup="true"
 				color="primary"
 				size="small"
-				style={{ marginBottom: "4px", width: "100%" }}
+				style={{ marginBottom: "4px", width: "100%", borderLeft: "1px solid #ccc", borderRight: "1px solid #ccc" }}
 				onClick={event => setAnchorEl(event.currentTarget)}
+				
 			>
-				{month.month_year_label}{month.month_year_label.slice(-3) === "ing" ? "" : " Pricing"} <ArrowDropDownIcon />
+				{month.month_year_label}{month.month_year_label.slice(-3) === "ing" ? "" : " Pricing"} at {month.pricing.currentMarkup[0].margin_applied_label}% <ArrowDropDownIcon />
 			</Button>
 			<Menu
 				anchorEl={anchorEl}

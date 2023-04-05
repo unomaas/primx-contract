@@ -31,36 +31,44 @@ export default function UpdateCustomsDuties() {
 			headerClassName: classes.header
 		},
 		{
-			field: 'USA_percent',
+			field: 'usa_percent_label',
 			headerName: 'USA',
 			flex: 1,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {
-				return `${(params.value * 100)}%`;
+				return `${params.value}%`;
 			},
 			disableColumnMenu: true,
 			type: 'number',
 			editable: true,
 		},
 		{
-			field: 'CAN_percent',
+			field: 'can_percent_label',
 			headerName: 'Canada',
 			flex: 1,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {
-				return `${(params.value * 100)}%`;
+				return `${params.value}%`;
 			},
 			disableColumnMenu: true,
 			type: 'number',
-			// editable: true,/
+			editable: true,
 		},
 	]; // End columns
 	//#endregion - End State Variables.
 
 	//#region - Table Setup Below:
-	//rows are from the shipping costs reducer
+	// let rows = [];
+	// if (customsDuties.length > 0) {
+	// 	customsDuties.forEach((duty) => {
+	// 		duty.usa_percent_label = (duty.usa_percent * 100);
+	// 		duty.CAN_percent_label = (duty.can_percent * 100);
+	// 		rows.push(duty)
+	// 	}); // End customsDuties.forEach
+	// } // End if
+
 	let rows = customsDuties;
-	
+
 
 	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
@@ -184,16 +192,23 @@ export default function UpdateCustomsDuties() {
 	//#endregion - Custom Table Components.
 	//#endregion - Table Setup. 
 
-		// ⬇ Submit handler for in-line cell edits on the data grid:
-		const handleInCellEditSubmit = ({ id, field, value }) => {
-			const duty = customsDuties.find(duty => duty.custom_duty_id === id);
-			// ⬇ If the value is the same as the original, don't submit the edit:
-			if (duty[field] === value) return;
-			// ⬇ If the value is different, modify the product object:
-			duty[field] = value;
+	// ⬇ Submit handler for in-line cell edits on the data grid:
+	const handleInCellEditSubmit = ({ id, field, value }) => {
+		const duty = customsDuties.find(duty => duty.custom_duty_id === id);
 
-			console.log(`Ryan Here: \n `, { id, field, value, duty });
-		}; // End handleInCellEditSubmit
+		// ⬇ If the value is the same as the original, don't submit the edit:
+		if (duty[field] === value) return;
+
+		let percentage = value;
+		let decimal = value / 100;
+		let value_field = field.slice(0, -6);
+
+		// ⬇ If the value is different, modify the product object:
+		duty[field] = value;
+		duty[value_field] = decimal;
+
+		console.log(`Ryan Here:  handleInCellEditSubmit\n `, { id, field, value, duty, percentage, decimal, value_field });
+	}; // End handleInCellEditSubmit
 
 	// ⬇ Rendering below: 
 	return (

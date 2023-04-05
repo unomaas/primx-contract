@@ -33,7 +33,7 @@ export default function CustomsDutiesTable() {
 			headerClassName: classes.header
 		},
 		{
-			field: 'USA_percent',
+			field: 'usa_percent',
 			headerName: 'USA',
 			flex: 1,
 			headerClassName: classes.header,
@@ -46,7 +46,7 @@ export default function CustomsDutiesTable() {
 			// editable: true,
 		},
 		{
-			field: 'CAN_percent',
+			field: 'can_percent',
 			headerName: 'Canada',
 			flex: 1,
 			headerClassName: classes.header,
@@ -478,9 +478,9 @@ export default function CustomsDutiesTable() {
 											}}
 										>
 											<TextField
-												defaultValue={(cost.USA_percent) * 100}
+												defaultValue={(cost.usa_percent) * 100}
 												type="number"
-												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'USA_percent')}
+												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'usa_percent')}
 												size="small"
 												InputProps={{
 													endAdornment: <InputAdornment position="end">%</InputAdornment>,
@@ -493,9 +493,9 @@ export default function CustomsDutiesTable() {
 											}}
 										>
 											<TextField
-												defaultValue={(cost.CAN_percent) * 100}
+												defaultValue={(cost.can_percent) * 100}
 												type="number"
-												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'CAN_percent')}
+												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'can_percent')}
 												size="small"
 												InputProps={{
 													endAdornment: <InputAdornment position="end">%</InputAdornment>,

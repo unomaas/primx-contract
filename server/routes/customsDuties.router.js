@@ -8,7 +8,12 @@ const format = require('pg-format');
 router.get('/fetch-customs-duties', async (req, res) => {
 	try {
 		const sql = `
-			SELECT *
+			SELECT 
+				*,
+				usa_percent::REAL,
+				can_percent::REAL,
+				(usa_percent * 100)::REAL AS usa_percent_label,
+				(can_percent * 100)::REAL AS can_percent_label
 			FROM "customs_duties" AS "cd"
 			ORDER BY "cd".custom_duty_id ASC;
 		`; // End sql
@@ -26,22 +31,22 @@ router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
 		let sql = `
 			UPDATE "customs_duties" AS cd 
 			SET 
-				"USA_percent" = v.USA_percent,
-				"CAN_percent" = v.CAN_percent
+				"usa_percent" = v.usa_percent,
+				"can_percent" = v.can_percent
 			FROM (VALUES 
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of req.body) {
 			sql += format(
 				`(%L::int, %L::decimal, %L::decimal), `,
-				cost.custom_duty_id, cost.USA_percent, cost.CAN_percent
+				cost.custom_duty_id, cost.usa_percent, cost.can_percent
 			); // End format
 		}; // End for loop
 		// ⬇ Remove the last comma and space:
 		sql = sql.slice(0, -2);
 		// ⬇ Add the closing parentheses:
 		sql += `
-			) AS v(custom_duty_id, USA_percent, CAN_percent)
+			) AS v(custom_duty_id, usa_percent, can_percent)
 			WHERE v.custom_duty_id = cd.custom_duty_id;
 		`; // End sql
 		// ⬇ Send the query to the database:
@@ -62,7 +67,8 @@ router.get('/get-all-customs-duties-history', async (req, res) => {
 		const sql = `
 			SELECT 
 				*,
-				TO_CHAR("cdh".date_saved, 'YYYY-MM') AS "date_saved"
+				TO_CHAR("cdh".date_saved, 'YYYY-MM') AS "date_saved",
+				TO_CHAR(cdh.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM "customs_duties_history" AS "cdh"
 			JOIN "customs_duties" AS "cd" using ("custom_duty_id") 
 			ORDER BY "cdh".date_saved DESC, "cdh".custom_duty_id DESC;
@@ -79,12 +85,15 @@ router.get('/get-one-year-of-customs-duties-history', async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
-				*,
-				TO_CHAR("cdh".date_saved, 'YYYY-MM') AS "date_saved"
-			FROM "customs_duties_history" AS "cdh"
-			JOIN "customs_duties" AS "cd" using ("custom_duty_id") 
-			WHERE "cdh".date_saved >= NOW() - INTERVAL '1 year'
-			ORDER BY "cdh".date_saved DESC, "cdh".custom_duty_id DESC;
+				custom_duty_history_id,
+				custom_duty_id,
+				usa_percent,
+				can_percent,
+				TO_CHAR(date_saved, 'YYYY-MM') AS date_saved,
+				TO_CHAR(date_saved, 'YYYY-MM-DD') AS date_saved_full
+			FROM customs_duties_history AS cdh
+			WHERE cdh.date_saved >= NOW() - INTERVAL '1 year'
+			ORDER BY cdh.date_saved DESC, cdh.custom_duty_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		// ⬇ Make an object of results indexed by date_saved:
@@ -143,7 +152,7 @@ router.post('/submit-customs-duties-history', rejectUnauthenticated, async (req,
 		const today = new Date().toISOString().slice(0, 10);
 		let sql = `
 			INSERT INTO "customs_duties_history" (
-				"custom_duty_id", "USA_percent", "CAN_percent", "date_saved"
+				"custom_duty_id", "usa_percent", "can_percent", "date_saved"
 			)
 			VALUES
 		`; // End sql
@@ -151,7 +160,7 @@ router.post('/submit-customs-duties-history', rejectUnauthenticated, async (req,
 		for (let cost of req.body) {
 			sql += format(
 				`(%L::int, %L::decimal, %L::decimal, NOW()), `,
-				cost.custom_duty_id, cost.USA_percent, cost.CAN_percent
+				cost.custom_duty_id, cost.usa_percent, cost.can_percent
 			); // End format
 		}; // End for loop
 		// ⬇ Remove the last comma and space:

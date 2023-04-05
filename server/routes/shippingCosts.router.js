@@ -97,7 +97,8 @@ router.get('/get-all-shipping-cost-history', async (req, res) => {
 				sch.cpea_40ft,
 				sch.flow_20ft,
 				sch.flow_40ft,
-				TO_CHAR("sch".date_saved, 'YYYY/MM/DD') AS "date_saved",
+				TO_CHAR("sch".date_saved, 'YYYY-MM') AS "date_saved",
+				TO_CHAR(sch.date_saved, 'YYYY-MM-DD') AS date_saved_full,
 				sc.destination_id,
 				sd.destination_name,
 				sd.destination_country
@@ -133,6 +134,7 @@ router.get('/get-one-year-of-shipping-cost-history', async (req, res) => {
 				sch.flow_20ft,
 				sch.flow_40ft,
 				TO_CHAR("sch".date_saved, 'YYYY-MM') AS "date_saved",
+				TO_CHAR(sch.date_saved, 'YYYY-MM-DD') AS date_saved_full,
 				sc.destination_id,
 				sd.destination_name,
 				sd.destination_country

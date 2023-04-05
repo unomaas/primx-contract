@@ -44,7 +44,7 @@ export default function UpdatePricingSteps() {
 				},
 				{
 					headerName: 'USA Duty (%)',
-					field: 'USA_percent',
+					field: 'usa_percent',
 					flex: 1,
 					headerClassName: classes.header,
 					valueFormatter: (params) => {
@@ -54,7 +54,7 @@ export default function UpdatePricingSteps() {
 				},
 				{
 					headerName: 'CAN Duty (%)',
-					field: 'CAN_percent',
+					field: 'can_percent',
 					flex: 1,
 					headerClassName: classes.header,
 					valueFormatter: (params) => {

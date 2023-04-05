@@ -187,7 +187,6 @@ export default function UpdateProductCosts() {
 
 	// ⬇ Rendering below: 
 	return (
-		<div>
 			<div
 				style={{
 					display: 'flex',
@@ -197,6 +196,7 @@ export default function UpdateProductCosts() {
 				<Paper
 					elevation={3}
 					className={classes.productsGrid}
+					
 				>
 					<DataGrid
 						className={classes.dataGridTables}
@@ -217,7 +217,6 @@ export default function UpdateProductCosts() {
 				</Paper>
 
 			</div>
-		</div>
 	)
 }
 

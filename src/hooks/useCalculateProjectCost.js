@@ -36,25 +36,25 @@ export default function useCalculateProjectCost(estimate, options) {
 		primxDcProductInfo = products.find(product => product.product_id === 1);
 		primxDcDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 1);
 		primxDcDosageRateInfo.dosage_rate = primxDcDosageRateInfo.lbs_y3;
-		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).USA_percent;
+		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).usa_percent;
 
 		primxSteelFiberProductInfo = products.find(product => product.product_id === 4);
 		primxSteelFiberDosageRateInfo_75_50 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3);
 		primxSteelFiberDosageRateInfo_90_60 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4);
 		primxSteelFiberDosageRateInfo_75_50.dosage_rate = primxSteelFiberDosageRateInfo_75_50.lbs_y3;
 		primxSteelFiberDosageRateInfo_90_60.dosage_rate = primxSteelFiberDosageRateInfo_90_60.lbs_y3;
-		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).USA_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).USA_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).usa_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).usa_percent;
 
 		primxFlowProductInfo = products.find(product => product.product_id === 3);
 		primxFlowDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 3);
 		primxFlowDosageRateInfo.dosage_rate = primxFlowDosageRateInfo.lbs_y3;
-		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).USA_percent;
+		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).usa_percent;
 
 		primxCpeaProductInfo = products.find(product => product.product_id === 8);
 		primxCpeaDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 8);
 		primxCpeaDosageRateInfo.dosage_rate = primxCpeaDosageRateInfo.lbs_y3;
-		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).USA_percent;
+		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).usa_percent;
 
 		primxUltraCureProductInfo = products.find(product => product.product_id === 6);
 
@@ -63,25 +63,25 @@ export default function useCalculateProjectCost(estimate, options) {
 		primxDcProductInfo = products.find(product => product.product_id === 2);
 		primxDcDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 2);
 		primxDcDosageRateInfo.dosage_rate = primxDcDosageRateInfo.kg_m3;
-		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).CAN_percent;
+		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).can_percent;
 
 		primxSteelFiberProductInfo = products.find(product => product.product_id === 5);
 		primxSteelFiberDosageRateInfo_75_50 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5);
 		primxSteelFiberDosageRateInfo_90_60 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6);
 		primxSteelFiberDosageRateInfo_75_50.dosage_rate = primxSteelFiberDosageRateInfo_75_50.kg_m3;
 		primxSteelFiberDosageRateInfo_90_60.dosage_rate = primxSteelFiberDosageRateInfo_90_60.kg_m3;
-		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).CAN_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).CAN_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).can_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).can_percent;
 
 		primxFlowProductInfo = products.find(product => product.product_id === 3);
 		primxFlowDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 3);
 		primxFlowDosageRateInfo.dosage_rate = primxFlowDosageRateInfo.kg_m3;
-		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).CAN_percent;
+		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).can_percent;
 
 		primxCpeaProductInfo = products.find(product => product.product_id === 8);
 		primxCpeaDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 8);
 		primxCpeaDosageRateInfo.dosage_rate = primxCpeaDosageRateInfo.kg_m3;
-		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).CAN_percent;
+		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).can_percent;
 
 		primxUltraCureProductInfo = products.find(product => product.product_id === 7);
 	}; // End if
