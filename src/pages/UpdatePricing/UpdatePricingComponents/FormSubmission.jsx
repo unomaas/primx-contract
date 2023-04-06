@@ -37,6 +37,10 @@ export default function FormSubmission() {
 				newShippingCosts: viewState.newShippingCosts,
 				newProductCosts: viewState.newProductCosts,
 				newMarkup: viewState.newMarkup,
+				currentCustomsDuties: dataState.currentCustomsDuties,
+				currentShippingCosts: dataState.currentShippingCosts,
+				currentProductCosts: dataState.currentProductCosts,
+				currentMarkup: dataState.currentMarkup,
 			}
 		})
 	};

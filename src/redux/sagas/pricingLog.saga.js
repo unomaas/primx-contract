@@ -7,6 +7,8 @@ import {
 
 import useCalculateProjectCost from '../../hooks/useCalculateProjectCost';
 
+
+
 const errorText = 'Error in Pricing Log Saga: ';
 
 function* pricingLogSaga() {
@@ -59,7 +61,6 @@ function* updatePricingInitialLoad() {
 		const shippingCostHistory12Months = yield axios.get(`/api/shippingcosts/get-one-year-of-shipping-cost-history`);
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
-		console.log(`Ryan Here 1: updatePricingInitialLoad \n `, { currentCustomsDuties: currentCustomsDuties.data, currentMarkup: currentMarkup.data });
 
 		//#region - Calculate historical pricing data for 12 months: 
 		const monthHolderObject = {
@@ -100,7 +101,6 @@ function* updatePricingInitialLoad() {
 			}; // End if
 		}); // End forEach
 
-		console.log(`Ryan Here 2: \n `, { monthHolderObject: monthHolderObject, markupHistory12Months: markupHistory12Months.data});
 		// ⬇ Create a double loop.  First loop is each month in the monthHolderObject.  Second loop is each shippingDestination in the shippingDestinations.data array. 
 		for (const i in monthHolderObject) {
 			const month = monthHolderObject[i];
@@ -184,7 +184,6 @@ function* updatePricingInitialLoad() {
 			});
 		}; // End if/else
 
-		console.log(`Ryan Here: \n `, { nextMonth, nextMonthLabel, thisMonth, thisMonthLabel, monthHolderObject, saveMonthOptions });
 		// ⬇ Sort saveMonthOptions by date:
 		saveMonthOptions.sort((a, b) => {
 			const aDate = new Date(a.value);
@@ -227,16 +226,26 @@ function* updatePricingInitialLoad() {
 
 
 function* submitNewPricingChanges(action) {
-	console.log(`Ryan Here:  submitNewPricingChanges \n `, action.payload);
+	console.log(`Ryan Here:  submitNewPricingChanges \n `, { payload: action.payload });
 	try {
-		
+		yield put({ type: "SHOW_TOP_LOADING_DIV" });
 
+		// ⬇ Submit the new pricing changes:
+		const result = yield axios.post(`/api/pricingLog/submit-new-pricing-changes`, action.payload);
 
-
-		return;
+		yield put({
+			type: 'SET_PRICING_LOG_VIEW', payload: {
+				updatePricingIsLoading: true,
+				updatePricingStep: 1,
+			}
+		});
+		yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
+		yield put({ type: "HIDE_TOP_LOADING_DIV" });
+		yield put({ type: 'UPDATE_PRICING_INITIAL_LOAD' });
 
 	} catch (error) {
 		console.error(errorText, error);
+		yield put({ type: "HIDE_TOP_LOADING_DIV" });
 		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
 	}; // End try/catch
 } // End submitNewPricingChanges
