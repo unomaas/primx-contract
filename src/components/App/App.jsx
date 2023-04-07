@@ -14,8 +14,8 @@ import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx';
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
 import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
 // import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
-import AdminUpdateMarkup from '../AdminUpdates/AdminUpdateMarkup';
-import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
+import AdminUpdateMarkup from '../LegacyComponents/AdminUpdateMarkup';
+import AdminUpdateShipping from '../LegacyComponents/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
 import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
 import MuiBackdropManager from '../MuiBackdropManager/MuiBackdropManager';
@@ -158,21 +158,21 @@ function App() {
 								<AdminUpdateMaterials />
 							</AdminRoute> */}
 
-							<AdminRoute exact path="/AdminUpdateMarkup" >
+							{/* <AdminRoute exact path="/AdminUpdateMarkup" >
 								<AdminUpdateMarkup />
-							</AdminRoute>
+							</AdminRoute> */}
 
 							<AdminRoute exact path="/AdminUpdateDestinations" >
 								<AdminUpdateDestinations />
 							</AdminRoute>
 
-							<AdminRoute exact path="/AdminUpdateCustoms" >
+							{/* <AdminRoute exact path="/AdminUpdateCustoms" >
 								<AdminUpdateCustoms />
-							</AdminRoute>
+							</AdminRoute> */}
 
-							<AdminRoute exact path="/AdminUpdateShipping" >
+							{/* <AdminRoute exact path="/AdminUpdateShipping" >
 								<AdminUpdateShipping />
-							</AdminRoute>
+							</AdminRoute> */}
 
 							<AdminRoute exact path="/AdminOrders">
 								<AdminOrders />

@@ -15,7 +15,17 @@ export default function UpdateShippingCosts() {
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
 	const shippingCosts = viewState.newShippingCosts;
 
-	// TODO: Ryan Here. !!  Need to update the pricing calculator to use the new shipping costs table.  Then need to update the POST for the save history log stuff.  Also need to update the table help descriptions in each new table. Also disable all the old update items in the admin portal. Also need ot update all the shipping cost routes for the history table. Also make it so only one month can be saved at a time for history log. 
+	// TODO: Ryan Here. !!  
+	// // Need to update the pricing calculator to use the new shipping costs table.  
+	// // Then need to update the POST for the save history log stuff.  
+	// // Also need to update the table help descriptions in each new table. 
+	// // Also disable all the old update items in the admin portal. 
+	// // Also need ot update all the shipping cost routes for the history table. 
+	// // Also make it so only one month can be saved at a time for history log. 
+	// TODO: Add a modal to the shipping destinations and make it so they have to enter shipping costs for anything that's activated. 
+	// TODO: Check the Pricing Log tables and update it. Specifically the date saved filter seems off. And the shipping cost table needs to be updated. 
+	// TODO: Check that estimate pricing and combining still works. 
+	// TODO: Look at removing all the null values from the old calculations. (Low Priority)
 
 
 	const [selectedRow, setSelectedRow] = useState(null);
@@ -175,7 +185,7 @@ export default function UpdateShippingCosts() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied shipping costs to only the active destinations.<br /><br />Click a row to select it.  Click again to deselect.  Exporting with a row selected will only export that single row.<br /><br />If you do not see a destination here, it is not active.  Please go to "Shipping Destinations" to manage destination active statuses.<br /><br />To save the current costs to the Pricing History Log for this month, first select a row and then click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but please be aware this will create more than one entry in the Pricing History Log for this month.<br /><br />To change the costs for any destination, a row must be selected and costs must be saved for this month already. Enter in the new costs and click "Submit".<br /><br />The Destination Filter in the top-right will narrow the results to just the selected destination.</p>}
+					title={<p>This table shows the currently applied shipping costs to each active destination, for each product, in a 20ft or 40ft trailer.<br /><br />To edit the shipping cost for pricing going forward, double-click on the desired cell.<br /><br />You are able to go forward and backward in the navigation stepper to see the effects of any changes shown in Step 4.</p>}
 					placement="right-start"
 					arrow
 				>
@@ -261,7 +271,7 @@ export default function UpdateShippingCosts() {
 					fontSize: "12px",
 					fontFamily: "Lexend Tera",
 				}}>
-					Current Shipping Costs
+					Shipping Costs
 				</div>
 
 				<div style={{

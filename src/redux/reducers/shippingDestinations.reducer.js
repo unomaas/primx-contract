@@ -24,7 +24,17 @@ const shippingAllDestinations = (state = [], action) => {
 	}
 }
 
+export const showEditModal = (state = false, action) => {
+	switch (action.type) {
+		case 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL':
+			return action.payload;
+		default:
+			return state;
+	} // End switch
+}; // End 
+
 export default combineReducers({
 	shippingActiveDestinations,
 	shippingAllDestinations,
+	showEditModal,
 });

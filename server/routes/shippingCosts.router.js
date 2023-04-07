@@ -200,7 +200,6 @@ router.get('/get-recent-shipping-cost-history', async (req, res) => {
 	}; // End try/catch
 });
 
-// TODO: Update.
 router.get('/get-specific-shipping-cost-history', async (req, res) => {
 	const { date_saved, destination_id } = req.query;
 	try {

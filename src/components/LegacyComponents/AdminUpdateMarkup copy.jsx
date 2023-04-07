@@ -8,7 +8,7 @@ import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornmen
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HelpIcon from '@material-ui/icons/Help';
-import AdminUpdates from './AdminUpdates';
+import AdminUpdates from '../AdminUpdates/AdminUpdates';
 
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.

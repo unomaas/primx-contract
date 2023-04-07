@@ -77,7 +77,7 @@ export default function UpdateCustomsDuties() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied custom duties percentages.<br /><br />To save the current customs duties to the Pricing History Log for this month, click "Actions", then click "Save Customs To History Log".  You will be able to save the current customs multiple times, but please be aware this will create more than one entry in the Pricing History Log for this month.</p>}
+					title={<p>This table shows the currently applied Customs percentage applied to each product.<br /><br />To edit the percentage for pricing going forward, double-click on the desired cell.<br /><br />You are able to go forward and backward in the navigation stepper to see the effects of any changes shown in Step 4.</p>}
 					placement="right-start"
 					arrow
 				>

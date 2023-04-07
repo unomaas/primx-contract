@@ -53,9 +53,9 @@ function AdminLandingPage() {
         Go
       </Button>
 
-			<h3>View Pricing Log</h3>
+			<h3>Set New Pricing</h3>
       <Button
-        onClick={() => { history.push('./PricingLog') }}
+        onClick={() => { history.push('./UpdatePricing') }}
         variant="contained"
         color="primary"
         className={classes.LexendTeraFont11}
@@ -63,9 +63,9 @@ function AdminLandingPage() {
         Go
       </Button>
 
-			<h3>Set New Pricing</h3>
+			<h3>View Pricing Log</h3>
       <Button
-        onClick={() => { history.push('./UpdatePricing') }}
+        onClick={() => { history.push('./PricingLog') }}
         variant="contained"
         color="primary"
         className={classes.LexendTeraFont11}

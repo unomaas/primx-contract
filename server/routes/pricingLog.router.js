@@ -45,16 +45,10 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 		currentProductCosts,
 		currentMarkup,
 	} = req.body;
-	// TODO: Post all the new costs to the tables.  Save all the current(now old) costs to the history logs.  Do it all in a postgres transaction.  We also need logic for if they're saving to a month already saved, not saving at all, or saving to a new month. 
-	// ! Something like if (monthToSaveTo != '-1') { ... } else { ... }
 
 	// ⬇ Generate today in YYYY-MM-DD format with time zone:
 	const today = new Date().toISOString().slice(7, 10);
 	let dateToSaveTo = `${monthToSaveTo}${today}`
-
-	console.log(`Ryan Here: \n `, {});
-
-
 
 	try {
 		// ⬇ Default logic assumptions: 
@@ -320,41 +314,20 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 		`;
 
 		if (savingPricesToHistoryLog && !overwritingAnExistingMonth) {
-			fullQuery += `
-				-- ⬇ Saving to history log on a new month entry:
-			`; // End sql
 			fullQuery += currentCustomsDutiesSql + currentShippingCostsSql + currentProductCostsSql + currentMarkupSql;
 		}; // End if
 
 		if (savingPricesToHistoryLog && overwritingAnExistingMonth) {
-			fullQuery += `
-				-- ⬇ Saving to history log, but overwriting an existing month:
-			`; // End sql
 			fullQuery += overwriteCustomsDutiesSql + overwriteShippingCostsSql + overwriteProductCostsSql + overwriteMarkupSql;
 		}; // End if
 
 		// ⬇ We're always going to be saving the new prices to be current:
-		fullQuery += ` 
-			\n\n\n
-			-- ⬇ Saving the new prices to be current: ***IGNORE BELOW THIS, CONFIRMED TO BE WORKING*** 
-			\n\n\n
-		`; // End sql
 		fullQuery += newCustomsDutiesSql + newShippingCostsSql + newProductCostsSql + newMarkupSql;
 
 		fullQuery += `
 			COMMIT;
 		`; // End fullQuery
 		//#endregion - Full query building above.
-
-		console.log(`Ryan Here: End of Command \n \n `, {
-			savingPricesToHistoryLog,
-			overwritingAnExistingMonth,
-			monthToSaveTo,
-			dateToSaveTo,
-			// ⬇ Confirmed that newSql queries are working.  Need to test the overwrite and the non-overwrite.
-			fullQuery,
-
-		});
 
 		// ⬇ Now we run the full query:
 		await pool.query(fullQuery);

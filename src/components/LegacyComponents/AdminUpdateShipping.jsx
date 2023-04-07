@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 //components
-import AdminUpdates from './AdminUpdates';
-import UpdateShippingCostsGrid from './UpdateShippingCostsGrid';
+import AdminUpdates from '../AdminUpdates/AdminUpdates';
+// import UpdateShippingCostsGrid from '../LegacyComponents/UpdateShippingCostsGrid';
 
 //imports for MUI
 import { makeStyles } from '@material-ui/core/styles';

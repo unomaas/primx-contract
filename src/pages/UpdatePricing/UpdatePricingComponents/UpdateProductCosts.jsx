@@ -54,7 +54,7 @@ export default function UpdateProductCosts() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied product self costs.<br /><br />To edit the product self costs, first you must save the current costs to the Pricing History Log for this month.<br /><br />To do that, click "Actions", then click "Save Costs".  You will be able to save the current costs multiple times, but please be aware this will create more than one entry in the Pricing History Log for this month.</p>}
+					title={<p>This table shows the currently applied product self costs.<br /><br />To edit the product self cost for pricing going forward, double-click on the desired cell.<br /><br />You are able to go forward and backward in the navigation stepper to see the effects of any changes shown in Step 4.</p>}
 					placement="right-start"
 					arrow
 				>

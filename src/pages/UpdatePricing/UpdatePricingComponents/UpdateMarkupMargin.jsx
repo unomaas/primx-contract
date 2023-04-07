@@ -202,7 +202,7 @@ export default function UpdateMarkupMargin() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the currently applied markup margin percentage.<br /><br />To edit the markup margin, first you must save the current markup to the Pricing History Log for this month.<br /><br />To do that, click "Actions", then click "Save Markup".  You will be able to save the current costs multiple times, but please be aware this will create more than one entry in the Pricing History Log for this month.</p>}
+					title={<p>This table shows the currently applied markup margin percentage.<br /><br />To edit the markup margin, please use the number input field in the top right of the table, to the right of "Set Markup Margin".<br /><br />This table also allows you to view the pricing per unit, and compare it to the new pricing per unit. You are also able to select a different month to compare to, by clicking on the buttons in the header.<br /><br />Please note the difference in price, shown as a percentage, on the right-side of the table is the <b>absolute difference</b> between the two prices, meaning it will not show if the difference is positive or negative.</p>}
 					placement="right-start"
 					arrow
 				>
