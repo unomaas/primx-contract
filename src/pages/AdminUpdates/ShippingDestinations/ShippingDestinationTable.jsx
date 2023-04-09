@@ -285,13 +285,6 @@ export default function ShippingDestinationTable() {
 	//#endregion - Table Setup. 
 
 
-	console.log(`Ryan Here: \n `, {
-		selectedRow,
-		// shippingCosts,
-		shippingDestinations,
-
-	});
-
 	// ⬇ Rendering below: 
 	return (
 		<Paper

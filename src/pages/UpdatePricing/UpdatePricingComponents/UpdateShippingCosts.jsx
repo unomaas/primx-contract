@@ -22,7 +22,7 @@ export default function UpdateShippingCosts() {
 	// // Also disable all the old update items in the admin portal. 
 	// // Also need ot update all the shipping cost routes for the history table. 
 	// // Also make it so only one month can be saved at a time for history log. 
-	// TODO: Add a modal to the shipping destinations and make it so they have to enter shipping costs for anything that's activated. 
+	// // TODO: Add a modal to the shipping destinations and make it so they have to enter shipping costs for anything that's activated. 
 	// TODO: Check the Pricing Log tables and update it. Specifically the date saved filter seems off. And the shipping cost table needs to be updated. 
 	// TODO: Check that estimate pricing and combining still works. 
 	// TODO: Look at removing all the null values from the old calculations. (Low Priority)

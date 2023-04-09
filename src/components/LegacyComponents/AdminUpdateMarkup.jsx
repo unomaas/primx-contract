@@ -52,17 +52,6 @@ export default function AdminUpdateMarkup() {
 	const leftTableData = markupHistory12Months[leftSelectedMonth];
 	const rightTableData = markupHistory12Months[rightSelectedMonth];
 
-	// const 
-
-	// console.log(`Ryan Here: In App 2 \n `, {
-	// 	markupHistory12Months,
-	// 	markupHistoryRecent,
-	// 	currentMarkup,
-	// 	rightSelectedMonth,
-	// 	leftSelectedMonth,
-	// 	leftTableData,
-	// 	rightTableData
-	// });
 
 	let rows = [];
 

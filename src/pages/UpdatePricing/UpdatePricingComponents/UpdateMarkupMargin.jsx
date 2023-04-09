@@ -535,8 +535,6 @@ export default function UpdateMarkupMargin() {
 
 const GridToolbarSelectDropdown = ({ month, otherMonth, handleViewSelection, viewState }) => {
 
-	console.log(`Ryan Here \n `, {month, otherMonth, handleViewSelection, viewState});
-
 	const { monthOptions } = viewState;
 	const [anchorEl, setAnchorEl] = useState(null);
 	return (

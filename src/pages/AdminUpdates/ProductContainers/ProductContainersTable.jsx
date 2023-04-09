@@ -71,6 +71,8 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
+			// ⬇ Format cell with a comma:
+			valueFormatter: (params) => { return params.value.toLocaleString(); },
 		},
 		{
 			field: 'gross_weight_of_pallet',
@@ -80,6 +82,7 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
+			valueFormatter: (params) => { return params.value.toLocaleString(); },
 		},
 		{
 			field: 'net_weight_of_pallet',
@@ -89,6 +92,7 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
+			valueFormatter: (params) => { return params.value.toLocaleString(); },
 		},
 	]; // End columns
 	//#endregion - End State Variables.
@@ -430,7 +434,7 @@ export default function ProductContainersTable() {
 						padding: '1rem',
 						width: "fit-content",
 						height: "fit-content",
-						marginTop: "-300px",	
+						marginTop: "-300px",
 					}}>
 						<div
 							style={{

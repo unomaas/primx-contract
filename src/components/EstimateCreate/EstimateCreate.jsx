@@ -474,7 +474,6 @@ const showTables = useSelector(store => store.estimatesReducer.tableState);
 											</TableCell>
 										</TableRow>
 
-										{/* //! Ryan Here, I think this can be removed.  Don't do it until everything else has been tested to be working though.  */}
 										{/* <TableRow hover={true}>
 											<TableCell><b>Shipping Country:</b></TableCell>
 											<TableCell>

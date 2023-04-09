@@ -93,9 +93,6 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	// ⬇ PrimX DC 20ft & 40ft:
 	const primxDc20ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.dc_20ft || "0";
-
-	console.log(`Ryan Here in useCalc: testing the new destination \n `, {shippingCosts, estimate,primxDc20ftCostInfo} );
-
 	const primxDc20ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '20' && (container.product_id == 1 || container.product_id == 2));
 	const primxDc40ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.dc_40ft || "0";
 	const primxDc40ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '40' && (container.product_id == 1 || container.product_id == 2));
