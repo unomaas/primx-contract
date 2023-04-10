@@ -347,9 +347,7 @@ const ShippingCostsEditModal = ({ selectedRow, handleSelectionModelChange }) => 
 
 
 	const handleShippingCostChange = (value, key) => {
-		// editData[key] = {
-		// 	[key]: value.includes('.') ? parseFloat(value).toFixed(2) : parseFloat(value),
-		// }; // End editData
+
 		if (value <= 0) {
 			value = 0;
 		} else if (value >= 0 && value.includes('.')) {
@@ -358,7 +356,6 @@ const ShippingCostsEditModal = ({ selectedRow, handleSelectionModelChange }) => 
 			value = parseFloat(value);
 		}
 		editData[key] = value
-		console.log(`Ryan Here: handleShippingCostChange \n `, { value, key, editData });
 	}; // End handleShippingCostChange
 
 
@@ -367,7 +364,6 @@ const ShippingCostsEditModal = ({ selectedRow, handleSelectionModelChange }) => 
 		// for (let i = 0; i < inputMap.length; i++) {
 		for (let i in inputMap) {
 			let input = inputMap[i];
-			console.log(`Ryan Here: in loop \n `, input);
 			if (!editData[input.key] || editData[input.key] == 0) {
 				alert(`Please enter a value for ${inputMap[i].label}.`);
 				return;

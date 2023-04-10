@@ -207,7 +207,6 @@ export default function UpdateCustomsDuties() {
 		duty[field] = value;
 		duty[value_field] = decimal;
 
-		console.log(`Ryan Here:  handleInCellEditSubmit\n `, { id, field, value, duty, percentage, decimal, value_field });
 	}; // End handleInCellEditSubmit
 
 	// ⬇ Rendering below: 

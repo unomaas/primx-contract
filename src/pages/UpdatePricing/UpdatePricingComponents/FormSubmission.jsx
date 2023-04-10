@@ -22,7 +22,6 @@ export default function FormSubmission() {
 
 
 	const handleMonthChange = (value) => {
-		console.log(`Ryan Here handleMonthChange \n `, { value, monthToSaveTo });
 		dispatch({ type: 'SET_PRICING_LOG_VIEW', payload: { monthToSaveTo: value } })
 	}
 

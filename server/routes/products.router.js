@@ -50,6 +50,7 @@ router.get('/get-all-product-cost-history', async (req, res) => {
 			SELECT 
 				"pch".product_cost_history_id,
 				"pch".product_id,
+				"p".product_label,
 				"pch".product_self_cost,
 				TO_CHAR("pch".date_saved, 'YYYY-MM') AS "date_saved",
 				TO_CHAR(pch.date_saved, 'YYYY-MM-DD') AS date_saved_full

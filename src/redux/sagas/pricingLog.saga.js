@@ -123,18 +123,6 @@ function* updatePricingInitialLoad() {
 				estimate.destination_id = destination.destination_id;
 				estimate.destination_name = destination.destination_name;
 
-				console.log(`Ryan Here pre useCalc: \n `, destination.destination_name,
-					'\n',
-					{
-						destination,
-						shippingDestinations,
-						estimate,
-						pricing: month.pricing,
-						month,
-						monthHolderObject,
-					}
-				);
-
 				const calculatedEstimate = useCalculateProjectCost(estimate, month.pricing);
 
 				month.destinationsCosts.push({

@@ -75,7 +75,7 @@ const useStyles = makeStyles({
   },
 
 	shippingCostHistoryGrid: {
-    width: 900,
+    width: 1200,
     margin: 'auto',
   },
 
