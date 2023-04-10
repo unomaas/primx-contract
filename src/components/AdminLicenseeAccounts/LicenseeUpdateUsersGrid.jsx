@@ -66,8 +66,9 @@ export default function SystemAdminUpdateUsersGrid() {
 
   // click listener for the process order buttons inside the pending order table
   const handleDeleteAdmin = (params) => {
+		if (!window.confirm('Are you sure you want to delete this user?')) return;
       // params has a key of id which contains the db id for the estimate that corresponds to the button clicked
-      dispatch({ type: 'DELETE_LICENSEE', payload: params });
+      // dispatch({ type: 'DELETE_LICENSEE', payload: params });
   }
 
   return (

@@ -9,6 +9,7 @@ function* shippingDestinationsSaga() {
 	yield takeLatest('FETCH_ACTIVE_SHIPPING_DESTINATIONS', fetchActiveShippingDestinations);
 	yield takeLatest('FETCH_ALL_SHIPPING_DESTINATIONS', fetchAllShippingDestinations);
 	yield takeLatest('TOGGLE_SHIPPING_DESTINATION_ACTIVE', toggleShippingDestinationActive);
+	yield takeLatest('TOGGLE_SHIPPING_DESTINATION_ACTIVE_SET_PRICES', toggleShippingDestinationActiveSetPrices);
 
 };
 
@@ -74,6 +75,26 @@ function* fetchAllShippingDestinations() {
 		console.error('Error with fetchAllShippingDestinations in shippingDestinations saga', error);
 	}
 }
+
+function* toggleShippingDestinationActiveSetPrices(action) {
+	try {
+		//GET all shipping costs
+		const response = yield axios.post(`/api/shippingDestinations/toggle-active-set-prices`, action.payload);
+		if (response) {
+			// ⬇ Refresh shipping destinations and hide loading div:
+			yield put({ type: "FETCH_ALL_SHIPPING_DESTINATIONS" });
+			yield put({ type: 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL', payload: false });
+			yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+			yield put({ type: "SNACK_GENERIC_REQUEST_SUCCESS" })
+		}
+	} catch (error) {
+		console.error('Error with toggleShippingDestinationActive in shippingDestinations saga', error);
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+		yield put({ type: 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL', payload: false });
+		yield put({ type: "SNACK_GENERIC_REQUEST_ERROR" })
+	}
+}
+
 
 function* toggleShippingDestinationActive(action) {
 	try {

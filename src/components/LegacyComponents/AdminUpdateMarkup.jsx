@@ -8,7 +8,7 @@ import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornmen
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HelpIcon from '@material-ui/icons/Help';
-import AdminUpdates from './AdminUpdates';
+import AdminUpdates from '../AdminUpdates/AdminUpdates';
 
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
@@ -52,17 +52,6 @@ export default function AdminUpdateMarkup() {
 	const leftTableData = markupHistory12Months[leftSelectedMonth];
 	const rightTableData = markupHistory12Months[rightSelectedMonth];
 
-	// const 
-
-	// console.log(`Ryan Here: In App 2 \n `, {
-	// 	markupHistory12Months,
-	// 	markupHistoryRecent,
-	// 	currentMarkup,
-	// 	rightSelectedMonth,
-	// 	leftSelectedMonth,
-	// 	leftTableData,
-	// 	rightTableData
-	// });
 
 	let rows = [];
 
@@ -105,7 +94,7 @@ export default function AdminUpdateMarkup() {
 				sortable: false,
 			},
 			{
-				headerName: `75/50 Price: ${leftTableData.month_year_label}`,
+				headerName: `60lbs/35kg ${leftTableData.month_year_label}`,
 				field: 'left_price_per_unit_75_50',
 				flex: 1,
 				headerClassName: classes.header,
@@ -116,7 +105,7 @@ export default function AdminUpdateMarkup() {
 			},
 			{
 				headerName: `90/60 Price: ${leftTableData.month_year_label}`,
-				field: 'left_price_per_unit_90_605',
+				field: 'left_price_per_unit_90_60',
 				flex: 1,
 				headerClassName: classes.header,
 				disableColumnMenu: true,
@@ -535,12 +524,9 @@ export default function AdminUpdateMarkup() {
 							borderRadius: '1rem',
 							boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
 							padding: '1rem',
-							width: 'auto',
-							height: 'auto',
-							maxWidth: '50%',
-							maxHeight: '50%',
-							minWidth: '415px',
-							minHeight: '145px',
+							width: "fit-content",
+							height: "fit-content",
+							marginTop: "-300px",	
 						}}>
 							<div
 								style={{
@@ -609,7 +595,7 @@ export default function AdminUpdateMarkup() {
 										color="primary"
 										onClick={() => handleSubmit()}
 									>
-										Submit
+										Save Changes
 									</Button>
 								</div>
 							</div>

@@ -59,6 +59,7 @@ export default function UpdateShippingCostsGrid() {
 			field: 'container_destination',
 			headerName: 'Country',
 			flex: 0.75,
+			editable: true,
 			disableColumnMenu: true,
 			headerClassName: classes.header
 		},
@@ -69,6 +70,7 @@ export default function UpdateShippingCostsGrid() {
 			flex: .5,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
+			editable: true,
 			valueFormatter: (params) => {
 				return new Intl.NumberFormat('en-US', {
 					style: 'currency',
@@ -310,14 +312,14 @@ export default function UpdateShippingCostsGrid() {
 
 		const [anchorEl, setAnchorEl] = useState(null);
 		const menuItems = [
-			<Button
-				color="primary"
-				size="small"
-				onClick={() => handleSaveHistoryLogSubmit()}
-			>
-				Save Costs to History Log
-			</Button>,
-			<Divider />,
+			// <Button
+			// 	color="primary"
+			// 	size="small"
+			// 	onClick={() => handleSaveHistoryLogSubmit()}
+			// >
+			// 	Save Costs to History Log
+			// </Button>,
+			// <Divider />,
 			<Tooltip title={tooltipText} placement="right-end" arrow>
 				<span>
 					<Button
@@ -342,7 +344,7 @@ export default function UpdateShippingCostsGrid() {
 			}}>
 				{selectedRow &&
 					<>
-						<Button
+						{/* <Button
 							aria-controls="customized-menu"
 							aria-haspopup="true"
 							color="primary"
@@ -378,7 +380,15 @@ export default function UpdateShippingCostsGrid() {
 									)
 								}
 							})}
-						</Menu>
+						</Menu> */}
+						<Button
+							color="primary"
+							size="small"
+							onClick={() => dispatch({ type: 'SHIPPING_COSTS_SHOW_EDIT_MODAL', payload: true })}
+							disabled={disabled}
+						>
+							Edit {selectedRow?.destination_name}'s Costs
+						</Button>
 					</>
 				}
 				<CustomPagination />
@@ -436,12 +446,9 @@ export default function UpdateShippingCostsGrid() {
 						borderRadius: '1rem',
 						boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
 						padding: '1rem',
-						width: 'auto',
-						height: 'auto',
-						maxWidth: '50%',
-						maxHeight: '50%',
-						minWidth: '415px',
-						minHeight: '345px',
+						width: "fit-content",
+						height: "fit-content",
+						marginTop: "-300px",
 					}}>
 						<div
 							style={{
@@ -514,7 +521,7 @@ export default function UpdateShippingCostsGrid() {
 									color="primary"
 									onClick={() => handleSubmit()}
 								>
-									Submit
+									Save Changes
 								</Button>
 							</div>
 						</div>

@@ -303,13 +303,11 @@ export default function useCalculateSingleEstimate(options) {
 
 
 
-	// // TODO: Will have to figure out the states for the shipping destinations from the estimate ID. For now, I'm just going to hardcode it to California.
 
 	// let x1 = (e.california_40ft / (e.primx_dc_40ft_net_weight_of_pallet * e.primx_dc_40ft_max_pallets_per_container));
 	// let x2 = (e.california_20ft / (e.primx_dc_20ft_net_weight_of_pallet * e.primx_dc_20ft_max_pallets_per_container));
 	// let x3 = Math.min(x1, x2);
 
-	// // TODO: Do this for the rest of the products:
 	// let y1 = (e.california_40ft / (e.primx_steel_fibers_40ft_net_weight_of_pallet * e.primx_steel_fibers_40ft_max_pallets_per_container));
 	// let y2 = (e.california_20ft / (e.primx_steel_fibers_20ft_net_weight_of_pallet * e.primx_steel_fibers_20ft_max_pallets_per_container));
 	// let x4 = Math.min(y1, y2);
@@ -325,8 +323,6 @@ export default function useCalculateSingleEstimate(options) {
 	// // ⬇ Calculate transportation cost + material cost per material unit:
 
 	// // x3 = 
-
-	// // TODO: When I com eback, I'll have to setup a use effect to import this stuff to play with. 
 
 
 

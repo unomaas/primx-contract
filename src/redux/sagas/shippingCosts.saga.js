@@ -18,7 +18,7 @@ function* shippingCostsSaga() {
 function* fetchShippingCosts() {
 	try {
 		//GET all shipping costs
-		const shippingCosts = yield axios.get('/api/shippingcosts');
+		const shippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs');
 
 		//send results to shippingCosts reducer
 		yield put({

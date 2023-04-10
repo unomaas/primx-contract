@@ -60,7 +60,7 @@ const useStyles = makeStyles({
   },
 
   shippingGrid: {
-    width: 800,
+    width: 925,
     margin: 'auto',
   },
 
@@ -75,7 +75,7 @@ const useStyles = makeStyles({
   },
 
 	shippingCostHistoryGrid: {
-    width: 900,
+    width: 1200,
     margin: 'auto',
   },
 

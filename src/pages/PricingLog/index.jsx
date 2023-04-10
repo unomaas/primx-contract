@@ -27,20 +27,18 @@ export default function index() {
 	const [tableMounted, setTableMounted] = useState(false);
 
 
-	const pricingLogData = useSelector(store => store.pricingLog);
-	const { viewState, dataState } = pricingLogData;
+	const { viewState, dataState } = useSelector(store => store.pricingLog);
 
 	useEffect(() => {
 		// GET shipping cost data on page load
 		dispatch({ type: 'PRICING_LOG_INITIAL_LOAD' })
 	}, [])
 
-	if (viewState.isLoading) return <TopLoadingDiv />;
+	if (viewState.pricingLogIsLoading) return <TopLoadingDiv />;
 
 
 	return (
 		<div className="EstimateCreate-wrapper">
-
 			<PricingLogTable />
 		</div>
 

@@ -31,7 +31,7 @@ router.get('/all', async (req, res) => {
 			FROM "shipping_destinations"
 			ORDER BY destination_id ASC;
 		`; // End sql
-		const {rows} = await pool.query(sql);
+		const { rows } = await pool.query(sql);
 		res.send(rows);
 	} catch (error) {
 		console.error('Error in shipping destinations GET router', error);
@@ -72,6 +72,59 @@ router.put('/toggle-active/:destinationId', rejectUnauthenticated, async (req, r
 			WHERE "destination_id" = $1;
 		`; // End sql
 		pool.query(sql, [destinationId]);
+		res.sendStatus(202);
+	} catch (error) {
+		console.error('Error in shipping destinations PUT route -->', error);
+		res.sendStatus(500);
+	}; // End try/catch
+}); // End PUT route
+
+router.post('/toggle-active-set-prices', rejectUnauthenticated, async (req, res) => {
+	try {
+		const { destination_id, shipping_costs } = req.body;
+
+		let sql = `
+			BEGIN;
+		`; // End sql
+
+		sql += `
+			UPDATE "shipping_destinations" 
+			SET "destination_active" = NOT "destination_active"
+			WHERE "destination_id" = ${format('%L', destination_id)};
+		`; // End sql
+
+		sql += `
+			UPDATE "shipping_costs"
+			SET
+				"dc_20ft" = v.dc_20ft,
+				"dc_40ft" = v.dc_40ft,
+				"fibers_20ft" = v.fibers_20ft,
+				"fibers_40ft" = v.fibers_40ft,
+				"cpea_20ft" = v.cpea_20ft,
+				"cpea_40ft" = v.cpea_40ft,
+				"flow_20ft" = v.flow_20ft,
+				"flow_40ft" = v.flow_40ft
+			FROM (VALUES
+		`; // End sql
+		// ⬇ Loop through the req.body array to build the query:
+		for (let i in shipping_costs) {
+			const cost = shipping_costs[i];
+			sql += `(${format('%L::int', destination_id)}, ${format('%L::decimal', cost.dc_20ft)}, ${format('%L::decimal', cost.dc_40ft)}, ${format('%L::decimal', cost.fibers_20ft)}, ${format('%L::decimal', cost.fibers_40ft)}, ${format('%L::decimal', cost.cpea_20ft)}, ${format('%L::decimal', cost.cpea_40ft)}, ${format('%L::decimal', cost.flow_20ft)}, ${format('%L::decimal', cost.flow_40ft)}), `
+		}; // End for loop
+		// ⬇ Remove the last comma and space:
+		sql = sql.slice(0, -2);
+		// ⬇ Add the WHERE clause:
+		sql += `
+			) AS v(destination_id, dc_20ft, dc_40ft, fibers_20ft, fibers_40ft, cpea_20ft, cpea_40ft, flow_20ft, flow_40ft) 
+			WHERE "shipping_costs"."destination_id" = v.destination_id;
+		`; // End sql
+
+		sql += `
+			COMMIT;
+		`; // End sql
+
+
+		pool.query(sql);
 		res.sendStatus(202);
 	} catch (error) {
 		console.error('Error in shipping destinations PUT route -->', error);

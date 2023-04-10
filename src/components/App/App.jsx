@@ -13,9 +13,9 @@ import AdminUpdates from '../AdminUpdates/AdminUpdates';
 import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx';
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
 import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
-import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
-import AdminUpdateMarkup from '../AdminUpdates/AdminUpdateMarkup';
-import AdminUpdateShipping from '../AdminUpdates/AdminUpdateShipping';
+// import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
+import AdminUpdateMarkup from '../LegacyComponents/AdminUpdateMarkup';
+import AdminUpdateShipping from '../LegacyComponents/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
 import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
 import MuiBackdropManager from '../MuiBackdropManager/MuiBackdropManager';
@@ -33,6 +33,7 @@ import AdminUpdateCustoms from '../../pages/AdminUpdates/CustomsDuties/index.jsx
 import ProductContainers from '../../pages/AdminUpdates/ProductContainers/index.jsx';
 import DosageRates from '../../pages/AdminUpdates/DosageRates/index.jsx';
 import PricingLog from '../../pages/PricingLog/index.jsx';
+import UpdatePricing from '../../pages/UpdatePricing/index.jsx';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, useLocation } from 'react-router-dom';
@@ -153,25 +154,25 @@ function App() {
 								<AdminUpdateLicenses />
 							</AdminRoute>
 
-							<AdminRoute exact path="/AdminUpdateMaterials" >
+							{/* <AdminRoute exact path="/AdminUpdateMaterials" >
 								<AdminUpdateMaterials />
-							</AdminRoute>
+							</AdminRoute> */}
 
-							<AdminRoute exact path="/AdminUpdateMarkup" >
+							{/* <AdminRoute exact path="/AdminUpdateMarkup" >
 								<AdminUpdateMarkup />
-							</AdminRoute>
+							</AdminRoute> */}
 
 							<AdminRoute exact path="/AdminUpdateDestinations" >
 								<AdminUpdateDestinations />
 							</AdminRoute>
 
-							<AdminRoute exact path="/AdminUpdateCustoms" >
+							{/* <AdminRoute exact path="/AdminUpdateCustoms" >
 								<AdminUpdateCustoms />
-							</AdminRoute>
+							</AdminRoute> */}
 
-							<AdminRoute exact path="/AdminUpdateShipping" >
+							{/* <AdminRoute exact path="/AdminUpdateShipping" >
 								<AdminUpdateShipping />
-							</AdminRoute>
+							</AdminRoute> */}
 
 							<AdminRoute exact path="/AdminOrders">
 								<AdminOrders />
@@ -191,6 +192,10 @@ function App() {
 
 							<AdminRoute exact path="/pricinglog">
 								<PricingLog />
+							</AdminRoute>
+
+							<AdminRoute exact path="/updatepricing">
+								<UpdatePricing />
 							</AdminRoute>
 
 							{/* If logged in and user permissions is 1, that makes the super-admin and allows them to see this system admin page */}

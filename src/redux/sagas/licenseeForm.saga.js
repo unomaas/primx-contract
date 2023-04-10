@@ -113,10 +113,10 @@ function* recalculateEstimate(action) {
 	const currentEstimate = action.payload;
 	currentEstimate.force_recalculate = true;
 	try {
-		const products = yield axios.get('/api/products');
+		const products = yield axios.get('/api/products/get-current-products');
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
-		const shippingCosts = yield axios.get('/api/shippingcosts');
+		const shippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs');
 		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
 		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
 		const customsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
@@ -178,10 +178,10 @@ function* recalculateCombinedEstimate(action) {
 	if (combinedEstimate.estimate_number_combined_3) thirdEstimateNumber = combinedEstimate.estimate_number_combined_3;
 
 	try {
-		const products = yield axios.get('/api/products');
+		const products = yield axios.get('/api/products/get-current-products');
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
-		const shippingCosts = yield axios.get('/api/shippingcosts');
+		const shippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs');
 		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
 		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
 		const customsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
@@ -258,8 +258,8 @@ function* recalculateCombinedEstimate(action) {
 // 	const currentEstimate = action.payload;
 // 	try {
 // 		// get updated shipping and product pricing data from the DB
-// 		const shippingCosts = yield axios.get('/api/shippingcosts');
-// 		const productCosts = yield axios.get('/api/products');
+// 		const shippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs');
+// 		const productCosts = yield axios.get('/api/products/get-current-products');
 
 // 		// Loop through shippingCosts, find the matching id, and update the shipping costs of the current estimate with the current shipping costs
 // 		shippingCosts.data.forEach(shippingState => {

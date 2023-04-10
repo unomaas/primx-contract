@@ -9,7 +9,7 @@ const format = require('pg-format');
 /**
  * GET route template
  */
-router.get('/', (req, res) => {
+router.get('/get-current-products', (req, res) => {
 	// GET route code here
 	const queryText = `SELECT * FROM "products" ORDER BY product_id ASC`;
 	pool.query(queryText)
@@ -47,10 +47,16 @@ router.post('/', rejectUnauthenticated, (req, res) => {
 router.get('/get-all-product-cost-history', async (req, res) => {
 	try {
 		const sql = `
-			SELECT *
+			SELECT 
+				"pch".product_cost_history_id,
+				"pch".product_id,
+				"p".product_label,
+				"pch".product_self_cost,
+				TO_CHAR("pch".date_saved, 'YYYY-MM') AS "date_saved",
+				TO_CHAR(pch.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM "product_cost_history" AS "pch"
 			JOIN "products" AS "p" ON "pch".product_id = "p".product_id
-			ORDER BY "pch".date_saved DESC, "pch".product_cost_history_id ASC;
+			ORDER BY "pch".date_saved DESC, "pch".product_id ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
@@ -68,14 +74,23 @@ router.get('/get-one-year-of-product-cost-history', async (req, res) => {
 				"pch".product_cost_history_id,
 				"pch".product_id,
 				"pch".product_self_cost,
-				TO_CHAR("pch".date_saved, 'YYYY-MM-DD') AS "date_saved"
+				TO_CHAR("pch".date_saved, 'YYYY-MM') AS "date_saved",
+				TO_CHAR(pch.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM "product_cost_history" AS "pch"
 			JOIN "products" AS "p" ON "pch".product_id = "p".product_id
 			WHERE "pch".date_saved > NOW() - INTERVAL '1 year'
-			ORDER BY "pch".product_cost_history_id DESC;
+			ORDER BY "pch".date_saved DESC, "pch".product_id ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
-		res.send(rows);
+		// ⬇ Make an object of results indexed by date_saved:
+		const results = {};
+		for (let row of rows) {
+			if (!results[row.date_saved]) {
+				results[row.date_saved] = [];
+			}; // End if
+			results[row.date_saved].push(row);
+		}; // End for loop
+		res.send(results);
 	} catch (error) {
 		console.error('Error in products GET router', error);
 		res.sendStatus(500);
@@ -178,7 +193,13 @@ router.post('/edit-products-costs', rejectUnauthenticated, async (req, res) => {
 //#region - Markup routes below: 
 router.get('/get-markup-margin', async (req, res) => {
 	try {
-		const sql = `SELECT * FROM "markup"`;
+		const sql = `
+			SELECT 
+				*,
+				margin_applied::REAL,
+				(margin_applied * 100)::REAL AS margin_applied_label
+			FROM "markup"
+		`;
 		const { rows } = await pool.query(sql);
 		res.send(rows);
 	} catch (error) {
@@ -187,19 +208,29 @@ router.get('/get-markup-margin', async (req, res) => {
 	} // End try/catch
 }); // End GET route
 
-router.get('/get-recent-markup-history', async (req, res) => {
+router.get('/get-one-year-of-markup-history', async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
 				markup_history_id,
-				margin_applied,
-				TO_CHAR(date_saved, 'YYYY-MM-DD') AS date_saved
+				margin_applied::REAL,
+				(margin_applied * 100)::REAL AS margin_applied_label,
+				TO_CHAR(date_saved, 'YYYY-MM') AS date_saved,
+				TO_CHAR(date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM "markup_history" AS "mh"
-			ORDER BY "mh".markup_history_id DESC
-			LIMIT 12;
+			WHERE "mh".date_saved > NOW() - INTERVAL '1 year'
+			ORDER BY "mh".date_saved DESC, "mh".markup_history_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
-		res.send(rows);
+		// ⬇ Make an object of results indexed by date_saved:
+		const results = {};
+		for (let row of rows) {
+			if (!results[row.date_saved]) {
+				results[row.date_saved] = [];
+			}; // End if
+			results[row.date_saved].push(row);
+		}; // End for loop
+		res.send(results);
 	} catch (error) {
 		console.error('Error in recent markup history GET', error);
 		res.sendStatus(500);
@@ -209,9 +240,14 @@ router.get('/get-recent-markup-history', async (req, res) => {
 router.get('/get-all-markup-history', async (req, res) => {
 	try {
 		const sql = `
-			SELECT *
+			SELECT 
+				markup_history_id,
+				margin_applied::REAL,
+				(margin_applied * 100)::REAL AS margin_applied_label,
+				TO_CHAR(date_saved, 'YYYY-MM') AS date_saved,
+				TO_CHAR(date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM "markup_history" AS "mh"
-			ORDER BY "mh".date_saved DESC, "mh".markup_history_id ASC;
+			ORDER BY "mh".date_saved DESC, "mh".markup_history_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);

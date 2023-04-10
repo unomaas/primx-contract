@@ -474,7 +474,6 @@ const showTables = useSelector(store => store.estimatesReducer.tableState);
 											</TableCell>
 										</TableRow>
 
-										{/* //! Ryan Here, I think this can be removed.  Don't do it until everything else has been tested to be working though.  */}
 										{/* <TableRow hover={true}>
 											<TableCell><b>Shipping Country:</b></TableCell>
 											<TableCell>
@@ -510,7 +509,7 @@ const showTables = useSelector(store => store.estimatesReducer.tableState);
 												<Button
 													type="submit"
 													// !⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-													// onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+													onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
 													variant="contained"
 													className={classes.LexendTeraFont11}
 													color="primary"

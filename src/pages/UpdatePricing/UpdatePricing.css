@@ -1,0 +1,11 @@
+#StepperWrapper {
+	width: 750px;
+	margin: 0 auto;
+	padding: 10px;
+}
+
+#ButtonsWrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}

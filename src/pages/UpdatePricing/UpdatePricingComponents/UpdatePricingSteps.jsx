@@ -2,15 +2,14 @@
 import { React, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
-import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
+import { useStyles } from '../../../components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
 import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
 
-
-export default function PricingLogTable() {
+export default function UpdatePricingSteps() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
 	const classes = useStyles();
@@ -30,12 +29,12 @@ export default function PricingLogTable() {
 			columns: [
 				{
 					headerName: 'Date Saved',
-					field: 'date_saved_full',
+					field: 'date_saved',
 					flex: 1,
 					headerClassName: classes.header,
-					// valueFormatter: (params) => {
-					// 	return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
-					// },
+					valueFormatter: (params) => {
+						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
+					},
 				},
 				{
 					headerName: 'Custom Duty',
@@ -47,7 +46,6 @@ export default function PricingLogTable() {
 					headerName: 'USA Duty (%)',
 					field: 'usa_percent',
 					flex: 1,
-					type: 'number',
 					headerClassName: classes.header,
 					valueFormatter: (params) => {
 						// ⬇ Return value as a percentage:
@@ -58,15 +56,14 @@ export default function PricingLogTable() {
 					headerName: 'CAN Duty (%)',
 					field: 'can_percent',
 					flex: 1,
-					type: 'number',
 					headerClassName: classes.header,
 					valueFormatter: (params) => {
 						// ⬇ Return value as a percentage:
 						return `${(params.value * 100)}%`;
 					},
 				},
-			] // End columns
-		}, // End customs_duties
+			]
+		},
 		markup_margin: {
 			label: "Markup Margin",
 			key: "markup_margin",
@@ -76,26 +73,25 @@ export default function PricingLogTable() {
 			columns: [
 				{
 					headerName: 'Date Saved',
-					field: 'date_saved_full',
+					field: 'date_saved',
 					flex: 1,
 					headerClassName: classes.header,
-					// valueFormatter: (params) => {
-					// 	return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
-					// },
+					valueFormatter: (params) => {
+						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
+					},
 				},
 				{
 					headerName: 'Margin Applied (%)',
 					field: 'margin_applied',
 					flex: 1,
-					type: 'number',
 					headerClassName: classes.header,
 					valueFormatter: (params) => {
 						return `${(params.value * 100)}%`;
 					},
 					type: 'number',
 				},
-			] // End columns
-		}, // End markup_margin
+			]
+		},
 		product_cost: {
 			label: "Material Cost",
 			key: "product_cost",
@@ -105,12 +101,12 @@ export default function PricingLogTable() {
 			columns: [
 				{
 					headerName: 'Date Saved',
-					field: 'date_saved_full',
+					field: 'date_saved',
 					flex: 1,
 					headerClassName: classes.header,
-					// valueFormatter: (params) => {
-					// return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
-					// },
+					valueFormatter: (params) => {
+						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
+					},
 				},
 				{
 					headerName: 'Product',
@@ -131,188 +127,73 @@ export default function PricingLogTable() {
 						}).format(params.value);
 					},
 				},
-			] // End columns
-		}, // End product_cost
+			]
+		},
 		shipping_cost: {
 			label: "Shipping Cost",
 			key: "shipping_cost",
-			className: classes.shippingCostHistoryGrid,
+			className: classes.customsDutiesHistoryGrid,
 			rows: dataState.shippingCostHistoryAll,
 			row_id: "shipping_cost_history_id",
 			columns: [
 				{
 					headerName: 'Date Saved',
-					field: 'date_saved_full',
-					flex: 1.25,
+					field: 'date_saved',
+					flex: 1,
 					headerClassName: classes.header,
-					// valueFormatter: (params) => {
-					// return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
-					// },
+					valueFormatter: (params) => {
+						return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
+					},
+					
 				},
 				{
-					headerName: 'Destination',
+					headerName: 'Product',
+					field: 'product_label',
+					flex: 1,
+					headerClassName: classes.header,
+				},
+				{
+					field: 'container_length_ft',
+					headerName: 'Container Length (ft)',
+					flex: .5,
+					disableColumnMenu: true,
+					editable: false,
+					headerClassName: classes.header,
+					valueFormatter: (params) => {
+						return `${params.value}"`;
+					},
+				},
+				{
 					field: 'destination_name',
-					flex: 1.25,
-					headerClassName: classes.header,
-
+					headerName: 'Destination',
+					flex: .75,
+					disableColumnMenu: true,
+					editable: false,
+					headerClassName: classes.header
 				},
 				{
-					headerName: 'DC 20ft',
-					field: 'dc_20ft',
-					flex: 1,
-					headerClassName: classes.header,
+					field: 'container_destination',
+					headerName: 'Country',
+					flex: 0.75,
 					disableColumnMenu: true,
-					sortable: false,
+					headerClassName: classes.header
+				},
+				{
+					field: 'shipping_cost',
 					type: 'number',
+					headerName: 'Cost',
+					flex: .5,
+					disableColumnMenu: true,
+					headerClassName: classes.header,
 					valueFormatter: (params) => {
 						return new Intl.NumberFormat('en-US', {
 							style: 'currency',
 							currency: 'USD',
 						}).format(params.value);
-					}
+					},
 				},
-				{
-					headerName: 'DC 40ft',
-					field: 'dc_40ft',
-					flex: 1,
-					headerClassName: classes.header,
-					disableColumnMenu: true,
-					sortable: false,
-					type: 'number',
-					valueFormatter: (params) => {
-						return new Intl.NumberFormat('en-US', {
-							style: 'currency',
-							currency: 'USD',
-						}).format(params.value);
-					}
-				},
-				{
-					headerName: 'Fibers 20ft',
-					field: 'fibers_20ft',
-					flex: 1,
-					headerClassName: classes.header,
-					disableColumnMenu: true,
-					sortable: false,
-					type: 'number',
-					valueFormatter: (params) => {
-						return new Intl.NumberFormat('en-US', {
-							style: 'currency',
-							currency: 'USD',
-						}).format(params.value);
-					}
-				},
-				{
-					headerName: 'Fibers 40ft',
-					field: 'fibers_40ft',
-					flex: 1,
-					headerClassName: classes.header,
-					disableColumnMenu: true,
-					sortable: false,
-					type: 'number',
-					valueFormatter: (params) => {
-						return new Intl.NumberFormat('en-US', {
-							style: 'currency',
-							currency: 'USD',
-						}).format(params.value);
-					}
-				},
-				{
-					headerName: 'CPEA 20ft',
-					field: 'cpea_20ft',
-					flex: 1,
-					headerClassName: classes.header,
-					disableColumnMenu: true,
-					sortable: false,
-					type: 'number',
-					valueFormatter: (params) => {
-						return new Intl.NumberFormat('en-US', {
-							style: 'currency',
-							currency: 'USD',
-						}).format(params.value);
-					}
-				},
-				{
-					headerName: 'CPEA 40ft',
-					field: 'cpea_40ft',
-					flex: 1,
-					headerClassName: classes.header,
-					disableColumnMenu: true,
-					sortable: false,
-					type: 'number',
-					valueFormatter: (params) => {
-						return new Intl.NumberFormat('en-US', {
-							style: 'currency',
-							currency: 'USD',
-						}).format(params.value);
-					}
-				},
-				{
-					headerName: 'Flow 20ft',
-					field: 'flow_20ft',
-					flex: 1,
-					headerClassName: classes.header,
-					disableColumnMenu: true,
-					sortable: false,
-					type: 'number',
-					valueFormatter: (params) => {
-						return new Intl.NumberFormat('en-US', {
-							style: 'currency',
-							currency: 'USD',
-						}).format(params.value);
-					}
-				},
-				{
-					headerName: 'Flow 40ft',
-					field: 'flow_40ft',
-					flex: 1,
-					headerClassName: classes.header,
-					disableColumnMenu: true,
-					sortable: false,
-					type: 'number',
-					valueFormatter: (params) => {
-						return new Intl.NumberFormat('en-US', {
-							style: 'currency',
-							currency: 'USD',
-						}).format(params.value);
-					}
-				},
-			] // End columns
-		}, // End shipping_cost
-		// TODO: Implement this. 
-		// price_per_unit: {
-		// 	label: "Price Per Unit",
-		// 	key: "price_per_unit",
-		// 	className: classes.shippingCostHistoryGrid,
-		// 	// rows: dataState.pricePerUnitHistory12Months,
-		// 	row_id: "product_cost_history_id",
-		// 	columns: [
-		// 		{
-		// 			headerName: 'Date Saved',
-		// 			field: 'date_saved_full',
-		// 			flex: 1,
-		// 			headerClassName: classes.header,
-		// 		},
-		// 		{
-		// 			headerName: 'Product',
-		// 			field: 'product_label',
-		// 			flex: 1,
-		// 			headerClassName: classes.header,
-		// 		},
-		// 		{
-		// 			headerName: 'Cost',
-		// 			field: 'product_self_cost',
-		// 			flex: 1,
-		// 			headerClassName: classes.header,
-		// 			type: 'number',
-		// 			valueFormatter: (params) => {
-		// 				return new Intl.NumberFormat('en-US', {
-		// 					style: 'currency',
-		// 					currency: 'USD',
-		// 				}).format(params.value);
-		// 			},
-		// 		},
-		// 	] // End columns
-		// }, // End product_cost
+			]
+		},
 	}
 
 	const [selectedLog, setSelectedLog] = useState(pricingLogTableOptions.product_cost);
@@ -331,7 +212,7 @@ export default function PricingLogTable() {
 	// let rows = selectedLog.rows;
 	let rows = [];
 	for (let row of selectedLog.rows) {
-		if (Object.values(filter).length > 0 && filter.value !== row.date_saved_full) continue;
+		if (Object.values(filter).length > 0 && filter.value !== row.date_saved) continue;
 		rows.push(row);
 	}; // End for of loop
 
@@ -341,8 +222,8 @@ export default function PricingLogTable() {
 		const TableInstructions = () => {
 			return (
 				<Tooltip
-					title={<p>This table shows the historical pricing log for various items.<br /><br />Row selection is disabled.  Click in the center of the table to select a new pricing history view.  Use the top-right Date Saved filter to narrow down results to a specific date.</p>}
-					placement="right-start"
+				title={<p>This table shows the historical pricing log for various items.<br /><br />Row selection is disabled.  Click in the center of the table to select a new pricing history view.  Use the top-right Date Saved filter to narrow down results to a specific date.</p>}
+				placement="right-start"
 					arrow
 				>
 					<Button
@@ -373,10 +254,9 @@ export default function PricingLogTable() {
 
 		let autocompleteOptions = {};
 		selectedLog.rows.forEach((row) => {
-			autocompleteOptions[row.date_saved_full] = {
-				value: row.date_saved_full,
-				// label: `${new Date(row.date_saved_full).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`,
-				label: row.date_saved_full,
+			autocompleteOptions[row.date_saved] = {
+				value: row.date_saved,
+				label: `${new Date(row.date_saved).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`,
 			}
 		});
 

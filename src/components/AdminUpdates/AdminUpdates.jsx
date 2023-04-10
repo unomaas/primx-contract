@@ -24,20 +24,8 @@ export default function AdminUpdates() {
 			url: '/AdminUpdateDestinations',
 		},
 		{
-			text: 'Shipping Costs by Destination',
-			url: '/AdminUpdateShipping',
-		},
-		{
-			text: 'Material Costs',
-			url: '/AdminUpdateMaterials',
-		},
-		{
 			text: 'Licensee Accounts',
 			url: '/LicenseeAccounts',
-		},
-		{
-			text: 'Customs Duties',
-			url: '/AdminUpdateCustoms',
 		},
 		{
 			text: 'Product Containers',
@@ -46,10 +34,6 @@ export default function AdminUpdates() {
 		{
 			text: 'Dosage Rates',
 			url: '/DosageRates',
-		},
-		{
-			text: 'Markup Margin',
-			url: '/AdminUpdateMarkup',
 		},
 	];
 

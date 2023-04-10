@@ -30,11 +30,10 @@ export default function CustomsDutiesTable() {
 			field: 'duty_label',
 			headerName: 'Duty Label',
 			flex: 2.5,
-			editable: false,
 			headerClassName: classes.header
 		},
 		{
-			field: 'USA_percent',
+			field: 'usa_percent',
 			headerName: 'USA',
 			flex: 1,
 			headerClassName: classes.header,
@@ -44,9 +43,10 @@ export default function CustomsDutiesTable() {
 			},
 			disableColumnMenu: true,
 			type: 'number',
+			// editable: true,
 		},
 		{
-			field: 'CAN_percent',
+			field: 'can_percent',
 			headerName: 'Canada',
 			flex: 1,
 			headerClassName: classes.header,
@@ -56,6 +56,7 @@ export default function CustomsDutiesTable() {
 			},
 			disableColumnMenu: true,
 			type: 'number',
+			// editable: true,
 		},
 	]; // End columns
 	//#endregion - End State Variables.
@@ -299,7 +300,7 @@ export default function CustomsDutiesTable() {
 				height: "52px",
 			}}>
 				<>
-					<Button
+					{/* <Button
 						aria-controls="customized-menu"
 						aria-haspopup="true"
 						color="primary"
@@ -335,7 +336,15 @@ export default function CustomsDutiesTable() {
 								)
 							}
 						})}
-					</Menu>
+					</Menu> */}
+					<Button
+						color="primary"
+						size="small"
+						onClick={() => setShowEditModal(true)}
+						disabled={disabled}
+					>
+						Edit Customs Duties
+					</Button>
 				</>
 				{/* <CustomPagination /> */}
 			</div>
@@ -401,12 +410,9 @@ export default function CustomsDutiesTable() {
 						borderRadius: '1rem',
 						boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
 						padding: '1rem',
-						width: 'auto',
-						height: 'auto',
-						maxWidth: '50%',
-						maxHeight: '50%',
-						minWidth: '415px',
-						minHeight: '345px',
+						width: "fit-content",
+						height: "fit-content",
+						marginTop: "-300px",
 					}}>
 						<div
 							style={{
@@ -472,9 +478,9 @@ export default function CustomsDutiesTable() {
 											}}
 										>
 											<TextField
-												defaultValue={(cost.USA_percent) * 100}
+												defaultValue={(cost.usa_percent) * 100}
 												type="number"
-												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'USA_percent')}
+												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'usa_percent')}
 												size="small"
 												InputProps={{
 													endAdornment: <InputAdornment position="end">%</InputAdornment>,
@@ -487,9 +493,9 @@ export default function CustomsDutiesTable() {
 											}}
 										>
 											<TextField
-												defaultValue={(cost.CAN_percent) * 100}
+												defaultValue={(cost.can_percent) * 100}
 												type="number"
-												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'CAN_percent')}
+												onChange={(event) => handleRowChange(event.target.value, cost.custom_duty_id, 'can_percent')}
 												size="small"
 												InputProps={{
 													endAdornment: <InputAdornment position="end">%</InputAdornment>,
@@ -521,7 +527,7 @@ export default function CustomsDutiesTable() {
 									color="primary"
 									onClick={() => handleSubmit()}
 								>
-									Submit
+									Save Changes
 								</Button>
 							</div>
 						</div>
