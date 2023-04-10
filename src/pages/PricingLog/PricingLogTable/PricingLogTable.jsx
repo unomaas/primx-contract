@@ -65,8 +65,8 @@ export default function PricingLogTable() {
 						return `${(params.value * 100)}%`;
 					},
 				},
-			]
-		},
+			] // End columns
+		}, // End customs_duties
 		markup_margin: {
 			label: "Markup Margin",
 			key: "markup_margin",
@@ -94,8 +94,8 @@ export default function PricingLogTable() {
 					},
 					type: 'number',
 				},
-			]
-		},
+			] // End columns
+		}, // End markup_margin
 		product_cost: {
 			label: "Material Cost",
 			key: "product_cost",
@@ -131,8 +131,8 @@ export default function PricingLogTable() {
 						}).format(params.value);
 					},
 				},
-			]
-		},
+			] // End columns
+		}, // End product_cost
 		shipping_cost: {
 			label: "Shipping Cost",
 			key: "shipping_cost",
@@ -276,8 +276,43 @@ export default function PricingLogTable() {
 						}).format(params.value);
 					}
 				},
-			]
-		},
+			] // End columns
+		}, // End shipping_cost
+		// TODO: Implement this. 
+		// price_per_unit: {
+		// 	label: "Price Per Unit",
+		// 	key: "price_per_unit",
+		// 	className: classes.shippingCostHistoryGrid,
+		// 	// rows: dataState.pricePerUnitHistory12Months,
+		// 	row_id: "product_cost_history_id",
+		// 	columns: [
+		// 		{
+		// 			headerName: 'Date Saved',
+		// 			field: 'date_saved_full',
+		// 			flex: 1,
+		// 			headerClassName: classes.header,
+		// 		},
+		// 		{
+		// 			headerName: 'Product',
+		// 			field: 'product_label',
+		// 			flex: 1,
+		// 			headerClassName: classes.header,
+		// 		},
+		// 		{
+		// 			headerName: 'Cost',
+		// 			field: 'product_self_cost',
+		// 			flex: 1,
+		// 			headerClassName: classes.header,
+		// 			type: 'number',
+		// 			valueFormatter: (params) => {
+		// 				return new Intl.NumberFormat('en-US', {
+		// 					style: 'currency',
+		// 					currency: 'USD',
+		// 				}).format(params.value);
+		// 			},
+		// 		},
+		// 	] // End columns
+		// }, // End product_cost
 	}
 
 	const [selectedLog, setSelectedLog] = useState(pricingLogTableOptions.product_cost);
