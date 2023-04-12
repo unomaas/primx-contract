@@ -241,7 +241,6 @@ export default function UpdateMarkupMargin() {
 		}; // End handleLogViewSelection
 
 		// let marginInputValueLabel = (newMarkup[0].margin_applied * 100);
-		// ! Ryan Here
 		// const markupInputRef = useRef(JSON.parse(JSON.stringify(newMarkup[0].margin_applied_label)));
 
 

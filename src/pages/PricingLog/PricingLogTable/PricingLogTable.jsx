@@ -8,7 +8,8 @@ import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper, TextF
 import { Autocomplete } from '@material-ui/lab';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
-
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 export default function PricingLogTable() {
 	// ⬇ State Variables:
@@ -25,6 +26,7 @@ export default function PricingLogTable() {
 			label: "Customs Duties",
 			key: "customs_duties",
 			className: classes.customsDutiesHistoryGrid,
+			paperClassName: classes.customsDutiesHistoryGrid,
 			rows: dataState.customsDutiesHistoryAll,
 			row_id: "custom_duty_history_id",
 			columns: [
@@ -71,6 +73,7 @@ export default function PricingLogTable() {
 			label: "Markup Margin",
 			key: "markup_margin",
 			className: classes.customsDutiesHistoryGrid,
+			paperClassName: classes.customsDutiesHistoryGrid,
 			rows: dataState.markupHistoryAll,
 			row_id: "markup_history_id",
 			columns: [
@@ -89,9 +92,7 @@ export default function PricingLogTable() {
 					flex: 1,
 					type: 'number',
 					headerClassName: classes.header,
-					valueFormatter: (params) => {
-						return `${(params.value * 100)}%`;
-					},
+					valueFormatter: (params) => { return `${(params.value * 100)}%` },
 					type: 'number',
 				},
 			] // End columns
@@ -100,6 +101,7 @@ export default function PricingLogTable() {
 			label: "Material Cost",
 			key: "product_cost",
 			className: classes.customsDutiesHistoryGrid,
+			paperClassName: classes.customsDutiesHistoryGrid,
 			rows: dataState.productCostHistoryAll,
 			row_id: "product_cost_history_id",
 			columns: [
@@ -137,6 +139,7 @@ export default function PricingLogTable() {
 			label: "Shipping Cost",
 			key: "shipping_cost",
 			className: classes.shippingCostHistoryGrid,
+			paperClassName: classes.shippingCostHistoryGrid,
 			rows: dataState.shippingCostHistoryAll,
 			row_id: "shipping_cost_history_id",
 			columns: [
@@ -279,40 +282,16 @@ export default function PricingLogTable() {
 			] // End columns
 		}, // End shipping_cost
 		// TODO: Implement this. 
-		// price_per_unit: {
-		// 	label: "Price Per Unit",
-		// 	key: "price_per_unit",
-		// 	className: classes.shippingCostHistoryGrid,
-		// 	// rows: dataState.pricePerUnitHistory12Months,
-		// 	row_id: "product_cost_history_id",
-		// 	columns: [
-		// 		{
-		// 			headerName: 'Date Saved',
-		// 			field: 'date_saved_full',
-		// 			flex: 1,
-		// 			headerClassName: classes.header,
-		// 		},
-		// 		{
-		// 			headerName: 'Product',
-		// 			field: 'product_label',
-		// 			flex: 1,
-		// 			headerClassName: classes.header,
-		// 		},
-		// 		{
-		// 			headerName: 'Cost',
-		// 			field: 'product_self_cost',
-		// 			flex: 1,
-		// 			headerClassName: classes.header,
-		// 			type: 'number',
-		// 			valueFormatter: (params) => {
-		// 				return new Intl.NumberFormat('en-US', {
-		// 					style: 'currency',
-		// 					currency: 'USD',
-		// 				}).format(params.value);
-		// 			},
-		// 		},
-		// 	] // End columns
-		// }, // End product_cost
+		price_per_unit: {
+			label: "Price Per Unit",
+			key: "price_per_unit",
+			className: classes.pricePerUnitHistoryGrid,
+			paperClassName: classes.pricePerUnitHistoryPaper,
+			row_id: "destination_id",
+			rows: dataState?.pricePerUnitHistory12Months?.pricingLogPerUnitRows,
+			double_columns: dataState?.pricePerUnitHistory12Months?.pricingLogPerUnitTopHeader,
+			columns: dataState?.pricePerUnitHistory12Months?.pricingLogPerUnitBottomHeader,
+		}, // End product_cost
 	}
 
 	const [selectedLog, setSelectedLog] = useState(pricingLogTableOptions.product_cost);
@@ -325,7 +304,69 @@ export default function PricingLogTable() {
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const [tableMounted, setTableMounted] = useState(false);
 	// columns for Data Grid
-	const columns = selectedLog.columns;
+	let columns = [];
+	let doubleColumns = [];
+
+	if (selectedLog.key != "price_per_unit") {
+		columns = selectedLog.columns;
+	} else {
+		selectedLog.columns.forEach((column) => {
+			if (column.headerName.includes("Price")) {
+				columns.push({
+					headerName: column.headerName,
+					field: column.field,
+					flex: 1,
+					headerClassName: classes.header,
+					disableColumnMenu: true,
+					sortable: false,
+					type: 'number',
+					valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
+				}); // End push
+			} else if (column.headerName.includes("Change")) {
+				columns.push({
+					headerName: column.headerName,
+					field: column.field,
+					flex: 1,
+					headerClassName: classes.header,
+					disableColumnMenu: true,
+					sortable: false,
+					type: 'number',
+					renderCell: (params) => {
+						if (params.value == undefined) return "N/A";
+						if (params.value > 0) return <div style={{ display: "flex", alignItems: "center" }}><ArrowUpwardIcon style={{ color: "green" }} />&nbsp;&nbsp;{`${(params.value * 100).toFixed(2)}%`}</div>;
+						if (params.value < 0) return <div style={{ display: "flex", alignItems: "center" }}><ArrowDownwardIcon style={{ color: "red" }} />&nbsp;&nbsp;{`${(params.value * 100).toFixed(2)}%`}</div>;
+						if (params.value == 0) return <div>0.00%</div>;
+					},
+				}); // End push
+			} else {
+				columns.push({
+					headerName: column.headerName,
+					field: column.field,
+					flex: 1,
+					headerClassName: classes.header,
+				}); // End push
+			}; // End if/else
+		}); // End for each
+
+		selectedLog.double_columns.forEach((column) => {
+			if (column.month_year_label) {
+				doubleColumns.push({
+					headerName: column.headerName,
+					// headerName: `${column.headerName} at ${(column.margin_applied * 100)}% Margin`,
+					field: column.field,
+					flex: 4,
+					headerClassName: classes.header,
+				}); // End push
+			} else {
+				doubleColumns.push({
+					// headerName: column.headerName,
+					// field: column.field,
+					flex: 1,
+					headerClassName: classes.header,
+				}); // End push
+			}; // End if/else
+		}); // End for each
+	}; // End if/else
 
 
 	// let rows = selectedLog.rows;
@@ -334,6 +375,7 @@ export default function PricingLogTable() {
 		if (Object.values(filter).length > 0 && filter.value !== row.date_saved_full) continue;
 		rows.push(row);
 	}; // End for of loop
+
 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
@@ -359,8 +401,8 @@ export default function PricingLogTable() {
 			<GridToolbarExport />,
 			<Divider />,
 			<GridToolbarFilterButton />,
-			<Divider />,
-			<GridToolbarColumnsButton />,
+			// <Divider />,
+			// <GridToolbarColumnsButton />,
 			<Divider />,
 			<GridToolbarDensitySelector />,
 			<Divider />,
@@ -381,94 +423,163 @@ export default function PricingLogTable() {
 		});
 
 		return (
-			<GridToolbarContainer >
-				<div style={{
-					flex: "1",
+			<GridToolbarContainer className={`toolbar-container`} style={{ display: "block" }}>
+
+				<div className={`toolbar-row ${selectedLog.key == "price_per_unit" ? classes.pricePerUnitToolbar : ""}`} style={{
 					display: "flex",
-					justifyContent: "flex-start",
-					height: "45px"
+					// padding: "4px 4px 0",
+					alignItems: "center",
 				}}>
-					<Button
-						aria-controls="customized-menu"
-						aria-haspopup="true"
-						color="primary"
-						size="small"
-						style={{ marginBottom: "4px" }}
-						onClick={event => setAnchorEl(event.currentTarget)}
-					>
-						<ArrowDropDownIcon /> Options
-					</Button>
-					<Menu
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={() => setAnchorEl(null)}
-						elevation={3}
-						getContentAnchorEl={null}
-						anchorOrigin={{
-							vertical: 'bottom',
-							horizontal: 'left',
-						}}
-						transformOrigin={{
-							vertical: 'top',
-							horizontal: 'left',
-						}}
-					>
-						{menuItems.map((item, index) => {
-							if (item.type === Divider) {
-								return <Divider variant="middle" key={index} />
+
+					<div style={{
+						flex: "1",
+						display: "flex",
+						justifyContent: "flex-start",
+						height: "45px"
+					}}>
+						<Button
+							aria-controls="customized-menu"
+							aria-haspopup="true"
+							color="primary"
+							size="small"
+							style={{ marginBottom: "4px" }}
+							onClick={event => setAnchorEl(event.currentTarget)}
+						>
+							<ArrowDropDownIcon /> Options
+						</Button>
+						<Menu
+							anchorEl={anchorEl}
+							keepMounted
+							open={Boolean(anchorEl)}
+							onClose={() => setAnchorEl(null)}
+							elevation={3}
+							getContentAnchorEl={null}
+							anchorOrigin={{
+								vertical: 'bottom',
+								horizontal: 'left',
+							}}
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'left',
+							}}
+						>
+							{menuItems.map((item, index) => {
+								if (item.type === Divider) {
+									return <Divider variant="middle" key={index} />
+								} else {
+									return (
+										<MenuItem
+											key={index}
+											disableGutters
+											onClick={() => setAnchorEl(null)}
+										>
+											{item}
+										</MenuItem>
+									)
+								}
+							})}
+						</Menu>
+					</div>
+
+					<div style={{
+						flex: "1",
+						display: "flex",
+						justifyContent: "center",
+						fontSize: "12px",
+						fontFamily: "Lexend Tera",
+						height: "45px"
+
+					}}>
+						<GridToolbarSelectDropdown />
+
+					</div>
+
+					<div style={{
+						flex: "1",
+						display: "flex",
+						justifyContent: "flex-end",
+						fontSize: "11px",
+						fontFamily: "Lexend Tera",
+						// height: "45px"
+
+					}}>
+
+						{selectedLog.key != "price_per_unit" &&
+							<Autocomplete
+								options={Object.values(autocompleteOptions)}
+								getOptionLabel={(option) => option.label || ""}
+								getOptionSelected={(option, value) => option.label == value.label}
+								style={{ width: 190 }}
+								renderInput={(params) =>
+									<TextField
+										{...params}
+										label="Date Saved Filter"
+										InputLabelProps={{ shrink: true }}
+									/>
+								}
+								onChange={(event, value) => handleFilter(value || {})}
+								value={Object.keys(filter).length > 0 ? filter : null}
+							/>
+						}
+
+					</div>
+				</div>
+
+				{selectedLog.key === "price_per_unit" &&
+					<div style={{
+						display: "flex",
+						// padding: "4px 4px 0",
+						alignItems: "center",
+						height: "45px",
+						// width: "100%",
+						marginLeft: "-4px",
+						marginRight: "-4px",
+						backgroundColor: "#686868",
+						color: "white",
+					}}>
+
+						{selectedLog.double_columns.map((column, index) => {
+							if (column.month_year_label) {
+								return (
+									<div style={{
+										flex: "4",
+										display: "flex",
+										// textAlign: "center",
+										justifyContent: "center",
+										borderLeft: "1px solid #e0e0e0",
+										borderRight: "1px solid #e0e0e0",
+										fontWeight: "500",
+										// className: classes.header,
+										// justifyContent: "center",
+										// fontSize: "11px",
+										// fontFamily: "Lexend Tera",
+										// height: "45px"
+									}} key={index} >
+										{column.month_year_label} at {(column.margin_applied * 100)}% Markup
+									</div>
+								)
 							} else {
 								return (
-									<MenuItem
-										key={index}
-										disableGutters
-										onClick={() => setAnchorEl(null)}
-									>
-										{item}
-									</MenuItem>
+									<div style={{
+										flex: "1",
+										display: "flex",
+										justifyContent: "center",
+										// borderLeft: "1px solid #e0e0e0",
+										borderRight: "1px solid #e0e0e0",
+										fontWeight: "bold",
+										// justifyContent: "center",
+										// fontSize: "11px",
+										// fontFamily: "Lexend Tera",
+										// height: "45px"
+									}} key={index}>{column.month_year_value}</div>
 								)
 							}
 						})}
-					</Menu>
-				</div>
+					</div>
+				}
 
-				<div style={{
-					flex: "1",
-					display: "flex",
-					justifyContent: "center",
-					fontSize: "12px",
-					fontFamily: "Lexend Tera",
-				}}>
-					<GridToolbarSelectDropdown />
 
-				</div>
-
-				<div style={{
-					flex: "1",
-					display: "flex",
-					justifyContent: "flex-end",
-					fontSize: "11px",
-					fontFamily: "Lexend Tera",
-				}}>
-
-					<Autocomplete
-						options={Object.values(autocompleteOptions)}
-						getOptionLabel={(option) => option.label || ""}
-						getOptionSelected={(option, value) => option.label == value.label}
-						style={{ width: 190 }}
-						renderInput={(params) =>
-							<TextField
-								{...params}
-								label="Date Saved Filter"
-								InputLabelProps={{ shrink: true }}
-							/>
-						}
-						onChange={(event, value) => handleFilter(value || {})}
-						value={Object.keys(filter).length > 0 ? filter : null}
-					/>
-
-				</div>
-			</GridToolbarContainer>
+			</GridToolbarContainer >
 		); // End return
 	}; // End CustomToolbar
 
@@ -578,7 +689,7 @@ export default function PricingLogTable() {
 		const [anchorEl, setAnchorEl] = useState(null);
 
 		return (
-			<div style={{
+			<div className={`toolbar-container ${selectedLog.key == "price_per_unit" ? classes.pricePerUnitToolbar : ""}`} style={{
 				flex: "1",
 				display: "flex",
 				justifyContent: "flex-start",
@@ -594,10 +705,19 @@ export default function PricingLogTable() {
 	return (
 		<Paper
 			elevation={3}
-			className={selectedLog.className}
+			className={selectedLog.paperClassName}
+		// style={{ width: "700px", margin: "0 auto", overflowX: "scroll" }}
 		>
+
+			{/* <TableHeader selectedLog={selectedLog} /> */}
+
+			{/* <CustomToolbar /> */}
 			<DataGrid
+				id="pricingLogTable"
 				className={selectedLog.className}
+				// ⬇ Set a style to, if the selectedLog.key == "price_per_unit", I want the width to be rows.length * 100 px:
+				style={selectedLog.key === "price_per_unit" ? { width: `${rows.length * 175}px` } : {}}
+
 				columns={columns}
 				rows={rows}
 				getRowId={(row) => row[`${selectedLog.row_id}`]}
