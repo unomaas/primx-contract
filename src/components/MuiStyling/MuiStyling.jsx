@@ -79,6 +79,23 @@ const useStyles = makeStyles({
     margin: 'auto',
   },
 
+	pricePerUnitHistoryGrid: {
+    margin: 'auto',
+  },
+
+	pricePerUnitToolbar: {
+		display: "block",
+		width: "1200px",
+		position: "sticky",
+		left: "0",
+  },
+
+	pricePerUnitHistoryPaper: {
+    width: 1200,
+    margin: 'auto',
+		overflowX: 'scroll',
+  },
+
 	destinationGrid: {
     width: 685,
     margin: 'auto',
