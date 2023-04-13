@@ -338,6 +338,15 @@ export default function PricingLogTable() {
 						if (params.value == 0) return <div>0.00%</div>;
 					},
 				}); // End push
+			} else if (column.headerName.includes("Measurement")) {
+				columns.push({
+					headerName: column.headerName,
+					field: column.field,
+					flex: 1,
+					headerClassName: classes.header,
+					disableColumnMenu: true,
+					sortable: false,
+				}); // End push
 			} else {
 				columns.push({
 					headerName: column.headerName,
@@ -352,7 +361,6 @@ export default function PricingLogTable() {
 			if (column.month_year_label) {
 				doubleColumns.push({
 					headerName: column.headerName,
-					// headerName: `${column.headerName} at ${(column.margin_applied * 100)}% Margin`,
 					field: column.field,
 					flex: 4,
 					headerClassName: classes.header,
@@ -716,7 +724,7 @@ export default function PricingLogTable() {
 				id="pricingLogTable"
 				className={selectedLog.className}
 				// ⬇ Set a style to, if the selectedLog.key == "price_per_unit", I want the width to be rows.length * 100 px:
-				style={selectedLog.key === "price_per_unit" ? { width: `${rows.length * 175}px` } : {}}
+				style={selectedLog.key === "price_per_unit" ? { width: `${rows.length * 200}px` } : {}}
 
 				columns={columns}
 				rows={rows}

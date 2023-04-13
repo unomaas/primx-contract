@@ -127,14 +127,20 @@ function* pricingLogInitialLoad() {
 		}; // End for loop
 		//#endregion - Calculate historical pricing data.
 
-		const pricingLogPerUnitTopHeader = [{ month_year_value: "" }];
-		const pricingLogPerUnitBottomHeader = [{
+		const pricingLogPerUnitTopHeader = [{ month_year_value: "" }, { month_year_label: null, month_year_value: "" }];
+		const pricingLogPerUnitBottomHeader = [
+			{
 			headerName: "Destination",
 			field: 'destination_name',
 			// flex: 1,
 			// style: { backgroundColor: '#C8C8C8', },
 			// style: { backgroundColor: '#C8C8C8', },
-		}];
+		},
+		{
+			headerName: "Measurement Units",
+			field: 'measurement_units',
+		},
+	];
 		// const pricingLogPerUnitRows = [];
 		const pricingLogPerUnitRowsObject = {};
 
@@ -158,38 +164,18 @@ function* pricingLogInitialLoad() {
 				{
 					headerName: `60lbs/35kg Price - ${month.month_year_label}`,
 					field: `lower_${month.month_year_value}`,
-					// flex: 1,
-					// headerClassName: `classes.header`,
-					// style: { backgroundColor: '#C8C8C8', },
-					// type: 'number',
-					// valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 				},
 				{
 					headerName: `Change from Last Month`,
 					field: `lower_diff_${month.month_year_value}`,
-					// flex: 1,
-					// headerClassName: `classes.header`,
-					// style: { backgroundColor: '#C8C8C8', },
-					// type: 'number',
-					// valueFormatter: (params) => { return `${(params.value * 100)}%` },
 				},
 				{
 					headerName: `68lbs/40kg Price - ${month.month_year_label}`,
 					field: `higher_${month.month_year_value}`,
-					// flex: 1,
-					// headerClassName: `classes.header`,
-					// style: { backgroundColor: '#C8C8C8', },
-					// type: 'number',
-					// valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 				},
 				{
 					headerName: `Change from Last Month`,
 					field: `higher_diff_${month.month_year_value}`,
-					// headerClassName: `classes.header`,
-					// flex: 1,
-					// style: { backgroundColor: '#C8C8C8', },
-					// type: 'number',
-					// valueFormatter: (params) => { return `${(params.value * 100)}%` },
 				},
 			); // End pricingLogPerUnitBottomHeader.push
 
@@ -202,7 +188,7 @@ function* pricingLogInitialLoad() {
 					pricingLogPerUnitRowsObject[destination.destination_id] = {
 						destination_id: destination.destination_id,
 						destination_name: destination.destination_name,
-						// measurement_units: destination.measurement_units,
+						measurement_units: (destination.measurement_units).charAt(0).toUpperCase() + (destination.measurement_units).slice(1),
 						units_label: destination.units_label,
 						[`lower_${month.month_year_value}`]: destination.price_per_unit_75_50,
 						[`lower_diff_${month.month_year_value}`]: 0,
