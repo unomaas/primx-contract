@@ -98,7 +98,7 @@ export default function PricingLogTable() {
 			] // End columns
 		}, // End markup_margin
 		product_cost: {
-			label: "Material Cost",
+			label: "Product Cost",
 			key: "product_cost",
 			className: classes.customsDutiesHistoryGrid,
 			paperClassName: classes.customsDutiesHistoryGrid,
