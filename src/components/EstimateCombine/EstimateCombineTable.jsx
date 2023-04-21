@@ -2133,10 +2133,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														<section className="removeInPrint">
 															{!showFinalCostRow &&
 																<Tooltip
-																	title={`Please select dosage options for all of the above estimates before being able to save.`}
+																	title={`Please select dosage options for all of the above estimates before being able to save, via the circular buttons to the left of the "PrimX Steel Fibers" label.`}
 																	placement="left-end"
 																	arrow
 																	color="primary"
+																	style={{
+																		marginBottom: "-9px",
+																		marginRight: "10px",
+																	}}
 																>
 																	<HelpIcon />
 																</Tooltip>
