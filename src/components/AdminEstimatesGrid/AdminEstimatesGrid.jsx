@@ -245,28 +245,28 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 			{
 				field: 'price_per_unit_75_50',
 				headerClassName: classes.header,
-				headerName: 'Price Per Unit, 75/50 SF Dosage',
+				headerName: 'Price Per Unit, 60lbs/35kg SF Dosage',
 				width: 200,
 				valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 			},
 			{
 				field: 'price_per_unit_90_60',
 				headerClassName: classes.header,
-				headerName: 'Price Per Unit, 90/60 SF Dosage',
+				headerName: 'Price Per Unit, 68lbs/40kg SF Dosage',
 				width: 200,
 				valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 			},
 			{
 				field: 'total_project_cost_75_50',
 				headerClassName: classes.header,
-				headerName: 'Total Project Cost, 75/50 SF Dosage',
+				headerName: 'Total Project Cost, 60lbs/35kg SF Dosage',
 				width: 200,
 				valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 			},
 			{
 				field: 'total_project_cost_90_60',
 				headerClassName: classes.header,
-				headerName: 'Total Project Cost, 90/60 SF Dosage',
+				headerName: 'Total Project Cost, 68lbs/40kg SF Dosage',
 				width: 200,
 				valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 			},
@@ -280,28 +280,28 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 		// {
 		// 	field: 'price_per_unit_75_50',
 		// 	headerClassName: classes.header,
-		// 	headerName: 'Price Per Unit, 75/50 SF Dosage',
+		// 	headerName: 'Price Per Unit, 60lbs/35kg SF Dosage',
 		// 	width: 200,
 		// 	valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 		// },
 		// {
 		// 	field: 'price_per_unit_90_60',
 		// 	headerClassName: classes.header,
-		// 	headerName: 'Price Per Unit, 90/60 SF Dosage',
+		// 	headerName: 'Price Per Unit, 68lbs/40kg SF Dosage',
 		// 	width: 200,
 		// 	valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 		// },
 		// {
 		// 	field: 'total_project_cost_75_50',
 		// 	headerClassName: classes.header,
-		// 	headerName: 'Total Project Cost, 75/50 SF Dosage',
+		// 	headerName: 'Total Project Cost, 60lbs/35kg SF Dosage',
 		// 	width: 200,
 		// 	valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 		// },
 		// {
 		// 	field: 'total_project_cost_90_60',
 		// 	headerClassName: classes.header,
-		// 	headerName: 'Total Project Cost, 90/60 SF Dosage',
+		// 	headerName: 'Total Project Cost, 68lbs/40kg SF Dosage',
 		// 	width: 200,
 		// 	valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
 		// },

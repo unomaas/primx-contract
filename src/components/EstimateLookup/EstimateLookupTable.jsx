@@ -608,6 +608,7 @@ export default function EstimateLookupTable() {
 															: <>
 																<Button
 																	variant="contained"
+																	color="primary"
 																	onClick={handleEdit}
 																	className={classes.LexendTeraFont11}
 																	style={{ float: "left", marginTop: "13px" }}

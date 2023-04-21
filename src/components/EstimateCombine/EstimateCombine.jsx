@@ -45,7 +45,7 @@ export default function EstimateCombine() {
 			dispatch({ type: 'SET_RECALCULATED_FALSE' }),
 			dispatch({ type: 'FETCH_DOSAGE_RATES' })
 	}, []); // End useEffect
-	
+
 	// ⬇ Run on estimate search complete:
 	useEffect(() => {
 		// ⬇ If the user got here with params by searching from the lookup view, dispatch the data in the URL params to run a GET request to the DB:
@@ -118,100 +118,101 @@ export default function EstimateCombine() {
 				<ButtonToggle />
 
 				<br />
+				{!licensee_id_searched &&
+					<form onSubmit={handleSubmit}>
+						<Grid container
+							spacing={2}
+							justifyContent="center"
+						>
 
-				<form onSubmit={handleSubmit}>
-					<Grid container
-						spacing={2}
-						justifyContent="center"
-					>
+							{/* Grid #1: The Search Bar for Estimate Lookup */}
+							<Grid item xs={12}>
+								<Paper elevation={3}>
+									<TableContainer >
+										<Table size="small">
+											<TableBody>
+												<TableRow>
 
-						{/* Grid #1: The Search Bar for Estimate Lookup */}
-						<Grid item xs={12}>
-							<Paper elevation={3}>
-								<TableContainer >
-									<Table size="small">
-										<TableBody>
-											<TableRow>
+													<TableCell><b>Licensee/Contractor Name:</b></TableCell>
+													<TableCell>
+														<FormControl error={error}>
+															<Select
+																onChange={event => handleChange('licensee_id', event.target.value)}
+																required
+																size="small"
+																fullWidth
+																value={combineQuery.licensee_id}
+															>
+																<MenuItem key="0" value="0">Please Select</MenuItem>
+																{companies.map(companies => {
+																	return (<MenuItem key={companies.licensee_id} value={companies.licensee_id}>{companies.licensee_contractor_name}</MenuItem>)
+																}
+																)}
+															</Select>
+															<FormHelperText>{selectError}</FormHelperText>
+														</FormControl>
+													</TableCell>
 
-												<TableCell><b>Licensee/Contractor Name:</b></TableCell>
-												<TableCell>
-													<FormControl error={error}>
-														<Select
-															onChange={event => handleChange('licensee_id', event.target.value)}
+													<TableCell><b>First Estimate Number:</b></TableCell>
+													<TableCell>
+														<TextField
+															onChange={event => handleChange('first_estimate_number', event.target.value.toLocaleUpperCase())}
 															required
+															type="search"
 															size="small"
 															fullWidth
-															value={combineQuery.licensee_id}
+															value={combineQuery.first_estimate_number}
+														/>
+													</TableCell>
+
+													<TableCell colSpan={2} align="right">
+													</TableCell>
+												</TableRow>
+
+												<TableRow>
+													<TableCell><b>Second Estimate Number:</b></TableCell>
+													<TableCell>
+														<TextField
+															onChange={event => handleChange('second_estimate_number', event.target.value.toLocaleUpperCase())}
+															required
+															type="search"
+															size="small"
+															fullWidth
+															value={combineQuery.second_estimate_number}
+														/>
+													</TableCell>
+
+													<TableCell><b>Third Estimate Number:</b></TableCell>
+													<TableCell>
+														<TextField
+															onChange={event => handleChange('third_estimate_number', event.target.value.toLocaleUpperCase())}
+															type="search"
+															size="small"
+															fullWidth
+															value={combineQuery.third_estimate_number}
+														/>
+													</TableCell>
+
+													<TableCell colSpan={2} align="right">
+														<Button
+															type="submit"
+															variant="contained"
+															className={classes.LexendTeraFont11}
+															color="primary"
 														>
-															<MenuItem key="0" value="0">Please Select</MenuItem>
-															{companies.map(companies => {
-																return (<MenuItem key={companies.licensee_id} value={companies.licensee_id}>{companies.licensee_contractor_name}</MenuItem>)
-															}
-															)}
-														</Select>
-														<FormHelperText>{selectError}</FormHelperText>
-													</FormControl>
-												</TableCell>
+															Combine
+														</Button>
+													</TableCell>
+												</TableRow>
 
-												<TableCell><b>First Estimate Number:</b></TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('first_estimate_number', event.target.value.toLocaleUpperCase())}
-														required
-														type="search"
-														size="small"
-														fullWidth
-														value={combineQuery.first_estimate_number}
-													/>
-												</TableCell>
-
-												<TableCell colSpan={2} align="right">
-												</TableCell>
-											</TableRow>
-
-											<TableRow>
-												<TableCell><b>Second Estimate Number:</b></TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('second_estimate_number', event.target.value.toLocaleUpperCase())}
-														required
-														type="search"
-														size="small"
-														fullWidth
-														value={combineQuery.second_estimate_number}
-													/>
-												</TableCell>
-
-												<TableCell><b>Third Estimate Number:</b></TableCell>
-												<TableCell>
-													<TextField
-														onChange={event => handleChange('third_estimate_number', event.target.value.toLocaleUpperCase())}
-														type="search"
-														size="small"
-														fullWidth
-														value={combineQuery.third_estimate_number}
-													/>
-												</TableCell>
-
-												<TableCell colSpan={2} align="right">
-													<Button
-														type="submit"
-														variant="contained"
-														className={classes.LexendTeraFont11}
-														color="primary"
-													>
-														Combine
-													</Button>
-												</TableCell>
-											</TableRow>
-
-										</TableBody>
-									</Table>
-								</TableContainer>
-							</Paper>
+											</TableBody>
+										</Table>
+									</TableContainer>
+								</Paper>
+							</Grid>
 						</Grid>
-					</Grid>
-				</form>
+					</form>
+				}
 			</section>
 			<br />
 			{/* End estimate search form */}

@@ -104,7 +104,7 @@ export default function AdminUpdateMarkup() {
 				valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
 			},
 			{
-				headerName: `90/60 Price: ${leftTableData.month_year_label}`,
+				headerName: `68lbs/40kg Price: ${leftTableData.month_year_label}`,
 				field: 'left_price_per_unit_90_60',
 				flex: 1,
 				headerClassName: classes.header,
@@ -114,7 +114,7 @@ export default function AdminUpdateMarkup() {
 				valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
 			},
 			{
-				headerName: `75/50 Price: ${rightTableData.month_year_label}`,
+				headerName: `60lbs/35kg Price: ${rightTableData.month_year_label}`,
 				field: 'right_price_per_unit_75_50',
 				flex: 1,
 				headerClassName: classes.header,
@@ -124,7 +124,7 @@ export default function AdminUpdateMarkup() {
 				valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
 			},
 			{
-				headerName: `90/60 Price: ${rightTableData.month_year_label}`,
+				headerName: `68lbs/40kg Price: ${rightTableData.month_year_label}`,
 				field: 'right_price_per_unit_90_60',
 				flex: 1,
 				headerClassName: classes.header,
@@ -134,7 +134,7 @@ export default function AdminUpdateMarkup() {
 				valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
 			},
 			{
-				headerName: `75/50 Difference`,
+				headerName: `60lbs/35kg Difference`,
 				field: 'difference_per_unit_75_50',
 				flex: 1,
 				headerClassName: classes.header,
@@ -144,7 +144,7 @@ export default function AdminUpdateMarkup() {
 				valueFormatter: (params) => { return `${(params.value * 100).toFixed(2)}%`; },
 			},
 			{
-				headerName: `90/60 Difference`,
+				headerName: `68lbs/40kg Difference`,
 				field: 'difference_per_unit_90_60',
 				flex: 1,
 				headerClassName: classes.header,

@@ -8,6 +8,8 @@ import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, Tab
 import { useParams } from 'react-router';
 import { useStyles } from '../MuiStyling/MuiStyling';
 import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
+import HelpIcon from '@material-ui/icons/Help';
+
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -2067,112 +2069,128 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableRow>
 									}
 
-									{showFinalCostRow && <>
-										<br /> <br />
-										<TableRow hover={true}>
-											<TableCell colSpan={8} align="right">
-												<b>Total Concrete Amt ({cubic_measurement_unit}):</b>
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.measurement_units == 'imperial'
-													? calcCombinedEstimate?.design_cubic_yards_total?.toLocaleString('en-US')
-													: calcCombinedEstimate?.design_cubic_meters_total?.toLocaleString('en-US')
-												}
-											</TableCell>
-										</TableRow>
-										<TableRow hover={true}>
-											<TableCell colSpan={8} align="right">
-												<b>Total for All Floors (USD):</b>
-											</TableCell>
-											<TableCell align="right">
-												{calcCombinedEstimate?.total_project_cost_75_50_display}
-											</TableCell>
-										</TableRow>
+									{/* {showFinalCostRow && <> */}
+									<br /> <br />
+									<TableRow hover={true}>
+										<TableCell colSpan={8} align="right">
+											<b>Total Concrete Amt ({cubic_measurement_unit}):</b>
+										</TableCell>
+										<TableCell align="right">
+											{showFinalCostRow &&
+												calcCombinedEstimate?.measurement_units == 'imperial'
+												? calcCombinedEstimate?.design_cubic_yards_total?.toLocaleString('en-US')
+												: calcCombinedEstimate?.design_cubic_meters_total?.toLocaleString('en-US')
+											}
+										</TableCell>
+									</TableRow>
+									<TableRow hover={true}>
+										<TableCell colSpan={8} align="right">
+											<b>Total for All Floors (USD):</b>
+										</TableCell>
+										<TableCell align="right">
+											{showFinalCostRow &&
+												calcCombinedEstimate?.total_project_cost_75_50_display
+											}
+										</TableCell>
 
-										{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths <= 2 && !editState &&
-											<TableRow hover={true}>
-												<TableCell colSpan={9} align="right">
-													{((firstEstimate.used_in_a_combined_order == true) &&
-														(secondEstimate.used_in_a_combined_order == true) &&
-														((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.used_in_a_combined_order == true))) ?
-														<>
-															<Button
-																variant="contained"
-																// onClick={handleEdit}
-																onClick={() => setEditState(!editState)}
-																className={classes.LexendTeraFont11}
-																style={{ float: "left", marginTop: "13px" }}
-															>
-																Edit This Estimate
-															</Button>
+									</TableRow>
 
-															<TextField
-																onChange={(event) => setPoNumber(event.target.value)}
-																size="small"
-																label="PO Number"
-																helperText={poNumError}
-															/>
-															&nbsp; &nbsp;
-															<Button
-																variant="contained"
-																color="secondary"
-																onClick={handlePlaceOrder}
-																style={{ marginTop: "13px" }}
-																className={classes.LexendTeraFont11}
-															>
-																Place Order
-															</Button>
-														</> : <>
-															<section className="removeInPrint">
-																<Button
-																	variant="contained"
-																	color="primary"
-																	onClick={handleSave}
-																	className={classes.LexendTeraFont11}
-																>
-																	Save Estimate
-																</Button>
-															</section>
-														</>
-													}
-												</TableCell>
-											</TableRow>
-										}
+									{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths <= 2 && !editState &&
+										<TableRow hover={true} style={{ verticalAlign: "middle" }}>
+											<TableCell colSpan={9} align="right">
+												{((firstEstimate.used_in_a_combined_order == true) &&
+													(secondEstimate.used_in_a_combined_order == true) &&
+													((JSON.stringify(thirdEstimate) === '{}') || (thirdEstimate.used_in_a_combined_order == true))) ?
+													<>
+														<Button
+															color="primary"
+															variant="contained"
+															// onClick={handleEdit}
+															onClick={() => setEditState(!editState)}
+															className={classes.LexendTeraFont11}
+															style={{ float: "left", marginTop: "13px" }}
+														>
+															Edit This Estimate
+														</Button>
 
-										{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths >= 3 &&
-											<TableRow hover={true}>
-												<TableCell colSpan={9} align="right">
-													<Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
+														<TextField
+															onChange={(event) => setPoNumber(event.target.value)}
+															size="small"
+															label="PO Number"
+															helperText={poNumError}
+														/>
+														&nbsp; &nbsp;
 														<Button
 															variant="contained"
-															color="primary"
-															onClick={() => handleRecalculateCosts(calcCombinedEstimate, 'calcCombinedEstimate')}
+															color="secondary"
+															onClick={handlePlaceOrder}
 															style={{ marginTop: "13px" }}
 															className={classes.LexendTeraFont11}
 														>
-															Recalculate Costs
+															Place Order
 														</Button>
-													</Tooltip>
-												</TableCell>
-											</TableRow>
-										}
+													</> : <>
+														<section className="removeInPrint">
+															{!showFinalCostRow &&
+																<Tooltip
+																	title={`Please select dosage options for all of the above estimates before being able to save.`}
+																	placement="left-end"
+																	arrow
+																	color="primary"
+																>
+																	<HelpIcon />
+																</Tooltip>
+															}
+															<Button
+																variant="contained"
+																color="primary"
+																onClick={handleSave}
+																className={classes.LexendTeraFont11}
+																disabled={!showFinalCostRow && true}
+															>
+																Save Estimate
+															</Button>
+														</section>
+													</>
+												}
+											</TableCell>
+										</TableRow>
+									}
 
-										{editState &&
-											<TableRow hover={true}>
-												<TableCell colSpan={9} align="right">
+									{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths >= 3 &&
+										<TableRow hover={true}>
+											<TableCell colSpan={9} align="right">
+												<Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
 													<Button
-														onClick={handleEditSave}
 														variant="contained"
-														className={classes.LexendTeraFont11}
 														color="primary"
+														onClick={() => handleRecalculateCosts(calcCombinedEstimate, 'calcCombinedEstimate')}
+														style={{ marginTop: "13px" }}
+														className={classes.LexendTeraFont11}
 													>
-														Save Edits
+														Recalculate Costs
 													</Button>
-												</TableCell>
-											</TableRow>
-										}
+												</Tooltip>
+											</TableCell>
+										</TableRow>
+									}
 
-									</>}
+									{editState &&
+										<TableRow hover={true}>
+											<TableCell colSpan={9} align="right">
+												<Button
+													onClick={handleEditSave}
+													variant="contained"
+													className={classes.LexendTeraFont11}
+													color="primary"
+												>
+													Save Edits
+												</Button>
+											</TableCell>
+										</TableRow>
+									}
+
+									{/* </>} */}
 
 
 								</TableBody>
