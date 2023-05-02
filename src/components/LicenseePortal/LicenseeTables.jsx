@@ -28,13 +28,13 @@ export default function LicenseeTables() {
 	if (tableData == "Pending Orders") {
 		data_to_display = pageData.pending_orders_array;
 		grid_source = "pending";
-	} else if (tableData == "Processed Orders") {
+	} else if (tableData == "Approved Orders") {
 		data_to_display = pageData.processed_orders_array;
 		grid_source = "processed";
 	} else if (tableData == "Archived Orders") {
 		data_to_display = pageData.archived_orders_array;
 		grid_source = "archived";
-	} else if (tableData == "Open Orders") {
+	} else if (tableData == "Saved Estimates") {
 		data_to_display = pageData.open_orders_array;
 		grid_source = "open";
 	}

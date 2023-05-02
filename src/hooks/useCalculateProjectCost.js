@@ -84,6 +84,8 @@ export default function useCalculateProjectCost(estimate, options) {
 		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).can_percent;
 
 		primxUltraCureProductInfo = products.find(product => product.product_id === 7);
+
+
 	}; // End if
 	//#endregion - Step 1.
 
@@ -93,31 +95,31 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	// ⬇ PrimX DC 20ft & 40ft:
 	const primxDc20ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.dc_20ft || "0";
-	const primxDc20ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '20' && (container.product_id == 1 || container.product_id == 2));
+	const primxDc20ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '20' && (container.product_id == 1 || container.product_id == 2));
 	const primxDc40ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.dc_40ft || "0";
-	const primxDc40ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '40' && (container.product_id == 1 || container.product_id == 2));
+	const primxDc40ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '40' && (container.product_id == 1 || container.product_id == 2));
 
 
 	// ⬇ PrimX Steel Fibers 20ft & 40ft:
 	const primxSteelFiber20ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.fibers_20ft || "0";
-	const primxSteelFiber20ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '20' && (container.product_id == 4 || container.product_id == 5));
+	const primxSteelFiber20ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '20' && (container.product_id == 4 || container.product_id == 5));
 	const primxSteelFiber40ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.fibers_40ft || "0";
-	const primxSteelFiber40ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '40' && (container.product_id == 4 || container.product_id == 5));
+	const primxSteelFiber40ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '40' && (container.product_id == 4 || container.product_id == 5));
 
 
 	// ⬇ PrimX Flow 20ft & 40ft:
 	const primxFlow20ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.flow_20ft || "0";
-	const primxFlow20ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '20' && container.product_id == 3);
+	const primxFlow20ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '20' && container.product_id == 3);
 	const primxFlow40ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.flow_40ft || "0";
 	const primxFlow40ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '40' && container.product_id == 3);
 
 
 	// ⬇ PrimX Cpea 20ft & 40ft:
 	const primxCpea20ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.cpea_20ft || "0";
-	const primxCpea20ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '20' && container.product_id == 8);
+	const primxCpea20ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '20' && container.product_id == 8);
 
 	const primxCpea40ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.cpea_40ft || "0";
-	const primxCpea40ftContainerInfo = productContainers.find(container => container.container_destination == estimate. destination_country && container.container_length_ft == '40' && container.product_id == 8);
+	const primxCpea40ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '40' && container.product_id == 8);
 	//#endregion - Step 2.
 
 
@@ -130,14 +132,18 @@ export default function useCalculateProjectCost(estimate, options) {
 	const primxSteelFiber20ftTransportationCostPerLb = parseFloat(primxSteelFiber20ftCostInfo) / (parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet) * parseFloat(primxSteelFiber20ftContainerInfo.max_pallets_per_container));
 	const primxSteelFiber40ftTransportationCostPerLb = parseFloat(primxSteelFiber40ftCostInfo) / (parseFloat(primxSteelFiber40ftContainerInfo.net_weight_of_pallet) * parseFloat(primxSteelFiber40ftContainerInfo.max_pallets_per_container));
 
+
 	// ⬇ PrimX Flow 20ft & 40ft:
 	const primxFlow20ftTransportationCostPerLb = parseFloat(primxFlow20ftCostInfo) / (parseFloat(primxFlow20ftContainerInfo.net_weight_of_pallet) * parseFloat(primxFlow20ftContainerInfo.max_pallets_per_container));
 	const primxFlow40ftTransportationCostPerLb = parseFloat(primxFlow40ftCostInfo) / (parseFloat(primxFlow40ftContainerInfo.net_weight_of_pallet) * parseFloat(primxFlow40ftContainerInfo.max_pallets_per_container));
 
+
 	// ⬇ PrimX Cpea 20ft & 40ft:
 	const primxCpea20ftTransportationCostPerLb = parseFloat(primxCpea20ftCostInfo) / (parseFloat(primxCpea20ftContainerInfo.net_weight_of_pallet) * parseFloat(primxCpea20ftContainerInfo.max_pallets_per_container));
 	const primxCpea40ftTransportationCostPerLb = parseFloat(primxCpea40ftCostInfo) / (parseFloat(primxCpea40ftContainerInfo.net_weight_of_pallet) * parseFloat(primxCpea40ftContainerInfo.max_pallets_per_container));
+
 	//#endregion - Step 3.
+
 
 
 
@@ -153,6 +159,7 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	// ⬇ PrimX Cpea:
 	const cheapestPrimxCpeaTransportationCostPerLb = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? primxCpea20ftTransportationCostPerLb : primxCpea40ftTransportationCostPerLb;
+
 	//#endregion - Step 4.
 
 
@@ -170,6 +177,7 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	// ⬇ PrimX Cpea:
 	const primxCpeaProductPlusCustomDutyPercentage = parseFloat(primxCpeaProductInfo.product_self_cost) + (parseFloat(primxCpeaProductInfo.product_self_cost) * parseFloat(primxCpeaProductInfo.custom_duty_percentage));
+
 	//#endregion - Step 5. 
 
 
@@ -211,6 +219,7 @@ export default function useCalculateProjectCost(estimate, options) {
 		(primxFlowTransportationCostPlusMaterialCostPerUnit * parseFloat(primxFlowDosageRateInfo.dosage_rate)) +
 		(primxCpeaTransportationCostPlusMaterialCostPerUnit * parseFloat(primxCpeaDosageRateInfo.dosage_rate))
 	);
+
 	//#endregion - Step 7.
 
 
@@ -220,6 +229,7 @@ export default function useCalculateProjectCost(estimate, options) {
 	const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(currentMarkup[0].margin_applied));
 	const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(currentMarkup[0].margin_applied));
 	// ! Ryan Here, save this number: 379540 square feet by 10 inches thickness to get the numbers shown in their estimate example
+	
 	//#endregion - Step 8. 
 
 

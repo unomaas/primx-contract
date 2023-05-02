@@ -508,8 +508,8 @@ const showTables = useSelector(store => store.estimatesReducer.tableState);
 												align="right">
 												<Button
 													type="submit"
-													// !⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-													onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+													// ! Ryan Here. ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION: 
+													// onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
 													variant="contained"
 													className={classes.LexendTeraFont11}
 													color="primary"

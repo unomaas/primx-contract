@@ -21,7 +21,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	const classes = useStyles();
 	// ⬇ Sets the error state for a faulty search:
 	const [poNumError, setPoNumError] = useState("");
-	const [poNumber, setPoNumber] = useState('');
+	const [poNumber, setPoNumber] = useState("");
+
 	// ⬇ Used for page navigation:
 	const dispatch = useDispatch();
 	const history = useHistory();
@@ -36,6 +37,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	const thirdEstimateAgeInMonths = useDifferenceBetweenDates(thirdEstimate?.date_created).total_months;
 	const calcEstimateAgeInMonths = useDifferenceBetweenDates(calcCombinedEstimate?.date_created).total_months;
 	const [editState, setEditState] = useState(false);
+
+	useEffect(() => {
+		if (Object.keys(calcCombinedEstimate).length > 0 && calcCombinedEstimate.estimate_number != poNumber) {
+			setPoNumber(calcCombinedEstimate.estimate_number);
+		};
+	}, [calcCombinedEstimate]);
 
 
 	// ⬇ Checks if the third estimate is populated, and if so, adjusts the table size to display accordingly:
@@ -2115,6 +2122,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 														<TextField
 															onChange={(event) => setPoNumber(event.target.value)}
+															value={poNumber}
 															size="small"
 															label="PO Number"
 															helperText={poNumError}

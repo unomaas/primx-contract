@@ -9,6 +9,7 @@ import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHe
 import { useStyles } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
 import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
+import dayjs from 'dayjs';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -183,6 +184,12 @@ export default function EstimateCreateTable() {
 		} // End if/else
 	}, [estimateData.materials_on_hand]);
 	//#endregion ⬆⬆ Event handles above. 
+
+	// ⬇ Use dayjs to get today's date in YYYY-MM-DD format:
+	let startDate = dayjs().format('YYYY-MM-DD');
+	if (estimateData.date_created) startDate = estimateData.date_created;
+
+	const threeMonthGuaranteeDate = dayjs(startDate).add(3, 'month').format('YYYY-MM-DD');
 
 
 	// ⬇ Rendering:
@@ -946,84 +953,88 @@ export default function EstimateCreateTable() {
 										</TableRow>
 									</TableBody>
 								</Table>
-								<br /> <br />
+								{/* <br /> <br /> */}
 
-								{calculatedDisplayObject?.materials_excluded != 'exclude_fibers' &&
-									<Table size="small">
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
-												{estimateData?.measurement_units === 'imperial'
-													? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
-													: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
-												}
-											</TableRow>
-											<TableRow hover={true}>
-												<TableCell><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-												{estimateData?.measurement_units === 'imperial'
-													? <TableCell align="right">{calculatedDisplayObject?.design_cubic_yards_total}</TableCell>
-													: <TableCell align="right">{calculatedDisplayObject?.design_cubic_meters_total}</TableCell>
-												}
-											</TableRow>
-											<TableRow hover={true}>
-												<TableCell><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
-												<TableCell align="right">{calculatedDisplayObject?.price_per_unit_90_60_display}</TableCell>
-											</TableRow>
-											<TableRow hover={true}>
-												<TableCell><b>Total PrimX Price per Project (USD):</b></TableCell>
-												<TableCell align="right">{calculatedDisplayObject?.total_project_cost_90_60_display}</TableCell>
-											</TableRow>
+								<Table size="small">
+									<TableBody>
+										{calculatedDisplayObject?.materials_excluded != 'exclude_fibers' &&
+											<>
+												<br /> <br />
 
-											<TableRow hover={true}>
-												<TableCell colSpan={2} align="right">
-													{/* Conditional rendering to show the Edit or Save button based off whether they've came here from the Edit Estimate button or not: */}
-													{editState ? (
-														// If they are editing this estimate, show the Save Edit:
-														<>
+												<TableRow hover={true}>
+													<TableCell><b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
+													{estimateData?.measurement_units === 'imperial'
+														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
+													{estimateData?.measurement_units === 'imperial'
+														? <TableCell align="right">{calculatedDisplayObject?.design_cubic_yards_total}</TableCell>
+														: <TableCell align="right">{calculatedDisplayObject?.design_cubic_meters_total}</TableCell>
+													}
+												</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell align="right">{calculatedDisplayObject?.price_per_unit_90_60_display}</TableCell>
+												</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell align="right">{calculatedDisplayObject?.total_project_cost_90_60_display}</TableCell>
+												</TableRow>
+											</>
+										}
+
+										<TableRow hover={true}>
+											<TableCell colSpan={2} align="right">
+												{/* Conditional rendering to show the Edit or Save button based off whether they've came here from the Edit Estimate button or not: */}
+												{editState ? (
+													// If they are editing this estimate, show the Save Edit:
+													<>
+														<Button
+															onClick={event => handleEdit(event)}
+															variant="contained"
+															className={classes.LexendTeraFont11}
+															color="secondary"
+														>
+															Save Edits
+														</Button>
+													</>
+												) : (
+													// If they are not editing, show the Save Estimate conditional rendering: 
+													<>
+														{/* Conditional rendering for the save button to be enabled or disabled based off whether they've filled out all the inputs: */}
+														{saveButton ? (
+															// If they have filled out all of the inputs, make it enabled:
 															<Button
-																onClick={event => handleEdit(event)}
+																type="submit"
+																// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+																// onClick={event => handleSave(event)}
 																variant="contained"
 																className={classes.LexendTeraFont11}
 																color="secondary"
+															// style={{backgroundColor: "green"}}
 															>
-																Save Edits
+																Save Estimate
 															</Button>
-														</>
-													) : (
-														// If they are not editing, show the Save Estimate conditional rendering: 
-														<>
-															{/* Conditional rendering for the save button to be enabled or disabled based off whether they've filled out all the inputs: */}
-															{saveButton ? (
-																// If they have filled out all of the inputs, make it enabled:
-																<Button
-																	type="submit"
-																	// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-																	// onClick={event => handleSave(event)}
-																	variant="contained"
-																	className={classes.LexendTeraFont11}
-																	color="secondary"
-																// style={{backgroundColor: "green"}}
-																>
-																	Save Estimate
-																</Button>
-															) : (
-																// If they haven't filled out the inputs, make it disabled:
-																<Button
-																	variant="contained"
-																	className={classes.LexendTeraFont11}
-																	disabled
-																>
-																	Save Estimate
-																</Button>
-															)}
-															{/* End conditional rendering for saveButton ? */}
-														</>
-													)}
-												</TableCell>
-											</TableRow>
-										</TableBody>
-									</Table>
-								}
+														) : (
+															// If they haven't filled out the inputs, make it disabled:
+															<Button
+																variant="contained"
+																className={classes.LexendTeraFont11}
+																disabled
+															>
+																Save Estimate
+															</Button>
+														)}
+														{/* End conditional rendering for saveButton ? */}
+													</>
+												)}
+											</TableCell>
+										</TableRow>
+									</TableBody>
+								</Table>
 
 							</TableContainer>
 							<br />
@@ -1031,9 +1042,17 @@ export default function EstimateCreateTable() {
 								padding: "20px",
 							}}>
 								<b>Price Guarantee Disclaimer:</b>
-								<br /> The prices shown above are guaranteed to be eligible for three months from the date it's saved.
+								<br /> The prices above are guaranteed to be eligible for three months, from the date it's saved until {threeMonthGuaranteeDate}.
 							</div>
 
+							{estimateData.materials_excluded === 'exclude_fibers' &&
+								<div style={{
+									padding: "20px",
+								}}>
+									<b>Exclude PrīmX Steel Fibers Disclaimer:</b>
+									<br /> In particular cases, the selected steel fiber product for the project must be approved by PrīmX Engineers.
+								</div>
+							}
 						</Paper>
 					</Grid>
 				</Grid>

@@ -21,9 +21,9 @@ export default function GridToolbarSelectDropdown() {
 	const tableData = useSelector(store => store.licenseePortalReducer.tableData);
 	// ⬇ Options for the drop-down menus: 
 	const options = [
-		"Open Orders",
+		"Saved Estimates",
 		"Pending Orders",
-		"Processed Orders",
+		"Approved Orders",
 		"Archived Orders"
 	];
 

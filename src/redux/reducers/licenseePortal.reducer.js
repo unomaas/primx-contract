@@ -10,7 +10,7 @@ const pageData = (state = {}, action) => {
 	} // End switch 
 }; // End pageData
 
-const tableData = (state = 'Open Orders', action) => {
+const tableData = (state = 'Saved Estimates', action) => {
 	switch (action.type) {
 		case 'SET_LICENSEE_PORTAL_TABLE':
 			return action.payload;

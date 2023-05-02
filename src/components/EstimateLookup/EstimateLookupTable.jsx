@@ -25,6 +25,13 @@ export default function EstimateLookupTable() {
 	const history = useHistory();
 	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
 
+	useEffect(() => {
+		if (Object.keys(searchResult).length > 0 && searchResult.estimate_number != poNumber) {
+			setPoNumber(searchResult.estimate_number);
+		};
+	}, [searchResult]);
+
+
 	// ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
 	const { licensee_id_searched, estimate_number_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
 	let cubic_measurement_unit = searchResult?.measurement_units === "imperial" ? "yd³" : "m³";
@@ -73,7 +80,7 @@ export default function EstimateLookupTable() {
 		history.push(`/create`);
 	}; // End handleClose
 
-	
+
 
 	const handleSteelFiberSelection = (value) => {
 		dispatch({ type: 'SET_STEEL_FIBER_SELECTION_QUERY', payload: value })
@@ -621,6 +628,7 @@ export default function EstimateLookupTable() {
 																	onChange={(event) => setPoNumber(event.target.value)}
 																	size="small"
 																	label="PO Number"
+																	value={poNumber}
 																	helperText={poNumError}
 																/> &nbsp; &nbsp;
 
