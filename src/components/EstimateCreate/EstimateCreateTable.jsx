@@ -33,6 +33,7 @@ export default function EstimateCreateTable() {
 	const productContainers = useSelector(store => store.productContainers.productContainersArray);
 	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
 	const customsDuties = useSelector(store => store.customsDuties.customsDutiesArray);
+	const user = useSelector(store => store.user);
 
 	const [materialsEditWarning, setMaterialsEditWarning] = useState(false);
 
@@ -866,7 +867,7 @@ export default function EstimateCreateTable() {
 						<Paper elevation={3}>
 							<TableContainer>
 								<h3>Materials Required Calculations</h3>
-								{/* <h3>PrimX Material Calculations</h3> */}
+								{/* <h3>PrīmX Material Calculations</h3> */}
 								<Table size="small">
 
 									{/* <TableHead>
@@ -893,13 +894,15 @@ export default function EstimateCreateTable() {
 															value='none'
 															control={<Radio />}
 														/>
+														{user && user.permission_level <= 2 &&
+															<FormControlLabel
+																label="Exclude PrīmX CPEA"
+																value="exclude_cpea"
+																control={<Radio />}
+															/>
+														}
 														<FormControlLabel
-															label="Exclude PrimX CPEA"
-															value="exclude_cpea"
-															control={<Radio />}
-														/>
-														<FormControlLabel
-															label="Exclude PrimX Steel Fibers"
+															label="Exclude PrīmX Steel Fibers"
 															value="exclude_fibers"
 															control={<Radio />}
 														/>
@@ -912,9 +915,9 @@ export default function EstimateCreateTable() {
 
 											<TableCell><b>Materials Included:</b></TableCell>
 											<TableCell>
-												{calculatedDisplayObject?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-												{calculatedDisplayObject?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-												{calculatedDisplayObject?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+												{calculatedDisplayObject?.materials_excluded == 'none' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX Fibers, PrīmX UltraCure Blankets'}
+												{calculatedDisplayObject?.materials_excluded == 'exclude_cpea' && 'PrīmX DC, PrīmX Flow, PrīmX Fibers, PrīmX UltraCure Blankets'}
+												{calculatedDisplayObject?.materials_excluded == 'exclude_fibers' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX UltraCure Blankets'}
 											</TableCell>
 										</TableRow>
 
@@ -922,12 +925,12 @@ export default function EstimateCreateTable() {
 
 								</Table>
 
-								<h3>PrimX Material Price for the Project</h3>
+								<h3>PrīmX Material Price for the Project</h3>
 								<Table size="small">
 									<TableBody>
 										{calculatedDisplayObject?.materials_excluded != 'exclude_fibers' &&
 											<TableRow hover={true}>
-												<TableCell><b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
+												<TableCell><b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
 												{estimateData?.measurement_units === 'imperial'
 													? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
 													: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
@@ -942,11 +945,11 @@ export default function EstimateCreateTable() {
 											}
 										</TableRow>
 										<TableRow hover={true}>
-											<TableCell><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+											<TableCell><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 											<TableCell align="right">{calculatedDisplayObject?.price_per_unit_75_50_display}</TableCell>
 										</TableRow>
 										<TableRow hover={true}>
-											<TableCell><b>Total PrimX Price per Project (USD):</b></TableCell>
+											<TableCell><b>Total PrīmX Price per Project (USD):</b></TableCell>
 											<TableCell align="right">{calculatedDisplayObject?.total_project_cost_75_50_display}</TableCell>
 										</TableRow>
 										<TableRow>
@@ -962,7 +965,7 @@ export default function EstimateCreateTable() {
 												<br /> <br />
 
 												<TableRow hover={true}>
-													<TableCell><b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
+													<TableCell><b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b></TableCell>
 													{estimateData?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
 														: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
@@ -976,11 +979,11 @@ export default function EstimateCreateTable() {
 													}
 												</TableRow>
 												<TableRow hover={true}>
-													<TableCell><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 													<TableCell align="right">{calculatedDisplayObject?.price_per_unit_90_60_display}</TableCell>
 												</TableRow>
 												<TableRow hover={true}>
-													<TableCell><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell><b>Total PrīmX Price per Project (USD):</b></TableCell>
 													<TableCell align="right">{calculatedDisplayObject?.total_project_cost_90_60_display}</TableCell>
 												</TableRow>
 											</>
@@ -1045,14 +1048,14 @@ export default function EstimateCreateTable() {
 								<br /> The prices above are guaranteed to be eligible for three months, from the date it's saved until {threeMonthGuaranteeDate}.
 							</div>
 
-							{estimateData.materials_excluded === 'exclude_fibers' &&
+							{/* {estimateData.materials_excluded === 'exclude_fibers' && */}
 								<div style={{
 									padding: "20px",
 								}}>
 									<b>Exclude PrīmX Steel Fibers Disclaimer:</b>
-									<br /> In particular cases, the selected steel fiber product for the project must be approved by PrīmX Engineers.
+									<br /> In particular cases, the selected steel fiber product for the project must be approved by PrīmX engineers.
 								</div>
-							}
+							{/* } */}
 						</Paper>
 					</Grid>
 				</Grid>
