@@ -127,9 +127,7 @@ const useStyles = makeStyles({
 		// margin: '0 1em',
 	},
 
-  AddLicenseeInput: {
-    margin: 10
-  },
+
   AddTypesInput: {
     margin: 10
   },

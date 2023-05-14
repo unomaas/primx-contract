@@ -27,7 +27,7 @@ export default function EstimateCreate() {
 	const placementTypes = useSelector(store => store.placementTypes);
 	const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
 	const products = useSelector(store => store.products.productsObject);
-const showTables = useSelector(store => store.estimatesReducer.tableState);
+	const showTables = useSelector(store => store.estimatesReducer.tableState);
 	const editState = useSelector(store => store.estimatesReducer.editState);
 	const [error, setError] = useState(false);
 	const [radioError, setRadioError] = useState("");
@@ -68,24 +68,35 @@ const showTables = useSelector(store => store.estimatesReducer.tableState);
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
 	const handleChange = (key, value) => {
+		// ⬇ If they change the destination while editing, force a recalculate of the estimate price per unit:
 		if (key == 'destination_id' && editState == true) {
 			estimateData.force_recalculate = true;
-		};
-		// ⬇ If they're toggling Materials On-Hand, send the opposite bool: 
-		if (key === 'materials_on_hand') {
-			// ⬇ Converts our string input bool to a true bool for the reducer: 
-			const bool_value = (value === 'false');
-			// ⬇ Sends the keys/values to the estimate reducer object: 
-			dispatch({
-				type: 'SET_ESTIMATE',
-				payload: { key: key, value: bool_value }
-			}); // End dispatch
-		} else { // ⬇ Else it's every other input, handle accordingly: 
-			dispatch({
-				type: 'SET_ESTIMATE',
-				payload: { key: key, value: value }
-			}); // End dispatch
-		} // End if/else 
+		}; // End if
+
+		// ⬇ If they're setting the Licensee Id, we want to set the default unit of measurement for that licensee. 
+		if (key === 'licensee_id') {
+			// ⬇ Find the Licensee by the ID:
+			const licensee = companies.find(company => company.licensee_id == value);
+			if (licensee.default_measurement) handleMeasurementUnits(licensee.default_measurement);
+		}; // End if
+
+		// return;
+		// ! Commenting this out, as Materials on Hand is not implemented at the moment. 
+		// // ⬇ If they're toggling Materials On-Hand, send the opposite bool: 
+		// if (key === 'materials_on_hand') {
+		// 	// ⬇ Converts our string input bool to a true bool for the reducer: 
+		// 	const bool_value = (value === 'false');
+		// 	// ⬇ Sends the keys/values to the estimate reducer object: 
+		// 	dispatch({
+		// 		type: 'SET_ESTIMATE',
+		// 		payload: { key: key, value: bool_value }
+		// 	}); // End dispatch
+		// } else { // ⬇ Else it's every other input, handle accordingly: 
+		dispatch({
+			type: 'SET_ESTIMATE',
+			payload: { key: key, value: value }
+		}); // End dispatch
+		// } // End if/else 
 	} // End handleChange
 
 	/** ⬇ handleShipping:
@@ -131,6 +142,7 @@ const showTables = useSelector(store => store.estimatesReducer.tableState);
 	 * This function will add of metric or imperial costs to the estimateData package depending on their selection of the radio buttons.
 	 */
 	const handleMeasurementUnits = (units) => {
+
 		// ⬇ Making sure validation doesn't trigger:
 		setError(false);
 		setRadioError("");

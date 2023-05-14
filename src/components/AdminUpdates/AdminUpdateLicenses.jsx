@@ -9,6 +9,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import { useStyles } from '../MuiStyling/MuiStyling';
 
 
@@ -21,7 +23,8 @@ export default function AdminUpdateLicenses() {
 	const companies = useSelector(store => store.companies);
 	// establish add company input state with use state
 	let [companyNameInput, setCompanyNameInput] = useState('');
-  const [pageSize, setPageSize] = useState(10);
+	let [defaultMeasurements, setDefaultMeasurements] = useState('imperial');
+	const [pageSize, setPageSize] = useState(10);
 	//defining classes for MUI
 	const classes = useStyles();
 
@@ -96,11 +99,12 @@ export default function AdminUpdateLicenses() {
 	//handles add company button click that sends payload of company name input to saga for posting to database
 	const handleAddCompany = (event) => {
 		if (companyNameInput == '') {
-			dispatch({ type: 'SET_EMPTY_ERROR' })
-		} else {
-			dispatch({ type: 'ADD_COMPANY', payload: companyNameInput });
-			setCompanyNameInput('');
+			// dispatch({ type: 'SET_EMPTY_ERROR' })
+			alert('Please enter a name for the new licensee first.');
+			return;
 		}
+		dispatch({ type: 'ADD_COMPANY', payload: { name: companyNameInput, measurement: defaultMeasurements } });
+		setCompanyNameInput('');
 	}
 
 
@@ -111,22 +115,44 @@ export default function AdminUpdateLicenses() {
 
 			<h2>Update Licensee</h2>
 
-			<form onSubmit={handleAddCompany}>
-				<TextField
-					id="outlined-basic"
-					className={classes.AddLicenseeInput}
-					label="Add New Licensee"
-					variant="outlined"
-					value={companyNameInput}
-					onChange={handleCompanyInputChange} />
-				<Fab
-					className={classes.AddLicenseeInput}
-					type="submit"
-					color="primary"
-					aria-label="add">
-					<AddIcon />
-				</Fab>
-			</form>
+			<div style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				marginBottom: '20px'
+			}}>
+				<form onSubmit={handleAddCompany}>
+					<TextField
+						id="outlined-basic"
+						className={classes.AddLicenseeInput}
+						label="Add New Licensee"
+						variant="outlined"
+						value={companyNameInput}
+						onChange={handleCompanyInputChange}
+						style={{ marginRight: "10px" }}
+					/>
+
+					<Select
+						onChange={(event) => setDefaultMeasurements(event.target.value)}
+						variant="outlined"
+						label="Default Measurement Units"
+						value={defaultMeasurements}
+					>
+						<MenuItem value="imperial">Imperial</MenuItem>
+						<MenuItem value="metric">Metric</MenuItem>
+					</Select>
+
+					<Fab
+						type="submit"
+						color="primary"
+						style={{ marginLeft: '20px', fontSize: '10px' }}
+						aria-label="add"
+					>
+						<AddIcon />
+					</Fab>
+				</form>
+
+			</div>
 
 			<div className={classes.licenseeGrid}>
 				<DataGrid

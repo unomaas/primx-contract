@@ -39,10 +39,12 @@ router.get('/active', (req, res) => {
 
 // POST route to POST a new licensee into the licensees table
 router.post('/', rejectUnauthenticated, (req, res) => {
-  const queryText = `INSERT INTO "licensees" (licensee_contractor_name)
-      VALUES ($1)`;
+	const { name, measurement } = req.body.value;
+
+  const queryText = `INSERT INTO "licensees" (licensee_contractor_name, default_measurement)
+      VALUES ($1, $2)`;
    
-  pool.query(queryText, [req.body.value])
+  pool.query(queryText, [name, measurement])
     .then(() => res.sendStatus(201))
     .catch((error) => {
       console.error('Company ServerSide Post failed:', error);

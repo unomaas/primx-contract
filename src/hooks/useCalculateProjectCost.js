@@ -122,10 +122,31 @@ export default function useCalculateProjectCost(estimate, options) {
 	const primxCpea40ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '40' && container.product_id == 8);
 	//#endregion - Step 2.
 
+	// ! Ryan here, we need to calculate the total amount of pallets and containers. 
+	// console.log(`Ryan Here: Checking container info \n `, {
+	// 	primxFlow20ftContainerInfo,
+	// 	primxFlow40ftContainerInfo,
+	// 	primxSteelFiber20ftContainerInfo,
+	// 	primxSteelFiber40ftContainerInfo,
+	// 	primxDc20ftContainerInfo,
+	// 	primxDc40ftContainerInfo,
+	// 	primxCpea20ftContainerInfo,
+	// 	primxCpea40ftContainerInfo,
+	// 	estimate,
+	// });
+
+
 
 	//#region Step 3 - Calculate the cost per unit for each product, for both container sizes:
 	// ⬇ PrimX DC 20ft & 40ft:
 	const primxDc20ftTransportationCostPerLb = parseFloat(primxDc20ftCostInfo) / (parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet) * parseFloat(primxDc20ftContainerInfo.max_pallets_per_container));
+
+	// ! Ryan here
+	// ⬇ Calculate the number of pallets per container:
+	const primxDc20ftPalletsPerContainer = Math.floor(parseFloat(estimate.estimate_quantity) / parseFloat(primxDc20ftContainerInfo.max_pallets_per_container));
+	// ⬇ Calculate the number of containers needed:
+	const primxDc20ftContainersNeeded = Math.ceil(parseFloat(primxDc20ftPalletsPerContainer) / parseFloat(primxDc20ftContainerInfo.max_pallets_per_container));
+
 	const primxDc40ftTransportationCostPerLb = parseFloat(primxDc40ftCostInfo) / (parseFloat(primxDc40ftContainerInfo.net_weight_of_pallet) * parseFloat(primxDc40ftContainerInfo.max_pallets_per_container));
 
 	// ⬇ PrimX Steel Fibers 20ft & 40ft:
@@ -159,6 +180,24 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	// ⬇ PrimX Cpea:
 	const cheapestPrimxCpeaTransportationCostPerLb = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? primxCpea20ftTransportationCostPerLb : primxCpea40ftTransportationCostPerLb;
+
+	// console.log(`Ryan Here: \n `, {
+	// 	cheapestPrimXDcTransportationCostPerLb,
+	// 	primxDc20ftTransportationCostPerLb,
+	// 	primxDc40ftTransportationCostPerLb,
+
+	// 	cheapestPrimxSteelFiberTransportationCostPerLb,
+	// 	primxSteelFiber20ftTransportationCostPerLb,
+	// 	primxSteelFiber40ftTransportationCostPerLb,
+
+	// 	cheapestPrimxFlowTransportationCostPerLb,
+	// 	primxFlow20ftTransportationCostPerLb,
+	// 	primxFlow40ftTransportationCostPerLb,
+
+	// 	cheapestPrimxCpeaTransportationCostPerLb,
+	// 	primxCpea20ftTransportationCostPerLb,
+	// 	primxCpea40ftTransportationCostPerLb,
+	// });
 
 	//#endregion - Step 4.
 
