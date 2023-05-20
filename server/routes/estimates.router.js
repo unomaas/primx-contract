@@ -21,6 +21,9 @@ router.get('/lookup/:estimate', (req, res) => {
 	const queryText = `
     SELECT 
 			e.*, 
+			e.total_number_of_20ft_containers::int,
+			e.total_number_of_40ft_containers::int,
+			e.total_number_of_pallets::int,
 			ft.floor_type_label, 
 			l.licensee_contractor_name, 
 			pt.placement_type_label, 
@@ -122,6 +125,11 @@ router.post('/add-new-estimate', async (req, res) => {
 		total_project_cost_75_50,
 		total_project_cost_90_60,
 
+		// ⬇ Container/Pallet Info:
+		total_number_of_pallets,
+		total_number_of_20ft_containers,
+		total_number_of_40ft_containers,
+
 		// ⬇ Imperial: 
 		square_feet,
 		thickness_inches,
@@ -174,6 +182,10 @@ router.post('/add-new-estimate', async (req, res) => {
 			price_per_unit_90_60,
 			total_project_cost_75_50,
 			total_project_cost_90_60,
+
+			total_number_of_pallets,
+			total_number_of_20ft_containers,
+			total_number_of_40ft_containers,
 	`; // End sql
 
 	if (estimate_number_combined_1 && estimate_number_combined_2) {
@@ -241,6 +253,9 @@ router.post('/add-new-estimate', async (req, res) => {
 			${format('%L', price_per_unit_90_60)},
 			${format('%L', total_project_cost_75_50)},
 			${format('%L', total_project_cost_90_60)},
+			${format('%L', total_number_of_pallets)},
+			${format('%L', total_number_of_20ft_containers)},
+			${format('%L', total_number_of_40ft_containers)},
 	`;
 
 	if (estimate_number_combined_1 && estimate_number_combined_2) {
@@ -590,6 +605,11 @@ router.put('/clientupdates/:estimate_id', async (req, res) => {
 			total_project_cost_75_50,
 			total_project_cost_90_60,
 
+			// ⬇ Container/Pallet Info:
+			total_number_of_pallets,
+			total_number_of_20ft_containers,
+			total_number_of_40ft_containers,
+
 			// ⬇ Imperial: 
 			square_feet,
 			thickness_inches,
@@ -635,6 +655,9 @@ router.put('/clientupdates/:estimate_id', async (req, res) => {
 				"estimate_number_combined_3" = ${format('%L', estimate_number_combined_3)},
 				"total_project_cost_75_50" = ${format('%L', total_project_cost_75_50)},
 				"total_project_cost_90_60" = ${format('%L', total_project_cost_90_60)},
+				"total_number_of_pallets" = ${format('%L', parseInt(total_number_of_pallets))},
+				"total_number_of_20ft_containers" = ${format('%L', parseInt(total_number_of_20ft_containers))},
+				"total_number_of_40ft_containers" = ${format('%L', parseInt(total_number_of_40ft_containers))},
 		`; // End sql
 		// Add in the imperial or metric specific values based on unit choice
 		if (req.body.measurement_units == 'imperial') {

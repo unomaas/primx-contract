@@ -63,7 +63,10 @@ export default function NavDrawer() {
 						// If user is logged in:
 						<List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
 
-							<ListItem button onClick={() => history.push(`/create`)}>
+							<ListItem button onClick={() => {
+								dispatch({ type: "CLEAR_ALL_STALE_DATA" });
+								history.push(`/create`)
+							}}>
 								<NoteAddIcon /> &nbsp;
 								<p>Create New Estimate</p>
 							</ListItem>

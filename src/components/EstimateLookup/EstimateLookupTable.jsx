@@ -293,6 +293,34 @@ export default function EstimateLookupTable() {
 										</TableBody>
 									</Table>
 
+									<h3>Total PrīmX Materials:</h3>
+									<Table size='small'>
+										<TableBody>
+											{searchResult?.total_number_of_20ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 20':</b></TableCell>
+													<TableCell align="right">
+														{searchResult?.total_number_of_20ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											{searchResult?.total_number_of_40ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 40':</b></TableCell>
+													<TableCell align="right">
+														{searchResult?.total_number_of_40ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											<TableRow hover={true}>
+												<TableCell><b>Total Pallets:</b></TableCell>
+												<TableCell align="right">
+													{searchResult?.total_number_of_pallets?.toLocaleString()}
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+
 									{(parseInt(searchResult?.thickened_edge_perimeter_lineal_feet) > 0 || parseInt(searchResult?.thickened_edge_construction_joint_lineal_feet) > 0) &&
 										<>
 											<h3>Thickened Edge Calculator</h3>
@@ -428,6 +456,34 @@ export default function EstimateLookupTable() {
 										</TableBody>
 									</Table>
 
+									<h3>Total PrīmX Materials:</h3>
+									<Table size='small'>
+										<TableBody>
+											{searchResult?.total_number_of_20ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 20':</b></TableCell>
+													<TableCell align="right">
+														{searchResult?.total_number_of_20ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											{searchResult?.total_number_of_40ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 40':</b></TableCell>
+													<TableCell align="right">
+														{searchResult?.total_number_of_40ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											<TableRow hover={true}>
+												<TableCell><b>Total Pallets:</b></TableCell>
+												<TableCell align="right">
+													{searchResult?.total_number_of_pallets?.toLocaleString()}
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+
 									{searchResult?.thickened_edge_perimeter_lineal_meters > 0 || searchResult?.thickened_edge_construction_joint_lineal_meters > 0 &&
 										<>
 											<h3>Thickened Edge Calculator</h3>
@@ -498,14 +554,14 @@ export default function EstimateLookupTable() {
 				<Grid item xs={12}>
 					<Paper elevation={3}>
 						<TableContainer>
-							<h3>PrimX Material Price for the Project</h3>
+							<h3>PrīmX Material Price for the Project</h3>
 							<Table size='small'>
 								<TableRow hover={true}>
 									<TableCell><b>Materials Included:</b></TableCell>
 									<TableCell align="right">
-										{searchResult?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-										{searchResult?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-										{searchResult?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+										{searchResult?.materials_excluded == 'none' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX Fibers, PrīmX UltraCure Blankets'}
+										{searchResult?.materials_excluded == 'exclude_cpea' && 'PrīmX DC, PrīmX Flow, PrīmX Fibers, PrīmX UltraCure Blankets'}
+										{searchResult?.materials_excluded == 'exclude_fibers' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX UltraCure Blankets'}
 									</TableCell>
 								</TableRow>
 							</Table>
@@ -523,7 +579,7 @@ export default function EstimateLookupTable() {
 														disabled={searchResult?.ordered_by_licensee == 'true' ? true : false}
 													/>
 												}
-												<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+												<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
 												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
@@ -539,11 +595,11 @@ export default function EstimateLookupTable() {
 										}
 									</TableRow>
 									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-										<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+										<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 										<TableCell align="right">{searchResult?.price_per_unit_75_50_display}</TableCell>
 									</TableRow>
 									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-										<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+										<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 										<TableCell align="right">{searchResult?.total_project_cost_75_50_display}</TableCell>
 									</TableRow>
 									<TableRow>
@@ -564,7 +620,7 @@ export default function EstimateLookupTable() {
 														value="90_60"
 													/>
 												}
-												<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+												<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
 												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
@@ -579,11 +635,11 @@ export default function EstimateLookupTable() {
 											}
 										</TableRow>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-											<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+											<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 											<TableCell align="right">{searchResult?.price_per_unit_90_60_display}</TableCell>
 										</TableRow>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-											<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+											<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 											<TableCell align="right">{searchResult?.total_project_cost_90_60_display}</TableCell>
 										</TableRow>
 									</TableBody>

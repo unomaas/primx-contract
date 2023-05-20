@@ -29,7 +29,7 @@ function* fetchAllUsers() {
 function* deleteAdmin(action) {
   try {
     //tells userInfo router to delete a user based on their id#
-    yield axios.delete(`/api/userInfo/${action.payload.id}`)
+    yield axios.delete(`/api/userInfo/${action.payload.user_id}`)
     //sends results to reducer
     yield put({
       type: 'FETCH_ADMIN_INFO'
@@ -58,7 +58,7 @@ function* fetchAllLicensees() {
 function* deleteLicensee(action) {
 	try {
 		//tells userInfo router to delete a user based on their id#
-		yield axios.delete(`/api/userInfo/licensees/${action.payload.id}`)
+		yield axios.delete(`/api/userInfo/licensees/${action.payload.licensee_id}`)
 		//sends results to reducer
 		yield put({
 			type: 'FETCH_LICENSEE_INFO'

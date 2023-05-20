@@ -26,7 +26,7 @@ function* fetchAllEstimates() {
 function* editEstimateData(action) {
 	try {
 		// action.payload is an object with the id, a dbColumn that tells column to be edited, and a newValue that contains the requested change
-		yield axios.put(`/api/estimates/edit/${action.payload.id}`, action.payload);
+		yield axios.put(`/api/estimates/edit/${action.payload.estimate_id}`, action.payload);
 	}
 	catch (error) {
 		console.error('Error with editEstimateData in the adminEstimates Saga', error);

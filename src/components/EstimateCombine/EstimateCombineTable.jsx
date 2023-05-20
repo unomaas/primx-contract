@@ -134,7 +134,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 		}
 		// else {
 		// 	swal({
-		// 		title: "This order has been submitted! Your PrimX representative will be in touch.",
+		// 		title: "This order has been submitted! Your PrīmX representative will be in touch.",
 		// 		text: "Please print or save this page. You will need the estimate number to check the order status in the future.",
 		// 		icon: "success",
 		// 		buttons: "I understand",
@@ -489,15 +489,43 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</>
 									}
 
-									<h3>PrimX Material Price for the Project</h3>
+									<h3>Total PrīmX Materials:</h3>
+									<Table size='small'>
+										<TableBody>
+											{firstEstimate?.total_number_of_20ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 20':</b></TableCell>
+													<TableCell align="right">
+														{firstEstimate?.total_number_of_20ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											{firstEstimate?.total_number_of_40ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 40':</b></TableCell>
+													<TableCell align="right">
+														{firstEstimate?.total_number_of_40ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											<TableRow hover={true}>
+												<TableCell><b>Total Pallets:</b></TableCell>
+												<TableCell align="right">
+													{firstEstimate?.total_number_of_pallets?.toLocaleString()}
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+
+									<h3>PrīmX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>Materials Included:</b></TableCell>
 												<TableCell align="right">
-													{firstEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-													{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-													{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'none' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX Fibers, PrīmX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrīmX DC, PrīmX Flow, PrīmX Fibers, PrīmX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX UltraCure Blankets'}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -520,7 +548,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																}
 															</span>
 														</Tooltip>
-														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+														<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 													</TableCell>
 													{firstEstimate?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
@@ -536,11 +564,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												}
 											</TableRow>
 											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-												<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+												<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 												<TableCell align="right">{firstEstimate?.price_per_unit_75_50_display}</TableCell>
 											</TableRow>
 											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 												<TableCell align="right">{firstEstimate?.total_project_cost_75_50_display}</TableCell>
 											</TableRow>
 											<TableRow>
@@ -566,7 +594,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																}
 															</span>
 														</Tooltip>
-														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+														<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 													</TableCell>
 													{firstEstimate?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
@@ -581,11 +609,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													}
 												</TableRow>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 													<TableCell align="right">{firstEstimate?.price_per_unit_90_60_display}</TableCell>
 												</TableRow>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 													<TableCell align="right">{firstEstimate?.total_project_cost_90_60_display}</TableCell>
 												</TableRow>
 
@@ -739,15 +767,44 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											</Table>
 										</>
 									}
-									<h3>PrimX Material Price for the Project</h3>
+
+									<h3>Total PrīmX Materials:</h3>
+									<Table size='small'>
+										<TableBody>
+											{secondEstimate?.total_number_of_20ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 20':</b></TableCell>
+													<TableCell align="right">
+														{secondEstimate?.total_number_of_20ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											{secondEstimate?.total_number_of_40ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 40':</b></TableCell>
+													<TableCell align="right">
+														{secondEstimate?.total_number_of_40ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											<TableRow hover={true}>
+												<TableCell><b>Total Pallets:</b></TableCell>
+												<TableCell align="right">
+													{secondEstimate?.total_number_of_pallets?.toLocaleString()}
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+
+									<h3>PrīmX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>Materials Included:</b></TableCell>
 												<TableCell align="right">
-													{secondEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-													{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-													{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'none' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX Fibers, PrīmX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrīmX DC, PrīmX Flow, PrīmX Fibers, PrīmX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX UltraCure Blankets'}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -770,7 +827,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																}
 															</span>
 														</Tooltip>
-														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+														<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 													</TableCell>
 													{secondEstimate?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
@@ -786,11 +843,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												}
 											</TableRow>
 											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-												<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+												<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 												<TableCell align="right">{secondEstimate?.price_per_unit_75_50_display}</TableCell>
 											</TableRow>
 											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 												<TableCell align="right">{secondEstimate?.total_project_cost_75_50_display}</TableCell>
 											</TableRow>
 											<TableRow>
@@ -816,7 +873,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																}
 															</span>
 														</Tooltip>
-														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+														<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 													</TableCell>
 													{secondEstimate?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
@@ -831,11 +888,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													}
 												</TableRow>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 													<TableCell align="right">{secondEstimate?.price_per_unit_90_60_display}</TableCell>
 												</TableRow>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 													<TableCell align="right">{secondEstimate?.total_project_cost_90_60_display}</TableCell>
 												</TableRow>
 
@@ -994,15 +1051,43 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</>
 											}
 
-											<h3>PrimX Material Price for the Project</h3>
+											<h3>Total PrīmX Materials:</h3>
+											<Table size='small'>
+												<TableBody>
+													{thirdEstimate?.total_number_of_20ft_containers != 0 &&
+														<TableRow hover={true}>
+															<TableCell><b>Total Containers, 20':</b></TableCell>
+															<TableCell align="right">
+																{thirdEstimate?.total_number_of_20ft_containers?.toLocaleString()}
+															</TableCell>
+														</TableRow>
+													}
+													{thirdEstimate?.total_number_of_40ft_containers != 0 &&
+														<TableRow hover={true}>
+															<TableCell><b>Total Containers, 40':</b></TableCell>
+															<TableCell align="right">
+																{thirdEstimate?.total_number_of_40ft_containers?.toLocaleString()}
+															</TableCell>
+														</TableRow>
+													}
+													<TableRow hover={true}>
+														<TableCell><b>Total Pallets:</b></TableCell>
+														<TableCell align="right">
+															{thirdEstimate?.total_number_of_pallets?.toLocaleString()}
+														</TableCell>
+													</TableRow>
+												</TableBody>
+											</Table>
+
+											<h3>PrīmX Material Price for the Project</h3>
 											<Table size='small'>
 												<TableBody>
 													<TableRow hover={true}>
 														<TableCell><b>Materials Included:</b></TableCell>
 														<TableCell align="right">
-															{thirdEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-															{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-															{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'none' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX Fibers, PrīmX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrīmX DC, PrīmX Flow, PrīmX Fibers, PrīmX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX UltraCure Blankets'}
 														</TableCell>
 													</TableRow>
 												</TableBody>
@@ -1025,7 +1110,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																		}
 																	</span>
 																</Tooltip>
-																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+																<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 															</TableCell>
 															{thirdEstimate?.measurement_units === 'imperial'
 																? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
@@ -1041,11 +1126,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														}
 													</TableRow>
 													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-														<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+														<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 														<TableCell align="right">{thirdEstimate?.price_per_unit_75_50_display}</TableCell>
 													</TableRow>
 													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-														<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+														<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 														<TableCell align="right">{thirdEstimate?.total_project_cost_75_50_display}</TableCell>
 													</TableRow>
 													<TableRow>
@@ -1071,7 +1156,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																		}
 																	</span>
 																</Tooltip>
-																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+																<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 															</TableCell>
 															{thirdEstimate?.measurement_units === 'imperial'
 																? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
@@ -1086,11 +1171,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															}
 														</TableRow>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-															<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+															<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 															<TableCell align="right">{thirdEstimate?.price_per_unit_90_60_display}</TableCell>
 														</TableRow>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-															<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+															<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 															<TableCell align="right">{thirdEstimate?.total_project_cost_90_60_display}</TableCell>
 														</TableRow>
 
@@ -1252,15 +1337,43 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</>
 									}
 
-									<h3>PrimX Material Price for the Project</h3>
+									<h3>Total PrīmX Materials:</h3>
+									<Table size='small'>
+										<TableBody>
+											{firstEstimate?.total_number_of_20ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 20':</b></TableCell>
+													<TableCell align="right">
+														{firstEstimate?.total_number_of_20ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											{firstEstimate?.total_number_of_40ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 40':</b></TableCell>
+													<TableCell align="right">
+														{firstEstimate?.total_number_of_40ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											<TableRow hover={true}>
+												<TableCell><b>Total Pallets:</b></TableCell>
+												<TableCell align="right">
+													{firstEstimate?.total_number_of_pallets?.toLocaleString()}
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+
+									<h3>PrīmX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>Materials Included:</b></TableCell>
 												<TableCell align="right">
-													{firstEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-													{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-													{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'none' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX Fibers, PrīmX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'exclude_cpea' && 'PrīmX DC, PrīmX Flow, PrīmX Fibers, PrīmX UltraCure Blankets'}
+													{firstEstimate?.materials_excluded == 'exclude_fibers' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX UltraCure Blankets'}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -1283,7 +1396,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																}
 															</span>
 														</Tooltip>
-														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+														<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 													</TableCell>
 													{firstEstimate?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
@@ -1299,11 +1412,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												}
 											</TableRow>
 											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-												<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+												<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 												<TableCell align="right">{firstEstimate?.price_per_unit_75_50_display}</TableCell>
 											</TableRow>
 											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 												<TableCell align="right">{firstEstimate?.total_project_cost_75_50_display}</TableCell>
 											</TableRow>
 											<TableRow>
@@ -1329,7 +1442,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																}
 															</span>
 														</Tooltip>
-														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+														<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 													</TableCell>
 													{firstEstimate?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
@@ -1344,11 +1457,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													}
 												</TableRow>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 													<TableCell align="right">{firstEstimate?.price_per_unit_90_60_display}</TableCell>
 												</TableRow>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 													<TableCell align="right">{firstEstimate?.total_project_cost_90_60_display}</TableCell>
 												</TableRow>
 
@@ -1504,15 +1617,43 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</>
 									}
 
-									<h3>PrimX Material Price for the Project</h3>
+									<h3>Total PrīmX Materials:</h3>
+									<Table size='small'>
+										<TableBody>
+											{secondEstimate?.total_number_of_20ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 20':</b></TableCell>
+													<TableCell align="right">
+														{secondEstimate?.total_number_of_20ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											{secondEstimate?.total_number_of_40ft_containers != 0 &&
+												<TableRow hover={true}>
+													<TableCell><b>Total Containers, 40':</b></TableCell>
+													<TableCell align="right">
+														{secondEstimate?.total_number_of_40ft_containers?.toLocaleString()}
+													</TableCell>
+												</TableRow>
+											}
+											<TableRow hover={true}>
+												<TableCell><b>Total Pallets:</b></TableCell>
+												<TableCell align="right">
+													{secondEstimate?.total_number_of_pallets?.toLocaleString()}
+												</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+
+									<h3>PrīmX Material Price for the Project</h3>
 									<Table size='small'>
 										<TableBody>
 											<TableRow hover={true}>
 												<TableCell><b>Materials Included:</b></TableCell>
 												<TableCell align="right">
-													{secondEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-													{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-													{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'none' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX Fibers, PrīmX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'exclude_cpea' && 'PrīmX DC, PrīmX Flow, PrīmX Fibers, PrīmX UltraCure Blankets'}
+													{secondEstimate?.materials_excluded == 'exclude_fibers' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX UltraCure Blankets'}
 												</TableCell>
 											</TableRow>
 										</TableBody>
@@ -1535,7 +1676,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																}
 															</span>
 														</Tooltip>
-														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+														<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 													</TableCell>
 													{secondEstimate?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
@@ -1551,11 +1692,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												}
 											</TableRow>
 											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-												<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+												<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 												<TableCell align="right">{secondEstimate?.price_per_unit_75_50_display}</TableCell>
 											</TableRow>
 											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+												<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 												<TableCell align="right">{secondEstimate?.total_project_cost_75_50_display}</TableCell>
 											</TableRow>
 											<TableRow>
@@ -1581,7 +1722,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																}
 															</span>
 														</Tooltip>
-														<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+														<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 													</TableCell>
 													{secondEstimate?.measurement_units === 'imperial'
 														? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
@@ -1596,11 +1737,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													}
 												</TableRow>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+													<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 													<TableCell align="right">{secondEstimate?.price_per_unit_90_60_display}</TableCell>
 												</TableRow>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+													<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 													<TableCell align="right">{secondEstimate?.total_project_cost_90_60_display}</TableCell>
 												</TableRow>
 
@@ -1760,15 +1901,43 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</>
 											}
 
-											<h3>PrimX Material Price for the Project</h3>
+											<h3>Total PrīmX Materials:</h3>
+											<Table size='small'>
+												<TableBody>
+													{thirdEstimate?.total_number_of_20ft_containers != 0 &&
+														<TableRow hover={true}>
+															<TableCell><b>Total Containers, 20':</b></TableCell>
+															<TableCell align="right">
+																{thirdEstimate?.total_number_of_20ft_containers?.toLocaleString()}
+															</TableCell>
+														</TableRow>
+													}
+													{thirdEstimate?.total_number_of_40ft_containers != 0 &&
+														<TableRow hover={true}>
+															<TableCell><b>Total Containers, 40':</b></TableCell>
+															<TableCell align="right">
+																{thirdEstimate?.total_number_of_40ft_containers?.toLocaleString()}
+															</TableCell>
+														</TableRow>
+													}
+													<TableRow hover={true}>
+														<TableCell><b>Total Pallets:</b></TableCell>
+														<TableCell align="right">
+															{thirdEstimate?.total_number_of_pallets?.toLocaleString()}
+														</TableCell>
+													</TableRow>
+												</TableBody>
+											</Table>
+
+											<h3>PrīmX Material Price for the Project</h3>
 											<Table size='small'>
 												<TableBody>
 													<TableRow hover={true}>
 														<TableCell><b>Materials Included:</b></TableCell>
 														<TableCell align="right">
-															{thirdEstimate?.materials_excluded == 'none' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX Fibers, PrimX UltraCure Blankets'}
-															{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrimX DC, PrimX Flow, PrimX Fibers, PrimX UltraCure Blankets'}
-															{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrimX DC, PrimX Flow, PrimX CPEA, PrimX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'none' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX Fibers, PrīmX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'exclude_cpea' && 'PrīmX DC, PrīmX Flow, PrīmX Fibers, PrīmX UltraCure Blankets'}
+															{thirdEstimate?.materials_excluded == 'exclude_fibers' && 'PrīmX DC, PrīmX Flow, PrīmX CPEA, PrīmX UltraCure Blankets'}
 														</TableCell>
 													</TableRow>
 												</TableBody>
@@ -1791,7 +1960,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																		}
 																	</span>
 																</Tooltip>
-																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+																<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 															</TableCell>
 															{thirdEstimate?.measurement_units === 'imperial'
 																? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
@@ -1807,11 +1976,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														}
 													</TableRow>
 													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-														<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+														<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 														<TableCell align="right">{thirdEstimate?.price_per_unit_75_50_display}</TableCell>
 													</TableRow>
 													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
-														<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+														<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 														<TableCell align="right">{thirdEstimate?.total_project_cost_75_50_display}</TableCell>
 													</TableRow>
 													<TableRow>
@@ -1837,7 +2006,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 																		}
 																	</span>
 																</Tooltip>
-																<b>PrimX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
+																<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 															</TableCell>
 															{thirdEstimate?.measurement_units === 'imperial'
 																? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
@@ -1852,11 +2021,11 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															}
 														</TableRow>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-															<TableCell style={{ paddingLeft: "60px" }}><b>PrimX Price per {cubic_measurement_unit} (USD):</b></TableCell>
+															<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
 															<TableCell align="right">{thirdEstimate?.price_per_unit_90_60_display}</TableCell>
 														</TableRow>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
-															<TableCell style={{ paddingLeft: "60px" }}><b>Total PrimX Price per Project (USD):</b></TableCell>
+															<TableCell style={{ paddingLeft: "60px" }}><b>Total PrīmX Price per Project (USD):</b></TableCell>
 															<TableCell align="right">{thirdEstimate?.total_project_cost_90_60_display}</TableCell>
 														</TableRow>
 
@@ -2141,7 +2310,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														<section className="removeInPrint">
 															{!showFinalCostRow &&
 																<Tooltip
-																	title={`Please select dosage options for all of the above estimates before being able to save, via the circular buttons to the left of the "PrimX Steel Fibers" label.`}
+																	title={`Please select dosage options for all of the above estimates before being able to save, via the circular buttons to the left of the "PrīmX Steel Fibers" label.`}
 																	placement="left-end"
 																	arrow
 																	color="primary"

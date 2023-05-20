@@ -103,6 +103,11 @@ export default function EstimateCreateTable() {
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
 	const handleChange = (key, value) => {
+
+		const object = {
+			key: value,
+		}
+
 		// setNewEstimate({ ...newEstimate, [key]: value });
 
 		if (editState == true && materialsEditWarning == false) {
@@ -134,6 +139,10 @@ export default function EstimateCreateTable() {
 		estimateData.price_per_unit_90_60 = calculatedDisplayObject.price_per_unit_90_60;
 		estimateData.total_project_cost_75_50 = calculatedDisplayObject.total_project_cost_75_50;
 		estimateData.total_project_cost_90_60 = calculatedDisplayObject.total_project_cost_90_60;
+
+		estimateData.total_number_of_20ft_containers = calculatedDisplayObject.total_number_of_20ft_containers;
+		estimateData.total_number_of_40ft_containers = calculatedDisplayObject.total_number_of_40ft_containers;
+		estimateData.total_number_of_pallets = calculatedDisplayObject.total_number_of_pallets;
 
 		// ⬇ Send the estimate object to be POSTed:
 		dispatch({ type: 'ADD_ESTIMATE', payload: estimateData });
@@ -635,127 +644,155 @@ export default function EstimateCreateTable() {
 						<Paper elevation={3}>
 							<TableContainer>
 								<h3>Project Quantity Calculations</h3>
-								{estimateData.measurement_units == "imperial" ?
-									<Table size="small">
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Square Feet:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.square_feet_display}
-												</TableCell>
-											</TableRow>
+								<Table size="small">
+									<TableBody>
+										{estimateData.measurement_units == "imperial" ?
+											<>
+												<TableRow hover={true}>
+													<TableCell><b>Square Feet:</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.square_feet_display}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.thickness_inches_display}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Thickness (in):</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.thickness_inches_display}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.cubic_yards}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Cubic Yards:</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.cubic_yards}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.perimeter_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.perimeter_thickening_cubic_yards}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.construction_joint_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.construction_joint_thickening_cubic_yards}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.cubic_yards_subtotal}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Subtotal:</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.cubic_yards_subtotal}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor (yd³):</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.waste_factor_cubic_yards}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Waste Factor (yd³):</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.waste_factor_cubic_yards}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.design_cubic_yards_total}
-												</TableCell>
-											</TableRow>
-										</TableBody>
-									</Table>
-									:
-									<Table size="small">
-										<TableBody>
-											<TableRow hover={true}>
-												<TableCell><b>Square Meters:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.square_meters_display}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Total Cubic Yards:</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.design_cubic_yards_total}
+													</TableCell>
+												</TableRow>
+											</>
+											:
+											<>
+												<TableRow hover={true}>
+													<TableCell><b>Square Meters:</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.square_meters_display}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.thickness_millimeters_display}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Thickness (mm):</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.thickness_millimeters_display}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.cubic_meters}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Cubic Meters:</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.cubic_meters}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.perimeter_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.perimeter_thickening_cubic_meters}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.construction_joint_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.construction_joint_thickening_cubic_meters}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.cubic_meters_subtotal}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Subtotal:</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.cubic_meters_subtotal}
+													</TableCell>
+												</TableRow>
 
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor (m³):</b></TableCell>
-												<TableCell align="right">
-													{calculatedDisplayObject?.waste_factor_cubic_meters}
-												</TableCell>
-											</TableRow>
+												<TableRow hover={true}>
+													<TableCell><b>Waste Factor (m³):</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.waste_factor_cubic_meters}
+													</TableCell>
+												</TableRow>
 
+												<TableRow hover={true}>
+													<TableCell><b>Total Cubic Meters:</b></TableCell>
+													<TableCell align="right">
+														{calculatedDisplayObject?.design_cubic_meters_total}
+													</TableCell>
+												</TableRow>
+											</>
+										}
+									</TableBody>
+								</Table>
+
+								<h3>Total PrīmX Materials:</h3>
+								<Table size='small'>
+									<TableBody>
+										{calculatedDisplayObject?.total_number_of_20ft_containers != 0 &&
 											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Meters:</b></TableCell>
+												<TableCell><b>Total Containers, 20':</b></TableCell>
 												<TableCell align="right">
-													{calculatedDisplayObject?.design_cubic_meters_total}
+													{calculatedDisplayObject?.total_number_of_20ft_containers?.toLocaleString()}
 												</TableCell>
 											</TableRow>
-										</TableBody>
-									</Table>
-								}
+										}
+										{calculatedDisplayObject?.total_number_of_40ft_containers != 0 &&
+											<TableRow hover={true}>
+												<TableCell><b>Total Containers, 40':</b></TableCell>
+												<TableCell align="right">
+													{calculatedDisplayObject?.total_number_of_40ft_containers?.toLocaleString()}
+												</TableCell>
+											</TableRow>
+										}
+										<TableRow hover={true}>
+											<TableCell><b>Total Pallets:</b></TableCell>
+											<TableCell align="right">
+												{calculatedDisplayObject?.total_number_of_pallets?.toLocaleString()}
+											</TableCell>
+										</TableRow>
+									</TableBody>
+								</Table>
 
 								<h3>Thickened Edge Calculations</h3>
 								{estimateData.measurement_units == "imperial" ?
@@ -1016,7 +1053,7 @@ export default function EstimateCreateTable() {
 																// onClick={event => handleSave(event)}
 																variant="contained"
 																className={classes.LexendTeraFont11}
-																color="secondary"
+																color="primary"
 															// style={{backgroundColor: "green"}}
 															>
 																Save Estimate
@@ -1049,12 +1086,12 @@ export default function EstimateCreateTable() {
 							</div>
 
 							{/* {estimateData.materials_excluded === 'exclude_fibers' && */}
-								<div style={{
-									padding: "20px",
-								}}>
-									<b>Exclude PrīmX Steel Fibers Disclaimer:</b>
-									<br /> In particular cases, the selected steel fiber product for the project must be approved by PrīmX engineers.
-								</div>
+							<div style={{
+								padding: "20px",
+							}}>
+								<b>Exclude PrīmX Steel Fibers Disclaimer:</b>
+								<br /> In particular cases, the selected steel fiber product for the project must be approved by PrīmX engineers.
+							</div>
 							{/* } */}
 						</Paper>
 					</Grid>

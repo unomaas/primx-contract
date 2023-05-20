@@ -27,7 +27,7 @@ function* initialLoadLicenseePortal(action) {
 function* archiveEstimateLicensee(action) {
 	try {
 		// ⬇ Save the required ID's for easier ref: 
-		const estimate_id = action.payload.id;
+		const estimate_id = action.payload.estimate_id;
 		const licensee_id = action.payload.row.licensee_id;
 
 		// ⬇ Update the DB to archive the estimate: 
@@ -43,7 +43,7 @@ function* archiveEstimateLicensee(action) {
 function* deleteEstimateLicensee(action) {
 	try {
 		// ⬇ Save the required ID's for easier ref: 
-		const estimate_id = action.payload.id;
+		const estimate_id = action.payload.estimate_id;
 		const licensee_id = action.payload.row.licensee_id;
 		// ⬇ Update the DB to delete the estimate: 
 		yield axios.delete(`/api/estimates/delete/${estimate_id}`);

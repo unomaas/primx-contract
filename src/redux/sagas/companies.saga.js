@@ -34,7 +34,7 @@ function* fetchActiveCompanies() {
 function* toggleActiveInactiveLicensee(action) {
 	try {
 		// action.payload contains the id of the licensee, their name, and the boolean of whether active is true or false
-		yield axios.put(`/api/companies/${action.payload.id}`, action.payload);
+		yield axios.put(`/api/companies/${action.payload.licensee_id}`, action.payload);
 		// fetches all companies to refresh DOM data for licensee view
 		yield put({
 			type: 'FETCH_ALL_COMPANIES'
