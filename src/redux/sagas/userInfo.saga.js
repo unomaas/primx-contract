@@ -29,7 +29,7 @@ function* fetchAllUsers() {
 function* deleteAdmin(action) {
   try {
     //tells userInfo router to delete a user based on their id#
-    yield axios.delete(`/api/userInfo/${action.payload.user_id}`)
+    yield axios.delete(`/api/userInfo/${action.payload.id}`)
     //sends results to reducer
     yield put({
       type: 'FETCH_ADMIN_INFO'

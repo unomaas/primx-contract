@@ -60,7 +60,7 @@ router.delete('/:id', rejectUnauthenticated, (req, res) => {
   }
 });
 
-//Delete Route - Delete an admin user
+//Delete Route - Delete an licensee user
 router.delete('/licensees/:id', rejectUnauthenticated, (req, res) => {
 	const queryText = `DELETE FROM "users" WHERE "user_id" = $1;`;
 	pool.query(queryText, [req.params.id])
@@ -68,7 +68,7 @@ router.delete('/licensees/:id', rejectUnauthenticated, (req, res) => {
 			res.sendStatus(200)
 		})
 		.catch((error) => {
-			console.error('Error in admin DELETE in server', error);
+			console.error('Error in licensee DELETE in server', error);
 		});
 });
 
