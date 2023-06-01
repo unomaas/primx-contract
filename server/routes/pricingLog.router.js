@@ -3,6 +3,9 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const pool = require('../modules/pool');
 const router = express.Router();
 const format = require('pg-format');
+const dayjs = require('dayjs');
+var customParseFormat = require('dayjs/plugin/customParseFormat')
+dayjs.extend(customParseFormat)
 
 router.get('/update-pricing-initial-load', rejectUnauthenticated, async (req, res) => {
 	try {
@@ -47,8 +50,19 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 	} = req.body;
 
 	// ⬇ Generate today in YYYY-MM-DD format with time zone:
-	const today = new Date().toISOString().slice(7, 10);
+	const today = dayjs().format('-DD');
 	let dateToSaveTo = `${monthToSaveTo}${today}`
+
+	// ⬇ If dateToSaveTo is not a valid date (e.g., 2021-02-31), then we need to set it to the last day of that month:
+	if (!dayjs(dateToSaveTo, 'YYYY-MM-DD', true).isValid()) {
+		dateToSaveTo = dayjs(monthToSaveTo).endOf('month').format('YYYY-MM-DD');
+	}; // End if
+
+	// ⬇ If dateToSaveTo is past the current month (e.g., 2023-07-05 is past 2023-06-15), set the dateToSaveTo to the first day of the next month:
+	if (dayjs(dateToSaveTo).isAfter(dayjs().format('2023-06-25'))) {
+		dateToSaveTo = dayjs(dateToSaveTo).startOf('month').format('YYYY-MM-DD');
+	}; // End if
+
 
 	try {
 		// ⬇ Default logic assumptions: 

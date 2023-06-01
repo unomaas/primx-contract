@@ -14,9 +14,9 @@ export default function FormSubmission() {
 	const dispatch = useDispatch();
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
 	const {
-		monthOptions,
+		// monthOptions,
 		saveMonthOptions,
-		nextMonthToSave,
+		// nextMonthToSave,
 		monthToSaveTo,
 	} = viewState;
 
@@ -40,6 +40,7 @@ export default function FormSubmission() {
 			}
 		})
 	};
+
 
 	return (
 		<div

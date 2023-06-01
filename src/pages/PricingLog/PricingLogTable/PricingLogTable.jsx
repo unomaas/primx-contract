@@ -724,7 +724,7 @@ export default function PricingLogTable() {
 				id="pricingLogTable"
 				className={selectedLog.className}
 				// ⬇ Set a style to, if the selectedLog.key == "price_per_unit", I want the width to be rows.length * 100 px:
-				style={selectedLog.key === "price_per_unit" ? { width: `${rows.length * 100}px` } : {}}
+				style={selectedLog.key === "price_per_unit" ? { width: `${rows.length * 125}px` } : {}}
 
 				columns={columns}
 				rows={rows}

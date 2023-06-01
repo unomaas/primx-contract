@@ -4,6 +4,8 @@ import {
 	takeLatest,
 	takeEvery
 } from 'redux-saga/effects';
+import dayjs from 'dayjs';
+
 
 // import { useStyles } from '../../components/MuiStyling/MuiStyling';
 
@@ -70,7 +72,7 @@ function* pricingLogInitialLoad() {
 		const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 		Object.keys(markupHistory12Months.data).forEach((date) => {
-			
+
 			if (!monthHolderObject[date]) {
 				const monthLabel = months[+date.split('-')[1] - 1] + ', ' + date.split('-')[0];
 				monthHolderObject[date] = {
@@ -130,17 +132,17 @@ function* pricingLogInitialLoad() {
 		const pricingLogPerUnitTopHeader = [{ month_year_value: "" }, { month_year_label: null, month_year_value: "" }];
 		const pricingLogPerUnitBottomHeader = [
 			{
-			headerName: "Destination",
-			field: 'destination_name',
-			// flex: 1,
-			// style: { backgroundColor: '#C8C8C8', },
-			// style: { backgroundColor: '#C8C8C8', },
-		},
-		{
-			headerName: "Measurement Units",
-			field: 'measurement_units',
-		},
-	];
+				headerName: "Destination",
+				field: 'destination_name',
+				// flex: 1,
+				// style: { backgroundColor: '#C8C8C8', },
+				// style: { backgroundColor: '#C8C8C8', },
+			},
+			{
+				headerName: "Measurement Units",
+				field: 'measurement_units',
+			},
+		];
 		// const pricingLogPerUnitRows = [];
 		const pricingLogPerUnitRowsObject = {};
 
@@ -211,7 +213,7 @@ function* pricingLogInitialLoad() {
 					// pricingLogPerUnitRowsObject[destination.destination_id][`lower_diff_${lastMonth.month_year_value}`] = (destination.price_per_unit_75_50 - destinationLastMonth.price_per_unit_75_50) / destinationLastMonth.price_per_unit_75_50;
 					pricingLogPerUnitRowsObject[destination.destination_id][`higher_diff_${lastMonth.month_year_value}`] = (destinationLastMonth.price_per_unit_90_60 - destination.price_per_unit_90_60) / destination.price_per_unit_90_60;
 					// pricingLogPerUnitRowsObject[destination.destination_id][`higher_diff_${lastMonth.month_year_value}`] = (destination.price_per_unit_90_60 - destinationLastMonth.price_per_unit_90_60) / destinationLastMonth.price_per_unit_90_60;
-100;
+					// 100;
 
 				}; // End if
 				// lastDestination = destination;
@@ -370,26 +372,33 @@ function* updatePricingInitialLoad() {
 		monthOptions.unshift(monthOptions.pop());
 		//#endregion - Calculate historical pricing data.
 
-		// ⬇ Calulate the next month (i.e., if it's 2023-03, calculate 2023-04) without moment:
-		const nextMonth = new Date().getMonth() == 11 ? `${new Date().getFullYear() + 1}-01` : `${new Date().getFullYear()}-${new Date().getMonth() + 2 < 10 ? '0' + (new Date().getMonth() + 2) : new Date().getMonth() + 2}`;
+		// ⬇ Calculate the next month (i.e., if it's 2023-03, calculate 2023-04) with day.js:
+		const nextMonth = dayjs().add(1, 'month').format('YYYY-MM');
 		const nextMonthLabel = months[+nextMonth.split('-')[1] - 1] + ', ' + nextMonth.split('-')[0];
-		const thisMonth = `${new Date().getFullYear()}-${new Date().getMonth() + 1 < 10 ? '0' + (new Date().getMonth() + 1) : new Date().getMonth() + 1}`;
+		const thisMonth = dayjs().format('YYYY-MM');
 		const thisMonthLabel = months[+thisMonth.split('-')[1] - 1] + ', ' + thisMonth.split('-')[0];
 
-
+		// ⬇ Check if this month is already in the saveMonthOptions array:
 		if (!monthHolderObject[thisMonth]) {
 			saveMonthOptions.push({
 				label: thisMonthLabel,
 				value: thisMonth,
 				saved: false,
 			});
-		} else {
+		} else if (!monthHolderObject[nextMonth]) {
 			saveMonthOptions.push({
 				label: nextMonthLabel,
 				value: nextMonth,
 				saved: false,
 			});
 		}; // End if/else
+		// } else {
+		// 	saveMonthOptions.push({
+		// 		label: nextMonthLabel,
+		// 		value: nextMonth,
+		// 		saved: false,
+		// 	});
+		// }; // End if/else
 
 		// ⬇ Sort saveMonthOptions by date:
 		saveMonthOptions.sort((a, b) => {
@@ -397,6 +406,7 @@ function* updatePricingInitialLoad() {
 			const bDate = new Date(b.value);
 			return bDate - aDate;
 		});
+
 
 		yield put({
 			type: 'SET_PRICING_LOG_DATA', payload: {
