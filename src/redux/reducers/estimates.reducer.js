@@ -2,14 +2,9 @@ import {
 	combineReducers
 } from 'redux';
 
-
-
-
 const today = new Date().toISOString().substring(0, 10);
 
-
-// ⬇ estimatesReducer:
-export const estimatesReducer = (state = {
+const defaultEstimateData = {
 	// ⬇ General Info: 
 	project_name: "",
 	licensee_id: 0,
@@ -48,6 +43,12 @@ export const estimatesReducer = (state = {
 	primx_ultracure_blankets_on_hand_sq_ft: 0,
 	primx_ultracure_blankets_on_hand_sq_m: 0,
 	primx_cpea_on_hand_liters: 0,
+}; // End defaultEstimateData
+
+
+// ⬇ estimatesReducer:
+export const estimatesReducer = (state = {
+	...defaultEstimateData,
 }, action) => {
 	switch (action.type) {
 		case 'SET_ESTIMATE':
@@ -63,44 +64,7 @@ export const estimatesReducer = (state = {
 			return action.payload;
 		case 'CLEAR_ESTIMATE':
 			return {
-				// ⬇ General Info: 
-				project_name: "",
-				licensee_id: 0,
-				project_general_contractor: "",
-				project_manager_name: "",
-				project_manager_email: "",
-				project_manager_phone: "",
-				floor_type_id: 0,
-				placement_type_id: 0,
-				measurement_units: "imperial",
-				date_created: today,
-				anticipated_first_pour_date: "",
-				ship_to_address: "",
-				ship_to_city: "",
-				destination_id: 0,
-				zip_postal_code: "",
-				waste_factor_percentage: 5,
-				materials_excluded: 'none',
-				// ⬇ Imperial: 
-				square_feet: "",
-				thickness_inches: "",
-				thickened_edge_perimeter_lineal_feet: "0",
-				thickened_edge_construction_joint_lineal_feet: "0",
-				// ⬇ Metric:
-				square_meters: "",
-				thickness_millimeters: "",
-				thickened_edge_perimeter_lineal_meters: "0",
-				thickened_edge_construction_joint_lineal_meters: "0",
-				// ⬇ Materials on-hand inputs:
-				materials_on_hand: false,
-				primx_dc_on_hand_lbs: 0,
-				primx_dc_on_hand_kgs: 0,
-				primx_flow_on_hand_liters: 0,
-				primx_steel_fibers_on_hand_lbs: 0,
-				primx_steel_fibers_on_hand_kgs: 0,
-				primx_ultracure_blankets_on_hand_sq_ft: 0,
-				primx_ultracure_blankets_on_hand_sq_m: 0,
-				primx_cpea_on_hand_liters: 0,
+				...defaultEstimateData,
 			};
 		default:
 			return state;
@@ -179,12 +143,12 @@ export const searchQuery = (state = {
 	} // End switch
 }; // End searchQuery
 
-export const setCalcEstimate = (state = {}, action) => {
+export const setCalcEstimate = (state = { materials_excluded: 'none' }, action) => {
 	switch (action.type) {
 		case 'SET_CALCULATED_ESTIMATE':
 			return action.payload;
 		case 'CLEAR_CALCULATED_ESTIMATE':
-			return {};
+			return { materials_excluded: 'none' };
 		default:
 			return state;
 	} // End switch
