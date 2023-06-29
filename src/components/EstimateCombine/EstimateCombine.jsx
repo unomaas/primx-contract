@@ -133,7 +133,7 @@ export default function EstimateCombine() {
 											<TableBody>
 												<TableRow>
 
-													<TableCell><b>Licensee/Contractor Name:</b></TableCell>
+													<TableCell><b>Contractor Name:</b></TableCell>
 													<TableCell>
 														<FormControl error={error}>
 															<Select

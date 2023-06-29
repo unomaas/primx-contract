@@ -57,7 +57,6 @@ function* fetchAllLicensees() {
 //worker saga to delete users if you are the super admin
 function* deleteLicensee(action) {
 	try {
-		console.log(`Ryan Here: \n `, action.payload);
 		//tells userInfo router to delete a user based on their id#
 		yield axios.delete(`/api/userInfo/licensees/${action.payload.id}`)
 		//sends results to reducer

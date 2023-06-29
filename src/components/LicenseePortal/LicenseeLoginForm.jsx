@@ -63,7 +63,7 @@ function LicenseeLoginForm() {
 	return (
 		<div>
 
-			<h2>Welcome, Licensee</h2>
+			<h2>Welcome, Contractor</h2>
 
 			{errors.loginMessage && (
 				<h3 className="alert" role="alert">

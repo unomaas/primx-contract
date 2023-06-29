@@ -214,7 +214,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 						<TableContainer>
 							{/* <h3>Estimate {calcCombinedEstimate.estimate_number}</h3> */}
 							{isThisASavedCombinedEstimate && <h3>Estimate {calcCombinedEstimate.estimate_number}</h3>}
-							<h4>Licensee & Project Information</h4>
+							<h4>Project Information</h4>
 							<Table size="small">
 								<TableBody>
 
@@ -226,7 +226,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									</TableRow>
 
 									<TableRow hover={true}>
-										<TableCell><b>Licensee/Contractor Name:</b></TableCell>
+										<TableCell><b>Contractor Name:</b></TableCell>
 										<TableCell>
 											{firstEstimate?.licensee_contractor_name}
 										</TableCell>
