@@ -938,11 +938,11 @@ export default function EstimateCreateTable() {
 																control={<Radio />}
 															/>
 														}
-														<FormControlLabel
+														{/* <FormControlLabel
 															label="Exclude PrīmX Steel Fibers"
 															value="exclude_fibers"
 															control={<Radio />}
-														/>
+														/> */}
 													</RadioGroup>
 												</FormControl>
 											</TableCell>
@@ -1089,8 +1089,8 @@ export default function EstimateCreateTable() {
 							<div style={{
 								padding: "20px",
 							}}>
-								<b>Exclude PrīmX Steel Fibers Disclaimer:</b>
-								<br /> In particular cases, the selected steel fiber product for the project must be approved by PrīmX engineers.
+								<b>Total PrīmX Materials Disclaimer:</b>
+								<br /> The amount of materials calculated above is approximate.  It will be precised after PO placement.
 							</div>
 							{/* } */}
 						</Paper>

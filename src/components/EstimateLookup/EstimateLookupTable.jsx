@@ -100,7 +100,7 @@ export default function EstimateLookupTable() {
 				<Grid item xs={6}>
 					<Paper elevation={3}>
 						<TableContainer>
-							<h3>Licensee & Project Information</h3>
+							<h3>Project Information</h3>
 							<Table size="small">
 								<TableBody>
 
@@ -112,7 +112,7 @@ export default function EstimateLookupTable() {
 									</TableRow>
 
 									<TableRow hover={true}>
-										<TableCell><b>Licensee/Contractor Name:</b></TableCell>
+										<TableCell><b>Contractor Name:</b></TableCell>
 										<TableCell>
 											{searchResult?.licensee_contractor_name}
 										</TableCell>
