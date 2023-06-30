@@ -39,8 +39,18 @@ export default function EstimateCreate() {
 		dispatch({ type: 'SET_BUTTON_STATE', payload: 'create' }),
 			// Fetches and set all fields for dropdown menus
 			dispatch({ type: 'FETCH_FIELD_SELECT' }),
-			dispatch({ type: 'FETCH_ALL_FOR_CALCULATE' })
+			dispatch({ type: 'FETCH_ALL_FOR_CALCULATE' });
+
+
 	}, []);
+
+	useEffect(() => {
+		// ⬇ If the user is logged in, have the company select default to their company:
+		if (user && user.licensee_id) {
+			console.log(' Ryan Here, useEffect: User is logged in, setting default company to their company.');
+			handleChange('licensee_id', user.licensee_id);
+		}; // End if statement
+	}, [user])
 	//#endregion ⬆⬆ All state variables above. 
 
 
@@ -68,6 +78,7 @@ export default function EstimateCreate() {
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
 	const handleChange = (key, value) => {
+		console.log(`Ryan Here: handleChange \n `, { key, value });
 		// ⬇ If they change the destination while editing, force a recalculate of the estimate price per unit:
 		if (key == 'destination_id' && editState == true) {
 			estimateData.force_recalculate = true;
@@ -521,7 +532,7 @@ export default function EstimateCreate() {
 												<Button
 													type="submit"
 													// ! Ryan Here. ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION: 
-													// onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+													onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
 													variant="contained"
 													className={classes.LexendTeraFont11}
 													color="primary"
