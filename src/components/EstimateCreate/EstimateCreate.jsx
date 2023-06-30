@@ -47,7 +47,6 @@ export default function EstimateCreate() {
 	useEffect(() => {
 		// ⬇ If the user is logged in, have the company select default to their company:
 		if (user && user.licensee_id) {
-			console.log(' Ryan Here, useEffect: User is logged in, setting default company to their company.');
 			handleChange('licensee_id', user.licensee_id);
 		}; // End if statement
 	}, [user])
