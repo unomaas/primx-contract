@@ -77,7 +77,6 @@ export default function EstimateCreate() {
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
 	const handleChange = (key, value) => {
-		console.log(`Ryan Here: handleChange \n `, { key, value });
 		// ⬇ If they change the destination while editing, force a recalculate of the estimate price per unit:
 		if (key == 'destination_id' && editState == true) {
 			estimateData.force_recalculate = true;
