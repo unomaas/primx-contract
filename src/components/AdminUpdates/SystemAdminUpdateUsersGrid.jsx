@@ -17,6 +17,8 @@ export default function SystemAdminUpdateUsersGrid() {
   const userInfo = useSelector(store => store.userInfoReducer.userInfo);
   const [pageSize, setPageSize] = useState(10);
 
+	
+
   useEffect(() => {
     // GET all user data on page load
     // dispatch({ type: 'FETCH_ADMIN_INFO' });
@@ -24,7 +26,10 @@ export default function SystemAdminUpdateUsersGrid() {
 
   //function to render the delete button in the datagrid
   const renderDeleteButton = (params) => {
-    //we only want the delete button to show if the user has an id greater than 1 - user with id === 1 is the super admin and we don't want the super admin to be deleted
+
+		// ⬇ Pull in the user's permission level from the store, and hide a delete button if system admin:
+		if (params.row.permission_level === 1) return null;	
+
       return (
         <Button
           variant="contained"

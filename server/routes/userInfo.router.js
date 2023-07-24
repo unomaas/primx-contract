@@ -11,7 +11,9 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 		SELECT
 			user_id, username, permission_level
 		FROM "users" 
-		WHERE permission_level = 2
+		WHERE 
+			permission_level = 1 OR
+			permission_level = 2
 		ORDER BY username ASC;
 	`;
   pool.query(queryText).then((result) => {
