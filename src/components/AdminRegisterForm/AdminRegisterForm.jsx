@@ -94,7 +94,6 @@ function AdminRegisterForm() {
             // onClick={registerUser}
             variant="contained"
             color="primary"
-            className="btn"
             value="Register"
             className={classes.LexendTeraFont11}
           >
