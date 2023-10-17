@@ -7,6 +7,8 @@ import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsBu
 import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
+import Papa from 'papaparse';
+
 
 export default function UpdateShippingCosts() {
 	//#region - State Variables Below: 
@@ -163,13 +165,118 @@ export default function UpdateShippingCosts() {
 	//#endregion - End State Variables.
 
 	//#region - Table Setup Below:
-	let rows = shippingCosts;
+	const [rows, setRows] = useState(shippingCosts || []);
 
 
 
 	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
+
+
+		const handleFileUpload = (event) => {
+			const file = event.target.files[0];
+			parseCSV(file);
+		};
+
+		const parseCSV = (file) => {
+			Papa.parse(file, {
+				complete: updateData,
+				header: true
+			});
+		};
+
+		const validateData = (data) => {
+
+			// ⬇ Create a function to loop through columns and create an array of headerName's: 
+			const expectedHeaders = columns.map(column => column.headerName);
+
+
+			const headers = Object.keys(data[0]).filter(header =>
+				!header.startsWith('_') && header.trim() !== ''
+			);
+
+			console.log('validateData 1', { headers, expectedHeaders });
+
+			return JSON.stringify(headers) === JSON.stringify(expectedHeaders);
+		};
+
+		const cleanData = (data) => {
+
+			let cleanedData = data.filter(row => row["Destination"].trim() !== "");
+			console.log('cleanedData1', { cleanedData });
+
+			cleanedData = cleanedData.map(row => {
+				// Remove unnecessary columns
+				for (let key in row) {
+					if (key === "" || key.startsWith("_")) {
+						delete row[key];
+					}
+				}
+				return row;
+			});
+
+			console.log('cleanedData2', { cleanedData });
+			// const expectedHeaders = ["Destination", "DC 20ft", "DC 40ft", "Fibers 20ft", "Fibers 40ft", "CPEA 20ft", "CPEA 40ft", "Flow 20ft", "Flow 40ft"]; 
+			// const headers = Object.keys(data[0]);
+
+			return cleanedData;
+		};
+
+		const updateRowsWithCSVData = (rows, csvData) => {
+			// Mapping between CSV headers and rows keys
+			const mapping = {
+				"DC 20ft": "dc_20ft",
+				"DC 40ft": "dc_40ft",
+				"Fibers 20ft": "fibers_20ft",
+				"Fibers 40ft": "fibers_40ft",
+				"CPEA 20ft": "cpea_20ft",
+				"CPEA 40ft": "cpea_40ft",
+				"Flow 20ft": "flow_20ft",
+				"Flow 40ft": "flow_40ft"
+			};
+		
+			// Loop through each row
+			for (let row of rows) {
+				// Find the corresponding CSV data entry
+				const csvEntry = csvData.find(entry => entry.Destination === row.destination_name);
+				if (csvEntry) {
+					// Update the prices using the mapping
+					for (let csvKey in mapping) {
+						row[mapping[csvKey]] = csvEntry[csvKey];
+					}
+				}
+			}
+		
+			return rows;
+		};
+
+
+		const updateData = (result) => {
+
+			console.log('pre clean', result.data);
+			const cleanedData = cleanData(result.data);
+			// Here, you can set the state or dispatch an action to update your store
+			// For instance: setRows(result.data);
+
+			if (validateData(cleanedData)) {
+
+				console.log('post clean and validated]', cleanedData);
+				console.log({rows, cleanedData});
+
+				const updatedRows = updateRowsWithCSVData(rows, cleanedData);
+				console.log(`Ryan Here: \n `, {updatedRows});
+        setRows(prevRows => [...updatedRows]);  // Update the state with the new rows
+
+
+			} else {
+				console.error("CSV format is incorrect");
+			}
+		};
+
+		console.log('counting renders', {rows})
+		console.count('renders')
+
 		// ⬇ State Variables:
 		const TableInstructions = () => {
 			return (
@@ -207,6 +314,15 @@ export default function UpdateShippingCosts() {
 
 		return (
 			<GridToolbarContainer >
+
+				<input
+					type="file"
+					id="csv-upload"
+					style={{ display: 'none' }}
+					onChange={handleFileUpload}
+				/>
+
+
 				<div style={{
 					flex: "1",
 					display: "flex",
@@ -270,7 +386,12 @@ export default function UpdateShippingCosts() {
 					fontSize: "11px",
 					fontFamily: "Lexend Tera",
 				}}>
-
+					<Button
+						color="primary"
+						onClick={() => document.getElementById('csv-upload').click()}
+					>
+						Upload CSV
+					</Button>
 				</div>
 			</GridToolbarContainer>
 		); // End return
