@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminLoginForm from '../AdminLoginForm/AdminLoginForm';
+import AdminLoginForm from '../LoginForm/LoginForm';
 
 function AdminLoginPage() {
 

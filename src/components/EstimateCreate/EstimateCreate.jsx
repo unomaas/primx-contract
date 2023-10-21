@@ -86,7 +86,7 @@ export default function EstimateCreate() {
 		if (key === 'licensee_id') {
 			// ⬇ Find the Licensee by the ID:
 			const licensee = companies.find(company => company.licensee_id == value);
-			if (licensee.default_measurement) handleMeasurementUnits(licensee.default_measurement);
+			if (licensee?.default_measurement) handleMeasurementUnits(licensee?.default_measurement);
 		}; // End if
 
 		// return;
