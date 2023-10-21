@@ -19,11 +19,10 @@ import AdminUpdateShipping from '../LegacyComponents/AdminUpdateShipping';
 import SystemAdmin from '../AdminUpdates/SystemAdmin';
 import MuiSnackbarManager from '../MuiSnackbarManager/MuiSnackbarManager';
 import MuiBackdropManager from '../MuiBackdropManager/MuiBackdropManager';
-import Error404Page from '../ProtectedRoute/Error404Page';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import SysAdminRoute from '../ProtectedRoute/SysAdminRoute';
-import AdminRoute from '../ProtectedRoute/AdminRoute';
-import LicenseeRoute from '../ProtectedRoute/LicenseeRoute';
+import Error404Page from '../../routes/Error404Page';
+// import ProtectedRoute from '../../routes/ProtectedRoute';
+import SysAdminRoute from '../../routes/SysAdminRoute';
+import LicenseeRoute from '../../routes/LicenseeRoute';
 import LicenseeAccounts from '../AdminLicenseeAccounts/LicenseeAccounts';
 import LicenseePortal from '../LicenseePortal/LicenseePortal';
 import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
@@ -41,8 +40,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core';
 import { theme } from '../MuiStyling/MuiStyling';
 import { Buffer } from "buffer";
+
+import AdminRoute, { adminRoutes } from '../../routes/AdminRoute';
+import ProtectedRoute, { protectedRoutes } from '../../routes/ProtectedRoute';
+import LoginForm from '../LoginForm/LoginForm';
+
 Buffer.from("anything", "base64");
-window.Buffer = window.Buffer || require("buffer").Buffer; 
+window.Buffer = window.Buffer || require("buffer").Buffer;
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -59,6 +63,8 @@ function App() {
 	}, [dispatch]);
 	//#endregion ⬆⬆ All state variables above. 
 
+	console.log(`Ryan Here: \n `, { adminRoutes });
+
 
 	// ⬇ Rendering:
 	return (
@@ -69,10 +75,8 @@ function App() {
 
 				<div className="App">
 
-
 					{/* This manages the Snackbar alerts throughout the app: */}
 					<MuiSnackbarManager />
-
 
 					<Nav />
 
@@ -82,131 +86,40 @@ function App() {
 							<Redirect exact from="/" to="/create" />
 							<Redirect exact from="/home" to="/create" />
 
-							{/* Home/Landing Page with Create New or Lookup Estimate: */}
-							<Route exact path="/create">
-								<EstimateCreate />
-							</Route>
 
-							{/* /lookup leads to the search estimate view for finding individual estimates */}
-							<Route exact path="/lookup">
-								<EstimateLookup />
-							</Route>
+							<LoginForm exact path="/Login" />
 
-							{/* This route bring user to specific estimate in /lookup */}
-							<Route
-								exact path="/lookup/:licensee_id_searched/:estimate_number_searched"
-								children={<EstimateLookup />}
-							>
-							</Route>
+							{/* // ⬇ Any logged in user will be able to view these, whether licensee, region, admin, or super user: */}
+							{protectedRoutes.map((route) => (
+								<ProtectedRoute
+									key={route.path}
+									exact
+									path={route.path}
+									component={route.component}
+								/>
+							))}
 
-							{/* /combine leads to the combine estimate view for combining individual estimates */}
-							<Route exact path="/combine">
-								<EstimateCombine />
-							</Route>
-
-							{/* (For Combinations of 2) This route bring user to specific estimate combinations in /combine */}
-							<Route
-								exact path="/combine/:licensee_id_searched/:first_estimate_number_combined/:second_estimate_number_combined"
-								children={<EstimateCombine />}
-							>
-							</Route>
-
-							{/* (For Combinations of 3) This route bring user to specific estimate combinations in /combine */}
-							<Route
-								exact path="/combine/:licensee_id_searched/:first_estimate_number_combined/:second_estimate_number_combined/:third_estimate_number_combined"
-								children={<EstimateCombine />}
-							>
-							</Route>
-
-							<Route exact path="/Login" >
-								<AdminLoginPage />
-							</Route>
-
-							{/* For protected routes, the view could show one of several things on the same route.  Visiting localhost:3000/user will show the AdminLandingPage if the user is logged in.  If the user is not logged in, the ProtectedRoute will show the LoginPage (component).  Even though it seems like they are different pages, the user is always on localhost:3000/user */}
-							{/* // logged in shows AdminLandingPage else shows LoginPage */}
-
-							<Route exact path="/LoginLicensee" >
-								<LicenseeLoginPage />
-							</Route>
-
-							<LicenseeRoute exact path="/SavedEstimates" >
+							{/* <LicenseeRoute exact path="/SavedEstimates" >
 								<LicenseePortal />
-							</LicenseeRoute>
+							</LicenseeRoute> */}
 
-							<AdminRoute exact path="/User" >
-								<AdminLandingPage />
-							</AdminRoute>
+							{/* // ⬇ Only Admin users (NOT regional) will  be able to view these: */}
+							{adminRoutes.map((route) => (
+								<AdminRoute
+									key={route.path}
+									exact
+									path={route.path}
+									component={route.component}
+								/>
+							))}
 
-							<AdminRoute exact path="/AdminUpdates" >
-								<AdminUpdates />
-
-							</AdminRoute>
-
-							<AdminRoute exact path="/AdminOrders" >
-								<AdminOrders />
-							</AdminRoute>
-
-							<AdminRoute exact path="/AdminUpdateTypes" >
-								<AdminUpdateTypes />
-							</AdminRoute>
-
-							<AdminRoute exact path="/AdminUpdateLicenses" >
-								<AdminUpdateLicenses />
-							</AdminRoute>
-
-							{/* <AdminRoute exact path="/AdminUpdateMaterials" >
-								<AdminUpdateMaterials />
-							</AdminRoute> */}
-
-							{/* <AdminRoute exact path="/AdminUpdateMarkup" >
-								<AdminUpdateMarkup />
-							</AdminRoute> */}
-
-							<AdminRoute exact path="/AdminUpdateDestinations" >
-								<AdminUpdateDestinations />
-							</AdminRoute>
-
-							{/* <AdminRoute exact path="/AdminUpdateCustoms" >
-								<AdminUpdateCustoms />
-							</AdminRoute> */}
-
-							{/* <AdminRoute exact path="/AdminUpdateShipping" >
-								<AdminUpdateShipping />
-							</AdminRoute> */}
-
-							<AdminRoute exact path="/AdminOrders">
-								<AdminOrders />
-							</AdminRoute>
-
-							<AdminRoute exact path="/LicenseeAccounts">
-								<LicenseeAccounts />
-							</AdminRoute>
-
-							<AdminRoute exact path="/ProductContainers">
-								<ProductContainers />
-							</AdminRoute>
-
-							<AdminRoute exact path="/DosageRates">
-								<DosageRates />
-							</AdminRoute>
-
-							<AdminRoute exact path="/pricinglog">
-								<PricingLog />
-							</AdminRoute>
-
-							<AdminRoute exact path="/updatepricing">
-								<UpdatePricing />
-							</AdminRoute>
-
-							{/* If logged in and user permissions is 1, that makes the super-admin and allows them to see this system admin page */}
 							<SysAdminRoute exact path="/SystemAdmin" >
 								<SystemAdmin />
 							</SysAdminRoute>
 
+
 							{/* If none of the other routes matched, we will show a 404. */}
-							<Route>
-								<Error404Page />
-							</Route>
+							<Route render={() => <Error404Page />} />
 
 						</Switch>
 

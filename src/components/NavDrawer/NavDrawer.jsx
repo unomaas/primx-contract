@@ -132,7 +132,10 @@ export default function NavDrawer() {
 
 							<Divider />
 
-							<ListItem button onClick={() => dispatch({ type: 'LOGOUT' })}>
+							<ListItem button onClick={() => {
+								dispatch({ type: 'LOGOUT' })
+								history.push('/login')
+							}}>
 								<ExitToAppIcon /> &nbsp;
 								<p>Log Out</p>
 							</ListItem>
@@ -166,7 +169,7 @@ export default function NavDrawer() {
 
 							<ListItem button onClick={() => history.push(`/login`)}>
 								<ExitToAppIcon /> &nbsp;
-								<p>Admin Login</p>
+								<p>Login</p>
 							</ListItem>
 
 						</List>
