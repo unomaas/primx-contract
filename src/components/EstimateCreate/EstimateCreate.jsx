@@ -46,10 +46,13 @@ export default function EstimateCreate() {
 
 	useEffect(() => {
 		// ⬇ If the user is logged in, have the company select default to their company:
-		if (user && user.licensee_id) {
+		if (user && user.licensee_id && companies) {
 			handleChange('licensee_id', user.licensee_id);
+
+			const licensee = companies.find(company => company.licensee_id == user.licensee_id);
+			if (licensee?.default_measurement) handleMeasurementUnits(licensee?.default_measurement);
 		}; // End if statement
-	}, [user])
+	}, [user, companies])
 	//#endregion ⬆⬆ All state variables above. 
 
 
@@ -255,6 +258,7 @@ export default function EstimateCreate() {
 													size="small"
 													fullWidth
 													value={estimateData.licensee_id}
+												// disabled={user?.licensee_id ? true : false}
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{companies.map(companies => {
@@ -530,7 +534,7 @@ export default function EstimateCreate() {
 												<Button
 													type="submit"
 													// ! Ryan Here. ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION: 
-													onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+													// onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
 													variant="contained"
 													className={classes.LexendTeraFont11}
 													color="primary"

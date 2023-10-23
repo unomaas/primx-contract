@@ -19,6 +19,7 @@ export default function EstimateCombine() {
 	const history = useHistory();
 	// ⬇ Used for company drop-down select:
 	const companies = useSelector(store => store.companies);
+	const user = useSelector((store) => store.user);
 	// ⬇ Used for the combine query:
 	const combineQuery = useSelector(store => store.combineEstimatesReducer.combineQuery);
 	// ⬇ calcCombinedEstimate is the object returned by searching for multiple estimates to combined, with updated quotes. 
@@ -64,6 +65,13 @@ export default function EstimateCombine() {
 		} // End if statement
 	}, [licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined]
 	); // End useEffect 
+
+	useEffect(() => {
+		// ⬇ If the user is logged in, have the company select default to their company:
+		if (user && user.licensee_id) {
+			handleChange('licensee_id', user.licensee_id);
+		}; // End if statement
+	}, [user])
 	// #endregion ⬆⬆ All state variables above. 
 
 
