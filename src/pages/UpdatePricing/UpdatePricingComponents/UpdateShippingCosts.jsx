@@ -7,6 +7,9 @@ import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsBu
 import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
+import Papa from 'papaparse';
+import useCsvFileUpload from '../../../hooks/useCsvFileUpload';
+import PublishIcon from '@material-ui/icons/Publish';
 
 export default function UpdateShippingCosts() {
 	//#region - State Variables Below: 
@@ -163,13 +166,27 @@ export default function UpdateShippingCosts() {
 	//#endregion - End State Variables.
 
 	//#region - Table Setup Below:
-	let rows = shippingCosts;
+	const [rows, setRows] = useState(shippingCosts || []);
 
 
 
 	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
+		const mapping = {
+			"DC 20ft": "dc_20ft",
+			"DC 40ft": "dc_40ft",
+			"Fibers 20ft": "fibers_20ft",
+			"Fibers 40ft": "fibers_40ft",
+			"CPEA 20ft": "cpea_20ft",
+			"CPEA 40ft": "cpea_40ft",
+			"Flow 20ft": "flow_20ft",
+			"Flow 40ft": "flow_40ft"
+		};
+		const { handleFileUpload } = useCsvFileUpload(columns, rows, setRows, mapping);
+
+
+
 		// ⬇ State Variables:
 		const TableInstructions = () => {
 			return (
@@ -188,7 +205,33 @@ export default function UpdateShippingCosts() {
 			)
 		}; // End TableInstructions
 		const [anchorEl, setAnchorEl] = useState(null);
+
+		const ImportButton = () => {
+			return (
+				<>
+					<Tooltip
+						title={<p>Upload a CSV file to load the data in the table automatically.<br/> <br/>Please note that the spreadsheet headers and destination names must match *exactly* as it's shown on the table. Destination order does not matter as long as the destination name is spelled correctly.<br/> <br/>For example, the easiest way to upload a CSV will be to first export a CSV from the table, and modify the data in that spreadsheet, as the headers and destination's will be correct.</p>}
+						placement="right-start"
+						arrow
+					>
+						<Button
+							color="primary"
+							onClick={() => document.getElementById('csv-upload').click()}
+						>
+							<PublishIcon color="primary" style={{
+								marginLeft: "-5px",
+								marginRight: "5px",
+							}} /> Upload CSV
+						</Button>
+					</Tooltip>
+				</>
+			); // End return
+		}; // End ImportButton
+
+
 		const menuItems = [
+			<ImportButton />,
+			<Divider />,
 			<GridToolbarExport />,
 			<Divider />,
 			<GridToolbarFilterButton />,
@@ -207,6 +250,15 @@ export default function UpdateShippingCosts() {
 
 		return (
 			<GridToolbarContainer >
+
+				<input
+					type="file"
+					id="csv-upload"
+					style={{ display: 'none' }}
+					onChange={handleFileUpload}
+				/>
+
+
 				<div style={{
 					flex: "1",
 					display: "flex",

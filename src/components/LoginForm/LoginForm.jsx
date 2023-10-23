@@ -12,7 +12,6 @@ import { useStyles } from '../MuiStyling/MuiStyling';
 import { useParams, useLocation } from 'react-router';
 
 
-// ! Ryan here, pull in React Router to check the URL.  If they're at Login, push them somewhere else (/create for permissions of Licensee, and /admin for permissions of Admin)
 
 
 function AdminLoginForm() {
