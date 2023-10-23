@@ -8,7 +8,8 @@ import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper } from
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
 import Papa from 'papaparse';
-
+import useCsvFileUpload from '../../../hooks/useCsvFileUpload';
+import PublishIcon from '@material-ui/icons/Publish';
 
 export default function UpdateShippingCosts() {
 	//#region - State Variables Below: 
@@ -172,110 +173,19 @@ export default function UpdateShippingCosts() {
 	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
 	const CustomToolbar = () => {
-
-
-		const handleFileUpload = (event) => {
-			const file = event.target.files[0];
-			parseCSV(file);
+		const mapping = {
+			"DC 20ft": "dc_20ft",
+			"DC 40ft": "dc_40ft",
+			"Fibers 20ft": "fibers_20ft",
+			"Fibers 40ft": "fibers_40ft",
+			"CPEA 20ft": "cpea_20ft",
+			"CPEA 40ft": "cpea_40ft",
+			"Flow 20ft": "flow_20ft",
+			"Flow 40ft": "flow_40ft"
 		};
-
-		const parseCSV = (file) => {
-			Papa.parse(file, {
-				complete: updateData,
-				header: true
-			});
-		};
-
-		const validateData = (data) => {
-
-			// ⬇ Create a function to loop through columns and create an array of headerName's: 
-			const expectedHeaders = columns.map(column => column.headerName);
+		const { handleFileUpload } = useCsvFileUpload(columns, rows, setRows, mapping);
 
 
-			const headers = Object.keys(data[0]).filter(header =>
-				!header.startsWith('_') && header.trim() !== ''
-			);
-
-			console.log('validateData 1', { headers, expectedHeaders });
-
-			return JSON.stringify(headers) === JSON.stringify(expectedHeaders);
-		};
-
-		const cleanData = (data) => {
-
-			let cleanedData = data.filter(row => row["Destination"].trim() !== "");
-			console.log('cleanedData1', { cleanedData });
-
-			cleanedData = cleanedData.map(row => {
-				// Remove unnecessary columns
-				for (let key in row) {
-					if (key === "" || key.startsWith("_")) {
-						delete row[key];
-					}
-				}
-				return row;
-			});
-
-			console.log('cleanedData2', { cleanedData });
-			// const expectedHeaders = ["Destination", "DC 20ft", "DC 40ft", "Fibers 20ft", "Fibers 40ft", "CPEA 20ft", "CPEA 40ft", "Flow 20ft", "Flow 40ft"]; 
-			// const headers = Object.keys(data[0]);
-
-			return cleanedData;
-		};
-
-		const updateRowsWithCSVData = (rows, csvData) => {
-			// Mapping between CSV headers and rows keys
-			const mapping = {
-				"DC 20ft": "dc_20ft",
-				"DC 40ft": "dc_40ft",
-				"Fibers 20ft": "fibers_20ft",
-				"Fibers 40ft": "fibers_40ft",
-				"CPEA 20ft": "cpea_20ft",
-				"CPEA 40ft": "cpea_40ft",
-				"Flow 20ft": "flow_20ft",
-				"Flow 40ft": "flow_40ft"
-			};
-		
-			// Loop through each row
-			for (let row of rows) {
-				// Find the corresponding CSV data entry
-				const csvEntry = csvData.find(entry => entry.Destination === row.destination_name);
-				if (csvEntry) {
-					// Update the prices using the mapping
-					for (let csvKey in mapping) {
-						row[mapping[csvKey]] = csvEntry[csvKey];
-					}
-				}
-			}
-		
-			return rows;
-		};
-
-
-		const updateData = (result) => {
-
-			console.log('pre clean', result.data);
-			const cleanedData = cleanData(result.data);
-			// Here, you can set the state or dispatch an action to update your store
-			// For instance: setRows(result.data);
-
-			if (validateData(cleanedData)) {
-
-				console.log('post clean and validated]', cleanedData);
-				console.log({rows, cleanedData});
-
-				const updatedRows = updateRowsWithCSVData(rows, cleanedData);
-				console.log(`Ryan Here: \n `, {updatedRows});
-        setRows(prevRows => [...updatedRows]);  // Update the state with the new rows
-
-
-			} else {
-				console.error("CSV format is incorrect");
-			}
-		};
-
-		console.log('counting renders', {rows})
-		console.count('renders')
 
 		// ⬇ State Variables:
 		const TableInstructions = () => {
@@ -295,7 +205,33 @@ export default function UpdateShippingCosts() {
 			)
 		}; // End TableInstructions
 		const [anchorEl, setAnchorEl] = useState(null);
+
+		const ImportButton = () => {
+			return (
+				<>
+					<Tooltip
+						title={<p>Upload a CSV file to load the data in the table automatically.<br/> <br/>Please note that the spreadsheet headers and destination names must match *exactly* as it's shown on the table. Destination order does not matter as long as the destination name is spelled correctly.<br/> <br/>For example, the easiest way to upload a CSV will be to first export a CSV from the table, and modify the data in that spreadsheet, as the headers and destination's will be correct.</p>}
+						placement="right-start"
+						arrow
+					>
+						<Button
+							color="primary"
+							onClick={() => document.getElementById('csv-upload').click()}
+						>
+							<PublishIcon color="primary" style={{
+								marginLeft: "-5px",
+								marginRight: "5px",
+							}} /> Upload CSV
+						</Button>
+					</Tooltip>
+				</>
+			); // End return
+		}; // End ImportButton
+
+
 		const menuItems = [
+			<ImportButton />,
+			<Divider />,
 			<GridToolbarExport />,
 			<Divider />,
 			<GridToolbarFilterButton />,
@@ -386,12 +322,7 @@ export default function UpdateShippingCosts() {
 					fontSize: "11px",
 					fontFamily: "Lexend Tera",
 				}}>
-					<Button
-						color="primary"
-						onClick={() => document.getElementById('csv-upload').click()}
-					>
-						Upload CSV
-					</Button>
+
 				</div>
 			</GridToolbarContainer>
 		); // End return
