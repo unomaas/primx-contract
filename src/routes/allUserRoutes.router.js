@@ -12,7 +12,6 @@ import PricingLog from '../pages/PricingLog/index.jsx';
 import UpdatePricing from '../pages/UpdatePricing/index.jsx';
 
 export const adminRoutes = [
-		// ! Ryan here. When I revisit this, the /admin page used to  be /user page.  Figure it out on if we want /admin to be the updates, or just push to admin/updates, etc. 
 	{
 		title: 'Admin Landing Page',
 		path: '/admin',
