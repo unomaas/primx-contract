@@ -7,7 +7,7 @@ import UpdateFloorTypesGrid from './UpdateFloorTypesGrid.jsx';
 import UpdatePlacementTypesGrid from './UpdatePlacementTypesGrid';
 
 //imports for MUI
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TextField from '@material-ui/core/TextField';
@@ -26,7 +26,7 @@ export default function AdminUpdateTypes() {
 	const placementTypes = useSelector(store => store.placementTypes);
 
 	//defining classes for MUI
-	const classes = useStyles();
+	const classes = useClasses();
 
 	//the following handle...change functions set the floor type and placement type useStates
 	const handleFloorChange = (event) => {

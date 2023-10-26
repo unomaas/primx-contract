@@ -3,7 +3,7 @@ import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
-import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
+import { useClasses } from '../../../../src/components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
 import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
@@ -14,7 +14,7 @@ import HelpIcon from '@material-ui/icons/Help';
 export default function CustomsDutiesTable() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
-	const classes = useStyles();
+	const classes = useClasses();
 	const dispatch = useDispatch();
 	const customsDuties = useSelector(store => store.customsDuties.customsDutiesArray);
 	const customsDutiesHistoryRecent = useSelector(store => store.customsDuties.customsDutiesHistoryRecentArray);

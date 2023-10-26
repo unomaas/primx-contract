@@ -2,7 +2,7 @@
 import { React, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
-import { useStyles } from '../../../components/MuiStyling/MuiStyling';
+import { useClasses } from '../../../components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import { Button, MenuItem, Menu, TextField, Divider, Tooltip, Paper, InputAdornment } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -15,7 +15,7 @@ import useCalculateProjectCost from '../../../hooks/useCalculateProjectCost';
 export default function UpdateMarkupMargin() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
-	const classes = useStyles();
+	const classes = useClasses();
 	const dispatch = useDispatch();
 
 

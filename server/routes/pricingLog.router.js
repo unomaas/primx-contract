@@ -59,10 +59,9 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 	}; // End if
 
 	// ⬇ If dateToSaveTo is past the current month (e.g., 2023-07-05 is past 2023-06-15), set the dateToSaveTo to the first day of the next month:
-	if (dayjs(dateToSaveTo).isAfter(dayjs().format('2023-06-25'))) {
+	if (dayjs(dateToSaveTo).isAfter(dayjs().format('YYYY-MM-DD'))) {
 		dateToSaveTo = dayjs(dateToSaveTo).startOf('month').format('YYYY-MM-DD');
 	}; // End if
-
 
 	try {
 		// ⬇ Default logic assumptions: 

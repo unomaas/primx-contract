@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Drawer, List, ListItem, Divider, IconButton, Box } from '@material-ui/core';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 // ⬇ Icons:
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
@@ -26,7 +26,7 @@ import AutorenewIcon from '@material-ui/icons/Autorenew';
 export default function NavDrawer() {
 	//#region ⬇⬇ All state variables below:
 	const [open, setOpen] = useState(false);
-	const classes = useStyles();
+	const classes = useClasses();
 	const history = useHistory();
 	const user = useSelector((store) => store.user);
 	const dispatch = useDispatch();

@@ -2,7 +2,7 @@
 import { React, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
-import { useStyles } from '../../../components/MuiStyling/MuiStyling';
+import { useClasses } from '../../../components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
 import { Button, MenuItem, Menu, TablePagination, Divider, Tooltip, Paper, TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
@@ -12,7 +12,7 @@ import HelpIcon from '@material-ui/icons/Help';
 export default function UpdatePricingSteps() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
-	const classes = useStyles();
+	const classes = useClasses();
 
 	const pricingLog = useSelector(store => store.pricingLog);
 	const { viewState, dataState } = pricingLog;

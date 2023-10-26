@@ -21,7 +21,7 @@ export default function LicenseePortal() {
 	useEffect(() => {
 		dispatch({ type: 'SET_BUTTON_STATE', payload: 'SavedEstimates' });
 
-		if (user.permission_level <= 2 && companies.length == 0) {
+		if (user.permission_level <= 5 && companies.length == 0) {
 			dispatch({ type: 'FETCH_ALL_COMPANIES' });
 		}
 	}, []);
@@ -42,7 +42,7 @@ export default function LicenseePortal() {
 
 			<br />
 
-			{user?.permission_level <= 2 &&
+			{user?.permission_level <= 5 &&
 				<LicenseeSelect companies={companies} setSelectedLicenseeId={setSelectedLicenseeId} />
 
 			}

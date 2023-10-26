@@ -26,7 +26,7 @@ export default function LicenseeRegisterForm() {
 		},
 	}));
 	//defining classes for MUI
-	const classes = useStyles();
+	const classes = useClasses();
 
 	const registerUser = (event) => {
 		event.preventDefault();

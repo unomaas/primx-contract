@@ -27,7 +27,7 @@ function AdminRegisterForm() {
     },
   }));
   //defining classes for MUI
-  const classes = useStyles();
+  const classes = useClasses();
 
 
   const registerUser = (event) => {

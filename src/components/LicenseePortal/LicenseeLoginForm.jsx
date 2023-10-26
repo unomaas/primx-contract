@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 //MUI Imports
 // import TextField from '@material-ui/core/TextField';
 // import Button from '@material-ui/core/Button';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 
 
@@ -25,7 +25,7 @@ function LicenseeLoginForm() {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	//defining classes for MUI
-	const classes = useStyles();
+	const classes = useClasses();
 	// ⬇ Run on page load:
 	useEffect(() => {
 		// ⬇ Fetch the current companies for drop-down menu options:

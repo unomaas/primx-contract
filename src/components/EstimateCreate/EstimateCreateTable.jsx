@@ -5,20 +5,30 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Alert } from '@material-ui/lab';
-import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar, Radio, RadioGroup, FormControl, FormControlLabel } from '@material-ui/core';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar, Radio, RadioGroup, FormControl, FormControlLabel, Tooltip } from '@material-ui/core';
+import { useClasses } from '../MuiStyling/MuiStyling';
+import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 import dayjs from 'dayjs';
+import InfoIcon from '@material-ui/icons/Info';
 //#endregion ⬆⬆ All document setup above.
 
-
+const theme = createMuiTheme({
+	overrides: {
+		MuiTooltip: {
+			tooltip: {
+				fontSize: "1em",
+			}
+		}
+	}
+});
 
 export default function EstimateCreateTable() {
 	// //#region ⬇⬇ All state variables below:
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const classes = useStyles();
+	const classes = useClasses();
 	const calculateEstimate = useEstimateCalculations;
 	const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
 	const calculatedDisplayObject = useSelector(store => store.estimatesReducer.setCalcEstimate);
@@ -200,6 +210,7 @@ export default function EstimateCreateTable() {
 	if (estimateData.date_created) startDate = estimateData.date_created;
 
 	const threeMonthGuaranteeDate = dayjs(startDate).add(3, 'month').format('YYYY-MM-DD');
+	const sixMonthGuaranteeDate = dayjs(startDate).add(6, 'month').format('YYYY-MM-DD');
 
 
 	// ⬇ Rendering:
@@ -931,7 +942,7 @@ export default function EstimateCreateTable() {
 															value='none'
 															control={<Radio />}
 														/>
-														{user && user.permission_level <= 2 &&
+														{user && user.permission_level <= 5 &&
 															<FormControlLabel
 																label="Exclude PrīmX CPEA"
 																value="exclude_cpea"
@@ -1047,26 +1058,59 @@ export default function EstimateCreateTable() {
 														{/* Conditional rendering for the save button to be enabled or disabled based off whether they've filled out all the inputs: */}
 														{saveButton ? (
 															// If they have filled out all of the inputs, make it enabled:
-															<Button
-																type="submit"
-																// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-																// onClick={event => handleSave(event)}
-																variant="contained"
-																className={classes.LexendTeraFont11}
-																color="primary"
-															// style={{backgroundColor: "green"}}
-															>
-																Save Estimate
-															</Button>
+															<>
+																<MuiThemeProvider theme={theme}>
+																	<Tooltip
+																		placement="left"
+																		arrow
+																		title="Saving the estimate will enable a 6-month warranty period.  The estimate will  be stored in the system and is available for later conversion to PO.  After the estimate is saved, you may print the page or export it as a PDF file."
+																		color="primary"
+																		style={{
+																			marginBottom: "-9px",
+																			marginRight: "10px",
+																		}}
+																	>
+																		<InfoIcon />
+																	</Tooltip>
+																</MuiThemeProvider>
+																<Button
+																	type="submit"
+																	// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+																	// onClick={event => handleSave(event)}
+																	color="primary"
+																	variant="contained"
+																	className={classes.LexendTeraFont11}
+																// style={{backgroundColor: "green"}}
+																>
+																	Save Estimate
+																</Button>
+															</>
 														) : (
 															// If they haven't filled out the inputs, make it disabled:
-															<Button
-																variant="contained"
-																className={classes.LexendTeraFont11}
-																disabled
-															>
-																Save Estimate
-															</Button>
+															<>
+																<MuiThemeProvider theme={theme}>
+																	<Tooltip
+																		placement="left"
+																		arrow
+																		title="Saving the estimate will enable a 6-month warranty period.  The estimate will  be stored in the system and is available for later conversion to PO.  After the estimate is saved, you may print the page or export it as a PDF file."
+																		color="primary"
+																		style={{
+																			marginBottom: "-9px",
+																			marginRight: "10px",
+																		}}
+																	>
+																		<InfoIcon />
+																	</Tooltip>
+																</MuiThemeProvider>
+																<Button
+																	variant="contained"
+																	className={classes.LexendTeraFont11}
+																	disabled
+																>
+																	Save Estimate
+																</Button>
+															</>
+
 														)}
 														{/* End conditional rendering for saveButton ? */}
 													</>
@@ -1082,7 +1126,7 @@ export default function EstimateCreateTable() {
 								padding: "20px",
 							}}>
 								<b>Price Guarantee Disclaimer:</b>
-								<br /> The prices above are guaranteed to be eligible for three months, from the date it's saved until {threeMonthGuaranteeDate}.
+								<br />The prices above are guaranteed to be eligible for six months, from the date it's saved until {sixMonthGuaranteeDate}.
 							</div>
 
 							{/* {estimateData.materials_excluded === 'exclude_fibers' && */}
@@ -1090,7 +1134,7 @@ export default function EstimateCreateTable() {
 								padding: "20px",
 							}}>
 								<b>Total PrīmX Materials Disclaimer:</b>
-								<br /> The amount of materials calculated above is approximate.  It will be precised after PO placement.
+								<br />The amount of materials calculated above is approximate.  It will be precised after PO placement.
 							</div>
 							{/* } */}
 						</Paper>

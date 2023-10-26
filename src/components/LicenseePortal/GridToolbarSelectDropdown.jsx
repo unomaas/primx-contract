@@ -8,13 +8,13 @@ import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToo
 import { Button, ButtonGroup, ClickAwayListener, Grow, Fade, Popper, MenuItem, MenuList, Paper, Menu } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
 
 export default function GridToolbarSelectDropdown() {
 
 	// ⬇ State variables below: 
-	const classes = useStyles();
+	const classes = useClasses();
 	const anchorRef = useRef(null);
 	const [open, setOpen] = useState(false);
 	const dispatch = useDispatch();

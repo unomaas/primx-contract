@@ -2,7 +2,7 @@
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
 import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
@@ -14,7 +14,7 @@ import HelpIcon from '@material-ui/icons/Help';
 export default function UpdateShippingCostsGrid() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
-	const classes = useStyles();
+	const classes = useClasses();
 	const dispatch = useDispatch();
 	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
 	const shippingCostHistoryRecent = useSelector(store => store.shippingCosts.shippingCostHistoryRecentArray);

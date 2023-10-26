@@ -186,7 +186,7 @@ Print Screen Scaling
   }
 
   .removeInPrint {
-    display: none;
+    display: none !important;
   }
 
 }

@@ -7,14 +7,14 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations.js';
 import Typography from '@material-ui/core/Typography';
 // components
 import AdminEstimatesGrid from '../AdminEstimatesGrid/AdminEstimatesGrid';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 
 
 export default function AdminOrders() {
 	// bring in custom calculation hook
 	const calculateEstimate = useEstimateCalculations;
 	const dispatch = useDispatch();
-	const classes = useStyles();
+	const classes = useClasses();
 
 	// useSelector looks at the array of estimate objects from adminEstimates reducer
 	const allEstimates = useSelector(store => store.adminEstimates);
