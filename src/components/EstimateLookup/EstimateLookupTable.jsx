@@ -657,7 +657,7 @@ export default function EstimateLookupTable() {
 														{/* Edit Estimate Button: */}
 
 														{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 3
-															? <Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
+															? <Tooltip title={`This estimate is more than 6 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
 																<Button
 																	variant="contained"
 																	color="primary"

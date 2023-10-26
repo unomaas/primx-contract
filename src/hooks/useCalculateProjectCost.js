@@ -358,7 +358,7 @@ export default function useCalculateProjectCost(estimate, options) {
 
 
 	//#region Step 9 - Calculate total project cost:
-	// ⬇ If this is a new estimate, we want to calculate the total project cost.  If it's a saved estimate, we want to use the previously calculated total project cost to respect the price guaranteet:
+	// ⬇ If this is a new estimate, we want to calculate the total project cost.  If it's a saved estimate, we want to use the previously calculated total project cost to respect the price guarantee:
 	if (!estimate.estimate_number || options.difference_in_months >= 3 || estimate.force_recalculate) {
 		// ⬇ Calculate the total project cost:
 		estimate.price_per_unit_75_50 = dollarSalesCostPerUnit_75_50;

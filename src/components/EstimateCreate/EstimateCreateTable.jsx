@@ -5,13 +5,21 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Alert } from '@material-ui/lab';
-import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar, Radio, RadioGroup, FormControl, FormControlLabel } from '@material-ui/core';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar, Radio, RadioGroup, FormControl, FormControlLabel, Tooltip } from '@material-ui/core';
+import { useClasses } from '../MuiStyling/MuiStyling';
+import { makeStyles } from '@material-ui/core/styles';
+
 import swal from 'sweetalert';
 import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 import dayjs from 'dayjs';
+import InfoIcon from '@material-ui/icons/Info';
 //#endregion ⬆⬆ All document setup above.
 
+const useStyles = makeStyles(theme => ({
+  customTooltip: {
+    fontSize: "16px" // Customize this value as needed.
+  }
+}));
 
 
 export default function EstimateCreateTable() {
@@ -41,6 +49,7 @@ export default function EstimateCreateTable() {
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
 		estimateData.difference_in_months = useDifferenceBetweenDates(estimateData.date_created).total_months;
+		console.log(`Ryan Here: 1\n `, estimateData.difference_in_months);
 		if (
 			(
 				estimateData.square_feet &&
@@ -200,6 +209,7 @@ export default function EstimateCreateTable() {
 	if (estimateData.date_created) startDate = estimateData.date_created;
 
 	const threeMonthGuaranteeDate = dayjs(startDate).add(3, 'month').format('YYYY-MM-DD');
+	const sixMonthGuaranteeDate = dayjs(startDate).add(6, 'month').format('YYYY-MM-DD');
 
 
 	// ⬇ Rendering:
@@ -1047,17 +1057,27 @@ export default function EstimateCreateTable() {
 														{/* Conditional rendering for the save button to be enabled or disabled based off whether they've filled out all the inputs: */}
 														{saveButton ? (
 															// If they have filled out all of the inputs, make it enabled:
-															<Button
-																type="submit"
-																// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-																// onClick={event => handleSave(event)}
-																variant="contained"
-																className={classes.LexendTeraFont11}
-																color="primary"
-															// style={{backgroundColor: "green"}}
-															>
-																Save Estimate
-															</Button>
+															<>
+																<Tooltip
+																	placement="left"
+																	title="Saving the estimate will enable a 6-month warranty period.  The estimate will  be stored in the system and is available for later conversion to PO.  After the estimate is saved, you may also export it as a .PDF or print."
+																	// className={classes.customTooltip}
+																	// className={classes.LexendTeraFont11}
+																>
+																	<InfoIcon />
+																</Tooltip>
+																<Button
+																	type="submit"
+																	// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+																	// onClick={event => handleSave(event)}
+																	variant="contained"
+																	className={classes.LexendTeraFont11}
+																	color="primary"
+																// style={{backgroundColor: "green"}}
+																>
+																	Save Estimate
+																</Button>
+															</>
 														) : (
 															// If they haven't filled out the inputs, make it disabled:
 															<Button
@@ -1082,7 +1102,7 @@ export default function EstimateCreateTable() {
 								padding: "20px",
 							}}>
 								<b>Price Guarantee Disclaimer:</b>
-								<br /> The prices above are guaranteed to be eligible for three months, from the date it's saved until {threeMonthGuaranteeDate}.
+								<br />The prices above are guaranteed to be eligible for six months, from the date it's saved until {sixMonthGuaranteeDate}.
 							</div>
 
 							{/* {estimateData.materials_excluded === 'exclude_fibers' && */}
@@ -1090,7 +1110,7 @@ export default function EstimateCreateTable() {
 								padding: "20px",
 							}}>
 								<b>Total PrīmX Materials Disclaimer:</b>
-								<br /> The amount of materials calculated above is approximate.  It will be precised after PO placement.
+								<br />The amount of materials calculated above is approximate.  It will be precised after PO placement.
 							</div>
 							{/* } */}
 						</Paper>
