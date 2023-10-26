@@ -2,7 +2,7 @@
 // ⬇ Dependent Functionality:
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab';
 import { useSelector, useDispatch } from 'react-redux';
 //#endregion ⬆⬆ All document setup above.
@@ -15,7 +15,7 @@ export default function ButtonToggle() {
   const buttonState = useSelector(store => store.estimatesReducer.buttonState);
   // toggle button states
   const dispatch = useDispatch();
-  const classes = useStyles();
+  const classes = useClasses();
 
   //#endregion ⬆⬆ All state variables above. 
 

@@ -9,11 +9,11 @@ import { Button, MenuItem, TextField, Select, Radio, RadioGroup, FormControl, Fo
 // components
 import AdminEstimatesGrid from '../AdminEstimatesGrid/AdminEstimatesGrid';
 import LicenseeEstimatesGrid from './LicenseeEstimatesGrid.jsx';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 
 
 export default function LicenseeTables() {
-	const classes = useStyles();
+	const classes = useClasses();
 	const pageData = useSelector(store => store.licenseePortalReducer.pageData);
 	const tableData = useSelector(store => store.licenseePortalReducer.tableData);
 

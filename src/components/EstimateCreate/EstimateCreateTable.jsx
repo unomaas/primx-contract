@@ -7,26 +7,28 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Alert } from '@material-ui/lab';
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar, Radio, RadioGroup, FormControl, FormControlLabel, Tooltip } from '@material-ui/core';
 import { useClasses } from '../MuiStyling/MuiStyling';
-import { makeStyles } from '@material-ui/core/styles';
-
+import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 import dayjs from 'dayjs';
 import InfoIcon from '@material-ui/icons/Info';
 //#endregion ⬆⬆ All document setup above.
 
-const useStyles = makeStyles(theme => ({
-  customTooltip: {
-    fontSize: "16px" // Customize this value as needed.
-  }
-}));
-
+const theme = createMuiTheme({
+	overrides: {
+		MuiTooltip: {
+			tooltip: {
+				fontSize: "1em",
+			}
+		}
+	}
+});
 
 export default function EstimateCreateTable() {
 	// //#region ⬇⬇ All state variables below:
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const classes = useStyles();
+	const classes = useClasses();
 	const calculateEstimate = useEstimateCalculations;
 	const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
 	const calculatedDisplayObject = useSelector(store => store.estimatesReducer.setCalcEstimate);
@@ -49,7 +51,6 @@ export default function EstimateCreateTable() {
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
 		estimateData.difference_in_months = useDifferenceBetweenDates(estimateData.date_created).total_months;
-		console.log(`Ryan Here: 1\n `, estimateData.difference_in_months);
 		if (
 			(
 				estimateData.square_feet &&
@@ -941,7 +942,7 @@ export default function EstimateCreateTable() {
 															value='none'
 															control={<Radio />}
 														/>
-														{user && user.permission_level <= 2 &&
+														{user && user.permission_level <= 5 &&
 															<FormControlLabel
 																label="Exclude PrīmX CPEA"
 																value="exclude_cpea"
@@ -1058,21 +1059,27 @@ export default function EstimateCreateTable() {
 														{saveButton ? (
 															// If they have filled out all of the inputs, make it enabled:
 															<>
-																<Tooltip
-																	placement="left"
-																	title="Saving the estimate will enable a 6-month warranty period.  The estimate will  be stored in the system and is available for later conversion to PO.  After the estimate is saved, you may also export it as a .PDF or print."
-																	// className={classes.customTooltip}
-																	// className={classes.LexendTeraFont11}
-																>
-																	<InfoIcon />
-																</Tooltip>
+																<MuiThemeProvider theme={theme}>
+																	<Tooltip
+																		placement="left"
+																		arrow
+																		title="Saving the estimate will enable a 6-month warranty period.  The estimate will  be stored in the system and is available for later conversion to PO.  After the estimate is saved, you may print the page or export it as a PDF file."
+																		color="primary"
+																		style={{
+																			marginBottom: "-9px",
+																			marginRight: "10px",
+																		}}
+																	>
+																		<InfoIcon />
+																	</Tooltip>
+																</MuiThemeProvider>
 																<Button
 																	type="submit"
 																	// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
 																	// onClick={event => handleSave(event)}
+																	color="primary"
 																	variant="contained"
 																	className={classes.LexendTeraFont11}
-																	color="primary"
 																// style={{backgroundColor: "green"}}
 																>
 																	Save Estimate
@@ -1080,13 +1087,30 @@ export default function EstimateCreateTable() {
 															</>
 														) : (
 															// If they haven't filled out the inputs, make it disabled:
-															<Button
-																variant="contained"
-																className={classes.LexendTeraFont11}
-																disabled
-															>
-																Save Estimate
-															</Button>
+															<>
+																<MuiThemeProvider theme={theme}>
+																	<Tooltip
+																		placement="left"
+																		arrow
+																		title="Saving the estimate will enable a 6-month warranty period.  The estimate will  be stored in the system and is available for later conversion to PO.  After the estimate is saved, you may print the page or export it as a PDF file."
+																		color="primary"
+																		style={{
+																			marginBottom: "-9px",
+																			marginRight: "10px",
+																		}}
+																	>
+																		<InfoIcon />
+																	</Tooltip>
+																</MuiThemeProvider>
+																<Button
+																	variant="contained"
+																	className={classes.LexendTeraFont11}
+																	disabled
+																>
+																	Save Estimate
+																</Button>
+															</>
+
 														)}
 														{/* End conditional rendering for saveButton ? */}
 													</>

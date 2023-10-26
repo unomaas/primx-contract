@@ -2,7 +2,7 @@
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -15,7 +15,7 @@ import AdminUpdates from '../AdminUpdates/AdminUpdates';
 export default function AdminUpdateMarkup() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
-	const classes = useStyles();
+	const classes = useClasses();
 	const dispatch = useDispatch();
 	const currentMarkup = useSelector(store => store.products.currentMarkupMargin);
 	const markupHistoryRecent = useSelector(store => store.products.markupHistoryRecent);

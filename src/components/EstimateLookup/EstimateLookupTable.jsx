@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch, Tooltip, Radio } from '@material-ui/core';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 //#endregion ⬆⬆ All document setup above.
 
@@ -18,7 +18,7 @@ export default function EstimateLookupTable() {
 	const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
 	// ⬇ hasRecalculated is a boolean that defaults to false. When a user recalculates costs, the boolean gets set to true, which activates the Submit Order button.
 	const hasRecalculated = useSelector(store => store.estimatesReducer.hasRecalculated);
-	const classes = useStyles(); // Keep in for MUI styling. 
+	const classes = useClasses(); // Keep in for MUI styling. 
 	const [poNumError, setPoNumError] = useState("");
 	const [poNumber, setPoNumber] = useState('');
 	const dispatch = useDispatch();
@@ -656,18 +656,20 @@ export default function EstimateLookupTable() {
 													<section className="removeInPrint">
 														{/* Edit Estimate Button: */}
 
-														{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 3
-															? <Tooltip title={`This estimate is more than 6 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
-																<Button
-																	variant="contained"
-																	color="primary"
-																	onClick={handleRecalculateCosts}
-																	style={{ marginTop: "13px" }}
-																	className={classes.LexendTeraFont11}
-																>
-																	Recalculate Costs
-																</Button>
-															</Tooltip>
+														{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 6
+															? <>
+																<Tooltip title={`This estimate is more than 6 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
+																	<Button
+																		variant="contained"
+																		color="primary"
+																		onClick={handleRecalculateCosts}
+																		style={{ marginTop: "13px" }}
+																		className={classes.LexendTeraFont11}
+																	>
+																		Recalculate Costs
+																	</Button>
+																</Tooltip>
+															</>
 															: <>
 																<Button
 																	variant="contained"
@@ -678,6 +680,16 @@ export default function EstimateLookupTable() {
 																>
 																	Edit This Estimate
 																</Button>
+
+																<Button
+																	variant="contained"
+																	onClick={() => window.print()}
+																	className={classes.LexendTeraFont11}
+																	style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
+																>
+																	Export Estimate
+																</Button>
+
 
 
 																<TextField

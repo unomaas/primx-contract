@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 //MUI Imports
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 
 import { useParams, useLocation } from 'react-router';
 
@@ -25,7 +25,7 @@ function AdminLoginForm() {
 		if (user?.permission_level == 3) {
 			history.push('/create');
 		}
-		if (user?.permission_level <= 2) {
+		if (user?.permission_level <= 5) {
 			history.push('/user');
 		}
 	}, [user, history]);
@@ -37,7 +37,7 @@ function AdminLoginForm() {
 	const history = useHistory();
 
 	//defining classes for MUI
-	const classes = useStyles();
+	const classes = useClasses();
 
 	const login = (event) => {
 		event.preventDefault();

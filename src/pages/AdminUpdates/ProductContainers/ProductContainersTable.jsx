@@ -2,7 +2,7 @@
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
-import { useStyles } from '../../../../src/components/MuiStyling/MuiStyling';
+import { useClasses } from '../../../../src/components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
 import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
@@ -13,7 +13,7 @@ import HelpIcon from '@material-ui/icons/Help';
 export default function ProductContainersTable() {
 	// ⬇ State Variables:
 	//#region - State Variables Below: 
-	const classes = useStyles();
+	const classes = useClasses();
 	const dispatch = useDispatch();
 	const productContainers = useSelector(store => store.productContainers.productContainersArray);
 	const [showEditModal, setShowEditModal] = useState(false);

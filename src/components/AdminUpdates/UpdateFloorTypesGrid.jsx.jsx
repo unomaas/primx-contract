@@ -2,12 +2,12 @@
 import React, { useState } from 'react';
 // Material-UI components
 import { DataGrid } from '@material-ui/data-grid';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 
 // component that renders a Material UI Data Grid, needs an array of floor types and placement types as props.
 export default function UpdateFloorTypesGrid({ floorTypes }) {
 	//Material UI classes for data grid
-	const classes = useStyles();
+	const classes = useClasses();
 	const [pageSize, setPageSize] = useState(10);
 
 

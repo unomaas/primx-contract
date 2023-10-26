@@ -2,7 +2,7 @@
 import { React, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
-import { useStyles } from '../../../components/MuiStyling/MuiStyling';
+import { useClasses } from '../../../components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import { Button, Menu, Divider, Tooltip, Paper, FormControl, Select, MenuItem, FormHelperText, InputLabel } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';

@@ -11,7 +11,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 
 
 
@@ -26,7 +26,7 @@ export default function AdminUpdateLicenses() {
 	let [defaultMeasurements, setDefaultMeasurements] = useState('imperial');
 	const [pageSize, setPageSize] = useState(10);
 	//defining classes for MUI
-	const classes = useStyles();
+	const classes = useClasses();
 
 	// GET all licensee company data on component load
 	useEffect(() => {

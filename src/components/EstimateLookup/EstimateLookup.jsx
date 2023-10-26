@@ -9,7 +9,7 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useParams, useLocation } from 'react-router';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import EstimateLookupTable from './EstimateLookupTable';
 import EstimateCombineTable from '../EstimateCombine/EstimateCombineTable';
 //#endregion ⬆⬆ All document setup above.
@@ -23,7 +23,7 @@ export default function EstimateLookup() {
 	const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
 	const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
 	const [error, setError] = useState(false);
-	const classes = useStyles(); // Keep in for MUI styling. 
+	const classes = useClasses(); // Keep in for MUI styling. 
 	const [selectError, setSelectError] = useState("");
 	// ⬇ showDataTable handles the state of showing table: 
 	const showDataTable = useSelector(store => store.combineEstimatesReducer.showDataTable);
@@ -196,13 +196,13 @@ export default function EstimateLookup() {
 						<>
 							<b>Price Guarantee Disclaimer:</b>
 							< br />
-							The prices shown above are guaranteed to be eligible for three months from {searchResult?.date_created}.
+							The prices shown above are guaranteed to be eligible for six months  from {searchResult?.date_created}.
 						</>
 					}
 
 					{/* Format the searchResult?.date_created from YYYY-MM-DD to Month, Date, Year */}
 
-					{/* <br /> The prices shown above are guaranteed to be eligible for three months from {moment(searchResult?.date_created).format('MMMM Do, YYYY')}. */}
+					{/* <br /> The prices shown above are guaranteed to be eligible for six months  from {moment(searchResult?.date_created).format('MMMM Do, YYYY')}. */}
 				</>
 			}
 
