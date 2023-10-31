@@ -2292,6 +2292,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 														<Button
 															variant="contained"
+															color="primary"
 															onClick={() => window.print()}
 															className={classes.LexendTeraFont11}
 															style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
@@ -2350,7 +2351,18 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 									{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths >= 6 &&
 										<TableRow hover={true}>
-											<TableCell colSpan={9} align="right">
+											<TableCell>
+												<Button
+													variant="contained"
+													color="primary"
+													onClick={() => window.print()}
+													className={classes.LexendTeraFont11}
+													style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
+												>
+													Export Estimate
+												</Button>
+											</TableCell>
+											<TableCell colSpan={8} align="right">
 												<Tooltip title={`This estimate is more than 6 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
 													<Button
 														variant="contained"

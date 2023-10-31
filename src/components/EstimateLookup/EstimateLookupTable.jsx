@@ -658,6 +658,16 @@ export default function EstimateLookupTable() {
 
 														{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 6
 															? <>
+																<Button
+																	variant="contained"
+																	color="primary"
+																	onClick={() => window.print()}
+																	className={classes.LexendTeraFont11}
+																	style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
+																>
+																	Export Estimate
+																</Button>
+
 																<Tooltip title={`This estimate is more than 6 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
 																	<Button
 																		variant="contained"
@@ -683,14 +693,13 @@ export default function EstimateLookupTable() {
 
 																<Button
 																	variant="contained"
+																	color="primary"
 																	onClick={() => window.print()}
 																	className={classes.LexendTeraFont11}
 																	style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
 																>
 																	Export Estimate
 																</Button>
-
-
 
 																<TextField
 																	onChange={(event) => setPoNumber(event.target.value)}

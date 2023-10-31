@@ -196,7 +196,7 @@ export default function EstimateLookup() {
 						<>
 							<b>Price Guarantee Disclaimer:</b>
 							< br />
-							The prices shown above are guaranteed to be eligible for six months  from {searchResult?.date_created}.
+							The prices shown above are guaranteed to be eligible for six months from {searchResult?.date_created}.
 						</>
 					}
 
@@ -220,6 +220,13 @@ export default function EstimateLookup() {
 					</h3>
 				</>
 			}
+
+			<div style={{
+				padding: "20px",
+			}}>
+				<b>Total PrīmX Materials Disclaimer:</b>
+				<br />The amount of materials calculated above is approximate.  It will be precised after PO placement.
+			</div>
 
 			{/* Render messages underneath the table if an estimate has been submitted as an order */}
 			{/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
