@@ -1072,18 +1072,26 @@ export default function EstimateCreateTable() {
 																	>
 																		<InfoIcon />
 																	</Tooltip>
+																	{/* <Tooltip
+																		placement="left"
+																		arrow
+																		title="Saving the estimate will enable a 6-month warranty period.  The estimate will  be stored in the system and is available for later conversion to PO.  After the estimate is saved, you may print the page or export it as a PDF file."
+																		color="primary"
+																	> */}
+																		<Button
+																			type="submit"
+																			// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
+																			// onClick={event => handleSave(event)}
+																			color="primary"
+																			variant="contained"
+																			className={classes.LexendTeraFont11}
+																		// style={{backgroundColor: "green"}}
+																		>
+																			Save Estimate
+																		</Button>
+																	{/* </Tooltip> */}
 																</MuiThemeProvider>
-																<Button
-																	type="submit"
-																	// ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION:
-																	// onClick={event => handleSave(event)}
-																	color="primary"
-																	variant="contained"
-																	className={classes.LexendTeraFont11}
-																// style={{backgroundColor: "green"}}
-																>
-																	Save Estimate
-																</Button>
+
 															</>
 														) : (
 															// If they haven't filled out the inputs, make it disabled:
