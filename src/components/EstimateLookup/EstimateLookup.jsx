@@ -218,6 +218,13 @@ export default function EstimateLookup() {
 					<h3>
 						Your estimate number is: <b style={{ color: 'red' }}>{calcCombinedEstimate?.estimate_number}</b>
 					</h3>
+					{!calcCombinedEstimate?.ordered_by_licensee &&
+						<>
+							<b>Price Guarantee Disclaimer:</b>
+							< br />
+							The prices shown above are guaranteed to be eligible for six months from {calcCombinedEstimate?.date_created?.substring(0, 10)}.
+						</>
+					}
 				</>
 			}
 
