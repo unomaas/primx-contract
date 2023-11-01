@@ -9,9 +9,9 @@ import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHe
 import { useClasses } from '../MuiStyling/MuiStyling';
 import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import swal from 'sweetalert';
-import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
 import dayjs from 'dayjs';
 import InfoIcon from '@material-ui/icons/Info';
+import { differenceBetweenDates } from '../../utils/dateUtils';
 //#endregion ⬆⬆ All document setup above.
 
 const theme = createMuiTheme({
@@ -50,7 +50,8 @@ export default function EstimateCreateTable() {
 	let cubic_measurement_unit = estimateData.measurement_units === "imperial" ? "yd³" : "m³";
 	// ⬇ Have a useEffect looking at the estimateData object. If all necessary keys exist indicating user has entered all necessary form data, run the estimate calculations functions to display the rest of the table. This also makes the materials table adjust automatically if the user changes values.
 	useEffect(() => {
-		estimateData.difference_in_months = useDifferenceBetweenDates(estimateData.date_created).total_months;
+		estimateData.difference_in_months = differenceBetweenDates(estimateData.date_created).total_months;
+
 		if (
 			(
 				estimateData.square_feet &&

@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Radio, Tooltip } from '@material-ui/core';
 import { useParams } from 'react-router';
 import { useClasses } from '../MuiStyling/MuiStyling';
-import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
+import { differenceBetweenDates } from '../../utils/dateUtils';
 import HelpIcon from '@material-ui/icons/Help';
 
 //#endregion ⬆⬆ All document setup above.
@@ -32,10 +32,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	const [tableWidth, setTableWidth] = useState(4);
 	let cubic_measurement_unit = firstEstimate?.measurement_units === "imperial" ? "yd³" : "m³";
 	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
-	const firstEstimateAgeInMonths = useDifferenceBetweenDates(firstEstimate?.date_created).total_months;
-	const secondEstimateAgeInMonths = useDifferenceBetweenDates(secondEstimate?.date_created).total_months;
-	const thirdEstimateAgeInMonths = useDifferenceBetweenDates(thirdEstimate?.date_created).total_months;
-	const calcEstimateAgeInMonths = useDifferenceBetweenDates(calcCombinedEstimate?.date_created).total_months;
+
+	const firstEstimateAgeInMonths = differenceBetweenDates(firstEstimate?.date_created).total_months;
+	const secondEstimateAgeInMonths = differenceBetweenDates(secondEstimate?.date_created).total_months;
+	const thirdEstimateAgeInMonths = differenceBetweenDates(thirdEstimate?.date_created).total_months;
+	const calcEstimateAgeInMonths = differenceBetweenDates(calcCombinedEstimate?.date_created).total_months;
+
 	const [editState, setEditState] = useState(false);
 
 	useEffect(() => {

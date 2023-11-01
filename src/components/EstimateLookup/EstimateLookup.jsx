@@ -12,6 +12,9 @@ import { useParams, useLocation } from 'react-router';
 import { useClasses } from '../MuiStyling/MuiStyling';
 import EstimateLookupTable from './EstimateLookupTable';
 import EstimateCombineTable from '../EstimateCombine/EstimateCombineTable';
+import dayjs from 'dayjs';
+import { getXMonthGuaranteeDate } from '../../utils/dateUtils';
+
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -105,6 +108,11 @@ export default function EstimateLookup() {
 	}; // End handleSubmit
 	//#endregion ⬆⬆ Event handlers above. 
 
+	// ⬇ Use dayjs to get today's date in YYYY-MM-DD format:
+	let startDate = dayjs().format('YYYY-MM-DD');
+	if (searchResult.date_created) startDate = searchResult.date_created.substring(0, 10);
+	if (calcCombinedEstimate.date_created) startDate = calcCombinedEstimate.date_created.substring(0, 10);
+
 	// ⬇ Rendering below:
 	return (
 		<div className="EstimateCreate-wrapper">
@@ -196,7 +204,7 @@ export default function EstimateLookup() {
 						<>
 							<b>Price Guarantee Disclaimer:</b>
 							< br />
-							The prices shown above are guaranteed to be eligible for six months from {searchResult?.date_created}.
+							The prices shown above are guaranteed to be eligible for six months, from {startDate} through {getXMonthGuaranteeDate(startDate, 6)}.
 						</>
 					}
 
@@ -222,7 +230,7 @@ export default function EstimateLookup() {
 						<>
 							<b>Price Guarantee Disclaimer:</b>
 							< br />
-							The prices shown above are guaranteed to be eligible for six months from {calcCombinedEstimate?.date_created?.substring(0, 10)}.
+							The prices shown above are guaranteed to be eligible for six months, from {startDate} through {getXMonthGuaranteeDate(calcCombinedEstimate?.date_created, 6)}.
 						</>
 					}
 				</>

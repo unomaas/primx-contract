@@ -7,9 +7,9 @@ import { useParams, useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch, Tooltip, Radio } from '@material-ui/core';
 import { useClasses } from '../MuiStyling/MuiStyling';
-import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
+import { isEmpty } from '../../utils/helpers';
+import { isWithinXMonths } from '../../utils/dateUtils';
 //#endregion ⬆⬆ All document setup above.
-
 
 
 export default function EstimateLookupTable() {
@@ -582,8 +582,8 @@ export default function EstimateLookupTable() {
 												<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
-												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
-												: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
+												? <TableCell align="right">{dosageRates?.find(dosageRate => dosageRate?.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
+												: <TableCell align="right">{dosageRates?.find(dosageRate => dosageRate?.dosage_rate_id === 5).kg_m3}kg</TableCell>
 											}
 										</TableRow>
 									}
@@ -623,8 +623,8 @@ export default function EstimateLookupTable() {
 												<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
-												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
-												: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+												? <TableCell align="right">{dosageRates?.find(dosageRate => dosageRate?.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+												: <TableCell align="right">{dosageRates?.find(dosageRate => dosageRate?.dosage_rate_id === 6).kg_m3}kg</TableCell>
 											}
 										</TableRow>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
@@ -648,7 +648,7 @@ export default function EstimateLookupTable() {
 							<Table>
 								<TableBody>
 									{/* Render the following table row for any orders that haven't been placed yet */}
-									{!searchResult.ordered_by_licensee &&
+									{!isEmpty(searchResult) && !searchResult.ordered_by_licensee &&
 										<>
 											<TableRow hover={true}>
 
@@ -656,7 +656,7 @@ export default function EstimateLookupTable() {
 													<section className="removeInPrint">
 														{/* Edit Estimate Button: */}
 
-														{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 6
+														{!isWithinXMonths(searchResult?.date_created, 6)
 															? <>
 																<Button
 																	variant="contained"
