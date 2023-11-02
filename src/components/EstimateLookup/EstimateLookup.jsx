@@ -9,9 +9,12 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useParams, useLocation } from 'react-router';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import EstimateLookupTable from './EstimateLookupTable';
 import EstimateCombineTable from '../EstimateCombine/EstimateCombineTable';
+import dayjs from 'dayjs';
+import { getXMonthGuaranteeDate } from '../../utils/dateUtils';
+
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -23,7 +26,7 @@ export default function EstimateLookup() {
 	const searchResult = useSelector(store => store.estimatesReducer.searchedEstimate);
 	const searchQuery = useSelector(store => store.estimatesReducer.searchQuery);
 	const [error, setError] = useState(false);
-	const classes = useStyles(); // Keep in for MUI styling. 
+	const classes = useClasses(); // Keep in for MUI styling. 
 	const [selectError, setSelectError] = useState("");
 	// ⬇ showDataTable handles the state of showing table: 
 	const showDataTable = useSelector(store => store.combineEstimatesReducer.showDataTable);
@@ -104,6 +107,11 @@ export default function EstimateLookup() {
 		} // End if/else
 	}; // End handleSubmit
 	//#endregion ⬆⬆ Event handlers above. 
+
+	// ⬇ Use dayjs to get today's date in YYYY-MM-DD format:
+	let startDate = dayjs().format('YYYY-MM-DD');
+	if (searchResult.date_created) startDate = searchResult.date_created.substring(0, 10);
+	if (calcCombinedEstimate.date_created) startDate = calcCombinedEstimate.date_created.substring(0, 10);
 
 	// ⬇ Rendering below:
 	return (
@@ -196,13 +204,13 @@ export default function EstimateLookup() {
 						<>
 							<b>Price Guarantee Disclaimer:</b>
 							< br />
-							The prices shown above are guaranteed to be eligible for three months from {searchResult?.date_created}.
+							The prices shown above are guaranteed to be eligible for six months, from {startDate} through {getXMonthGuaranteeDate(startDate, 6)}.
 						</>
 					}
 
 					{/* Format the searchResult?.date_created from YYYY-MM-DD to Month, Date, Year */}
 
-					{/* <br /> The prices shown above are guaranteed to be eligible for three months from {moment(searchResult?.date_created).format('MMMM Do, YYYY')}. */}
+					{/* <br /> The prices shown above are guaranteed to be eligible for six months  from {moment(searchResult?.date_created).format('MMMM Do, YYYY')}. */}
 				</>
 			}
 
@@ -218,8 +226,22 @@ export default function EstimateLookup() {
 					<h3>
 						Your estimate number is: <b style={{ color: 'red' }}>{calcCombinedEstimate?.estimate_number}</b>
 					</h3>
+					{!calcCombinedEstimate?.ordered_by_licensee &&
+						<>
+							<b>Price Guarantee Disclaimer:</b>
+							< br />
+							The prices shown above are guaranteed to be eligible for six months, from {startDate} through {getXMonthGuaranteeDate(calcCombinedEstimate?.date_created, 6)}.
+						</>
+					}
 				</>
 			}
+
+			<div style={{
+				padding: "20px",
+			}}>
+				<b>Total PrīmX Materials Disclaimer:</b>
+				<br />The amount of materials calculated above is approximate.  It will be precised after PO placement.
+			</div>
 
 			{/* Render messages underneath the table if an estimate has been submitted as an order */}
 			{/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}

@@ -7,7 +7,7 @@ import {
 import dayjs from 'dayjs';
 
 
-// import { useStyles } from '../../components/MuiStyling/MuiStyling';
+// import { useClasses } from '../../components/MuiStyling/MuiStyling';
 
 import useCalculateProjectCost from '../../hooks/useCalculateProjectCost';
 
@@ -23,7 +23,7 @@ function* pricingLogSaga() {
 }
 
 function* pricingLogInitialLoad() {
-	// const classes = useStyles();
+	// const classes = useClasses();
 	try {
 		const customsDutiesHistoryAll = yield axios.get('/api/customsduties/get-all-customs-duties-history');
 		const markupHistoryAll = yield axios.get('/api/products/get-all-markup-history');

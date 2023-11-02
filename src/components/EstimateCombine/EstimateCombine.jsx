@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar } from '@material-ui/core';
 import { useParams } from 'react-router';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -30,7 +30,7 @@ export default function EstimateCombine() {
 	const [error, setError] = useState(false);
 	const [selectError, setSelectError] = useState("");
 	// ⬇ Deprecated, used for Styling MUI components. 
-	const classes = useStyles(); // Keep in for MUI styling. 
+	const classes = useClasses(); // Keep in for MUI styling. 
 	// ⬇ Component has a main view at /lookup and a sub-view of /lookup/... where ... is the licensee ID appended with the estimate number.
 	const { licensee_id_searched, first_estimate_number_combined, second_estimate_number_combined, third_estimate_number_combined } = useParams();
 	// ⬇ first,second,thirdEstimate below are objects searched from the DB

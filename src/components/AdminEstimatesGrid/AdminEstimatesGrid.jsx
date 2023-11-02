@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button'
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
 
 
@@ -16,7 +16,7 @@ export default function AdminEstimatesGrid({ estimatesArray, gridSource }) {
 
 	//#region ⬇⬇ All state variables below:
 	const dispatch = useDispatch();
-	const classes = useStyles();
+	const classes = useClasses();
 	const history = useHistory();
 	const user = useSelector(store => store.user);
 	const [pageSize, setPageSize] = useState(10);

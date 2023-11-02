@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { DataGrid, GridToolbar, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
 import { Button, ButtonGroup, ClickAwayListener, Grow, Popper, MenuItem, MenuList, Paper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import swal from 'sweetalert';
 import GridToolbarSelectDropdown from './GridToolbarSelectDropdown';
 
@@ -17,7 +17,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 
 	//#region ⬇⬇ All state variables below:
 	const dispatch = useDispatch();
-	const classes = useStyles();
+	const classes = useClasses();
 	const history = useHistory();
 	const [pageSize, setPageSize] = useState(10);
 	// ⬇ Create number formatter.

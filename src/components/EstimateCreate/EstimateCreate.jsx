@@ -5,7 +5,7 @@ import './EstimateCreate.css';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import { Button, MenuItem, TextField, Select, Radio, RadioGroup, FormControl, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Grid, FormHelperText, Switch, FormGroup } from '@material-ui/core';
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import ImperialTable from '../LegacyComponents/ImperialTable/ImperialTable';
 import EstimateCreateTable from './EstimateCreateTable';
 import MetricTable from '../LegacyComponents/MetricTable/MetricTable';
@@ -19,7 +19,7 @@ import Alert from '@material-ui/lab/Alert';
 export default function EstimateCreate() {
 	//#region ⬇⬇ All state variables below:
 	const dispatch = useDispatch();
-	const classes = useStyles();
+	const classes = useClasses();
 	const today = new Date().toISOString().substring(0, 10);
 	const companies = useSelector(store => store.companies);
 	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);

@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Radio, Tooltip } from '@material-ui/core';
 import { useParams } from 'react-router';
-import { useStyles } from '../MuiStyling/MuiStyling';
-import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
+import { useClasses } from '../MuiStyling/MuiStyling';
+import { differenceBetweenDates } from '../../utils/dateUtils';
 import HelpIcon from '@material-ui/icons/Help';
 
 //#endregion ⬆⬆ All document setup above.
@@ -18,7 +18,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 	//#region ⬇⬇ All state variables below:
 	// ⬇ Deprecated, used for Styling MUI components. 
-	const classes = useStyles();
+	const classes = useClasses();
 	// ⬇ Sets the error state for a faulty search:
 	const [poNumError, setPoNumError] = useState("");
 	const [poNumber, setPoNumber] = useState("");
@@ -32,10 +32,12 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 	const [tableWidth, setTableWidth] = useState(4);
 	let cubic_measurement_unit = firstEstimate?.measurement_units === "imperial" ? "yd³" : "m³";
 	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
-	const firstEstimateAgeInMonths = useDifferenceBetweenDates(firstEstimate?.date_created).total_months;
-	const secondEstimateAgeInMonths = useDifferenceBetweenDates(secondEstimate?.date_created).total_months;
-	const thirdEstimateAgeInMonths = useDifferenceBetweenDates(thirdEstimate?.date_created).total_months;
-	const calcEstimateAgeInMonths = useDifferenceBetweenDates(calcCombinedEstimate?.date_created).total_months;
+
+	const firstEstimateAgeInMonths = differenceBetweenDates(firstEstimate?.date_created).total_months;
+	const secondEstimateAgeInMonths = differenceBetweenDates(secondEstimate?.date_created).total_months;
+	const thirdEstimateAgeInMonths = differenceBetweenDates(thirdEstimate?.date_created).total_months;
+	const calcEstimateAgeInMonths = differenceBetweenDates(calcCombinedEstimate?.date_created).total_months;
+
 	const [editState, setEditState] = useState(false);
 
 	useEffect(() => {
@@ -536,14 +538,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											{firstEstimate?.materials_excluded != 'exclude_fibers' &&
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+														<Tooltip title={firstEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
 																{!isThisASavedCombinedEstimate &&
 																	<Radio
 																		checked={firstEstimate?.selected_steel_fiber_dosage == '75_50'}
 																		onChange={() => handleSteelFiberSelection('75_50', 'FIRST')}
 																		value="75_50"
-																		disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																		disabled={firstEstimateAgeInMonths >= 6 ? true : false}
 																	/>
 																}
 															</span>
@@ -582,14 +584,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<TableBody>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+														<Tooltip title={firstEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
 																{!isThisASavedCombinedEstimate &&
 																	<Radio
 																		checked={firstEstimate?.selected_steel_fiber_dosage == '90_60'}
 																		onChange={() => handleSteelFiberSelection('90_60', 'FIRST')}
 																		value="90_60"
-																		disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																		disabled={firstEstimateAgeInMonths >= 6 ? true : false}
 																	/>
 																}
 															</span>
@@ -617,7 +619,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													<TableCell align="right">{firstEstimate?.total_project_cost_90_60_display}</TableCell>
 												</TableRow>
 
-												{firstEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
+												{firstEstimateAgeInMonths >= 6 && !calcCombinedEstimate.estimate_number &&
 													<>
 														<TableRow hover={true}>
 
@@ -815,14 +817,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											{secondEstimate?.materials_excluded != 'exclude_fibers' &&
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+														<Tooltip title={secondEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
 																{!isThisASavedCombinedEstimate &&
 																	<Radio
 																		checked={secondEstimate?.selected_steel_fiber_dosage == '75_50'}
 																		onChange={() => handleSteelFiberSelection('75_50', 'SECOND')}
 																		value="75_50"
-																		disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																		disabled={secondEstimateAgeInMonths >= 6 ? true : false}
 																	/>
 																}
 															</span>
@@ -861,14 +863,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<TableBody>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+														<Tooltip title={secondEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
 																{!isThisASavedCombinedEstimate &&
 																	<Radio
 																		checked={secondEstimate?.selected_steel_fiber_dosage == '90_60'}
 																		onChange={() => handleSteelFiberSelection('90_60', 'SECOND')}
 																		value="90_60"
-																		disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																		disabled={secondEstimateAgeInMonths >= 6 ? true : false}
 																	/>
 																}
 															</span>
@@ -897,7 +899,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 
 												{/* Render the following table row for any orders that haven't been placed yet */}
-												{secondEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
+												{secondEstimateAgeInMonths >= 6 && !calcCombinedEstimate.estimate_number &&
 													<>
 														<TableRow hover={true}>
 
@@ -1098,14 +1100,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{thirdEstimate?.materials_excluded != 'exclude_fibers' &&
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 															<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+																<Tooltip title={thirdEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 																	<span>
 																		{!isThisASavedCombinedEstimate &&
 																			<Radio
 																				checked={thirdEstimate?.selected_steel_fiber_dosage == '75_50'}
 																				onChange={() => handleSteelFiberSelection('75_50', 'THIRD')}
 																				value="75_50"
-																				disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																				disabled={thirdEstimateAgeInMonths >= 6 ? true : false}
 																			/>
 																		}
 																	</span>
@@ -1144,14 +1146,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													<TableBody>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 															<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+																<Tooltip title={thirdEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 																	<span>
 																		{!isThisASavedCombinedEstimate &&
 																			<Radio
 																				checked={thirdEstimate?.selected_steel_fiber_dosage == '90_60'}
 																				onChange={() => handleSteelFiberSelection('90_60', 'THIRD')}
 																				value="90_60"
-																				disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																				disabled={thirdEstimateAgeInMonths >= 6 ? true : false}
 																			/>
 																		}
 																	</span>
@@ -1180,7 +1182,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														</TableRow>
 
 														{/* Render the following table row for any orders that haven't been placed yet */}
-														{thirdEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
+														{thirdEstimateAgeInMonths >= 6 && !calcCombinedEstimate.estimate_number &&
 															<>
 																<TableRow hover={true}>
 
@@ -1384,14 +1386,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											{firstEstimate?.materials_excluded != 'exclude_fibers' &&
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+														<Tooltip title={firstEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
 																{!isThisASavedCombinedEstimate &&
 																	<Radio
 																		checked={firstEstimate?.selected_steel_fiber_dosage == '75_50'}
 																		onChange={() => handleSteelFiberSelection('75_50', 'FIRST')}
 																		value="75_50"
-																		disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																		disabled={firstEstimateAgeInMonths >= 6 ? true : false}
 																	/>
 																}
 															</span>
@@ -1430,14 +1432,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<TableBody>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-														<Tooltip title={firstEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+														<Tooltip title={firstEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
 																{!isThisASavedCombinedEstimate &&
 																	<Radio
 																		checked={firstEstimate?.selected_steel_fiber_dosage == '90_60'}
 																		onChange={() => handleSteelFiberSelection('90_60', 'FIRST')}
 																		value="90_60"
-																		disabled={firstEstimateAgeInMonths >= 3 ? true : false}
+																		disabled={firstEstimateAgeInMonths >= 6 ? true : false}
 																	/>
 																}
 															</span>
@@ -1466,7 +1468,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 
 												{/* Render the following table row for any orders that haven't been placed yet */}
-												{firstEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
+												{firstEstimateAgeInMonths >= 6 && !calcCombinedEstimate.estimate_number &&
 													<>
 														<TableRow hover={true}>
 
@@ -1664,14 +1666,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											{secondEstimate?.materials_excluded != 'exclude_fibers' &&
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+														<Tooltip title={secondEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
 																{!isThisASavedCombinedEstimate &&
 																	<Radio
 																		checked={secondEstimate?.selected_steel_fiber_dosage == '75_50'}
 																		onChange={() => handleSteelFiberSelection('75_50', 'SECOND')}
 																		value="75_50"
-																		disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																		disabled={secondEstimateAgeInMonths >= 6 ? true : false}
 																	/>
 																}
 															</span>
@@ -1710,14 +1712,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<TableBody>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-														<Tooltip title={secondEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+														<Tooltip title={secondEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 															<span>
 																{!isThisASavedCombinedEstimate &&
 																	<Radio
 																		checked={secondEstimate?.selected_steel_fiber_dosage == '90_60'}
 																		onChange={() => handleSteelFiberSelection('90_60', 'SECOND')}
 																		value="90_60"
-																		disabled={secondEstimateAgeInMonths >= 3 ? true : false}
+																		disabled={secondEstimateAgeInMonths >= 6 ? true : false}
 																	/>
 																}
 															</span>
@@ -1746,7 +1748,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 
 												{/* Render the following table row for any orders that haven't been placed yet */}
-												{secondEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
+												{secondEstimateAgeInMonths >= 6 && !calcCombinedEstimate.estimate_number &&
 													<>
 														<TableRow hover={true}>
 
@@ -1948,14 +1950,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													{thirdEstimate?.materials_excluded != 'exclude_fibers' &&
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 															<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+																<Tooltip title={thirdEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 																	<span>
 																		{!isThisASavedCombinedEstimate &&
 																			<Radio
 																				checked={thirdEstimate?.selected_steel_fiber_dosage == '75_50'}
 																				onChange={() => handleSteelFiberSelection('75_50', 'THIRD')}
 																				value="75_50"
-																				disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																				disabled={thirdEstimateAgeInMonths >= 6 ? true : false}
 																			/>
 																		}
 																	</span>
@@ -1994,14 +1996,14 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													<TableBody>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 															<TableCell style={isThisASavedCombinedEstimate ? { paddingLeft: "60px" } : {}}>
-																<Tooltip title={thirdEstimateAgeInMonths >= 3 ? "This estimate is older than 3 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
+																<Tooltip title={thirdEstimateAgeInMonths >= 6 ? "This estimate is older than 6 months.  Please recalculate it to be current with today's pricing before being able to select a price." : ""}>
 																	<span>
 																		{!isThisASavedCombinedEstimate &&
 																			<Radio
 																				checked={thirdEstimate?.selected_steel_fiber_dosage == '90_60'}
 																				onChange={() => handleSteelFiberSelection('90_60', 'THIRD')}
 																				value="90_60"
-																				disabled={thirdEstimateAgeInMonths >= 3 ? true : false}
+																				disabled={thirdEstimateAgeInMonths >= 6 ? true : false}
 																			/>
 																		}
 																	</span>
@@ -2030,7 +2032,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														</TableRow>
 
 														{/* Render the following table row for any orders that haven't been placed yet */}
-														{thirdEstimateAgeInMonths >= 3 && !calcCombinedEstimate.estimate_number &&
+														{thirdEstimateAgeInMonths >= 6 && !calcCombinedEstimate.estimate_number &&
 															<>
 																<TableRow hover={true}>
 
@@ -2260,6 +2262,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableCell>
 									</TableRow>
 									<TableRow hover={true}>
+
 										<TableCell colSpan={8} align="right">
 											<b>Total for All Floors (USD):</b>
 										</TableCell>
@@ -2271,8 +2274,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 
 									</TableRow>
 
-									{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths <= 2 && !editState &&
-										<TableRow hover={true} style={{ verticalAlign: "middle" }}>
+									{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths <= 5 && !editState &&
+										<TableRow hover={true} style={{ verticalAlign: "middle" }} className="removeInPrint" >
 											<TableCell colSpan={9} align="right">
 												{((firstEstimate.used_in_a_combined_order == true) &&
 													(secondEstimate.used_in_a_combined_order == true) &&
@@ -2287,6 +2290,16 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 															style={{ float: "left", marginTop: "13px" }}
 														>
 															Edit This Estimate
+														</Button>
+
+														<Button
+															variant="contained"
+															color="primary"
+															onClick={() => window.print()}
+															className={classes.LexendTeraFont11}
+															style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
+														>
+															Export Estimate
 														</Button>
 
 														<TextField
@@ -2338,10 +2351,21 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										</TableRow>
 									}
 
-									{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths >= 3 &&
+									{!calcCombinedEstimate.ordered_by_licensee && calcEstimateAgeInMonths >= 6 &&
 										<TableRow hover={true}>
-											<TableCell colSpan={9} align="right">
-												<Tooltip title={`This estimate is more than 3 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
+											<TableCell>
+												<Button
+													variant="contained"
+													color="primary"
+													onClick={() => window.print()}
+													className={classes.LexendTeraFont11}
+													style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
+												>
+													Export Estimate
+												</Button>
+											</TableCell>
+											<TableCell colSpan={8} align="right">
+												<Tooltip title={`This estimate is more than 6 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
 													<Button
 														variant="contained"
 														color="primary"

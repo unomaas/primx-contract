@@ -1,76 +1,53 @@
-// ⬇ Write a JS Doc comment to describe the below function:
-/**
- * @function useDifferenceBetweenDates
- * @param {Date} pastDate
- * @param {Date} recentDate Optional, defaults to new Date().
- * @returns {Object} Object containing the difference in months between the two dates.
- * @description This function takes two dates and returns the difference between them in an object containing a variety of units.
- * @example useDifferenceBetweenDates('2021-01-01', '2021-02-01')
- * return {
- * "total_months": Math.round(months_passed),
- * "total_days": Math.round(total_days),
- * "total_weeks": Math.round(total_weeks),
- * "total_hours": Math.round(total_hours),
- * "total_minutes": Math.round(total_mins),
- * "total_seconds": Math.round(total_secs),
- * "result": result.trim()
- * }
- */
-export default function useDifferenceBetweenDates(pastDate, recentDate = new Date()) {
+import dayjs from 'dayjs';
 
-	//new date instance
-	let dt_date1 = new Date(pastDate);
-	let dt_date2 = new Date(recentDate);
+export default function useDifferenceBetweenDates(pastDate, recentDate = dayjs().format('YYYY-MM-DD')) {
+	try {
 
-	//Get the Timestamp
-	const date1_time_stamp = dt_date1.getTime();
-	const date2_time_stamp = dt_date2.getTime();
+		if (typeof pastDate !== 'string' || typeof recentDate !== 'string') {
+			throw new Error('Both dates must be strings');
+		}; // End if
 
-	let calc;
+		// Ensure the dates are in day.js objects
+		const olderDate = dayjs(pastDate);
+		const newerDate = dayjs(recentDate);
 
-	//Check which timestamp is greater
-	if (date1_time_stamp > date2_time_stamp) {
-		calc = new Date(date1_time_stamp - date2_time_stamp);
-	} else {
-		calc = new Date(date2_time_stamp - date1_time_stamp);
-	}
-	//Retrieve the date, month and year
-	const calcFormatTmp = calc.getDate() + '-' + (calc.getMonth() + 1) + '-' + calc.getFullYear();
-	//Convert to an array and store
-	const calcFormat = calcFormatTmp.split("-");
-	//Subtract each member of our array from the default date
-	const days_passed = Number(Math.abs(calcFormat[0]) - 1);
-	const months_passed = Number(Math.abs(calcFormat[1]) - 1);
-	const years_passed = Number(Math.abs(calcFormat[2]) - 1970);
+		if (!olderDate.isValid() || !newerDate.isValid()) {
+			throw new Error('Invalid date format. Expected format is YYYY-MM-DD.');
+		}
 
-	//Set up custom text
-	const yrsTxt = ["year ", "years "];
-	const mnthsTxt = ["month ", "months "];
-	const daysTxt = ["day ", "days "];
+		// if (newerDate.isBefore(olderDate)) {
+		// 	throw new Error('The recent date must be later than the past date');
+		// }
 
-	//Convert to days and sum together
-	const total_days = (years_passed * 365) + (months_passed * 30.417) + days_passed;
-	const total_secs = total_days * 24 * 60 * 60;
-	const total_mins = total_days * 24 * 60;
-	const total_hours = total_days * 24;
-	const total_weeks = (total_days >= 7) ? total_days / 7 : 0;
+		// Calculate the differences
+		const totalYears = newerDate.diff(olderDate, 'year');
+		const totalMonths = newerDate.diff(olderDate, 'month');
+		const totalWeeks = newerDate.diff(olderDate, 'week');
+		const totalDays = newerDate.diff(olderDate, 'day');
+		const totalHours = newerDate.diff(olderDate, 'hour');
+		const totalMinutes = newerDate.diff(olderDate, 'minute');
 
-	//display result with custom text
-	const result = ((years_passed == 1) ? years_passed + ' ' + yrsTxt[0] + ' ' : (years_passed > 1) ? years_passed + ' ' + yrsTxt[1] + ' ' : '') + ((months_passed == 1) ? months_passed + ' ' + mnthsTxt[0] : (months_passed > 1) ? months_passed + ' ' + mnthsTxt[1] + ' ' : '') + ((days_passed == 1) ? days_passed + ' ' + daysTxt[0] : (days_passed > 1) ? days_passed + ' ' + daysTxt[1] : '');
+		const result = {
+			total_years: totalYears,
+			total_months: totalMonths,
+			total_weeks: totalWeeks,
+			total_days: totalDays,
+			total_hours: totalHours,
+			total_minutes: totalMinutes,
+		};
 
-	// ⬇ Validation to stop the result from being negative:
-	let return_total_months = 0;
-	if (Math.round(total_days) > 1) return_total_months = Math.floor(total_days / 30.417);
+		return result;
+	} catch (error) {
+		console.error(error);
 
-	//return the result
-	return {
-		"result": result.trim(),
-		"total_months": return_total_months,
-		"total_weeks": Math.round(total_weeks),
-		"total_days": Math.round(total_days),
-		"total_hours": Math.round(total_hours),
-		"total_minutes": Math.round(total_mins),
-		"total_seconds": Math.round(total_secs),
-	}
+		return {
+			total_years: 0,
+			total_months: 0,
+			total_weeks: 0,
+			total_days: 0,
+			total_hours: 0,
+			total_minutes: 0,
+		};
+	};
+
 }
-

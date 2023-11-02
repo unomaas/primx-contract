@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import useEstimateCalculations from '../../../hooks/useEstimateCalculations';
 import { Alert } from '@material-ui/lab';
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar } from '@material-ui/core';
-import { useStyles } from '../../MuiStyling/MuiStyling';
+import { useClasses } from '../../MuiStyling/MuiStyling';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -15,7 +15,7 @@ export default function MetricTable() {
 	// //#region ⬇⬇ All state variables below:
 	const dispatch = useDispatch();
 	const history = useHistory();
-	const classes = useStyles();
+	const classes = useClasses();
 	const calculateEstimate = useEstimateCalculations;
 	const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
 	const calculatedDisplayObject = useSelector(store => store.estimatesReducer.setCalcEstimate);

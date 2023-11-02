@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
 // Material-UI components
-import { useStyles } from '../MuiStyling/MuiStyling';
+import { useClasses } from '../MuiStyling/MuiStyling';
 import { DataGrid } from '@material-ui/data-grid';
 import Button from '@material-ui/core/Button';
 
@@ -11,7 +11,7 @@ export default function SystemAdminUpdateUsersGrid() {
 
 	const dispatch = useDispatch();
 
-	const classes = useStyles();
+	const classes = useClasses();
 
 	//grabbing all info of users from reducer
 	const userInfo = useSelector(store => store.userInfoReducer.userInfo);
