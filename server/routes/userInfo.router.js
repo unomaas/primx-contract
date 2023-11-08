@@ -34,7 +34,7 @@ router.get('/licensees', rejectUnauthenticated, (req, res) => {
 			l.licensee_contractor_name
 		FROM "users" AS u
 		LEFT JOIN "licensees" AS l ON u.licensee_id = l.licensee_id
-		WHERE u.permission_level = 3
+		WHERE u.permission_level = 4
 		ORDER BY u.username ASC;
 	`;
 	pool.query(queryText).then((result) => {

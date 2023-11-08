@@ -28,7 +28,7 @@ router.get('/lookup/:estimate', (req, res) => {
 			l.licensee_contractor_name, 
 			pt.placement_type_label, 
 			sd.destination_name,
-			sd.destination_country
+			r.region_code AS destination_country
 		FROM "estimates" AS e
     JOIN "floor_types" AS ft
 			ON e.floor_type_id = ft.floor_type_id
@@ -38,6 +38,8 @@ router.get('/lookup/:estimate', (req, res) => {
 			ON e.placement_type_id = pt.placement_type_id
     JOIN "shipping_destinations" AS sd
 			ON e.destination_id = sd.destination_id
+		JOIN regions as r 
+			ON r.region_id = sd.region_id
     WHERE e.estimate_number = $1 AND l.licensee_id = $2;
 	`;
 	// ORDER BY e.estimate_id DESC;

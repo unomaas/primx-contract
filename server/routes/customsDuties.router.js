@@ -8,14 +8,18 @@ const format = require('pg-format');
 router.get('/fetch-customs-duties', async (req, res) => {
 	try {
 		const sql = `
-			SELECT 
-				*,
-				usa_percent::REAL,
-				can_percent::REAL,
-				(usa_percent * 100)::REAL AS usa_percent_label,
-				(can_percent * 100)::REAL AS can_percent_label
-			FROM "customs_duties" AS "cd"
-			ORDER BY "cd".custom_duty_id ASC;
+			SELECT
+				cd.duty_label,
+				r.region_code,
+				cdr.duty_percentage
+			FROM customs_duties_regions AS cdr
+			JOIN regions AS r
+				ON cdr.region_id = r.region_id
+			JOIN customs_duties AS cd
+				ON cdr.custom_duty_id = cd.custom_duty_id
+			ORDER BY 
+				r.region_code DESC, 
+				cd.duty_label;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
@@ -29,25 +33,26 @@ router.get('/fetch-customs-duties', async (req, res) => {
 router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
 	try {
 		let sql = `
-			UPDATE "customs_duties" AS cd 
+			UPDATE "customs_duties_regions" AS cdr
 			SET 
-				"usa_percent" = v.usa_percent,
-				"can_percent" = v.can_percent
+					"duty_percentage" = v.duty_percentage
 			FROM (VALUES 
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of req.body) {
 			sql += format(
-				`(%L::int, %L::decimal, %L::decimal), `,
-				cost.custom_duty_id, cost.usa_percent, cost.can_percent
+				`(%L::int, %L::int, %L::decimal), `,
+				cost.custom_duty_id, cost.region_id, cost.duty_percentage
 			); // End format
 		}; // End for loop
 		// ⬇ Remove the last comma and space:
 		sql = sql.slice(0, -2);
 		// ⬇ Add the closing parentheses:
 		sql += `
-			) AS v(custom_duty_id, usa_percent, can_percent)
-			WHERE v.custom_duty_id = cd.custom_duty_id;
+			) AS v(custom_duty_id, region_id, duty_percentage)
+			WHERE 
+				v.custom_duty_id = cdr.custom_duty_id AND
+				v.region_id = cdr.region_id;
 		`; // End sql
 		// ⬇ Send the query to the database:
 		await pool.query(sql);
@@ -58,10 +63,11 @@ router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
 		res.sendStatus(500);
 	}; // End try/catch
 });
-//#endregion - Shipping Cost routes baove. 
+//#endregion - Shipping Cost routes above. 
 
 //#region - Shipping Cost History routes below:
 // GET route - gets shipping cost history
+// ! Ryan Here, will have to re-visit history queries. 
 router.get('/get-all-customs-duties-history', async (req, res) => {
 	try {
 		const sql = `
@@ -81,6 +87,7 @@ router.get('/get-all-customs-duties-history', async (req, res) => {
 	}; // End try/catch
 });
 
+// ! Ryan Here, will have to re-visit history queries. 
 router.get('/get-one-year-of-customs-duties-history', async (req, res) => {
 	try {
 		const sql = `

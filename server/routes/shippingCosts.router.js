@@ -21,12 +21,13 @@ router.get('/get-current-shipping-costs', async (req, res) => {
 				sc.flow_20ft,
 				sc.flow_40ft,
 				sd.destination_name,
-				sd.destination_country
+				r.region_code AS destination_country
 			FROM shipping_costs AS sc
 			JOIN shipping_destinations AS sd USING(destination_id)
+			JOIN regions as r ON r.region_id = sd.region_id
 			WHERE sd.destination_active = TRUE
 			ORDER BY
-				sd.destination_country DESC, 
+				r.region_code DESC, 
 				sd.destination_name ASC;
 		`; // End sql
 		const result = await pool.query(sql);
@@ -83,6 +84,7 @@ router.put('/edit-shipping-costs', rejectUnauthenticated, async (req, res) => {
 
 //#region - Shipping Cost History routes below:
 // GET route - gets shipping cost history
+// ! Ryan Here, will have to re-visit history queries. 
 router.get('/get-all-shipping-cost-history', async (req, res) => {
 	try {
 		const sql = `
@@ -97,19 +99,20 @@ router.get('/get-all-shipping-cost-history', async (req, res) => {
 				sch.cpea_40ft,
 				sch.flow_20ft,
 				sch.flow_40ft,
-				TO_CHAR("sch".date_saved, 'YYYY-MM') AS "date_saved",
+				TO_CHAR(sch.date_saved, 'YYYY-MM') AS date_saved,
 				TO_CHAR(sch.date_saved, 'YYYY-MM-DD') AS date_saved_full,
 				sc.destination_id,
 				sd.destination_name,
-				sd.destination_country
+				r.region_code AS destination_country
 			FROM shipping_cost_history AS sch
 			JOIN shipping_costs AS sc USING(shipping_cost_id)
 			JOIN shipping_destinations AS sd USING(destination_id)
+			JOIN regions as r ON r.region_id = sd.region_id
 			WHERE sd.destination_active = TRUE
 			ORDER BY
-				"sch".date_saved DESC,
-				"sd".destination_country DESC, 
-				"sd".destination_name ASC;
+				sch.date_saved DESC,
+				r.region_code DESC, 
+				sd.destination_name ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
@@ -119,6 +122,7 @@ router.get('/get-all-shipping-cost-history', async (req, res) => {
 	}; // End try/catch
 });
 
+// ! Ryan Here, will have to re-visit history queries. 
 router.get('/get-one-year-of-shipping-cost-history', async (req, res) => {
 	try {
 		const sql = `
@@ -137,15 +141,16 @@ router.get('/get-one-year-of-shipping-cost-history', async (req, res) => {
 				TO_CHAR(sch.date_saved, 'YYYY-MM-DD') AS date_saved_full,
 				sc.destination_id,
 				sd.destination_name,
-				sd.destination_country
+				r.region_code AS destination_country
 			FROM shipping_cost_history AS sch
 			JOIN shipping_costs AS sc USING(shipping_cost_id)
 			JOIN shipping_destinations AS sd USING(destination_id)
+			JOIN regions as r ON r.region_id = sd.region_id
 			WHERE sd.destination_active = TRUE
 				AND "sch".date_saved > NOW() - INTERVAL '1 year'
 			ORDER BY
 				"sch".date_saved DESC,
-				"sd".destination_country DESC, 
+				"r".region_code DESC, 
 				"sd".destination_name ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);

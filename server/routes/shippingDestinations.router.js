@@ -8,12 +8,18 @@ const format = require('pg-format');
 router.get('/active', async (req, res) => {
 	try {
 		const sql = `
-			SELECT * 
-			FROM "shipping_destinations"
-			WHERE destination_active = TRUE
+			SELECT 
+				sd.destination_id,
+				sd.destination_name,
+				r.region_code AS destination_country,
+				sd.destination_active
+			FROM shipping_destinations as sd
+			JOIN regions AS r 
+				ON r.region_id = sd.region_id
+			WHERE sd.destination_active = TRUE
 			ORDER BY 
-				destination_country DESC,
-				destination_name ASC;
+				r.region_code DESC,
+				sd.destination_name ASC;
 		`; // End sql
 		const result = await pool.query(sql);
 		res.send(result.rows);
@@ -27,9 +33,17 @@ router.get('/active', async (req, res) => {
 router.get('/all', async (req, res) => {
 	try {
 		const sql = `
-			SELECT * 
-			FROM "shipping_destinations"
-			ORDER BY destination_id ASC;
+			SELECT 
+				sd.destination_id,
+				sd.destination_name,
+				r.region_code AS destination_country,
+				sd.destination_active
+			FROM shipping_destinations as sd
+			JOIN regions AS r 
+				ON r.region_id = sd.region_id
+			ORDER BY 
+				r.region_code DESC,
+				sd.destination_name ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);

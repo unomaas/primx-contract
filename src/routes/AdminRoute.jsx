@@ -90,7 +90,7 @@ export default function AdminRoute(props) {
 
 	let ComponentToShow;
 
-	if (user.user_id && user.permission_level <= 5) {
+	if (user.user_id && user.permission_level <= 2) {
 		// if the user is logged in (only logged in users have ids)
 		// show the component that is protected
 		ComponentToShow = ComponentToProtect;
