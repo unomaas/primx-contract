@@ -943,7 +943,7 @@ export default function EstimateCreateTable() {
 															value='none'
 															control={<Radio />}
 														/>
-														{user && user.permission_level <= 5 &&
+														{user && user.permission_level <= 3 &&
 															<FormControlLabel
 																label="Exclude PrīmX CPEA"
 																value="exclude_cpea"
