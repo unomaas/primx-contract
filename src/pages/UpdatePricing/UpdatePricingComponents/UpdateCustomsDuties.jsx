@@ -5,47 +5,52 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useClasses } from '../../../components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
+import { Button, Fade, MenuItem, Menu, TextField, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper, TablePagination } from '@material-ui/core';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
+import ImportButton from '../../components/ImportCsvButton';
+
 
 export default function UpdateCustomsDuties() {
 	//#region - State Variables Below: 
 	const classes = useClasses();
 	const dispatch = useDispatch();
 
-	const rowsPerPageOptions = [10, 25, 50, 100];
-	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+	// const rowsPerPageOptions = [10, 25, 50, 100];
+	// const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
 	const customsDuties = viewState.newCustomsDuties;
-	;
+
+
+	//#region - Table action state variables: 
+	const rowsPerPageOptions = [10, 25, 50, 100];
+	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+	const [tableMounted, setTableMounted] = useState(false);
+	const [selectedRow, setSelectedRow] = useState(null);
+	//#endregion - Table action state variables.
+
 	// ⬇ Logic to handle setting the table rows on first load: 
 
 	const columns = [
 		{
 			field: 'duty_label',
 			headerName: 'Duty Label',
-			flex: 2.5,
+			flex: 2,
 			headerClassName: classes.header
 		},
 		{
-			field: 'usa_percent_label',
-			headerName: 'USA',
+			field: 'destination_country',
+			headerName: 'Region',
+			disableColumnMenu: true,
 			flex: 1,
 			headerClassName: classes.header,
-			valueFormatter: (params) => {
-				return `${params.value}%`;
-			},
-			disableColumnMenu: true,
-			type: 'number',
-			editable: true,
 		},
 		{
-			field: 'can_percent_label',
-			headerName: 'Canada',
-			flex: 1,
+			field: 'duty_percentage_label',
+			headerName: 'Percentage',
+			flex: 1.5,
 			headerClassName: classes.header,
 			valueFormatter: (params) => {
 				return `${params.value}%`;
@@ -67,7 +72,8 @@ export default function UpdateCustomsDuties() {
 	// 	}); // End customsDuties.forEach
 	// } // End if
 
-	let rows = customsDuties;
+	const [rows, setRows] = useState(customsDuties || [])
+
 
 
 	//#region - Custom Table Components Below: 
@@ -91,7 +97,19 @@ export default function UpdateCustomsDuties() {
 			)
 		}; // End TableInstructions
 		const [anchorEl, setAnchorEl] = useState(null);
+		const mapping = {
+			// Header Name : Column Name
+			"Percentage": "duty_percentage",
+		};
+
 		const menuItems = [
+			<ImportButton
+				columns={columns}
+				rows={rows}
+				setRows={setRows}
+				mapping={mapping}
+			/>,
+			<Divider />,
 			<GridToolbarExport />,
 			<Divider />,
 			<GridToolbarFilterButton />,
@@ -174,6 +192,51 @@ export default function UpdateCustomsDuties() {
 	}; // End CustomToolbar
 
 
+	const CustomPagination = () => {
+		// ⬇ State Variables: 
+		const { state, apiRef } = useGridSlotComponentProps();
+
+		//#region - Pagination Action Handlers:
+		// ⬇ We only want the page size to be set once, on initial render (otherwise it defaults to 100):
+		useEffect(() => {
+			if (tableMounted === false) {
+				apiRef.current.setPageSize(rowsPerPageOptions[0]);
+				setTableMounted(true);
+			}; // End if
+		}, []); // End useEffect
+
+		const handleOnPageChange = (value) => {
+			apiRef.current.setPage(value);
+			setSelectedRow(null);
+		}; // End handleOnPageChange
+
+
+		const handleOnRowsPerPageChange = (size) => {
+			apiRef.current.setPageSize(size.props.value);
+			setRowsPerPage(size.props.value);
+			handleOnPageChange(0);
+			setSelectedRow(null);
+		}; // End handleOnRowsPerPageChange
+		//#endregion - Pagination Action Handlers.
+
+		return (
+			<div style={{
+				flex: "1",
+				display: "flex",
+				justifyContent: "flex-end",
+			}}>
+				<TablePagination
+					component='div'
+					count={state.rows.totalRowCount}
+					page={state.pagination.page}
+					onPageChange={(event, value) => handleOnPageChange(value)}
+					rowsPerPageOptions={rowsPerPageOptions}
+					rowsPerPage={rowsPerPage}
+					onRowsPerPageChange={(event, size) => handleOnRowsPerPageChange(size)}
+				/>
+			</div>
+		); // End return
+	}; // End PaginationComponent
 
 	const CustomFooter = () => {
 
@@ -185,6 +248,7 @@ export default function UpdateCustomsDuties() {
 				justifyContent: "flex-start",
 				height: "52px",
 			}}>
+				<CustomPagination />
 
 			</div>
 		); // End return
@@ -194,7 +258,7 @@ export default function UpdateCustomsDuties() {
 
 	// ⬇ Submit handler for in-line cell edits on the data grid:
 	const handleInCellEditSubmit = ({ id, field, value }) => {
-		const duty = customsDuties.find(duty => duty.custom_duty_id === id);
+		const duty = customsDuties.find(duty => duty.customs_duties_regions_id === id);
 
 		// ⬇ If the value is the same as the original, don't submit the edit:
 		if (duty[field] === value) return;
@@ -221,7 +285,7 @@ export default function UpdateCustomsDuties() {
 				onCellEditCommit={handleInCellEditSubmit}
 				rows={rows}
 				disableSelectionOnClick
-				getRowId={(row) => row.custom_duty_id}
+				getRowId={(row) => row.customs_duties_regions_id}
 				autoHeight
 				pagination
 				// onSelectionModelChange={(id_array) => handleSelectionModelChange(id_array)}

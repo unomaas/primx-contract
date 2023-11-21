@@ -20,7 +20,7 @@ export default function SystemAdminUpdateUsersGrid() {
 
   useEffect(() => {
     // GET all user data on page load
-    dispatch({ type: 'FETCH_ADMIN_INFO' });
+    dispatch({ type: 'FETCH_LICENSEE_INFO' });
   }, [])
 
   //function to render the delete button in the datagrid

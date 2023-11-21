@@ -71,6 +71,8 @@ export default function AdminUpdateLicenses() {
 	//establish rows with campanies array for datagrid
 	let rows = companies;
 
+	// ! Ryan here, when you come back, we need to implement a way to update which regions a licensee can operate in. Then, we  need to add a view to create/manage regions.  Then we need to update the shipping destinations view to be able to create new destinations that link to a region. Then we need to work out the new historical pricing stuff with regions (likely one table per region). Then do the same thing for pricing updates in the set new pricing procedure.  Then create a view to create/manage region admin, then implement the logic associated with that. I think that might be everything. 
+
 	//estabish columns for datagrid
 	const columns = [
 		{
@@ -79,7 +81,20 @@ export default function AdminUpdateLicenses() {
 			width: 300,
 			headerClassName: classes.header
 		},
-
+		{
+			field: 'operating_regions',
+			headerName: 'Operating Regions',
+			width: 300,
+			headerClassName: classes.header,
+			// renderCell: (params) => (
+			// 	<span>
+			// 		{params?.row?.operating_regions?.join(', ')}
+			// 	</span>
+			// )
+			valueFormatter: (params) => {
+				return params?.row?.operating_regions?.join(', ');
+			}
+		},
 		{
 			field: 'activate_button',
 			headerName: 'Activate/Deactivate',
@@ -89,6 +104,7 @@ export default function AdminUpdateLicenses() {
 			align: 'center',
 			headerClassName: classes.header
 		},
+
 	];
 
 	// tracks the state of the company name input in companynameinput variable

@@ -258,9 +258,11 @@ function* pricingLogInitialLoad() {
 function* updatePricingInitialLoad() {
 	try {
 		const currentShippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs');
+		console.log(`Ryan Here Saga 1: \n `,  {currentShippingCosts} );
 		const currentProductCosts = yield axios.get('/api/products/get-current-products');
 		const currentCustomsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
+		const activeRegions = yield axios.get('/api/regions/get-active-regions');
 
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
 		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
@@ -270,7 +272,7 @@ function* updatePricingInitialLoad() {
 		const shippingCostHistory12Months = yield axios.get(`/api/shippingcosts/get-one-year-of-shipping-cost-history`);
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
-
+		
 		//#region - Calculate historical pricing data for 12 months: 
 		const monthHolderObject = {
 			current: {
@@ -337,6 +339,7 @@ function* updatePricingInitialLoad() {
 				month.destinationsCosts.push({
 					destination_id: calculatedEstimate.destination_id,
 					destination_name: calculatedEstimate.destination_name,
+					destination_country: calculatedEstimate.destination_country,
 					measurement_units: calculatedEstimate.measurement_units,
 					units_label: calculatedEstimate.units_label,
 					price_per_unit_75_50: calculatedEstimate.price_per_unit_75_50,
@@ -418,6 +421,7 @@ function* updatePricingInitialLoad() {
 				productContainers: productContainers.data,
 				dosageRates: dosageRates.data,
 				pricingData12Months: monthHolderObject,
+				activeRegions: activeRegions.data,
 			}, // End payload
 		}); // End yield put
 
@@ -438,7 +442,7 @@ function* updatePricingInitialLoad() {
 		console.error(errorText, error);
 		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
 	}; // End try/catch
-} // End
+} // End updatePricingInitialLoad
 
 
 

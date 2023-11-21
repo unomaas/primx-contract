@@ -217,7 +217,7 @@ router.get('/get-specific-shipping-cost-history', async (req, res) => {
 				"p".product_label,
 				"c".container_length_ft, 
 				"sd".destination_name,
-				"c".container_destination
+				r.region_code AS container_destination
 			FROM "shipping_cost_history" AS "sch"
 			JOIN "shipping_costs" AS "sc"
 				ON "sc".shipping_cost_id = "sch".shipping_cost_id
@@ -229,6 +229,8 @@ router.get('/get-specific-shipping-cost-history', async (req, res) => {
 				ON "p".product_id = "pc".product_id
 			JOIN "containers" AS "c"
 				ON "pc".container_id = "c".container_id
+			JOIN regions AS r 
+				ON r.region_id = c.region_id
 			WHERE 
 				"date_saved" <= ${format('%L', date_saved)} AND 
 				"sd".destination_id = ${format('%L', destination_id)}

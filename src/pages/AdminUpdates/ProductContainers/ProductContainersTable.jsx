@@ -302,53 +302,6 @@ export default function ProductContainersTable() {
 
 	const CustomFooter = () => {
 
-
-		// //#region - Info for the Save Costs to History Log button:
-		// // ⬇ Get today's date in YYYY-MM format;
-		// const today = new Date().toISOString().slice(0, 7);
-		// let disabled = true;
-		// let tooltipText = <p>The current costs have not been saved yet for this month.  Please click the "Save Costs to History Log" button to save the current costs for this month first.</p>;
-		// if (
-		// 	shippingCostHistoryRecent.length > 0 &&
-		// 	shippingCostHistoryRecent[0].date_saved.slice(0, 7) === today
-		// ) {
-		// 	disabled = false;
-		// 	tooltipText = "";
-		// };
-
-		// const handleSaveHistoryLogSubmit = () => {
-		// 	if (
-		// 		shippingCostHistoryRecent.length > 0 &&
-		// 		shippingCostHistoryRecent[0].date_saved.slice(0, 7) === today
-		// 	) {
-		// 		if (window.confirm(`Costs have already been saved for this month.  If you continue, two entries will be saved for this month.  Click "OK" to continue.`)) {
-		// 			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-		// 			dispatch({ type: 'SHIPPING_COSTS_SAVE_HISTORY_LOG', payload: shippingCosts })
-		// 		}; // End if
-		// 	} else {
-		// 		dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-		// 		dispatch({ type: 'SHIPPING_COSTS_SAVE_HISTORY_LOG', payload: shippingCosts })
-		// 	}; // End if
-		// }; // End handleSaveHistoryLogSubmit
-		// //#endregion - Info for the Save Costs to History Log button.
-
-		const [anchorEl, setAnchorEl] = useState(null);
-		const menuItems = [
-			// <Tooltip placement="right-end" arrow>
-			<span>
-				<Button
-					color="primary"
-					size="small"
-					onClick={() => setShowEditModal(true)}
-				>
-					Edit {selectedRow?.trimmed_display_name.trimEnd()}'s Container Stats
-				</Button>
-			</span>
-			// </Tooltip>,
-
-		]; // End menuItems
-
-
 		return (
 			<div style={{
 				flex: "1",

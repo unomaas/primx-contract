@@ -11,7 +11,19 @@ const {
 // GET route to GET all data from the licensees table, both active and inactive licensees
 router.get('/all', (req, res) => {
   // SQL query to get all licensees for the admin licensees grid, ordered by active licensees first, then alphabetically
-  const queryText = `SELECT * FROM "licensees" ORDER BY "active" DESC, "licensee_contractor_name" ASC;`;
+  const queryText = `
+    SELECT
+      l.licensee_id, 
+      l.licensee_contractor_name, 
+      l.default_measurement,
+      l.active,
+      array_agg(r.region_code) AS operating_regions
+    FROM licensees AS l
+    JOIN licensee_regions AS lr ON lr.licensee_id = l.licensee_id
+    JOIN regions AS r ON r.region_id = lr.region_id
+    GROUP BY l.licensee_id, l.licensee_contractor_name, l.default_measurement
+    ORDER BY l.licensee_contractor_name ASC;
+  `;
 
   pool.query(queryText)
     .then((result) => res.send(result.rows))
@@ -24,7 +36,19 @@ router.get('/all', (req, res) => {
 // GET route to GET all active licensees to be displayed in Select menus for the estimate creation view and the estimate lookup view
 router.get('/active', (req, res) => {
   // SQL query to get licensees that are currently active sorted alphabetically
-  const queryText = `SELECT * FROM "licensees" WHERE "active" = TRUE ORDER BY "licensee_contractor_name" ASC;`;
+  const queryText = `
+    SELECT
+      l.licensee_id, 
+      l.licensee_contractor_name, 
+      l.default_measurement,
+      array_agg(r.region_code) AS operating_regions
+    FROM licensees AS l
+    JOIN licensee_regions AS lr ON lr.licensee_id = l.licensee_id
+    JOIN regions AS r ON r.region_id = lr.region_id
+    WHERE l.active = TRUE
+    GROUP BY l.licensee_id, l.licensee_contractor_name, l.default_measurement
+    ORDER BY l.licensee_contractor_name ASC;
+  `;
 
   pool.query(queryText)
     .then((result) => res.send(result.rows))

@@ -12,6 +12,8 @@ export default function useCalculateProjectCost(estimate, options) {
 		customsDuties,
 	} = options;
 
+
+
 	if (
 		products.length === 0 ||
 		shippingDestinations.length === 0 ||
@@ -32,59 +34,61 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	// ⬇ Determine whether we're using imperial or metric units for the products: 
 	if (estimate.measurement_units == 'imperial') {
+
 		// ⬇ Find the product info for imperial, then set the dosage rate to the imperial dosage rate:
-		primxDcProductInfo = products.find(product => product.product_id === 1);
+		primxDcProductInfo = products.find(product => product.product_id === 1 && product.destination_country == estimate.destination_country);
 		primxDcDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 1);
 		primxDcDosageRateInfo.dosage_rate = primxDcDosageRateInfo.lbs_y3;
-		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).usa_percent;
+		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 
-		primxSteelFiberProductInfo = products.find(product => product.product_id === 4);
+		primxSteelFiberProductInfo = products.find(product => product.product_id === 4 && product.destination_country == estimate.destination_country);
 		primxSteelFiberDosageRateInfo_75_50 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3);
 		primxSteelFiberDosageRateInfo_90_60 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4);
 		primxSteelFiberDosageRateInfo_75_50.dosage_rate = primxSteelFiberDosageRateInfo_75_50.lbs_y3;
 		primxSteelFiberDosageRateInfo_90_60.dosage_rate = primxSteelFiberDosageRateInfo_90_60.lbs_y3;
-		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).usa_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).usa_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
+		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 
-		primxFlowProductInfo = products.find(product => product.product_id === 3);
+		primxFlowProductInfo = products.find(product => product.product_id === 3 && product.destination_country == estimate.destination_country);
 		primxFlowDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 3);
 		primxFlowDosageRateInfo.dosage_rate = primxFlowDosageRateInfo.lbs_y3;
-		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).usa_percent;
+		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).duty_percentage;
 
-		primxCpeaProductInfo = products.find(product => product.product_id === 8);
+		primxCpeaProductInfo = products.find(product => product.product_id === 8 && product.destination_country == estimate.destination_country);
 		primxCpeaDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 8);
 		primxCpeaDosageRateInfo.dosage_rate = primxCpeaDosageRateInfo.lbs_y3;
-		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).usa_percent;
+		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 
-		primxUltraCureProductInfo = products.find(product => product.product_id === 6);
+		primxUltraCureProductInfo = products.find(product => product.product_id === 6 && product.destination_country == estimate.destination_country);
 
 	} else if (estimate.measurement_units == 'metric') {
+
 		// ⬇ Find the product info for metric, then set the dosage rate to the metric dosage rate:
-		primxDcProductInfo = products.find(product => product.product_id === 2);
+		primxDcProductInfo = products.find(product => product.product_id === 2 && product.destination_country == estimate.destination_country);
+
 		primxDcDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 2);
 		primxDcDosageRateInfo.dosage_rate = primxDcDosageRateInfo.kg_m3;
-		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).can_percent;
+		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 
-		primxSteelFiberProductInfo = products.find(product => product.product_id === 5);
+		primxSteelFiberProductInfo = products.find(product => product.product_id === 5 && product.destination_country == estimate.destination_country);
 		primxSteelFiberDosageRateInfo_75_50 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5);
 		primxSteelFiberDosageRateInfo_90_60 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6);
 		primxSteelFiberDosageRateInfo_75_50.dosage_rate = primxSteelFiberDosageRateInfo_75_50.kg_m3;
 		primxSteelFiberDosageRateInfo_90_60.dosage_rate = primxSteelFiberDosageRateInfo_90_60.kg_m3;
-		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).can_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).can_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
+		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 
-		primxFlowProductInfo = products.find(product => product.product_id === 3);
+		primxFlowProductInfo = products.find(product => product.product_id === 3 && product.destination_country == estimate.destination_country);
 		primxFlowDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 3);
 		primxFlowDosageRateInfo.dosage_rate = primxFlowDosageRateInfo.kg_m3;
-		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).can_percent;
+		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 
-		primxCpeaProductInfo = products.find(product => product.product_id === 8);
+		primxCpeaProductInfo = products.find(product => product.product_id === 8 && product.destination_country == estimate.destination_country);
 		primxCpeaDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 8);
 		primxCpeaDosageRateInfo.dosage_rate = primxCpeaDosageRateInfo.kg_m3;
-		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).can_percent;
+		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 
-		primxUltraCureProductInfo = products.find(product => product.product_id === 7);
-
+		primxUltraCureProductInfo = products.find(product => product.product_id === 7 && product.destination_country == estimate.destination_country);
 
 	}; // End if
 	//#endregion - Step 1.
@@ -98,6 +102,8 @@ export default function useCalculateProjectCost(estimate, options) {
 	const primxDc20ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '20' && (container.product_id == 1 || container.product_id == 2));
 	const primxDc40ftCostInfo = shippingCosts.find(cost => cost.destination_id == estimate.destination_id)?.dc_40ft || "0";
 	const primxDc40ftContainerInfo = productContainers.find(container => container.container_destination == estimate.destination_country && container.container_length_ft == '40' && (container.product_id == 1 || container.product_id == 2));
+
+
 
 
 	// ⬇ PrimX Steel Fibers 20ft & 40ft:

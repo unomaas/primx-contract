@@ -25,9 +25,11 @@ function AdminLoginForm() {
 		// ! Ryan Here: User permission levels are: 1 for Super Admin, 2 for Regular Admin, 3 for Region Admin, 4 for Licensees, 5 for Public.  Right?  Let's make it, 1 - 3 - 5 - 7?  1 for Super, 3 for Regular, 5 for Regional, 7 for Licensee, 9 for... anything else? 
 		// ! Ryan Here: User permissions USED TO BE 1, 2, 3.  1 Super, 2 regular, 3 licensee.  Actually, let's do 1-2-3-4. 1 Super, 2 Regular, 3 Regional, 4 Licensee. 
 
+		// ⬇ If it's a Licensee user or higher, push to create. 
 		if (user?.permission_level >= 4) {
 			history.push('/create');
 		}
+		// ⬇ If it's a Regional user or lower, push to user.
 		if (user?.permission_level <= 3) {
 			history.push('/user');
 		}

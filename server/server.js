@@ -23,7 +23,7 @@ const userInfoRouter = require('./routes/userInfo.router');
 const licenseePortalRouter = require('./routes/licenseePortal.router')
 const dosageRatesRouter = require('./routes/dosageRates.router')
 const pricingLogRouter = require('./routes/pricingLog.router')
-// const regionsRouter = require('./routes/regions.router')
+const regionsRouter = require('./routes/regions.router')
 
 
 // Body parser middleware
@@ -52,7 +52,7 @@ app.use('/api/licenseePortal', licenseePortalRouter);
 app.use('/api/productContainer', productContainerRouter);
 app.use('/api/dosageRates', dosageRatesRouter);
 app.use('/api/pricingLog', pricingLogRouter);
-// app.use('/api/regions', regionsRouter);
+app.use('/api/regions', regionsRouter);
 
 // Serve static files
 app.use(express.static('build'));

@@ -9,9 +9,9 @@ router.get('/fetch-customs-duties', async (req, res) => {
 	try {
 		const sql = `
 			SELECT
-				cd.duty_label,
-				r.region_code,
-				cdr.duty_percentage
+				cd.custom_duty_id, cd.duty_label,
+				r.region_id, r.region_code AS destination_country,
+				cdr.customs_duties_regions_id, cdr.duty_percentage::REAL, (cdr.duty_percentage * 100)::REAL AS duty_percentage_label
 			FROM customs_duties_regions AS cdr
 			JOIN regions AS r
 				ON cdr.region_id = r.region_id
@@ -34,8 +34,7 @@ router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
 	try {
 		let sql = `
 			UPDATE "customs_duties_regions" AS cdr
-			SET 
-					"duty_percentage" = v.duty_percentage
+			SET "duty_percentage" = v.duty_percentage
 			FROM (VALUES 
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
@@ -72,12 +71,17 @@ router.get('/get-all-customs-duties-history', async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
-				*,
-				TO_CHAR("cdh".date_saved, 'YYYY-MM') AS "date_saved",
+				cdh.custom_duty_history_id,
+				cdh.custom_duty_id,
+				r.region_id,
+				r.region_code AS destination_country,
+				cdr.duty_percentage,
+				TO_CHAR(cdh.date_saved, 'YYYY-MM') AS "date_saved",
 				TO_CHAR(cdh.date_saved, 'YYYY-MM-DD') AS date_saved_full
-			FROM "customs_duties_history" AS "cdh"
-			JOIN "customs_duties" AS "cd" using ("custom_duty_id") 
-			ORDER BY "cdh".date_saved DESC, "cdh".custom_duty_id DESC;
+			FROM customs_duties_history AS cdh
+			JOIN customs_duties_regions AS cdr ON cdh.custom_duty_id = cdr.custom_duty_id AND cdh.region_id = cdr.region_id
+			JOIN regions AS r ON cdr.region_id = r.region_id
+			ORDER BY cdh.date_saved DESC, cdh.custom_duty_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
@@ -92,13 +96,19 @@ router.get('/get-one-year-of-customs-duties-history', async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
-				custom_duty_history_id,
-				custom_duty_id,
-				usa_percent,
-				can_percent,
-				TO_CHAR(date_saved, 'YYYY-MM') AS date_saved,
-				TO_CHAR(date_saved, 'YYYY-MM-DD') AS date_saved_full
+				cdh.custom_duty_history_id,
+				cdh.custom_duty_id,
+				r.region_id,
+				r.region_code AS destination_country,
+				cdr.duty_percentage,
+				TO_CHAR(cdh.date_saved, 'YYYY-MM') AS "date_saved",
+				TO_CHAR(cdh.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM customs_duties_history AS cdh
+			JOIN customs_duties_regions AS cdr 
+				ON cdh.custom_duty_id = cdr.custom_duty_id 
+				AND cdh.region_id = cdr.region_id
+			JOIN regions AS r 
+				ON cdr.region_id = r.region_id
 			WHERE cdh.date_saved >= NOW() - INTERVAL '1 year'
 			ORDER BY cdh.date_saved DESC, cdh.custom_duty_id DESC;
 		`; // End sql
@@ -121,9 +131,17 @@ router.get('/get-one-year-of-customs-duties-history', async (req, res) => {
 router.get('/get-recent-customs-duties-history', async (req, res) => {
 	try {
 		const sql = `
-			SELECT *
-			FROM "customs_duties_history" AS "cdh"
-			ORDER BY "cdh".custom_duty_history_id DESC
+			SELECT 
+				cdh.*, 
+				r.region_code AS destination_country,
+				cdr.duty_percentage
+			FROM customs_duties_history AS cdh
+			JOIN customs_duties_regions AS cdr 
+				ON cdh.custom_duty_id = cdr.custom_duty_id 
+				AND cdh.region_id = cdr.region_id
+			JOIN regions AS r 
+				ON cdr.region_id = r.region_id
+			ORDER BY cdh.custom_duty_history_id DESC
 			LIMIT 6;
 		`; // End sql
 		const { rows } = await pool.query(sql);
@@ -159,15 +177,15 @@ router.post('/submit-customs-duties-history', rejectUnauthenticated, async (req,
 		const today = new Date().toISOString().slice(0, 10);
 		let sql = `
 			INSERT INTO "customs_duties_history" (
-				"custom_duty_id", "usa_percent", "can_percent", "date_saved"
+				"custom_duty_id", "duty_percentage", "region_id", "date_saved"
 			)
 			VALUES
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of req.body) {
 			sql += format(
-				`(%L::int, %L::decimal, %L::decimal, NOW()), `,
-				cost.custom_duty_id, cost.usa_percent, cost.can_percent
+				`(%L::int, %L::decimal, %L::int, NOW()), `,
+				cost.custom_duty_id, cost.duty_percentage, cost.region_id
 			); // End format
 		}; // End for loop
 		// ⬇ Remove the last comma and space:

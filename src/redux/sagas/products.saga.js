@@ -4,12 +4,11 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import createProductPriceObject from '../../hooks/createProductPriceObject';
-import useCalculateProjectCost from '../../hooks/useCalculateProjectCost';
 
 // companies saga to fetch companies
 function* productsSaga() {
 	yield takeLatest('FETCH_PRODUCTS_ARRAY', fetchProductsArray);
-	yield takeLatest('FETCH_PRODUCTS_OBJECT', fetchProductsObject)
+	// yield takeLatest('FETCH_PRODUCTS_OBJECT', fetchProductsObject)
 	// yield takeLatest('UPDATE_PRODUCT', updateProduct);
 	yield takeLatest('ADD_PRODUCT', addProduct);
 	yield takeLatest('FETCH_PRODUCT_COST_HISTORY_RECENT', fetchProductCostRecent);
@@ -41,22 +40,22 @@ function* fetchProductsArray() {
 //worker saga to get all products data from DB and create the 
 //custom product identifier/price object to be used in the 
 //estimate create and lookup views
-function* fetchProductsObject() {
-	try {
-		const response = yield axios.get('/api/products/get-current-products');
+// function* fetchProductsObject() {
+// 	try {
+// 		const response = yield axios.get('/api/products/get-current-products');
 
-		// use the createProductPriceObject function to convert the returned product array into an object
-		const productObject = createProductPriceObject(response.data);
+// 		// use the createProductPriceObject function to convert the returned product array into an object
+// 		const productObject = createProductPriceObject(response.data);
 
-		// set product object in reducer
-		yield put({
-			type: 'SET_PRODUCTS_OBJECT',
-			payload: productObject
-		});
-	} catch (error) {
-		console.error('Error with fetchProducts in field select saga', error);
-	}
-}
+// 		// set product object in reducer
+// 		yield put({
+// 			type: 'SET_PRODUCTS_OBJECT',
+// 			payload: productObject
+// 		});
+// 	} catch (error) {
+// 		console.error('Error with fetchProducts in field select saga', error);
+// 	}
+// }
 
 function* updateProduct(action) {
 	try {

@@ -1,14 +1,15 @@
 
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useClasses } from '../../../components/MuiStyling/MuiStyling';
-import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
-import { Button, MenuItem, Menu, Divider, Tooltip, Paper } from '@material-ui/core';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
+import { Button, MenuItem, Menu, Divider, Tooltip, Paper, TablePagination } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 // import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import HelpIcon from '@material-ui/icons/Help';
+import ImportButton from '../../components/ImportCsvButton';
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function UpdateProductCosts() {
@@ -19,6 +20,15 @@ export default function UpdateProductCosts() {
 	const productsArray = viewState.newProductCosts;
 	//#endregion - End State Variables.
 
+	//#region - Table action state variables: 
+	const rowsPerPageOptions = [10, 25, 50, 100];
+	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+	const [tableMounted, setTableMounted] = useState(false);
+	const [selectedRow, setSelectedRow] = useState(null);
+	//#endregion - Table action state variables.
+
+
+
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const columns = [
 		{
@@ -28,9 +38,18 @@ export default function UpdateProductCosts() {
 			headerClassName: classes.header,
 		},
 		{
+			field: 'destination_country',
+			headerName: 'Region',
+			disableColumnMenu: true,
+			flex: 1,
+			headerClassName: classes.header,
+		},
+		{
 			field: 'product_self_cost',
 			type: 'number',
 			headerName: 'Self Cost',
+			sortable: false,
+			disableColumnMenu: true,
 			flex: 1,
 			headerClassName: classes.header,
 			editable: true,
@@ -45,7 +64,8 @@ export default function UpdateProductCosts() {
 	//#endregion - End State Variables.
 
 	//#region - Table Setup Below:
-	let rows = productsArray;
+	// let rows = productsArray;
+	const [rows, setRows] = useState(productsArray || [])
 
 	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
@@ -68,7 +88,22 @@ export default function UpdateProductCosts() {
 			)
 		}; // End TableInstructions
 		const [anchorEl, setAnchorEl] = useState(null);
+
+		const mapping = {
+			// Header Name : Column Name
+			// ! Only include the columns you want updated: 
+			"Self Cost": "product_self_cost",
+		};
+
+
 		const menuItems = [
+			<ImportButton
+				columns={columns}
+				rows={rows}
+				setRows={setRows}
+				mapping={mapping}
+			/>,
+			<Divider />,
 			<GridToolbarExport />,
 			<Divider />,
 			<GridToolbarFilterButton />,
@@ -152,6 +187,52 @@ export default function UpdateProductCosts() {
 	}; // End CustomToolbar
 
 
+	const CustomPagination = () => {
+		// ⬇ State Variables: 
+		const { state, apiRef } = useGridSlotComponentProps();
+
+		//#region - Pagination Action Handlers:
+		// ⬇ We only want the page size to be set once, on initial render (otherwise it defaults to 100):
+		useEffect(() => {
+			if (tableMounted === false) {
+				apiRef.current.setPageSize(rowsPerPageOptions[0]);
+				setTableMounted(true);
+			}; // End if
+		}, []); // End useEffect
+
+		const handleOnPageChange = (value) => {
+			apiRef.current.setPage(value);
+			setSelectedRow(null);
+		}; // End handleOnPageChange
+
+
+		const handleOnRowsPerPageChange = (size) => {
+			apiRef.current.setPageSize(size.props.value);
+			setRowsPerPage(size.props.value);
+			handleOnPageChange(0);
+			setSelectedRow(null);
+		}; // End handleOnRowsPerPageChange
+		//#endregion - Pagination Action Handlers.
+
+		return (
+			<div style={{
+				flex: "1",
+				display: "flex",
+				justifyContent: "flex-end",
+			}}>
+				<TablePagination
+					component='div'
+					count={state.rows.totalRowCount}
+					page={state.pagination.page}
+					onPageChange={(event, value) => handleOnPageChange(value)}
+					rowsPerPageOptions={rowsPerPageOptions}
+					rowsPerPage={rowsPerPage}
+					onRowsPerPageChange={(event, size) => handleOnRowsPerPageChange(size)}
+				/>
+			</div>
+		); // End return
+	}; // End PaginationComponent
+
 	const CustomFooter = () => {
 
 		return (
@@ -159,17 +240,9 @@ export default function UpdateProductCosts() {
 				flex: "1",
 				display: "flex",
 				justifyContent: "flex-end",
-				height: "52px",
+				// height: "52px",
 			}}>
-				<>
-					{/* <Button
-						color="primary"
-						size="small"
-						onClick={() => dispatch({ type: 'SET_PRICING_LOG_VIEW', payload: { updatePricingStep: 2 } })}
-					>
-						Next <ArrowRightIcon />
-					</Button> */}
-				</>
+					<CustomPagination />
 			</div>
 		); // End return
 	}; // End CustomFooter
@@ -178,45 +251,54 @@ export default function UpdateProductCosts() {
 
 	// ⬇ Submit handler for in-line cell edits on the data grid:
 	const handleInCellEditSubmit = ({ id, field, value }) => {
-		const product = productsArray.find(product => product.product_id === id);
+		const product = productsArray.find(product => product.product_region_cost_id === id);
+
+		// ⬇ Check if the product is found
+		if (!product) {
+			console.error(`Product not found with id: ${id}`);
+			return;
+		}
+
 		// ⬇ If the value is the same as the original, don't submit the edit:
 		if (product[field] === value) return;
+
 		// ⬇ If the value is different, modify the product object:
 		product[field] = value;
 	}; // End handleInCellEditSubmit
 
 	// ⬇ Rendering below: 
 	return (
-			<div
-				style={{
-					display: 'flex',
-					justifyContent: 'center',
-				}}
+		<div
+			style={{
+				display: 'flex',
+				justifyContent: 'center',
+			}}
+		>
+			<Paper
+				elevation={3}
+				className={classes.productsGrid}
+
 			>
-				<Paper
-					elevation={3}
-					className={classes.productsGrid}
-					
-				>
-					<DataGrid
-						className={classes.dataGridTables}
-						disableSelectionOnClick
-						columns={columns}
-						rows={rows}
-						getRowId={(row) => row.product_id}
-						autoHeight
-						onCellEditCommit={handleInCellEditSubmit}
-						pagination
-						components={{
-							Toolbar: CustomToolbar,
-							Footer: CustomFooter,
-						}}
-					// density={"compact"}
-					/>
+				{/* //! When you come back, keep going through the update pricing stepper. Maybe setup the import for product self costs.   */}
+				<DataGrid
+					className={classes.dataGridTables}
+					disableSelectionOnClick
+					columns={columns}
+					rows={rows}
+					getRowId={(row) => row.product_region_cost_id}
+					autoHeight
+					onCellEditCommit={handleInCellEditSubmit}
+					pagination
+					components={{
+						Toolbar: CustomToolbar,
+						Footer: CustomFooter,
+					}}
+				// density={"compact"}
+				/>
 
-				</Paper>
+			</Paper>
 
-			</div>
+		</div>
 	)
 }
 
