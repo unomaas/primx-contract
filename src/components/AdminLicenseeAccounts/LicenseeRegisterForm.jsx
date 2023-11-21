@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Button, Select, MenuItem } from '@material-ui/core';
+import { useClasses } from '../MuiStyling/MuiStyling';
 
 
 export default function LicenseeRegisterForm() {
