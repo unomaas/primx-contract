@@ -242,29 +242,66 @@ export default function UpdateProductCosts() {
 				justifyContent: "flex-end",
 				// height: "52px",
 			}}>
-					<CustomPagination />
+				<CustomPagination />
 			</div>
 		); // End return
 	}; // End CustomFooter
 	//#endregion - Table Setup. 
 
 
+	// // ⬇ Submit handler for in-line cell edits on the data grid:
+	// const handleInCellEditSubmit = ({ id, field, value }) => {
+
+	// 	console.log(`Ryan Here: \n `, {
+	// 		id,
+	// 		field,
+	// 		value,
+	// 		productsArray,
+	// 	} );
+	// 	const product = productsArray.find(product => product.product_region_cost_id === id);
+
+	// 	// ⬇ Check if the product is found
+	// 	if (!product) {
+	// 		console.error(`Product not found with id: ${id}`);
+	// 		return;
+	// 	}
+
+	// 	// ⬇ If the value is the same as the original, don't submit the edit:
+	// 	if (product[field] === value) return;
+
+	// 	// ⬇ If the value is different, modify the product object:
+	// 	product[field] = value;
+	// }; // End handleInCellEditSubmit
+
 	// ⬇ Submit handler for in-line cell edits on the data grid:
 	const handleInCellEditSubmit = ({ id, field, value }) => {
-		const product = productsArray.find(product => product.product_region_cost_id === id);
+		const productIndex = productsArray.findIndex(product => product.product_region_cost_id === id);
 
-		// ⬇ Check if the product is found
-		if (!product) {
+		// ⬇ Check if the product index is valid
+		if (productIndex === -1) {
 			console.error(`Product not found with id: ${id}`);
 			return;
 		}
 
 		// ⬇ If the value is the same as the original, don't submit the edit:
-		if (product[field] === value) return;
+		if (productsArray[productIndex][field] === value) return;
 
-		// ⬇ If the value is different, modify the product object:
-		product[field] = value;
+		// ⬇ Create a new array with the updated product
+		const updatedProductsArray = [...productsArray];
+		updatedProductsArray[productIndex] = {
+			...updatedProductsArray[productIndex],
+			[field]: value
+		};
+
+		// ⬇ Dispatch the updated array to the Redux store
+		dispatch({
+			type: 'SET_PRICING_LOG_VIEW',
+			payload: { newProductCosts: updatedProductsArray }
+		});
+
+		setRows(updatedProductsArray);
 	}; // End handleInCellEditSubmit
+
 
 	// ⬇ Rendering below: 
 	return (
@@ -287,7 +324,7 @@ export default function UpdateProductCosts() {
 					rows={rows}
 					getRowId={(row) => row.product_region_cost_id}
 					autoHeight
-					onCellEditCommit={handleInCellEditSubmit}
+					onCellEditCommit={(data) => handleInCellEditSubmit(data)}
 					pagination
 					components={{
 						Toolbar: CustomToolbar,

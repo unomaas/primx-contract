@@ -1,11 +1,11 @@
 const express = require('express');
-const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const { rejectUnauthenticated, rejectNonAdmin } = require('../modules/authentication-middleware');
 const pool = require('../modules/pool');
 const router = express.Router();
 const format = require('pg-format');
 
 
-router.get('/fetch-customs-duties', async (req, res) => {
+router.get('/fetch-customs-duties', rejectUnauthenticated, async (req, res) => {
 	try {
 		const sql = `
 			SELECT
@@ -30,7 +30,7 @@ router.get('/fetch-customs-duties', async (req, res) => {
 });
 
 
-router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
+router.put('/edit-customs-duties', rejectNonAdmin, async (req, res) => {
 	try {
 		let sql = `
 			UPDATE "customs_duties_regions" AS cdr
@@ -66,8 +66,7 @@ router.put('/edit-customs-duties', rejectUnauthenticated, async (req, res) => {
 
 //#region - Shipping Cost History routes below:
 // GET route - gets shipping cost history
-// ! Ryan Here, will have to re-visit history queries. 
-router.get('/get-all-customs-duties-history', async (req, res) => {
+router.get('/get-all-customs-duties-history', rejectNonAdmin, async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
@@ -75,42 +74,46 @@ router.get('/get-all-customs-duties-history', async (req, res) => {
 				cdh.custom_duty_id,
 				r.region_id,
 				r.region_code AS destination_country,
-				cdr.duty_percentage,
+				cdh.duty_percentage::REAL,
+				(cdh.duty_percentage * 100)::REAL AS duty_percentage_label,
 				TO_CHAR(cdh.date_saved, 'YYYY-MM') AS "date_saved",
 				TO_CHAR(cdh.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM customs_duties_history AS cdh
-			JOIN customs_duties_regions AS cdr ON cdh.custom_duty_id = cdr.custom_duty_id AND cdh.region_id = cdr.region_id
-			JOIN regions AS r ON cdr.region_id = r.region_id
-			ORDER BY cdh.date_saved DESC, cdh.custom_duty_id DESC;
+			JOIN regions AS r 
+				ON cdh.region_id = r.region_id
+			ORDER BY 
+				cdh.date_saved DESC, 
+				r.region_code DESC,
+				cdh.custom_duty_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
 	} catch (error) {
-		console.error('Error in customs dutie GET router', error);
+		console.error('Error in customs duties GET router', error);
 		res.sendStatus(500);
 	}; // End try/catch
 });
 
-// ! Ryan Here, will have to re-visit history queries. 
-router.get('/get-one-year-of-customs-duties-history', async (req, res) => {
+router.get('/get-one-year-of-customs-duties-history', rejectNonAdmin, async (req, res) => {
 	try {
 		const sql = `
-			SELECT 
-				cdh.custom_duty_history_id,
-				cdh.custom_duty_id,
-				r.region_id,
-				r.region_code AS destination_country,
-				cdr.duty_percentage,
-				TO_CHAR(cdh.date_saved, 'YYYY-MM') AS "date_saved",
-				TO_CHAR(cdh.date_saved, 'YYYY-MM-DD') AS date_saved_full
-			FROM customs_duties_history AS cdh
-			JOIN customs_duties_regions AS cdr 
-				ON cdh.custom_duty_id = cdr.custom_duty_id 
-				AND cdh.region_id = cdr.region_id
-			JOIN regions AS r 
-				ON cdr.region_id = r.region_id
-			WHERE cdh.date_saved >= NOW() - INTERVAL '1 year'
-			ORDER BY cdh.date_saved DESC, cdh.custom_duty_id DESC;
+		SELECT 
+			cdh.custom_duty_history_id,
+			cdh.custom_duty_id,
+			r.region_id,
+			r.region_code AS destination_country,
+			cdh.duty_percentage::REAL,
+			(cdh.duty_percentage * 100)::REAL AS duty_percentage_label,
+			TO_CHAR(cdh.date_saved, 'YYYY-MM') AS "date_saved",
+			TO_CHAR(cdh.date_saved, 'YYYY-MM-DD') AS date_saved_full
+		FROM customs_duties_history AS cdh
+		JOIN regions AS r 
+			ON cdh.region_id = r.region_id
+		WHERE cdh.date_saved >= NOW() - INTERVAL '1 year'
+		ORDER BY 
+			cdh.date_saved DESC, 
+			r.region_code DESC,
+			cdh.custom_duty_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		// ⬇ Make an object of results indexed by date_saved:
@@ -128,50 +131,50 @@ router.get('/get-one-year-of-customs-duties-history', async (req, res) => {
 	}; // End try/catch
 });
 
-router.get('/get-recent-customs-duties-history', async (req, res) => {
-	try {
-		const sql = `
-			SELECT 
-				cdh.*, 
-				r.region_code AS destination_country,
-				cdr.duty_percentage
-			FROM customs_duties_history AS cdh
-			JOIN customs_duties_regions AS cdr 
-				ON cdh.custom_duty_id = cdr.custom_duty_id 
-				AND cdh.region_id = cdr.region_id
-			JOIN regions AS r 
-				ON cdr.region_id = r.region_id
-			ORDER BY cdh.custom_duty_history_id DESC
-			LIMIT 6;
-		`; // End sql
-		const { rows } = await pool.query(sql);
-		res.send(rows);
-	} catch (error) {
-		console.error('Error in customs duties GET router', error);
-		res.sendStatus(500);
-	}; // End try/catch
-});
+// router.get('/get-recent-customs-duties-history', rejectNonAdmin, async (req, res) => {
+// 	try {
+// 		const sql = `
+// 			SELECT 
+// 				cdh.*, 
+// 				r.region_code AS destination_country,
+// 				cdr.duty_percentage
+// 			FROM customs_duties_history AS cdh
+// 			JOIN customs_duties_regions AS cdr 
+// 				ON cdh.custom_duty_id = cdr.custom_duty_id 
+// 				AND cdh.region_id = cdr.region_id
+// 			JOIN regions AS r 
+// 				ON cdr.region_id = r.region_id
+// 			ORDER BY cdh.custom_duty_history_id DESC
+// 			LIMIT 6;
+// 		`; // End sql
+// 		const { rows } = await pool.query(sql);
+// 		res.send(rows);
+// 	} catch (error) {
+// 		console.error('Error in customs duties GET router', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// });
 
-router.get('/get-specific-customs-duties-history', async (req, res) => {
-	const { date_saved } = req.query;
-	try {
-		const sql = `
-			SELECT * 
-			FROM "customs_duties_history"
-			WHERE "date_saved" <= ${format('%L', date_saved)}
-			ORDER BY "date_saved" DESC
-			LIMIT 6;
-		`; // End sql
-		const { rows } = await pool.query(sql);
-		res.send(rows);
-	} catch (error) {
-		console.error('Error in customs duties GET router', error);
-		res.sendStatus(500);
-	}; // End try/catch
-});
+// router.get('/get-specific-customs-duties-history', rejectNonAdmin, async (req, res) => {
+// 	const { date_saved } = req.query;
+// 	try {
+// 		const sql = `
+// 			SELECT * 
+// 			FROM "customs_duties_history"
+// 			WHERE "date_saved" <= ${format('%L', date_saved)}
+// 			ORDER BY "date_saved" DESC
+// 			LIMIT 6;
+// 		`; // End sql
+// 		const { rows } = await pool.query(sql);
+// 		res.send(rows);
+// 	} catch (error) {
+// 		console.error('Error in customs duties GET router', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// });
 
 // ⬇ POST route - adds shipping cost history
-router.post('/submit-customs-duties-history', rejectUnauthenticated, async (req, res) => {
+router.post('/submit-customs-duties-history', rejectNonAdmin, async (req, res) => {
 	try {
 		// ⬇ Today's date in YYYY-MM-DD format: 
 		const today = new Date().toISOString().slice(0, 10);

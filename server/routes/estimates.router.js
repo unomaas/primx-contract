@@ -56,7 +56,6 @@ router.get('/lookup/:estimate', (req, res) => {
 
 // GET request to get all estimates data from the database
 router.get('/all', rejectNonAdmin, (req, res) => {
-	// ! Ryan here, implement 
 	// SQL query to GET all estimates along the floor type names, licensee names, placement type names, and shipping state/province names
 	const queryText = `
 		SELECT 

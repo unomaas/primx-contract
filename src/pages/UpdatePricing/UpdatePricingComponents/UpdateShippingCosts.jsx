@@ -16,6 +16,7 @@ export default function UpdateShippingCosts() {
 	const dispatch = useDispatch();
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
 	const shippingCosts = viewState.newShippingCosts;
+	console.log(`Ryan Here 1: \n `, {shippingCosts: JSON.parse(JSON.stringify(shippingCosts))} );
 
 
 	//#region - Table action state variables: 
@@ -372,14 +373,44 @@ export default function UpdateShippingCosts() {
 	//#endregion - Table Setup. 
 
 
+	// // ⬇ Submit handler for in-line cell edits on the data grid:
+	// const handleInCellEditSubmit = ({ id, field, value }) => {
+	// 	const destination = shippingCosts.find(destination => destination.destination_id === id);
+	// 	// ⬇ If the value is the same as the original, don't submit the edit:
+	// 	if (destination[field] === value) return;
+	// 	// ⬇ If the value is different, modify the product object:
+	// 	destination[field] = value;
+	// }; // End handleInCellEditSubmit
+
 	// ⬇ Submit handler for in-line cell edits on the data grid:
 	const handleInCellEditSubmit = ({ id, field, value }) => {
-		const destination = shippingCosts.find(destination => destination.destination_id === id);
+		const destinationIndex = shippingCosts.findIndex(destination => destination.destination_id === id);
+
+		// ⬇ Check if the destination index is valid
+		if (destinationIndex === -1) {
+			console.error(`Destination not found with id: ${id}`);
+			return;
+		}
+
 		// ⬇ If the value is the same as the original, don't submit the edit:
-		if (destination[field] === value) return;
-		// ⬇ If the value is different, modify the product object:
-		destination[field] = value;
-	}; // End handleInCellEditSubmit
+		if (shippingCosts[destinationIndex][field] === value) return;
+
+		// ⬇ Create a new array with the updated destination
+		const updatedShippingCosts = [...shippingCosts];
+		updatedShippingCosts[destinationIndex] = {
+			...updatedShippingCosts[destinationIndex],
+			[field]: value
+		};
+		
+		// ⬇ Dispatch the updated array to the Redux store
+		dispatch({
+			type: 'SET_PRICING_LOG_VIEW',
+			payload: { newShippingCosts: updatedShippingCosts }
+		});
+
+		setRows(updatedShippingCosts)
+	};
+
 
 	// ⬇ Rendering below: 
 	return (

@@ -15,7 +15,7 @@ router.get('/get-current-products', rejectUnauthenticated, (req, res) => {
 	const queryText = `
 		SELECT 
 			p.product_id, p.product_label, 
-			prc.product_region_cost_id, prc.region_id, prc.self_cost AS product_self_cost,
+			prc.product_region_cost_id, prc.region_id, prc.product_self_cost AS product_self_cost,
 			r.region_code AS destination_country
 		FROM products AS p
 		JOIN product_region_cost AS prc 
@@ -63,8 +63,9 @@ router.get('/get-all-product-cost-history', rejectNonAdmin, async (req, res) => 
 				pch.product_cost_history_id,
 				pch.product_id,
 				r.region_code AS destination_country,
+				r.region_id,
 				p.product_label,
-				prc.self_cost AS product_self_cost,
+				prc.product_self_cost AS product_self_cost,
 				TO_CHAR(pch.date_saved, 'YYYY-MM') AS "date_saved",
 				TO_CHAR(pch.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM product_cost_history AS pch
@@ -75,7 +76,10 @@ router.get('/get-all-product-cost-history', rejectNonAdmin, async (req, res) => 
 				AND pch.region_id = prc.region_id
 			JOIN regions AS r 
 				ON prc.region_id = r.region_id
-			ORDER BY pch.date_saved DESC, pch.product_id ASC;
+			ORDER BY 
+				pch.date_saved DESC, 
+				r.region_code DESC,
+				pch.product_id ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
@@ -93,8 +97,9 @@ router.get('/get-one-year-of-product-cost-history', rejectNonAdmin, async (req, 
 				pch.product_cost_history_id,
 				pch.product_id,
 				r.region_code AS destination_country,
+				r.region_id,
 				p.product_label,
-				prc.self_cost AS product_self_cost,
+				prc.product_self_cost AS product_self_cost,
 				TO_CHAR(pch.date_saved, 'YYYY-MM') AS "date_saved",
 				TO_CHAR(pch.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM product_cost_history AS pch
@@ -105,7 +110,9 @@ router.get('/get-one-year-of-product-cost-history', rejectNonAdmin, async (req, 
 			JOIN regions AS r 
 				ON prc.region_id = r.region_id
 			WHERE "pch".date_saved > NOW() - INTERVAL '1 year'
-			ORDER BY "pch".date_saved DESC, "pch".product_id ASC;
+			ORDER BY 
+				"pch".date_saved DESC, 
+				"pch".product_id ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
 		// ⬇ Make an object of results indexed by date_saved:
@@ -123,97 +130,96 @@ router.get('/get-one-year-of-product-cost-history', rejectNonAdmin, async (req, 
 	}; // End try/catch
 });
 
-
-router.get('/get-recent-product-cost-history', rejectNonAdmin, async (req, res) => {
-	try {
-		const sql = `
-			SELECT *
-			FROM "product_cost_history" AS "pch"
-			ORDER BY "pch".product_cost_history_id DESC
-			LIMIT 8;
-		`; // End sql
-		const { rows } = await pool.query(sql);
-		res.send(rows);
-	} catch (error) {
-		console.error('Error in products GET router', error);
-		res.sendStatus(500);
-	}; // End try/catch
-});
-
-
-router.get('/get-specific-product-cost-history', rejectNonAdmin, async (req, res) => {
-	const { date_saved } = req.query;
-	try {
-		const sql = `
-			SELECT * 
-			FROM "product_cost_history"
-			WHERE "date_saved" <= ${format('%L', date_saved)}
-			ORDER BY "date_saved" DESC
-			LIMIT 8;
-		`; // End sql
-		const { rows } = await pool.query(sql);
-		res.send(rows);
-	} catch (error) {
-		console.error('Error in GET router', error);
-		res.sendStatus(500);
-	}; // End try/catch
-});
-
-router.post('/submit-product-cost-history', rejectNonAdmin, async (req, res) => {
-	try {
-		// ⬇ Today's date in YYYY-MM-DD format: 
-		const today = new Date().toISOString().slice(0, 10);
-		let sql = `
-			INSERT INTO "product_cost_history" (
-				"product_id", "product_self_cost", "date_saved"
-			)
-			VALUES
-		`; // End sql
-		// ⬇ Loop through the req.body array to build the query:
-		for (let cost of req.body) {
-			sql += format(`(%L::int, %L::decimal, NOW()), `, cost.product_id, cost.product_self_cost);
-		}; // End for loop
-		// ⬇ Remove the last comma and space:
-		sql = sql.slice(0, -2);
-		sql += `;`;
-		// ⬇ Send the query to the database:
-		await pool.query(sql);
-		// ⬇ Send the response:
-		res.sendStatus(201);
-	} catch (error) {
-		console.error('Error in products history POST route', error);
-		res.sendStatus(500);
-	}; // End try/catch
-}); // End POST route
+// router.get('/get-recent-product-cost-history', rejectNonAdmin, async (req, res) => {
+// 	try {
+// 		const sql = `
+// 			SELECT *
+// 			FROM "product_cost_history" AS "pch"
+// 			ORDER BY "pch".product_cost_history_id DESC
+// 			LIMIT 8;
+// 		`; // End sql
+// 		const { rows } = await pool.query(sql);
+// 		res.send(rows);
+// 	} catch (error) {
+// 		console.error('Error in products GET router', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// });
 
 
-router.post('/edit-products-costs', rejectNonAdmin, async (req, res) => {
-	try {
-		let sql = `
-			UPDATE "products" AS p 
-			SET "product_self_cost" = v.product_self_cost
-			FROM (VALUES 
-		`; // End sql
-		// ⬇ Loop through the req.body array to build the query:
-		for (let cost of req.body) {
-			sql += format(`(%L::int, %L::decimal), `, cost.product_id, cost.product_self_cost);
-		}; // End for loop
-		// ⬇ Remove the last comma and space:
-		sql = sql.slice(0, -2);
-		// ⬇ Add the closing parentheses:
-		sql += `
-			) AS v(product_id, product_self_cost)
-			WHERE v.product_id = p.product_id;
-		`; // End sql
-		// ⬇ Send the query to the database:
-		await pool.query(sql);
-		// ⬇ Send the response:
-		res.sendStatus(202);
-	} catch (error) {
-		console.error('Error with product costs edit: ', error);
-		res.sendStatus(500);
-	}; // End try/catch
-}); // End POST route
+// router.get('/get-specific-product-cost-history', rejectNonAdmin, async (req, res) => {
+// 	const { date_saved } = req.query;
+// 	try {
+// 		const sql = `
+// 			SELECT * 
+// 			FROM "product_cost_history"
+// 			WHERE "date_saved" <= ${format('%L', date_saved)}
+// 			ORDER BY "date_saved" DESC
+// 			LIMIT 8;
+// 		`; // End sql
+// 		const { rows } = await pool.query(sql);
+// 		res.send(rows);
+// 	} catch (error) {
+// 		console.error('Error in GET router', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// });
+
+// router.post('/submit-product-cost-history', rejectNonAdmin, async (req, res) => {
+// 	try {
+// 		// ⬇ Today's date in YYYY-MM-DD format: 
+// 		const today = new Date().toISOString().slice(0, 10);
+// 		let sql = `
+// 			INSERT INTO "product_cost_history" (
+// 				"product_id", "product_self_cost", "date_saved"
+// 			)
+// 			VALUES
+// 		`; // End sql
+// 		// ⬇ Loop through the req.body array to build the query:
+// 		for (let cost of req.body) {
+// 			sql += format(`(%L::int, %L::decimal, NOW()), `, cost.product_id, cost.product_self_cost);
+// 		}; // End for loop
+// 		// ⬇ Remove the last comma and space:
+// 		sql = sql.slice(0, -2);
+// 		sql += `;`;
+// 		// ⬇ Send the query to the database:
+// 		await pool.query(sql);
+// 		// ⬇ Send the response:
+// 		res.sendStatus(201);
+// 	} catch (error) {
+// 		console.error('Error in products history POST route', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// }); // End POST route
+
+
+// router.post('/edit-products-costs', rejectNonAdmin, async (req, res) => {
+// 	try {
+// 		let sql = `
+// 			UPDATE "products" AS p 
+// 			SET "product_self_cost" = v.product_self_cost
+// 			FROM (VALUES 
+// 		`; // End sql
+// 		// ⬇ Loop through the req.body array to build the query:
+// 		for (let cost of req.body) {
+// 			sql += format(`(%L::int, %L::decimal), `, cost.product_id, cost.product_self_cost);
+// 		}; // End for loop
+// 		// ⬇ Remove the last comma and space:
+// 		sql = sql.slice(0, -2);
+// 		// ⬇ Add the closing parentheses:
+// 		sql += `
+// 			) AS v(product_id, product_self_cost)
+// 			WHERE v.product_id = p.product_id;
+// 		`; // End sql
+// 		// ⬇ Send the query to the database:
+// 		await pool.query(sql);
+// 		// ⬇ Send the response:
+// 		res.sendStatus(202);
+// 	} catch (error) {
+// 		console.error('Error with product costs edit: ', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// }); // End POST route
 
 
 //#region - Markup routes below: 
@@ -235,7 +241,6 @@ router.get('/get-markup-margin', rejectUnauthenticated, async (req, res) => {
 	} // End try/catch
 }); // End GET route
 
-// ! Ryan Here. Will have to revisit the history stuff. 
 router.get('/get-one-year-of-markup-history', rejectNonAdmin, async (req, res) => {
 	try {
 		const sql = `
@@ -285,6 +290,7 @@ router.get('/get-all-markup-history', rejectNonAdmin, async (req, res) => {
 				ON mh.region_id = r.region_id
 			ORDER BY 
 				mh.date_saved DESC, 
+				r.region_code DESC,
 				mh.markup_history_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);
@@ -295,32 +301,32 @@ router.get('/get-all-markup-history', rejectNonAdmin, async (req, res) => {
 	}; // End try/catch
 }); // End GET route
 
-router.get('/get-specific-markup-history', rejectNonAdmin, async (req, res) => {
-	const { date_saved } = req.query;
-	try {
-		const sql = `
-			SELECT
-				mh.markup_history_id,
-				mh.margin_applied::REAL,
-				(mh.margin_applied * 100)::REAL AS margin_applied_label,
-				TO_CHAR(mh.date_saved, 'YYYY-MM') AS date_saved,
-				TO_CHAR(mh.date_saved, 'YYYY-MM-DD') AS date_saved_full,
-				r.region_id, 
-				r.region_code AS destination_country
-			FROM markup_history AS mh
-			JOIN regions AS r
-				ON mh.region_id = r.region_id
-			WHERE "date_saved" <= ${format('%L', date_saved)}
-			ORDER BY "date_saved" DESC
-			LIMIT 1;
-		`; // End sql
-		const { rows } = await pool.query(sql);
-		res.send(rows);
-	} catch (error) {
-		console.error('Error in all markup history GET', error);
-		res.sendStatus(500);
-	}; // End try/catch
-}); // End GET route
+// router.get('/get-specific-markup-history', rejectNonAdmin, async (req, res) => {
+// 	const { date_saved } = req.query;
+// 	try {
+// 		const sql = `
+// 			SELECT
+// 				mh.markup_history_id,
+// 				mh.margin_applied::REAL,
+// 				(mh.margin_applied * 100)::REAL AS margin_applied_label,
+// 				TO_CHAR(mh.date_saved, 'YYYY-MM') AS date_saved,
+// 				TO_CHAR(mh.date_saved, 'YYYY-MM-DD') AS date_saved_full,
+// 				r.region_id, 
+// 				r.region_code AS destination_country
+// 			FROM markup_history AS mh
+// 			JOIN regions AS r
+// 				ON mh.region_id = r.region_id
+// 			WHERE "date_saved" <= ${format('%L', date_saved)}
+// 			ORDER BY "date_saved" DESC
+// 			LIMIT 1;
+// 		`; // End sql
+// 		const { rows } = await pool.query(sql);
+// 		res.send(rows);
+// 	} catch (error) {
+// 		console.error('Error in all markup history GET', error);
+// 		res.sendStatus(500);
+// 	}; // End try/catch
+// }); // End GET route
 
 router.post('/edit-markup-margin', rejectNonAdmin, async (req, res) => {
 	try {

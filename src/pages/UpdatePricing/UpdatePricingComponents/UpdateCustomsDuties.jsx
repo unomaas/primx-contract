@@ -256,21 +256,55 @@ export default function UpdateCustomsDuties() {
 	//#endregion - Custom Table Components.
 	//#endregion - Table Setup. 
 
-	// ⬇ Submit handler for in-line cell edits on the data grid:
+	// // ⬇ Submit handler for in-line cell edits on the data grid:
+	// const handleInCellEditSubmit = ({ id, field, value }) => {
+	// 	const duty = customsDuties.find(duty => duty.customs_duties_regions_id === id);
+
+	// 	// ⬇ If the value is the same as the original, don't submit the edit:
+	// 	if (duty[field] === value) return;
+
+	// 	let percentage = value;
+	// 	let decimal = value / 100;
+	// 	let value_field = field.slice(0, -6);
+
+	// 	// ⬇ If the value is different, modify the product object:
+	// 	duty[field] = value;
+	// 	duty[value_field] = decimal;
+
+	// }; // End handleInCellEditSubmit
+
 	const handleInCellEditSubmit = ({ id, field, value }) => {
-		const duty = customsDuties.find(duty => duty.customs_duties_regions_id === id);
+		const dutyIndex = customsDuties.findIndex(duty => duty.customs_duties_regions_id === id);
+
+		// ⬇ Check if the customs duty is found
+		if (dutyIndex === -1) {
+			console.error(`Customs duty not found with id: ${id}`);
+			return;
+		}
 
 		// ⬇ If the value is the same as the original, don't submit the edit:
-		if (duty[field] === value) return;
+		if (customsDuties[dutyIndex][field] === value) return;
 
 		let percentage = value;
 		let decimal = value / 100;
 		let value_field = field.slice(0, -6);
 
-		// ⬇ If the value is different, modify the product object:
-		duty[field] = value;
-		duty[value_field] = decimal;
+		// ⬇ Create a new array with the updated customs duty
+		const updatedCustomsDuties = [...customsDuties];
+		updatedCustomsDuties[dutyIndex] = {
+			...updatedCustomsDuties[dutyIndex],
+			[field]: value,
+			[value_field]: decimal
+		};
 
+		// ⬇ Dispatch the updated array to the Redux store
+		dispatch({
+			type: 'SET_PRICING_LOG_VIEW',
+			payload: { newCustomsDuties: updatedCustomsDuties }
+		});
+
+		// ⬇ Update local state to reflect changes in UI
+		setRows(updatedCustomsDuties);
 	}; // End handleInCellEditSubmit
 
 	// ⬇ Rendering below: 

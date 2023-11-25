@@ -44,6 +44,10 @@ function* pricingLogInitialLoad() {
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
 
+		console.log(`Ryan Here: pricingLogInitialLoad \n `, {
+			customsDutiesHistoryAll: customsDutiesHistoryAll.data,
+
+		});
 		// Ideas:
 		// Top Header: Current Pricing --> Most Recent Month --> Previous Month --> So on, for 12 months data.
 		// Next Header: 60lbs/35kg -- Difference in Percent from Last Month --> 68lbs/40kg -- Difference in Percent from Last Month --> So on, for 12 months data.  Loop through the data on render and have an arrow up or down generated, with color for positive or negative change. 
@@ -79,6 +83,7 @@ function* pricingLogInitialLoad() {
 					month_year_label: monthLabel,
 					month_year_value: date,
 					margin_applied: (markupHistory12Months.data[date][0].margin_applied),
+					margin_applied_label: (markupHistory12Months.data[date][0].margin_applied_label),
 					date_saved_full: (markupHistory12Months.data[date][0].date_saved_full),
 					pricing: {
 						products: JSON.parse(JSON.stringify(productCostHistory12Months.data[date])),
@@ -119,6 +124,7 @@ function* pricingLogInitialLoad() {
 
 				month.destinationsCosts.push({
 					destination_id: calculatedEstimate.destination_id,
+					destination_country: calculatedEstimate.destination_country,
 					destination_name: calculatedEstimate.destination_name,
 					measurement_units: calculatedEstimate.measurement_units,
 					units_label: calculatedEstimate.units_label,
@@ -139,6 +145,10 @@ function* pricingLogInitialLoad() {
 				// style: { backgroundColor: '#C8C8C8', },
 			},
 			{
+				headerName: "Region",
+				field: 'destination_country',
+			},
+			{
 				headerName: "Measurement Units",
 				field: 'measurement_units',
 			},
@@ -156,6 +166,7 @@ function* pricingLogInitialLoad() {
 				month_year_value: month.month_year_value,
 				date_saved_full: month.date_saved_full,
 				margin_applied: month.margin_applied,
+				margin_applied_label: month.margin_applied_label,
 				// headerClassName: `classes.header`,
 				// style: { backgroundColor: '#C8C8C8', },
 
@@ -190,6 +201,7 @@ function* pricingLogInitialLoad() {
 					pricingLogPerUnitRowsObject[destination.destination_id] = {
 						destination_id: destination.destination_id,
 						destination_name: destination.destination_name,
+						destination_country: destination.destination_country,
 						measurement_units: (destination.measurement_units).charAt(0).toUpperCase() + (destination.measurement_units).slice(1),
 						units_label: destination.units_label,
 						[`lower_${month.month_year_value}`]: destination.price_per_unit_75_50,
@@ -258,7 +270,6 @@ function* pricingLogInitialLoad() {
 function* updatePricingInitialLoad() {
 	try {
 		const currentShippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs');
-		console.log(`Ryan Here Saga 1: \n `,  {currentShippingCosts} );
 		const currentProductCosts = yield axios.get('/api/products/get-current-products');
 		const currentCustomsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
@@ -272,7 +283,7 @@ function* updatePricingInitialLoad() {
 		const shippingCostHistory12Months = yield axios.get(`/api/shippingcosts/get-one-year-of-shipping-cost-history`);
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
-		
+
 		//#region - Calculate historical pricing data for 12 months: 
 		const monthHolderObject = {
 			current: {

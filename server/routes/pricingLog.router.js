@@ -1,5 +1,5 @@
 const express = require('express');
-const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const { rejectUnauthenticated, rejectNonAdmin } = require('../modules/authentication-middleware');
 const pool = require('../modules/pool');
 const router = express.Router();
 const format = require('pg-format');
@@ -7,7 +7,8 @@ const dayjs = require('dayjs');
 var customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
 
-router.get('/update-pricing-initial-load', rejectUnauthenticated, async (req, res) => {
+// ! This is not used currently. 
+router.get('/update-pricing-initial-load', rejectNonAdmin, async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
@@ -37,7 +38,7 @@ router.get('/update-pricing-initial-load', rejectUnauthenticated, async (req, re
 });
 
 
-router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, res) => {
+router.post('/submit-new-pricing-changes', rejectNonAdmin, async (req, res) => {
 
 	const {
 		monthToSaveTo,
@@ -99,13 +100,13 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 		if (savingPricesToHistoryLog && !overwritingAnExistingMonth) {
 			currentCustomsDutiesSql = `
 				INSERT INTO "customs_duties_history" (
-					"custom_duty_id", "usa_percent", "can_percent", "date_saved"
+					"custom_duty_id", "duty_percentage", "region_id", "date_saved"
 				)
-				VALUES 
+				VALUES
 			`; // End sql
 			// ⬇ Loop through the req.body array to build the query:
 			for (let cost of currentCustomsDuties) {
-				currentCustomsDutiesSql += `(${format('%L::int', cost.custom_duty_id)}, ${format('%L::decimal', cost.usa_percent)}, ${format('%L::decimal', cost.can_percent)}, ${format('%L', dateToSaveTo)}), `
+				currentCustomsDutiesSql += `(${format('%L::int', cost.custom_duty_id)}, ${format('%L::decimal', cost.duty_percentage)}, ${format('%L::int', cost.region_id)}, ${format('%L', dateToSaveTo)}), `
 			}; // End for loop
 			// ⬇ Remove the last comma and space, and add the ending semicolon:
 			currentCustomsDutiesSql = currentCustomsDutiesSql.slice(0, -2) + `;`;
@@ -128,13 +129,13 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 
 			currentProductCostsSql = `
 				INSERT INTO "product_cost_history" (
-					"product_id", "product_self_cost", "date_saved"
+						"product_id", "product_self_cost", "region_id", "date_saved"
 				)
 				VALUES
 			`; // End sql
 			// ⬇ Loop through the req.body array to build the query:
 			for (let cost of currentProductCosts) {
-				currentProductCostsSql += `(${format('%L::int', cost.product_id)}, ${format('%L::decimal', cost.product_self_cost)}, ${format('%L', dateToSaveTo)}), `
+				currentProductCostsSql += `(${format('%L::int', cost.product_id)}, ${format('%L::decimal', cost.product_self_cost)}, ${format('%L::int', cost.region_id)}, ${format('%L', dateToSaveTo)}), `
 			}; // End for loop
 			// ⬇ Remove the last comma and space, and add the ending semicolon:
 			currentProductCostsSql = currentProductCostsSql.slice(0, -2) + `;`;
@@ -142,11 +143,15 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 
 			currentMarkupSql = `
 				INSERT INTO "markup_history" (
-					"margin_applied", "date_saved"
-				) VALUES (
-					${format('%L::decimal', currentMarkup[0].margin_applied)}, ${format('%L', dateToSaveTo)}
-				);
+						"margin_applied", "region_id", "date_saved"
+				)
+				VALUES
 			`; // End sql
+			// ⬇ Loop through the req.body array to build the query:
+			for (let markup of currentMarkup) {
+				currentMarkupSql += `(${format('%L::decimal', markup.margin_applied)}, ${format('%L::int', markup.region_id)}, ${format('%L', dateToSaveTo)}), `
+			};
+			currentMarkupSql = currentMarkupSql.slice(0, -2) + `;`;
 		}; // End if
 		//#endregion - Current costs sql query building above.
 
@@ -154,21 +159,23 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 		//#region - Overwriting data query building below:
 		if (savingPricesToHistoryLog && overwritingAnExistingMonth) {
 			overwriteCustomsDutiesSql = `
-				UPDATE "customs_duties_history" 
-				SET "usa_percent" = v.usa_percent, "can_percent" = v.can_percent
-				FROM (VALUES 
+				UPDATE "customs_duties_history"
+				SET "duty_percentage" = v.duty_percentage
+				FROM (VALUES
 			`; // End sql
 			// ⬇ Loop through the req.body array to build the query:
 			for (let cost of newCustomsDuties) {
-				overwriteCustomsDutiesSql += `(${format('%L::int', cost.custom_duty_id)}, ${format('%L::decimal', cost.usa_percent)}, ${format('%L::decimal', cost.can_percent)}), `
+				overwriteCustomsDutiesSql += `(${format('%L::int', cost.custom_duty_id)}, ${format('%L::decimal', cost.duty_percentage)}, ${format('%L::int', cost.region_id)}), `
 			}; // End for loop
 			// ⬇ Remove the last comma and space:
 			overwriteCustomsDutiesSql = overwriteCustomsDutiesSql.slice(0, -2);
 			// ⬇ Add the WHERE clause:
 			overwriteCustomsDutiesSql += `
-				) AS v(custom_duty_id, usa_percent, can_percent)
-				WHERE "customs_duties_history"."custom_duty_id" = v.custom_duty_id 
-				AND "customs_duties_history"."date_saved" = ${format('%L', dateToSaveTo)};
+				) AS v(custom_duty_id, duty_percentage, region_id)
+				WHERE 
+					"customs_duties_history"."custom_duty_id" = v.custom_duty_id AND 
+					"customs_duties_history"."region_id" = v.region_id AND 
+					"customs_duties_history"."date_saved" = ${format('%L', dateToSaveTo)};
 			`; // End sql
 
 
@@ -194,8 +201,9 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 			// ⬇ Add the WHERE clause:
 			overwriteShippingCostsSql += `
 				) AS v(shipping_cost_id, dc_20ft, dc_40ft, fibers_20ft, fibers_40ft, cpea_20ft, cpea_40ft, flow_20ft, flow_40ft) 
-				WHERE "shipping_cost_history"."shipping_cost_id" = v.shipping_cost_id 
-				AND "shipping_cost_history"."date_saved" = ${format('%L', dateToSaveTo)};
+				WHERE
+					"shipping_cost_history"."shipping_cost_id" = v.shipping_cost_id AND 
+					"shipping_cost_history"."date_saved" = ${format('%L', dateToSaveTo)};
 			`; // End sql
 
 
@@ -206,15 +214,17 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 			`; // End sql
 			// ⬇ Loop through the req.body array to build the query:	
 			for (let cost of newProductCosts) {
-				overwriteProductCostsSql += `(${format('%L::int', cost.product_id)}, ${format('%L::decimal', cost.product_self_cost)}), `
+				overwriteProductCostsSql += `(${format('%L::int', cost.product_id)}, ${format('%L::decimal', cost.product_self_cost)}, ${format('%L::int', cost.region_id)}), `
 			}; // End for loop
 			// ⬇ Remove the last comma and space:
 			overwriteProductCostsSql = overwriteProductCostsSql.slice(0, -2);
 			// ⬇ Add the WHERE clause:
 			overwriteProductCostsSql += `
-				) AS v(product_id, product_self_cost) 
-				WHERE "product_cost_history"."product_id" = v.product_id 
-				AND "product_cost_history"."date_saved" = ${format('%L', dateToSaveTo)};
+				) AS v(product_id, product_self_cost, region_id)
+				WHERE 
+					"product_cost_history"."product_id" = v.product_id AND 
+					"product_cost_history"."region_id" = v.region_id AND 
+					"product_cost_history"."date_saved" = ${format('%L', dateToSaveTo)};
 			`; // End sql
 
 
@@ -225,14 +235,16 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 			`; // End sql
 			// ⬇ Loop through the req.body array to build the query:
 			for (let cost of newMarkup) {
-				overwriteMarkupSql += `(${format('%L::decimal', cost.margin_applied)}), `
+				overwriteMarkupSql += `(${format('%L::decimal', cost.margin_applied)}, ${format('%L::int', cost.region_id)}), `
 			}; // End for loop
 			// ⬇ Remove the last comma and space:
 			overwriteMarkupSql = overwriteMarkupSql.slice(0, -2);
 			// ⬇ Add the WHERE clause:
 			overwriteMarkupSql += `
-				) AS v(margin_applied) 
-				WHERE "markup_history"."date_saved" = ${format('%L', dateToSaveTo)};
+				) AS v(margin_applied, region_id)
+				WHERE 
+					"markup_history"."region_id" = v.region_id AND 
+					"markup_history"."date_saved" = ${format('%L', dateToSaveTo)};
 			`; // End sql
 		}; // End if
 		//#endregion - Overwriting data query building above.
@@ -240,22 +252,20 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 
 		//#region - New costs sql query building below:
 		let newCustomsDutiesSql = `
-			UPDATE "customs_duties" AS cd
-			SET 
-				"usa_percent" = v.usa_percent,
-				"can_percent" = v.can_percent
-			FROM (VALUES 
+			UPDATE "customs_duties_regions" AS cdr
+			SET "duty_percentage" = v.duty_percentage
+			FROM (VALUES
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of newCustomsDuties) {
-			newCustomsDutiesSql += `(${format('%L::int', cost.custom_duty_id)}, ${format('%L::decimal', cost.usa_percent)}, ${format('%L::decimal', cost.can_percent)}), `
+			newCustomsDutiesSql += `(${format('%L::int', cost.custom_duty_id)}, ${format('%L::decimal', cost.duty_percentage)}), `
 		}; // End for loop
 		// ⬇ Remove the last comma and space:
 		newCustomsDutiesSql = newCustomsDutiesSql.slice(0, -2);
 		// ⬇ Add the closing parentheses:
 		newCustomsDutiesSql += `
-			) AS v(custom_duty_id, usa_percent, can_percent)
-			WHERE v.custom_duty_id = cd.custom_duty_id;
+			) AS v(custom_duty_id, duty_percentage)
+			WHERE cdr.custom_duty_id = v.custom_duty_id;
 		`; // End sql
 
 
@@ -286,20 +296,22 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 
 
 		let newProductCostsSql = `
-			UPDATE "products" AS p
+			UPDATE "product_region_cost" AS prc
 			SET "product_self_cost" = v.product_self_cost
 			FROM (VALUES
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of newProductCosts) {
-			newProductCostsSql += `(${format('%L::int', cost.product_id)}, ${format('%L::decimal', cost.product_self_cost)}), `
+			newProductCostsSql += `(${format('%L::int', cost.product_id)}, ${format('%L::decimal', cost.product_self_cost)}, ${format('%L::int', cost.region_id)}), `
 		}; // End for loop
 		// ⬇ Remove the last comma and space:
 		newProductCostsSql = newProductCostsSql.slice(0, -2);
 		// ⬇ Add the closing parentheses:
 		newProductCostsSql += `
-			) AS v(product_id, product_self_cost)
-			WHERE v.product_id = p.product_id;
+			) AS v(product_id, product_self_cost, region_id)
+			WHERE 
+				prc.product_id = v.product_id AND 
+				prc.region_id = v.region_id;
 		`; // End sql
 
 
@@ -310,14 +322,14 @@ router.post('/submit-new-pricing-changes', rejectUnauthenticated, async (req, re
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of newMarkup) {
-			newMarkupSql += `(${format('%L::int', cost.markup_id)}, ${format('%L::decimal', cost.margin_applied)}), `
+			newMarkupSql += `(${format('%L::decimal', cost.margin_applied)}, ${format('%L::int', cost.region_id)}), `
 		}; // End for loop
 		// ⬇ Remove the last comma and space:
 		newMarkupSql = newMarkupSql.slice(0, -2);
 		// ⬇ Add the closing parentheses:
 		newMarkupSql += `
-			) AS v(markup_id, margin_applied)
-			WHERE v.markup_id = m.markup_id;
+			) AS v(margin_applied, region_id)
+			WHERE m.region_id = v.region_id;
 		`; // End sql
 		//#endregion - New costs sql query building above:
 

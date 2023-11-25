@@ -12,8 +12,6 @@ export default function useCalculateProjectCost(estimate, options) {
 		customsDuties,
 	} = options;
 
-
-
 	if (
 		products.length === 0 ||
 		shippingDestinations.length === 0 ||
@@ -354,9 +352,11 @@ export default function useCalculateProjectCost(estimate, options) {
 
 
 	//#region Step 8 - Calculate the sales price per unit:
+	const regionalMarkup = currentMarkup.find(markup => markup.destination_country == estimate.destination_country);
+
 	// ⬇ Calculate the sales price per unit:
-	const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(currentMarkup[0].margin_applied));
-	const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(currentMarkup[0].margin_applied));
+	const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(regionalMarkup.margin_applied));
+	const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(regionalMarkup.margin_applied));
 	// ! Ryan Here, save this number: 379540 square feet by 10 inches thickness to get the numbers shown in their estimate example
 
 	//#endregion - Step 8. 

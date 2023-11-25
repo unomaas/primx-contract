@@ -40,32 +40,19 @@ export default function PricingLogTable() {
 					// },
 				},
 				{
-					headerName: 'Custom Duty',
-					field: 'duty_label',
-					flex: 1,
-					headerClassName: classes.header
+					field: 'destination_country',
+					headerName: 'Region',
+					disableColumnMenu: true,
+					flex: .5,
+					headerClassName: classes.header,
 				},
 				{
-					headerName: 'USA Duty (%)',
-					field: 'usa_percent',
+					headerName: 'Duty Percentage (%)',
+					field: 'duty_percentage_label',
 					flex: 1,
 					type: 'number',
 					headerClassName: classes.header,
-					valueFormatter: (params) => {
-						// ⬇ Return value as a percentage:
-						return `${(params.value * 100)}%`;
-					},
-				},
-				{
-					headerName: 'CAN Duty (%)',
-					field: 'can_percent',
-					flex: 1,
-					type: 'number',
-					headerClassName: classes.header,
-					valueFormatter: (params) => {
-						// ⬇ Return value as a percentage:
-						return `${(params.value * 100)}%`;
-					},
+					valueFormatter: (params) => { return `${(params.value)}%` },
 				},
 			] // End columns
 		}, // End customs_duties
@@ -87,12 +74,20 @@ export default function PricingLogTable() {
 					// },
 				},
 				{
+					field: 'destination_country',
+					headerName: 'Region',
+					disableColumnMenu: true,
+					flex: .5,
+					headerClassName: classes.header,
+				},
+				{
 					headerName: 'Margin Applied (%)',
-					field: 'margin_applied',
+					field: 'margin_applied_label',
 					flex: 1,
 					type: 'number',
 					headerClassName: classes.header,
-					valueFormatter: (params) => { return `${(params.value * 100)}%` },
+					valueFormatter: (params) => { return `${(params.value)}%` },
+					// valueFormatter: (params) => { return `${(params.value * 100)}%` },
 					type: 'number',
 				},
 			] // End columns
@@ -118,6 +113,13 @@ export default function PricingLogTable() {
 					headerName: 'Product',
 					field: 'product_label',
 					flex: 1,
+					headerClassName: classes.header,
+				},
+				{
+					field: 'destination_country',
+					headerName: 'Region',
+					disableColumnMenu: true,
+					flex: .5,
 					headerClassName: classes.header,
 				},
 				{
@@ -338,7 +340,7 @@ export default function PricingLogTable() {
 						if (params.value == 0) return <div>0.00%</div>;
 					},
 				}); // End push
-			} else if (column.headerName.includes("Measurement")) {
+			} else if (column.headerName.includes("Measurement") || column.headerName.includes("Region")) {
 				columns.push({
 					headerName: column.headerName,
 					field: column.field,
@@ -563,7 +565,7 @@ export default function PricingLogTable() {
 										// fontFamily: "Lexend Tera",
 										// height: "45px"
 									}} key={index} >
-										{column.month_year_label} at {(column.margin_applied * 100)}% Markup
+										{column.month_year_label} at {(column.margin_applied_label)}% Markup
 									</div>
 								)
 							} else {

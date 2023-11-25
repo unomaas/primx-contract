@@ -35,7 +35,6 @@ export default function UpdateMarkupMargin() {
 
 	function calculateNewPricingData() {
 
-		console.log(`Ryan Here: calculateNewPricingData \n `, { newMarkup, currentMarkup });
 		pricingData12Months.new.destinationsCosts = [];
 
 		pricingData12Months.new.pricing = {
@@ -62,6 +61,7 @@ export default function UpdateMarkupMargin() {
 			}; // End if/else
 
 			estimate.destination_id = destination.destination_id;
+			estimate.region_id = destination.region_id;
 			estimate.destination_name = destination.destination_name;
 
 			const calculatedEstimate = useCalculateProjectCost(estimate, pricingData12Months.new.pricing);
@@ -76,10 +76,10 @@ export default function UpdateMarkupMargin() {
 				price_per_unit_90_60: calculatedEstimate.price_per_unit_90_60,
 			}); // End month.destinationsCosts.push
 		}; // End for loop
-	}
+	}; // End calculateNewPricingData
 
 	// useEffect(() => {
-	calculateNewPricingData();
+		calculateNewPricingData();
 	// }, [newMarkup]);
 
 	const leftTableData = leftSelectedMonth.destinationsCosts;
@@ -110,6 +110,7 @@ export default function UpdateMarkupMargin() {
 			rows.push(row);
 		}; // End for
 	}; // End if
+
 
 	// ⬇ Logic to handle setting the table rows on first load: 
 	const columns = [
@@ -247,21 +248,6 @@ export default function UpdateMarkupMargin() {
 			setRightSelectedMonth(pricingData12Months[date]);
 		}; // End handleLogViewSelection
 
-		// ! Ryan here. 
-		const handleMarkupChange = (event) => {
-			const percentage = event.target.value;
-			const decimal = percentage / 100;
-
-			dispatch({
-				type: 'SET_PRICING_LOG_VIEW', payload: {
-					newMarkup: [{
-						"markup_id": 1,
-						"margin_applied": decimal,
-						"margin_applied_label": percentage,
-					}]
-				}
-			});
-		}; // End handleMarkupChange
 
 		return (
 			<GridToolbarContainer style={{ display: "block", width: "100%" }} >
@@ -371,38 +357,6 @@ export default function UpdateMarkupMargin() {
 							Edit Regional Markup
 						</Button>
 					</div>
-					{/* <div
-						style={{
-							flex: 3,
-							fontSize: "12px",
-							fontFamily: "Lexend Tera",
-						}}
-					>
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								width: "100%",
-								height: "35px",
-								color: "#3f51b5",
-							}}
-						>
-							Set Markup Margin:
-							<TextField
-								id="markup-input"
-								type="number"
-								color="primary"
-								style={{ width: "80px", marginLeft: "8px", marginTop: "3px" }}
-								InputProps={{
-									endAdornment: <InputAdornment position="end">%</InputAdornment>
-								}}
-								defaultValue={newMarkup[0].margin_applied_label}
-								onBlur={(event) => handleMarkupChange(event)}
-								onKeyPress={(event) => { if (event.key === 'Enter') handleMarkupChange(event); }}
-							/>
-						</div>
-					</div> */}
 				</div>
 
 			</GridToolbarContainer >
@@ -479,6 +433,7 @@ export default function UpdateMarkupMargin() {
 		const { newMarkup } = viewState;
 		const { currentMarkup } = dataState;
 
+
 		// State for the editable markup data
 		const [editData, setEditData] = useState(() =>
 			newMarkup.reduce((acc, markup) => {
@@ -494,33 +449,17 @@ export default function UpdateMarkupMargin() {
 			}));
 		};
 
-		const handleMarkupChange = (event) => {
-			const percentage = event.target.value;
-			const decimal = percentage / 100;
-	
-			dispatch({
-					type: 'SET_PRICING_LOG_VIEW', 
-					payload: {
-							newMarkup: [{
-									"markup_id": 1,
-									"margin_applied": decimal,
-									"margin_applied_label": percentage,
-							}]
-					}
-			});
-	}; // End handleMarkupChange
-
 		const handleSubmit = () => {
 			// Check for changes before submitting
-			const hasChanges = newMarkup.some(markup => editData[markup.region_id] !== markup.margin_applied_label);
+			const hasChanges = newMarkup.some(region => editData[region.region_id] !== region.margin_applied_label);
 
 			if (!hasChanges) {
 				alert('Please make changes to submit first.');
 				return;
-			}
+			};
 
 			// Transform editData to match the structure of newMarkup
-			const updatedMarkup = currentMarkup.map(markup => ({
+			const updatedMarkup = newMarkup.map(markup => ({
 				...markup,
 				margin_applied_label: editData[markup.region_id],
 				margin_applied: editData[markup.region_id] / 100,
@@ -528,6 +467,9 @@ export default function UpdateMarkupMargin() {
 
 			// Dispatch the updated newMarkup
 			dispatch({ type: 'SET_PRICING_LOG_VIEW', payload: { newMarkup: updatedMarkup } });
+			// if (leftSelectedMonth.month_year_value === 'new' || rightSelectedMonth.month_year_value === 'new') {
+				// ⬇ Find  which one is new:
+			// }; 
 			setShowEditModal(false);
 		};
 
@@ -559,24 +501,26 @@ export default function UpdateMarkupMargin() {
 						height: "fit-content",
 						marginTop: "-300px",
 					}}>
-						{newMarkup.map(region => (
-							<div key={region.markup_id} style={{ marginBottom: '10px', display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-								<div style={{ marginRight: '10px' }}>{region.destination_country} Markup (%):</div>
-								<TextField
-									id="markup-input"
-									type="number"
-									color="primary"
-									style={{ width: '75px' }}
-									// style={{ width: "80px", marginLeft: "8px", marginTop: "3px" }}
-									InputProps={{
-										endAdornment: <InputAdornment position="end">%</InputAdornment>
-									}}
-									defaultValue={newMarkup[0].margin_applied_label}
-									onBlur={(event) => handleMarkupChange(event)}
-									onKeyPress={(event) => { if (event.key === 'Enter') handleMarkupChange(event); }}
-								/>
-							</div>
-						))}
+						{newMarkup.map(region => {
+							console.log(`Ryan Here: \n newMarkup.map`, {region} );
+							return (
+								<div key={region.markup_id} style={{ marginBottom: '10px', display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+									<div style={{ marginRight: '10px' }}>{region.destination_country} Markup (%):</div>
+									<TextField
+										id="markup-input"
+										type="number"
+										color="primary"
+										style={{ width: '75px' }}
+										InputProps={{
+											endAdornment: <InputAdornment position="end">%</InputAdornment>
+										}}
+										defaultValue={region.margin_applied_label}
+										onBlur={(event) => handleEdit(region.region_id, event.target.value)}
+										onKeyPress={(event) => { event.key === 'Enter' && handleEdit(region.region_id, event.target.value) }}
+									/>
+								</div>
+							)
+						})}
 						<div style={{ borderTop: "1px solid #000", marginTop: '10px', paddingTop: "10px", display: 'flex', justifyContent: 'space-between' }}>
 							<Button variant="contained" color="secondary" onClick={() => setShowEditModal(false)}>Cancel</Button>
 							<Button variant="contained" color="primary" onClick={() => handleSubmit()}>Apply</Button>
@@ -623,8 +567,6 @@ export default function UpdateMarkupMargin() {
 
 
 const GridToolbarSelectDropdown = ({ month, otherMonth, handleViewSelection, viewState }) => {
-
-	// console.log(`Ryan Here: GridToolbarSelectDropdown \n `, {month, otherMonth, handleViewSelection, viewState} );
 
 	const { monthOptions } = viewState;
 	const [anchorEl, setAnchorEl] = useState(null);
