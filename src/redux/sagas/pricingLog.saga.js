@@ -44,10 +44,6 @@ function* pricingLogInitialLoad() {
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
 
-		console.log(`Ryan Here: pricingLogInitialLoad \n `, {
-			customsDutiesHistoryAll: customsDutiesHistoryAll.data,
-
-		});
 		// Ideas:
 		// Top Header: Current Pricing --> Most Recent Month --> Previous Month --> So on, for 12 months data.
 		// Next Header: 60lbs/35kg -- Difference in Percent from Last Month --> 68lbs/40kg -- Difference in Percent from Last Month --> So on, for 12 months data.  Loop through the data on render and have an arrow up or down generated, with color for positive or negative change. 

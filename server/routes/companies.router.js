@@ -3,8 +3,10 @@ const pool = require('../modules/pool');
 const router = express.Router();
 const {
   rejectUnauthenticated,
+  rejectNonAdmin
 } = require('../modules/authentication-middleware');
 
+const format = require('pg-format');
 
 // *************************** GET ROUTES ***************************
 
@@ -17,11 +19,11 @@ router.get('/all', (req, res) => {
       l.licensee_contractor_name, 
       l.default_measurement,
       l.active,
-      array_agg(r.region_code) AS operating_regions
+      array_agg(r.region_id) AS operating_regions
     FROM licensees AS l
     JOIN licensee_regions AS lr ON lr.licensee_id = l.licensee_id
     JOIN regions AS r ON r.region_id = lr.region_id
-    GROUP BY l.licensee_id, l.licensee_contractor_name, l.default_measurement
+    GROUP BY l.licensee_id
     ORDER BY l.licensee_contractor_name ASC;
   `;
 
@@ -41,12 +43,13 @@ router.get('/active', (req, res) => {
       l.licensee_id, 
       l.licensee_contractor_name, 
       l.default_measurement,
-      array_agg(r.region_code) AS operating_regions
+      l.active,
+      array_agg(r.region_id) AS operating_regions
     FROM licensees AS l
     JOIN licensee_regions AS lr ON lr.licensee_id = l.licensee_id
     JOIN regions AS r ON r.region_id = lr.region_id
     WHERE l.active = TRUE
-    GROUP BY l.licensee_id, l.licensee_contractor_name, l.default_measurement
+    GROUP BY l.licensee_id
     ORDER BY l.licensee_contractor_name ASC;
   `;
 
@@ -62,19 +65,92 @@ router.get('/active', (req, res) => {
 // *************************** POST ROUTES ***************************
 
 // POST route to POST a new licensee into the licensees table
-router.post('/', rejectUnauthenticated, (req, res) => {
-	const { name, measurement } = req.body.value;
+// router.post('/', rejectUnauthenticated, (req, res) => {
+// 	const { name, measurement } = req.body.value;
 
-  const queryText = `INSERT INTO "licensees" (licensee_contractor_name, default_measurement)
-      VALUES ($1, $2)`;
-   
-  pool.query(queryText, [name, measurement])
-    .then(() => res.sendStatus(201))
-    .catch((error) => {
-      console.error('Company ServerSide Post failed:', error);
-      res.sendStatus(500);
-    });
-})
+//   const queryText = `INSERT INTO "licensees" (licensee_contractor_name, default_measurement)
+//       VALUES ($1, $2)`;
+
+//   pool.query(queryText, [name, measurement])
+//     .then(() => res.sendStatus(201))
+//     .catch((error) => {
+//       console.error('Company ServerSide Post failed:', error);
+//       res.sendStatus(500);
+//     });
+// })
+
+router.post('/submit-licensee', rejectNonAdmin, async (req, res) => {
+  const connection = await pool.connect();
+  try {
+    const {
+      licensee_contractor_name,
+      default_measurement,
+      operating_regions,
+      active,
+      edit,
+      licensee_id,
+    } = req.body;
+
+    await connection.query('BEGIN'); // Start transaction
+
+    let licenseeId = licensee_id;
+
+    if (edit) {
+      const updateLicenseeSql = `
+            UPDATE licensees
+            SET 
+              licensee_contractor_name = ${format(`%L`, licensee_contractor_name)},
+               default_measurement = ${format(`%L`, default_measurement)},
+               active = ${format(`%L`, active)}
+            WHERE licensee_id = ${format(`%L`, licensee_id)};
+          `;
+
+      await connection.query(updateLicenseeSql);
+
+      await connection.query(`DELETE FROM licensee_regions WHERE licensee_id = ${format(`%L`, licensee_id)};`);
+    } else {
+      const insertLicenseeSql = `
+            INSERT INTO licensees (
+              licensee_contractor_name, 
+              default_measurement, 
+              active
+            ) VALUES (
+              ${format(`%L`, licensee_contractor_name)}, 
+              ${format(`%L`, default_measurement)}, 
+              ${format(`%L`, active)}
+            )
+            RETURNING licensee_id;
+          `;
+
+      const result = await connection.query(insertLicenseeSql);
+      licenseeId = result.rows[0].licensee_id;
+    }; // End if/else
+
+    // Insert new operating regions
+    for (const regionId of operating_regions) {
+      const insertRegionSql = `
+        INSERT INTO licensee_regions (
+          licensee_id, 
+          region_id
+        ) VALUES (
+          ${format(`%L`, licenseeId)}, 
+          ${format(`%L`, regionId)}
+        )
+      `;
+      await connection.query(insertRegionSql);
+    }
+
+    await connection.query('COMMIT'); // Commit transaction
+    res.sendStatus(201);
+  } catch (error) {
+    await connection.query('ROLLBACK'); // Rollback transaction on error
+    console.error('Error in submit licensee POST', error);
+    res.sendStatus(500);
+  } finally {
+    connection.release();
+  }
+});
+
 
 
 // *************************** PUT ROUTES ***************************

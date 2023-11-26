@@ -23,7 +23,7 @@ router.get('/get-active-regions', rejectUnauthenticated, async (req, res) => {
 	}
 });
 
-router.get('/get-active-regions', rejectUnauthenticated, async (req, res) => {
+router.get('/get-all-regions', rejectNonAdmin, async (req, res) => {
 	const queryText = 'SELECT * FROM regions ORDER BY region_id;';
 	try {
 		const results = await pool.query(queryText);

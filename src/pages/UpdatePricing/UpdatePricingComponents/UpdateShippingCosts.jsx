@@ -16,7 +16,6 @@ export default function UpdateShippingCosts() {
 	const dispatch = useDispatch();
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
 	const shippingCosts = viewState.newShippingCosts;
-	console.log(`Ryan Here 1: \n `, {shippingCosts: JSON.parse(JSON.stringify(shippingCosts))} );
 
 
 	//#region - Table action state variables: 

@@ -12,7 +12,7 @@ import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
 import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx';
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
-import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
+import AdminUpdateLicenses from '../LegacyComponents/AdminUpdateLicenses.jsx';
 // import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
 import AdminUpdateMarkup from '../LegacyComponents/AdminUpdateMarkup';
 import AdminUpdateShipping from '../LegacyComponents/AdminUpdateShipping';

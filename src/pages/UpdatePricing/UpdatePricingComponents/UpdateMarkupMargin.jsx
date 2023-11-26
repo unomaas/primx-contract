@@ -502,7 +502,6 @@ export default function UpdateMarkupMargin() {
 						marginTop: "-300px",
 					}}>
 						{newMarkup.map(region => {
-							console.log(`Ryan Here: \n newMarkup.map`, {region} );
 							return (
 								<div key={region.markup_id} style={{ marginBottom: '10px', display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 									<div style={{ marginRight: '10px' }}>{region.destination_country} Markup (%):</div>
