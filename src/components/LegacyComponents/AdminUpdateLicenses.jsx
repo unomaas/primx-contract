@@ -49,21 +49,11 @@ export default function AdminUpdateLicenses() {
 		measurement: '',
 		operating_regions: [],
 	});
-	// const [availableRegions, setAvailableRegions] = useState(regions || []);
-
-	console.log(`Ryan Here: \n `, {
-		companies,
-		selectedCompany,
-		selectedRegions,
-		activeRegions,
-	});
-
 
 	// GET all licensee company data on component load
 	useEffect(() => {
 		dispatch({ type: 'FETCH_ALL_COMPANIES' });
 		dispatch({ type: 'FETCH_ACTIVE_REGIONS' });
-
 	}, [])
 
 
@@ -106,7 +96,7 @@ export default function AdminUpdateLicenses() {
 	// ! Ryan here, when you come back, we need to implement a way to update which regions a licensee can operate in. Then, we  need to add a view to create/manage regions.  Then we need to update the shipping destinations view to be able to create new destinations that link to a region. Then we need to work out the new historical pricing stuff with regions (likely one table per region). Then do the same thing for pricing updates in the set new pricing procedure.  Then create a view to create/manage region admin, then implement the logic associated with that. I think that might be everything. 
 	// // ! 1.) Implement a wa to update which regions a licensee can operate in. 
 	// ! 2.) Add a view to create/manage regions.  Need to add a way that when a user creates a new region, they automatically set prices and shit for it.
-	// ! 3.) Update the shipping destinations view to be able to create new destinations that link to a region. 
+	// // ! 3.) Update the shipping destinations view to be able to create new destinations that link to a region. 
 	// ! 4.) Create a view to create/manage region admin, then implement the logic associated with that. 
 	// ! 5.) I think that might be everything.
 

@@ -337,7 +337,6 @@ export default function LicenseesTable() {
 		};
 
 		const handleSubmit = () => {
-			console.log(`Ryan Here: handleSubmit \n `, { editData });
 			if (selectedRow && JSON.stringify(editData) === JSON.stringify(selectedRow)) {
 				alert('Please make changes to submit.');
 				return;

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useClasses } from '../../../components/MuiStyling/MuiStyling';
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
-import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper } from '@material-ui/core';
+import { Button, Fade, MenuItem, Menu, TextField, TablePagination, Modal, Backdrop, InputAdornment, Divider, Tooltip, Paper, FormControl, InputLabel, Select, FormControlLabel, Switch, ButtonGroup } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
@@ -18,7 +18,8 @@ export default function ShippingDestinationTable() {
 	const classes = useClasses();
 	const dispatch = useDispatch();
 	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingAllDestinations);
-	const showEditModal = useSelector(store => store.shippingDestinations.showEditModal);
+	const [showEditModal, setShowEditModal] = useState(false);
+	const activeRegions = useSelector(store => store.regions.activeRegions);
 
 	const [selectedRow, setSelectedRow] = useState(null);
 
@@ -36,7 +37,7 @@ export default function ShippingDestinationTable() {
 		},
 		{
 			field: 'destination_country',
-			headerName: 'Country',
+			headerName: 'Region',
 			flex: 1,
 			headerClassName: classes.header,
 		},
@@ -70,7 +71,7 @@ export default function ShippingDestinationTable() {
 	useEffect(() => {
 		// GET shipping cost data on page load
 		dispatch({ type: 'FETCH_ALL_SHIPPING_DESTINATIONS' });
-		dispatch({ type: 'FETCH_SHIPPING_COSTS' });
+		dispatch({ type: 'FETCH_ACTIVE_REGIONS' });
 		// setIsTableLoaded(true)
 	}, [])
 
@@ -242,21 +243,21 @@ export default function ShippingDestinationTable() {
 
 
 
-		const toggleActiveSubmit = () => {
-			if (selectedRow.destination_active === false) {
-				dispatch({ type: 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL', payload: true })
-				return;
-			}; // End if
+		// const toggleActiveSubmit = () => {
+		// 	if (selectedRow.destination_active === false) {
+		// 		dispatch({ type: 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL', payload: true })
+		// 		return;
+		// 	}; // End if
 
-			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-			dispatch({ type: 'TOGGLE_SHIPPING_DESTINATION_ACTIVE', payload: selectedRow.destination_id })
+		// 	dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+		// 	dispatch({ type: 'TOGGLE_SHIPPING_DESTINATION_ACTIVE', payload: selectedRow.destination_id })
 
-			setSelectedRow({
-				...selectedRow,
-				destination_active: !selectedRow.destination_active
-			})
+		// 	setSelectedRow({
+		// 		...selectedRow,
+		// 		destination_active: !selectedRow.destination_active
+		// 	})
 
-		}; // End handleActiveSubmit
+		// }; // End handleActiveSubmit
 
 		return (
 			<div style={{
@@ -264,18 +265,37 @@ export default function ShippingDestinationTable() {
 				display: "flex",
 				justifyContent: "flex-start",
 			}}>
-				{selectedRow &&
-					// ⬇ Only show this button if a row is selected:
-					<Button
-						color={selectedRow.destination_active === true ? "secondary" : "primary"}
-						size="small"
-						onClick={() => toggleActiveSubmit()}
-					>
-						{selectedRow.destination_active === true
-							? `Set ${selectedRow.destination_name} Inactive`
-							: `Set ${selectedRow.destination_name} Active`
-						}
-					</Button>
+				{selectedRow
+					? <>
+						{/* <Button
+							color={selectedRow.destination_active === true ? "secondary" : "primary"}
+							size="small"
+							onClick={() => toggleActiveSubmit()}
+						>
+							{selectedRow.destination_active === true
+								? `Set ${selectedRow.destination_name} Inactive`
+								: `Set ${selectedRow.destination_name} Active`
+							}
+						</Button> */}
+						<Button
+							color="primary"
+							size="small"
+							onClick={() => setShowEditModal(true)}
+							style={{ margin: "4px" }}
+						>
+							Edit {selectedRow?.destination_name}
+						</Button>
+					</>
+					: <>
+						<Button
+							color="primary"
+							size="small"
+							onClick={() => setShowEditModal(true)}
+							style={{ margin: "4px" }}
+						>
+							Create New Destination
+						</Button>
+					</>
 				}
 				<CustomPagination />
 			</div>
@@ -283,6 +303,145 @@ export default function ShippingDestinationTable() {
 	}; // End CustomFooter
 	//#endregion - Custom Table Components.
 	//#endregion - Table Setup. 
+
+
+
+	const TableEditModal = () => {
+
+		const destination = {
+			destination_name: '',
+			destination_id: 0,
+			region_id: 0,
+			destination_country: 0,
+			destination_active: true,
+			// Add initial values for shipping costs
+
+		};
+
+		// const newDestinationShippingCosts = {
+		// 	dc_20ft: '',
+		// 	dc_40ft: '',
+		// 	fibers_20ft: '',
+		// 	fibers_40ft: '',
+		// 	cpea_20ft: '',
+		// 	cpea_40ft: '',
+		// 	flow_20ft: '',
+		// 	flow_40ft: '',
+		// };
+
+		// Assume editData is already correctly initialized based on the selected row
+		const [editData, setEditData] = useState({
+			...selectedRow || destination
+		});
+
+
+		const handleEdit = (value, label) => {
+			setEditData({
+				...editData,
+				[label]: value
+			});
+		};
+
+		const handleSubmit = () => {
+			if (selectedRow && JSON.stringify(editData) === JSON.stringify(selectedRow)) {
+				alert('Please make changes to submit.');
+				return;
+			}
+			
+			// ⬇ Map over editData for validation: 
+			for (let key in editData) {
+				if (typeof editData[key] == 'string' && editData[key] === '') {
+					alert(`Please enter a value for ${key.replace(/_/g, ' ').replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}.`);
+					return;
+				}; // End if
+			}; // End for in loop
+
+			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+
+			dispatch({
+				type: 'SUBMIT_DESTINATION', payload: {
+					...editData,
+					edit: selectedRow ? true : false,
+				}
+			});
+			setShowEditModal(false);
+			setSelectedRow(editData);
+		};
+
+
+		return (
+			<Modal
+				open={showEditModal}
+				onClose={() => setShowEditModal(false)}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{ timeout: 500 }}
+				style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+			>
+				<Fade in={showEditModal}>
+					<div style={{ backgroundColor: 'white', borderRadius: '1rem', boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)", padding: '1rem', width: "fit-content", height: "fit-content", marginTop: "-300px", minWidth: '350px', maxWidth: '450px' }}>
+						<div style={{ margin: '0px auto 10px auto', fontSize: "1.1rem", letterSpacing: "0.5px", borderBottom: "1px solid #000", fontFamily: "Lexend Tera", paddingBottom: '10px' }}>
+							{selectedRow?.destination_name ? `Edit ${selectedRow.destination_name}` : 'Create New Destination'}
+						</div>
+						<div style={{ marginBottom: '10px' }}>
+							<TextField
+								fullWidth
+								label="Destination Name"
+								value={editData.destination_name}
+								onChange={(event) => handleEdit(event.target.value, 'destination_name')}
+								style={{ marginBottom: '20px' }}
+							/>
+							<FormControl fullWidth>
+								<InputLabel>Region</InputLabel>
+								<Select
+									value={editData.region_id}
+									onChange={(event) => handleEdit(event.target.value, 'region_id')}
+									style={{ textAlign: 'left' }}
+								>
+									{activeRegions?.map((region) => (
+										<MenuItem key={region.region_id} value={region.region_id}>
+											{region.region_code}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							{selectedRow &&
+								<div style={{ marginTop: '20px', width: '100%' }}>
+									<ButtonGroup fullWidth>
+										<Button
+											variant={!editData.destination_active ? "contained" : "outlined"}
+											color="secondary"
+											onClick={(event) => handleEdit(false, 'destination_active')}
+										>
+											Inactive
+										</Button>
+										<Button
+											variant={editData.destination_active ? "contained" : "outlined"}
+											color="primary"
+											onClick={(event) => handleEdit(true, 'destination_active')}
+										>
+											Active
+										</Button>
+									</ButtonGroup>
+								</div>
+							}
+
+						</div>
+						<div style={{ borderTop: "1px solid #000" }}>
+							<div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+								<Button variant="contained" color="secondary" onClick={() => setShowEditModal(false)}>
+									Cancel
+								</Button>
+								<Button variant="contained" color="primary" onClick={handleSubmit}>
+									Submit
+								</Button>
+							</div>
+						</div>
+					</div>
+				</Fade>
+			</Modal>
+		);
+	};
 
 
 	// ⬇ Rendering below: 
@@ -306,189 +465,191 @@ export default function ShippingDestinationTable() {
 			/>
 
 			{showEditModal &&
-				<ShippingCostsEditModal selectedRow={selectedRow} handleSelectionModelChange={handleSelectionModelChange} />
+				<TableEditModal
+				/>
 			}
 		</Paper>
 	)
 }
 
 
-//#region - Table Edit Modal: 
-const ShippingCostsEditModal = ({ selectedRow, handleSelectionModelChange }) => {
-	const editData = {
-		// "dc_20ft": 0,
-		// "dc_40ft": 0,
-		// "fibers_20ft": 0,
-		// "fibers_40ft": 0,
-		// "cpea_20ft": 0,
-		// "cpea_40ft": 0,
-		// "flow_20ft": 0,
-		// "flow_40ft": 0,
-	};
-	// const costsByDestinationArray = shippingCosts.filter(cost => cost.destination_name === selectedRow?.destination_name);
-	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
-	const showEditModal = useSelector(store => store.shippingDestinations.showEditModal);
-	const dispatch = useDispatch();
-	// const selectedShippingCost = shippingCosts.find(cost => cost.destination_id === selectedRow?.destination_id);
 
-	const inputMap = [
-		{ label: 'DC 20ft', key: 'dc_20ft', },
-		{ label: 'DC 40ft', key: 'dc_40ft', },
-		{ label: 'Fibers 20ft', key: 'fibers_20ft', },
-		{ label: 'Fibers 40ft', key: 'fibers_40ft', },
-		{ label: 'CPEA 20ft', key: 'cpea_20ft', },
-		{ label: 'CPEA 40ft', key: 'cpea_40ft', },
-		{ label: 'Flow 20ft', key: 'flow_20ft', },
-		{ label: 'Flow 40ft', key: 'flow_40ft', },
-	]; // End inputMap
+// //#region - Table Edit Modal: 
+// const ShippingCostsEditModal = ({ selectedRow, handleSelectionModelChange }) => {
+// 	const editData = {
+// 		// "dc_20ft": 0,
+// 		// "dc_40ft": 0,
+// 		// "fibers_20ft": 0,
+// 		// "fibers_40ft": 0,
+// 		// "cpea_20ft": 0,
+// 		// "cpea_40ft": 0,
+// 		// "flow_20ft": 0,
+// 		// "flow_40ft": 0,
+// 	};
+// 	// const costsByDestinationArray = shippingCosts.filter(cost => cost.destination_name === selectedRow?.destination_name);
+// 	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
+// 	const showEditModal = useSelector(store => store.shippingDestinations.showEditModal);
+// 	const dispatch = useDispatch();
+// 	// const selectedShippingCost = shippingCosts.find(cost => cost.destination_id === selectedRow?.destination_id);
 
-
-
+// 	const inputMap = [
+// 		{ label: 'DC 20ft', key: 'dc_20ft', },
+// 		{ label: 'DC 40ft', key: 'dc_40ft', },
+// 		{ label: 'Fibers 20ft', key: 'fibers_20ft', },
+// 		{ label: 'Fibers 40ft', key: 'fibers_40ft', },
+// 		{ label: 'CPEA 20ft', key: 'cpea_20ft', },
+// 		{ label: 'CPEA 40ft', key: 'cpea_40ft', },
+// 		{ label: 'Flow 20ft', key: 'flow_20ft', },
+// 		{ label: 'Flow 40ft', key: 'flow_40ft', },
+// 	]; // End inputMap
 
 
-	const handleShippingCostChange = (value, key) => {
-
-		if (value <= 0) {
-			value = 0;
-		} else if (value >= 0 && value.includes('.')) {
-			value = parseFloat(value).toFixed(2);
-		} else {
-			value = parseFloat(value);
-		}
-		editData[key] = value
-	}; // End handleShippingCostChange
 
 
-	const handleSubmit = () => {
-		// ⬇ Loop through the input map and make sure all keys have a value that's not 0:
-		// for (let i = 0; i < inputMap.length; i++) {
-		for (let i in inputMap) {
-			let input = inputMap[i];
-			if (!editData[input.key] || editData[input.key] == 0) {
-				alert(`Please enter a value for ${inputMap[i].label}.`);
-				return;
-			}; // End if
-		}; // End for
 
-		dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-		dispatch({
-			type: 'TOGGLE_SHIPPING_DESTINATION_ACTIVE_SET_PRICES', payload: {
-				destination_id: selectedRow.destination_id,
-				shipping_costs: editData,
-			}
-		})
+// 	const handleShippingCostChange = (value, key) => {
 
-		handleSelectionModelChange([selectedRow.destination_id]);
-	}; // End handleSubmit
+// 		if (value <= 0) {
+// 			value = 0;
+// 		} else if (value >= 0 && value.includes('.')) {
+// 			value = parseFloat(value).toFixed(2);
+// 		} else {
+// 			value = parseFloat(value);
+// 		}
+// 		editData[key] = value
+// 	}; // End handleShippingCostChange
 
 
-	return (
-		<Modal
-			aria-labelledby="transition-modal-title"
-			aria-describedby="transition-modal-description"
-			// className={classes.modal}
-			open={showEditModal}
-			onClose={() => dispatch({ type: 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL', payload: false })}
-			closeAfterTransition
-			BackdropComponent={Backdrop}
-			BackdropProps={{
-				timeout: 500,
-			}}
-			style={{
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
-			}}
-		>
-			<Fade in={showEditModal}>
-				<div style={{
-					backgroundColor: 'white',
-					borderRadius: '1rem',
-					boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
-					padding: '1rem',
-					width: "fit-content",
-					height: "fit-content",
-					marginTop: "-300px",
-				}}>
-					<div
-						style={{
-							margin: '0px auto 10px auto',
-							fontSize: "1.1rem",
-							letterSpacing: "0.5px",
-							borderBottom: "1px solid #000",
-							fontFamily: "Lexend Tera",
-							paddingBottom: '10px',
-						}}
-					>
-						Set {selectedRow?.destination_name}'s Shipping Costs
-					</div>
+// 	const handleSubmit = () => {
+// 		// ⬇ Loop through the input map and make sure all keys have a value that's not 0:
+// 		// for (let i = 0; i < inputMap.length; i++) {
+// 		for (let i in inputMap) {
+// 			let input = inputMap[i];
+// 			if (!editData[input.key] || editData[input.key] == 0) {
+// 				alert(`Please enter a value for ${inputMap[i].label}.`);
+// 				return;
+// 			}; // End if
+// 		}; // End for
+
+// 		dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
+// 		dispatch({
+// 			type: 'TOGGLE_SHIPPING_DESTINATION_ACTIVE_SET_PRICES', payload: {
+// 				destination_id: selectedRow.destination_id,
+// 				shipping_costs: editData,
+// 			}
+// 		})
+
+// 		handleSelectionModelChange([selectedRow.destination_id]);
+// 	}; // End handleSubmit
 
 
-					<div style={{ marginBottom: '10px' }}>
-						{inputMap.map((input, index) => {
-							return (
-								<div
-									key={index}
-									style={{
-										display: 'flex',
-										justifyContent: 'flex-end',
-										alignItems: 'flex-end',
-									}}
-								>
-									<div
-										style={{
-											padding: "0.6rem",
-										}}
-									>
-										{input.label}:
-									</div>
-									<div
-										style={{
-											width: '97px',
-										}}
-									>
-										<TextField
-											defaultValue={0}
-											type="number"
-											onChange={(event) => handleShippingCostChange(event.target.value, input.key)}
-										/>
-									</div>
-								</div>
-							)
-						})}
+// 	return (
+// 		<Modal
+// 			aria-labelledby="transition-modal-title"
+// 			aria-describedby="transition-modal-description"
+// 			// className={classes.modal}
+// 			open={showEditModal}
+// 			onClose={() => dispatch({ type: 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL', payload: false })}
+// 			closeAfterTransition
+// 			BackdropComponent={Backdrop}
+// 			BackdropProps={{
+// 				timeout: 500,
+// 			}}
+// 			style={{
+// 				display: 'flex',
+// 				alignItems: 'center',
+// 				justifyContent: 'center',
+// 			}}
+// 		>
+// 			<Fade in={showEditModal}>
+// 				<div style={{
+// 					backgroundColor: 'white',
+// 					borderRadius: '1rem',
+// 					boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
+// 					padding: '1rem',
+// 					width: "fit-content",
+// 					height: "fit-content",
+// 					marginTop: "-300px",
+// 				}}>
+// 					<div
+// 						style={{
+// 							margin: '0px auto 10px auto',
+// 							fontSize: "1.1rem",
+// 							letterSpacing: "0.5px",
+// 							borderBottom: "1px solid #000",
+// 							fontFamily: "Lexend Tera",
+// 							paddingBottom: '10px',
+// 						}}
+// 					>
+// 						Set {selectedRow?.destination_name}'s Shipping Costs
+// 					</div>
 
-					</div>
-					<div style={{ borderTop: "1px solid #000" }}>
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'space-between',
-								marginTop: '10px',
 
-							}}
-						>
-							<Button
-								variant="contained"
-								color="secondary"
-								onClick={() => dispatch({ type: 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL', payload: false })}
-							>
-								Cancel
-							</Button>
-							<Tooltip title={`To activate ${selectedRow?.destination_name}, please set the default pricing and press Submit.`} placement="top" style={{ color: "gray", fontSize: "12px" }} arrow>
-								<HelpIcon />
-							</Tooltip>
-							<Button
-								variant="contained"
-								color="primary"
-								onClick={() => handleSubmit()}
-							>
-								Submit
-							</Button>
-						</div>
-					</div>
-				</div>
-			</Fade>
-		</Modal>
-	); // End return
-}; // End ShippingCostsEditModal
-	//#endregion - Table Edit Modal.
+// 					<div style={{ marginBottom: '10px' }}>
+// 						{inputMap.map((input, index) => {
+// 							return (
+// 								<div
+// 									key={index}
+// 									style={{
+// 										display: 'flex',
+// 										justifyContent: 'flex-end',
+// 										alignItems: 'flex-end',
+// 									}}
+// 								>
+// 									<div
+// 										style={{
+// 											padding: "0.6rem",
+// 										}}
+// 									>
+// 										{input.label}:
+// 									</div>
+// 									<div
+// 										style={{
+// 											width: '97px',
+// 										}}
+// 									>
+// 										<TextField
+// 											defaultValue={0}
+// 											type="number"
+// 											onChange={(event) => handleShippingCostChange(event.target.value, input.key)}
+// 										/>
+// 									</div>
+// 								</div>
+// 							)
+// 						})}
+
+// 					</div>
+// 					<div style={{ borderTop: "1px solid #000" }}>
+// 						<div
+// 							style={{
+// 								display: 'flex',
+// 								justifyContent: 'space-between',
+// 								marginTop: '10px',
+
+// 							}}
+// 						>
+// 							<Button
+// 								variant="contained"
+// 								color="secondary"
+// 								onClick={() => dispatch({ type: 'SHIPPING_DESTINATIONS_SHOW_EDIT_MODAL', payload: false })}
+// 							>
+// 								Cancel
+// 							</Button>
+// 							<Tooltip title={`To activate ${selectedRow?.destination_name}, please set the default pricing and press Submit.`} placement="top" style={{ color: "gray", fontSize: "12px" }} arrow>
+// 								<HelpIcon />
+// 							</Tooltip>
+// 							<Button
+// 								variant="contained"
+// 								color="primary"
+// 								onClick={() => handleSubmit()}
+// 							>
+// 								Submit
+// 							</Button>
+// 						</div>
+// 					</div>
+// 				</div>
+// 			</Fade>
+// 		</Modal>
+// 	); // End return
+// }; // End ShippingCostsEditModal
+// //#endregion - Table Edit Modal.
