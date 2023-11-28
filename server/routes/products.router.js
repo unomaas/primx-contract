@@ -32,6 +32,22 @@ router.get('/get-current-products', rejectUnauthenticated, (req, res) => {
 		});
 });
 
+router.get('/get-products-for-regions', rejectUnauthenticated, (req, res) => {
+	// GET route code here
+	const queryText = `
+		SELECT *
+		FROM products
+		WHERE product_key NOT LIKE '%blanket%'
+		ORDER BY product_id;
+	`;
+	pool.query(queryText)
+		.then((results) => res.send(results.rows))
+		.catch((error) => {
+			console.error('Error getting products name and prices', error);
+			res.sendStatus(500);
+		});
+});
+
 /**
  * EDIT route template
  */

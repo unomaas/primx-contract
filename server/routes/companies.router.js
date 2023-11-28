@@ -155,16 +155,40 @@ router.post('/submit-licensee', rejectNonAdmin, async (req, res) => {
 
 // *************************** PUT ROUTES ***************************
 
-// PUT route to toggle the active boolean of the licensees table
-router.put('/:id', rejectUnauthenticated, (req, res) => {
-  // SQL query to update the active column of the licensees table
-  const queryText = `UPDATE "licensees" SET "active"=$1 WHERE "licensee_id"=$2`;
-  // req.body.active contains true or false depending on the current status of the licensee clicked, sets it to the opposite value
-  pool.query(queryText, [!req.body.active, req.body.licensee_id])
-    .then(() => { res.sendStatus(200); })
-    .catch((error) => {
-      console.error('Error completing UPDATE Companies query', error)
-    })
+router.post('/edit-existing-region', rejectNonAdmin, async (req, res) => {
+  const connection = await pool.connect();
+  try {
+    const {
+      region_id,
+      region_code,
+      is_active,
+      region_name,
+      customsDuties,
+      productCosts,
+      containerStats,
+    } = req.body;
+
+    await connection.query('BEGIN');
+
+    const updateRegionSql = `
+      UPDATE regions
+      SET 
+        region_name = ${format(`%L`, region_name)},
+        region_code = ${format(`%L`, region_code)}, 
+        is_active = ${format(`%L`, is_active)}
+      WHERE region_id = ${format(`%L`, region_id)};
+    `;
+    await connection.query(updateRegionSql);
+
+    await connection.query('COMMIT');
+    res.sendStatus(200);
+  } catch (error) {
+    await connection.query('ROLLBACK');
+    console.error('Error in edit existing region POST', error);
+    res.sendStatus(500);
+  } finally {
+    connection.release();
+  }
 });
 
 

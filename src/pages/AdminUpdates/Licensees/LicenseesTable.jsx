@@ -326,7 +326,6 @@ export default function LicenseesTable() {
 			active: true,
 		};
 
-		// Assume editData is already correctly initialized based on the selected row
 		const [editData, setEditData] = useState({ ...selectedRow || company });
 
 		const handleEdit = (value, label) => {
@@ -371,7 +370,9 @@ export default function LicenseesTable() {
 			>
 				<Fade in={showEditModal}>
 					<div style={{ backgroundColor: 'white', borderRadius: '1rem', boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)", padding: '1rem', width: "fit-content", height: "fit-content", marginTop: "-300px", minWidth: '460px' }}>
-						<div style={{ margin: '0px auto 10px auto', fontSize: "1.1rem", letterSpacing: "0.5px", borderBottom: "1px solid #000", fontFamily: "Lexend Tera", paddingBottom: '10px' }}>
+						<div
+							style={{ margin: '0px auto 10px auto', fontSize: "1.1rem", letterSpacing: "0.5px", borderBottom: "1px solid #000", fontFamily: "Lexend Tera", paddingBottom: '10px' }}
+						>
 							{selectedRow?.licensee_contractor_name ? `Edit ${selectedRow.licensee_contractor_name}` : 'Create New Licensee'}
 						</div>
 						<div style={{ marginBottom: '10px' }}>

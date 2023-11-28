@@ -10,7 +10,7 @@ export default function useCombineEstimateCalculations(estimate) {
 
 	// ⬇ Set a default value for waste factor percentage if one wasn't entered:
 	if (!estimate.waste_factor_percentage) {
-		estimate.waste_factor_percentage = 5;
+		estimate.waste_factor_percentage = 3;
 	}; // End if 
 
 

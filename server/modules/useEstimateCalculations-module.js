@@ -2,7 +2,7 @@ const useEstimateCalculations = (estimate) => {
 
 	// set a default value for waste factor percentage if one wasn't entered
 	if (!estimate.waste_factor_percentage) {
-		estimate.waste_factor_percentage = 5;
+		estimate.waste_factor_percentage = 3;
 	}
 	// Shipping prices come in with keys linked to the shipping_costs table if they're being calculated from the estimate creation view,
 	// we need to change them to match the keys saved on the estimate table. If estimates are being calculated from DB data, these keys already exist

@@ -1,9 +1,22 @@
 import { combineReducers } from 'redux';
 
-const activeRegions = (state = [], action) => {
+const defaultRegionsData = {
+  allRegions: [], 
+  products: [],
+  customsDuties: [],
+  containerSizes: [],
+  containerStats: {},
+}; 
+
+const regionData = (state = defaultRegionsData, action) => {
   switch (action.type) {
-    case 'SET_ACTIVE_REGIONS':
-      return action.payload;
+    case 'SET_REGIONS_DATA':
+      return {
+        ...state,
+        ...action.payload,
+      };
+    case 'CLEAR_REGIONS_DATA':
+      return defaultRegionsData;
     default:
       return state;
   }
@@ -11,5 +24,5 @@ const activeRegions = (state = [], action) => {
 
 
 export default combineReducers({
-  activeRegions,
+  regionData,
 });

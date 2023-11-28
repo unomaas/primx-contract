@@ -21,7 +21,7 @@ const defaultEstimateData = {
 	ship_to_city: "",
 	destination_id: 0,
 	zip_postal_code: "",
-	waste_factor_percentage: 5,
+	waste_factor_percentage: 3,
 	materials_excluded: 'none',
 	// ⬇ Imperial: 
 	square_feet: "",
@@ -53,8 +53,8 @@ export const estimatesReducer = (state = {
 	switch (action.type) {
 		case 'SET_ESTIMATE':
 			// validation for waste factor percentage: value can't go below 3
-			if (action.payload.key == 'waste_factor_percentage' && action.payload.value < 3) {
-				action.payload.value = 3;
+			if (action.payload.key == 'waste_factor_percentage' && action.payload.value < 0) {
+				action.payload.value = 0;
 			}
 			return {
 				...state,

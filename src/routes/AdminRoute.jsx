@@ -12,6 +12,7 @@ import AdminUpdateTypes from '../components/AdminUpdates/AdminUpdateTypes';
 import AdminUpdateDestinations from '../pages/AdminUpdates/ShippingDestinations/index.jsx'
 import LicenseeAccounts from '../components/AdminLicenseeAccounts/LicenseeAccounts';
 import ProductContainers from '../pages/AdminUpdates/ProductContainers/index.jsx';
+import Regions from '../pages/AdminUpdates/Regions/index.jsx';
 import DosageRates from '../pages/AdminUpdates/DosageRates/index.jsx';
 import PricingLog from '../pages/PricingLog/index.jsx';
 import UpdatePricing from '../pages/UpdatePricing/index.jsx';
@@ -64,6 +65,10 @@ export const adminRoutes = [
 	{
 		path: '/DosageRates',
 		component: DosageRates
+	},
+	{
+		path: '/Regions',
+		component: Regions
 	},
 	{
 		path: '/pricinglog',

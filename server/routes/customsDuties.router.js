@@ -29,6 +29,22 @@ router.get('/fetch-customs-duties', rejectUnauthenticated, async (req, res) => {
 	}; // End try/catch
 });
 
+router.get('/get-duties-for-regions', rejectNonAdmin, async (req, res) => {
+	try {
+		const sql = `
+			SELECT *
+			FROM customs_duties AS cd
+			ORDER BY 
+				cd.duty_label;
+		`; // End sql
+		const { rows } = await pool.query(sql);
+		res.send(rows);
+	} catch (error) {
+		console.error('Error in customs duties GET', error);
+		res.sendStatus(500);
+	}; // End try/catch
+});
+
 
 router.put('/edit-customs-duties', rejectNonAdmin, async (req, res) => {
 	try {

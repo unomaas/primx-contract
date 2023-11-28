@@ -34,25 +34,25 @@ export default function ProductContainersTable() {
 			headerClassName: classes.header
 		},
 		{
-			field: 'container_length_ft',
-			headerName: 'Container Length (ft)',
-			flex: 1,
-			disableColumnMenu: true,
-			sortable: false,
-			editable: false,
-			headerClassName: classes.header,
-			valueFormatter: (params) => {
-				return `${params.value}"`;
-			},
-		},
-		{
 			field: 'container_destination',
 			headerName: 'Destination',
 			flex: .75,
 			disableColumnMenu: true,
-			sortable: false,
 			editable: false,
 			headerClassName: classes.header
+		},
+		{
+			field: 'container_length_ft',
+			headerName: 'Container Length (ft)',
+			flex: 1,
+			disableColumnMenu: true,
+			type: 'number',
+			sortable: false,
+			editable: false,
+			headerClassName: classes.header,
+			valueFormatter: (params) => {
+				return `${params.value}'`;
+			},
 		},
 		{
 			field: 'max_pallets_per_container',
@@ -71,8 +71,7 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
-			// ⬇ Format cell with a comma:
-			valueFormatter: (params) => { return params.value.toLocaleString(); },
+			valueFormatter: (params) => { return parseFloat(params.value).toLocaleString('en-US'); },
 		},
 		{
 			field: 'gross_weight_of_pallet',
@@ -82,7 +81,7 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
-			valueFormatter: (params) => { return params.value.toLocaleString(); },
+			valueFormatter: (params) => { return parseFloat(params.value).toLocaleString('en-US'); },
 		},
 		{
 			field: 'net_weight_of_pallet',
@@ -92,7 +91,7 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
-			valueFormatter: (params) => { return params.value.toLocaleString(); },
+			valueFormatter: (params) => { return parseFloat(params.value).toLocaleString('en-US'); },
 		},
 	]; // End columns
 	//#endregion - End State Variables.
@@ -132,7 +131,6 @@ export default function ProductContainersTable() {
 		}; // End if	
 	}; // End handleSelectionModelChange
 	//#endregion - End Action Handlers.
-
 
 
 	//#region - Custom Table Components Below: 
@@ -459,7 +457,7 @@ export default function ProductContainersTable() {
 												padding: "0.6rem",
 											}}
 										>
-											{cost.product_label} for {cost.container_length_ft}' Container:
+											{cost.product_label} for {cost.container_destination} {cost.container_length_ft}' Container:
 										</div>
 										<div
 											style={{
