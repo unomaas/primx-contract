@@ -35,6 +35,10 @@ export default function AdminUpdates() {
 			text: 'Dosage Rates',
 			url: '/DosageRates',
 		},
+		{
+			text: 'Regions',
+			url: '/Regions',
+		},
 	];
 
 	menuItems.sort((a, b) => a.text.localeCompare(b.text));

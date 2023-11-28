@@ -87,7 +87,7 @@ export default function NavDrawer() {
 							</ListItem>
 
 							{/* Conditional rendering to show Admin Links: */}
-							{user.permission_level <= '2' &&
+							{user.permission_level <= 3 &&
 								<>
 									<Divider />
 
@@ -119,7 +119,7 @@ export default function NavDrawer() {
 							} {/* End Admin conditional rendering. */}
 
 							{/* Conditional rendering to show system admin portal: */}
-							{user.permission_level == '1' &&
+							{user.permission_level == 1 &&
 								<>
 									<Divider />
 

@@ -14,14 +14,14 @@ export default function LicenseePortal() {
 	const pageData = useSelector(store => store.licenseePortalReducer.pageData);
 	const history = useHistory();
 	const companies = useSelector(store => store.companies);
-	const [selectedLicenseeId, setSelectedLicenseeId] = useState(user.permission_level == 3 ? user.licensee_id : undefined);
+	const [selectedLicenseeId, setSelectedLicenseeId] = useState(user.permission_level == 4 ? user.licensee_id : undefined);
 	const [company, setCompany] = useState(0);
 
 
 	useEffect(() => {
 		dispatch({ type: 'SET_BUTTON_STATE', payload: 'SavedEstimates' });
 
-		if (user.permission_level <= 5 && companies.length == 0) {
+		if (user?.permission_level <= 3 && companies.length == 0) {
 			dispatch({ type: 'FETCH_ALL_COMPANIES' });
 		}
 	}, []);
@@ -42,7 +42,7 @@ export default function LicenseePortal() {
 
 			<br />
 
-			{user?.permission_level <= 5 &&
+			{user?.permission_level <= 3 &&
 				<LicenseeSelect companies={companies} setSelectedLicenseeId={setSelectedLicenseeId} />
 
 			}

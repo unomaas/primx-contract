@@ -13,7 +13,7 @@ router.get('/fetch-product-container', async (req, res) => {
 				"pc".product_id,
 				"p".product_label,
 				"c".container_length_ft,
-				"c".container_destination,
+				r.region_code AS container_destination,
 				"pc".max_pallets_per_container,
 				"pc".max_weight_of_container,
 				"pc".gross_weight_of_pallet,
@@ -23,6 +23,8 @@ router.get('/fetch-product-container', async (req, res) => {
 				ON "p".product_id = "pc".product_id
 			JOIN "containers" AS "c"
 				ON "c".container_id = "pc".container_id
+			JOIN regions AS r 
+				ON r.region_id = c.region_id
 			ORDER BY "pc".product_container_id ASC;
 		`; // End sql
 		const { rows } = await pool.query(sql);

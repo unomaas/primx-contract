@@ -47,14 +47,14 @@ router.post('/register', rejectUnauthenticated, (req, res, next) => {
 
 router.post('/register_licensee', rejectUnauthenticated, (req, res, next) => {
 	try {
-		if (req.user.permission_level == '1' || req.user.permission_level == '2') {
+		if (req.user.permission_level <= 3) {
 			const username = req.body.username;
 			const password = encryptLib.encryptPassword(req.body.password);
 			const licensee_id = req.body.licensee_id;
 			const queryText = `
 				INSERT INTO "users" 
 					(username, password, permission_level, licensee_id)
-				VALUES ($1, $2, 3, $3) 
+				VALUES ($1, $2, 4, $3) 
 				RETURNING user_id;
 			`; // End queryText
 			pool

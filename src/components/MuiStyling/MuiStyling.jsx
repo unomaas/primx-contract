@@ -120,7 +120,7 @@ const useClasses = makeStyles({
 	},
 
 	licenseeGrid: {
-		width: 525,
+		width: 700,
 		margin: 'auto',
 	},
 

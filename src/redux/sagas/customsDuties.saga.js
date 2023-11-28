@@ -9,6 +9,7 @@ const errorText = 'Error in Customs Duties: ';
 
 function* customsDutiesSaga() {
 	yield takeLatest('FETCH_CUSTOMS_DUTIES', fetchCustomsDuties);
+	yield takeLatest('FETCH_EACH_CUSTOMS_DUTIES', fetchEachCustomsDuties);
 	yield takeLatest('EDIT_CUSTOMS_DUTIES', editCustomsDuties);
 	yield takeLatest('FETCH_CUSTOMS_DUTIES_HISTORY_ALL', fetchAllCustomsDutiesHistory);
 	yield takeLatest('FETCH_CUSTOMS_DUTIES_HISTORY_RECENT', fetchRecentCustomsDutiesHistory);
@@ -19,6 +20,15 @@ function* fetchCustomsDuties() {
 	try {
 		const response = yield axios.get('/api/customsduties/fetch-customs-duties');
 		yield put({ type: 'SET_CUSTOMS_DUTIES', payload: response.data });
+	} catch (error) {
+		console.error(errorText, error);
+	}
+}
+
+function* fetchEachCustomsDuties() {
+	try {
+		const response = yield axios.get('/api/customsduties/fetch-each-customs-duties');
+		yield put({ type: 'SET_EACH_CUSTOMS_DUTIES', payload: response.data });
 	} catch (error) {
 		console.error(errorText, error);
 	}

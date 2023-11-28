@@ -12,7 +12,7 @@ import AdminOrders from '../AdminOrders/AdminOrders';
 import AdminUpdates from '../AdminUpdates/AdminUpdates';
 import AdminUpdatesIndex from '../../pages/AdminUpdates/index.jsx';
 import AdminUpdateTypes from '../AdminUpdates/AdminUpdateTypes';
-import AdminUpdateLicenses from '../AdminUpdates/AdminUpdateLicenses';
+import AdminUpdateLicenses from '../LegacyComponents/AdminUpdateLicenses.jsx';
 // import AdminUpdateMaterials from '../AdminUpdates/AdminUpdateMaterials';
 import AdminUpdateMarkup from '../LegacyComponents/AdminUpdateMarkup';
 import AdminUpdateShipping from '../LegacyComponents/AdminUpdateShipping';
@@ -27,12 +27,13 @@ import LicenseeAccounts from '../AdminLicenseeAccounts/LicenseeAccounts';
 import LicenseePortal from '../LicenseePortal/LicenseePortal';
 import LicenseeLoginPage from '../LicenseePortal/LicenseeLoginPage';
 import TopLoadingDiv from '../MuiBackdropManager/TopLoadingDiv';
-import AdminUpdateDestinations from '../../pages/AdminUpdates/ShippingDestinations/index.jsx'
-import AdminUpdateCustoms from '../../pages/AdminUpdates/CustomsDuties/index.jsx'
-import ProductContainers from '../../pages/AdminUpdates/ProductContainers/index.jsx';
-import DosageRates from '../../pages/AdminUpdates/DosageRates/index.jsx';
-import PricingLog from '../../pages/PricingLog/index.jsx';
-import UpdatePricing from '../../pages/UpdatePricing/index.jsx';
+// import AdminUpdateDestinations from '../../pages/AdminUpdates/ShippingDestinations/index.jsx'
+// import AdminUpdateCustoms from '../../pages/AdminUpdates/CustomsDuties/index.jsx'
+// import ProductContainers from '../../pages/AdminUpdates/ProductContainers/index.jsx';
+// import DosageRates from '../../pages/AdminUpdates/DosageRates/index.jsx';
+// import Regions from '../../pages/AdminUpdates/Regions/index.jsx';
+// import PricingLog from '../../pages/PricingLog/index.jsx';
+// import UpdatePricing from '../../pages/UpdatePricing/index.jsx';
 // ⬇ Dependent Functionality:
 import React, { useEffect } from 'react';
 import { HashRouter as Router, Route, Redirect, Switch, useLocation } from 'react-router-dom';

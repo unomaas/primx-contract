@@ -8,10 +8,27 @@ import {
 function* shippingDestinationsSaga() {
 	yield takeLatest('FETCH_ACTIVE_SHIPPING_DESTINATIONS', fetchActiveShippingDestinations);
 	yield takeLatest('FETCH_ALL_SHIPPING_DESTINATIONS', fetchAllShippingDestinations);
-	yield takeLatest('TOGGLE_SHIPPING_DESTINATION_ACTIVE', toggleShippingDestinationActive);
-	yield takeLatest('TOGGLE_SHIPPING_DESTINATION_ACTIVE_SET_PRICES', toggleShippingDestinationActiveSetPrices);
+	// yield takeLatest('TOGGLE_SHIPPING_DESTINATION_ACTIVE', toggleShippingDestinationActive);
+	// yield takeLatest('TOGGLE_SHIPPING_DESTINATION_ACTIVE_SET_PRICES', toggleShippingDestinationActiveSetPrices);
+	yield takeLatest('SUBMIT_DESTINATION', submitDestination);
 
 };
+
+function* submitDestination(action) {
+	try {
+		// takes licensee input payload and posts to database
+		yield axios.post('/api/shippingDestinations/submit-destination', action.payload);
+		// refresh companies with new licensee post
+		yield put({ type: 'FETCH_ALL_SHIPPING_DESTINATIONS' });
+		yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	} catch (error) {
+		console.error('Error in post shipping destinations saga:', error);
+		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	}
+}
+
 
 //worker saga to GET all shipping costs
 function* fetchActiveShippingDestinations() {

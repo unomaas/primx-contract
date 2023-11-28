@@ -79,6 +79,7 @@ function* pricingLogInitialLoad() {
 					month_year_label: monthLabel,
 					month_year_value: date,
 					margin_applied: (markupHistory12Months.data[date][0].margin_applied),
+					margin_applied_label: (markupHistory12Months.data[date][0].margin_applied_label),
 					date_saved_full: (markupHistory12Months.data[date][0].date_saved_full),
 					pricing: {
 						products: JSON.parse(JSON.stringify(productCostHistory12Months.data[date])),
@@ -119,6 +120,7 @@ function* pricingLogInitialLoad() {
 
 				month.destinationsCosts.push({
 					destination_id: calculatedEstimate.destination_id,
+					destination_country: calculatedEstimate.destination_country,
 					destination_name: calculatedEstimate.destination_name,
 					measurement_units: calculatedEstimate.measurement_units,
 					units_label: calculatedEstimate.units_label,
@@ -139,6 +141,10 @@ function* pricingLogInitialLoad() {
 				// style: { backgroundColor: '#C8C8C8', },
 			},
 			{
+				headerName: "Region",
+				field: 'destination_country',
+			},
+			{
 				headerName: "Measurement Units",
 				field: 'measurement_units',
 			},
@@ -156,6 +162,7 @@ function* pricingLogInitialLoad() {
 				month_year_value: month.month_year_value,
 				date_saved_full: month.date_saved_full,
 				margin_applied: month.margin_applied,
+				margin_applied_label: month.margin_applied_label,
 				// headerClassName: `classes.header`,
 				// style: { backgroundColor: '#C8C8C8', },
 
@@ -190,6 +197,7 @@ function* pricingLogInitialLoad() {
 					pricingLogPerUnitRowsObject[destination.destination_id] = {
 						destination_id: destination.destination_id,
 						destination_name: destination.destination_name,
+						destination_country: destination.destination_country,
 						measurement_units: (destination.measurement_units).charAt(0).toUpperCase() + (destination.measurement_units).slice(1),
 						units_label: destination.units_label,
 						[`lower_${month.month_year_value}`]: destination.price_per_unit_75_50,
@@ -261,7 +269,7 @@ function* updatePricingInitialLoad() {
 		const currentProductCosts = yield axios.get('/api/products/get-current-products');
 		const currentCustomsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
-
+		const activeRegions = yield axios.get(`/api/regions/get-regions`, { params: { active: true } });
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
 		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
 		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
@@ -337,6 +345,7 @@ function* updatePricingInitialLoad() {
 				month.destinationsCosts.push({
 					destination_id: calculatedEstimate.destination_id,
 					destination_name: calculatedEstimate.destination_name,
+					destination_country: calculatedEstimate.destination_country,
 					measurement_units: calculatedEstimate.measurement_units,
 					units_label: calculatedEstimate.units_label,
 					price_per_unit_75_50: calculatedEstimate.price_per_unit_75_50,
@@ -418,6 +427,7 @@ function* updatePricingInitialLoad() {
 				productContainers: productContainers.data,
 				dosageRates: dosageRates.data,
 				pricingData12Months: monthHolderObject,
+				activeRegions: activeRegions.data,
 			}, // End payload
 		}); // End yield put
 
@@ -438,7 +448,7 @@ function* updatePricingInitialLoad() {
 		console.error(errorText, error);
 		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
 	}; // End try/catch
-} // End
+} // End updatePricingInitialLoad
 
 
 

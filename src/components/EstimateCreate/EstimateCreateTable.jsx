@@ -7,14 +7,14 @@ import useEstimateCalculations from '../../hooks/useEstimateCalculations';
 import { Alert } from '@material-ui/lab';
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, InputAdornment, Snackbar, Radio, RadioGroup, FormControl, FormControlLabel, Tooltip } from '@material-ui/core';
 import { useClasses } from '../MuiStyling/MuiStyling';
-import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 import dayjs from 'dayjs';
 import InfoIcon from '@material-ui/icons/Info';
 import { differenceBetweenDates } from '../../utils/dateUtils';
 //#endregion ⬆⬆ All document setup above.
 
-const theme = createMuiTheme({
+const theme = createTheme({
 	overrides: {
 		MuiTooltip: {
 			tooltip: {
@@ -943,7 +943,7 @@ export default function EstimateCreateTable() {
 															value='none'
 															control={<Radio />}
 														/>
-														{user && user.permission_level <= 2 &&
+														{user && user.permission_level <= 3 &&
 															<FormControlLabel
 																label="Exclude PrīmX CPEA"
 																value="exclude_cpea"

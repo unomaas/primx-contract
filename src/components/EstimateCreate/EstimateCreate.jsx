@@ -53,6 +53,20 @@ export default function EstimateCreate() {
 			if (licensee?.default_measurement) handleMeasurementUnits(licensee?.default_measurement);
 		}; // End if statement
 	}, [user, companies])
+
+	let filteredDestinations = shippingDestinations;
+
+	// ⬇ If the user is a licensee, limit the destinations they're allowed to select:
+	if (user?.licensee_id && user?.permission_level >= 4 && companies?.length > 0) {
+		const licensee = companies.find(company => company.licensee_id === user.licensee_id);
+
+		if (licensee && licensee.operating_regions) {
+			// Filter shippingDestinations based on operatingRegions
+			filteredDestinations = shippingDestinations.filter(destination =>
+				licensee.operating_regions.includes(destination.destination_country)
+			);
+		}; // End if statement
+	} // End if statement
 	//#endregion ⬆⬆ All state variables above. 
 
 
@@ -158,32 +172,32 @@ export default function EstimateCreate() {
 		// ⬇ Making sure validation doesn't trigger:
 		setError(false);
 		setRadioError("");
-		// ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
-		const pricingArray = [
-			{ key: 'primx_flow_unit_price', value: products.flow_liters },
-			{ key: 'primx_cpea_unit_price', value: products.cpea_liters },
-		] // End pricingArray
-		if (units == 'imperial') {
-			pricingArray.push(
-				{ key: 'primx_dc_unit_price', value: products.dc_lbs },
-				{ key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_lbs },
-				{ key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqft }
-			) // End if
-		} else if (units == 'metric') {
-			pricingArray.push(
-				{ key: 'primx_dc_unit_price', value: products.dc_kgs },
-				{ key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_kgs },
-				{ key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqmeters }
-			) // End else/if
-		} // End if/else statement
-		// ⬇ Loop through pricingArray to dispatch values to be stored in the estimates reducer:
-		pricingArray.forEach(product => {
-			dispatch({
-				type: 'SET_ESTIMATE',
-				payload: { key: product.key, value: product.value }
-			}); // End dispatch
-		}) //End pricingArray for each
-		// set units in the estimate reducer
+		// // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
+		// const pricingArray = [
+		// 	{ key: 'primx_flow_unit_price', value: products.flow_liters },
+		// 	{ key: 'primx_cpea_unit_price', value: products.cpea_liters },
+		// ] // End pricingArray
+		// if (units == 'imperial') {
+		// 	pricingArray.push(
+		// 		{ key: 'primx_dc_unit_price', value: products.dc_lbs },
+		// 		{ key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_lbs },
+		// 		{ key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqft }
+		// 	) // End if
+		// } else if (units == 'metric') {
+		// 	pricingArray.push(
+		// 		{ key: 'primx_dc_unit_price', value: products.dc_kgs },
+		// 		{ key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_kgs },
+		// 		{ key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqmeters }
+		// 	) // End else/if
+		// } // End if/else statement
+		// // ⬇ Loop through pricingArray to dispatch values to be stored in the estimates reducer:
+		// pricingArray.forEach(product => {
+		// 	dispatch({
+		// 		type: 'SET_ESTIMATE',
+		// 		payload: { key: product.key, value: product.value }
+		// 	}); // End dispatch
+		// }) //End pricingArray for each
+		// // set units in the estimate reducer
 		dispatch({
 			type: 'SET_ESTIMATE',
 			payload: { key: 'measurement_units', value: units }
@@ -262,6 +276,9 @@ export default function EstimateCreate() {
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{companies.map(companies => {
+
+														if (user?.licensee_id && companies.licensee_id !== user.licensee_id) return;
+
 														return (<MenuItem key={companies.licensee_id} value={companies.licensee_id}>{companies.licensee_contractor_name}</MenuItem>)
 													}
 													)}
@@ -478,7 +495,7 @@ export default function EstimateCreate() {
 													disabled={editState ? true : false}
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
-													{shippingDestinations.map(state => {
+													{filteredDestinations.map(state => {
 														return (<MenuItem key={state.destination_id} value={state.destination_id}>{state.destination_name}, {state.destination_country}</MenuItem>)
 													})}
 												</Select>
