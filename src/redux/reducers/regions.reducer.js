@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 const defaultRegionsData = {
   allRegions: [], 
+  activeRegions: [],
   products: [],
   customsDuties: [],
   containerSizes: [],

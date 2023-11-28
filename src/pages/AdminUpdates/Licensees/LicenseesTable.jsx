@@ -21,7 +21,8 @@ export default function LicenseesTable() {
 	const [showEditModal, setShowEditModal] = useState(false);
 
 	const companies = useSelector(store => store.companies);
-	const activeRegions = useSelector(store => store.regions.activeRegions);
+	const { activeRegions } = useSelector(store => store.regions.regionData);
+
 
 	const [selectedRegions, setSelectedRegions] = useState([]);
 
@@ -98,7 +99,7 @@ export default function LicenseesTable() {
 	//#region - Action Handlers Below: 
 	useEffect(() => {
 		dispatch({ type: 'FETCH_ALL_COMPANIES' });
-		dispatch({ type: 'FETCH_ACTIVE_REGIONS' });
+		dispatch({ type: 'FETCH_REGIONS', payload: 'active' });
 	}, [])
 
 	// ⬇ Handles the selection and deselection of a row:

@@ -479,7 +479,6 @@ export default function RegionsTable() {
 		const newRegionInputs = () => {
 			if (selectedRow) return null;
 
-			console.log(`Ryan Here: \n `, { editData, CustomsDuties: editData.customsDuties });
 			return (
 				<>
 					<div style={{ marginBottom: '20px' }}>

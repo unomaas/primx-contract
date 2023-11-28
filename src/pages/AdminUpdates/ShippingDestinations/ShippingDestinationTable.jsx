@@ -19,7 +19,7 @@ export default function ShippingDestinationTable() {
 	const dispatch = useDispatch();
 	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingAllDestinations);
 	const [showEditModal, setShowEditModal] = useState(false);
-	const activeRegions = useSelector(store => store.regions.activeRegions);
+	const { activeRegions } = useSelector(store => store.regions.regionData);
 
 	const [selectedRow, setSelectedRow] = useState(null);
 
@@ -71,7 +71,7 @@ export default function ShippingDestinationTable() {
 	useEffect(() => {
 		// GET shipping cost data on page load
 		dispatch({ type: 'FETCH_ALL_SHIPPING_DESTINATIONS' });
-		dispatch({ type: 'FETCH_ACTIVE_REGIONS' });
+		dispatch({ type: 'FETCH_REGIONS', payload: 'active' });
 		// setIsTableLoaded(true)
 	}, [])
 
@@ -347,7 +347,7 @@ export default function ShippingDestinationTable() {
 				alert('Please make changes to submit.');
 				return;
 			}
-			
+
 			// ⬇ Map over editData for validation: 
 			for (let key in editData) {
 				if (typeof editData[key] == 'string' && editData[key] === '') {

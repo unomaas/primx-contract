@@ -12,12 +12,16 @@ function* regionsSaga() {
 
 function* fetchRegions(action) {
 	const params = {};
-	if (action.payload === 'active') params.active = true;
+	let key = `allRegions`;
+	if (action.payload === 'active') {
+		params.active = true;
+		key = `activeRegions`;
+	}
 	try {
 		const response = yield axios.get(`/api/regions/get-regions`, { params: params });
 		yield put({
-			type: 'SET_REGIONS',
-			payload: { [action.payload]: response.data }
+			type: 'SET_REGIONS_DATA',
+			payload: { [key]: response.data }
 		});
 	} catch (error) {
 		console.error('product get request failed', error);
