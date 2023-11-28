@@ -7,7 +7,6 @@ const dayjs = require('dayjs');
 var customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
 
-// router.get('/get-regions', rejectUnauthenticated, async (req, res) => {
 router.get('/get-regions', rejectNonAdmin, async (req, res) => {
 
 	let activeClause = '';
@@ -43,6 +42,7 @@ router.post('/create-new-region', rejectNonAdmin, async (req, res) => {
 			customsDuties,
 			productCosts,
 			containerStats,
+			markupPercentage,
 		} = req.body;
 
 		await connection.query('BEGIN');
@@ -55,6 +55,14 @@ router.post('/create-new-region', rejectNonAdmin, async (req, res) => {
     `;
 		const regionResult = await connection.query(insertRegionSql);
 		const regionId = regionResult.rows[0].region_id;
+
+		// After inserting the new region and getting its ID (regionId)
+		const insertMarkupSql = `
+			INSERT INTO markup (margin_applied, region_id)
+			VALUES (${format('%L', markupPercentage)}, ${format('%L', regionId)});
+		`;
+
+		await connection.query(insertMarkupSql);
 
 		// Insert into customs_duties_regions table
 		for (const [customDutyId, { value }] of Object.entries(customsDuties)) {

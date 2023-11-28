@@ -274,7 +274,6 @@ export default function RegionsTable() {
 			region_name: '',
 			region_code: '',
 			is_active: true,
-
 		};
 
 		const newRegionData = {
@@ -293,7 +292,16 @@ export default function RegionsTable() {
 				return acc;
 			}, {}),
 			containerStats: {},
+			markupPercentage: 0,
 		}
+
+		const [editData, setEditData] = useState({
+			...selectedRow || {
+				...initialRegionData,
+				...newRegionData,
+			}
+		});
+
 
 		const [defaultUnit, setDefaultUnit] = useState('metric');
 
@@ -301,6 +309,7 @@ export default function RegionsTable() {
 			productCosts: false,
 			customsDuties: false,
 			containerStats: false,
+			markupPercentage: false,
 		});
 
 		const toggleSection = (section) => {
@@ -346,12 +355,6 @@ export default function RegionsTable() {
 			});
 		}, [defaultUnit]);
 
-		const [editData, setEditData] = useState({
-			...selectedRow || {
-				...initialRegionData,
-				...newRegionData,
-			}
-		});
 
 
 		const handleEdit = (value, label) => {
@@ -397,7 +400,9 @@ export default function RegionsTable() {
 			});
 		};
 
-
+		const handleMarkupChange = (value) => {
+			setEditData({ ...editData, markupPercentage: parseFloat(value) || 0 });
+		};
 
 		const handleSubmit = () => {
 
@@ -474,6 +479,7 @@ export default function RegionsTable() {
 		const newRegionInputs = () => {
 			if (selectedRow) return null;
 
+			console.log(`Ryan Here: \n `, { editData, CustomsDuties: editData.customsDuties });
 			return (
 				<>
 					<div style={{ marginBottom: '20px' }}>
@@ -488,6 +494,10 @@ export default function RegionsTable() {
 											value={editData?.productCosts[productKey]?.value}
 											onChange={(e) => handleProductCostsChange(productKey, e.target.value, 'productCosts')}
 											type="number"
+											InputProps={{
+												startAdornment: <InputAdornment position="start">$</InputAdornment>,								
+													endAdornment: <InputAdornment position="end">USD</InputAdornment>,
+											}}
 										/>
 									</Grid>
 								))}
@@ -503,14 +513,33 @@ export default function RegionsTable() {
 									return <Grid item xs={6} key={key}>
 										<TextField
 											fullWidth
-											label={`${editData?.customsDuties[key]?.label} Customs (%)`}
+											label={`${editData?.customsDuties[key]?.label} Customs`}
 											value={editData?.customsDuties[key]?.value}
 											onChange={(e) => handleProductCostsChange(key, e.target.value, 'customsDuties')}
-											type="number"
+											type="number"								
+											InputProps={{
+												endAdornment: <InputAdornment position="end">%</InputAdornment>,
+											}}
 										/>
 									</Grid>
 								})}
 							</Grid>
+						</Collapse>
+					</div>
+
+					<div style={{ marginBottom: '20px' }}>
+						{renderCollapsibleSectionHeader('markupPercentage', 'Set Markup Percentage')}
+						<Collapse in={!collapsedSections.markupPercentage}>
+							<TextField
+								fullWidth
+								label="Markup Percentage"
+								value={editData?.markupPercentage}
+								onChange={(e) => handleMarkupChange(e.target.value)}
+								type="number"
+								InputProps={{
+									endAdornment: <InputAdornment position="end">%</InputAdornment>,
+								}}
+							/>
 						</Collapse>
 					</div>
 
@@ -527,6 +556,7 @@ export default function RegionsTable() {
 									id="default-unit-select"
 									value={defaultUnit}
 									onChange={(e) => setDefaultUnit(e.target.value)}
+									style={{ textAlign: 'left' }}
 								>
 									<MenuItem value="imperial">Imperial (lbs)</MenuItem>
 									<MenuItem value="metric">Metric (kgs)</MenuItem>
@@ -556,7 +586,7 @@ export default function RegionsTable() {
 								</div>
 							))}
 						</Collapse>
-					</div>
+					</div >
 				</>
 			)
 		}

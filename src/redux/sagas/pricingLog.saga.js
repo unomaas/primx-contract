@@ -269,8 +269,7 @@ function* updatePricingInitialLoad() {
 		const currentProductCosts = yield axios.get('/api/products/get-current-products');
 		const currentCustomsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
 		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
-		const activeRegions = yield axios.get('/api/regions/get-active-regions');
-
+		const activeRegions = yield axios.get(`/api/regions/get-regions`, { params: { active: true } });
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
 		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
 		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
