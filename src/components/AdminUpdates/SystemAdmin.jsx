@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 //import components
 import AdminUpdates from './AdminUpdates';
@@ -6,7 +7,11 @@ import SystemAdminUpdateUsersGrid from './SystemAdminUpdateUsersGrid';
 import AdminRegisterForm from '../AdminRegisterForm/AdminRegisterForm';
 
 export default function SystemAdmin() {
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // GET all users on page load
+    dispatch({ type: 'FETCH_ADMIN_INFO' });
+  }, [])
 
   return (
     <div>
@@ -14,19 +19,18 @@ export default function SystemAdmin() {
         {/* shows nav dropdown */}
         <AdminUpdates />
       </div>
-
+{/* 
       <div>
         <AdminRegisterForm />
-      </div>
+      </div> */}
 
       {/* providing some spacing */}
-      <br></br>
-      <br></br>
 
-      <div>
+
+      {/* <div> */}
         {/* grid component where all of the info and work is happening */}
         <SystemAdminUpdateUsersGrid />
-      </div>
+      {/* </div> */}
     </div>
   )
 }

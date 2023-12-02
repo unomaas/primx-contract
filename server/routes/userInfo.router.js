@@ -1,32 +1,43 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const { rejectUnauthenticated } = require('../modules/authentication-middleware');
-const { useRadioGroup } = require('@material-ui/core');
+const { rejectUnauthenticated, rejectNonAdmin, rejectNonSysAdmin } = require('../modules/authentication-middleware');
 
 //Get Route for Admin Accounts
-router.get('/', rejectUnauthenticated, (req, res) => {
-  //query to grab all users and their info
-  const queryText = `
+router.get('/', rejectNonAdmin, (req, res) => {
+	//query to grab all users and their info
+	const queryText = `
 		SELECT
-			user_id, username, permission_level
-		FROM "users" 
+			u.user_id, 
+			u.username, 
+			u.permission_level,
+			CASE 
+				WHEN u.permission_level = 1 THEN 'System Admin'
+				WHEN u.permission_level = 2 THEN 'Admin'
+				WHEN u.permission_level = 3 THEN 'Region Admin'
+				ELSE 'User'
+			END AS permission_type,
+			r.region_id, 
+			r.region_name,
+			r.region_code
+		FROM users AS u
+		LEFT JOIN regions AS r
+			ON u.region_id = r.region_id
 		WHERE 
-			permission_level = 1 OR
-			permission_level = 2
+			u.permission_level < 4
 		ORDER BY username ASC;
 	`;
-  pool.query(queryText).then((result) => {
-    res.send(result.rows);
-  }).catch((error) => {
-    console.error('Error in GET', error);
-    res.sendStatus(500);
-  })
+	pool.query(queryText).then((result) => {
+		res.send(result.rows);
+	}).catch((error) => {
+		console.error('Error in GET', error);
+		res.sendStatus(500);
+	})
 });
 
 //Get Route for Admin Accounts
 
-router.get('/licensees', rejectUnauthenticated, (req, res) => {
+router.get('/licensees', rejectNonAdmin, (req, res) => {
 	//query to grab all users and their info
 	const queryText = `
 		SELECT 
@@ -46,24 +57,19 @@ router.get('/licensees', rejectUnauthenticated, (req, res) => {
 });
 
 //Delete Route - Delete an admin user
-router.delete('/:id', rejectUnauthenticated, (req, res) => {
-  if (req.user.permission_level == '1') {
-    const queryText = `DELETE FROM "users" WHERE "user_id" = $1;`;
-    pool.query(queryText, [req.params.id])
-      .then(result => {
-        res.sendStatus(200)
-      })
-      .catch((error) => {
-        console.error('Error in admin DELETE in server', error);
-      });
-  } else {
-    console.error('unable to delete unless you are superuser');
-    res.sendStatus(403);
-  }
+router.delete('/:user_id', rejectNonSysAdmin, async (req, res) => {
+	try {
+		const queryText = `DELETE FROM "users" WHERE "user_id" = $1;`;
+		const result = await pool.query(queryText, [req.params.user_id])
+		res.sendStatus(200)
+	} catch (error) {
+		console.error('unable to delete unless you are superuser');
+		res.sendStatus(403);
+	}
 });
 
 //Delete Route - Delete an licensee user
-router.delete('/licensees/:id', rejectUnauthenticated, (req, res) => {
+router.delete('/licensees/:id', rejectNonAdmin, (req, res) => {
 	const queryText = `DELETE FROM "users" WHERE "user_id" = $1;`;
 	pool.query(queryText, [req.params.id])
 		.then(result => {
@@ -73,6 +79,8 @@ router.delete('/licensees/:id', rejectUnauthenticated, (req, res) => {
 			console.error('Error in licensee DELETE in server', error);
 		});
 });
+
+
 
 
 module.exports = router;

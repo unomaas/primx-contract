@@ -86,7 +86,6 @@ export default function NavDrawer() {
 								<p>Saved Estimates</p>
 							</ListItem>
 
-							{/* Conditional rendering to show Admin Links: */}
 							{user.permission_level <= 3 &&
 								<>
 									<Divider />
@@ -100,7 +99,12 @@ export default function NavDrawer() {
 										<ViewCarouselIcon /> &nbsp;
 										<p>View Pipeline</p>
 									</ListItem>
+								</>
 
+							}
+
+							{user.permission_level <= 2 &&
+								<>
 									<ListItem button onClick={() => history.push(`/adminupdates`)}>
 										<UpdateIcon /> &nbsp;
 										<p>Update Items</p>
@@ -116,19 +120,17 @@ export default function NavDrawer() {
 										<p>Monthly Pricing Log</p>
 									</ListItem>
 								</>
-							} {/* End Admin conditional rendering. */}
+							}
 
-							{/* Conditional rendering to show system admin portal: */}
 							{user.permission_level == 1 &&
 								<>
 									<Divider />
-
 									<ListItem button onClick={() => history.push(`/systemadmin`)}>
 										<SupervisorAccountIcon /> &nbsp;
 										<p>System Admin</p>
 									</ListItem>
 								</>
-							} {/* End System Admin conditional rendering. */}
+							} 
 
 							<Divider />
 
