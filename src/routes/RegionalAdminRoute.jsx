@@ -1,16 +1,16 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import Error404Page from './Error404Page';
-import AdminLoginPage from '../components/AdminLoginPage/AdminLoginPage';
-import LoginForm from '../components/LoginForm/LoginForm';
+import Error404Page from './Error404Page.jsx';
+import AdminLoginPage from '../components/AdminLoginPage/AdminLoginPage.jsx';
+import LoginForm from '../components/LoginForm/LoginForm.jsx';
 import { useSelector } from 'react-redux';
-import AdminLandingPage from '../components/AdminLandingPage/AdminLandingPage';
-import AdminUpdates from '../components/AdminUpdates/AdminUpdates';
-import AdminOrders from '../components/AdminOrders/AdminOrders';
-import AdminUpdateTypes from '../components/AdminUpdates/AdminUpdateTypes';
+import AdminLandingPage from '../components/AdminLandingPage/AdminLandingPage.jsx';
+import AdminUpdates from '../components/AdminUpdates/AdminUpdates.jsx';
+import AdminOrders from '../components/AdminOrders/AdminOrders.jsx';
+import AdminUpdateTypes from '../components/AdminUpdates/AdminUpdateTypes.jsx';
 // import AdminUpdateLicenses from '../components/AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateDestinations from '../pages/AdminUpdates/ShippingDestinations/index.jsx'
-import LicenseeAccounts from '../components/AdminLicenseeAccounts/LicenseeAccounts';
+import LicenseeAccounts from '../components/AdminLicenseeAccounts/LicenseeAccounts.jsx';
 import ProductContainers from '../pages/AdminUpdates/ProductContainers/index.jsx';
 import Regions from '../pages/AdminUpdates/Regions/index.jsx';
 import DosageRates from '../pages/AdminUpdates/DosageRates/index.jsx';
@@ -29,50 +29,19 @@ import AdminUpdateLicenses from '../pages/AdminUpdates/Licensees/index.jsx';
 // by checking req.isAuthenticated for authentication
 // and by checking req.user for authorization
 
-export const adminRoutes = [
+export const regionalAdminRoutes = [
 	{
-		path: '/AdminUpdates',
-		component: AdminUpdates
+		path: '/User',
+		component: AdminLandingPage
 	},
 	{
-		path: '/AdminUpdateTypes',
-		component: AdminUpdateTypes
+		path: '/AdminOrders',
+		component: AdminOrders
 	},
-	{
-		path: '/AdminUpdateLicenses',
-		component: AdminUpdateLicenses
-	},
-	{
-		path: '/AdminUpdateDestinations',
-		component: AdminUpdateDestinations
-	},
-	{
-		path: '/LicenseeAccounts',
-		component: LicenseeAccounts
-	},
-	{
-		path: '/ProductContainers',
-		component: ProductContainers
-	},
-	{
-		path: '/DosageRates',
-		component: DosageRates
-	},
-	{
-		path: '/Regions',
-		component: Regions
-	},
-	{
-		path: '/pricinglog',
-		component: PricingLog
-	},
-	{
-		path: '/updatepricing',
-		component: UpdatePricing
-	},
+
 ];
 
-export default function AdminRoute(props) {
+export default function RegionalAdminRoute(props) {
 	const user = useSelector((store) => store.user);
 
 	// Using destructuring, this takes ComponentToProtect from component
@@ -88,7 +57,7 @@ export default function AdminRoute(props) {
 
 	let ComponentToShow;
 
-	if (user.user_id && user.permission_level <= 2) {
+	if (user.user_id && user.permission_level <= 3) {
 		// if the user is logged in (only logged in users have ids)
 		// show the component that is protected
 		ComponentToShow = ComponentToProtect;

@@ -1,11 +1,13 @@
 const express = require('express');
 const {
 	rejectUnauthenticated,
+	rejectNonAdmin,
+	rejectNonSysAdmin,
 } = require('../modules/authentication-middleware');
 const encryptLib = require('../modules/encryption');
 const pool = require('../modules/pool');
 const userStrategy = require('../strategies/user.strategy');
-
+const format = require('pg-format');
 const router = express.Router();
 
 // Handles Ajax request for user information if user is authenticated
@@ -17,57 +19,60 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
-router.post('/register', rejectUnauthenticated, (req, res, next) => {
+router.post('/register', rejectNonSysAdmin, async (req, res, next) => {
+	let {
+		username,
+		password,
+		permission_level,
+		region_id,
+	} = req.body;
+	
+	if (!region_id) region_id = null;
+	
+	password = encryptLib.encryptPassword(password);
+	
+	const connection = await pool.connect();
 	try {
-		if (req.user.permission_level == '1') {
-			const username = req.body.username;
-			const password = encryptLib.encryptPassword(req.body.password);
-			const queryText = `
-				INSERT INTO "users" 
-					(username, password, permission_level)
-				VALUES ($1, $2, 2) 
-				RETURNING user_id;
-			`; // End queryText 
-			pool
-				.query(queryText, [username, password])
-				.then(() => res.sendStatus(201))
-				.catch((error) => {
-					console.error('Admin registration failed: ', error);
-					res.sendStatus(500);
-				});
-		} else {
-			console.error('unable to register unless you are superuser');
-			res.sendStatus(403);
-		}
-	} catch {
-		console.error('Error Registering');
-		res.sendStatus(403);
+		await connection.query('BEGIN');
+
+		const insertUserSql = `
+			INSERT INTO users (username, password, permission_level, region_id)
+			VALUES (${format(`%L`, username)}, ${format(`%L`, password)}, ${format(`%L`, permission_level)}, ${format(`%L`, region_id)})
+			RETURNING user_id;
+		`;
+
+		await connection.query(insertUserSql);
+
+		await connection.query('COMMIT');
+		res.sendStatus(201);
+	} catch (error) {
+		await connection.query('ROLLBACK'); // Rollback transaction on error
+		console.error('Error in submit licensee POST', error);
+		res.sendStatus(500);
+	} finally {
+		connection.release();
 	}
 });
 
-router.post('/register_licensee', rejectUnauthenticated, (req, res, next) => {
+router.post('/register_licensee', rejectNonAdmin, (req, res, next) => {
 	try {
-		if (req.user.permission_level <= 3) {
-			const username = req.body.username;
-			const password = encryptLib.encryptPassword(req.body.password);
-			const licensee_id = req.body.licensee_id;
-			const queryText = `
+		const username = req.body.username;
+		const password = encryptLib.encryptPassword(req.body.password);
+		const licensee_id = req.body.licensee_id;
+		const queryText = `
 				INSERT INTO "users" 
 					(username, password, permission_level, licensee_id)
 				VALUES ($1, $2, 4, $3) 
 				RETURNING user_id;
 			`; // End queryText
-			pool
-				.query(queryText, [username, password, licensee_id])
-				.then(() => res.sendStatus(201))
-				.catch((error) => {
-					console.error('Licensee registration failed: ', error);
-					res.sendStatus(500);
-				});
-		} else {
-			console.error('unable to register unless you are an admin');
-			res.sendStatus(403);
-		}
+		pool
+			.query(queryText, [username, password, licensee_id])
+			.then(() => res.sendStatus(201))
+			.catch((error) => {
+				console.error('Licensee registration failed: ', error);
+				res.sendStatus(500);
+			});
+
 	} catch {
 		console.error('Error Registering');
 		res.sendStatus(403);

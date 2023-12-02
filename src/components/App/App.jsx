@@ -43,6 +43,7 @@ import { theme } from '../MuiStyling/MuiStyling';
 import { Buffer } from "buffer";
 
 import AdminRoute, { adminRoutes } from '../../routes/AdminRoute';
+import RegionalAdminRoute, { regionalAdminRoutes } from '../../routes/RegionalAdminRoute.jsx';
 import ProtectedRoute, { protectedRoutes } from '../../routes/ProtectedRoute';
 import LoginForm from '../LoginForm/LoginForm';
 
@@ -102,6 +103,15 @@ function App() {
 							{/* <LicenseeRoute exact path="/SavedEstimates" >
 								<LicenseePortal />
 							</LicenseeRoute> */}
+
+							{regionalAdminRoutes.map((route) => (
+								<RegionalAdminRoute
+									key={route.path}
+									exact
+									path={route.path}
+									component={route.component}
+								/>
+							))}
 
 							{/* // ⬇ Only Admin users (NOT regional) will  be able to view these: */}
 							{adminRoutes.map((route) => (
