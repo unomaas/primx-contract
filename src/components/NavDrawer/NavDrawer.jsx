@@ -81,10 +81,13 @@ export default function NavDrawer() {
 								<p>Combine Estimates</p>
 							</ListItem>
 
-							<ListItem button onClick={() => history.push(`/SavedEstimates`)}>
-								<SaveIcon /> &nbsp;
-								<p>Saved Estimates</p>
-							</ListItem>
+							{user.permission_level != 3 &&
+
+								<ListItem button onClick={() => history.push(`/SavedEstimates`)}>
+									<SaveIcon /> &nbsp;
+									<p>Saved Estimates</p>
+								</ListItem>
+							}
 
 							{user.permission_level <= 3 &&
 								<>
@@ -130,7 +133,7 @@ export default function NavDrawer() {
 										<p>System Admin</p>
 									</ListItem>
 								</>
-							} 
+							}
 
 							<Divider />
 

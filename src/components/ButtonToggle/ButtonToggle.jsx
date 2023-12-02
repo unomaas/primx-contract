@@ -16,6 +16,7 @@ export default function ButtonToggle() {
   // toggle button states
   const dispatch = useDispatch();
   const classes = useClasses();
+  const user = useSelector((store) => store.user);
 
   //#endregion ⬆⬆ All state variables above. 
 
@@ -67,11 +68,13 @@ export default function ButtonToggle() {
           Combine Estimates
         </ToggleButton>
 
-				<ToggleButton
-          value="SavedEstimates"
-        >
-          Saved Estimates
-        </ToggleButton>
+        {user && user.permission_level != 3 &&
+          <ToggleButton
+            value="SavedEstimates"
+          >
+            Saved Estimates
+          </ToggleButton>
+        }
       </ToggleButtonGroup>
     </div>
   );
