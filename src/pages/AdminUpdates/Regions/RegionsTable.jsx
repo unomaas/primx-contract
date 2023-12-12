@@ -614,7 +614,7 @@ export default function RegionsTable() {
 							maxWidth: '400px',
 							maxHeight: '500px',
 							overflowY: 'hidden', // Disable Y-axis scrolling for the modal container
-							marginTop: '-300px',
+							// marginTop: '-300px',
 							minWidth: '500px',
 							display: 'flex',
 							flexDirection: 'column', // Stack children vertically
