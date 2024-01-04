@@ -185,9 +185,6 @@ function* pricingLogInitialLoad() {
 
 		let lastMonth = null;
 		// ⬇ Loop through the monthHolderObject and create the top header:
-		console.log(`Ryan Here: \n `, {
-			monthHolderObject,
-		});
 		for (const i in monthHolderObject) {
 			const month = monthHolderObject[i];
 
@@ -228,12 +225,7 @@ function* pricingLogInitialLoad() {
 			); // End pricingLogPerUnitBottomHeader.push
 
 			// ⬇ Loop through the destinationsCosts array and create the rows:
-			// let lastDestination = null;
 			for (const destination of month.destinationsCosts) {
-
-				// console.log(`Ryan Here: \n `, {month, pricingLogPerUnitRowsObject, destination} );
-
-
 				if (!pricingLogPerUnitRowsObject[destination.destination_id]) {
 					pricingLogPerUnitRowsObject[destination.destination_id] = {
 						destination_id: destination.destination_id,
@@ -357,11 +349,20 @@ function* updatePricingInitialLoad() {
 		Object.keys(markupHistory12Months.data).forEach((date) => {
 			if (!monthHolderObject[date]) {
 				const monthLabel = months[+date.split('-')[1] - 1] + ', ' + date.split('-')[0];
+
+				console.log(`*** Ryan Here: \n `, {
+					date, 
+					// monthHolderObject, 
+					// productCostHistory12Months, 
+					monthLabel
+				} );
+
 				monthHolderObject[date] = {
 					month_year_label: monthLabel,
 					month_year_value: date,
 					date_saved_full: (markupHistory12Months.data[date][0].date_saved_full),
 					pricing: {
+						// ! Ryan here, this is throwing errors. 
 						products: JSON.parse(JSON.stringify(productCostHistory12Months.data[date])),
 						currentMarkup: JSON.parse(JSON.stringify(markupHistory12Months.data[date])),
 						shippingCosts: JSON.parse(JSON.stringify(shippingCostHistory12Months.data[date])),
