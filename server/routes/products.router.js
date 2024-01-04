@@ -286,7 +286,7 @@ router.get('/get-one-year-of-markup-history', rejectNonAdmin, async (req, res) =
 				r.region_id, 
 				r.region_code AS destination_country
 			FROM regions AS r
-			LEFT JOIN markup_history AS mh
+			INNER JOIN markup_history AS mh
 				ON mh.region_id = r.region_id
 				AND "mh".date_saved > NOW() - INTERVAL '1 year'
 			ORDER BY "mh".date_saved DESC, "mh".markup_history_id DESC;
