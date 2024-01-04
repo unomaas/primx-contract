@@ -383,8 +383,8 @@ export default function UpdateShippingCosts() {
 
 	// ⬇ Submit handler for in-line cell edits on the data grid:
 	const handleInCellEditSubmit = ({ id, field, value }) => {
-		const destinationIndex = shippingCosts.findIndex(destination => destination.destination_id === id);
-
+		const destinationIndex = shippingCosts.findIndex(destination => destination.shipping_cost_id === id);
+		
 		// ⬇ Check if the destination index is valid
 		if (destinationIndex === -1) {
 			console.error(`Destination not found with id: ${id}`);

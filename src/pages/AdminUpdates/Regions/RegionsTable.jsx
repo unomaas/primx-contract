@@ -494,8 +494,8 @@ export default function RegionsTable() {
 											onChange={(e) => handleProductCostsChange(productKey, e.target.value, 'productCosts')}
 											type="number"
 											InputProps={{
-												startAdornment: <InputAdornment position="start">$</InputAdornment>,								
-													endAdornment: <InputAdornment position="end">USD</InputAdornment>,
+												startAdornment: <InputAdornment position="start">$</InputAdornment>,
+												endAdornment: <InputAdornment position="end">USD</InputAdornment>,
 											}}
 										/>
 									</Grid>
@@ -515,7 +515,7 @@ export default function RegionsTable() {
 											label={`${editData?.customsDuties[key]?.label} Customs`}
 											value={editData?.customsDuties[key]?.value}
 											onChange={(e) => handleProductCostsChange(key, e.target.value, 'customsDuties')}
-											type="number"								
+											type="number"
 											InputProps={{
 												endAdornment: <InputAdornment position="end">%</InputAdornment>,
 											}}
@@ -633,9 +633,9 @@ export default function RegionsTable() {
 						</div>
 						<div
 							style={{
-								flex: 1, // Allow this div to expand and take available space
+								flex: 1,
 								marginBottom: '10px',
-								overflowY: 'auto', // Enable Y-axis scrolling for the content
+								overflowY: 'auto',
 								padding: '10px',
 							}}
 						>

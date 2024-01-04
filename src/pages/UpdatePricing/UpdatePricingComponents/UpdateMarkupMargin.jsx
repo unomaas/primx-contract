@@ -79,7 +79,7 @@ export default function UpdateMarkupMargin() {
 	}; // End calculateNewPricingData
 
 	// useEffect(() => {
-		calculateNewPricingData();
+	calculateNewPricingData();
 	// }, [newMarkup]);
 
 	const leftTableData = leftSelectedMonth.destinationsCosts;
@@ -92,8 +92,16 @@ export default function UpdateMarkupMargin() {
 		// ⬇ Looping through the left table data:
 		for (let i = 0; i < shippingDestinations.length; i++) {
 			const shippingDestinationItem = shippingDestinations[i];
-			const leftTableDataItem = leftTableData[i];
-			const rightTableDataItem = rightTableData[i];
+			const leftTableDataItem = leftTableData.find(item => item.destination_id === shippingDestinationItem.destination_id) || {
+				price_per_unit_75_50: "N/A",
+				price_per_unit_90_60: "N/A",
+				units_label: "N/A"
+			};
+			const rightTableDataItem = rightTableData.find(item => item.destination_id === shippingDestinationItem.destination_id) || {
+				price_per_unit_75_50: "N/A",
+				price_per_unit_90_60: "N/A",
+				units_label: "N/A"
+			};
 			const row = {
 				destination_id: shippingDestinationItem.destination_id,
 				destination_name: shippingDestinationItem.destination_name,
@@ -103,8 +111,12 @@ export default function UpdateMarkupMargin() {
 				right_price_per_unit_75_50: rightTableDataItem.price_per_unit_75_50,
 				right_price_per_unit_90_60: rightTableDataItem.price_per_unit_90_60,
 				// ⬇ Calculate the difference between the two as a percentage:
-				difference_per_unit_75_50: Math.abs(rightTableDataItem.price_per_unit_75_50 - leftTableDataItem.price_per_unit_75_50) / ((leftTableDataItem.price_per_unit_75_50 + rightTableDataItem.price_per_unit_75_50) / 2),
-				difference_per_unit_90_60: Math.abs(rightTableDataItem.price_per_unit_90_60 - leftTableDataItem.price_per_unit_90_60) / ((leftTableDataItem.price_per_unit_90_60 + rightTableDataItem.price_per_unit_90_60) / 2),
+				difference_per_unit_75_50: (leftTableDataItem.price_per_unit_75_50 === "N/A" || rightTableDataItem.price_per_unit_75_50 === "N/A")
+					? "N/A"
+					: Math.abs(rightTableDataItem.price_per_unit_75_50 - leftTableDataItem.price_per_unit_75_50) / ((leftTableDataItem.price_per_unit_75_50 + rightTableDataItem.price_per_unit_75_50) / 2),
+				difference_per_unit_90_60: (leftTableDataItem.price_per_unit_90_60 === "N/A" || rightTableDataItem.price_per_unit_90_60 === "N/A")
+					? "N/A"
+					: Math.abs(rightTableDataItem.price_per_unit_90_60 - leftTableDataItem.price_per_unit_90_60) / ((leftTableDataItem.price_per_unit_90_60 + rightTableDataItem.price_per_unit_90_60) / 2),
 				units_label: rightTableDataItem.units_label,
 			}; // End row
 			rows.push(row);
@@ -138,7 +150,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+				} else {
+					return params.value;
+				}; // End if/else
+			}, // End valueFormatter
 		},
 		{
 			headerName: `68lbs/40kg: ${leftSelectedMonth.month_year_label}`,
@@ -148,7 +166,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+				} else {
+					return params.value;
+				}; // End if/else
+			}, // End valueFormatter
 		},
 		{
 			headerName: `60lbs/35kg: ${rightSelectedMonth.month_year_label}`,
@@ -158,7 +182,14 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
+			valueFormatter: (params) => {
+
+				if (typeof params.value === "number") {
+					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+				} else {
+					return params.value;
+				}; // End if/else
+			}, // End valueFormatter
 		},
 		{
 			headerName: `68lbs/40kg: ${rightSelectedMonth.month_year_label}`,
@@ -168,7 +199,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+				} else {
+					return params.value;
+				}; // End if/else
+			}, // End valueFormatter
 		},
 		{
 			headerName: `60lbs/35kg Difference`,
@@ -178,7 +215,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return `${(params.value * 100).toFixed(2)}%`; },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return `${(params.value * 100).toFixed(2)}%`;
+				} else {
+					return params.value;
+				}; // End if/else
+			},
 		},
 		{
 			headerName: `68lbs/40kg Difference`,
@@ -188,7 +231,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return `${(params.value * 100).toFixed(2)}%`; },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return `${(params.value * 100).toFixed(2)}%`;
+				} else {
+					return params.value;
+				}; // End if/else
+			},
 		},
 		{
 			headerName: `Units`,
@@ -468,7 +517,7 @@ export default function UpdateMarkupMargin() {
 			// Dispatch the updated newMarkup
 			dispatch({ type: 'SET_PRICING_LOG_VIEW', payload: { newMarkup: updatedMarkup } });
 			// if (leftSelectedMonth.month_year_value === 'new' || rightSelectedMonth.month_year_value === 'new') {
-				// ⬇ Find  which one is new:
+			// ⬇ Find  which one is new:
 			// }; 
 			setShowEditModal(false);
 		};
@@ -580,7 +629,7 @@ const GridToolbarSelectDropdown = ({ month, otherMonth, handleViewSelection, vie
 				onClick={event => setAnchorEl(event.currentTarget)}
 
 			>
-				{month.month_year_label}{month.month_year_label.slice(-3) === "ing" ? "" : " Pricing"} at {month.pricing.currentMarkup[0].margin_applied_label}% <ArrowDropDownIcon />
+				{month.month_year_label}{month.month_year_label.slice(-3) === "ing" ? "" : " Pricing"} <ArrowDropDownIcon />
 			</Button>
 			<Menu
 				anchorEl={anchorEl}
