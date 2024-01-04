@@ -44,6 +44,24 @@ function* pricingLogInitialLoad() {
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
 
+		console.log(`Ryan Here: pricingLogInitialLoad \n `, {
+			customsDutiesHistoryAll,
+			markupHistoryAll,
+			productCostHistoryAll,
+			shippingCostHistoryAll,
+			currentShippingCosts,
+			currentProductCosts,
+			currentCustomsDuties,
+			currentMarkup,
+			shippingDestinations,
+			productContainers,
+			dosageRates,
+			markupHistory12Months,
+			shippingCostHistory12Months,
+			productCostHistory12Months,
+			customsDutiesHistory12Months,
+		});
+
 		// Ideas:
 		// Top Header: Current Pricing --> Most Recent Month --> Previous Month --> So on, for 12 months data.
 		// Next Header: 60lbs/35kg -- Difference in Percent from Last Month --> 68lbs/40kg -- Difference in Percent from Last Month --> So on, for 12 months data.  Loop through the data on render and have an arrow up or down generated, with color for positive or negative change. 
@@ -213,8 +231,8 @@ function* pricingLogInitialLoad() {
 			// let lastDestination = null;
 			for (const destination of month.destinationsCosts) {
 
-			// console.log(`Ryan Here: \n `, {month, pricingLogPerUnitRowsObject, destination} );
-				
+				// console.log(`Ryan Here: \n `, {month, pricingLogPerUnitRowsObject, destination} );
+
 
 				if (!pricingLogPerUnitRowsObject[destination.destination_id]) {
 					pricingLogPerUnitRowsObject[destination.destination_id] = {
@@ -301,6 +319,21 @@ function* updatePricingInitialLoad() {
 		const shippingCostHistory12Months = yield axios.get(`/api/shippingcosts/get-one-year-of-shipping-cost-history`);
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
+
+
+		console.log(`Ryan Here: updatePricingInitialLoad \n `, {
+			currentShippingCosts,
+			currentProductCosts,
+			currentCustomsDuties,
+			currentMarkup,
+			activeRegions,
+			shippingDestinations,
+			productContainers,
+			dosageRates,
+			markupHistory12Months,
+			shippingCostHistory12Months,
+			productCostHistory12Months,
+		});
 
 		//#region - Calculate historical pricing data for 12 months: 
 		const monthHolderObject = {
