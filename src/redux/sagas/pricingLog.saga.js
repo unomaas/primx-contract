@@ -44,24 +44,6 @@ function* pricingLogInitialLoad() {
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
 
-		console.log(`Ryan Here: pricingLogInitialLoad \n `, {
-			customsDutiesHistoryAll,
-			markupHistoryAll,
-			productCostHistoryAll,
-			shippingCostHistoryAll,
-			currentShippingCosts,
-			currentProductCosts,
-			currentCustomsDuties,
-			currentMarkup,
-			shippingDestinations,
-			productContainers,
-			dosageRates,
-			markupHistory12Months,
-			shippingCostHistory12Months,
-			productCostHistory12Months,
-			customsDutiesHistory12Months,
-		});
-
 		// Ideas:
 		// Top Header: Current Pricing --> Most Recent Month --> Previous Month --> So on, for 12 months data.
 		// Next Header: 60lbs/35kg -- Difference in Percent from Last Month --> 68lbs/40kg -- Difference in Percent from Last Month --> So on, for 12 months data.  Loop through the data on render and have an arrow up or down generated, with color for positive or negative change. 
@@ -312,21 +294,6 @@ function* updatePricingInitialLoad() {
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
 
-
-		console.log(`Ryan Here: updatePricingInitialLoad \n `, {
-			currentShippingCosts,
-			currentProductCosts,
-			currentCustomsDuties,
-			currentMarkup,
-			activeRegions,
-			shippingDestinations,
-			productContainers,
-			dosageRates,
-			markupHistory12Months,
-			shippingCostHistory12Months,
-			productCostHistory12Months,
-		});
-
 		//#region - Calculate historical pricing data for 12 months: 
 		const monthHolderObject = {
 			current: {
@@ -349,13 +316,6 @@ function* updatePricingInitialLoad() {
 		Object.keys(markupHistory12Months.data).forEach((date) => {
 			if (!monthHolderObject[date]) {
 				const monthLabel = months[+date.split('-')[1] - 1] + ', ' + date.split('-')[0];
-
-				console.log(`*** Ryan Here: \n `, {
-					date, 
-					monthHolderObject, 
-					productCostHistory12Months, 
-					monthLabel
-				} );
 
 				monthHolderObject[date] = {
 					month_year_label: monthLabel,
