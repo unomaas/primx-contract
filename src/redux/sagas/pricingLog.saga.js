@@ -352,8 +352,8 @@ function* updatePricingInitialLoad() {
 
 				console.log(`*** Ryan Here: \n `, {
 					date, 
-					// monthHolderObject, 
-					// productCostHistory12Months, 
+					monthHolderObject, 
+					productCostHistory12Months, 
 					monthLabel
 				} );
 
