@@ -283,7 +283,6 @@ export default function PricingLogTable() {
 				},
 			] // End columns
 		}, // End shipping_cost
-		// TODO: Implement this. 
 		price_per_unit: {
 			label: "Price Per Unit",
 			key: "price_per_unit",
@@ -341,6 +340,15 @@ export default function PricingLogTable() {
 					},
 				}); // End push
 			} else if (column.headerName.includes("Measurement") || column.headerName.includes("Region")) {
+				columns.push({
+					headerName: column.headerName,
+					field: column.field,
+					flex: 1,
+					headerClassName: classes.header,
+					disableColumnMenu: true,
+					sortable: false,
+				}); // End push
+			} else if (column.headerName.includes("Percentage") ) {
 				columns.push({
 					headerName: column.headerName,
 					field: column.field,
@@ -551,37 +559,34 @@ export default function PricingLogTable() {
 						{selectedLog.double_columns.map((column, index) => {
 							if (column.month_year_label) {
 								return (
-									<div style={{
-										flex: "4",
-										display: "flex",
-										// textAlign: "center",
-										justifyContent: "center",
-										borderLeft: "1px solid #e0e0e0",
-										borderRight: "1px solid #e0e0e0",
-										fontWeight: "500",
-										// className: classes.header,
-										// justifyContent: "center",
-										// fontSize: "11px",
-										// fontFamily: "Lexend Tera",
-										// height: "45px"
-									}} key={index} >
-										{column.month_year_label} at {(column.margin_applied_label)}% Markup
+									<div
+										style={{
+											flex: "4",
+											display: "flex",
+											justifyContent: "center",
+											borderLeft: "1px solid #e0e0e0",
+											borderRight: "1px solid #e0e0e0",
+											fontWeight: "500",
+										}}
+										key={index}
+									>
+										{column.month_year_label}
 									</div>
 								)
 							} else {
 								return (
-									<div style={{
-										flex: "1",
-										display: "flex",
-										justifyContent: "center",
-										// borderLeft: "1px solid #e0e0e0",
-										borderRight: "1px solid #e0e0e0",
-										fontWeight: "bold",
-										// justifyContent: "center",
-										// fontSize: "11px",
-										// fontFamily: "Lexend Tera",
-										// height: "45px"
-									}} key={index}>{column.month_year_value}</div>
+									<div
+										style={{
+											flex: "1",
+											display: "flex",
+											justifyContent: "center",
+											borderRight: "1px solid #e0e0e0",
+											fontWeight: "bold",
+										}}
+										key={index}
+									>
+										{column.month_year_value}
+									</div>
 								)
 							}
 						})}

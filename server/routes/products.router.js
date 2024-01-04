@@ -32,12 +32,10 @@ router.get('/get-current-products', rejectUnauthenticated, (req, res) => {
 		});
 });
 
-router.get('/get-products-for-regions', rejectUnauthenticated, (req, res) => {
-	// GET route code here
+router.get('/get-products-for-regions', rejectNonAdmin, (req, res) => {
 	const queryText = `
 		SELECT *
 		FROM products
-		WHERE product_key NOT LIKE '%blanket%'
 		ORDER BY product_id;
 	`;
 	pool.query(queryText)
@@ -243,8 +241,11 @@ router.get('/get-markup-margin', rejectUnauthenticated, async (req, res) => {
 	try {
 		const sql = `
 			SELECT 
-				m.markup_id, m.margin_applied::REAL, (m.margin_applied * 100)::REAL AS margin_applied_label,
-				r.region_id, r.region_code AS destination_country
+				m.markup_id, 
+				m.margin_applied::REAL, 
+				(m.margin_applied * 100)::REAL AS margin_applied_label,
+				r.region_id, 
+				r.region_code AS destination_country
 			FROM markup AS m
 			JOIN regions AS r
 				ON m.region_id = r.region_id;
@@ -259,19 +260,35 @@ router.get('/get-markup-margin', rejectUnauthenticated, async (req, res) => {
 
 router.get('/get-one-year-of-markup-history', rejectNonAdmin, async (req, res) => {
 	try {
+		// ! Ryan here
+		// const sql = `
+		// 	SELECT 
+		// 		mh.markup_history_id,
+		// 		mh.margin_applied::REAL,
+		// 		(mh.margin_applied * 100)::REAL AS margin_applied_label,
+		// 		TO_CHAR(mh.date_saved, 'YYYY-MM') AS date_saved,
+		// 		TO_CHAR(mh.date_saved, 'YYYY-MM-DD') AS date_saved_full,
+		// 		r.region_id, 
+		// 		r.region_code AS destination_country
+		// 	FROM markup_history AS mh
+		// 	JOIN regions AS r
+		// 		ON mh.region_id = r.region_id
+		// 	WHERE "mh".date_saved > NOW() - INTERVAL '1 year'
+		// 	ORDER BY "mh".date_saved DESC, "mh".markup_history_id DESC;
+		// `; // End sql
 		const sql = `
 			SELECT 
 				mh.markup_history_id,
-				mh.margin_applied::REAL,
-				(mh.margin_applied * 100)::REAL AS margin_applied_label,
-				TO_CHAR(mh.date_saved, 'YYYY-MM') AS date_saved,
-				TO_CHAR(mh.date_saved, 'YYYY-MM-DD') AS date_saved_full,
+				COALESCE(mh.margin_applied::REAL, 0) AS margin_applied,
+				COALESCE((mh.margin_applied * 100)::REAL, 0) AS margin_applied_label,
+				TO_CHAR(COALESCE(mh.date_saved, NOW()), 'YYYY-MM') AS date_saved,
+				TO_CHAR(COALESCE(mh.date_saved, NOW()), 'YYYY-MM-DD') AS date_saved_full,
 				r.region_id, 
 				r.region_code AS destination_country
-			FROM markup_history AS mh
-			JOIN regions AS r
+			FROM regions AS r
+			LEFT JOIN markup_history AS mh
 				ON mh.region_id = r.region_id
-			WHERE "mh".date_saved > NOW() - INTERVAL '1 year'
+				AND "mh".date_saved > NOW() - INTERVAL '1 year'
 			ORDER BY "mh".date_saved DESC, "mh".markup_history_id DESC;
 		`; // End sql
 		const { rows } = await pool.query(sql);

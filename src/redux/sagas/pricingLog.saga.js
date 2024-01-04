@@ -103,6 +103,17 @@ function* pricingLogInitialLoad() {
 			for (const destination of shippingDestinations.data) {
 				const estimate = {};
 
+				if (i !== 'current') {
+					let hasProductCostData = productCostHistory12Months.data[i].some(item => item.destination_country === destination.destination_country);
+					let hasCustomsDutyData = customsDutiesHistory12Months.data[i].some(item => item.destination_country === destination.destination_country);
+
+					if (!hasProductCostData || !hasCustomsDutyData) {
+						// Skip this destination if either historical product cost data or customs duty data is missing
+						console.warn(`Skipping destination ${destination.destination_country} for month ${i} due to missing data.`);
+						continue;
+					}
+				}; // End if
+
 				if (destination.destination_country == "USA") {
 					estimate.measurement_units = "imperial";
 					estimate.design_cubic_yards_total = 1000;
@@ -131,14 +142,16 @@ function* pricingLogInitialLoad() {
 		}; // End for loop
 		//#endregion - Calculate historical pricing data.
 
-		const pricingLogPerUnitTopHeader = [{ month_year_value: "" }, { month_year_label: null, month_year_value: "" }];
+		const pricingLogPerUnitTopHeader = [
+			{ month_year_value: "" },
+			{ month_year_label: null, month_year_value: "" },
+			{ month_year_value: "" },
+		];
+
 		const pricingLogPerUnitBottomHeader = [
 			{
 				headerName: "Destination",
 				field: 'destination_name',
-				// flex: 1,
-				// style: { backgroundColor: '#C8C8C8', },
-				// style: { backgroundColor: '#C8C8C8', },
 			},
 			{
 				headerName: "Region",
@@ -154,6 +167,9 @@ function* pricingLogInitialLoad() {
 
 		let lastMonth = null;
 		// ⬇ Loop through the monthHolderObject and create the top header:
+		console.log(`Ryan Here: \n `, {
+			monthHolderObject,
+		});
 		for (const i in monthHolderObject) {
 			const month = monthHolderObject[i];
 
@@ -161,15 +177,20 @@ function* pricingLogInitialLoad() {
 				month_year_label: month.month_year_label,
 				month_year_value: month.month_year_value,
 				date_saved_full: month.date_saved_full,
-				margin_applied: month.margin_applied,
-				margin_applied_label: month.margin_applied_label,
+				// margin_applied: month.margin_applied,
+				// margin_applied_label: month.margin_applied_label,
 				// headerClassName: `classes.header`,
 				// style: { backgroundColor: '#C8C8C8', },
 
 			}); // End pricingLogPerUnitTopHeader.push
 
+
 			// ⬇ Loop through the destinationsCosts array and create the bottom header:
 			pricingLogPerUnitBottomHeader.push(
+				// {
+				// 	headerName: `Markup Percentage - ${month.month_year_label}`,
+				// 	field: `markup_${month.month_year_value}`,
+				// },
 				{
 					headerName: `60lbs/35kg Price - ${month.month_year_label}`,
 					field: `lower_${month.month_year_value}`,
@@ -192,6 +213,8 @@ function* pricingLogInitialLoad() {
 			// let lastDestination = null;
 			for (const destination of month.destinationsCosts) {
 
+			// console.log(`Ryan Here: \n `, {month, pricingLogPerUnitRowsObject, destination} );
+				
 
 				if (!pricingLogPerUnitRowsObject[destination.destination_id]) {
 					pricingLogPerUnitRowsObject[destination.destination_id] = {
@@ -200,6 +223,7 @@ function* pricingLogInitialLoad() {
 						destination_country: destination.destination_country,
 						measurement_units: (destination.measurement_units).charAt(0).toUpperCase() + (destination.measurement_units).slice(1),
 						units_label: destination.units_label,
+						[`markup_${month.month_year_value}`]: month.margin_applied_label,
 						[`lower_${month.month_year_value}`]: destination.price_per_unit_75_50,
 						[`lower_diff_${month.month_year_value}`]: 0,
 						[`higher_${month.month_year_value}`]: destination.price_per_unit_90_60,
@@ -236,7 +260,6 @@ function* pricingLogInitialLoad() {
 		// }; // End for loop
 
 		const pricingLogPerUnitRows = Object.values(pricingLogPerUnitRowsObject);
-
 
 
 		yield put({
@@ -326,6 +349,17 @@ function* updatePricingInitialLoad() {
 
 			for (const destination of shippingDestinations.data) {
 				const estimate = {};
+
+				if (i !== 'current') {
+					let hasProductCostData = productCostHistory12Months.data[i].some(item => item.destination_country === destination.destination_country);
+					let hasCustomsDutyData = customsDutiesHistory12Months.data[i].some(item => item.destination_country === destination.destination_country);
+
+					if (!hasProductCostData || !hasCustomsDutyData) {
+						// Skip this destination if either historical product cost data or customs duty data is missing
+						console.warn(`Skipping destination ${destination.destination_country} for month ${i} due to missing data.`);
+						continue;
+					}
+				}; // End if
 
 				if (destination.destination_country == "USA") {
 					estimate.measurement_units = "imperial";

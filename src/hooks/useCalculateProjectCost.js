@@ -66,6 +66,7 @@ export default function useCalculateProjectCost(estimate, options) {
 
 		primxDcDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 2);
 		primxDcDosageRateInfo.dosage_rate = primxDcDosageRateInfo.kg_m3;
+
 		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 
 		primxSteelFiberProductInfo = products.find(product => product.product_id === 5 && product.destination_country == estimate.destination_country);
@@ -190,7 +191,7 @@ export default function useCalculateProjectCost(estimate, options) {
 		estimate.primx_cpea_pallets_needed = Math.ceil(estimate.primx_cpea_total_project_amount / parseFloat(primxCpea20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ Primx UltraCure Blankets:
-		estimate.primx_ultracure_blankets_total_project_amount = estimate.square_feet * 1.2; // 1.2 is the factor provided by PrimX
+		estimate.primx_ultracure_blankets_total_project_amount = estimate.design_cubic_yards_total * 1.2; // 1.2 is the factor provided by PrimX
 
 		// ⬇ Blankets come in rolls of 6458 sq feet, need to round up:
 		estimate.primx_ultracure_blankets_pallets_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 6458);
@@ -215,7 +216,7 @@ export default function useCalculateProjectCost(estimate, options) {
 		estimate.primx_cpea_pallets_needed = Math.ceil(estimate.primx_cpea_total_project_amount / parseFloat(primxCpea20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ Primx UltraCure Blankets:
-		estimate.primx_ultracure_blankets_total_project_amount = estimate.square_meters * 1.2; // 1.2 is the factor provided by PrimX
+		estimate.primx_ultracure_blankets_total_project_amount = estimate.design_cubic_meters_total * 1.2; // 1.2 is the factor provided by PrimX
 		// ⬇ Blankets come in rolls of 600 square meters, need to round up:
 		estimate.primx_ultracure_blankets_pallets_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 600);
 
