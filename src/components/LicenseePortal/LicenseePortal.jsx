@@ -42,7 +42,7 @@ export default function LicenseePortal() {
 
 			<br />
 
-			{user?.permission_level <= 5 &&
+			{user?.permission_level <= 2 &&
 				<LicenseeSelect companies={companies} setSelectedLicenseeId={setSelectedLicenseeId} />
 
 			}

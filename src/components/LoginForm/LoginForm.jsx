@@ -22,10 +22,15 @@ function AdminLoginForm() {
 	const location = useLocation();
 
 	useEffect(() => {
-		if (user?.permission_level == 3) {
+		// ! User permission levels are:  1-2-3-4. 1 Super, 2 Regular, 3 Regional, 4 Licensee. 
+		// ! : User permissions USED TO BE 1, 2, 3.  1 Super, 2 regular, 3 licensee.  
+
+		// ⬇ If it's a Licensee user or higher, push to create. 
+		if (user?.permission_level >= 3) {
 			history.push('/create');
 		}
-		if (user?.permission_level <= 5) {
+		// ⬇ If it's a Regional user or lower, push to user.
+		if (user?.permission_level <= 2) {
 			history.push('/user');
 		}
 	}, [user, history]);

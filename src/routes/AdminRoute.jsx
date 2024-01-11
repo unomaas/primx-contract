@@ -12,9 +12,11 @@ import AdminUpdateLicenses from '../components/AdminUpdates/AdminUpdateLicenses'
 import AdminUpdateDestinations from '../pages/AdminUpdates/ShippingDestinations/index.jsx'
 import LicenseeAccounts from '../components/AdminLicenseeAccounts/LicenseeAccounts';
 import ProductContainers from '../pages/AdminUpdates/ProductContainers/index.jsx';
+// import Regions from '../pages/AdminUpdates/Regions/index.jsx';
 import DosageRates from '../pages/AdminUpdates/DosageRates/index.jsx';
 import PricingLog from '../pages/PricingLog/index.jsx';
 import UpdatePricing from '../pages/UpdatePricing/index.jsx';
+// import AdminUpdateLicenses from '../pages/AdminUpdates/Licensees/index.jsx';
 
 
 // A Custom Wrapper Component -- This will keep our code DRY.
@@ -29,12 +31,16 @@ import UpdatePricing from '../pages/UpdatePricing/index.jsx';
 
 export const adminRoutes = [
 	{
-		path: '/User',
-		component: AdminLandingPage
-	},
-	{
 		path: '/AdminUpdates',
 		component: AdminUpdates
+	},
+	{
+		path: '/AdminOrders',
+		component: AdminOrders
+	},
+	{
+		path: '/User',
+		component: AdminLandingPage
 	},
 	{
 		path: '/AdminUpdateTypes',
@@ -49,10 +55,6 @@ export const adminRoutes = [
 		component: AdminUpdateDestinations
 	},
 	{
-		path: '/AdminOrders',
-		component: AdminOrders
-	},
-	{
 		path: '/LicenseeAccounts',
 		component: LicenseeAccounts
 	},
@@ -64,6 +66,10 @@ export const adminRoutes = [
 		path: '/DosageRates',
 		component: DosageRates
 	},
+	// {
+	// 	path: '/Regions',
+	// 	component: Regions
+	// },
 	{
 		path: '/pricinglog',
 		component: PricingLog
@@ -90,7 +96,7 @@ export default function AdminRoute(props) {
 
 	let ComponentToShow;
 
-	if (user.user_id && user.permission_level <= 5) {
+	if (user.user_id && user.permission_level <= 2) {
 		// if the user is logged in (only logged in users have ids)
 		// show the component that is protected
 		ComponentToShow = ComponentToProtect;
@@ -121,4 +127,3 @@ export default function AdminRoute(props) {
 
 	);
 }
-
