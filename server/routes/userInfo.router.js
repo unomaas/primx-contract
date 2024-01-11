@@ -2,7 +2,6 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
-const { useRadioGroup } = require('@material-ui/core');
 
 //Get Route for Admin Accounts
 router.get('/', rejectUnauthenticated, (req, res) => {
@@ -12,8 +11,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 			user_id, username, permission_level
 		FROM "users" 
 		WHERE 
-			permission_level = 1 OR
-			permission_level = 2
+			permission_level <= 2
 		ORDER BY username ASC;
 	`;
   pool.query(queryText).then((result) => {
@@ -23,8 +21,6 @@ router.get('/', rejectUnauthenticated, (req, res) => {
     res.sendStatus(500);
   })
 });
-
-//Get Route for Admin Accounts
 
 router.get('/licensees', rejectUnauthenticated, (req, res) => {
 	//query to grab all users and their info
