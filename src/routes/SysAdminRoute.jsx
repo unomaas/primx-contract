@@ -29,7 +29,7 @@ function SysAdminRoute(props) {
 
   let ComponentToShow;
 
-  if (user.user_id && user.permission_level <= "1") {
+  if (user.user_id && user.permission_level <= 1) {
     // if the user is logged in (only logged in users have ids)
     // show the component that is protected
     ComponentToShow = ComponentToProtect;
