@@ -165,8 +165,28 @@ export default function useCalculateProjectCost(estimate, options) {
 	const cheapestPrimxCpeaTransportationCostPerLb = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? primxCpea20ftTransportationCostPerLb : primxCpea40ftTransportationCostPerLb;
 	const primxCpeaTransportation20or40 = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? 20 : 40;
 
+	// * The issue is that if they select Imperial but ship to a destination that's using Metric product container stats, we need to convert the total project amount from cubic yards to cubic meters.  And vice-versa. 
+	// ? We could check the container_destination to be USA or CAN... but that would require some sort of mapping.  We don't inherently have a way to determine that yet.  
+	console.log(`Ryan Here: useCalculateProjectCost \n `, {
+		'1 estimateInfo': {
+			estimateDestinationCountry: estimate.destination_country,
+			estimateMeasurementUnits: estimate.measurement_units,
+		}, 
+		'2 containerInfo': {
+			primxDc20ftContainerInfo,
+			primxDc40ftContainerInfo,
+			primxSteelFiber20ftContainerInfo,
+			primxSteelFiber40ftContainerInfo,
+			primxCpea20ftContainerInfo,
+			primxCpea40ftContainerInfo,
+		}
 
 
+		// destinationMeasurementUnits: shippingDestinations.find(destination => destination.destination_id === estimate.destination_id).measurement_units,
+	});
+
+
+	// ! Ryan here 
 	if (estimate.measurement_units == "imperial") {
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_yards_total * parseFloat(primxDcDosageRateInfo.dosage_rate);
