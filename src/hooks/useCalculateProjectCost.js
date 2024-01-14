@@ -24,6 +24,24 @@ export default function useCalculateProjectCost(estimate, options) {
 		return;
 	}; // End if
 
+	const needToConvertUnits = (
+		(estimate.measurement_units === 'imperial' && estimate.destination_country === 'CAN') ||
+		(estimate.measurement_units === 'metric' && estimate.destination_country === 'USA')
+	);
+
+	const lbsToKgsConversionRate = 0.453592;
+	const kgsToLbsConversionRate = 2.20462;
+
+	const convertForPalletCalculation = (totalProjectAmount, netWeightOfPallet, convertUnits) => {
+		if (convertUnits) {
+			// Convert total project amount to match the unit of the net weight of pallet
+			totalProjectAmount = totalProjectAmount * lbsToKgsConversionRate; // Assuming conversion from lbs to kgs
+		}
+		return Math.ceil(totalProjectAmount / parseFloat(netWeightOfPallet));
+	};
+
+
+
 	estimate.destination_country = shippingDestinations.find(destination => destination.destination_id === estimate.destination_id).destination_country;
 
 	//#region Step 1 - Determining the data we're using: 
@@ -165,14 +183,19 @@ export default function useCalculateProjectCost(estimate, options) {
 	const cheapestPrimxCpeaTransportationCostPerLb = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? primxCpea20ftTransportationCostPerLb : primxCpea40ftTransportationCostPerLb;
 	const primxCpeaTransportation20or40 = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? 20 : 40;
 
+
 	// * The issue is that if they select Imperial but ship to a destination that's using Metric product container stats, we need to convert the total project amount from cubic yards to cubic meters.  And vice-versa. 
 	// ? We could check the container_destination to be USA or CAN... but that would require some sort of mapping.  We don't inherently have a way to determine that yet.  
 	console.log(`Ryan Here: useCalculateProjectCost \n `, {
-		'1 estimateInfo': {
+		'1 estimate Info': {
 			estimateDestinationCountry: estimate.destination_country,
 			estimateMeasurementUnits: estimate.measurement_units,
-		}, 
-		'2 containerInfo': {
+		},
+		'2 total cubic volume info': {
+			designCubicYardsTotal: estimate.design_cubic_yards_total,
+			designCubicMetersTotal: estimate.design_cubic_meters_total,
+		},
+		'3 container Info': {
 			primxDc20ftContainerInfo,
 			primxDc40ftContainerInfo,
 			primxSteelFiber20ftContainerInfo,
@@ -180,13 +203,24 @@ export default function useCalculateProjectCost(estimate, options) {
 			primxCpea20ftContainerInfo,
 			primxCpea40ftContainerInfo,
 		}
-
-
-		// destinationMeasurementUnits: shippingDestinations.find(destination => destination.destination_id === estimate.destination_id).measurement_units,
 	});
 
+	// if (estimate.measurement_units == 'imperial' && estimate.destination_country == 'CAN') {
+	// 	// ⬇ Convert the total project amount from cubic yards to cubic meters:
+	// 	estimate.design_cubic_meters_total = estimate.design_cubic_yards_total * 0.764554858;
+	// 	estimate.square_meters = estimate.square_feet * 0.09290304;
+	// } else if (estimate.measurement_units == 'metric' && estimate.destination_country == 'USA') {
+	// 	// ⬇ Convert the total project amount from cubic meters to cubic yards:
+	// 	estimate.design_cubic_yards_total = estimate.design_cubic_meters_total * 1.30795062;
+	// 	estimate.square_feet = estimate.square_meters * 10.7639104;
+	// }; // End if/else
 
-	// ! Ryan here 
+
+
+
+	// ! Ryan here - this is where we need a fix: 
+	// #region - //! This is the old calculation. 
+
 	if (estimate.measurement_units == "imperial") {
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_yards_total * parseFloat(primxDcDosageRateInfo.dosage_rate);
@@ -236,6 +270,56 @@ export default function useCalculateProjectCost(estimate, options) {
 		estimate.primx_ultracure_blankets_pallets_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 600);
 
 	}; // End if/else
+	// #endregion - End old calculation
+
+
+	// //#region - //! This is the new calculation. 
+	// const convertUnits = (amount, fromUnit) => {
+	// 	return fromUnit === 'lbs' ? amount * lbsToKgsConversionRate : amount * kgsToLbsConversionRate;
+	// };
+
+	// // Calculate total project amount and pallets needed for each product
+	// const calculateAmountAndPallets = (productInfo, dosageRateInfo, containerInfo) => {
+	// 	let totalAmount = estimate.measurement_units === 'imperial'
+	// 		? estimate.design_cubic_yards_total * parseFloat(dosageRateInfo.dosage_rate)
+	// 		: estimate.design_cubic_meters_total * parseFloat(dosageRateInfo.dosage_rate);
+
+	// 	if (needToConvertUnits) {
+	// 		totalAmount = convertUnits(totalAmount, estimate.measurement_units === 'imperial' ? 'lbs' : 'kgs');
+	// 	}
+
+	// 	const palletsNeeded = Math.ceil(totalAmount / parseFloat(containerInfo.net_weight_of_pallet));
+	// 	return { totalAmount, palletsNeeded };
+	// };
+
+	// // Calculate for PrimX DC
+	// const { totalAmount: primxDcTotalAmount, palletsNeeded: primxDcPalletsNeeded } = calculateAmountAndPallets(primxDcProductInfo, primxDcDosageRateInfo, primxDc20ftContainerInfo);
+	// estimate.primx_dc_total_project_amount = primxDcTotalAmount;
+	// estimate.primx_dc_pallets_needed = primxDcPalletsNeeded;
+
+	// // Calculate for PrimX Steel Fibers
+	// const { totalAmount: steelFibersTotalAmount, palletsNeeded: steelFibersPalletsNeeded } = calculateAmountAndPallets(primxSteelFiberProductInfo, primxSteelFiberDosageRateInfo_90_60, primxSteelFiber20ftContainerInfo);
+	// estimate.primx_steel_fibers_total_project_amount_higher = steelFibersTotalAmount;
+	// estimate.primx_steel_fibers_pallets_needed = steelFibersPalletsNeeded;
+
+	// // Calculate for PrimX Flow
+	// const { totalAmount: flowTotalAmount, palletsNeeded: flowPalletsNeeded } = calculateAmountAndPallets(primxFlowProductInfo, primxFlowDosageRateInfo, primxFlow20ftContainerInfo);
+	// estimate.primx_flow_total_project_amount = flowTotalAmount;
+	// estimate.primx_flow_pallets_needed = flowPalletsNeeded;
+
+	// // Calculate for PrimX Cpea
+	// const { totalAmount: cpeaTotalAmount, palletsNeeded: cpeaPalletsNeeded } = calculateAmountAndPallets(primxCpeaProductInfo, primxCpeaDosageRateInfo, primxCpea20ftContainerInfo);
+	// estimate.primx_cpea_total_project_amount = cpeaTotalAmount;
+	// estimate.primx_cpea_pallets_needed = cpeaPalletsNeeded;
+
+	// // Calculate for PrimX UltraCure Blankets
+	// const ultracureAmount = estimate.measurement_units === 'imperial'
+	// 	? estimate.square_feet * 1.2
+	// 	: estimate.square_meters * 1.2;
+	// const ultracurePalletsNeeded = Math.ceil(ultracureAmount / (estimate.measurement_units === 'imperial' ? 6458 : 600));
+	// estimate.primx_ultracure_blankets_total_project_amount = ultracureAmount;
+	// estimate.primx_ultracure_blankets_pallets_needed = ultracurePalletsNeeded;
+	// //#endregion - End new calculation
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
 	if (estimate.materials_excluded == "exclude_cpea") {
