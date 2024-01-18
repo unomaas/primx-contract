@@ -24,24 +24,6 @@ export default function useCalculateProjectCost(estimate, options) {
 		return;
 	}; // End if
 
-	const needToConvertUnits = (
-		(estimate.measurement_units === 'imperial' && estimate.destination_country === 'CAN') ||
-		(estimate.measurement_units === 'metric' && estimate.destination_country === 'USA')
-	);
-
-	const lbsToKgsConversionRate = 0.453592;
-	const kgsToLbsConversionRate = 2.20462;
-
-	const convertForPalletCalculation = (totalProjectAmount, netWeightOfPallet, convertUnits) => {
-		if (convertUnits) {
-			// Convert total project amount to match the unit of the net weight of pallet
-			totalProjectAmount = totalProjectAmount * lbsToKgsConversionRate; // Assuming conversion from lbs to kgs
-		}
-		return Math.ceil(totalProjectAmount / parseFloat(netWeightOfPallet));
-	};
-
-
-
 	estimate.destination_country = shippingDestinations.find(destination => destination.destination_id === estimate.destination_id).destination_country;
 
 	//#region Step 1 - Determining the data we're using: 
@@ -54,25 +36,25 @@ export default function useCalculateProjectCost(estimate, options) {
 		primxDcProductInfo = products.find(product => product.product_id === 1);
 		primxDcDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 1);
 		primxDcDosageRateInfo.dosage_rate = primxDcDosageRateInfo.lbs_y3;
-		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).usa_percent;
+		// primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).usa_percent;
 
 		primxSteelFiberProductInfo = products.find(product => product.product_id === 4);
 		primxSteelFiberDosageRateInfo_75_50 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3);
 		primxSteelFiberDosageRateInfo_90_60 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4);
 		primxSteelFiberDosageRateInfo_75_50.dosage_rate = primxSteelFiberDosageRateInfo_75_50.lbs_y3;
 		primxSteelFiberDosageRateInfo_90_60.dosage_rate = primxSteelFiberDosageRateInfo_90_60.lbs_y3;
-		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).usa_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).usa_percent;
+		// primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).usa_percent;
+		// primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).usa_percent;
 
 		primxFlowProductInfo = products.find(product => product.product_id === 3);
 		primxFlowDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 3);
 		primxFlowDosageRateInfo.dosage_rate = primxFlowDosageRateInfo.lbs_y3;
-		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).usa_percent;
+		// primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).usa_percent;
 
 		primxCpeaProductInfo = products.find(product => product.product_id === 8);
 		primxCpeaDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 8);
 		primxCpeaDosageRateInfo.dosage_rate = primxCpeaDosageRateInfo.lbs_y3;
-		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).usa_percent;
+		// primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).usa_percent;
 
 		primxUltraCureProductInfo = products.find(product => product.product_id === 6);
 
@@ -81,32 +63,44 @@ export default function useCalculateProjectCost(estimate, options) {
 		primxDcProductInfo = products.find(product => product.product_id === 2);
 		primxDcDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 2);
 		primxDcDosageRateInfo.dosage_rate = primxDcDosageRateInfo.kg_m3;
-		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).can_percent;
+		// primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).can_percent;
 
 		primxSteelFiberProductInfo = products.find(product => product.product_id === 5);
 		primxSteelFiberDosageRateInfo_75_50 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5);
 		primxSteelFiberDosageRateInfo_90_60 = dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6);
 		primxSteelFiberDosageRateInfo_75_50.dosage_rate = primxSteelFiberDosageRateInfo_75_50.kg_m3;
 		primxSteelFiberDosageRateInfo_90_60.dosage_rate = primxSteelFiberDosageRateInfo_90_60.kg_m3;
-		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).can_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).can_percent;
+		// primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).can_percent;
+		// primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).can_percent;
 
 		primxFlowProductInfo = products.find(product => product.product_id === 3);
 		primxFlowDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 3);
 		primxFlowDosageRateInfo.dosage_rate = primxFlowDosageRateInfo.kg_m3;
-		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).can_percent;
+		// primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).can_percent;
 
 		primxCpeaProductInfo = products.find(product => product.product_id === 8);
 		primxCpeaDosageRateInfo = dosageRates.find(dosageRate => dosageRate.product_id === 8);
 		primxCpeaDosageRateInfo.dosage_rate = primxCpeaDosageRateInfo.kg_m3;
-		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).can_percent;
+		// primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).can_percent;
 
 		primxUltraCureProductInfo = products.find(product => product.product_id === 7);
-
-
 	}; // End if
 	//#endregion - Step 1.
 
+
+	if (estimate.destination_country == "USA") {
+		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).usa_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).usa_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).usa_percent;
+		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).usa_percent;
+		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).usa_percent;
+	} else if (estimate.destination_country == "CAN") {
+		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).can_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).can_percent;
+		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).can_percent;
+		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).can_percent;
+		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).can_percent;
+	}; // End if/else
 
 
 	//#region Step 2 - Set Cost and Container Info. Determine the cost and container pricing information based off of matching product_id, destination_id, and container_length_ft.  Do this for each product, for both container sizes:
@@ -184,51 +178,28 @@ export default function useCalculateProjectCost(estimate, options) {
 	const primxCpeaTransportation20or40 = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? 20 : 40;
 
 
-	// * The issue is that if they select Imperial but ship to a destination that's using Metric product container stats, we need to convert the total project amount from cubic yards to cubic meters.  And vice-versa. 
-	// ? We could check the container_destination to be USA or CAN... but that would require some sort of mapping.  We don't inherently have a way to determine that yet.  
-	console.log(`Ryan Here: useCalculateProjectCost \n `, {
-		'1 estimate Info': {
-			estimateDestinationCountry: estimate.destination_country,
-			estimateMeasurementUnits: estimate.measurement_units,
-		},
-		'2 total cubic volume info': {
-			designCubicYardsTotal: estimate.design_cubic_yards_total,
-			designCubicMetersTotal: estimate.design_cubic_meters_total,
-		},
-		'3 container Info': {
-			primxDc20ftContainerInfo,
-			primxDc40ftContainerInfo,
-			primxSteelFiber20ftContainerInfo,
-			primxSteelFiber40ftContainerInfo,
-			primxCpea20ftContainerInfo,
-			primxCpea40ftContainerInfo,
-		}
-	});
+	const needToConvertUnits = (
+		(estimate.measurement_units === 'imperial' && estimate.destination_country === 'CAN') ||
+		(estimate.measurement_units === 'metric' && estimate.destination_country === 'USA')
+	);
 
-	// if (estimate.measurement_units == 'imperial' && estimate.destination_country == 'CAN') {
-	// 	// ⬇ Convert the total project amount from cubic yards to cubic meters:
-	// 	estimate.design_cubic_meters_total = estimate.design_cubic_yards_total * 0.764554858;
-	// 	estimate.square_meters = estimate.square_feet * 0.09290304;
-	// } else if (estimate.measurement_units == 'metric' && estimate.destination_country == 'USA') {
-	// 	// ⬇ Convert the total project amount from cubic meters to cubic yards:
-	// 	estimate.design_cubic_yards_total = estimate.design_cubic_meters_total * 1.30795062;
-	// 	estimate.square_feet = estimate.square_meters * 10.7639104;
-	// }; // End if/else
+	const lbsToKgsConversionRate = 0.45359237;
+	const kgsToLbsConversionRate = 2.20462262;
 
+	const convertUnits = (amount, fromUnit) => {
+		return fromUnit === 'lbs' ? amount * lbsToKgsConversionRate : amount * kgsToLbsConversionRate;
+	};
 
-
-
-	// ! Ryan here - this is where we need a fix: 
-	// #region - //! This is the old calculation. 
 
 	if (estimate.measurement_units == "imperial") {
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_yards_total * parseFloat(primxDcDosageRateInfo.dosage_rate);
+		if (needToConvertUnits) estimate.primx_dc_total_project_amount = convertUnits(estimate.primx_dc_total_project_amount, 'lbs')
 		estimate.primx_dc_pallets_needed = Math.ceil(estimate.primx_dc_total_project_amount / parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Steel Fibers:
 		estimate.primx_steel_fibers_total_project_amount_higher = estimate.design_cubic_yards_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate);
-
+		if (needToConvertUnits) estimate.primx_steel_fibers_total_project_amount_higher = convertUnits(estimate.primx_steel_fibers_total_project_amount_higher, 'lbs')
 		estimate.primx_steel_fibers_pallets_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount_higher / parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Flow:
@@ -249,11 +220,12 @@ export default function useCalculateProjectCost(estimate, options) {
 
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_meters_total * parseFloat(primxDcDosageRateInfo.dosage_rate);
+		if (needToConvertUnits) estimate.primx_dc_total_project_amount = convertUnits(estimate.primx_dc_total_project_amount, 'kgs')
 		estimate.primx_dc_pallets_needed = Math.ceil(estimate.primx_dc_total_project_amount / parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Steel Fibers:
 		estimate.primx_steel_fibers_total_project_amount_higher = estimate.design_cubic_meters_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate);
-
+		if (needToConvertUnits) estimate.primx_steel_fibers_total_project_amount_higher = convertUnits(estimate.primx_steel_fibers_total_project_amount_higher, 'kgs')
 		estimate.primx_steel_fibers_pallets_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount_higher / parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Flow:
@@ -270,56 +242,7 @@ export default function useCalculateProjectCost(estimate, options) {
 		estimate.primx_ultracure_blankets_pallets_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 600);
 
 	}; // End if/else
-	// #endregion - End old calculation
 
-
-	// //#region - //! This is the new calculation. 
-	// const convertUnits = (amount, fromUnit) => {
-	// 	return fromUnit === 'lbs' ? amount * lbsToKgsConversionRate : amount * kgsToLbsConversionRate;
-	// };
-
-	// // Calculate total project amount and pallets needed for each product
-	// const calculateAmountAndPallets = (productInfo, dosageRateInfo, containerInfo) => {
-	// 	let totalAmount = estimate.measurement_units === 'imperial'
-	// 		? estimate.design_cubic_yards_total * parseFloat(dosageRateInfo.dosage_rate)
-	// 		: estimate.design_cubic_meters_total * parseFloat(dosageRateInfo.dosage_rate);
-
-	// 	if (needToConvertUnits) {
-	// 		totalAmount = convertUnits(totalAmount, estimate.measurement_units === 'imperial' ? 'lbs' : 'kgs');
-	// 	}
-
-	// 	const palletsNeeded = Math.ceil(totalAmount / parseFloat(containerInfo.net_weight_of_pallet));
-	// 	return { totalAmount, palletsNeeded };
-	// };
-
-	// // Calculate for PrimX DC
-	// const { totalAmount: primxDcTotalAmount, palletsNeeded: primxDcPalletsNeeded } = calculateAmountAndPallets(primxDcProductInfo, primxDcDosageRateInfo, primxDc20ftContainerInfo);
-	// estimate.primx_dc_total_project_amount = primxDcTotalAmount;
-	// estimate.primx_dc_pallets_needed = primxDcPalletsNeeded;
-
-	// // Calculate for PrimX Steel Fibers
-	// const { totalAmount: steelFibersTotalAmount, palletsNeeded: steelFibersPalletsNeeded } = calculateAmountAndPallets(primxSteelFiberProductInfo, primxSteelFiberDosageRateInfo_90_60, primxSteelFiber20ftContainerInfo);
-	// estimate.primx_steel_fibers_total_project_amount_higher = steelFibersTotalAmount;
-	// estimate.primx_steel_fibers_pallets_needed = steelFibersPalletsNeeded;
-
-	// // Calculate for PrimX Flow
-	// const { totalAmount: flowTotalAmount, palletsNeeded: flowPalletsNeeded } = calculateAmountAndPallets(primxFlowProductInfo, primxFlowDosageRateInfo, primxFlow20ftContainerInfo);
-	// estimate.primx_flow_total_project_amount = flowTotalAmount;
-	// estimate.primx_flow_pallets_needed = flowPalletsNeeded;
-
-	// // Calculate for PrimX Cpea
-	// const { totalAmount: cpeaTotalAmount, palletsNeeded: cpeaPalletsNeeded } = calculateAmountAndPallets(primxCpeaProductInfo, primxCpeaDosageRateInfo, primxCpea20ftContainerInfo);
-	// estimate.primx_cpea_total_project_amount = cpeaTotalAmount;
-	// estimate.primx_cpea_pallets_needed = cpeaPalletsNeeded;
-
-	// // Calculate for PrimX UltraCure Blankets
-	// const ultracureAmount = estimate.measurement_units === 'imperial'
-	// 	? estimate.square_feet * 1.2
-	// 	: estimate.square_meters * 1.2;
-	// const ultracurePalletsNeeded = Math.ceil(ultracureAmount / (estimate.measurement_units === 'imperial' ? 6458 : 600));
-	// estimate.primx_ultracure_blankets_total_project_amount = ultracureAmount;
-	// estimate.primx_ultracure_blankets_pallets_needed = ultracurePalletsNeeded;
-	// //#endregion - End new calculation
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
 	if (estimate.materials_excluded == "exclude_cpea") {
@@ -429,7 +352,6 @@ export default function useCalculateProjectCost(estimate, options) {
 		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = 0;
 	}; // End if/else
 	//#endregion - Step 6.
-
 
 
 	//#region Step 7 - Calculate the self cost per unit for each product:
