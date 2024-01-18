@@ -170,11 +170,25 @@ export default function useCalculateProjectCost(estimate, options) {
 	const cheapestPrimxCpeaTransportationCostPerLb = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? primxCpea20ftTransportationCostPerLb : primxCpea40ftTransportationCostPerLb;
 	const primxCpeaTransportation20or40 = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? 20 : 40;
 
+	// ! Ryan here, need to update this to a different flag from the product container table. 
+	const needToConvertUnits = (
+		false
+		// (estimate.measurement_units === 'imperial' && estimate.destination_country === 'CAN') ||
+		// (estimate.measurement_units === 'metric' && estimate.destination_country === 'USA')
+	);
+
+	const lbsToKgsConversionRate = 0.45359237;
+	const kgsToLbsConversionRate = 2.20462262;
+
+	const convertUnits = (amount, fromUnit) => {
+		return fromUnit === 'lbs' ? amount * lbsToKgsConversionRate : amount * kgsToLbsConversionRate;
+	};
 
 
 	if (estimate.measurement_units == "imperial") {
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_yards_total * parseFloat(primxDcDosageRateInfo.dosage_rate);
+		if (needToConvertUnits) estimate.primx_dc_total_project_amount = convertUnits(estimate.primx_dc_total_project_amount, 'lbs')
 		estimate.primx_dc_pallets_needed = Math.ceil(estimate.primx_dc_total_project_amount / parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Steel Fibers:
