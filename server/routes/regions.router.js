@@ -43,14 +43,15 @@ router.post('/create-new-region', rejectNonAdmin, async (req, res) => {
 			productCosts,
 			containerStats,
 			markupPercentage,
+			defaultMeasurement,
 		} = req.body;
-
+		
 		await connection.query('BEGIN');
 
 		// Insert into regions table
 		const insertRegionSql = `
-      INSERT INTO regions (region_name, region_code, is_active)
-      VALUES (${format('%L', region_name)}, ${format('%L', region_code)}, ${format('%L', is_active)})
+      INSERT INTO regions (region_name, region_code, is_active, default_measurement)
+      VALUES (${format('%L', region_name)}, ${format('%L', region_code)}, ${format('%L', is_active)}), ${format('%L', defaultMeasurement)}
       RETURNING region_id;
     `;
 		const regionResult = await connection.query(insertRegionSql);

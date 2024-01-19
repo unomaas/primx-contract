@@ -170,11 +170,10 @@ export default function useCalculateProjectCost(estimate, options) {
 	const cheapestPrimxCpeaTransportationCostPerLb = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? primxCpea20ftTransportationCostPerLb : primxCpea40ftTransportationCostPerLb;
 	const primxCpeaTransportation20or40 = primxCpea20ftTransportationCostPerLb < primxCpea40ftTransportationCostPerLb ? 20 : 40;
 
-	// ! Ryan here, need to update this to a different flag from the product container table. 
+
 	const needToConvertUnits = (
-		false
-		// (estimate.measurement_units === 'imperial' && estimate.destination_country === 'CAN') ||
-		// (estimate.measurement_units === 'metric' && estimate.destination_country === 'USA')
+		(estimate.measurement_units === 'imperial' && primxDc20ftContainerInfo.default_measurement === 'metric') ||
+		(estimate.measurement_units === 'metric' && primxDc20ftContainerInfo.default_measurement === 'imperial')
 	);
 
 	const lbsToKgsConversionRate = 0.45359237;
@@ -184,7 +183,6 @@ export default function useCalculateProjectCost(estimate, options) {
 		return fromUnit === 'lbs' ? amount * lbsToKgsConversionRate : amount * kgsToLbsConversionRate;
 	};
 
-
 	if (estimate.measurement_units == "imperial") {
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_yards_total * parseFloat(primxDcDosageRateInfo.dosage_rate);
@@ -193,7 +191,7 @@ export default function useCalculateProjectCost(estimate, options) {
 
 		// ⬇ PrimX Steel Fibers:
 		estimate.primx_steel_fibers_total_project_amount_higher = estimate.design_cubic_yards_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate);
-
+		if (needToConvertUnits) estimate.primx_steel_fibers_total_project_amount_higher = convertUnits(estimate.primx_steel_fibers_total_project_amount_higher, 'lbs')
 		estimate.primx_steel_fibers_pallets_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount_higher / parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Flow:
@@ -214,11 +212,12 @@ export default function useCalculateProjectCost(estimate, options) {
 
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = estimate.design_cubic_meters_total * parseFloat(primxDcDosageRateInfo.dosage_rate);
+		if (needToConvertUnits) estimate.primx_dc_total_project_amount = convertUnits(estimate.primx_dc_total_project_amount, 'kgs')
 		estimate.primx_dc_pallets_needed = Math.ceil(estimate.primx_dc_total_project_amount / parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Steel Fibers:
 		estimate.primx_steel_fibers_total_project_amount_higher = estimate.design_cubic_meters_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate);
-
+		if (needToConvertUnits) estimate.primx_steel_fibers_total_project_amount_higher = convertUnits(estimate.primx_steel_fibers_total_project_amount_higher, 'kgs')
 		estimate.primx_steel_fibers_pallets_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount_higher / parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Flow:

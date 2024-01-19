@@ -14,6 +14,7 @@ router.get('/fetch-product-container', async (req, res) => {
 				"p".product_label,
 				"c".container_length_ft,
 				r.region_code AS container_destination,
+				r.default_measurement,
 				"pc".max_pallets_per_container,
 				"pc".max_weight_of_container,
 				"pc".gross_weight_of_pallet,

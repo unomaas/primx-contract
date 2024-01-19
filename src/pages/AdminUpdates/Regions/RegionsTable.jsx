@@ -405,9 +405,6 @@ export default function RegionsTable() {
 		};
 
 		const handleSubmit = () => {
-			// ! Ryan here, when you come back, pass defaultUnit along to the db and have it saved with the table, then use that within the useCalculateProjecTCost, and boom, done with the unit conversion ticket. 
-			console.log(`Ryan Here: \n `, {defaultUnit} );
-			return;
 
 			const validationErrors = []; // Initialize an array to store validation errors
 
@@ -461,6 +458,7 @@ export default function RegionsTable() {
 			dispatch({
 				type: 'SUBMIT_REGION', payload: {
 					...editData,
+					defaultMeasurement: defaultUnit,
 					edit: selectedRow ? true : false,
 				}
 			});

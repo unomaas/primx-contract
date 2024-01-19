@@ -322,7 +322,6 @@ function* updatePricingInitialLoad() {
 					month_year_value: date,
 					date_saved_full: (markupHistory12Months.data[date][0].date_saved_full),
 					pricing: {
-						// ! Ryan here, this is throwing errors. 
 						products: JSON.parse(JSON.stringify(productCostHistory12Months.data[date])),
 						currentMarkup: JSON.parse(JSON.stringify(markupHistory12Months.data[date])),
 						shippingCosts: JSON.parse(JSON.stringify(shippingCostHistory12Months.data[date])),
