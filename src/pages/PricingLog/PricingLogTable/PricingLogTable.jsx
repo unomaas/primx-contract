@@ -35,9 +35,6 @@ export default function PricingLogTable() {
 					field: 'date_saved_full',
 					flex: 1,
 					headerClassName: classes.header,
-					// valueFormatter: (params) => {
-					// 	return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
-					// },
 				},
 				{
 					field: 'destination_country',
@@ -69,9 +66,6 @@ export default function PricingLogTable() {
 					field: 'date_saved_full',
 					flex: 1,
 					headerClassName: classes.header,
-					// valueFormatter: (params) => {
-					// 	return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
-					// },
 				},
 				{
 					field: 'destination_country',
@@ -87,7 +81,6 @@ export default function PricingLogTable() {
 					type: 'number',
 					headerClassName: classes.header,
 					valueFormatter: (params) => { return `${(params.value)}%` },
-					// valueFormatter: (params) => { return `${(params.value * 100)}%` },
 					type: 'number',
 				},
 			] // End columns
@@ -105,9 +98,6 @@ export default function PricingLogTable() {
 					field: 'date_saved_full',
 					flex: 1,
 					headerClassName: classes.header,
-					// valueFormatter: (params) => {
-					// return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
-					// },
 				},
 				{
 					headerName: 'Product',
@@ -150,9 +140,6 @@ export default function PricingLogTable() {
 					field: 'date_saved_full',
 					flex: 1.25,
 					headerClassName: classes.header,
-					// valueFormatter: (params) => {
-					// return `${new Date(params.value).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`;
-					// },
 				},
 				{
 					headerName: 'Destination',
@@ -297,9 +284,6 @@ export default function PricingLogTable() {
 
 	const [selectedLog, setSelectedLog] = useState(pricingLogTableOptions.product_cost);
 
-
-
-	// const [selectedRow, setSelectedRow] = useState(null);
 	const rowsPerPageOptions = [10, 25, 50, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 	// ⬇ Logic to handle setting the table rows on first load: 
@@ -321,7 +305,10 @@ export default function PricingLogTable() {
 					disableColumnMenu: true,
 					sortable: false,
 					type: 'number',
-					valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) }
+					valueFormatter: (params) => {
+						if (!params.value) return null;
+						return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+					},
 				}); // End push
 			} else if (column.headerName.includes("Change")) {
 				columns.push({
@@ -333,10 +320,11 @@ export default function PricingLogTable() {
 					sortable: false,
 					type: 'number',
 					renderCell: (params) => {
-						if (params.value == undefined) return "N/A";
-						if (params.value > 0) return <div style={{ display: "flex", alignItems: "center" }}><ArrowUpwardIcon style={{ color: "green" }} />&nbsp;&nbsp;{`${(params.value * 100).toFixed(2)}%`}</div>;
-						if (params.value < 0) return <div style={{ display: "flex", alignItems: "center" }}><ArrowDownwardIcon style={{ color: "red" }} />&nbsp;&nbsp;{`${(params.value * 100).toFixed(2)}%`}</div>;
-						if (params.value == 0) return <div>0.00%</div>;
+						if (params.value == undefined) return null;
+						if (params.value > 0) return <div style={{ display: "flex", alignItems: "center" }}><ArrowUpwardIcon style={{ color: "green" }} />&nbsp;&nbsp;{`${Number((params.value * 100).toFixed(2))}%`}</div>;
+						if (params.value < 0) return <div style={{ display: "flex", alignItems: "center" }}
+						><ArrowDownwardIcon style={{ color: "red" }} />&nbsp;&nbsp;{`${Number((params.value * 100).toFixed(2))}%`}</div>;
+						if (params.value == 0) return <div>0%</div>;
 					},
 				}); // End push
 			} else if (column.headerName.includes("Measurement") || column.headerName.includes("Region")) {
@@ -348,7 +336,7 @@ export default function PricingLogTable() {
 					disableColumnMenu: true,
 					sortable: false,
 				}); // End push
-			} else if (column.headerName.includes("Percentage") ) {
+			} else if (column.headerName.includes("Markup")) {
 				columns.push({
 					headerName: column.headerName,
 					field: column.field,
@@ -356,6 +344,11 @@ export default function PricingLogTable() {
 					headerClassName: classes.header,
 					disableColumnMenu: true,
 					sortable: false,
+					type: 'number',
+					valueFormatter: (params) => {
+						if (!params.value) return null;
+						return `${Number((params.value * 100).toFixed(2))}%`;						
+					},
 				}); // End push
 			} else {
 				columns.push({
@@ -372,14 +365,10 @@ export default function PricingLogTable() {
 				doubleColumns.push({
 					headerName: column.headerName,
 					field: column.field,
-					flex: 4,
 					headerClassName: classes.header,
 				}); // End push
 			} else {
 				doubleColumns.push({
-					// headerName: column.headerName,
-					// field: column.field,
-					flex: 1,
 					headerClassName: classes.header,
 				}); // End push
 			}; // End if/else
@@ -419,8 +408,6 @@ export default function PricingLogTable() {
 			<GridToolbarExport />,
 			<Divider />,
 			<GridToolbarFilterButton />,
-			// <Divider />,
-			// <GridToolbarColumnsButton />,
 			<Divider />,
 			<GridToolbarDensitySelector />,
 			<Divider />,
@@ -435,7 +422,6 @@ export default function PricingLogTable() {
 		selectedLog.rows.forEach((row) => {
 			autocompleteOptions[row.date_saved_full] = {
 				value: row.date_saved_full,
-				// label: `${new Date(row.date_saved_full).toLocaleDateString('en-us', { weekday: "short", year: "numeric", month: "short", day: "numeric" })}`,
 				label: row.date_saved_full,
 			}
 		});
@@ -445,7 +431,6 @@ export default function PricingLogTable() {
 
 				<div className={`toolbar-row ${selectedLog.key == "price_per_unit" ? classes.pricePerUnitToolbar : ""}`} style={{
 					display: "flex",
-					// padding: "4px 4px 0",
 					alignItems: "center",
 				}}>
 
@@ -518,8 +503,6 @@ export default function PricingLogTable() {
 						justifyContent: "flex-end",
 						fontSize: "11px",
 						fontFamily: "Lexend Tera",
-						// height: "45px"
-
 					}}>
 
 						{selectedLog.key != "price_per_unit" &&
@@ -561,7 +544,8 @@ export default function PricingLogTable() {
 								return (
 									<div
 										style={{
-											flex: "4",
+											// ! Ryan here, this is what matters when doing the double header, and what we'll need to adjust to 4 if we're hiding the margin column. 
+											flex: "5",
 											display: "flex",
 											justifyContent: "center",
 											borderLeft: "1px solid #e0e0e0",
@@ -592,8 +576,6 @@ export default function PricingLogTable() {
 						})}
 					</div>
 				}
-
-
 			</GridToolbarContainer >
 		); // End return
 	}; // End CustomToolbar
@@ -716,23 +698,23 @@ export default function PricingLogTable() {
 	//#endregion - Custom Table Components.
 	//#endregion - Table Setup. 
 
+	const calculateTableWidth = () => {
+		// ! Assuming each column has a minWidth property, this number sets the width of the price per unit columns. 
+		const totalWidth = columns.reduce((acc, column) => acc + (column.minWidth || 130), 0);
+		return totalWidth + 2;
+	};
+
 	// ⬇ Rendering below: 
 	return (
 		<Paper
 			elevation={3}
 			className={selectedLog.paperClassName}
-		// style={{ width: "700px", margin: "0 auto", overflowX: "scroll" }}
 		>
 
-			{/* <TableHeader selectedLog={selectedLog} /> */}
-
-			{/* <CustomToolbar /> */}
 			<DataGrid
 				id="pricingLogTable"
 				className={selectedLog.className}
-				// ⬇ Set a style to, if the selectedLog.key == "price_per_unit", I want the width to be rows.length * 100 px:
-				style={selectedLog.key === "price_per_unit" ? { width: `${rows.length * 125}px` } : {}}
-
+				style={selectedLog.key === "price_per_unit" ? { width: `${calculateTableWidth()}px` } : {}}
 				columns={columns}
 				rows={rows}
 				getRowId={(row) => row[`${selectedLog.row_id}`]}

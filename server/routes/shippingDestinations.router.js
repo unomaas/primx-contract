@@ -13,6 +13,7 @@ router.get('/active', async (req, res) => {
 				sd.destination_name,
 				r.region_code AS destination_country,
 				r.region_id,
+				r.default_measurement,
 				sd.destination_active
 			FROM shipping_destinations as sd
 			JOIN regions AS r 

@@ -44,19 +44,19 @@ function* pricingLogInitialLoad() {
 		const productCostHistory12Months = yield axios.get(`/api/products/get-one-year-of-product-cost-history`);
 		const customsDutiesHistory12Months = yield axios.get(`/api/customsduties/get-one-year-of-customs-duties-history`);
 
-		// Ideas:
-		// Top Header: Current Pricing --> Most Recent Month --> Previous Month --> So on, for 12 months data.
-		// Next Header: 60lbs/35kg -- Difference in Percent from Last Month --> 68lbs/40kg -- Difference in Percent from Last Month --> So on, for 12 months data.  Loop through the data on render and have an arrow up or down generated, with color for positive or negative change. 
-		// Each Row: Destinations. 
-		// Columns = Current Pricing(60lbs/35kg, Diff, 68lbs/40kgs, Diff), Most Recent Saved Month(60lbs/35kg, Diff, 68lbs/40kgs, Diff), Previous Month(60lbs/35kg, Diff, 68lbs/40kgs, Diff), So on, for 12 months data. 
-
+		const markupHistoryDictionary = {};
+		Object.keys(markupHistory12Months.data).forEach(month => {
+			markupHistoryDictionary[month] = markupHistory12Months.data[month].reduce((acc, markup) => {
+				acc[markup.destination_country] = markup;
+				return acc;
+			}, {});
+		});
 
 		//#region - Calculate historical pricing data for 12 months: 
 		const monthHolderObject = {
 			current: {
 				month_year_label: 'Current Pricing',
 				month_year_value: 'current',
-				margin_applied: currentMarkup.data[0].margin_applied,
 				pricing: {
 					products: JSON.parse(JSON.stringify(currentProductCosts.data)),
 					currentMarkup: JSON.parse(JSON.stringify(currentMarkup.data)),
@@ -72,14 +72,11 @@ function* pricingLogInitialLoad() {
 		const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 		Object.keys(markupHistory12Months.data).forEach((date) => {
-
 			if (!monthHolderObject[date]) {
 				const monthLabel = months[+date.split('-')[1] - 1] + ', ' + date.split('-')[0];
 				monthHolderObject[date] = {
 					month_year_label: monthLabel,
 					month_year_value: date,
-					margin_applied: (markupHistory12Months.data[date][0].margin_applied),
-					margin_applied_label: (markupHistory12Months.data[date][0].margin_applied_label),
 					date_saved_full: (markupHistory12Months.data[date][0].date_saved_full),
 					pricing: {
 						products: JSON.parse(JSON.stringify(productCostHistory12Months.data[date])),
@@ -107,14 +104,14 @@ function* pricingLogInitialLoad() {
 					let hasProductCostData = productCostHistory12Months.data[i].some(item => item.destination_country === destination.destination_country);
 					let hasCustomsDutyData = customsDutiesHistory12Months.data[i].some(item => item.destination_country === destination.destination_country);
 
+					// Skip this destination if either historical product cost data or customs duty data is missing
 					if (!hasProductCostData || !hasCustomsDutyData) {
-						// Skip this destination if either historical product cost data or customs duty data is missing
 						console.warn(`Skipping destination ${destination.destination_country} for month ${i} due to missing data.`);
 						continue;
-					}
-				}; // End if
+					};
+				}
 
-				if (destination.destination_country == "USA") {
+				if (destination.default_measurement == "imperial") {
 					estimate.measurement_units = "imperial";
 					estimate.design_cubic_yards_total = 1000;
 					estimate.units_label = "USD/Cubic Yard";
@@ -137,6 +134,7 @@ function* pricingLogInitialLoad() {
 					units_label: calculatedEstimate.units_label,
 					price_per_unit_75_50: calculatedEstimate.price_per_unit_75_50,
 					price_per_unit_90_60: calculatedEstimate.price_per_unit_90_60,
+					markup_percentage: calculatedEstimate.markup_percentage,
 				}); // End month.destinationsCosts.push
 			}; // End for loop
 		}; // End for loop
@@ -174,20 +172,15 @@ function* pricingLogInitialLoad() {
 				month_year_label: month.month_year_label,
 				month_year_value: month.month_year_value,
 				date_saved_full: month.date_saved_full,
-				// margin_applied: month.margin_applied,
-				// margin_applied_label: month.margin_applied_label,
-				// headerClassName: `classes.header`,
-				// style: { backgroundColor: '#C8C8C8', },
-
 			}); // End pricingLogPerUnitTopHeader.push
-
 
 			// ⬇ Loop through the destinationsCosts array and create the bottom header:
 			pricingLogPerUnitBottomHeader.push(
-				// {
-				// 	headerName: `Markup Percentage - ${month.month_year_label}`,
-				// 	field: `markup_${month.month_year_value}`,
-				// },
+				// ! Ryan here, this is what we want to hide for regional admin. 
+				{
+					headerName: `Markup - ${month.month_year_label}`,
+					field: `markup_${month.month_year_value}`,
+				},
 				{
 					headerName: `60lbs/35kg Price - ${month.month_year_label}`,
 					field: `lower_${month.month_year_value}`,
@@ -215,7 +208,7 @@ function* pricingLogInitialLoad() {
 						destination_country: destination.destination_country,
 						measurement_units: (destination.measurement_units).charAt(0).toUpperCase() + (destination.measurement_units).slice(1),
 						units_label: destination.units_label,
-						[`markup_${month.month_year_value}`]: month.margin_applied_label,
+						[`markup_${month.month_year_value}`]: destination.markup_percentage,
 						[`lower_${month.month_year_value}`]: destination.price_per_unit_75_50,
 						[`lower_diff_${month.month_year_value}`]: 0,
 						[`higher_${month.month_year_value}`]: destination.price_per_unit_90_60,
@@ -224,21 +217,15 @@ function* pricingLogInitialLoad() {
 				} else {
 					pricingLogPerUnitRowsObject[destination.destination_id][`lower_${month.month_year_value}`] = destination.price_per_unit_75_50;
 					pricingLogPerUnitRowsObject[destination.destination_id][`higher_${month.month_year_value}`] = destination.price_per_unit_90_60;
+					pricingLogPerUnitRowsObject[destination.destination_id][`markup_${month.month_year_value}`] = destination.markup_percentage;
 				}; // End if/else
-
-				// if (month.month_year_value != lastMonth.month_year_value && lastMonth.month_year_value != "current" && lastDestination) {
-				// 
 
 				if (pricingLogPerUnitRowsObject[destination.destination_id] && lastMonth && lastMonth.month_year_value != month.month_year_value) {
 
 					const destinationLastMonth = lastMonth.destinationsCosts.find(element => destination.destination_id == element.destination_id);
 
 					pricingLogPerUnitRowsObject[destination.destination_id][`lower_diff_${lastMonth.month_year_value}`] = (destinationLastMonth.price_per_unit_75_50 - destination.price_per_unit_75_50) / destination.price_per_unit_75_50;
-					// pricingLogPerUnitRowsObject[destination.destination_id][`lower_diff_${lastMonth.month_year_value}`] = (destination.price_per_unit_75_50 - destinationLastMonth.price_per_unit_75_50) / destinationLastMonth.price_per_unit_75_50;
 					pricingLogPerUnitRowsObject[destination.destination_id][`higher_diff_${lastMonth.month_year_value}`] = (destinationLastMonth.price_per_unit_90_60 - destination.price_per_unit_90_60) / destination.price_per_unit_90_60;
-					// pricingLogPerUnitRowsObject[destination.destination_id][`higher_diff_${lastMonth.month_year_value}`] = (destination.price_per_unit_90_60 - destinationLastMonth.price_per_unit_90_60) / destinationLastMonth.price_per_unit_90_60;
-					// 100;
-
 				}; // End if
 				// lastDestination = destination;
 			}; // End for loop
@@ -246,13 +233,7 @@ function* pricingLogInitialLoad() {
 			lastMonth = month;
 		}; // End for loop
 
-		// ⬇ Loop through the pricingLogPerUnitRowsObject and create the rows:
-		// for (const i in pricingLogPerUnitRowsObject) {
-		// 	pricingLogPerUnitRows.push(pricingLogPerUnitRowsObject[i]);
-		// }; // End for loop
-
 		const pricingLogPerUnitRows = Object.values(pricingLogPerUnitRowsObject);
-
 
 		yield put({
 			type: 'SET_PRICING_LOG_DATA', payload: {
@@ -354,7 +335,7 @@ function* updatePricingInitialLoad() {
 					}
 				}; // End if
 
-				if (destination.destination_country == "USA") {
+				if (destination.default_measurement == "imperial") {
 					estimate.measurement_units = "imperial";
 					estimate.design_cubic_yards_total = 1000;
 					estimate.units_label = "USD/Cubic Yard";

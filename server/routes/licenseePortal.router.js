@@ -48,7 +48,6 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 
 		// ⬇ Sorting the estimates pulled for the licensee: 
 		for (const estimate of result.rows) {
-			// ! Ryan here, we need to check that this is updated to the right function. 
 			const calculated_estimate = calculateEstimate(estimate);
 			// ⬇ If the estimate is marked as ordered by both sides, it's Processed:
 			if (calculated_estimate.marked_as_ordered && calculated_estimate.ordered_by_licensee) {
