@@ -1,5 +1,6 @@
 import useValueFormatter from "./useValueFormatter";
 import useCalculateProjectCost from "./useCalculateProjectCost";
+import { estimateDummyOptions } from '../utils/dummyData';
 
 // ⬇ Custom hook to take in an estimate object and return a mutated object with new keys based on the necessary math needed for all the displays:
 export default function useEstimateCalculations(estimate, options = null) {
@@ -8,13 +9,10 @@ export default function useEstimateCalculations(estimate, options = null) {
 	estimate.date_created = estimate.date_created.split('T')[0];
 	estimate.anticipated_first_pour_date = estimate.anticipated_first_pour_date.split('T')[0];
 
-
-
 	// ⬇ Set a default value for waste factor percentage if one wasn't entered:
 	if (!estimate.waste_factor_percentage) {
 		estimate.waste_factor_percentage = 3;
 	}; // End if 
-
 
 	// ⬇ Begin adding new calculated keys to the estimate, first by adding in keys specific to the unit of measurement that's being worked with.
 	// ⬇ Imperial calculations below: 
@@ -38,7 +36,6 @@ export default function useEstimateCalculations(estimate, options = null) {
 		estimate.waste_factor_cubic_yards = estimate.cubic_yards_subtotal * (estimate.waste_factor_percentage / 100);
 		estimate.design_cubic_yards_total = Math.ceil(estimate.cubic_yards_subtotal + estimate.waste_factor_cubic_yards);
 
-
 	} // ⬇ Metric calculations below: 
 	else if (estimate.measurement_units == 'metric') {
 		// ⬇ Cubic meters base:
@@ -59,21 +56,20 @@ export default function useEstimateCalculations(estimate, options = null) {
 		estimate.cubic_meters_subtotal = estimate.cubic_meters + estimate.perimeter_thickening_cubic_meters + estimate.construction_joint_thickening_cubic_meters;
 		estimate.waste_factor_cubic_meters = estimate.cubic_meters_subtotal * (estimate.waste_factor_percentage / 100);
 		estimate.design_cubic_meters_total = Math.ceil(estimate.cubic_meters_subtotal + estimate.waste_factor_cubic_meters);
-
 	} // End Imperial/Metric if/else
-
 
 	estimate.square_feet_display = parseFloat(estimate.square_feet);
 	estimate.square_meters_display = parseFloat(estimate.square_meters);
 	estimate.thickness_inches_display = parseFloat(estimate.thickness_inches);
 	estimate.thickness_millimeters_display = parseFloat(estimate.thickness_millimeters);
-	
+
 	estimate.thickened_edge_perimeter_lineal_feet_display = parseFloat(estimate.thickened_edge_perimeter_lineal_feet);
 	estimate.thickened_edge_perimeter_lineal_meters_display = parseFloat(estimate.thickened_edge_perimeter_lineal_meters);
 	estimate.thickened_edge_construction_joint_lineal_feet_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_feet);
 	estimate.thickened_edge_construction_joint_lineal_meters_display = parseFloat(estimate.thickened_edge_construction_joint_lineal_meters);
 
 	// ⬇ If the options object is passed in, run the useCalculateProjectCost function to calculate the project cost:
+	// if (estimateDummyOptions) useCalculateProjectCost(estimate, estimateDummyOptions);
 	if (options) useCalculateProjectCost(estimate, options);
 	estimate.price_per_unit_75_50_display = estimate.price_per_unit_75_50;
 	estimate.price_per_unit_90_60_display = estimate.price_per_unit_90_60;
@@ -85,10 +81,6 @@ export default function useEstimateCalculations(estimate, options = null) {
 		// ⬇ Run each value through our formatter hook to return a pretty number: 
 		useValueFormatter(property, estimate);
 	} // End for loop
-
-
-
-
 
 	return estimate;
 }
