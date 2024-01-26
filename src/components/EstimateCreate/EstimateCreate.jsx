@@ -2,16 +2,13 @@
 // ⬇ File Imports: 
 import './EstimateCreate.css';
 // ⬇ Dependent Functionality:
+import { Button, FormControl, FormControlLabel, FormHelperText, Grid, MenuItem, Paper, Radio, RadioGroup, Select, Table, TableBody, TableCell, TableContainer, TableRow, TextField, TableHead, InputAdornment, Tooltip } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useState, useEffect } from 'react';
-import { Button, MenuItem, TextField, Select, Radio, RadioGroup, FormControl, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Grid, FormHelperText, Switch, FormGroup } from '@material-ui/core';
-import { useClasses } from '../MuiStyling/MuiStyling';
-import ImperialTable from '../LegacyComponents/ImperialTable/ImperialTable';
-import EstimateCreateTable from './EstimateCreateTable';
-import MetricTable from '../LegacyComponents/MetricTable/MetricTable';
 import ButtonToggle from '../ButtonToggle/ButtonToggle';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import { useClasses } from '../MuiStyling/MuiStyling';
+import EstimateCreateTable from './EstimateCreateTable';
+import { differenceBetweenDates } from '../../utils/dateUtils';
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -22,17 +19,26 @@ export default function EstimateCreate() {
 	const classes = useClasses();
 	const today = new Date().toISOString().substring(0, 10);
 	const companies = useSelector(store => store.companies);
-	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
+	// const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
 	const floorTypes = useSelector(store => store.floorTypes);
 	const placementTypes = useSelector(store => store.placementTypes);
 	const estimateData = useSelector(store => store.estimatesReducer.estimatesReducer);
-	const products = useSelector(store => store.products.productsObject);
+	// const products = useSelector(store => store.products.productsObject);
 	const showTables = useSelector(store => store.estimatesReducer.tableState);
 	const editState = useSelector(store => store.estimatesReducer.editState);
 	const [error, setError] = useState(false);
 	const [radioError, setRadioError] = useState("");
 	const [leadTime, setLeadTime] = useState("");
 	const user = useSelector(store => store.user);
+	const [saveButton, setSaveButton] = useState(false);
+	const products = useSelector(store => store.products.productsArray);
+	const shippingDestinations = useSelector(store => store.shippingDestinations.shippingActiveDestinations);
+	const currentMarkup = useSelector(store => store.products.currentMarkupMargin);
+	const shippingCosts = useSelector(store => store.shippingCosts.shippingCostsArray);
+	const productContainers = useSelector(store => store.productContainers.productContainersArray);
+	const dosageRates = useSelector(store => store.dosageRates.dosageRatesArray);
+	const customsDuties = useSelector(store => store.customsDuties.customsDutiesArray);
+	const [materialsEditWarning, setMaterialsEditWarning] = useState(false);
 
 	// ⬇ Run on page load:
 	useEffect(() => {
@@ -50,9 +56,34 @@ export default function EstimateCreate() {
 			handleChange('licensee_id', user.licensee_id);
 
 			const licensee = companies.find(company => company.licensee_id == user.licensee_id);
-			if (licensee?.default_measurement) handleMeasurementUnits(licensee?.default_measurement);
+			// if (licensee?.default_measurement) handleMeasurementUnits(licensee?.default_measurement);
 		}; // End if statement
 	}, [user, companies])
+
+	useEffect(() => {
+		if (
+			estimateData.total_project_volume && 
+			estimateData.destination_id
+		) {
+			estimateData.difference_in_months = differenceBetweenDates(estimateData.date_created).total_months;
+			dispatch({
+				type: 'HANDLE_CALCULATED_ESTIMATE',
+				payload: {
+					estimate: estimateData,
+					options: {
+						products: products,
+						shippingDestinations: shippingDestinations,
+						currentMarkup: currentMarkup,
+						shippingCosts: shippingCosts,
+						productContainers: productContainers,
+						dosageRates: dosageRates,
+						customsDuties: customsDuties
+					}
+				}
+			});
+			setSaveButton(true);
+		}
+	}, [estimateData]); 
 
 	let filteredDestinations = shippingDestinations;
 
@@ -94,35 +125,38 @@ export default function EstimateCreate() {
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
 	const handleChange = (key, value) => {
+
+	console.log(`Ryan Here handleChange \n `, {key, value});
+
+
+		if (key == 'total_project_volume' && editState == true && materialsEditWarning == false) {
+			if (!window.confirm(`⚠️ WARNING: Editing the materials included on an already saved estimate will force the estimate to be recalculated at today's current rates, resetting the price guarantee.  Please only click "Save Edits" if you are sure you want to do this, as it is not reversible.  If you do not wish to do this, click "Cancel".`)) return;
+			setMaterialsEditWarning(true);
+		}; // End if
+
 		// ⬇ If they change the destination while editing, force a recalculate of the estimate price per unit:
 		if (key == 'destination_id' && editState == true) {
 			estimateData.force_recalculate = true;
 		}; // End if
 
-		// ⬇ If they're setting the Licensee Id, we want to set the default unit of measurement for that licensee. 
-		if (key === 'licensee_id') {
-			// ⬇ Find the Licensee by the ID:
-			const licensee = companies.find(company => company.licensee_id == value);
-			if (licensee?.default_measurement) handleMeasurementUnits(licensee?.default_measurement);
-		}; // End if
+		// ⬇ If they set the destination_id, we need to set the default unit of measurement:
+		if (key == 'destination_id') {
+			const destination = shippingDestinations.find(destination => destination.destination_id == value);
+			if (destination?.default_measurement) handleMeasurementUnits(destination?.default_measurement);
+			// return;
+		}
 
-		// return;
-		// ! Commenting this out, as Materials on Hand is not implemented at the moment. 
-		// // ⬇ If they're toggling Materials On-Hand, send the opposite bool: 
-		// if (key === 'materials_on_hand') {
-		// 	// ⬇ Converts our string input bool to a true bool for the reducer: 
-		// 	const bool_value = (value === 'false');
-		// 	// ⬇ Sends the keys/values to the estimate reducer object: 
-		// 	dispatch({
-		// 		type: 'SET_ESTIMATE',
-		// 		payload: { key: key, value: bool_value }
-		// 	}); // End dispatch
-		// } else { // ⬇ Else it's every other input, handle accordingly: 
+		// ⬇ If they're setting the Licensee Id, we want to set the default unit of measurement for that licensee. 
+		// if (key === 'licensee_id') {
+		// 	// ⬇ Find the Licensee by the ID:
+		// 	const licensee = companies.find(company => company.licensee_id == value);
+		// 	if (licensee?.default_measurement) handleMeasurementUnits(licensee?.default_measurement);
+		// }; // End if
+
 		dispatch({
 			type: 'SET_ESTIMATE',
 			payload: { key: key, value: value }
 		}); // End dispatch
-		// } // End if/else 
 	} // End handleChange
 
 	/** ⬇ handleShipping:
@@ -134,27 +168,7 @@ export default function EstimateCreate() {
 			type: 'SET_ESTIMATE',
 			payload: { key: 'destination_id', value: id }
 		});
-		// // ⬇ Add in state shipping costs based off of state id in object:
-		// shippingDestinations.forEach(shippingState => {
-		// 	if (shippingState.destination_id == id) {
-		// 		// ⬇ Loop over shippingState object and add all values to the estimate object in the estimateReducer
-		// 		for (let keyName in shippingState) {
 
-
-		// 			// Ignore the id key for the shipping state, otherwise the edit view will break by changing the estimate id that's being edited
-		// 			// to the id of the shipping state
-		// 			if (keyName != 'id') {
-		// 				dispatch({
-		// 					type: 'SET_ESTIMATE',
-		// 					payload: {
-		// 						key: keyName,
-		// 						value: shippingState[keyName]
-		// 					} // End payload.
-		// 				}) // End dispatch.
-		// 			}
-		// 		}; // End for loop.
-		// 	} // End if statement
-		// }) // end shippingDestinations forEach
 		// If user is in the edit view, recalculate estimate values with new shipping data:
 		if (editState) {
 			dispatch({
@@ -168,40 +182,16 @@ export default function EstimateCreate() {
 	 * This function will add of metric or imperial costs to the estimateData package depending on their selection of the radio buttons.
 	 */
 	const handleMeasurementUnits = (units) => {
-
 		// ⬇ Making sure validation doesn't trigger:
 		setError(false);
 		setRadioError("");
-		// // ⬇ The logic for finding product costs needs to be hard coded to look at database values, since we need to save a snapshot of the pricing at the time of estimate creation:
-		// const pricingArray = [
-		// 	{ key: 'primx_flow_unit_price', value: products.flow_liters },
-		// 	{ key: 'primx_cpea_unit_price', value: products.cpea_liters },
-		// ] // End pricingArray
-		// if (units == 'imperial') {
-		// 	pricingArray.push(
-		// 		{ key: 'primx_dc_unit_price', value: products.dc_lbs },
-		// 		{ key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_lbs },
-		// 		{ key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqft }
-		// 	) // End if
-		// } else if (units == 'metric') {
-		// 	pricingArray.push(
-		// 		{ key: 'primx_dc_unit_price', value: products.dc_kgs },
-		// 		{ key: 'primx_steel_fibers_unit_price', value: products.steel_fibers_kgs },
-		// 		{ key: 'primx_ultracure_blankets_unit_price', value: products.blankets_sqmeters }
-		// 	) // End else/if
-		// } // End if/else statement
-		// // ⬇ Loop through pricingArray to dispatch values to be stored in the estimates reducer:
-		// pricingArray.forEach(product => {
-		// 	dispatch({
-		// 		type: 'SET_ESTIMATE',
-		// 		payload: { key: product.key, value: product.value }
-		// 	}); // End dispatch
-		// }) //End pricingArray for each
-		// // set units in the estimate reducer
+
 		dispatch({
 			type: 'SET_ESTIMATE',
 			payload: { key: 'measurement_units', value: units }
 		}); // End dispatch
+
+		dispatch({ type: 'CLEAR_CALCULATED_ESTIMATE' });
 	} // End handleMeasurementUnits
 
 	/** ⬇ handleSubmit:
@@ -236,7 +226,8 @@ export default function EstimateCreate() {
 
 			<form onSubmit={handleSubmit}>
 
-				<Grid container
+				<Grid
+					container
 					spacing={2}
 					justifyContent="center"
 				>
@@ -378,7 +369,7 @@ export default function EstimateCreate() {
 												</Select>
 											</TableCell>
 										</TableRow>
-
+										{/* 
 										<TableRow hover={true}>
 											<TableCell><b>Unit of Measurement:</b></TableCell>
 											<TableCell>
@@ -403,6 +394,25 @@ export default function EstimateCreate() {
 												</FormControl>
 											</TableCell>
 										</TableRow>
+
+										<TableRow hover={true}>
+												<TableCell>
+													<b>Total Volume:</b>
+												</TableCell>
+												<TableCell>
+													<TextField
+														// onChange={event => handleChange('square_feet', event.target.value)}
+														required
+														type="number"
+														size="small"
+														fullWidth
+														InputProps={{
+															endAdornment: <InputAdornment position="end">{estimateData.measurement_units == 'imperial' ? 'yd³' : 'm³'}</InputAdornment>
+														}}
+														value={estimateData.total_project_volume}
+													/>
+												</TableCell>
+											</TableRow> */}
 
 									</TableBody>
 								</Table>
@@ -536,25 +546,91 @@ export default function EstimateCreate() {
 											</TableCell>
 										</TableRow> */}
 
+									</TableBody>
+									{/* </Table>
+							</TableContainer>
+
+							<TableContainer> */}
+									<TableBody>
+										<TableRow >
+											<TableCell colSpan="2" align="center">
+												<h3>Project Quantity</h3>
+											</TableCell>
+										</TableRow>
+									</TableBody>
+
+									{/* <Table size="small"> */}
+									<TableBody>
 										<TableRow hover={true}>
-											<TableCell align="left">
-												{/* //! Disabling this for now as I don't know how to handle it. */}
-												{/* <b>Have Materials On Hand?</b>
-												<Switch
-													onChange={event => handleChange('materials_on_hand', event.target.value)}
-													checked={estimateData?.materials_on_hand}
-													value={estimateData?.materials_on_hand}
+											<TableCell>
+												<b>Total Project Volume:</b>
+											</TableCell>
+											<TableCell>
+												<TextField
+													onChange={event => handleChange('total_project_volume', event.target.value)}
+													required
+													type="number"
+													size="small"
+													fullWidth
+													InputProps={{
+														endAdornment: <InputAdornment position="end">{estimateData.measurement_units == 'imperial' ? 'yd³' : 'm³'}</InputAdornment>
+													}}
+													value={estimateData.total_project_volume}
+												/>
+											</TableCell>
+										</TableRow>
+
+										<TableRow hover={true}										>
+											<TableCell><b>Unit of Measurement:</b></TableCell>
+											<TableCell>
+												<Tooltip
+													placement="left"
+													arrow
+													title="Unit of measurement will be determined by selecting a destination."
 													color="primary"
-												/> */}
+													style={{
+														marginBottom: "-9px",
+														marginRight: "10px",
+													}}
+												>
+													<FormControl
+														error={error}
+														disabled={true}
+													>
+														<RadioGroup
+															value={estimateData.measurement_units}
+															style={{ display: 'inline' }}
+															onChange={event => handleMeasurementUnits(event.target.value)}
+														>
+															<FormControlLabel
+																label="Imperial"
+																value="imperial"
+																control={<Radio />}
+															/>
+															<FormControlLabel
+																label="Metric"
+																value="metric"
+																control={<Radio />}
+															/>
+														</RadioGroup>
+														<FormHelperText>{radioError}</FormHelperText>
+													</FormControl>
+												</Tooltip>
 
 											</TableCell>
+										</TableRow>
+
+
+
+
+										<TableRow >
 											<TableCell
-												// colSpan={2} 
+												colSpan={2}
 												align="right">
 												<Button
 													type="submit"
 													// ! Ryan Here. ⬇⬇⬇⬇ COMMENT THIS CODE IN/OUT FOR FORM VALIDATION: 
-													// onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
+													onClick={event => dispatch({ type: 'SET_TABLE_STATE', payload: true })}
 													variant="contained"
 													className={classes.LexendTeraFont11}
 													color="primary"
@@ -572,13 +648,13 @@ export default function EstimateCreate() {
 					</Grid>
 					{/* End Grid Table #2 */}
 				</Grid>
-			</form>
+			</form >
 
 			<br />
 
 			{/* Conditional rendering to show or hide tables based off submit button: */}
 			{showTables &&
-				<EstimateCreateTable />
+				<EstimateCreateTable saveButton={saveButton} />
 			}
 
 

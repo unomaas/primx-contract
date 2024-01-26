@@ -199,31 +199,31 @@ export default function useCalculateProjectCost(estimate, options) {
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = (
 			!needToConvertUnits
-				? estimate.design_cubic_yards_total * parseFloat(primxDcDosageRateInfo.dosage_rate)
-				// : estimate.design_cubic_yards_total * parseFloat(primxDcDosageRateInfo.dosage_rate)
-				: convertUnits(estimate.design_cubic_yards_total * parseFloat(primxDcDosageRateInfo.dosage_rate))
+				? estimate.total_project_volume * parseFloat(primxDcDosageRateInfo.dosage_rate)
+				// : estimate.total_project_volume * parseFloat(primxDcDosageRateInfo.dosage_rate)
+				: convertUnits(estimate.total_project_volume * parseFloat(primxDcDosageRateInfo.dosage_rate))
 		);
 		estimate.primx_dc_pallets_needed = Math.ceil(estimate.primx_dc_total_project_amount / parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Steel Fibers:
 		estimate.primx_steel_fibers_total_project_amount_higher = (
 			!needToConvertUnits
-				? estimate.design_cubic_yards_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate)
-				// : estimate.design_cubic_yards_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate)
-				: convertUnits(estimate.design_cubic_yards_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate))
+				? estimate.total_project_volume * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate)
+				// : estimate.total_project_volume * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate)
+				: convertUnits(estimate.total_project_volume * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate))
 		);
 		estimate.primx_steel_fibers_pallets_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount_higher / parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Flow:
-		estimate.primx_flow_total_project_amount = estimate.design_cubic_yards_total * parseFloat(primxFlowDosageRateInfo.dosage_rate);
+		estimate.primx_flow_total_project_amount = estimate.total_project_volume * parseFloat(primxFlowDosageRateInfo.dosage_rate);
 		estimate.primx_flow_pallets_needed = Math.ceil(estimate.primx_flow_total_project_amount / parseFloat(primxFlow20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Cpea:
-		estimate.primx_cpea_total_project_amount = estimate.design_cubic_yards_total * parseFloat(primxCpeaDosageRateInfo.dosage_rate);
+		estimate.primx_cpea_total_project_amount = estimate.total_project_volume * parseFloat(primxCpeaDosageRateInfo.dosage_rate);
 		estimate.primx_cpea_pallets_needed = Math.ceil(estimate.primx_cpea_total_project_amount / parseFloat(primxCpea20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ Primx UltraCure Blankets:
-		estimate.primx_ultracure_blankets_total_project_amount = estimate.design_cubic_yards_total * 1.2; // 1.2 is the factor provided by PrimX
+		estimate.primx_ultracure_blankets_total_project_amount = estimate.total_project_volume * 1.2; // 1.2 is the factor provided by PrimX
 
 		// ⬇ Blankets come in rolls of 6458 sq feet, need to round up:
 		estimate.primx_ultracure_blankets_pallets_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 6458);
@@ -233,31 +233,31 @@ export default function useCalculateProjectCost(estimate, options) {
 		// ⬇ PrimX DC:
 		estimate.primx_dc_total_project_amount = (
 			!needToConvertUnits
-				? estimate.design_cubic_meters_total * parseFloat(primxDcDosageRateInfo.dosage_rate)
-				// : estimate.design_cubic_meters_total * parseFloat(primxDcDosageRateInfo.dosage_rate)
-				: convertUnits(estimate.design_cubic_meters_total * parseFloat(primxDcDosageRateInfo.dosage_rate))
+				? estimate.total_project_volume * parseFloat(primxDcDosageRateInfo.dosage_rate)
+				// : estimate.total_project_volume * parseFloat(primxDcDosageRateInfo.dosage_rate)
+				: convertUnits(estimate.total_project_volume * parseFloat(primxDcDosageRateInfo.dosage_rate))
 		);
 		estimate.primx_dc_pallets_needed = Math.ceil(estimate.primx_dc_total_project_amount / parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Steel Fibers:
 		estimate.primx_steel_fibers_total_project_amount_higher = (
 			!needToConvertUnits
-				? estimate.design_cubic_meters_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate)
-				// : estimate.design_cubic_meters_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate)
-				: convertUnits(estimate.design_cubic_meters_total * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate))
+				? estimate.total_project_volume * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate)
+				// : estimate.total_project_volume * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate)
+				: convertUnits(estimate.total_project_volume * parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate))
 		);
 		estimate.primx_steel_fibers_pallets_needed = Math.ceil(estimate.primx_steel_fibers_total_project_amount_higher / parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Flow:
-		estimate.primx_flow_total_project_amount = estimate.design_cubic_meters_total * parseFloat(primxFlowDosageRateInfo.dosage_rate);
+		estimate.primx_flow_total_project_amount = estimate.total_project_volume * parseFloat(primxFlowDosageRateInfo.dosage_rate);
 		estimate.primx_flow_pallets_needed = Math.ceil(estimate.primx_flow_total_project_amount / parseFloat(primxFlow20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ PrimX Cpea:
-		estimate.primx_cpea_total_project_amount = estimate.design_cubic_meters_total * parseFloat(primxCpeaDosageRateInfo.dosage_rate);
+		estimate.primx_cpea_total_project_amount = estimate.total_project_volume * parseFloat(primxCpeaDosageRateInfo.dosage_rate);
 		estimate.primx_cpea_pallets_needed = Math.ceil(estimate.primx_cpea_total_project_amount / parseFloat(primxCpea20ftContainerInfo.net_weight_of_pallet));
 
 		// ⬇ Primx UltraCure Blankets:
-		estimate.primx_ultracure_blankets_total_project_amount = estimate.design_cubic_meters_total * 1.2; // 1.2 is the factor provided by PrimX
+		estimate.primx_ultracure_blankets_total_project_amount = estimate.total_project_volume * 1.2; // 1.2 is the factor provided by PrimX
 		// ⬇ Blankets come in rolls of 600 square meters, need to round up:
 		estimate.primx_ultracure_blankets_pallets_needed = Math.ceil(estimate.primx_ultracure_blankets_total_project_amount / 600);
 
@@ -373,17 +373,17 @@ export default function useCalculateProjectCost(estimate, options) {
 
 
 	//#region Step 6 - Calculate the transportation cost + material cost per material unit, for each product in the cheapest container:
-	const primxDcTransportationCostPlusMaterialCostPerUnit = cheapestPrimXDcTransportationCostPerUnit + primxDcProductPlusCustomDutyPercentage;
+	let primxDcTransportationCostPlusMaterialCostPerUnit = cheapestPrimXDcTransportationCostPerUnit + primxDcProductPlusCustomDutyPercentage;
 
 	// ⬇ PrimX Steel Fibers:
-	const primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50 = cheapestPrimxSteelFiberTransportationCostPerUnit + primxSteelFiberProductPlusCustomDutyPercentage_75_50;
-	const primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = cheapestPrimxSteelFiberTransportationCostPerUnit + primxSteelFiberProductPlusCustomDutyPercentage_90_60;
+	let primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50 = cheapestPrimxSteelFiberTransportationCostPerUnit + primxSteelFiberProductPlusCustomDutyPercentage_75_50;
+	let primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = cheapestPrimxSteelFiberTransportationCostPerUnit + primxSteelFiberProductPlusCustomDutyPercentage_90_60;
 
 	// ⬇ PrimX Flow:
-	const primxFlowTransportationCostPlusMaterialCostPerUnit = cheapestPrimxFlowTransportationCostPerUnit + primxFlowProductPlusCustomDutyPercentage;
+	let primxFlowTransportationCostPlusMaterialCostPerUnit = cheapestPrimxFlowTransportationCostPerUnit + primxFlowProductPlusCustomDutyPercentage;
 
-	// ⬇ PrimX Cpea:
-	const primxCpeaTransportationCostPlusMaterialCostPerUnit = cheapestPrimxCpeaTransportationCostPerUnit + primxCpeaProductPlusCustomDutyPercentage;
+	// ⬇ PrimX Cpea (let so it can change later):
+	let primxCpeaTransportationCostPlusMaterialCostPerUnit = cheapestPrimxCpeaTransportationCostPerUnit + primxCpeaProductPlusCustomDutyPercentage;
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
 	if (estimate.materials_excluded == "exclude_cpea") {
@@ -439,12 +439,14 @@ export default function useCalculateProjectCost(estimate, options) {
 
 
 	if (estimate.measurement_units == "imperial") {
-		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_yards_total);
-		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.design_cubic_yards_total);
+		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.total_project_volume);
+		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
 	} else if (estimate.measurement_units == "metric") {
-		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.design_cubic_meters_total);
-		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.design_cubic_meters_total);
+		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.total_project_volume);
+		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
 	}; // End if/else
+
+	estimate.total_project_volume = parseFloat(estimate.total_project_volume);
 	//#endregion - Step 9.
 
 
