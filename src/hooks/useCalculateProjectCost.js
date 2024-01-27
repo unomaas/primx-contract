@@ -373,17 +373,17 @@ export default function useCalculateProjectCost(estimate, options) {
 
 
 	//#region Step 6 - Calculate the transportation cost + material cost per material unit, for each product in the cheapest container:
-	const primxDcTransportationCostPlusMaterialCostPerUnit = cheapestPrimXDcTransportationCostPerUnit + primxDcProductPlusCustomDutyPercentage;
+	let primxDcTransportationCostPlusMaterialCostPerUnit = cheapestPrimXDcTransportationCostPerUnit + primxDcProductPlusCustomDutyPercentage;
 
 	// ⬇ PrimX Steel Fibers:
-	const primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50 = cheapestPrimxSteelFiberTransportationCostPerUnit + primxSteelFiberProductPlusCustomDutyPercentage_75_50;
-	const primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = cheapestPrimxSteelFiberTransportationCostPerUnit + primxSteelFiberProductPlusCustomDutyPercentage_90_60;
+	let primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50 = cheapestPrimxSteelFiberTransportationCostPerUnit + primxSteelFiberProductPlusCustomDutyPercentage_75_50;
+	let primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = cheapestPrimxSteelFiberTransportationCostPerUnit + primxSteelFiberProductPlusCustomDutyPercentage_90_60;
 
 	// ⬇ PrimX Flow:
-	const primxFlowTransportationCostPlusMaterialCostPerUnit = cheapestPrimxFlowTransportationCostPerUnit + primxFlowProductPlusCustomDutyPercentage;
+	let primxFlowTransportationCostPlusMaterialCostPerUnit = cheapestPrimxFlowTransportationCostPerUnit + primxFlowProductPlusCustomDutyPercentage;
 
 	// ⬇ PrimX Cpea:
-	const primxCpeaTransportationCostPlusMaterialCostPerUnit = cheapestPrimxCpeaTransportationCostPerUnit + primxCpeaProductPlusCustomDutyPercentage;
+	let primxCpeaTransportationCostPlusMaterialCostPerUnit = cheapestPrimxCpeaTransportationCostPerUnit + primxCpeaProductPlusCustomDutyPercentage;
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
 	if (estimate.materials_excluded == "exclude_cpea") {
