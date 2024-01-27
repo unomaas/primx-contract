@@ -151,8 +151,8 @@ export default function EstimateCreateTable() {
 		estimateData.total_project_cost_75_50 = calculatedDisplayObject.total_project_cost_75_50;
 		estimateData.total_project_cost_90_60 = calculatedDisplayObject.total_project_cost_90_60;
 
-		estimateData.total_number_of_20ft_containers = calculatedDisplayObject.total_number_of_20ft_containers;
-		estimateData.total_number_of_40ft_containers = calculatedDisplayObject.total_number_of_40ft_containers;
+		estimateData.total_number_of_20ft_containers = parseInt(calculatedDisplayObject.total_number_of_20ft_containers);
+		estimateData.total_number_of_40ft_containers = parseInt(calculatedDisplayObject.total_number_of_40ft_containers);
 		estimateData.total_number_of_pallets = calculatedDisplayObject.total_number_of_pallets;
 
 		// ⬇ Send the estimate object to be POSTed:
