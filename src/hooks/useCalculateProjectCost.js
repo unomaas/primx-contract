@@ -412,8 +412,6 @@ export default function useCalculateProjectCost(estimate, options) {
 	);
 	//#endregion - Step 7.
 
-	// console.log(`Ryan Here: \n `, { dollarSelfCostPerUnit_75_50,  dollarSelfCostPerUnit_90_60 } );
-
 
 
 	//#region Step 8 - Calculate the sales price per unit:

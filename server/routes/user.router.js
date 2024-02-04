@@ -24,29 +24,91 @@ router.post('/register', rejectNonSysAdmin, async (req, res, next) => {
 		username,
 		password,
 		permission_level,
-		region_id,
+		region_ids,
 	} = req.body;
-	
-	if (!region_id) region_id = null;
-	
+
+	if (!Array.isArray(region_ids) || region_ids.length === 0) region_ids = [null];
+
 	password = encryptLib.encryptPassword(password);
-	
+
 	const connection = await pool.connect();
 	try {
 		await connection.query('BEGIN');
 
 		const insertUserSql = `
-			INSERT INTO users (username, password, permission_level, region_id)
-			VALUES (${format(`%L`, username)}, ${format(`%L`, password)}, ${format(`%L`, permission_level)}, ${format(`%L`, region_id)})
+			INSERT INTO users (username, password, permission_level)
+			VALUES (${format(`%L`, username)}, ${format(`%L`, password)}, ${format(`%L`, permission_level)})
 			RETURNING user_id;
 		`;
 
-		await connection.query(insertUserSql);
+		const result = await connection.query(insertUserSql);
+		const userId = result.rows[0].user_id;
+
+		for (const regionId of region_ids) {
+			if (regionId !== null) {
+				const insertUserRegionSql = `
+					INSERT INTO user_regions (user_id, region_id)
+					VALUES (${format(`%L`, userId)}, ${format(`%L`, regionId)});
+				`;
+				await connection.query(insertUserRegionSql);
+			};
+		};
 
 		await connection.query('COMMIT');
 		res.sendStatus(201);
 	} catch (error) {
-		await connection.query('ROLLBACK'); // Rollback transaction on error
+		await connection.query('ROLLBACK');
+		console.error('Error in submit licensee POST', error);
+		res.sendStatus(500);
+	} finally {
+		connection.release();
+	}
+});
+
+
+router.put('/edit-admin', rejectNonSysAdmin, async (req, res) => {
+	let {
+		user_id,
+		username,
+		permission_level,
+		region_ids,
+	} = req.body;
+
+	if (!Array.isArray(region_ids) || region_ids.length === 0) region_ids = [null];
+
+	const connection = await pool.connect();
+	try {
+		await connection.query('BEGIN');
+
+		const updateUserSql = `
+			UPDATE users
+			SET username = ${format(`%L`, username)}, permission_level = ${format(`%L`, permission_level)}
+			WHERE user_id = ${format(`%L`, user_id)};
+		`;
+		await connection.query(updateUserSql);
+
+		if (permission_level != 3) {
+			const deleteAllUserRegionsSql = `
+				DELETE FROM user_regions
+				WHERE user_id = ${format(`%L`, user_id)};
+			`;
+			await connection.query(deleteAllUserRegionsSql);
+		};
+
+		if (region_ids.length > 1 && region_ids[0] !== null) {
+			for (const regionId of region_ids) {
+				const insertUserRegionSql = `
+					INSERT INTO user_regions (user_id, region_id)
+					VALUES (${format(`%L`, user_id)}, ${format(`%L`, regionId)});
+				`;
+				await connection.query(insertUserRegionSql);
+			};
+		};
+
+		await connection.query('COMMIT');
+		res.sendStatus(201);
+	} catch (error) {
+		await connection.query('ROLLBACK');
 		console.error('Error in submit licensee POST', error);
 		res.sendStatus(500);
 	} finally {

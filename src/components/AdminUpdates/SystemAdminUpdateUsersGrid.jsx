@@ -43,26 +43,19 @@ export default function SystemAdminUpdateUsersGrid() {
 			headerClassName: classes.header,
 			flex: 1,
 		},
-		// {
-		// 	field: '',
-		// 	headerName: 'Delete',
-		// 	width: 132,
-		// 	disableClickEventBubbling: true,
-		// 	// renderCell: renderDeleteButton, // function declared above, creates a button in each row of the pending column
-		// 	renderCell: (params) => {
-		// 		return (
-		// 			<Button
-		// 				variant="contained"
-		// 				color="secondary"
-		// 				onClick={() => handleDeleteAdmin(params)}
-		// 				className={classes.LexendTeraFont11}
-		// 			>
-		// 				Delete
-		// 			</Button>
-		// 		)
-		// 	},
-		// 	headerClassName: classes.header
-		// }
+		{
+			field: 'region_codes',
+			headerName: 'Operating Regions',
+			headerClassName: classes.header,
+			flex: 1,
+			valueFormatter: (params) => {
+				const regionCodes = params.value.map(regionId =>
+					activeRegions.find(region => region.region_id === regionId)?.region_code || regionId
+				);
+				return regionCodes.join(', ');
+			}
+		},
+
 	]
 
 	//function to render the delete button in the datagrid
@@ -93,6 +86,8 @@ export default function SystemAdminUpdateUsersGrid() {
 	const handleDeleteAdmin = (row) => {
 		if (!window.confirm('Are you sure you want to delete this user?')) return;
 		dispatch({ type: 'DELETE_ADMIN', payload: row });
+		setSelectedRow(null);
+		setShowEditModal(false);
 	}
 
 	// ⬇ Handles the selection and deselection of a row:
@@ -282,10 +277,10 @@ export default function SystemAdminUpdateUsersGrid() {
 						<Button
 							color="primary"
 							size="small"
-							onClick={() => handleDeleteAdmin(selectedRow)}
+							onClick={() => setShowEditModal(true)}
 							style={{ margin: "4px" }}
 						>
-							Delete {selectedRow?.username}
+							Edit {selectedRow?.username}
 						</Button>
 					</>
 					: <>
@@ -312,10 +307,10 @@ export default function SystemAdminUpdateUsersGrid() {
 			username: '',
 			password: '',
 			permission_level: 0,
-			region_id: 0,
+			region_codes: [],
 		};
 
-		const [editData, setEditData] = useState({ ...admin });
+		const [editData, setEditData] = useState({ ...selectedRow || admin });
 
 		const handleEdit = (value, label) => {
 			setEditData({
@@ -325,15 +320,28 @@ export default function SystemAdminUpdateUsersGrid() {
 		};
 
 		const handleSubmit = () => {
-			if (!editData.username || !editData.password || !editData.permission_level || (editData.permission_level === 3 && !editData.region_id)) {
+			if (!editData.username || !editData.permission_level || (editData.permission_level === 3 && editData.region_codes.length === 0) || (!editData.password && !selectedRow)) {
 				alert('Please fill out all fields to submit.');
 				return;
 			}
 
+			let region_ids = [];
+			if (editData.permission_level === 3) {
+				region_ids = activeRegions.filter(region => editData.region_codes.includes(region.region_code)).map(region => region.region_id);
+			}; 
+
 			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
 
-			dispatch({ type: 'SUBMIT_ADMIN', payload: editData });
+			dispatch({
+				type: 'SUBMIT_ADMIN', payload: {
+					...editData,
+					region_ids,
+					edit: selectedRow ? true : false,
+				}
+			});
+
 			setShowEditModal(false);
+			setEditData({ ...admin });
 			setSelectedRow(editData);
 		};
 
@@ -346,7 +354,10 @@ export default function SystemAdminUpdateUsersGrid() {
 		return (
 			<Modal
 				open={showEditModal}
-				onClose={() => setShowEditModal(false)}
+				onClose={() => {
+					setShowEditModal(false);
+					setEditData({ ...admin });
+				}}
 				closeAfterTransition
 				BackdropComponent={Backdrop}
 				BackdropProps={{ timeout: 500 }}
@@ -357,7 +368,7 @@ export default function SystemAdminUpdateUsersGrid() {
 						<div
 							style={{ margin: '0px auto 10px auto', fontSize: "1.1rem", letterSpacing: "0.5px", borderBottom: "1px solid #000", fontFamily: "Lexend Tera", paddingBottom: '10px' }}
 						>
-							Create New Admin Account
+							{selectedRow?.username ? `Edit User ${selectedRow.username}` : 'Create New Admin Account'}
 						</div>
 						<div style={{ marginBottom: '10px' }}>
 							<TextField
@@ -367,13 +378,15 @@ export default function SystemAdminUpdateUsersGrid() {
 								onChange={(event) => handleEdit(event.target.value, 'username')}
 								style={{ marginBottom: '20px' }}
 							/>
-														<TextField
-								fullWidth
-								label="Password"
-								value={editData.password}
-								onChange={(event) => handleEdit(event.target.value, 'password')}
-								style={{ marginBottom: '20px' }}
-							/>
+							{!selectedRow &&
+								<TextField
+									fullWidth
+									label="Password"
+									value={editData.password}
+									onChange={(event) => handleEdit(event.target.value, 'password')}
+									style={{ marginBottom: '20px' }}
+								/>
+							}
 							<FormControl fullWidth style={{ marginBottom: '20px' }}>
 								<InputLabel>Account Type</InputLabel>
 								<Select
@@ -390,14 +403,24 @@ export default function SystemAdminUpdateUsersGrid() {
 							</FormControl>
 							{editData.permission_level === 3 &&
 								<FormControl fullWidth>
-									<InputLabel>Operating Region</InputLabel>
+									<InputLabel>Operating Regions</InputLabel>
 									<Select
-										value={editData.region_id}
-										onChange={(event) => handleEdit(event.target.value, 'region_id')}
+										multiple
+										value={editData.region_codes}
 										style={{ textAlign: 'left' }}
+										onChange={(event) => {
+											const selectedCodes = event.target.value.filter(code => code !== null);
+											handleEdit(selectedCodes, 'region_codes');
+										}}
+										renderValue={(selected) => {
+											return selected
+												.filter(code => code !== null)
+												.map(code => activeRegions.find(region => region.region_code === code)?.region_code)
+												.join(', ');
+										}}
 									>
 										{activeRegions?.map((region) => (
-											<MenuItem key={region.region_id} value={region.region_id}>
+											<MenuItem key={region.region_id} value={region.region_code}>
 												{region.region_name}
 											</MenuItem>
 										))}
@@ -411,9 +434,14 @@ export default function SystemAdminUpdateUsersGrid() {
 								<Button variant="contained" color="secondary" onClick={() => setShowEditModal(false)}>
 									Cancel
 								</Button>
-								<Button variant="contained" color="primary" onClick={handleSubmit}>
-									Submit
-								</Button>
+								<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+									<Button style={{ marginRight: '10px' }} variant="contained" color="secondary" onClick={() => handleDeleteAdmin(selectedRow)}>
+										Delete
+									</Button>
+									<Button variant="contained" color="primary" onClick={handleSubmit}>
+										Submit
+									</Button>
+								</div>
 							</div>
 						</div>
 					</div>

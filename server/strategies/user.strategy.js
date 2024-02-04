@@ -8,8 +8,36 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
+
+	const sql = `
+		SELECT
+			u.user_id, 
+			u.username, 
+			u.permission_level,
+			CASE 
+					WHEN u.permission_level = 1 THEN 'System Admin'
+					WHEN u.permission_level = 2 THEN 'Admin'
+					WHEN u.permission_level = 3 THEN 'Region Admin'
+					ELSE 'User'
+			END AS permission_type,
+			ARRAY_AGG(r.region_id) FILTER (WHERE r.region_id IS NOT NULL) AS region_ids, 
+			ARRAY_AGG(r.region_name) FILTER (WHERE r.region_id IS NOT NULL) AS region_names,
+			ARRAY_AGG(r.region_code) FILTER (WHERE r.region_id IS NOT NULL) AS region_codes,
+			CASE
+				WHEN u.permission_level = 3 THEN true
+				ELSE false
+			END AS is_region_admin
+		FROM users AS u
+		LEFT JOIN user_regions AS ur 
+			ON u.user_id = ur.user_id
+		LEFT JOIN regions AS r 
+			ON ur.region_id = r.region_id
+		WHERE u.user_id = $1
+		GROUP BY u.user_id;
+	`;
+
 	pool
-		.query('SELECT * FROM "users" WHERE user_id = $1', [id])
+		.query(sql, [id])
 		.then((result) => {
 			// Handle Errors
 			const user = result && result.rows && result.rows[0];

@@ -17,15 +17,22 @@ router.get('/', rejectNonAdmin, (req, res) => {
 				WHEN u.permission_level = 3 THEN 'Region Admin'
 				ELSE 'User'
 			END AS permission_type,
-			r.region_id, 
-			r.region_name,
-			r.region_code
+			ARRAY_AGG(r.region_id) AS region_ids, 
+			ARRAY_AGG(r.region_name) AS region_names,
+			ARRAY_AGG(r.region_code) AS region_codes,
+			CASE
+				WHEN u.permission_level = 3 THEN true
+				ELSE false
+			END AS is_region_admin
 		FROM users AS u
+		LEFT JOIN user_regions AS ur
+			ON u.user_id = ur.user_id
 		LEFT JOIN regions AS r
-			ON u.region_id = r.region_id
+			ON ur.region_id = r.region_id
 		WHERE 
 			u.permission_level < 4
-		ORDER BY username ASC;
+		GROUP BY u.user_id
+		ORDER BY u.username ASC;
 	`;
 	pool.query(queryText).then((result) => {
 		res.send(result.rows);
