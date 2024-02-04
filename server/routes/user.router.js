@@ -74,7 +74,7 @@ router.put('/edit-admin', rejectNonSysAdmin, async (req, res) => {
 		region_ids,
 	} = req.body;
 
-	if (!Array.isArray(region_ids) || region_ids.length === 0) region_ids = [null];
+	if (!Array.isArray(region_ids)) region_ids = [];
 
 	const connection = await pool.connect();
 	try {
@@ -87,15 +87,13 @@ router.put('/edit-admin', rejectNonSysAdmin, async (req, res) => {
 		`;
 		await connection.query(updateUserSql);
 
-		if (permission_level != 3) {
-			const deleteAllUserRegionsSql = `
-				DELETE FROM user_regions
-				WHERE user_id = ${format(`%L`, user_id)};
-			`;
-			await connection.query(deleteAllUserRegionsSql);
-		};
+		const deleteAllUserRegionsSql = `
+			DELETE FROM user_regions
+			WHERE user_id = ${format(`%L`, user_id)};
+		`;
+		await connection.query(deleteAllUserRegionsSql);
 
-		if (region_ids.length > 1 && region_ids[0] !== null) {
+		if (permission_level == 3 && region_ids.length > 0) {
 			for (const regionId of region_ids) {
 				const insertUserRegionSql = `
 					INSERT INTO user_regions (user_id, region_id)
