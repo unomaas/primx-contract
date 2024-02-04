@@ -38,7 +38,10 @@ export const regionalAdminRoutes = [
 		path: '/AdminOrders',
 		component: AdminOrders
 	},
-
+	{
+		path: '/pricinglog',
+		component: PricingLog
+	},
 ];
 
 export default function RegionalAdminRoute(props) {

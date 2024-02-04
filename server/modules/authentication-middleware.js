@@ -37,7 +37,6 @@ const rejectNonSysAdmin = (req, res, next) => {
 const isRegionalAdmin = (user) => {
   if (
     user &&
-    user.region_id &&
     user.permission_level &&
     user.permission_level == 3
   ) {

@@ -19,7 +19,7 @@ export default function PricingLogTable() {
 	const pricingLog = useSelector(store => store.pricingLog);
 	const { viewState, dataState } = pricingLog;
 	const [filter, setFilter] = useState({});
-
+	const user = useSelector(store => store.user);
 
 	const pricingLogTableOptions = {
 		customs_duties: {
@@ -282,7 +282,9 @@ export default function PricingLogTable() {
 		}, // End product_cost
 	}
 
-	const [selectedLog, setSelectedLog] = useState(pricingLogTableOptions.product_cost);
+
+
+	const [selectedLog, setSelectedLog] = useState(user.is_region_admin ? pricingLogTableOptions.price_per_unit : pricingLogTableOptions.product_cost);
 
 	const rowsPerPageOptions = [10, 25, 50, 100];
 	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
@@ -347,7 +349,7 @@ export default function PricingLogTable() {
 					type: 'number',
 					valueFormatter: (params) => {
 						if (!params.value) return null;
-						return `${Number((params.value * 100).toFixed(2))}%`;						
+						return `${Number((params.value * 100).toFixed(2))}%`;
 					},
 				}); // End push
 			} else {
@@ -544,8 +546,7 @@ export default function PricingLogTable() {
 								return (
 									<div
 										style={{
-											// ! Ryan here, this is what matters when doing the double header, and what we'll need to adjust to 4 if we're hiding the margin column. 
-											flex: "5",
+											flex: user?.is_region_admin ? 4 : 5,
 											display: "flex",
 											justifyContent: "center",
 											borderLeft: "1px solid #e0e0e0",
@@ -703,6 +704,16 @@ export default function PricingLogTable() {
 		const totalWidth = columns.reduce((acc, column) => acc + (column.minWidth || 130), 0);
 		return totalWidth + 2;
 	};
+
+	if (user.is_region_admin) {
+		delete pricingLogTableOptions.customs_duties;
+		delete pricingLogTableOptions.markup_margin;
+		delete pricingLogTableOptions.product_cost;
+		delete pricingLogTableOptions.shipping_cost;
+		// ⬇ Filter by the id's within the user.region_id's array:
+		pricingLogTableOptions.price_per_unit.rows = pricingLogTableOptions.price_per_unit.rows.filter(row => user.region_codes.includes(row.destination_country))
+	};
+
 
 	// ⬇ Rendering below: 
 	return (

@@ -63,10 +63,6 @@ export const adminRoutes = [
 		component: Regions
 	},
 	{
-		path: '/pricinglog',
-		component: PricingLog
-	},
-	{
 		path: '/updatepricing',
 		component: UpdatePricing
 	},
