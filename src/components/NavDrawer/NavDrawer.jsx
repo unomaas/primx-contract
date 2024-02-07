@@ -59,7 +59,7 @@ export default function NavDrawer() {
 					<Divider />
 
 					{/* Conditioning rendering for what menu options are: */}
-					{user.user_id ? (
+					{user.user_id && (
 						// If user is logged in:
 						<List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
 
@@ -76,10 +76,10 @@ export default function NavDrawer() {
 								<p>Search For Estimate</p>
 							</ListItem> */}
 
-							<ListItem button onClick={() => history.push(`/combine`)}>
+							{/* <ListItem button onClick={() => history.push(`/combine`)}>
 								<StorageIcon /> &nbsp;
 								<p>Combine Estimates</p>
-							</ListItem>
+							</ListItem> */}
 
 							{user.permission_level != 3 &&
 
@@ -146,40 +146,7 @@ export default function NavDrawer() {
 							</ListItem>
 
 						</List>
-					) : (
-						// If user is not logged in:
-						<List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
-
-							<ListItem button onClick={() => history.push(`/create`)}>
-								<NoteAddIcon /> &nbsp;
-								<p>Create New Estimate</p>
-							</ListItem>
-
-							{/* <ListItem button onClick={() => history.push(`/lookup`)}>
-								<SearchIcon /> &nbsp;
-								<p>Search For Estimate</p>
-							</ListItem> */}
-
-							<ListItem button onClick={() => history.push(`/combine`)}>
-								<StorageIcon /> &nbsp;
-								<p>Combine Estimates</p>
-							</ListItem>
-
-							<ListItem button onClick={() => history.push(`/SavedEstimates`)}>
-								<SaveIcon /> &nbsp;
-								<p>Saved Estimates</p>
-							</ListItem>
-
-							<Divider />
-
-							<ListItem button onClick={() => history.push(`/login`)}>
-								<ExitToAppIcon /> &nbsp;
-								<p>Login</p>
-							</ListItem>
-
-						</List>
 					)}
-					{/* End conditional rendering for menu options. */}
 
 				</div>
 			</Drawer>

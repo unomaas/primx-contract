@@ -30,10 +30,10 @@ export const protectedRoutes = [
 	{
 		path: '/lookup/:licensee_id_searched/:estimate_number_searched', component: EstimateLookup
 	},
-	{
-		path: '/combine',
-		component: EstimateCombine,
-	},
+	// {
+	// 	path: '/combine',
+	// 	component: EstimateCombine,
+	// },
 	{
 		path: '/combine/:licensee_id_searched/:first_estimate_number_combined/:second_estimate_number_combined',
 		component: EstimateCombine,

@@ -88,7 +88,6 @@ export default function EstimateLookupTable() {
 	//#endregion ⬆⬆ Event handlers above. 
 
 	if (searchResult?.materials_excluded == 'exclude_fibers') searchResult.selected_steel_fiber_dosage = '75_50';
-
 	// ⬇ Rendering below:
 	return (
 		<div>
@@ -230,63 +229,13 @@ export default function EstimateLookupTable() {
 						<Grid item xs={6}>
 							<Paper elevation={3}>
 								<TableContainer>
-									<h3>Project Quantity Calculations</h3>
+									<h3>Project Quantity</h3>
 									<Table size="small">
 										<TableBody>
-
 											<TableRow hover={true}>
-												<TableCell><b>Square Feet:</b></TableCell>
+												<TableCell><b>Total Cubic {searchResult?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.square_feet_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.thickness_inches_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.perimeter_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.construction_joint_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.cubic_yards_subtotal}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.waste_factor_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.design_cubic_yards_total}
+													{parseFloat(searchResult?.total_project_volume)?.toLocaleString()}
 												</TableCell>
 											</TableRow>
 
@@ -393,63 +342,14 @@ export default function EstimateLookupTable() {
 						<Grid item xs={6}>
 							<Paper elevation={3}>
 								<TableContainer>
-									<h3>Project Quantity Calculations</h3>
+									<h3>Project Quantity</h3>
 									<Table size="small">
 										<TableBody>
 
 											<TableRow hover={true}>
-												<TableCell><b>Square Meters:</b></TableCell>
+												<TableCell><b>Total Cubic {searchResult?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.square_meters_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.thickness_millimeters_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.perimeter_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.construction_joint_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.cubic_meters_subtotal}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.waste_factor_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.design_cubic_meters_total}
+													{parseFloat(searchResult?.total_project_volume)?.toLocaleString()}
 												</TableCell>
 											</TableRow>
 
@@ -589,10 +489,9 @@ export default function EstimateLookupTable() {
 									}
 									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 										<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-										{searchResult?.measurement_units === 'imperial'
-											? <TableCell align="right">{searchResult?.design_cubic_yards_total}</TableCell>
-											: <TableCell align="right">{searchResult?.design_cubic_meters_total}</TableCell>
-										}
+										<TableCell align="right">
+											{parseFloat(searchResult?.total_project_volume)?.toLocaleString()}
+										</TableCell>
 									</TableRow>
 									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 										<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -629,10 +528,9 @@ export default function EstimateLookupTable() {
 										</TableRow>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-											{searchResult?.measurement_units === 'imperial'
-												? <TableCell align="right">{searchResult?.design_cubic_yards_total}</TableCell>
-												: <TableCell align="right">{searchResult?.design_cubic_meters_total}</TableCell>
-											}
+											<TableCell align="right">
+												{parseFloat(searchResult?.total_project_volume)?.toLocaleString()}
+											</TableCell>
 										</TableRow>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>

@@ -48,9 +48,9 @@ export default function AdminOrders() {
 				estimate.final_total_project_cost = estimate.total_project_cost_75_50;
 				estimate.selected_steel_fiber_dosage = 'Combined';
 				if (estimate.measurement_units == 'imperial') {
-					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.design_cubic_yards_total.replaceAll(',', ''));
+					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.total_project_volume.replaceAll(',', ''));
 				} else {
-					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.design_cubic_meters_total.replaceAll(',', ''));
+					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.total_project_volume.replaceAll(',', ''));
 				}
 			}
 			pendingOrders.push(estimate);
