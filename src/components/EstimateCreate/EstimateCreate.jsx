@@ -503,10 +503,13 @@ export default function EstimateCreate() {
 												>
 													<MenuItem key="0" value="0">Please Select</MenuItem>
 													{filteredDestinations.map(state => {
+														if (user?.permission_level === 3 && !user?.region_ids?.includes(state?.region_id)) return;
 
-														if (user?.permission_level === 3 && user?.region_id !== state?.region_id) return;
-
-														return (<MenuItem key={state.destination_id} value={state.destination_id}>{state.destination_name}, {state.destination_country}</MenuItem>)
+														return (
+															<MenuItem key={state.destination_id} value={state.destination_id}>
+																{state.destination_name}, {state.destination_country}
+															</MenuItem>
+														);
 													})}
 												</Select>
 											</TableCell>

@@ -4,7 +4,6 @@ const router = express.Router();
 const {
 	rejectUnauthenticated,
 	rejectNonAdmin,
-	isRegionalAdmin,
 } = require('../modules/authentication-middleware');
 const format = require('pg-format');
 const {
@@ -64,7 +63,10 @@ router.get('/all', rejectNonAdmin, (req, res) => {
 
 	let whereClause = '';
 
-	if (isRegionalAdmin(req.user)) whereClause = `WHERE r.region_id = ${format('%L', req.user.region_id)}`;
+	if (req.user.is_region_admin) {
+		const regionIds = req.user.region_ids.map(id => format('%L', id)).join(', ');
+		whereClause = `WHERE r.region_id IN (${regionIds})`;
+	}
 
 	// SQL query to GET all estimates along the floor type names, licensee names, placement type names, and shipping state/province names
 	const queryText = `

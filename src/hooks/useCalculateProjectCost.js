@@ -382,7 +382,7 @@ export default function useCalculateProjectCost(estimate, options) {
 	// ⬇ PrimX Flow:
 	let primxFlowTransportationCostPlusMaterialCostPerUnit = cheapestPrimxFlowTransportationCostPerUnit + primxFlowProductPlusCustomDutyPercentage;
 
-	// ⬇ PrimX Cpea (let so it can change later):
+	// ⬇ PrimX Cpea:
 	let primxCpeaTransportationCostPlusMaterialCostPerUnit = cheapestPrimxCpeaTransportationCostPerUnit + primxCpeaProductPlusCustomDutyPercentage;
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
@@ -411,8 +411,6 @@ export default function useCalculateProjectCost(estimate, options) {
 		(primxCpeaTransportationCostPlusMaterialCostPerUnit * parseFloat(primxCpeaDosageRateInfo.dosage_rate))
 	);
 	//#endregion - Step 7.
-
-	// console.log(`Ryan Here: \n `, { dollarSelfCostPerUnit_75_50,  dollarSelfCostPerUnit_90_60 } );
 
 
 

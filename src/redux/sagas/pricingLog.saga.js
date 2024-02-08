@@ -2,10 +2,10 @@ import axios from 'axios';
 import {
 	put,
 	takeLatest,
-	takeEvery
+	takeEvery,
+	select
 } from 'redux-saga/effects';
 import dayjs from 'dayjs';
-
 
 // import { useClasses } from '../../components/MuiStyling/MuiStyling';
 
@@ -25,6 +25,8 @@ function* pricingLogSaga() {
 function* pricingLogInitialLoad() {
 	// const classes = useClasses();
 	try {
+		const user = yield select(state => state.user);
+
 		const customsDutiesHistoryAll = yield axios.get('/api/customsduties/get-all-customs-duties-history');
 		const markupHistoryAll = yield axios.get('/api/products/get-all-markup-history');
 		const productCostHistoryAll = yield axios.get('/api/products/get-all-product-cost-history');
@@ -175,11 +177,14 @@ function* pricingLogInitialLoad() {
 			}); // End pricingLogPerUnitTopHeader.push
 
 			// ⬇ Loop through the destinationsCosts array and create the bottom header:
-			pricingLogPerUnitBottomHeader.push(
+			if (!user.is_region_admin) pricingLogPerUnitBottomHeader.push(
 				{
 					headerName: `Markup - ${month.month_year_label}`,
 					field: `markup_${month.month_year_value}`,
 				},
+			);
+
+			pricingLogPerUnitBottomHeader.push(
 				{
 					headerName: `60lbs/35kg Price - ${month.month_year_label}`,
 					field: `lower_${month.month_year_value}`,

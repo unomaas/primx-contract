@@ -108,7 +108,7 @@ export default function AdminOrders() {
 				align="center"
 				className={classes.OrdersHeaders}
 			>
-				Open Estimates
+				Saved Estimates
 			</Typography>
 			<AdminEstimatesGrid
 				estimatesArray={openEstimates}

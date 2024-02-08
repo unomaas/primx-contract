@@ -7,7 +7,7 @@ import { useParams, useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch, Tooltip, Radio } from '@material-ui/core';
 import { useClasses } from '../MuiStyling/MuiStyling';
-import { isEmpty } from '../../utils/helpers';
+import { isEmpty, allowedToPlaceForPO } from '../../utils/helpers';
 import { isWithinXMonths } from '../../utils/dateUtils';
 //#endregion ⬆⬆ All document setup above.
 
@@ -471,7 +471,7 @@ export default function EstimateLookupTable() {
 									{searchResult?.materials_excluded != 'exclude_fibers' &&
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
-												{!searchResult?.ordered_by_licensee &&
+												{!searchResult?.ordered_by_licensee && allowedToPlaceForPO(searchResult) &&
 													<Radio
 														checked={searchResult?.selected_steel_fiber_dosage == '75_50'}
 														onChange={() => handleSteelFiberSelection('75_50')}
@@ -512,7 +512,7 @@ export default function EstimateLookupTable() {
 									<TableBody>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
-												{!searchResult?.ordered_by_licensee &&
+												{!searchResult?.ordered_by_licensee && allowedToPlaceForPO(searchResult) &&
 													<Radio
 														checked={searchResult?.selected_steel_fiber_dosage == '90_60'}
 														onChange={() => handleSteelFiberSelection('90_60')}
@@ -599,33 +599,36 @@ export default function EstimateLookupTable() {
 																	Export Estimate
 																</Button>
 
-																<TextField
-																	onChange={(event) => setPoNumber(event.target.value)}
-																	size="small"
-																	label="PO Number"
-																	value={poNumber}
-																	helperText={poNumError}
-																/> &nbsp; &nbsp;
+																{allowedToPlaceForPO(searchResult) &&
+																	<>
+																		<TextField
+																			onChange={(event) => setPoNumber(event.target.value)}
+																			size="small"
+																			label="PO Number"
+																			value={poNumber}
+																			helperText={poNumError}
+																		/> &nbsp; &nbsp;
 
-																<Tooltip
-																	title={searchResult?.selected_steel_fiber_dosage ? '' : 'Please select a Steel Fiber dosage rate before placing an order.'}
-																	placement="top-end"
-																	arrow
-																>
-																	<span>
-																		<Button
-																			variant="contained"
-																			color="primary"
-																			onClick={handlePlaceOrder}
-																			className={classes.LexendTeraFont11}
-																			style={{ marginTop: "13px" }}
-																			disabled={searchResult?.selected_steel_fiber_dosage ? false : true}
+																		<Tooltip
+																			title={searchResult?.selected_steel_fiber_dosage ? '' : 'Please select a Steel Fiber dosage rate before placing an order.'}
+																			placement="top-end"
+																			arrow
 																		>
-																			Place Order
-																		</Button>
-
-																	</span>
-																</Tooltip>
+																			<span>
+																				<Button
+																					variant="contained"
+																					color="primary"
+																					onClick={handlePlaceOrder}
+																					className={classes.LexendTeraFont11}
+																					style={{ marginTop: "13px" }}
+																					disabled={searchResult?.selected_steel_fiber_dosage ? false : true}
+																				>
+																					Place Order
+																				</Button>
+																			</span>
+																		</Tooltip>
+																	</>
+																}
 															</>
 														}
 													</section>
