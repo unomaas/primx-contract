@@ -203,22 +203,47 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 		{ field: 'project_manager_phone', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Project Manager Phone', width: 175, editable: false },
 
 		// ⬇ Technical job details input by licensee
-		{ field: 'measurement_units', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Units', width: 100 }, // Editable + validation?
-		{ field: 'floor_type_label', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Floor Type', width: 175 }, // Editable + validation?
+		{
+			field: 'measurement_units',
+			headerClassName: classes.header,
+			headerName: 'Units',
+			width: 100,
+			valueFormatter: (params) => {
+				return params?.value.charAt(0).toUpperCase() + params?.value.slice(1);
+			}
+		}, { field: 'floor_type_label', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Floor Type', width: 175 }, // Editable + validation?
 		{ field: 'placement_type_label', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Placement Type', width: 175 }, // Editable + validation?
-		{ field: 'square_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Square Feet', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickness_inches', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickness(inches)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, disableColumnMenu: true, headerName: 'Square Meters', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickness_millimeters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickness(mm)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'waste_factor_percentage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Waste Factor (%)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
-		{ field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'square_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Square Feet', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickness_inches', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickness(inches)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'square_meters'.toLocaleString('en-US'), headerClassName: classes.header, disableColumnMenu: true, headerName: 'Square Meters', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickness_millimeters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickness(mm)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'waste_factor_percentage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Waste Factor (%)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickened_edge_construction_joint_lineal_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Construction Joint (lineal ft)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickened_edge_perimeter_lineal_feet', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Perimeter (lineal ft)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickened_edge_construction_joint_lineal_meters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Construction Joint (lineal m)', width: 175, editable: false }, // Editable + validation?
+		// { field: 'thickened_edge_perimeter_lineal_meters', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Thickened Edge Perimeter (lineal m)', width: 175, editable: false }, // Editable + validation?
 
-		// totals and design size
-		{ field: 'design_cubic_yards_total', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Design Volume (cubic yards)', width: 175 },
-		{ field: 'design_cubic_meters_total', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Design Volume (cubic meters)', width: 175 },
+		// // totals and design size
+		// { field: 'design_cubic_yards_total', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Design Volume (cubic yards)', width: 175 },
+		// { field: 'design_cubic_meters_total', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Design Volume (cubic meters)', width: 175 },
+		{
+			field: 'total_project_volume',
+			headerClassName: classes.header,
+			disableColumnMenu: true,
+			headerName: 'Total Project Volume',
+			width: 175,
+			align: 'right',
+			valueFormatter: (params) => {
+				return `${parseFloat(params?.value).toLocaleString('en-US')}`
+			}
+		},
+		{
+			field: 'measurement_units_label',
+			headerClassName: classes.header,
+			disableColumnMenu: true,
+			headerName: 'Units',
+			width: 100,
+		},
 		{ field: 'selected_steel_fiber_dosage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Selected Steel Fiber Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
 
 		{ field: 'price_per_unit_75_50', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Price Per Unit, 60lbs/35kg SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
@@ -226,7 +251,7 @@ export default function LicenseeEstimatesGrid({ estimateData, gridSource }) {
 
 		{ field: 'total_project_cost_75_50', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Total Project Cost, 60lbs/35kg SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
 		{ field: 'total_project_cost_90_60', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Total Project Cost, 68lbs/40kg SF Dosage', width: 175, editable: false, valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) } },
-		
+
 		{ field: 'estimate_number_combined_1', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 1', width: 175 },
 		{ field: 'estimate_number_combined_1_sf_dosage', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 1 - SF Dosage', width: 175, valueFormatter: (params) => { return params?.value?.replaceAll('_', '/') } },
 		{ field: 'estimate_number_combined_2', headerClassName: classes.header, disableColumnMenu: true, headerName: 'Estimate Number 2', width: 175 },

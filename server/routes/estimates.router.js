@@ -25,6 +25,10 @@ router.get('/lookup/:estimate', (req, res) => {
 			e.total_number_of_20ft_containers::int,
 			e.total_number_of_40ft_containers::int,
 			e.total_number_of_pallets::int,
+			CASE
+				WHEN e.measurement_units = 'imperial' THEN 'cubic yards'
+				WHEN e.measurement_units = 'metric' THEN 'cubic meters'
+			END AS measurement_units_label,
 			ft.floor_type_label, 
 			l.licensee_contractor_name, 
 			pt.placement_type_label, 
@@ -68,13 +72,19 @@ router.get('/all', rejectNonAdmin, (req, res) => {
 	const queryText = `
 		SELECT
 			e.*,
+			e.total_number_of_20ft_containers::int,
+			e.total_number_of_40ft_containers::int,
+			e.total_number_of_pallets::int,
+			CASE
+				WHEN e.measurement_units = 'imperial' THEN 'cubic yards'
+				WHEN e.measurement_units = 'metric' THEN 'cubic meters'
+			END AS measurement_units_label,
 			ft.floor_type_label,
 			l.licensee_contractor_name,
 			pt.placement_type_label,
 			sd.destination_name,
 			r.region_id,
-			r.region_code AS destination_country,
-			u.username
+			r.region_code AS destination_country
 		FROM estimates AS e
 		JOIN floor_types AS ft
 			ON e.floor_type_id = ft.floor_type_id
@@ -152,23 +162,24 @@ router.post('/add-new-estimate', async (req, res) => {
 		total_number_of_20ft_containers,
 		total_number_of_40ft_containers,
 
+		total_project_volume,
 		// ⬇ Imperial: 
-		square_feet,
-		thickness_inches,
-		thickened_edge_perimeter_lineal_feet,
-		thickened_edge_construction_joint_lineal_feet,
-		primx_dc_on_hand_lbs,
-		primx_steel_fibers_on_hand_lbs,
-		primx_ultracure_blankets_on_hand_sq_ft,
+		// square_feet,
+		// thickness_inches,
+		// thickened_edge_perimeter_lineal_feet,
+		// thickened_edge_construction_joint_lineal_feet,
+		// primx_dc_on_hand_lbs,
+		// primx_steel_fibers_on_hand_lbs,
+		// primx_ultracure_blankets_on_hand_sq_ft,
 
 		// ⬇ Metric:
-		square_meters,
-		thickness_millimeters,
-		thickened_edge_perimeter_lineal_meters,
-		thickened_edge_construction_joint_lineal_meters,
-		primx_dc_on_hand_kgs,
-		primx_steel_fibers_on_hand_kgs,
-		primx_ultracure_blankets_on_hand_sq_m,
+		// square_meters,
+		// thickness_millimeters,
+		// thickened_edge_perimeter_lineal_meters,
+		// thickened_edge_construction_joint_lineal_meters,
+		// primx_dc_on_hand_kgs,
+		// primx_steel_fibers_on_hand_kgs,
+		// primx_ultracure_blankets_on_hand_sq_m,
 	} = req.body;
 
 	// start the query text with shared values
@@ -218,32 +229,37 @@ router.post('/add-new-estimate', async (req, res) => {
 		`; // End sql
 	}; // End if
 
-	// Add in the imperial or metric specific values based on unit choice
-	if (measurement_units == 'imperial') {
-		// append the imperial specific data to the SQL query
-		sql += `
-				square_feet,
-				thickness_inches,
-				thickened_edge_perimeter_lineal_feet,
-				thickened_edge_construction_joint_lineal_feet,
-				primx_dc_on_hand_lbs,
-				primx_steel_fibers_on_hand_lbs,
-				primx_ultracure_blankets_on_hand_sq_ft
-			)
-    `; // End sql
-	} else if (req.body.measurement_units == 'metric') {
-		// append the metric specific data to the SQL query
-		sql += `
-			square_meters,
-			thickness_millimeters,
-			thickened_edge_perimeter_lineal_meters,
-			thickened_edge_construction_joint_lineal_meters,
-			primx_dc_on_hand_kgs,
-			primx_steel_fibers_on_hand_kgs,
-			primx_ultracure_blankets_on_hand_sq_m
-      )
-    `; // End sql
-	} // End if/else if
+	sql += `
+			total_project_volume
+		)
+	`;
+
+	// // Add in the imperial or metric specific values based on unit choice
+	// if (measurement_units == 'imperial') {
+	// 	// append the imperial specific data to the SQL query
+	// 	sql += `
+	// 			square_feet,
+	// 			thickness_inches,
+	// 			thickened_edge_perimeter_lineal_feet,
+	// 			thickened_edge_construction_joint_lineal_feet,
+	// 			primx_dc_on_hand_lbs,
+	// 			primx_steel_fibers_on_hand_lbs,
+	// 			primx_ultracure_blankets_on_hand_sq_ft
+	// 		)
+	//   `; // End sql
+	// } else if (req.body.measurement_units == 'metric') {
+	// 	// append the metric specific data to the SQL query
+	// 	sql += `
+	// 			square_meters,
+	// 			thickness_millimeters,
+	// 			thickened_edge_perimeter_lineal_meters,
+	// 			thickened_edge_construction_joint_lineal_meters,
+	// 			primx_dc_on_hand_kgs,
+	// 			primx_steel_fibers_on_hand_kgs,
+	// 			primx_ultracure_blankets_on_hand_sq_m
+	//     )
+	//   `; // End sql
+	// } // End if/else if
 
 	// add the values clause to the SQL query 
 	sql += `
@@ -289,30 +305,34 @@ router.post('/add-new-estimate', async (req, res) => {
 		`; // End sql
 	}
 
-	// Add in the imperial or metric specific values based on unit choice
-	if (measurement_units == 'imperial') {
-		// append the imperial specific data to the SQL query
-		sql += `
-			${format('%L', square_feet)},
-			${format('%L', thickness_inches)},
-			${format('%L', thickened_edge_perimeter_lineal_feet)},
-			${format('%L', thickened_edge_construction_joint_lineal_feet)},
-			${format('%L', primx_dc_on_hand_lbs)},
-			${format('%L', primx_steel_fibers_on_hand_lbs)},
-			${format('%L', primx_ultracure_blankets_on_hand_sq_ft)}
-		`;
-	} else if (req.body.measurement_units == 'metric') {
-		// append the metric specific data to the SQL query
-		sql += `
-			${format('%L', square_meters)},
-			${format('%L', thickness_millimeters)},
-			${format('%L', thickened_edge_perimeter_lineal_meters)},
-			${format('%L', thickened_edge_construction_joint_lineal_meters)},
-			${format('%L', primx_dc_on_hand_kgs)},
-			${format('%L', primx_steel_fibers_on_hand_kgs)},
-			${format('%L', primx_ultracure_blankets_on_hand_sq_m)}
-		`;
-	} // End if/else if
+	sql += `
+		${format('%L', total_project_volume)}
+	`;
+
+	// // Add in the imperial or metric specific values based on unit choice
+	// if (measurement_units == 'imperial') {
+	// 	// append the imperial specific data to the SQL query
+	// 	sql += `
+	// 		${format('%L', square_feet)},
+	// 		${format('%L', thickness_inches)},
+	// 		${format('%L', thickened_edge_perimeter_lineal_feet)},
+	// 		${format('%L', thickened_edge_construction_joint_lineal_feet)},
+	// 		${format('%L', primx_dc_on_hand_lbs)},
+	// 		${format('%L', primx_steel_fibers_on_hand_lbs)},
+	// 		${format('%L', primx_ultracure_blankets_on_hand_sq_ft)}
+	// 	`;
+	// } else if (req.body.measurement_units == 'metric') {
+	// 	// append the metric specific data to the SQL query
+	// 	sql += `
+	// 		${format('%L', square_meters)},
+	// 		${format('%L', thickness_millimeters)},
+	// 		${format('%L', thickened_edge_perimeter_lineal_meters)},
+	// 		${format('%L', thickened_edge_construction_joint_lineal_meters)},
+	// 		${format('%L', primx_dc_on_hand_kgs)},
+	// 		${format('%L', primx_steel_fibers_on_hand_kgs)},
+	// 		${format('%L', primx_ultracure_blankets_on_hand_sq_m)}
+	// 	`;
+	// } // End if/else if
 
 	// add the closing parenthesis to the SQL query
 	sql += `
@@ -587,7 +607,7 @@ router.delete('/delete/:estimate_id', rejectUnauthenticated, (req, res) => {
 // main POST route above
 
 
-router.put('/clientupdates/:estimate_id', async (req, res) => {
+router.put('/edit-estimate/:estimate_id', async (req, res) => {
 	try {
 
 		const {
@@ -622,8 +642,8 @@ router.put('/clientupdates/:estimate_id', async (req, res) => {
 			estimate_number_combined_3,
 
 			// ⬇ Final Cost Numbers:
-			// price_per_unit_75_50,
-			// price_per_unit_90_60,
+			price_per_unit_75_50,
+			price_per_unit_90_60,
 			total_project_cost_75_50,
 			total_project_cost_90_60,
 
@@ -632,23 +652,24 @@ router.put('/clientupdates/:estimate_id', async (req, res) => {
 			total_number_of_20ft_containers,
 			total_number_of_40ft_containers,
 
-			// ⬇ Imperial: 
-			square_feet,
-			thickness_inches,
-			thickened_edge_perimeter_lineal_feet,
-			thickened_edge_construction_joint_lineal_feet,
-			primx_dc_on_hand_lbs,
-			primx_steel_fibers_on_hand_lbs,
-			primx_ultracure_blankets_on_hand_sq_ft,
+			total_project_volume,
+			// // ⬇ Imperial: 
+			// square_feet,
+			// thickness_inches,
+			// thickened_edge_perimeter_lineal_feet,
+			// thickened_edge_construction_joint_lineal_feet,
+			// primx_dc_on_hand_lbs,
+			// primx_steel_fibers_on_hand_lbs,
+			// primx_ultracure_blankets_on_hand_sq_ft,
 
-			// ⬇ Metric:
-			square_meters,
-			thickness_millimeters,
-			thickened_edge_perimeter_lineal_meters,
-			thickened_edge_construction_joint_lineal_meters,
-			primx_dc_on_hand_kgs,
-			primx_steel_fibers_on_hand_kgs,
-			primx_ultracure_blankets_on_hand_sq_m,
+			// // ⬇ Metric:
+			// square_meters,
+			// thickness_millimeters,
+			// thickened_edge_perimeter_lineal_meters,
+			// thickened_edge_construction_joint_lineal_meters,
+			// primx_dc_on_hand_kgs,
+			// primx_steel_fibers_on_hand_kgs,
+			// primx_ultracure_blankets_on_hand_sq_m,
 		} = req.body;
 		let sql = `
 			UPDATE "estimates"
@@ -675,36 +696,40 @@ router.put('/clientupdates/:estimate_id', async (req, res) => {
 				"estimate_number_combined_1" = ${format('%L', estimate_number_combined_1)},
 				"estimate_number_combined_2" = ${format('%L', estimate_number_combined_2)},
 				"estimate_number_combined_3" = ${format('%L', estimate_number_combined_3)},
+				"price_per_unit_75_50" = ${format('%L', price_per_unit_75_50)},
+				"price_per_unit_90_60" = ${format('%L', price_per_unit_90_60)},
 				"total_project_cost_75_50" = ${format('%L', total_project_cost_75_50)},
 				"total_project_cost_90_60" = ${format('%L', total_project_cost_90_60)},
 				"total_number_of_pallets" = ${format('%L', parseInt(total_number_of_pallets))},
 				"total_number_of_20ft_containers" = ${format('%L', parseInt(total_number_of_20ft_containers))},
 				"total_number_of_40ft_containers" = ${format('%L', parseInt(total_number_of_40ft_containers))},
+				"total_project_volume" = ${format('%L', total_project_volume)}
+			WHERE "estimate_id" = ${format('%L', estimate_id)};
 		`; // End sql
-		// Add in the imperial or metric specific values based on unit choice
-		if (req.body.measurement_units == 'imperial') {
-			sql += `
-					"square_feet" = ${format('%L', square_feet)},
-					"thickness_inches" = ${format('%L', thickness_inches)},
-					"thickened_edge_perimeter_lineal_feet" = ${format('%L', thickened_edge_perimeter_lineal_feet)},
-					"thickened_edge_construction_joint_lineal_feet" = ${format('%L', thickened_edge_construction_joint_lineal_feet)},
-					"primx_dc_on_hand_lbs" = ${format('%L', primx_dc_on_hand_lbs)},
-					"primx_steel_fibers_on_hand_lbs" = ${format('%L', primx_steel_fibers_on_hand_lbs)},
-					"primx_ultracure_blankets_on_hand_sq_ft" = ${format('%L', primx_ultracure_blankets_on_hand_sq_ft)}
-				WHERE "estimate_id" = ${format('%L', estimate_id)};
-			`; // End sql
-		} else if (req.body.measurement_units == 'metric') {
-			sql += `
-					"square_meters" = ${format('%L', square_meters)},
-					"thickness_millimeters" = ${format('%L', thickness_millimeters)},
-					"thickened_edge_perimeter_lineal_meters" = ${format('%L', thickened_edge_perimeter_lineal_meters)},
-					"thickened_edge_construction_joint_lineal_meters" = ${format('%L', thickened_edge_construction_joint_lineal_meters)},
-					"primx_dc_on_hand_kgs" = ${format('%L', primx_dc_on_hand_kgs)},
-					"primx_steel_fibers_on_hand_kgs" = ${format('%L', primx_steel_fibers_on_hand_kgs)},
-					"primx_ultracure_blankets_on_hand_sq_m" = ${format('%L', primx_ultracure_blankets_on_hand_sq_m)}
-				WHERE "estimate_id" = ${format('%L', estimate_id)};
-			`; // End sql
-		}; // End if/else if
+		// // Add in the imperial or metric specific values based on unit choice
+		// if (req.body.measurement_units == 'imperial') {
+		// 	sql += `
+		// 			"square_feet" = ${format('%L', square_feet)},
+		// 			"thickness_inches" = ${format('%L', thickness_inches)},
+		// 			"thickened_edge_perimeter_lineal_feet" = ${format('%L', thickened_edge_perimeter_lineal_feet)},
+		// 			"thickened_edge_construction_joint_lineal_feet" = ${format('%L', thickened_edge_construction_joint_lineal_feet)},
+		// 			"primx_dc_on_hand_lbs" = ${format('%L', primx_dc_on_hand_lbs)},
+		// 			"primx_steel_fibers_on_hand_lbs" = ${format('%L', primx_steel_fibers_on_hand_lbs)},
+		// 			"primx_ultracure_blankets_on_hand_sq_ft" = ${format('%L', primx_ultracure_blankets_on_hand_sq_ft)}
+		// 		WHERE "estimate_id" = ${format('%L', estimate_id)};
+		// 	`; // End sql
+		// } else if (req.body.measurement_units == 'metric') {
+		// 	sql += `
+		// 			"square_meters" = ${format('%L', square_meters)},
+		// 			"thickness_millimeters" = ${format('%L', thickness_millimeters)},
+		// 			"thickened_edge_perimeter_lineal_meters" = ${format('%L', thickened_edge_perimeter_lineal_meters)},
+		// 			"thickened_edge_construction_joint_lineal_meters" = ${format('%L', thickened_edge_construction_joint_lineal_meters)},
+		// 			"primx_dc_on_hand_kgs" = ${format('%L', primx_dc_on_hand_kgs)},
+		// 			"primx_steel_fibers_on_hand_kgs" = ${format('%L', primx_steel_fibers_on_hand_kgs)},
+		// 			"primx_ultracure_blankets_on_hand_sq_m" = ${format('%L', primx_ultracure_blankets_on_hand_sq_m)}
+		// 		WHERE "estimate_id" = ${format('%L', estimate_id)};
+		// 	`; // End sql
+		// }; // End if/else if
 		await pool.query(sql);
 		res.sendStatus(200);
 	} catch (error) {

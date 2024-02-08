@@ -62,11 +62,11 @@ export default function ButtonToggle() {
           Search For Estimate
         </ToggleButton> */}
 
-        <ToggleButton
+        {/* <ToggleButton
           value="combine"
         >
           Combine Estimates
-        </ToggleButton>
+        </ToggleButton> */}
 
         {user && user.permission_level != 3 &&
           <ToggleButton

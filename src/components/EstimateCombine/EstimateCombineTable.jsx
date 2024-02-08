@@ -369,127 +369,18 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 							<Paper elevation={3}>
 								<TableContainer>
 									<h3>Estimate {firstEstimate.estimate_number}</h3>
-									<h4>Quantity Calculations</h4>
+									<h4>Project Quantity</h4>
 									<Table size="small">
 										<TableBody>
-
 											<TableRow hover={true}>
-												<TableCell><b>Square Feet:</b></TableCell>
+												<TableCell><b>Total Cubic {firstEstimate?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 												<TableCell align="right">
-													{firstEstimate?.square_feet_display}
+													{parseFloat(firstEstimate?.total_project_volume)?.toLocaleString()}
 												</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.thickness_inches_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.perimeter_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.construction_joint_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.cubic_yards_subtotal}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.waste_factor_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.design_cubic_yards_total}
-												</TableCell>
-											</TableRow>
-
 										</TableBody>
 									</Table>
 
-									{(firstEstimate?.thickened_edge_perimeter_lineal_feet > 0 || firstEstimate?.thickened_edge_construction_joint_lineal_feet > 0) &&
-										<>
-											<h4>Thickened Edge Calculator</h4>
-											<p>If applicable, for slabs under 6in.</p>
-											<Table size="small">
-
-												<TableHead>
-													<TableRow>
-														<TableCell></TableCell>
-														<TableCell align="right"><b>Perimeter</b></TableCell>
-														<TableCell align="right"><b>Construction Joint</b></TableCell>
-													</TableRow>
-												</TableHead>
-
-												<TableBody>
-													<TableRow hover={true}>
-														<TableCell><b>Lineal Feet:</b></TableCell>
-														<TableCell align="right">
-															{firstEstimate?.thickened_edge_perimeter_lineal_feet_display}
-														</TableCell>
-														<TableCell align="right">
-															{firstEstimate?.thickened_edge_construction_joint_lineal_feet_display}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Width (yd³):</b></TableCell>
-														<TableCell align="right">
-															5
-														</TableCell>
-														<TableCell align="right">
-															10
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Additional Thickness (in):</b></TableCell>
-														<TableCell align="right">
-															{firstEstimate?.additional_thickness_inches}
-														</TableCell>
-														<TableCell align="right">
-															{firstEstimate?.additional_thickness_inches}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Cubic Yards:</b></TableCell>
-														<TableCell align="right">
-															{firstEstimate?.perimeter_thickening_cubic_yards}
-														</TableCell>
-														<TableCell align="right">
-															{firstEstimate?.construction_joint_thickening_cubic_yards}
-														</TableCell>
-													</TableRow>
-												</TableBody>
-											</Table>
-										</>
-									}
 
 									<h3>Total PrīmX Materials:</h3>
 									<Table size='small'>
@@ -560,10 +451,9 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											}
 											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 												<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-												{firstEstimate?.measurement_units === 'imperial'
-													? <TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
-													: <TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
-												}
+												<TableCell align="right">
+													{parseFloat(firstEstimate?.total_project_volume)?.toLocaleString()}
+												</TableCell>
 											</TableRow>
 											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 												<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -605,10 +495,10 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-													{firstEstimate?.measurement_units === 'imperial'
-														? <TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
-														: <TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
-													}
+													<TableCell align="right">
+														{parseFloat(firstEstimate?.total_project_volume)?.toLocaleString()}
+													</TableCell>
+
 												</TableRow>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -648,127 +538,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 							<Paper elevation={3}>
 								<TableContainer>
 									<h3>Estimate {secondEstimate.estimate_number}</h3>
-									<h4>Quantity Calculations</h4>
+									<h4>Project Quantity</h4>
 									<Table size="small">
 										<TableBody>
-
 											<TableRow hover={true}>
-												<TableCell><b>Square Feet:</b></TableCell>
+												<TableCell><b>Total Cubic {secondEstimate?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 												<TableCell align="right">
-													{secondEstimate?.square_feet_display}
+													{parseFloat(secondEstimate?.total_project_volume)?.toLocaleString()}
 												</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.thickness_inches_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.perimeter_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.construction_joint_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.cubic_yards_subtotal}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor @ {secondEstimate?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.waste_factor_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.design_cubic_yards_total}
-												</TableCell>
-											</TableRow>
-
 										</TableBody>
 									</Table>
-
-									{(secondEstimate?.thickened_edge_perimeter_lineal_feet > 0 || secondEstimate?.thickened_edge_construction_joint_lineal_feet > 0) &&
-										<>
-											<h4>Thickened Edge Calculator</h4>
-											<p>If applicable, for slabs under 6in.</p>
-											<Table size="small">
-
-												<TableHead>
-													<TableRow>
-														<TableCell></TableCell>
-														<TableCell align="right"><b>Perimeter</b></TableCell>
-														<TableCell align="right"><b>Construction Joint</b></TableCell>
-													</TableRow>
-												</TableHead>
-
-												<TableBody>
-													<TableRow hover={true}>
-														<TableCell><b>Lineal Feet:</b></TableCell>
-														<TableCell align="right">
-															{secondEstimate?.thickened_edge_perimeter_lineal_feet_display}
-														</TableCell>
-														<TableCell align="right">
-															{secondEstimate?.thickened_edge_construction_joint_lineal_feet_display}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Width (yd³):</b></TableCell>
-														<TableCell align="right">
-															5
-														</TableCell>
-														<TableCell align="right">
-															10
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Additional Thickness (in):</b></TableCell>
-														<TableCell align="right">
-															{secondEstimate?.additional_thickness_inches}
-														</TableCell>
-														<TableCell align="right">
-															{secondEstimate?.additional_thickness_inches}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Cubic Yards:</b></TableCell>
-														<TableCell align="right">
-															{secondEstimate?.perimeter_thickening_cubic_yards}
-														</TableCell>
-														<TableCell align="right">
-															{secondEstimate?.construction_joint_thickening_cubic_yards}
-														</TableCell>
-													</TableRow>
-												</TableBody>
-											</Table>
-										</>
-									}
 
 									<h3>Total PrīmX Materials:</h3>
 									<Table size='small'>
@@ -839,10 +619,10 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											}
 											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 												<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-												{secondEstimate?.measurement_units === 'imperial'
-													? <TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
-													: <TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
-												}
+												<TableCell align="right">
+													{parseFloat(secondEstimate?.total_project_volume)?.toLocaleString()}
+												</TableCell>
+
 											</TableRow>
 											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 												<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -884,10 +664,10 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-													{secondEstimate?.measurement_units === 'imperial'
-														? <TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
-														: <TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
-													}
+													<TableCell align="right">
+														{parseFloat(secondEstimate?.total_project_volume)?.toLocaleString()}
+													</TableCell>
+
 												</TableRow>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -931,127 +711,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 										<TableContainer>
 
 											<h3>Estimate {thirdEstimate?.estimate_number}</h3>
-											<h4>Quantity Calculations</h4>
+											<h4>Project Quantity</h4>
 											<Table size="small">
 												<TableBody>
-
 													<TableRow hover={true}>
-														<TableCell><b>Square Feet:</b></TableCell>
+														<TableCell><b>Total Cubic {thirdEstimate?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 														<TableCell align="right">
-															{thirdEstimate?.square_feet_display}
+															{parseFloat(thirdEstimate?.total_project_volume)?.toLocaleString()}
 														</TableCell>
 													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Thickness (in):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.thickness_inches_display}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Cubic Yards:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.cubic_yards}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.perimeter_thickening_cubic_yards}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.construction_joint_thickening_cubic_yards}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Subtotal:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.cubic_yards_subtotal}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage}%:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.waste_factor_cubic_yards}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Total Cubic Yards:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.design_cubic_yards_total}
-														</TableCell>
-													</TableRow>
-
 												</TableBody>
 											</Table>
-
-											{(thirdEstimate?.thickened_edge_perimeter_lineal_feet > 0 || thirdEstimate?.thickened_edge_construction_joint_lineal_feet > 0) &&
-												<>
-													<h4>Thickened Edge Calculator</h4>
-													<p>If applicable, for slabs under 6in.</p>
-													<Table size="small">
-
-														<TableHead>
-															<TableRow>
-																<TableCell></TableCell>
-																<TableCell align="right"><b>Perimeter</b></TableCell>
-																<TableCell align="right"><b>Construction Joint</b></TableCell>
-															</TableRow>
-														</TableHead>
-
-														<TableBody>
-															<TableRow hover={true}>
-																<TableCell><b>Lineal Feet:</b></TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.thickened_edge_perimeter_lineal_feet_display}
-																</TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.thickened_edge_construction_joint_lineal_feet_display}
-																</TableCell>
-															</TableRow>
-
-															<TableRow hover={true}>
-																<TableCell><b>Width (yd³):</b></TableCell>
-																<TableCell align="right">
-																	5
-																</TableCell>
-																<TableCell align="right">
-																	10
-																</TableCell>
-															</TableRow>
-
-															<TableRow hover={true}>
-																<TableCell><b>Additional Thickness (in):</b></TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.additional_thickness_inches}
-																</TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.additional_thickness_inches}
-																</TableCell>
-															</TableRow>
-
-															<TableRow hover={true}>
-																<TableCell><b>Cubic Yards:</b></TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.perimeter_thickening_cubic_yards}
-																</TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.construction_joint_thickening_cubic_yards}
-																</TableCell>
-															</TableRow>
-														</TableBody>
-													</Table>
-												</>
-											}
 
 											<h3>Total PrīmX Materials:</h3>
 											<Table size='small'>
@@ -1122,10 +792,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													}
 													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 														<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-														{thirdEstimate?.measurement_units === 'imperial'
-															? <TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
-															: <TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
-														}
+														<TableCell align="right">{parseFloat(thirdEstimate?.total_project_volume)?.toLocaleString()}</TableCell>
+
 													</TableRow>
 													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 														<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -1167,10 +835,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														</TableRow>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 															<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-															{thirdEstimate?.measurement_units === 'imperial'
-																? <TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
-																: <TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
-															}
+															<TableCell align="right">{parseFloat(thirdEstimate?.total_project_volume)?.toLocaleString()}</TableCell>
+
 														</TableRow>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 															<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -1217,127 +883,18 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 						<Grid item xs={tableWidth}>
 							<Paper elevation={3}>
 								<TableContainer>
-									<h3>Estimate #1 Quantity Calculations</h3>
+									<h3>Estimate #1 Project Quantity</h3>
 									<Table size="small">
 										<TableBody>
-
 											<TableRow hover={true}>
-												<TableCell><b>Square Meters:</b></TableCell>
+												<TableCell><b>Total Cubic {firstEstimate?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 												<TableCell align="right">
-													{firstEstimate?.square_meters_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.thickness_millimeters_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.perimeter_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.construction_joint_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.cubic_meters_subtotal}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.waste_factor_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{firstEstimate?.design_cubic_meters_total}
+													{parseFloat(firstEstimate?.total_project_volume)?.toLocaleString()}
 												</TableCell>
 											</TableRow>
 
 										</TableBody>
 									</Table>
-
-									{firstEstimate?.thickened_edge_perimeter_lineal_meters > 0 || firstEstimate?.thickened_edge_construction_joint_lineal_meters > 0 &&
-										<>
-											<h3>Estimate #1 Thickened Edge Calculator</h3>
-											<p>If applicable, for slabs under 150mm.</p>
-											<Table size="small">
-
-												<TableHead>
-													<TableRow>
-														<TableCell></TableCell>
-														<TableCell align="right"><b>Perimeter</b></TableCell>
-														<TableCell align="right"><b>Construction Joint</b></TableCell>
-													</TableRow>
-												</TableHead>
-
-												<TableBody>
-													<TableRow hover={true}>
-														<TableCell><b>Lineal Meters:</b></TableCell>
-														<TableCell align="right">
-															{firstEstimate?.thickened_edge_perimeter_lineal_meters_display}
-														</TableCell>
-														<TableCell align="right">
-															{firstEstimate?.thickened_edge_construction_joint_lineal_meters_display}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Width (m³):</b></TableCell>
-														<TableCell align="right">
-															1.5
-														</TableCell>
-														<TableCell align="right">
-															3.0
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Additional Thickness (mm):</b></TableCell>
-														<TableCell align="right">
-															{firstEstimate?.additional_thickness_millimeters}
-														</TableCell>
-														<TableCell align="right">
-															{firstEstimate?.additional_thickness_millimeters}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Cubic Meters:</b></TableCell>
-														<TableCell align="right">
-															{firstEstimate?.perimeter_thickening_cubic_meters}
-														</TableCell>
-														<TableCell align="right">
-															{firstEstimate?.construction_joint_thickening_cubic_meters}
-														</TableCell>
-													</TableRow>
-												</TableBody>
-											</Table>
-										</>
-									}
 
 									<h3>Total PrīmX Materials:</h3>
 									<Table size='small'>
@@ -1408,10 +965,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											}
 											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 												<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-												{firstEstimate?.measurement_units === 'imperial'
-													? <TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
-													: <TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
-												}
+												<TableCell align="right">{parseFloat(firstEstimate?.total_project_volume)?.toLocaleString()}</TableCell>
+
 											</TableRow>
 											<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 												<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -1453,10 +1008,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-													{firstEstimate?.measurement_units === 'imperial'
-														? <TableCell align="right">{firstEstimate?.design_cubic_yards_total}</TableCell>
-														: <TableCell align="right">{firstEstimate?.design_cubic_meters_total}</TableCell>
-													}
+													<TableCell align="right">{parseFloat(firstEstimate?.total_project_volume)?.toLocaleString()}</TableCell>
+
 												</TableRow>
 												<TableRow hover={true} style={firstEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -1497,127 +1050,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 							<Paper elevation={3}>
 								<TableContainer>
 
-									<h3>Estimate #2 Quantity Calculations</h3>
+									<h3>Estimate #2 Project Quantity</h3>
 									<Table size="small">
 										<TableBody>
-
 											<TableRow hover={true}>
-												<TableCell><b>Square Meters:</b></TableCell>
+												<TableCell><b>Total Cubic {firstEstimate?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 												<TableCell align="right">
-													{secondEstimate?.square_meters_display}
+													{parseFloat(firstEstimate?.total_project_volume)?.toLocaleString()}
 												</TableCell>
 											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.thickness_millimeters_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.perimeter_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.construction_joint_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.cubic_meters_subtotal}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor @ {firstEstimate?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.waste_factor_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{secondEstimate?.design_cubic_meters_total}
-												</TableCell>
-											</TableRow>
-
 										</TableBody>
 									</Table>
-
-									{secondEstimate?.thickened_edge_perimeter_lineal_meters > 0 || secondEstimate?.thickened_edge_construction_joint_lineal_meters > 0 &&
-										<>
-											<h3>Estimate #2 Thickened Edge Calculator</h3>
-											<p>If applicable, for slabs under 150mm.</p>
-											<Table size="small">
-
-												<TableHead>
-													<TableRow>
-														<TableCell></TableCell>
-														<TableCell align="right"><b>Perimeter</b></TableCell>
-														<TableCell align="right"><b>Construction Joint</b></TableCell>
-													</TableRow>
-												</TableHead>
-
-												<TableBody>
-													<TableRow hover={true}>
-														<TableCell><b>Lineal Meters:</b></TableCell>
-														<TableCell align="right">
-															{secondEstimate?.thickened_edge_perimeter_lineal_meters_display}
-														</TableCell>
-														<TableCell align="right">
-															{secondEstimate?.thickened_edge_construction_joint_lineal_meters_display}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Width (m³):</b></TableCell>
-														<TableCell align="right">
-															1.5
-														</TableCell>
-														<TableCell align="right">
-															3.0
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Additional Thickness (mm):</b></TableCell>
-														<TableCell align="right">
-															{secondEstimate?.additional_thickness_millimeters}
-														</TableCell>
-														<TableCell align="right">
-															{secondEstimate?.additional_thickness_millimeters}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Cubic Meters:</b></TableCell>
-														<TableCell align="right">
-															{secondEstimate?.perimeter_thickening_cubic_meters}
-														</TableCell>
-														<TableCell align="right">
-															{secondEstimate?.construction_joint_thickening_cubic_meters}
-														</TableCell>
-													</TableRow>
-												</TableBody>
-											</Table>
-										</>
-									}
 
 									<h3>Total PrīmX Materials:</h3>
 									<Table size='small'>
@@ -1688,10 +1131,8 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											}
 											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 												<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-												{secondEstimate?.measurement_units === 'imperial'
-													? <TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
-													: <TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
-												}
+												<TableCell align="right">{parseFloat(secondEstimate?.total_project_volume)?.toLocaleString()}</TableCell>
+
 											</TableRow>
 											<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 												<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -1733,10 +1174,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 												</TableRow>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-													{secondEstimate?.measurement_units === 'imperial'
-														? <TableCell align="right">{secondEstimate?.design_cubic_yards_total}</TableCell>
-														: <TableCell align="right">{secondEstimate?.design_cubic_meters_total}</TableCell>
-													}
+													<TableCell align="right">{parseFloat(secondEstimate?.total_project_volume)?.toLocaleString()}</TableCell>
 												</TableRow>
 												<TableRow hover={true} style={secondEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 													<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -1780,128 +1218,17 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 									<Paper elevation={3}>
 										<TableContainer>
 
-											<h3>Estimate #3 Quantity Calculations</h3>
+											<h3>Estimate #3 Project Quantity</h3>
 											<Table size="small">
 												<TableBody>
-
 													<TableRow hover={true}>
-														<TableCell><b>Square Meters:</b></TableCell>
+														<TableCell><b>Total Cubic {firstEstimate?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 														<TableCell align="right">
-															{thirdEstimate?.square_meters_display}
+															{parseFloat(firstEstimate?.total_project_volume)?.toLocaleString()}
 														</TableCell>
 													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Thickness (mm):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.thickness_millimeters_display}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Cubic Meters:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.cubic_meters}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.perimeter_thickening_cubic_meters}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.construction_joint_thickening_cubic_meters}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Subtotal:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.cubic_meters_subtotal}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Waste Factor @ {thirdEstimate?.waste_factor_percentage}%:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.waste_factor_cubic_meters}
-														</TableCell>
-													</TableRow>
-
-													<TableRow hover={true}>
-														<TableCell><b>Total Cubic Meters:</b></TableCell>
-														<TableCell align="right">
-															{thirdEstimate?.design_cubic_meters_total}
-														</TableCell>
-													</TableRow>
-
 												</TableBody>
 											</Table>
-
-											{thirdEstimate?.thickened_edge_perimeter_lineal_meters > 0 || thirdEstimate?.thickened_edge_construction_joint_lineal_meters > 0 &&
-												<>
-													<h3>Estimate #3 Thickened Edge Calculator</h3>
-													<p>If applicable, for slabs under 150mm.</p>
-													<Table size="small">
-
-														<TableHead>
-															<TableRow>
-																<TableCell></TableCell>
-																<TableCell align="right"><b>Perimeter</b></TableCell>
-																<TableCell align="right"><b>Construction Joint</b></TableCell>
-															</TableRow>
-														</TableHead>
-
-														<TableBody>
-															<TableRow hover={true}>
-																<TableCell><b>Lineal Meters:</b></TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.thickened_edge_perimeter_lineal_meters_display}
-																</TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.thickened_edge_construction_joint_lineal_meters_display}
-																</TableCell>
-															</TableRow>
-
-															<TableRow hover={true}>
-																<TableCell><b>Width (m³):</b></TableCell>
-																<TableCell align="right">
-																	1.5
-																</TableCell>
-																<TableCell align="right">
-																	3.0
-																</TableCell>
-															</TableRow>
-
-															<TableRow hover={true}>
-																<TableCell><b>Additional Thickness (mm):</b></TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.additional_thickness_millimeters}
-																</TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.additional_thickness_millimeters}
-																</TableCell>
-															</TableRow>
-
-															<TableRow hover={true}>
-																<TableCell><b>Cubic Meters:</b></TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.perimeter_thickening_cubic_meters}
-																</TableCell>
-																<TableCell align="right">
-																	{thirdEstimate?.construction_joint_thickening_cubic_meters}
-																</TableCell>
-															</TableRow>
-
-														</TableBody>
-													</Table>
-												</>
-											}
 
 											<h3>Total PrīmX Materials:</h3>
 											<Table size='small'>
@@ -1972,10 +1299,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 													}
 													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 														<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-														{thirdEstimate?.measurement_units === 'imperial'
-															? <TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
-															: <TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
-														}
+														<TableCell align="right">{parseFloat(thirdEstimate?.total_project_volume)?.toLocaleString()}</TableCell>
 													</TableRow>
 													<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 														<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -2017,10 +1341,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 														</TableRow>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 															<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-															{thirdEstimate?.measurement_units === 'imperial'
-																? <TableCell align="right">{thirdEstimate?.design_cubic_yards_total}</TableCell>
-																: <TableCell align="right">{thirdEstimate?.design_cubic_meters_total}</TableCell>
-															}
+															<TableCell align="right">{parseFloat(thirdEstimate?.total_project_volume)?.toLocaleString()}</TableCell>
 														</TableRow>
 														<TableRow hover={true} style={thirdEstimate?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 															<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -2254,11 +1575,7 @@ export default function EstimateCombineTable({ firstEstimate, secondEstimate, th
 											<b>Total Concrete Amt ({cubic_measurement_unit}):</b>
 										</TableCell>
 										<TableCell align="right">
-											{showFinalCostRow &&
-												calcCombinedEstimate?.measurement_units == 'imperial'
-												? calcCombinedEstimate?.design_cubic_yards_total?.toLocaleString('en-US')
-												: calcCombinedEstimate?.design_cubic_meters_total?.toLocaleString('en-US')
-											}
+											{showFinalCostRow && parseFloat(calcCombinedEstimate?.total_project_volume)?.toLocaleString()}
 										</TableCell>
 									</TableRow>
 									<TableRow hover={true}>
