@@ -26,7 +26,9 @@ const calculateTotalVolume = (estimate) => {
 	// Check if totalVolume is a whole number
 	if (totalVolume % 1 !== 0) {
 		// Round to two decimal places if it's not a whole number
-		totalVolume = Math.round(totalVolume * 100) / 100;
+		// totalVolume = Math.round(totalVolume * 100) / 100;
+		// Round up to the nearest whole number
+		totalVolume = Math.ceil(totalVolume);
 	};
 
 	return totalVolume;

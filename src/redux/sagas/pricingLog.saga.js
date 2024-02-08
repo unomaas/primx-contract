@@ -176,7 +176,6 @@ function* pricingLogInitialLoad() {
 
 			// ⬇ Loop through the destinationsCosts array and create the bottom header:
 			pricingLogPerUnitBottomHeader.push(
-				// ! Ryan here, this is what we want to hide for regional admin. 
 				{
 					headerName: `Markup - ${month.month_year_label}`,
 					field: `markup_${month.month_year_value}`,

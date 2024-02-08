@@ -214,8 +214,7 @@ export default function EstimateLookup() {
 				</>
 			}
 
-			{
-				showLookupTable === 'combined' &&
+			{showLookupTable === 'combined' &&
 				<>
 					<EstimateCombineTable
 						firstEstimate={firstEstimate}
@@ -236,17 +235,11 @@ export default function EstimateLookup() {
 				</>
 			}
 
-			<div style={{
-				padding: "20px",
-			}}>
-				<b>Total PrīmX Materials Disclaimer:</b>
-				<br />The amount of materials calculated above is approximate.  It will be precised after PO placement.
-			</div>
+
 
 			{/* Render messages underneath the table if an estimate has been submitted as an order */}
 			{/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
-			{
-				searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
+			{searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
 				<>
 					<h3>
 						This order is currently being processed. Please contact your PrīmX representative for more details.
@@ -254,8 +247,7 @@ export default function EstimateLookup() {
 				</>
 			}
 			{/* Display this message if an estimate has been processed by an admin */}
-			{
-				searchResult.marked_as_ordered &&
+			{searchResult.marked_as_ordered &&
 				<>
 					<h3>
 						This order has been processed. Please contact your PrīmX representative for more details.
@@ -265,13 +257,20 @@ export default function EstimateLookup() {
 			{/* End full table conditional render*/}
 
 			{/* Conditonally render a failed search message if the search came back with nothing */}
-			{
-				!searchResult.estimate_number && estimate_number_searched &&
+			{!searchResult.estimate_number && estimate_number_searched &&
 				<>
 					<h3>
 						No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.
 					</h3>
 				</>
+			}
+			{searchResult.estimate_number && estimate_number_searched &&
+				<div style={{
+					padding: "20px",
+				}}>
+					<b>Total PrīmX Materials Disclaimer:</b>
+					<br />The amount of materials calculated above is approximate.  It will be precised after PO placement.
+				</div>
 			}
 
 		</div >

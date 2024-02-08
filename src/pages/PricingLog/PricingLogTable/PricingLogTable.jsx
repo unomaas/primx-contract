@@ -544,7 +544,6 @@ export default function PricingLogTable() {
 								return (
 									<div
 										style={{
-											// ! Ryan here, this is what matters when doing the double header, and what we'll need to adjust to 4 if we're hiding the margin column. 
 											flex: "5",
 											display: "flex",
 											justifyContent: "center",

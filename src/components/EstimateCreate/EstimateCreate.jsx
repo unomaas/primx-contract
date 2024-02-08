@@ -126,9 +126,6 @@ export default function EstimateCreate() {
 	 */
 	const handleChange = (key, value) => {
 
-	console.log(`Ryan Here handleChange \n `, {key, value});
-
-
 		if (key == 'total_project_volume' && editState == true && materialsEditWarning == false) {
 			if (!window.confirm(`⚠️ WARNING: Editing the materials included on an already saved estimate will force the estimate to be recalculated at today's current rates, resetting the price guarantee.  Please only click "Save Edits" if you are sure you want to do this, as it is not reversible.  If you do not wish to do this, click "Cancel".`)) return;
 			setMaterialsEditWarning(true);
