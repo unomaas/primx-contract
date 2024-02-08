@@ -16,12 +16,18 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 		const query = `
 			SELECT 
 				"e".*, 
-				"ft".floor_type_label,
-				"l".licensee_contractor_name, 
-				"pt".placement_type_label, 
-				"sd".destination_name,
-				r.region_code AS destination_country,
-				"u".username
+				e.total_number_of_20ft_containers::int,
+				e.total_number_of_40ft_containers::int,
+				e.total_number_of_pallets::int,
+				CASE
+					WHEN e.measurement_units = 'imperial' THEN 'cubic yards'
+					WHEN e.measurement_units = 'metric' THEN 'cubic meters'
+				END AS measurement_units_label,
+				ft.floor_type_label, 
+				l.licensee_contractor_name, 
+				pt.placement_type_label, 
+				sd.destination_name,
+				r.region_code AS destination_country
 			FROM "estimates" AS "e"
 			JOIN "floor_types" AS "ft"
 				ON "e".floor_type_id = "ft".floor_type_id
