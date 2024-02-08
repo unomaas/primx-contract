@@ -125,7 +125,7 @@ export default function NavDrawer() {
 								</>
 							}
 
-							{user.permission_level <= 3 &&
+							{user.permission_level == 3 &&
 								<>
 									<ListItem button onClick={() => history.push(`/pricinglog`)}>
 										<HistoryIcon /> &nbsp;

@@ -37,7 +37,7 @@ const defaultEstimateData = {
 	thickened_edge_perimeter_lineal_meters: "0",
 	thickened_edge_construction_joint_lineal_meters: "0",
 	// // ⬇ Materials on-hand inputs:
-	// materials_on_hand: false,
+	materials_on_hand: false,
 	// primx_dc_on_hand_lbs: 0,
 	// primx_dc_on_hand_kgs: 0,
 	// primx_flow_on_hand_liters: 0,
