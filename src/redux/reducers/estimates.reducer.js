@@ -24,7 +24,7 @@ const defaultEstimateData = {
 	waste_factor_percentage: 3,
 	materials_excluded: 'none',
 
-	total_project_volume: 0,
+	total_project_volume: '',
 
 	// ⬇ Imperial: 
 	square_feet: "",
@@ -60,7 +60,7 @@ export const estimatesReducer = (state = {
 				action.payload.value = 0;
 			}
 			if (action.payload.key == 'measurement_units') {
-				state.total_project_volume = 0;
+				state.total_project_volume = '';
 			}
 			return {
 				...state,

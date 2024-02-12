@@ -11,11 +11,12 @@ router.get('/', rejectNonAdmin, (req, res) => {
 			u.user_id, 
 			u.username, 
 			u.permission_level,
+			u.licensee_id,
 			CASE 
 				WHEN u.permission_level = 1 THEN 'System Admin'
 				WHEN u.permission_level = 2 THEN 'Admin'
 				WHEN u.permission_level = 3 THEN 'Region Admin'
-				ELSE 'User'
+				ELSE 'Licensee User'
 			END AS permission_type,
 			ARRAY_AGG(r.region_id) AS region_ids, 
 			ARRAY_AGG(r.region_name) AS region_names,

@@ -88,16 +88,16 @@ export default function EstimateCreate() {
 	let filteredDestinations = shippingDestinations;
 
 	// ⬇ If the user is a licensee, limit the destinations they're allowed to select:
-	if (user?.licensee_id && user?.permission_level >= 4 && companies?.length > 0) {
-		const licensee = companies.find(company => company.licensee_id === user.licensee_id);
+	// if (user?.licensee_id && user?.permission_level >= 4 && companies?.length > 0) {
+	// 	const licensee = companies.find(company => company.licensee_id === user.licensee_id);
 
-		if (licensee && licensee.operating_regions) {
-			// Filter shippingDestinations based on operatingRegions
-			filteredDestinations = shippingDestinations.filter(destination =>
-				licensee.operating_regions.includes(destination.destination_country)
-			);
-		}; // End if statement
-	} // End if statement
+	// 	if (licensee && licensee.operating_region_codes) {
+	// 		// Filter shippingDestinations based on operatingRegions
+	// 		filteredDestinations = shippingDestinations.filter(destination =>
+	// 			licensee.operating_region_codes.includes(destination.destination_country)
+	// 		);
+	// 	}; // End if statement
+	// } // End if statement
 	//#endregion ⬆⬆ All state variables above. 
 
 
@@ -124,7 +124,7 @@ export default function EstimateCreate() {
 	/** ⬇ handleChange:
 	 * When the user types, this will set their input to the kit object with keys for each field. 
 	 */
-	const handleChange = (key, value) => {
+	const handleChange = (key, value, type) => {
 
 		if (key == 'total_project_volume' && editState == true && materialsEditWarning == false) {
 			if (!window.confirm(`⚠️ WARNING: Editing the materials included on an already saved estimate will force the estimate to be recalculated at today's current rates, resetting the price guarantee.  Please only click "Save Edits" if you are sure you want to do this, as it is not reversible.  If you do not wish to do this, click "Cancel".`)) return;
@@ -142,7 +142,11 @@ export default function EstimateCreate() {
 			if (destination?.default_measurement) handleMeasurementUnits(destination?.default_measurement);
 			// return;
 		}
-
+		
+		if (type === 'numeric') {
+			value = parseFloat(value);
+		};
+		
 		// ⬇ If they're setting the Licensee Id, we want to set the default unit of measurement for that licensee. 
 		// if (key === 'licensee_id') {
 		// 	// ⬇ Find the Licensee by the ID:
@@ -505,6 +509,8 @@ export default function EstimateCreate() {
 													{filteredDestinations.map(state => {
 														if (user?.permission_level === 3 && !user?.region_ids?.includes(state?.region_id)) return;
 
+														if (user?.permission_level === 4 && !user?.operating_region_ids?.includes(state?.region_id)) return;
+
 														return (
 															<MenuItem key={state.destination_id} value={state.destination_id}>
 																{state.destination_name}, {state.destination_country}
@@ -567,7 +573,7 @@ export default function EstimateCreate() {
 											</TableCell>
 											<TableCell>
 												<TextField
-													onChange={event => handleChange('total_project_volume', event.target.value)}
+													onChange={event => handleChange('total_project_volume', event.target.value, 'numeric')}
 													required
 													type="number"
 													size="small"
@@ -586,7 +592,7 @@ export default function EstimateCreate() {
 												<Tooltip
 													placement="left"
 													arrow
-													title="Unit of measurement will be determined by selecting a destination."
+													title="Unit of measurement is selected by choosing a destination."
 													color="primary"
 													style={{
 														marginBottom: "-9px",

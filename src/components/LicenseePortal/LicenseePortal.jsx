@@ -14,7 +14,7 @@ export default function LicenseePortal() {
 	const pageData = useSelector(store => store.licenseePortalReducer.pageData);
 	const history = useHistory();
 	const companies = useSelector(store => store.companies);
-	const [selectedLicenseeId, setSelectedLicenseeId] = useState(user.permission_level == 4 ? user.licensee_id : undefined);
+	const [selectedLicenseeId, setSelectedLicenseeId] = useState(user?.permission_level == 4 ? user.licensee_id : undefined);
 	const [company, setCompany] = useState(0);
 
 

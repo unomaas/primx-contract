@@ -11,29 +11,68 @@ passport.deserializeUser((id, done) => {
 
 	const sql = `
 		SELECT
-			u.user_id, 
-			u.username, 
-			u.permission_level,
-			CASE 
-					WHEN u.permission_level = 1 THEN 'System Admin'
-					WHEN u.permission_level = 2 THEN 'Admin'
-					WHEN u.permission_level = 3 THEN 'Region Admin'
-					ELSE 'User'
-			END AS permission_type,
-			ARRAY_AGG(r.region_id) FILTER (WHERE r.region_id IS NOT NULL) AS region_ids, 
-			ARRAY_AGG(r.region_name) FILTER (WHERE r.region_id IS NOT NULL) AS region_names,
-			ARRAY_AGG(r.region_code) FILTER (WHERE r.region_id IS NOT NULL) AS region_codes,
-			CASE
-				WHEN u.permission_level = 3 THEN true
-				ELSE false
-			END AS is_region_admin
-		FROM users AS u
-		LEFT JOIN user_regions AS ur 
-			ON u.user_id = ur.user_id
-		LEFT JOIN regions AS r 
-			ON ur.region_id = r.region_id
-		WHERE u.user_id = $1
-		GROUP BY u.user_id;
+				u.user_id, 
+				u.username, 
+				u.permission_level,
+				u.licensee_id,
+				CASE 
+						WHEN u.permission_level = 1 THEN 'System Admin'
+						WHEN u.permission_level = 2 THEN 'Admin'
+						WHEN u.permission_level = 3 THEN 'Region Admin'
+						ELSE 'Licensee User'
+				END AS permission_type,
+				
+				u.permission_level = 3 AS is_region_admin,
+				CASE 
+						WHEN u.permission_level = 3 
+						THEN COALESCE(ur_data.region_ids)
+				END AS region_ids, 
+				CASE 
+						WHEN u.permission_level = 3 
+						THEN COALESCE(ur_data.region_names)
+				END AS region_names,
+				CASE 
+						WHEN u.permission_level = 3 
+						THEN COALESCE(ur_data.region_codes)
+				END AS region_codes,
+
+				u.licensee_id IS NOT NULL AS is_licensee_user,
+				CASE 
+						WHEN u.licensee_id IS NOT NULL 
+						THEN COALESCE(lr_data.operating_region_ids)
+				END AS operating_region_ids,
+				CASE 
+						WHEN u.licensee_id IS NOT NULL 
+						THEN COALESCE(lr_data.operating_region_names)
+				END AS operating_region_names,
+				CASE 
+						WHEN u.licensee_id IS NOT NULL 
+						THEN COALESCE(lr_data.operating_region_codes)
+				END AS operating_region_codes
+
+			FROM users AS u
+			LEFT JOIN (
+				SELECT 
+						ur.user_id,
+						ARRAY_AGG(ur_r.region_id) FILTER (WHERE ur_r.region_id IS NOT NULL) AS region_ids,
+						ARRAY_AGG(ur_r.region_name) FILTER (WHERE ur_r.region_name IS NOT NULL) AS region_names,
+						ARRAY_AGG(ur_r.region_code) FILTER (WHERE ur_r.region_code IS NOT NULL) AS region_codes
+				FROM user_regions AS ur
+				JOIN regions AS ur_r ON ur.region_id = ur_r.region_id
+				GROUP BY ur.user_id
+			) AS ur_data ON u.user_id = ur_data.user_id
+			LEFT JOIN (
+				SELECT 
+						lr.licensee_id,
+						ARRAY_AGG(lr_r.region_id) FILTER (WHERE lr_r.region_id IS NOT NULL) AS operating_region_ids,
+						ARRAY_AGG(lr_r.region_name) FILTER (WHERE lr_r.region_name IS NOT NULL) AS operating_region_names,
+						ARRAY_AGG(lr_r.region_code) FILTER (WHERE lr_r.region_code IS NOT NULL) AS operating_region_codes
+				FROM licensee_regions AS lr
+				JOIN regions AS lr_r ON lr.region_id = lr_r.region_id
+				GROUP BY lr.licensee_id
+			) AS lr_data ON u.licensee_id = lr_data.licensee_id
+			WHERE u.user_id = $1
+			GROUP BY u.user_id, ur_data.region_ids, ur_data.region_names, ur_data.region_codes, lr_data.operating_region_ids, lr_data.operating_region_names, lr_data.operating_region_codes;
 	`;
 
 	pool
