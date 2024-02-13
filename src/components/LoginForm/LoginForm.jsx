@@ -48,6 +48,7 @@ function AdminLoginForm() {
 		event.preventDefault();
 		//loggs in user and sends them to /user page / admin landing page - if incorrect user/password, user is given an error
 		if (username && password) {
+			dispatch({type: 'CLEAR_ALL_STALE_DATA'});
 			dispatch({
 				type: 'LOGIN',
 				payload: {
