@@ -126,9 +126,15 @@ export default function EstimateCreate() {
 	 */
 	const handleChange = (key, value, type) => {
 
-		if (key == 'total_project_volume' && editState == true && materialsEditWarning == false) {
+		if (
+			differenceBetweenDates(estimateData.date_created).total_months >= 6 &&
+			key == 'total_project_volume' && 
+			editState == true && 
+			materialsEditWarning == false
+		) {
 			if (!window.confirm(`⚠️ WARNING: Editing the materials included on an already saved estimate will force the estimate to be recalculated at today's current rates, resetting the price guarantee.  Please only click "Save Edits" if you are sure you want to do this, as it is not reversible.  If you do not wish to do this, click "Cancel".`)) return;
 			setMaterialsEditWarning(true);
+			estimateData.force_recalculate = true;
 		}; // End if
 
 		// ⬇ If they change the destination while editing, force a recalculate of the estimate price per unit:
