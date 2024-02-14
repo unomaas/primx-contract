@@ -46,7 +46,7 @@ export default function LicenseeRegisterForm() {
 
 	useEffect(() => {
 		// GET all users on page load
-		dispatch({ type: 'FETCH_FIELD_SELECT' });
+		dispatch({ type: 'FETCH_ACTIVE_COMPANIES' });
 	}, [])
 
 	return (

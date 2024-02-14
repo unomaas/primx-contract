@@ -33,16 +33,18 @@ function AdminRoute(props) {
 
   let ComponentToShow;
 
-  if (user.user_id && user.permission_level == "3") {
+  if (user.user_id && user.permission_level <= 4) {
     // if the user is logged in (only logged in users have ids)
     // show the component that is protected
     ComponentToShow = ComponentToProtect;
-  } else if (user.user_id && user.permission_level == "2") {
-    // if they are not logged in, check the loginMode on Redux State
-    // if the mode is 'login', show the LoginPage
-    // ComponentToShow = AdminLoginPage;
-    ComponentToShow = Error404Page;
-  } else {
+  } 
+  // else if (user.user_id && user.permission_level == "2") {
+  //   // if they are not logged in, check the loginMode on Redux State
+  //   // if the mode is 'login', show the LoginPage
+  //   // ComponentToShow = AdminLoginPage;
+  //   ComponentToShow = Error404Page;
+  // } 
+  else {
     ComponentToShow = LicenseeLoginPage;
 		// history.push(`/LoginLicensee`);
 

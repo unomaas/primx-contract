@@ -48,9 +48,9 @@ export default function AdminOrders() {
 				estimate.final_total_project_cost = estimate.total_project_cost_75_50;
 				estimate.selected_steel_fiber_dosage = 'Combined';
 				if (estimate.measurement_units == 'imperial') {
-					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.design_cubic_yards_total.replaceAll(',', ''));
+					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.total_project_volume.replaceAll(',', ''));
 				} else {
-					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.design_cubic_meters_total.replaceAll(',', ''));
+					estimate.final_price_per_unit = estimate.final_total_project_cost / parseFloat(estimate.total_project_volume.replaceAll(',', ''));
 				}
 			}
 			pendingOrders.push(estimate);
@@ -62,7 +62,8 @@ export default function AdminOrders() {
 			openEstimates.push(estimate);
 		}
 	})
-
+	
+	// ! Ryan here, when you come back, you need to update all of tables to remove the unused columns (both in the UI and in the database).  Then we need to come up with a fix to prevent imperial vs metric selection on Prod.  Then we need to merge this branch with the testing/main branch and push this up to the testing website.  Then we need to complete a run through of the testing website and all of the features, and let PrimX know it's done. :)  Eventually, we'll also need to sit down to make the DB migration on Prod and push these changes up to there as well.  THEN we get to re-make the app! 
 
 	useEffect(() => {
 		// GET all estimates data on page load
@@ -107,7 +108,7 @@ export default function AdminOrders() {
 				align="center"
 				className={classes.OrdersHeaders}
 			>
-				Open Estimates
+				Saved Estimates
 			</Typography>
 			<AdminEstimatesGrid
 				estimatesArray={openEstimates}

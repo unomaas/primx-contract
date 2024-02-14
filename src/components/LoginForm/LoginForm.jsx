@@ -26,11 +26,11 @@ function AdminLoginForm() {
 		// ! : User permissions USED TO BE 1, 2, 3.  1 Super, 2 regular, 3 licensee.  
 
 		// ⬇ If it's a Licensee user or higher, push to create. 
-		if (user?.permission_level >= 3) {
+		if (user?.permission_level >= 4) {
 			history.push('/create');
 		}
 		// ⬇ If it's a Regional user or lower, push to user.
-		if (user?.permission_level <= 2) {
+		if (user?.permission_level <= 3) {
 			history.push('/user');
 		}
 	}, [user, history]);
@@ -48,6 +48,7 @@ function AdminLoginForm() {
 		event.preventDefault();
 		//loggs in user and sends them to /user page / admin landing page - if incorrect user/password, user is given an error
 		if (username && password) {
+			dispatch({type: 'CLEAR_ALL_STALE_DATA'});
 			dispatch({
 				type: 'LOGIN',
 				payload: {

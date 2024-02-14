@@ -153,6 +153,8 @@ export default function EstimateCombine() {
 															>
 																<MenuItem key="0" value="0">Please Select</MenuItem>
 																{companies.map(companies => {
+																	if (user?.licensee_id && companies.licensee_id !== user.licensee_id) return;
+
 																	return (<MenuItem key={companies.licensee_id} value={companies.licensee_id}>{companies.licensee_contractor_name}</MenuItem>)
 																}
 																)}

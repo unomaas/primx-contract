@@ -18,6 +18,7 @@ import customsDutiesSaga from './customsDuties.saga';
 import productContainersSaga from './productContainers.saga';
 import dosageRatesSaga from './dosageRates.saga';
 import pricingLogSaga from './pricingLog.saga';
+import regionsSaga from './regions.saga';
 
 
 // rootSaga is the primary saga.
@@ -48,5 +49,6 @@ export default function* rootSaga() {
 		productContainersSaga(),
 		dosageRatesSaga(),
 		pricingLogSaga(),
+    regionsSaga(),
   ]);
 }

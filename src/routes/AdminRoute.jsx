@@ -8,15 +8,15 @@ import AdminLandingPage from '../components/AdminLandingPage/AdminLandingPage';
 import AdminUpdates from '../components/AdminUpdates/AdminUpdates';
 import AdminOrders from '../components/AdminOrders/AdminOrders';
 import AdminUpdateTypes from '../components/AdminUpdates/AdminUpdateTypes';
-import AdminUpdateLicenses from '../components/AdminUpdates/AdminUpdateLicenses';
+// import AdminUpdateLicenses from '../components/AdminUpdates/AdminUpdateLicenses';
 import AdminUpdateDestinations from '../pages/AdminUpdates/ShippingDestinations/index.jsx'
 import LicenseeAccounts from '../components/AdminLicenseeAccounts/LicenseeAccounts';
 import ProductContainers from '../pages/AdminUpdates/ProductContainers/index.jsx';
-// import Regions from '../pages/AdminUpdates/Regions/index.jsx';
+import Regions from '../pages/AdminUpdates/Regions/index.jsx';
 import DosageRates from '../pages/AdminUpdates/DosageRates/index.jsx';
 import PricingLog from '../pages/PricingLog/index.jsx';
 import UpdatePricing from '../pages/UpdatePricing/index.jsx';
-// import AdminUpdateLicenses from '../pages/AdminUpdates/Licensees/index.jsx';
+import AdminUpdateLicenses from '../pages/AdminUpdates/Licensees/index.jsx';
 
 
 // A Custom Wrapper Component -- This will keep our code DRY.
@@ -71,8 +71,8 @@ export const adminRoutes = [
 	// 	component: Regions
 	// },
 	{
-		path: '/pricinglog',
-		component: PricingLog
+		path: '/Regions',
+		component: Regions
 	},
 	{
 		path: '/updatepricing',

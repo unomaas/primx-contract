@@ -7,9 +7,9 @@ import { useParams, useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { Button, MenuItem, TextField, Select, FormControl, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, FormHelperText, Snackbar, Switch, Tooltip, Radio } from '@material-ui/core';
 import { useClasses } from '../MuiStyling/MuiStyling';
-import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
+import { isEmpty, allowedToPlaceForPO } from '../../utils/helpers';
+import { isWithinXMonths } from '../../utils/dateUtils';
 //#endregion ⬆⬆ All document setup above.
-
 
 
 export default function EstimateLookupTable() {
@@ -88,7 +88,6 @@ export default function EstimateLookupTable() {
 	//#endregion ⬆⬆ Event handlers above. 
 
 	if (searchResult?.materials_excluded == 'exclude_fibers') searchResult.selected_steel_fiber_dosage = '75_50';
-
 	// ⬇ Rendering below:
 	return (
 		<div>
@@ -230,63 +229,13 @@ export default function EstimateLookupTable() {
 						<Grid item xs={6}>
 							<Paper elevation={3}>
 								<TableContainer>
-									<h3>Project Quantity Calculations</h3>
+									<h3>Project Quantity</h3>
 									<Table size="small">
 										<TableBody>
-
 											<TableRow hover={true}>
-												<TableCell><b>Square Feet:</b></TableCell>
+												<TableCell><b>Total Cubic {searchResult?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.square_feet_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (in):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.thickness_inches_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (yd³):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.perimeter_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (yd³):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.construction_joint_thickening_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.cubic_yards_subtotal}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.waste_factor_cubic_yards}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Yards:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.design_cubic_yards_total}
+													{parseFloat(searchResult?.total_project_volume)?.toLocaleString()}
 												</TableCell>
 											</TableRow>
 
@@ -393,63 +342,14 @@ export default function EstimateLookupTable() {
 						<Grid item xs={6}>
 							<Paper elevation={3}>
 								<TableContainer>
-									<h3>Project Quantity Calculations</h3>
+									<h3>Project Quantity</h3>
 									<Table size="small">
 										<TableBody>
 
 											<TableRow hover={true}>
-												<TableCell><b>Square Meters:</b></TableCell>
+												<TableCell><b>Total Cubic {searchResult?.measurement_units == "imperial" ? "Yards" : "Meters"}:</b></TableCell>
 												<TableCell align="right">
-													{searchResult?.square_meters_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickness (mm):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.thickness_millimeters_display}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Perimeter (m³):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.perimeter_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Thickening @ Construction Joints (m³):</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.construction_joint_thickening_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Subtotal:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.cubic_meters_subtotal}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Waste Factor @ {searchResult?.waste_factor_percentage}%:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.waste_factor_cubic_meters}
-												</TableCell>
-											</TableRow>
-
-											<TableRow hover={true}>
-												<TableCell><b>Total Cubic Meters:</b></TableCell>
-												<TableCell align="right">
-													{searchResult?.design_cubic_meters_total}
+													{parseFloat(searchResult?.total_project_volume)?.toLocaleString()}
 												</TableCell>
 											</TableRow>
 
@@ -571,7 +471,7 @@ export default function EstimateLookupTable() {
 									{searchResult?.materials_excluded != 'exclude_fibers' &&
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
-												{!searchResult?.ordered_by_licensee &&
+												{!searchResult?.ordered_by_licensee && allowedToPlaceForPO(searchResult) &&
 													<Radio
 														checked={searchResult?.selected_steel_fiber_dosage == '75_50'}
 														onChange={() => handleSteelFiberSelection('75_50')}
@@ -582,17 +482,16 @@ export default function EstimateLookupTable() {
 												<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
-												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
-												: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 5).kg_m3}kg</TableCell>
+												? <TableCell align="right">{dosageRates?.find(dosageRate => dosageRate?.dosage_rate_id === 3).lbs_y3}lbs</TableCell>
+												: <TableCell align="right">{dosageRates?.find(dosageRate => dosageRate?.dosage_rate_id === 5).kg_m3}kg</TableCell>
 											}
 										</TableRow>
 									}
 									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 										<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-										{searchResult?.measurement_units === 'imperial'
-											? <TableCell align="right">{searchResult?.design_cubic_yards_total}</TableCell>
-											: <TableCell align="right">{searchResult?.design_cubic_meters_total}</TableCell>
-										}
+										<TableCell align="right">
+											{parseFloat(searchResult?.total_project_volume)?.toLocaleString()}
+										</TableCell>
 									</TableRow>
 									<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '75_50' ? { backgroundColor: '#ece9e9' } : {}}>
 										<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -613,7 +512,7 @@ export default function EstimateLookupTable() {
 									<TableBody>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={searchResult?.ordered_by_licensee ? { paddingLeft: "60px" } : {}}>
-												{!searchResult?.ordered_by_licensee &&
+												{!searchResult?.ordered_by_licensee && allowedToPlaceForPO(searchResult) &&
 													<Radio
 														checked={searchResult?.selected_steel_fiber_dosage == '90_60'}
 														onChange={() => handleSteelFiberSelection('90_60')}
@@ -623,16 +522,15 @@ export default function EstimateLookupTable() {
 												<b>PrīmX Steel Fibers @ Dosage Rate per {cubic_measurement_unit}:</b>
 											</TableCell>
 											{searchResult?.measurement_units === 'imperial'
-												? <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
-												: <TableCell align="right">{dosageRates.find(dosageRate => dosageRate.dosage_rate_id === 6).kg_m3}kg</TableCell>
+												? <TableCell align="right">{dosageRates?.find(dosageRate => dosageRate?.dosage_rate_id === 4).lbs_y3}lbs</TableCell>
+												: <TableCell align="right">{dosageRates?.find(dosageRate => dosageRate?.dosage_rate_id === 6).kg_m3}kg</TableCell>
 											}
 										</TableRow>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={{ paddingLeft: "60px" }}><b>Total Project Amount, Concrete ({cubic_measurement_unit}):</b></TableCell>
-											{searchResult?.measurement_units === 'imperial'
-												? <TableCell align="right">{searchResult?.design_cubic_yards_total}</TableCell>
-												: <TableCell align="right">{searchResult?.design_cubic_meters_total}</TableCell>
-											}
+											<TableCell align="right">
+												{parseFloat(searchResult?.total_project_volume)?.toLocaleString()}
+											</TableCell>
 										</TableRow>
 										<TableRow hover={true} style={searchResult?.selected_steel_fiber_dosage == '90_60' ? { backgroundColor: '#ece9e9' } : {}}>
 											<TableCell style={{ paddingLeft: "60px" }}><b>PrīmX Price per {cubic_measurement_unit} (USD):</b></TableCell>
@@ -648,7 +546,7 @@ export default function EstimateLookupTable() {
 							<Table>
 								<TableBody>
 									{/* Render the following table row for any orders that haven't been placed yet */}
-									{!searchResult.ordered_by_licensee &&
+									{!isEmpty(searchResult) && !searchResult.ordered_by_licensee &&
 										<>
 											<TableRow hover={true}>
 
@@ -656,8 +554,18 @@ export default function EstimateLookupTable() {
 													<section className="removeInPrint">
 														{/* Edit Estimate Button: */}
 
-														{useDifferenceBetweenDates(searchResult?.date_created).total_months >= 6
+														{!isWithinXMonths(searchResult?.date_created, 6)
 															? <>
+																<Button
+																	variant="contained"
+																	color="primary"
+																	onClick={() => window.print()}
+																	className={classes.LexendTeraFont11}
+																	style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
+																>
+																	Export Estimate
+																</Button>
+
 																<Tooltip title={`This estimate is more than 6 months old and must be recalculated to be current with today's rates before it can be placed for order.`} placement="right-end" arrow>
 																	<Button
 																		variant="contained"
@@ -683,6 +591,7 @@ export default function EstimateLookupTable() {
 
 																<Button
 																	variant="contained"
+																	color="primary"
 																	onClick={() => window.print()}
 																	className={classes.LexendTeraFont11}
 																	style={{ float: "left", marginTop: "13px", marginLeft: "10px" }}
@@ -690,35 +599,36 @@ export default function EstimateLookupTable() {
 																	Export Estimate
 																</Button>
 
+																{allowedToPlaceForPO(searchResult) &&
+																	<>
+																		<TextField
+																			onChange={(event) => setPoNumber(event.target.value)}
+																			size="small"
+																			label="PO Number"
+																			value={poNumber}
+																			helperText={poNumError}
+																		/> &nbsp; &nbsp;
 
-
-																<TextField
-																	onChange={(event) => setPoNumber(event.target.value)}
-																	size="small"
-																	label="PO Number"
-																	value={poNumber}
-																	helperText={poNumError}
-																/> &nbsp; &nbsp;
-
-																<Tooltip
-																	title={searchResult?.selected_steel_fiber_dosage ? '' : 'Please select a Steel Fiber dosage rate before placing an order.'}
-																	placement="top-end"
-																	arrow
-																>
-																	<span>
-																		<Button
-																			variant="contained"
-																			color="primary"
-																			onClick={handlePlaceOrder}
-																			className={classes.LexendTeraFont11}
-																			style={{ marginTop: "13px" }}
-																			disabled={searchResult?.selected_steel_fiber_dosage ? false : true}
+																		<Tooltip
+																			title={searchResult?.selected_steel_fiber_dosage ? '' : 'Please select a Steel Fiber dosage rate before placing an order.'}
+																			placement="top-end"
+																			arrow
 																		>
-																			Place Order
-																		</Button>
-
-																	</span>
-																</Tooltip>
+																			<span>
+																				<Button
+																					variant="contained"
+																					color="primary"
+																					onClick={handlePlaceOrder}
+																					className={classes.LexendTeraFont11}
+																					style={{ marginTop: "13px" }}
+																					disabled={searchResult?.selected_steel_fiber_dosage ? false : true}
+																				>
+																					Place Order
+																				</Button>
+																			</span>
+																		</Tooltip>
+																	</>
+																}
 															</>
 														}
 													</section>

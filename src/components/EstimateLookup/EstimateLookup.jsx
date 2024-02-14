@@ -12,6 +12,9 @@ import { useParams, useLocation } from 'react-router';
 import { useClasses } from '../MuiStyling/MuiStyling';
 import EstimateLookupTable from './EstimateLookupTable';
 import EstimateCombineTable from '../EstimateCombine/EstimateCombineTable';
+import dayjs from 'dayjs';
+import { getXMonthGuaranteeDate } from '../../utils/dateUtils';
+
 //#endregion ⬆⬆ All document setup above.
 
 
@@ -105,6 +108,11 @@ export default function EstimateLookup() {
 	}; // End handleSubmit
 	//#endregion ⬆⬆ Event handlers above. 
 
+	// ⬇ Use dayjs to get today's date in YYYY-MM-DD format:
+	let startDate = dayjs().format('YYYY-MM-DD');
+	if (searchResult.date_created) startDate = searchResult.date_created.substring(0, 10);
+	if (calcCombinedEstimate.date_created) startDate = calcCombinedEstimate.date_created.substring(0, 10);
+
 	// ⬇ Rendering below:
 	return (
 		<div className="EstimateCreate-wrapper">
@@ -196,7 +204,7 @@ export default function EstimateLookup() {
 						<>
 							<b>Price Guarantee Disclaimer:</b>
 							< br />
-							The prices shown above are guaranteed to be eligible for six months  from {searchResult?.date_created}.
+							The prices shown above are guaranteed to be eligible for six months, from {startDate} through {getXMonthGuaranteeDate(startDate, 6)}.
 						</>
 					}
 
@@ -206,8 +214,7 @@ export default function EstimateLookup() {
 				</>
 			}
 
-			{
-				showLookupTable === 'combined' &&
+			{showLookupTable === 'combined' &&
 				<>
 					<EstimateCombineTable
 						firstEstimate={firstEstimate}
@@ -218,13 +225,21 @@ export default function EstimateLookup() {
 					<h3>
 						Your estimate number is: <b style={{ color: 'red' }}>{calcCombinedEstimate?.estimate_number}</b>
 					</h3>
+					{!calcCombinedEstimate?.ordered_by_licensee &&
+						<>
+							<b>Price Guarantee Disclaimer:</b>
+							< br />
+							The prices shown above are guaranteed to be eligible for six months, from {startDate} through {getXMonthGuaranteeDate(calcCombinedEstimate?.date_created, 6)}.
+						</>
+					}
 				</>
 			}
 
+
+
 			{/* Render messages underneath the table if an estimate has been submitted as an order */}
 			{/* Display this message if an estimate has been ordered by the licensee but not yet processed by an admin */}
-			{
-				searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
+			{searchResult.ordered_by_licensee && !searchResult.marked_as_ordered &&
 				<>
 					<h3>
 						This order is currently being processed. Please contact your PrīmX representative for more details.
@@ -232,8 +247,7 @@ export default function EstimateLookup() {
 				</>
 			}
 			{/* Display this message if an estimate has been processed by an admin */}
-			{
-				searchResult.marked_as_ordered &&
+			{searchResult.marked_as_ordered &&
 				<>
 					<h3>
 						This order has been processed. Please contact your PrīmX representative for more details.
@@ -243,13 +257,20 @@ export default function EstimateLookup() {
 			{/* End full table conditional render*/}
 
 			{/* Conditonally render a failed search message if the search came back with nothing */}
-			{
-				!searchResult.estimate_number && estimate_number_searched &&
+			{!searchResult.estimate_number && estimate_number_searched &&
 				<>
 					<h3>
 						No matching estimate was found, please try again. Contact your PrīmX representative if you need further assistance.
 					</h3>
 				</>
+			}
+			{searchResult.estimate_number && estimate_number_searched &&
+				<div style={{
+					padding: "20px",
+				}}>
+					<b>Total PrīmX Materials Disclaimer:</b>
+					<br />The amount of materials calculated above is approximate.  It will be precised after PO placement.
+				</div>
 			}
 
 		</div >

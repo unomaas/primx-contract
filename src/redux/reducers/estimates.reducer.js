@@ -21,8 +21,11 @@ const defaultEstimateData = {
 	ship_to_city: "",
 	destination_id: 0,
 	zip_postal_code: "",
-	waste_factor_percentage: 5,
+	waste_factor_percentage: 3,
 	materials_excluded: 'none',
+
+	total_project_volume: '',
+
 	// ⬇ Imperial: 
 	square_feet: "",
 	thickness_inches: "",
@@ -33,16 +36,16 @@ const defaultEstimateData = {
 	thickness_millimeters: "",
 	thickened_edge_perimeter_lineal_meters: "0",
 	thickened_edge_construction_joint_lineal_meters: "0",
-	// ⬇ Materials on-hand inputs:
+	// // ⬇ Materials on-hand inputs:
 	materials_on_hand: false,
-	primx_dc_on_hand_lbs: 0,
-	primx_dc_on_hand_kgs: 0,
-	primx_flow_on_hand_liters: 0,
-	primx_steel_fibers_on_hand_lbs: 0,
-	primx_steel_fibers_on_hand_kgs: 0,
-	primx_ultracure_blankets_on_hand_sq_ft: 0,
-	primx_ultracure_blankets_on_hand_sq_m: 0,
-	primx_cpea_on_hand_liters: 0,
+	// primx_dc_on_hand_lbs: 0,
+	// primx_dc_on_hand_kgs: 0,
+	// primx_flow_on_hand_liters: 0,
+	// primx_steel_fibers_on_hand_lbs: 0,
+	// primx_steel_fibers_on_hand_kgs: 0,
+	// primx_ultracure_blankets_on_hand_sq_ft: 0,
+	// primx_ultracure_blankets_on_hand_sq_m: 0,
+	// primx_cpea_on_hand_liters: 0,
 }; // End defaultEstimateData
 
 
@@ -53,8 +56,11 @@ export const estimatesReducer = (state = {
 	switch (action.type) {
 		case 'SET_ESTIMATE':
 			// validation for waste factor percentage: value can't go below 3
-			if (action.payload.key == 'waste_factor_percentage' && action.payload.value < 3) {
-				action.payload.value = 3;
+			if (action.payload.key == 'waste_factor_percentage' && action.payload.value < 0) {
+				action.payload.value = 0;
+			}
+			if (action.payload.key == 'measurement_units') {
+				state.total_project_volume = '';
 			}
 			return {
 				...state,

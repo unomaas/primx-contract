@@ -59,7 +59,7 @@ export default function NavDrawer() {
 					<Divider />
 
 					{/* Conditioning rendering for what menu options are: */}
-					{user.user_id ? (
+					{user.user_id && (
 						// If user is logged in:
 						<List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
 
@@ -76,18 +76,20 @@ export default function NavDrawer() {
 								<p>Search For Estimate</p>
 							</ListItem> */}
 
-							<ListItem button onClick={() => history.push(`/combine`)}>
+							{/* <ListItem button onClick={() => history.push(`/combine`)}>
 								<StorageIcon /> &nbsp;
 								<p>Combine Estimates</p>
-							</ListItem>
+							</ListItem> */}
 
-							<ListItem button onClick={() => history.push(`/SavedEstimates`)}>
-								<SaveIcon /> &nbsp;
-								<p>Saved Estimates</p>
-							</ListItem>
+							{user.permission_level != 3 &&
 
-							{/* Conditional rendering to show Admin Links: */}
-							{user.permission_level <= '2' &&
+								<ListItem button onClick={() => history.push(`/SavedEstimates`)}>
+									<SaveIcon /> &nbsp;
+									<p>Saved Estimates</p>
+								</ListItem>
+							}
+
+							{user.permission_level <= 3 &&
 								<>
 									<Divider />
 
@@ -100,7 +102,12 @@ export default function NavDrawer() {
 										<ViewCarouselIcon /> &nbsp;
 										<p>View Pipeline</p>
 									</ListItem>
+								</>
 
+							}
+
+							{user.permission_level <= 2 &&
+								<>
 									<ListItem button onClick={() => history.push(`/adminupdates`)}>
 										<UpdateIcon /> &nbsp;
 										<p>Update Items</p>
@@ -116,19 +123,26 @@ export default function NavDrawer() {
 										<p>Monthly Pricing Log</p>
 									</ListItem>
 								</>
-							} {/* End Admin conditional rendering. */}
+							}
 
-							{/* Conditional rendering to show system admin portal: */}
-							{user.permission_level == '1' &&
+							{user.permission_level == 3 &&
+								<>
+									<ListItem button onClick={() => history.push(`/pricinglog`)}>
+										<HistoryIcon /> &nbsp;
+										<p>Price By Destination</p>
+									</ListItem>
+								</>
+							}
+
+							{user.permission_level == 1 &&
 								<>
 									<Divider />
-
 									<ListItem button onClick={() => history.push(`/systemadmin`)}>
 										<SupervisorAccountIcon /> &nbsp;
 										<p>System Admin</p>
 									</ListItem>
 								</>
-							} {/* End System Admin conditional rendering. */}
+							}
 
 							<Divider />
 
@@ -141,40 +155,7 @@ export default function NavDrawer() {
 							</ListItem>
 
 						</List>
-					) : (
-						// If user is not logged in:
-						<List className={classes.LexendTeraFont} style={{ fontSize: '13px' }}>
-
-							<ListItem button onClick={() => history.push(`/create`)}>
-								<NoteAddIcon /> &nbsp;
-								<p>Create New Estimate</p>
-							</ListItem>
-
-							{/* <ListItem button onClick={() => history.push(`/lookup`)}>
-								<SearchIcon /> &nbsp;
-								<p>Search For Estimate</p>
-							</ListItem> */}
-
-							<ListItem button onClick={() => history.push(`/combine`)}>
-								<StorageIcon /> &nbsp;
-								<p>Combine Estimates</p>
-							</ListItem>
-
-							<ListItem button onClick={() => history.push(`/SavedEstimates`)}>
-								<SaveIcon /> &nbsp;
-								<p>Saved Estimates</p>
-							</ListItem>
-
-							<Divider />
-
-							<ListItem button onClick={() => history.push(`/login`)}>
-								<ExitToAppIcon /> &nbsp;
-								<p>Login</p>
-							</ListItem>
-
-						</List>
 					)}
-					{/* End conditional rendering for menu options. */}
 
 				</div>
 			</Drawer>

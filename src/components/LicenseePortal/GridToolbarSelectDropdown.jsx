@@ -19,18 +19,31 @@ export default function GridToolbarSelectDropdown() {
 	const [open, setOpen] = useState(false);
 	const dispatch = useDispatch();
 	const tableData = useSelector(store => store.licenseePortalReducer.tableData);
+	const user = useSelector(store => store.user);
+
+
 	// ⬇ Options for the drop-down menus: 
-	const options = [
+	let options = [
 		"Saved Estimates",
 		"Pending Orders",
 		"Approved Orders",
 		"Archived Orders"
 	];
 
+	const onlyOperatesInNorthAmerica = user?.operating_region_ids?.every(region => region === 1 || region === 2);
+
+	if (onlyOperatesInNorthAmerica) {
+		options = [
+			"Saved Estimates",
+			"Archived Orders"
+		];
+	}
+
 	// ⬇ Handles opening and click away toggles for the pop-up: 
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);
 	};
+
 
 	// ⬇ Handles closing and setting the values from the pop-up: 
 	const handleClose = (event, index, value) => {

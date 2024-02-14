@@ -39,6 +39,7 @@ function* toggleActiveInactiveLicensee(action) {
 		yield put({
 			type: 'FETCH_ALL_COMPANIES'
 		});
+		yield put({ type: 'SET_SUCCESS_ACTIVE' });
 	} catch (error) {
 		console.error('Error in update company saga: ', error);
 	}
@@ -57,12 +58,28 @@ function* addCompany(action) {
 	}
 }
 
+function* submitLicensee(action) {
+	try {
+		// takes licensee input payload and posts to database
+		yield axios.post('/api/companies/submit-licensee', action.payload);
+		// refresh companies with new licensee post
+		yield put({ type: 'FETCH_ALL_COMPANIES' });
+		yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	} catch (error) {
+		console.error('Error in post licensee saga:', error);
+		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
+	}
+}
+
 // companies saga to fetch companies
 function* companiesSaga() {
 	yield takeLatest('FETCH_ALL_COMPANIES', fetchAllCompanies);
 	yield takeLatest('FETCH_ACTIVE_COMPANIES', fetchActiveCompanies);
-	yield takeLatest('TOGGLE_ACTIVE_INACTIVE_LICENSEE', toggleActiveInactiveLicensee);
-	yield takeLatest('ADD_COMPANY', addCompany);
+	// yield takeLatest('TOGGLE_ACTIVE_INACTIVE_LICENSEE', toggleActiveInactiveLicensee);
+	// yield takeLatest('ADD_COMPANY', addCompany);
+	yield takeLatest('SUBMIT_LICENSEE', submitLicensee);
 }
 
 export default companiesSaga;

@@ -3,13 +3,12 @@ import { React, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 // Material-UI components
 import { useClasses } from '../../../components/MuiStyling/MuiStyling';
-import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector } from '@material-ui/data-grid';
-import { Button, MenuItem, Menu, TextField, Divider, Tooltip, Paper, InputAdornment } from '@material-ui/core';
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, useGridSlotComponentProps } from '@material-ui/data-grid';
+import { Button, MenuItem, Menu, TextField, Divider, Tooltip, Paper, InputAdornment, TablePagination, Modal, Backdrop, Fade } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import HelpIcon from '@material-ui/icons/Help';
 import useCalculateProjectCost from '../../../hooks/useCalculateProjectCost';
 // import AdminUpdates from './AdminUpdates';
-
 
 // component that renders a Material UI Data Grid, needs an array of shipping costs as props.
 export default function UpdateMarkupMargin() {
@@ -18,15 +17,20 @@ export default function UpdateMarkupMargin() {
 	const classes = useClasses();
 	const dispatch = useDispatch();
 
-
 	const { viewState, dataState } = useSelector(store => store.pricingLog);
 	const { newShippingCosts, newProductCosts, newCustomsDuties, newMarkup, monthOptions } = viewState;
-	const { currentShippingCosts, currentProductCosts, currentCustomsDuties, currentMarkupMargin, shippingDestinations, pricingData12Months, productContainers, dosageRates } = dataState;
-
+	const { currentShippingCosts, currentProductCosts, currentCustomsDuties, currentMarkup, shippingDestinations, pricingData12Months, productContainers, dosageRates, activeRegions } = dataState;
 
 	const [rightSelectedMonth, setRightSelectedMonth] = useState(pricingData12Months['new']);
 	const [leftSelectedMonth, setLeftSelectedMonth] = useState(pricingData12Months['current']);
+	const [showEditModal, setShowEditModal] = useState(false);
 
+	//#region - Table action state variables: 
+	const rowsPerPageOptions = [10, 25, 50, 100];
+	const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+	const [tableMounted, setTableMounted] = useState(false);
+	const [selectedRow, setSelectedRow] = useState(null);
+	//#endregion - Table action state variables.
 
 
 	function calculateNewPricingData() {
@@ -57,6 +61,7 @@ export default function UpdateMarkupMargin() {
 			}; // End if/else
 
 			estimate.destination_id = destination.destination_id;
+			estimate.region_id = destination.region_id;
 			estimate.destination_name = destination.destination_name;
 
 			const calculatedEstimate = useCalculateProjectCost(estimate, pricingData12Months.new.pricing);
@@ -64,49 +69,59 @@ export default function UpdateMarkupMargin() {
 			pricingData12Months.new.destinationsCosts.push({
 				destination_id: calculatedEstimate.destination_id,
 				destination_name: calculatedEstimate.destination_name,
+				destination_country: calculatedEstimate.destination_country,
 				measurement_units: calculatedEstimate.measurement_units,
 				units_label: calculatedEstimate.units_label,
 				price_per_unit_75_50: calculatedEstimate.price_per_unit_75_50,
 				price_per_unit_90_60: calculatedEstimate.price_per_unit_90_60,
 			}); // End month.destinationsCosts.push
 		}; // End for loop
-	}
+	}; // End calculateNewPricingData
 
 	// useEffect(() => {
 	calculateNewPricingData();
-	// }, []);
+	// }, [newMarkup]);
 
 	const leftTableData = leftSelectedMonth.destinationsCosts;
 	const rightTableData = rightSelectedMonth.destinationsCosts;
 
-
 	let rows = [];
-
 
 	// ⬇ Logic to handle setting the table rows on first load:
 	if (leftTableData !== undefined && rightTableData !== undefined) {
 		// ⬇ Looping through the left table data:
 		for (let i = 0; i < shippingDestinations.length; i++) {
 			const shippingDestinationItem = shippingDestinations[i];
-			const leftTableDataItem = leftTableData[i];
-			const rightTableDataItem = rightTableData[i];
+			const leftTableDataItem = leftTableData.find(item => item.destination_id === shippingDestinationItem.destination_id) || {
+				price_per_unit_75_50: "N/A",
+				price_per_unit_90_60: "N/A",
+				units_label: "N/A"
+			};
+			const rightTableDataItem = rightTableData.find(item => item.destination_id === shippingDestinationItem.destination_id) || {
+				price_per_unit_75_50: "N/A",
+				price_per_unit_90_60: "N/A",
+				units_label: "N/A"
+			};
 			const row = {
 				destination_id: shippingDestinationItem.destination_id,
 				destination_name: shippingDestinationItem.destination_name,
+				destination_country: shippingDestinationItem.destination_country,
 				left_price_per_unit_75_50: leftTableDataItem.price_per_unit_75_50,
 				left_price_per_unit_90_60: leftTableDataItem.price_per_unit_90_60,
 				right_price_per_unit_75_50: rightTableDataItem.price_per_unit_75_50,
 				right_price_per_unit_90_60: rightTableDataItem.price_per_unit_90_60,
 				// ⬇ Calculate the difference between the two as a percentage:
-				difference_per_unit_75_50: Math.abs(rightTableDataItem.price_per_unit_75_50 - leftTableDataItem.price_per_unit_75_50) / ((leftTableDataItem.price_per_unit_75_50 + rightTableDataItem.price_per_unit_75_50) / 2),
-				difference_per_unit_90_60: Math.abs(rightTableDataItem.price_per_unit_90_60 - leftTableDataItem.price_per_unit_90_60) / ((leftTableDataItem.price_per_unit_90_60 + rightTableDataItem.price_per_unit_90_60) / 2),
+				difference_per_unit_75_50: (leftTableDataItem.price_per_unit_75_50 === "N/A" || rightTableDataItem.price_per_unit_75_50 === "N/A")
+					? "N/A"
+					: Math.abs(rightTableDataItem.price_per_unit_75_50 - leftTableDataItem.price_per_unit_75_50) / ((leftTableDataItem.price_per_unit_75_50 + rightTableDataItem.price_per_unit_75_50) / 2),
+				difference_per_unit_90_60: (leftTableDataItem.price_per_unit_90_60 === "N/A" || rightTableDataItem.price_per_unit_90_60 === "N/A")
+					? "N/A"
+					: Math.abs(rightTableDataItem.price_per_unit_90_60 - leftTableDataItem.price_per_unit_90_60) / ((leftTableDataItem.price_per_unit_90_60 + rightTableDataItem.price_per_unit_90_60) / 2),
 				units_label: rightTableDataItem.units_label,
 			}; // End row
 			rows.push(row);
 		}; // End for
 	}; // End if
-
-
 
 
 	// ⬇ Logic to handle setting the table rows on first load: 
@@ -120,6 +135,14 @@ export default function UpdateMarkupMargin() {
 			sortable: false,
 		},
 		{
+			headerName: `Region`,
+			field: 'destination_country',
+			flex: .5,
+			headerClassName: classes.header,
+			disableColumnMenu: true,
+			sortable: false,
+		},
+		{
 			headerName: `60lbs/35kg: ${leftSelectedMonth.month_year_label}`,
 			field: 'left_price_per_unit_75_50',
 			flex: 1,
@@ -127,7 +150,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+				} else {
+					return params.value;
+				}; // End if/else
+			}, // End valueFormatter
 		},
 		{
 			headerName: `68lbs/40kg: ${leftSelectedMonth.month_year_label}`,
@@ -137,7 +166,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+				} else {
+					return params.value;
+				}; // End if/else
+			}, // End valueFormatter
 		},
 		{
 			headerName: `60lbs/35kg: ${rightSelectedMonth.month_year_label}`,
@@ -147,7 +182,14 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
+			valueFormatter: (params) => {
+
+				if (typeof params.value === "number") {
+					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+				} else {
+					return params.value;
+				}; // End if/else
+			}, // End valueFormatter
 		},
 		{
 			headerName: `68lbs/40kg: ${rightSelectedMonth.month_year_label}`,
@@ -157,7 +199,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value) },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', }).format(params?.value)
+				} else {
+					return params.value;
+				}; // End if/else
+			}, // End valueFormatter
 		},
 		{
 			headerName: `60lbs/35kg Difference`,
@@ -167,7 +215,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return `${(params.value * 100).toFixed(2)}%`; },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return `${(params.value * 100).toFixed(2)}%`;
+				} else {
+					return params.value;
+				}; // End if/else
+			},
 		},
 		{
 			headerName: `68lbs/40kg Difference`,
@@ -177,7 +231,13 @@ export default function UpdateMarkupMargin() {
 			disableColumnMenu: true,
 			sortable: false,
 			type: 'number',
-			valueFormatter: (params) => { return `${(params.value * 100).toFixed(2)}%`; },
+			valueFormatter: (params) => {
+				if (typeof params.value === "number") {
+					return `${(params.value * 100).toFixed(2)}%`;
+				} else {
+					return params.value;
+				}; // End if/else
+			},
 		},
 		{
 			headerName: `Units`,
@@ -191,9 +251,6 @@ export default function UpdateMarkupMargin() {
 	//#endregion - End State Variables.
 
 	//#region - Table Setup Below:
-
-
-
 
 	//#region - Custom Table Components Below: 
 	// ⬇ A Custom Toolbar specifically made for the Shipping Costs Data Grid:
@@ -240,24 +297,6 @@ export default function UpdateMarkupMargin() {
 			setRightSelectedMonth(pricingData12Months[date]);
 		}; // End handleLogViewSelection
 
-		// let marginInputValueLabel = (newMarkup[0].margin_applied * 100);
-		// const markupInputRef = useRef(JSON.parse(JSON.stringify(newMarkup[0].margin_applied_label)));
-
-
-		const handleMarkupChange = (event) => {
-			const percentage = event.target.value;
-			const decimal = percentage / 100;
-
-			dispatch({
-				type: 'SET_PRICING_LOG_VIEW', payload: {
-					newMarkup: [{
-						"markup_id": 1,
-						"margin_applied": decimal,
-						"margin_applied_label": percentage,
-					}]
-				}
-			});
-		}; // End handleMarkupChange
 
 		return (
 			<GridToolbarContainer style={{ display: "block", width: "100%" }} >
@@ -271,7 +310,7 @@ export default function UpdateMarkupMargin() {
 				>
 					<div
 						style={{
-							flex: "0.125",
+							flex: 1.5,
 							justifyContent: "center",
 							fontSize: "12px",
 							fontFamily: "Lexend Tera",
@@ -319,7 +358,7 @@ export default function UpdateMarkupMargin() {
 
 					<div
 						style={{
-							flex: "0.25",
+							flex: 2,
 							justifyContent: "center",
 							fontSize: "12px",
 							fontFamily: "Lexend Tera",
@@ -336,7 +375,7 @@ export default function UpdateMarkupMargin() {
 
 					<div
 						style={{
-							flex: "0.25",
+							flex: 2,
 							justifyContent: "center",
 							fontSize: "12px",
 							fontFamily: "Lexend Tera",
@@ -350,40 +389,22 @@ export default function UpdateMarkupMargin() {
 						/>
 
 					</div>
-
 					<div
 						style={{
-							flex: "0.375",
+							flex: 3,
+							justifyContent: "center",
 							fontSize: "12px",
 							fontFamily: "Lexend Tera",
 						}}
 					>
-						<div
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								width: "100%",
-								height: "35px",
-								color: "#3f51b5",
-							}}
+						<Button
+							color="primary"
+							size="small"
+							style={{ marginBottom: "4px", width: "100%", height: "33px", }}
+							onClick={() => setShowEditModal(true)}
 						>
-							Set Markup Margin:
-							<TextField
-								id="markup-input"
-								type="number"
-								color="primary"
-								style={{ width: "80px", marginLeft: "8px", marginTop: "3px" }}
-								InputProps={{
-									endAdornment: <InputAdornment position="end">%</InputAdornment>
-								}}
-								defaultValue={newMarkup[0].margin_applied_label}
-								onBlur={(event) => handleMarkupChange(event)}
-								onKeyPress={(event) => { if (event.key === 'Enter') handleMarkupChange(event); }}
-							/>
-						</div>
-
-
+							Edit Regional Markup
+						</Button>
 					</div>
 				</div>
 
@@ -391,117 +412,174 @@ export default function UpdateMarkupMargin() {
 		); // End return
 	}; // End CustomToolbar
 
+	const CustomPagination = () => {
+		// ⬇ State Variables: 
+		const { state, apiRef } = useGridSlotComponentProps();
 
+		//#region - Pagination Action Handlers:
+		// ⬇ We only want the page size to be set once, on initial render (otherwise it defaults to 100):
+		useEffect(() => {
+			if (tableMounted === false) {
+				apiRef.current.setPageSize(rowsPerPageOptions[0]);
+				setTableMounted(true);
+			}; // End if
+		}, []); // End useEffect
 
+		const handleOnPageChange = (value) => {
+			apiRef.current.setPage(value);
+			setSelectedRow(null);
+		}; // End handleOnPageChange
+
+		const handleOnRowsPerPageChange = (size) => {
+			apiRef.current.setPageSize(size.props.value);
+			setRowsPerPage(size.props.value);
+			handleOnPageChange(0);
+			setSelectedRow(null);
+		}; // End handleOnRowsPerPageChange
+		//#endregion - Pagination Action Handlers.
+
+		return (
+			<div style={{
+				flex: "1",
+				display: "flex",
+				justifyContent: "flex-end",
+			}}>
+				<TablePagination
+					component='div'
+					count={state.rows.totalRowCount}
+					page={state.pagination.page}
+					onPageChange={(event, value) => handleOnPageChange(value)}
+					rowsPerPageOptions={rowsPerPageOptions}
+					rowsPerPage={rowsPerPage}
+					onRowsPerPageChange={(event, size) => handleOnRowsPerPageChange(size)}
+				/>
+			</div>
+		); // End return
+	}; // End PaginationComponent
 
 	const CustomFooter = () => {
-		// //#region - Info for the Save Costs to History Log button:
-		// // ⬇ Get today's date in YYYY-MM format;
-		// const today = new Date().toISOString().slice(0, 7);
-		// let disabled = true;
-		// let tooltipText = <p>The current costs have not been saved yet for this month.  Please click the "Save Costs to History Log" button to save the current costs for this month first.</p>;
-		// if (
-		// 	markupHistoryRecent.length > 1 &&
-		// 	markupHistoryRecent[1].date_saved.slice(0, 7) === today
-		// ) {
-		// 	disabled = false;
-		// 	tooltipText = "";
-		// };
-
-
-		// const handleSaveHistoryLogSubmit = () => {
-		// 	if (
-		// 		markupHistoryRecent.length > 1 &&
-		// 		markupHistoryRecent[1].date_saved.slice(0, 7) === today
-		// 	) {
-		// 		if (!window.confirm(`Markup margins have already been saved for this month.  If you continue, two entries will be saved for this month.  Click "OK" to continue.`)) return;
-		// 	}; // End if
-		// 	dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-		// 	dispatch({ type: 'MARKUP_SAVE_HISTORY_LOG', payload: currentMarkup })
-		// }; // End handleSaveHistoryLogSubmit
-		// //#endregion - Info for the Save Costs to History Log button.
-
-		// const [anchorEl, setAnchorEl] = useState(null);
-		// const menuItems = [
-		// 	<Button
-		// 		color="primary"
-		// 		size="small"
-		// 		onClick={() => handleSaveHistoryLogSubmit()}
-		// 	>
-		// 		Save Markup to History Log
-		// 	</Button>,
-		// 	<Divider />,
-		// 	<Tooltip title={tooltipText} placement="right-end" arrow>
-		// 		<span>
-		// 			<Button
-		// 				color="primary"
-		// 				size="small"
-		// 				onClick={() => setShowEditModal(true)}
-		// 				disabled={disabled}
-		// 			>
-		// 				Edit Markup Margin
-		// 			</Button>
-		// 		</span>
-		// 	</Tooltip>,
-
-		// ]; // End menuItems
-
 
 		return (
 			<div style={{
 				flex: "1",
 				display: "flex",
 				justifyContent: "flex-start",
-				height: "52px",
+				// height: "52px",
 			}}>
-				{/* <>
-					<Button
-						aria-controls="customized-menu"
-						aria-haspopup="true"
-						color="primary"
-						size="small"
-						onClick={event => setAnchorEl(event.currentTarget)}
-					>
-						<ArrowDropUpIcon /> Actions
-					</Button>
-					<Menu
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
-						onClose={() => setAnchorEl(null)}
-						elevation={3}
-						getContentAnchorEl={null}
-						anchorOrigin={{
-							vertical: 'top',
-							horizontal: 'left',
-						}}
-						transformOrigin={{
-							vertical: 'bottom',
-							horizontal: 'left',
-						}}
-					>
-						{menuItems.map((item, index) => {
-							if (item.type === Divider) {
-								return <Divider variant="middle" key={index} />
-							} else {
-								return (
-									<MenuItem
-										key={index}
-										disableGutters
-										onClick={() => setAnchorEl(null)}
-									>
-										{item}
-									</MenuItem>
-								)
-							}
-						})}
-					</Menu>
-				</> */}
+				<CustomPagination />
+
 			</div>
 		); // End return
 	}; // End CustomFooter
 	//#endregion - Custom Table Components.
 	//#endregion - Table Setup. 
+
+
+	//#region - Table Edit Modal: 
+	const RegionMarkupModal = () => {
+
+		const { viewState, dataState } = useSelector(store => store.pricingLog);
+		const { newMarkup } = viewState;
+		const { currentMarkup } = dataState;
+
+
+		// State for the editable markup data
+		const [editData, setEditData] = useState(() =>
+			newMarkup.reduce((acc, markup) => {
+				acc[markup.region_id] = markup.margin_applied_label;
+				return acc;
+			}, {})
+		);
+
+		const handleEdit = (regionId, value) => {
+			setEditData(prevEditData => ({
+				...prevEditData,
+				[regionId]: parseFloat(value),
+			}));
+		};
+
+		const handleSubmit = () => {
+			// Check for changes before submitting
+			const hasChanges = newMarkup.some(region => editData[region.region_id] !== region.margin_applied_label);
+
+			if (!hasChanges) {
+				alert('Please make changes to submit first.');
+				return;
+			};
+
+			// Transform editData to match the structure of newMarkup
+			const updatedMarkup = newMarkup.map(markup => ({
+				...markup,
+				margin_applied_label: editData[markup.region_id],
+				margin_applied: editData[markup.region_id] / 100,
+			}));
+
+			// Dispatch the updated newMarkup
+			dispatch({ type: 'SET_PRICING_LOG_VIEW', payload: { newMarkup: updatedMarkup } });
+			// if (leftSelectedMonth.month_year_value === 'new' || rightSelectedMonth.month_year_value === 'new') {
+			// ⬇ Find  which one is new:
+			// }; 
+			setShowEditModal(false);
+		};
+
+
+		return (
+			<Modal
+				aria-labelledby="transition-modal-title"
+				aria-describedby="transition-modal-description"
+				open={showEditModal}
+				onClose={() => setShowEditModal(false)}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 500,
+				}}
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}
+			>
+				<Fade in={showEditModal}>
+					<div style={{
+						backgroundColor: 'white',
+						borderRadius: '1rem',
+						boxShadow: "0.5rem 0.5rem 1rem 0.5rem rgba(0, 0, 0, 0.2)",
+						padding: '1rem',
+						width: "300px", // Adjust the width as needed
+						height: "fit-content",
+						marginTop: "-300px",
+					}}>
+						{newMarkup.map(region => {
+							return (
+								<div key={region.markup_id} style={{ marginBottom: '10px', display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+									<div style={{ marginRight: '10px' }}>{region.destination_country} Markup (%):</div>
+									<TextField
+										id="markup-input"
+										type="number"
+										color="primary"
+										style={{ width: '75px' }}
+										InputProps={{
+											endAdornment: <InputAdornment position="end">%</InputAdornment>
+										}}
+										defaultValue={region.margin_applied_label}
+										onBlur={(event) => handleEdit(region.region_id, event.target.value)}
+										onKeyPress={(event) => { event.key === 'Enter' && handleEdit(region.region_id, event.target.value) }}
+									/>
+								</div>
+							)
+						})}
+						<div style={{ borderTop: "1px solid #000", marginTop: '10px', paddingTop: "10px", display: 'flex', justifyContent: 'space-between' }}>
+							<Button variant="contained" color="secondary" onClick={() => setShowEditModal(false)}>Cancel</Button>
+							<Button variant="contained" color="primary" onClick={() => handleSubmit()}>Apply</Button>
+						</div>
+					</div>
+
+				</Fade>
+			</Modal >
+		); // End return
+	};
+
 
 
 	// ⬇ Rendering below: 
@@ -527,6 +605,10 @@ export default function UpdateMarkupMargin() {
 					Footer: CustomFooter,
 				}}
 			/>
+
+			{showEditModal &&
+				<RegionMarkupModal />
+			}
 		</Paper>
 	)
 }
@@ -545,9 +627,9 @@ const GridToolbarSelectDropdown = ({ month, otherMonth, handleViewSelection, vie
 				size="small"
 				style={{ marginBottom: "4px", width: "100%", borderLeft: "1px solid #ccc", borderRight: "1px solid #ccc" }}
 				onClick={event => setAnchorEl(event.currentTarget)}
-				
+
 			>
-				{month.month_year_label}{month.month_year_label.slice(-3) === "ing" ? "" : " Pricing"} at {month.pricing.currentMarkup[0].margin_applied_label}% <ArrowDropDownIcon />
+				{month.month_year_label}{month.month_year_label.slice(-3) === "ing" ? "" : " Pricing"} <ArrowDropDownIcon />
 			</Button>
 			<Menu
 				anchorEl={anchorEl}

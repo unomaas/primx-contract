@@ -28,7 +28,7 @@ function AdminLandingPage() {
       <center>
         <h2>
           Welcome, {user?.username?.charAt(0)?.toUpperCase() + user?.username?.slice(1)}!
-          </h2>
+        </h2>
       </center>
 
       {/* navigate to orders and estimates page */}
@@ -42,28 +42,33 @@ function AdminLandingPage() {
         Go
       </Button>
 
-      {/* navigate to the admin updates page */}
-      <h3>Update Items</h3>
-      <Button
-        onClick={goToAdminUpdates}
-        variant="contained"
-        color="primary"
-        className={classes.LexendTeraFont11}
-      >
-        Go
-      </Button>
+      {user && user.permission_level <= 2 &&
+        <>
 
-			<h3>Set New Pricing</h3>
-      <Button
-        onClick={() => { history.push('./UpdatePricing') }}
-        variant="contained"
-        color="primary"
-        className={classes.LexendTeraFont11}
-      >
-        Go
-      </Button>
+          {/* navigate to the admin updates page */}
+          <h3>Update Items</h3>
+          <Button
+            onClick={goToAdminUpdates}
+            variant="contained"
+            color="primary"
+            className={classes.LexendTeraFont11}
+          >
+            Go
+          </Button>
 
-			<h3>View Pricing Log</h3>
+          <h3>Set New Pricing</h3>
+          <Button
+            onClick={() => { history.push('./UpdatePricing') }}
+            variant="contained"
+            color="primary"
+            className={classes.LexendTeraFont11}
+          >
+            Go
+          </Button>
+        </>
+      }
+
+      <h3>{user.is_region_admin ? "View Pricing By Destination" : "View Pricing Log"}</h3>
       <Button
         onClick={() => { history.push('./PricingLog') }}
         variant="contained"
@@ -73,7 +78,7 @@ function AdminLandingPage() {
         Go
       </Button>
 
-    </div>
+    </div >
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import AdminUpdates from '../../../components/AdminUpdates/AdminUpdates';
+// import AdminUpdates from '../../../AdminUpdates/AdminUpdates';
 // import ShippingDestinationTable from './ShippingDestinationTable';
 import CustomsDutiesTable from './CustomsDutiesTable';
 

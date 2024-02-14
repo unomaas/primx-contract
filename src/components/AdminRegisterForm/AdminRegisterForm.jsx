@@ -45,10 +45,7 @@ function AdminRegisterForm() {
     setPassword('');
   }; // end registerUser
 
-  useEffect(() => {
-    // GET all users on page load
-    dispatch({ type: 'FETCH_ADMIN_INFO' });
-  }, [])
+
 
   return (
     <div>

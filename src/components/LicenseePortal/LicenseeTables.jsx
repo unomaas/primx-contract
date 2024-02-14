@@ -16,6 +16,7 @@ export default function LicenseeTables() {
 	const classes = useClasses();
 	const pageData = useSelector(store => store.licenseePortalReducer.pageData);
 	const tableData = useSelector(store => store.licenseePortalReducer.tableData);
+	const user = useSelector(store => store.user);
 
 	// const openOrders = useSelector(store => store.licenseePortalReducer.openOrders);
 	// const pendingOrders = useSelector(store => store.licenseePortalReducer.pendingOrders);

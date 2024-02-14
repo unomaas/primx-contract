@@ -16,12 +16,18 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 		const query = `
 			SELECT 
 				"e".*, 
-				"ft".floor_type_label,
-				"l".licensee_contractor_name, 
-				"pt".placement_type_label, 
-				"sd".destination_name,
-				"sd".destination_country,
-				"u".username
+				e.total_number_of_20ft_containers::int,
+				e.total_number_of_40ft_containers::int,
+				e.total_number_of_pallets::int,
+				CASE
+					WHEN e.measurement_units = 'imperial' THEN 'cubic yards'
+					WHEN e.measurement_units = 'metric' THEN 'cubic meters'
+				END AS measurement_units_label,
+				ft.floor_type_label, 
+				l.licensee_contractor_name, 
+				pt.placement_type_label, 
+				sd.destination_name,
+				r.region_code AS destination_country
 			FROM "estimates" AS "e"
 			JOIN "floor_types" AS "ft"
 				ON "e".floor_type_id = "ft".floor_type_id
@@ -31,6 +37,8 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 				ON "e".placement_type_id = "pt".placement_type_id
 			JOIN "shipping_destinations" AS "sd"
 				ON "e".destination_id = "sd".destination_id
+			JOIN regions as r 
+				ON r.region_id = sd.region_id
 			LEFT JOIN "users" AS "u"
 				ON "e".processed_by = "u".user_id
 			WHERE "e".licensee_id = $1
@@ -43,6 +51,7 @@ router.get('/:id', rejectUnauthenticated, async (req, res) => {
 		let pending_orders = [];
 		let archived_orders = [];
 		let open_orders = [];
+
 		// ⬇ Sorting the estimates pulled for the licensee: 
 		for (const estimate of result.rows) {
 			const calculated_estimate = calculateEstimate(estimate);

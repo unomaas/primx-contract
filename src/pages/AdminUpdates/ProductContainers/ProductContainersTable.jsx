@@ -34,25 +34,25 @@ export default function ProductContainersTable() {
 			headerClassName: classes.header
 		},
 		{
-			field: 'container_length_ft',
-			headerName: 'Container Length (ft)',
-			flex: 1,
-			disableColumnMenu: true,
-			sortable: false,
-			editable: false,
-			headerClassName: classes.header,
-			valueFormatter: (params) => {
-				return `${params.value}"`;
-			},
-		},
-		{
 			field: 'container_destination',
 			headerName: 'Destination',
 			flex: .75,
 			disableColumnMenu: true,
-			sortable: false,
 			editable: false,
 			headerClassName: classes.header
+		},
+		{
+			field: 'container_length_ft',
+			headerName: 'Container Length (ft)',
+			flex: 1,
+			disableColumnMenu: true,
+			type: 'number',
+			sortable: false,
+			editable: false,
+			headerClassName: classes.header,
+			valueFormatter: (params) => {
+				return `${params.value}'`;
+			},
 		},
 		{
 			field: 'max_pallets_per_container',
@@ -71,8 +71,7 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
-			// ⬇ Format cell with a comma:
-			valueFormatter: (params) => { return params.value.toLocaleString(); },
+			valueFormatter: (params) => { return parseFloat(params.value).toLocaleString('en-US'); },
 		},
 		{
 			field: 'gross_weight_of_pallet',
@@ -82,7 +81,7 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
-			valueFormatter: (params) => { return params.value.toLocaleString(); },
+			valueFormatter: (params) => { return parseFloat(params.value).toLocaleString('en-US'); },
 		},
 		{
 			field: 'net_weight_of_pallet',
@@ -92,7 +91,7 @@ export default function ProductContainersTable() {
 			flex: .75,
 			disableColumnMenu: true,
 			headerClassName: classes.header,
-			valueFormatter: (params) => { return params.value.toLocaleString(); },
+			valueFormatter: (params) => { return parseFloat(params.value).toLocaleString('en-US'); },
 		},
 	]; // End columns
 	//#endregion - End State Variables.
@@ -132,7 +131,6 @@ export default function ProductContainersTable() {
 		}; // End if	
 	}; // End handleSelectionModelChange
 	//#endregion - End Action Handlers.
-
 
 
 	//#region - Custom Table Components Below: 
@@ -302,53 +300,6 @@ export default function ProductContainersTable() {
 
 	const CustomFooter = () => {
 
-
-		// //#region - Info for the Save Costs to History Log button:
-		// // ⬇ Get today's date in YYYY-MM format;
-		// const today = new Date().toISOString().slice(0, 7);
-		// let disabled = true;
-		// let tooltipText = <p>The current costs have not been saved yet for this month.  Please click the "Save Costs to History Log" button to save the current costs for this month first.</p>;
-		// if (
-		// 	shippingCostHistoryRecent.length > 0 &&
-		// 	shippingCostHistoryRecent[0].date_saved.slice(0, 7) === today
-		// ) {
-		// 	disabled = false;
-		// 	tooltipText = "";
-		// };
-
-		// const handleSaveHistoryLogSubmit = () => {
-		// 	if (
-		// 		shippingCostHistoryRecent.length > 0 &&
-		// 		shippingCostHistoryRecent[0].date_saved.slice(0, 7) === today
-		// 	) {
-		// 		if (window.confirm(`Costs have already been saved for this month.  If you continue, two entries will be saved for this month.  Click "OK" to continue.`)) {
-		// 			dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-		// 			dispatch({ type: 'SHIPPING_COSTS_SAVE_HISTORY_LOG', payload: shippingCosts })
-		// 		}; // End if
-		// 	} else {
-		// 		dispatch({ type: 'SHOW_TOP_LOADING_DIV' });
-		// 		dispatch({ type: 'SHIPPING_COSTS_SAVE_HISTORY_LOG', payload: shippingCosts })
-		// 	}; // End if
-		// }; // End handleSaveHistoryLogSubmit
-		// //#endregion - Info for the Save Costs to History Log button.
-
-		const [anchorEl, setAnchorEl] = useState(null);
-		const menuItems = [
-			// <Tooltip placement="right-end" arrow>
-			<span>
-				<Button
-					color="primary"
-					size="small"
-					onClick={() => setShowEditModal(true)}
-				>
-					Edit {selectedRow?.trimmed_display_name.trimEnd()}'s Container Stats
-				</Button>
-			</span>
-			// </Tooltip>,
-
-		]; // End menuItems
-
-
 		return (
 			<div style={{
 				flex: "1",
@@ -506,7 +457,7 @@ export default function ProductContainersTable() {
 												padding: "0.6rem",
 											}}
 										>
-											{cost.product_label} for {cost.container_length_ft}' Container:
+											{cost.product_label} for {cost.container_destination} {cost.container_length_ft}' Container:
 										</div>
 										<div
 											style={{

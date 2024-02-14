@@ -4,9 +4,7 @@ import {
 } from 'redux-saga/effects';
 import axios from 'axios';
 import useEstimateCalculations from '../../hooks/useEstimateCalculations';
-import useCalculateProjectCost from '../../hooks/useCalculateProjectCost';
-import createProductPriceObject from '../../hooks/createProductPriceObject';
-import useDifferenceBetweenDates from '../../hooks/useDifferenceBetweenDates';
+// import createProductPriceObject from '../../hooks/createProductPriceObject';
 // import swal from 'sweetalert';
 
 
@@ -95,7 +93,7 @@ function* AddEstimate(action) {
 // Saga Worker to edit estimate into table
 function* editEstimate(action) {
 	try {
-		const res = yield axios.put(`/api/estimates/clientupdates/${action.payload.estimate_id}`, action.payload);
+		const res = yield axios.put(`/api/estimates/edit-estimate/${action.payload.estimate_id}`, action.payload);
 		if (res.status === 200) {
 			const history = action.payload.history;
 			yield history.push(`/lookup/${action.payload.licensee_id}/${action.payload.estimate_number}`);

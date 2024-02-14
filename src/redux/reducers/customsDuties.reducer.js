@@ -12,6 +12,16 @@ export const customsDutiesArray = (state = [], action) => {
 	}
 }
 
+export const eachCustomsDuties = (state = [], action) => {
+	switch (action.type) {
+		// request from adminEstimates saga, payload is an array of estimate objects
+		case 'SET_EACH_CUSTOMS_DUTIES':
+			return action.payload;
+		default:
+			return state;
+	}
+}
+
 export const customsDutiesHistoryAllArray = (state = [], action) => {
 	switch (action.type) {
 		case 'SET_CUSTOMS_DUTIES_HISTORY_ALL':
@@ -32,6 +42,7 @@ export const customsDutiesHistoryRecentArray = (state = [], action) => {
 
 export default combineReducers({
 	customsDutiesArray,
+	eachCustomsDuties,
 	customsDutiesHistoryAllArray,
 	customsDutiesHistoryRecentArray,
 });
