@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import { Button, Select, MenuItem } from '@material-ui/core';
 import { useClasses } from '../MuiStyling/MuiStyling';
 
-
 export default function LicenseeRegisterForm() {
 
 	const errors = useSelector((store) => store.errors);

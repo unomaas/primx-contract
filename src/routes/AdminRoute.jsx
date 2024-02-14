@@ -35,6 +35,14 @@ export const adminRoutes = [
 		component: AdminUpdates
 	},
 	{
+		path: '/AdminOrders',
+		component: AdminOrders
+	},
+	{
+		path: '/User',
+		component: AdminLandingPage
+	},
+	{
 		path: '/AdminUpdateTypes',
 		component: AdminUpdateTypes
 	},
@@ -58,6 +66,10 @@ export const adminRoutes = [
 		path: '/DosageRates',
 		component: DosageRates
 	},
+	// {
+	// 	path: '/Regions',
+	// 	component: Regions
+	// },
 	{
 		path: '/Regions',
 		component: Regions
@@ -115,4 +127,3 @@ export default function AdminRoute(props) {
 
 	);
 }
-
