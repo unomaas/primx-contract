@@ -43,7 +43,6 @@ export default function useCalculateProjectCost(estimate, options) {
 	//#endregion - Helpful constants.
 
 
-
 	//#region Step 1 - Determining the data we're using: 
 	// ⬇ Empty variables to set later: 
 	let primxDcProductInfo, primxSteelFiberProductInfo, primxFlowProductInfo, primxUltraCureProductInfo, primxCpeaProductInfo, primxDcDosageRateInfo, primxSteelFiberDosageRateInfo_75_50, primxSteelFiberDosageRateInfo_90_60, primxFlowDosageRateInfo, primxCpeaDosageRateInfo = null;
@@ -104,20 +103,6 @@ export default function useCalculateProjectCost(estimate, options) {
 	primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6 && customsDuty.destination_country == estimate.destination_country).duty_percentage;
 	//#endregion - Step 1.
 
-
-	if (estimate.destination_country == "USA") {
-		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).usa_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).usa_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).usa_percent;
-		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).usa_percent;
-		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).usa_percent;
-	} else if (estimate.destination_country == "CAN") {
-		primxDcProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 1).can_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_75_50 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 3).can_percent;
-		primxSteelFiberProductInfo.custom_duty_percentage_90_60 = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 4).can_percent;
-		primxFlowProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 2).can_percent;
-		primxCpeaProductInfo.custom_duty_percentage = customsDuties.find(customsDuty => customsDuty.custom_duty_id === 6).can_percent;
-	}; // End if/else
 
 
 	//#region Step 2 - Set Cost and Container Info. Determine the cost and container pricing information based off of matching product_id, destination_id, and container_length_ft.  Do this for each product, for both container sizes:
@@ -463,6 +448,7 @@ export default function useCalculateProjectCost(estimate, options) {
 		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60 = 0;
 	}; // End if/else
 	//#endregion - Step 6.
+
 
 
 	//#region Step 7 - Calculate the self cost per unit for each product:
