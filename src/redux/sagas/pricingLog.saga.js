@@ -113,13 +113,14 @@ function* pricingLogInitialLoad() {
 					};
 				}
 
+				estimate.total_project_volume = 1000;
 				if (destination.default_measurement == "imperial") {
 					estimate.measurement_units = "imperial";
-					estimate.design_cubic_yards_total = 1000;
+					// estimate.design_cubic_yards_total = 1000;
 					estimate.units_label = "USD/Cubic Yard";
 				} else {
 					estimate.measurement_units = "metric";
-					estimate.design_cubic_meters_total = 1000;
+					// estimate.design_cubic_meters_total = 1000;
 					estimate.units_label = "USD/Cubic Meter";
 				}; // End if/else
 
@@ -339,13 +340,14 @@ function* updatePricingInitialLoad() {
 					}
 				}; // End if
 
+				estimate.total_project_volume = 1000;
 				if (destination.default_measurement == "imperial") {
 					estimate.measurement_units = "imperial";
-					estimate.design_cubic_yards_total = 1000;
+					// estimate.design_cubic_yards_total = 1000;
 					estimate.units_label = "USD/Cubic Yard";
 				} else {
 					estimate.measurement_units = "metric";
-					estimate.design_cubic_meters_total = 1000;
+					// estimate.design_cubic_meters_total = 1000;
 					estimate.units_label = "USD/Cubic Meter";
 				}; // End if/else
 

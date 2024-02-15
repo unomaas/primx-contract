@@ -476,8 +476,13 @@ export default function useCalculateProjectCost(estimate, options) {
 	estimate.markup_percentage = regionalMarkup.margin_applied;
 
 	// ⬇ Calculate the sales price per unit:
-	const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(regionalMarkup.margin_applied));
-	const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(regionalMarkup.margin_applied));
+	// const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(regionalMarkup.margin_applied));
+	// const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(regionalMarkup.margin_applied));
+
+	// Corrected calculation for sales cost
+	const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 * (1 + parseFloat(regionalMarkup.margin_applied));
+	const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 * (1 + parseFloat(regionalMarkup.margin_applied));
+
 	// ! Ryan Here, save this number: 379540 square feet by 10 inches thickness to get the numbers shown in their estimate example
 	//#endregion - Step 8. 
 
@@ -491,16 +496,59 @@ export default function useCalculateProjectCost(estimate, options) {
 	};
 
 
-	if (estimate.measurement_units == "imperial") {
-		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.total_project_volume);
-		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
-	} else if (estimate.measurement_units == "metric") {
-		estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.total_project_volume);
-		estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
-	}; // End if/else
+	// if (estimate.measurement_units == "imperial") {
+	// 	estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.total_project_volume);
+	// 	estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
+	// } else if (estimate.measurement_units == "metric") {
+	// 	estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.total_project_volume);
+	// 	estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
+	// }; // End if/else
 
+	estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.total_project_volume);
+	estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
 	estimate.total_project_volume = parseFloat(estimate.total_project_volume);
 	//#endregion - Step 9.
+	// const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(regionalMarkup.margin_applied));
+	// const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(regionalMarkup.margin_applied));
+	// const testingDestinations = ["Arizona", "California", "Colorado", "Florida"]
+	// if (estimate.destination_name && testingDestinations.includes(estimate.destination_name)) {
+	// 	console.log(`Ryan Here: End of useCalculateProjectCost.js`,
+	// 		`\n ${estimate.destination_name} `,
+	// 		`\n Self Cost:  `,
+	// 		`\n    PPU 75-50: ${dollarSelfCostPerUnit_75_50} `,
+	// 		`\n    PPU 90-60: ${dollarSelfCostPerUnit_90_60} `,
+	// 		`\n Margin Applied:`,
+	// 		`\n    ${regionalMarkup.margin_applied}  `,
+	// 		`\n Sales Cost:  `,
+	// 		`\n    PPU 75-50: ${estimate.price_per_unit_75_50}  `,
+	// 		`\n    PPU 90-60: ${estimate.price_per_unit_90_60}  `,
+	// 		`\n Sales Cost Test:  `,
+	// 		`\n    PPU 75-50: ${dollarSalesCostPerUnit_75_50}  `,
+	// 		`\n    PPU 90-60: ${dollarSalesCostPerUnit_90_60}  `,
+	// 		`\n `, {
+	// 		'00_estimate_destination': estimate.destination_name,
+	// 		'01_self_cost': {
+	// 			dollarSelfCostPerUnit_75_50: JSON.parse(JSON.stringify(dollarSelfCostPerUnit_75_50)),
+	// 			dollarSelfCostPerUnit_90_60: JSON.parse(JSON.stringify(dollarSelfCostPerUnit_90_60)),
+	// 		},
+	// 		'02_sales_cost': {
+	// 			dollarSalesCostPerUnit_75_50: JSON.parse(JSON.stringify(dollarSalesCostPerUnit_75_50)),
+	// 			dollarSalesCostPerUnit_90_60: JSON.parse(JSON.stringify(dollarSalesCostPerUnit_90_60)),
+	// 		},
+	// 		'03_project_cost': {
+	// 			total_project_cost_75_50: JSON.parse(JSON.stringify(estimate.total_project_cost_75_50)),
+	// 			total_project_cost_90_60: JSON.parse(JSON.stringify(estimate.total_project_cost_90_60)),
+	// 		},
+	// 		'04_total_project_volume': JSON.parse(JSON.stringify(estimate.total_project_volume)),
+	// 		'05_estimate_price_per_unit': {
+	// 			price_per_unit_75_50: JSON.parse(JSON.stringify(estimate.price_per_unit_75_50)),
+	// 			price_per_unit_90_60: JSON.parse(JSON.stringify(estimate.price_per_unit_90_60)),
+	// 		},
+	// 		'06_markup_percentage': JSON.parse(JSON.stringify(regionalMarkup.margin_applied)),
+	// 		'09_estimate': estimate,
+	// 	});
+	// }
+
 
 
 	return estimate;
