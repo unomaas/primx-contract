@@ -43,11 +43,7 @@ import { theme } from '../MuiStyling/MuiStyling';
 import { Buffer } from "buffer";
 
 import AdminRoute, { adminRoutes } from '../../routes/AdminRoute';
-<<<<<<< HEAD
 import RegionalAdminRoute, { regionalAdminRoutes } from '../../routes/RegionalAdminRoute.jsx';
-=======
-// import RegionalAdminRoute, { regionalAdminRoutes } from '../../routes/RegionalAdminRoute.jsx';
->>>>>>> 5c9ab54 (Fixing bugs on prod.)
 import ProtectedRoute, { protectedRoutes } from '../../routes/ProtectedRoute';
 import LoginForm from '../LoginForm/LoginForm';
 
