@@ -7,7 +7,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { useClasses } from '../MuiStyling/MuiStyling';
 
-
 function AdminRegisterForm() {
 
   const errors = useSelector((store) => store.errors);
