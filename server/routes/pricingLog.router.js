@@ -54,7 +54,7 @@ router.post('/submit-new-pricing-changes', rejectNonAdmin, async (req, res) => {
 
 	// ⬇ Generate today in YYYY-MM-DD format with time zone:
 	const today = dayjs().format('-DD');
-	let dateToSaveTo = `${monthToSaveTo}${today}`
+	let dateToSaveTo = `${monthToSaveTo}${today}`;
 
 	// ⬇ If dateToSaveTo is not a valid date (e.g., 2021-02-31), then we need to set it to the last day of that month:
 	if (!dayjs(dateToSaveTo, 'YYYY-MM-DD', true).isValid()) {
@@ -73,6 +73,7 @@ router.post('/submit-new-pricing-changes', rejectNonAdmin, async (req, res) => {
 
 		if (monthToSaveTo == -1) {
 			savingPricesToHistoryLog = false;
+			dateToSaveTo = null;
 		}; // End if
 
 
@@ -258,15 +259,18 @@ router.post('/submit-new-pricing-changes', rejectNonAdmin, async (req, res) => {
 		`; // End sql
 		// ⬇ Loop through the req.body array to build the query:
 		for (let cost of newCustomsDuties) {
-			newCustomsDutiesSql += `(${format('%L::int', cost.custom_duty_id)}, ${format('%L::decimal', cost.duty_percentage)}), `
+			newCustomsDutiesSql += `(${format('%L::int', cost.custom_duty_id)}, ${format('%L::decimal', cost.duty_percentage)}, ${format('%L::int', cost.region_id)}), `
 		}; // End for loop
 		// ⬇ Remove the last comma and space:
 		newCustomsDutiesSql = newCustomsDutiesSql.slice(0, -2);
 		// ⬇ Add the closing parentheses:
 		newCustomsDutiesSql += `
-			) AS v(custom_duty_id, duty_percentage)
-			WHERE cdr.custom_duty_id = v.custom_duty_id;
+			) AS v(custom_duty_id, duty_percentage, region_id)
+			WHERE 
+				cdr.custom_duty_id = v.custom_duty_id AND 
+				cdr.region_id = v.region_id;
 		`; // End sql
+
 
 
 		let newShippingCostsSql = `
