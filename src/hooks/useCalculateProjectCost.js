@@ -497,7 +497,11 @@ export default function useCalculateProjectCost(estimate, options) {
 		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
 		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
 		primxFlowTransportationCostPlusMaterialCostPerUnit,
-		primxCpeaTransportationCostPlusMaterialCostPerUnit
+		primxCpeaTransportationCostPlusMaterialCostPerUnit,
+		flow: {
+			cheapestPrimxFlowTransportationCostPerUnit,
+			primxFlowProductPlusCustomDutyPercentage
+		}
 	});
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
