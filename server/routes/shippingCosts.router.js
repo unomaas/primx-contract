@@ -7,29 +7,31 @@ const format = require('pg-format');
 //#region - Shipping Costs routes below: 
 // GET route - gets shipping costs
 router.get('/get-current-shipping-costs', async (req, res) => {
+	let activeClause = '';
+	if (req.query.active === 'true') activeClause = 'WHERE sd.destination_active = TRUE AND r.is_active = true';
+	const sql = `
+		SELECT 
+			sc.shipping_cost_id,
+			sc.destination_id,
+			sc.dc_20ft,
+			sc.dc_40ft,
+			sc.fibers_20ft,
+			sc.fibers_40ft,
+			sc.cpea_20ft,
+			sc.cpea_40ft,
+			sc.flow_20ft,
+			sc.flow_40ft,
+			sd.destination_name,
+			r.region_code AS destination_country
+		FROM shipping_costs AS sc
+		JOIN shipping_destinations AS sd USING(destination_id)
+		JOIN regions as r ON r.region_id = sd.region_id
+		${activeClause}
+		ORDER BY
+			r.region_code DESC, 
+			sd.destination_name ASC;
+	`; // End sql
 	try {
-		const sql = `
-			SELECT 
-				sc.shipping_cost_id,
-				sc.destination_id,
-				sc.dc_20ft,
-				sc.dc_40ft,
-				sc.fibers_20ft,
-				sc.fibers_40ft,
-				sc.cpea_20ft,
-				sc.cpea_40ft,
-				sc.flow_20ft,
-				sc.flow_40ft,
-				sd.destination_name,
-				r.region_code AS destination_country
-			FROM shipping_costs AS sc
-			JOIN shipping_destinations AS sd USING(destination_id)
-			JOIN regions as r ON r.region_id = sd.region_id
-			WHERE sd.destination_active = TRUE
-			ORDER BY
-				r.region_code DESC, 
-				sd.destination_name ASC;
-		`; // End sql
 		const result = await pool.query(sql);
 		res.send(result.rows);
 	} catch (error) {

@@ -176,56 +176,56 @@ export default function useCalculateProjectCost(estimate, options) {
 	const primxCpea40ftTransportationCostPerUnit = parseFloat(primxCpea40ftCostInfo) / (parseFloat(primxCpea40ftContainerInfo.net_weight_of_pallet) * parseFloat(primxCpea40ftContainerInfo.max_pallets_per_container));
 	//#endregion - Step 3.
 
-	// console.log(`Ryan Here 1: \n `, {
-	// 	'dc': {
-	// 		'20': {
-	// 			primxDc20ftCostInfo,
-	// 			primxDc20ftContainerInfo,
-	// 			primxDc20ftTransportationCostPerUnit
-	// 		},
-	// 		'40': {
-	// 			primxDc40ftCostInfo,
-	// 			primxDc40ftContainerInfo,
-	// 			primxDc40ftTransportationCostPerUnit
-	// 		},
-	// 	},
-	// 	'steel_fibers': {
-	// 		'20': {
-	// 			primxSteelFiber20ftCostInfo,
-	// 			primxSteelFiber20ftContainerInfo,
-	// 			primxSteelFiber20ftTransportationCostPerUnit
-	// 		},
-	// 		'40': {
-	// 			primxSteelFiber40ftCostInfo,
-	// 			primxSteelFiber40ftContainerInfo,
-	// 			primxSteelFiber40ftTransportationCostPerUnit
-	// 		},
-	// 	},
-	// 	'flow': {
-	// 		'20': {
-	// 			primxFlow20ftCostInfo,
-	// 			primxFlow20ftContainerInfo,
-	// 			primxFlow20ftTransportationCostPerUnit
-	// 		},
-	// 		'40': {
-	// 			primxFlow40ftCostInfo,
-	// 			primxFlow40ftContainerInfo,
-	// 			primxFlow40ftTransportationCostPerUnit
-	// 		},
-	// 	},
-	// 	'cpea': {
-	// 		'20': {
-	// 			primxCpea20ftCostInfo,
-	// 			primxCpea20ftContainerInfo,
-	// 			primxCpea20ftTransportationCostPerUnit
-	// 		},
-	// 		'40': {
-	// 			primxCpea40ftCostInfo,
-	// 			primxCpea40ftContainerInfo,
-	// 			primxCpea40ftTransportationCostPerUnit
-	// 		},
-	// 	},
-	// });
+	console.log(`Ryan Here 1: \n `, {
+		'dc': {
+			'20': {
+				primxDc20ftCostInfo,
+				primxDc20ftContainerInfo,
+				primxDc20ftTransportationCostPerUnit
+			},
+			'40': {
+				primxDc40ftCostInfo,
+				primxDc40ftContainerInfo,
+				primxDc40ftTransportationCostPerUnit
+			},
+		},
+		'steel_fibers': {
+			'20': {
+				primxSteelFiber20ftCostInfo,
+				primxSteelFiber20ftContainerInfo,
+				primxSteelFiber20ftTransportationCostPerUnit
+			},
+			'40': {
+				primxSteelFiber40ftCostInfo,
+				primxSteelFiber40ftContainerInfo,
+				primxSteelFiber40ftTransportationCostPerUnit
+			},
+		},
+		'flow': {
+			'20': {
+				primxFlow20ftCostInfo,
+				primxFlow20ftContainerInfo,
+				primxFlow20ftTransportationCostPerUnit
+			},
+			'40': {
+				primxFlow40ftCostInfo,
+				primxFlow40ftContainerInfo,
+				primxFlow40ftTransportationCostPerUnit
+			},
+		},
+		'cpea': {
+			'20': {
+				primxCpea20ftCostInfo,
+				primxCpea20ftContainerInfo,
+				primxCpea20ftTransportationCostPerUnit
+			},
+			'40': {
+				primxCpea40ftCostInfo,
+				primxCpea40ftContainerInfo,
+				primxCpea40ftTransportationCostPerUnit
+			},
+		},
+	});
 
 	//#region Step 4 - Compare the Cost Per Lb of 20ft and 40ft containers, and choose the cheapest.  Then Determine the number of pallets and shipping containers for each product.
 	// ⬇ PrimX DC:
@@ -244,24 +244,24 @@ export default function useCalculateProjectCost(estimate, options) {
 	const cheapestPrimxCpeaTransportationCostPerUnit = primxCpea20ftTransportationCostPerUnit < primxCpea40ftTransportationCostPerUnit ? primxCpea20ftTransportationCostPerUnit : primxCpea40ftTransportationCostPerUnit;
 	const primxCpeaTransportation20or40 = primxCpea20ftTransportationCostPerUnit < primxCpea40ftTransportationCostPerUnit ? 20 : 40;
 
-	// console.log(`Ryan Here 2: \n `, {
-	// 	DC: {
-	// 		cheapestPrimXDcTransportationCostPerUnit,
-	// 		primxDcTransportation20or40,
-	// 	},
-	// 	SteelFiber: {
-	// 		cheapestPrimxSteelFiberTransportationCostPerUnit,
-	// 		primxSteelFiberTransportation20or40,
-	// 	},
-	// 	Flow: {
-	// 		cheapestPrimxFlowTransportationCostPerUnit,
-	// 		primxFlowTransportation20or40,
-	// 	},
-	// 	Cpea: {
-	// 		cheapestPrimxCpeaTransportationCostPerUnit,
-	// 		primxCpeaTransportation20or40,
-	// 	},
-	// });
+	console.log(`Ryan Here 2: \n `, {
+		DC: {
+			cheapestPrimXDcTransportationCostPerUnit,
+			primxDcTransportation20or40,
+		},
+		SteelFiber: {
+			cheapestPrimxSteelFiberTransportationCostPerUnit,
+			primxSteelFiberTransportation20or40,
+		},
+		Flow: {
+			cheapestPrimxFlowTransportationCostPerUnit,
+			primxFlowTransportation20or40,
+		},
+		Cpea: {
+			cheapestPrimxCpeaTransportationCostPerUnit,
+			primxCpeaTransportation20or40,
+		},
+	});
 
 
 	if (estimate.measurement_units == "imperial") {
@@ -332,36 +332,37 @@ export default function useCalculateProjectCost(estimate, options) {
 
 	}; // End if/else
 
-	// console.log(`Ryan Here 3: \n `, {
-	// 	'dc': {
-	// 		primx_dc_total_project_amount: estimate.primx_dc_total_project_amount,
-	// 		primx_dc_pallets_needed: estimate.primx_dc_pallets_needed,
-	// 		primx_dc_net_weight_of_pallet: parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet),
-	// 		primx_dc_dosage_rate: parseFloat(primxDcDosageRateInfo.dosage_rate),
-	// 	},
-	// 	'steel_fibers': {
-	// 		primx_steel_fibers_total_project_amount_higher: estimate.primx_steel_fibers_total_project_amount_higher,
-	// 		primx_steel_fibers_pallets_needed: estimate.primx_steel_fibers_pallets_needed,
-	// 		primx_steel_fibers_net_weight_of_pallet: parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet),
-	// 		primx_steel_fibers_dosage_rate: parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate),
-	// 	},
-	// 	'flow': {
-	// 		primx_flow_total_project_amount: estimate.primx_flow_total_project_amount,
-	// 		primx_flow_pallets_needed: estimate.primx_flow_pallets_needed,
-	// 		primx_flow_net_weight_of_pallet: parseFloat(primxFlow20ftContainerInfo.net_weight_of_pallet),
-	// 		primx_flow_dosage_rate: parseFloat(primxFlowDosageRateInfo.dosage_rate),
-	// 	},
-	// 	'cpea': {
-	// 		primx_cpea_total_project_amount: estimate.primx_cpea_total_project_amount,
-	// 		primx_cpea_pallets_needed: estimate.primx_cpea_pallets_needed,
-	// 		primx_cpea_net_weight_of_pallet: parseFloat(primxCpea20ftContainerInfo.net_weight_of_pallet),
-	// 		primx_cpea_dosage_rate: parseFloat(primxCpeaDosageRateInfo.dosage_rate),
-	// 	},
-	// 	'ultracure_blankets': {
-	// 		primx_ultracure_blankets_total_project_amount: estimate.primx_ultracure_blankets_total_project_amount,
-	// 		primx_ultracure_blankets_pallets_needed: estimate.primx_ultracure_blankets_pallets_needed,
-	// 	},
-	// });
+	console.log(`Ryan Here 3: \n `, {
+		'dc': {
+			primx_dc_total_project_amount: estimate.primx_dc_total_project_amount,
+			primx_dc_pallets_needed: estimate.primx_dc_pallets_needed,
+			primx_dc_net_weight_of_pallet: parseFloat(primxDc20ftContainerInfo.net_weight_of_pallet),
+			primx_dc_dosage_rate: parseFloat(primxDcDosageRateInfo.dosage_rate),
+		},
+		'steel_fibers': {
+			primx_steel_fibers_total_project_amount_higher: estimate.primx_steel_fibers_total_project_amount_higher,
+			primx_steel_fibers_pallets_needed: estimate.primx_steel_fibers_pallets_needed,
+			primx_steel_fibers_net_weight_of_pallet: parseFloat(primxSteelFiber20ftContainerInfo.net_weight_of_pallet),
+			primx_steel_fibers_dosage_rate: parseFloat(primxSteelFiberDosageRateInfo_90_60.dosage_rate),
+		},
+		'flow': {
+			primx_flow_total_project_amount: estimate.primx_flow_total_project_amount,
+			primx_flow_pallets_needed: estimate.primx_flow_pallets_needed,
+			primx_flow_net_weight_of_pallet: parseFloat(primxFlow20ftContainerInfo.net_weight_of_pallet),
+			primx_flow_dosage_rate: parseFloat(primxFlowDosageRateInfo.dosage_rate),
+		},
+		'cpea': {
+			primx_cpea_total_project_amount: estimate.primx_cpea_total_project_amount,
+			primx_cpea_pallets_needed: estimate.primx_cpea_pallets_needed,
+			primx_cpea_net_weight_of_pallet: parseFloat(primxCpea20ftContainerInfo.net_weight_of_pallet),
+			primx_cpea_dosage_rate: parseFloat(primxCpeaDosageRateInfo.dosage_rate),
+		},
+		'ultracure_blankets': {
+			primx_ultracure_blankets_total_project_amount: estimate.primx_ultracure_blankets_total_project_amount,
+			primx_ultracure_blankets_pallets_needed: estimate.primx_ultracure_blankets_pallets_needed,
+		},
+		needToConvertUnits: needToConvertUnits,
+	});
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
 	if (estimate.materials_excluded == "exclude_cpea") {
@@ -401,21 +402,21 @@ export default function useCalculateProjectCost(estimate, options) {
 			: Math.ceil(estimate.primx_cpea_pallets_needed / parseInt(primxCpea40ftContainerInfo.max_pallets_per_container))
 	);
 
-	// console.log(`Ryan Here 4: \n `, {
-	// 	containers_needed: {
-	// 		primx_dc_containers_needed: estimate.primx_dc_containers_needed,
-	// 		primx_steel_fibers_containers_needed: estimate.primx_steel_fibers_containers_needed,
-	// 		primx_flow_containers_needed: estimate.primx_flow_containers_needed,
-	// 		primx_cpea_containers_needed: estimate.primx_cpea_containers_needed,
-	// 	},
-	// 	container_sizes: {
-	// 		primxDcTransportation20or40,
-	// 		primxSteelFiberTransportation20or40,
-	// 		primxFlowTransportation20or40,
-	// 		primxCpeaTransportation20or40,
-	// 	},
-	// 	totalNumberOfPallets: totalNumberOfPallets,
-	// });
+	console.log(`Ryan Here 4: \n `, {
+		containers_needed: {
+			primx_dc_containers_needed: estimate.primx_dc_containers_needed,
+			primx_steel_fibers_containers_needed: estimate.primx_steel_fibers_containers_needed,
+			primx_flow_containers_needed: estimate.primx_flow_containers_needed,
+			primx_cpea_containers_needed: estimate.primx_cpea_containers_needed,
+		},
+		container_sizes: {
+			primxDcTransportation20or40,
+			primxSteelFiberTransportation20or40,
+			primxFlowTransportation20or40,
+			primxCpeaTransportation20or40,
+		},
+		totalNumberOfPallets: totalNumberOfPallets,
+	});
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
 	if (estimate.materials_excluded == "exclude_cpea") {
@@ -462,21 +463,21 @@ export default function useCalculateProjectCost(estimate, options) {
 	const primxCpeaProductPlusCustomDutyPercentage = parseFloat(primxCpeaProductInfo.product_self_cost) + (parseFloat(primxCpeaProductInfo.product_self_cost) * parseFloat(primxCpeaProductInfo.custom_duty_percentage));
 	//#endregion - Step 5. 
 
-	// console.log(`Ryan Here 5: \n `, {
-	// 	product_info: {
-	// 		primxSteelFiberProductInfo,
-	// 		primxDcProductInfo,
-	// 		primxFlowProductInfo,
-	// 		primxCpeaProductInfo
-	// 	},
-	// 	pricing_results: {
-	// 		primxDcProductPlusCustomDutyPercentage,
-	// 		primxSteelFiberProductPlusCustomDutyPercentage_75_50,
-	// 		primxSteelFiberProductPlusCustomDutyPercentage_90_60,
-	// 		primxFlowProductPlusCustomDutyPercentage,
-	// 		primxCpeaProductPlusCustomDutyPercentage,
-	// 	},
-	// });
+	console.log(`Ryan Here 5: \n `, {
+		product_info: {
+			primxSteelFiberProductInfo,
+			primxDcProductInfo,
+			primxFlowProductInfo,
+			primxCpeaProductInfo
+		},
+		pricing_results: {
+			primxDcProductPlusCustomDutyPercentage,
+			primxSteelFiberProductPlusCustomDutyPercentage_75_50,
+			primxSteelFiberProductPlusCustomDutyPercentage_90_60,
+			primxFlowProductPlusCustomDutyPercentage,
+			primxCpeaProductPlusCustomDutyPercentage,
+		},
+	});
 
 	//#region Step 6 - Calculate the transportation cost + material cost per material unit, for each product in the cheapest container:
 	let primxDcTransportationCostPlusMaterialCostPerUnit = cheapestPrimXDcTransportationCostPerUnit + primxDcProductPlusCustomDutyPercentage;
@@ -491,13 +492,13 @@ export default function useCalculateProjectCost(estimate, options) {
 	// ⬇ PrimX Cpea:
 	let primxCpeaTransportationCostPlusMaterialCostPerUnit = cheapestPrimxCpeaTransportationCostPerUnit + primxCpeaProductPlusCustomDutyPercentage;
 
-	// console.log(`Ryan Here 6: \n `, {
-	// 	primxDcTransportationCostPlusMaterialCostPerUnit,
-	// 	primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
-	// 	primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
-	// 	primxFlowTransportationCostPlusMaterialCostPerUnit,
-	// 	primxCpeaTransportationCostPlusMaterialCostPerUnit
-	// });
+	console.log(`Ryan Here 6: \n `, {
+		primxDcTransportationCostPlusMaterialCostPerUnit,
+		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
+		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
+		primxFlowTransportationCostPlusMaterialCostPerUnit,
+		primxCpeaTransportationCostPlusMaterialCostPerUnit
+	});
 
 	// ⬇ If they've selected exclude_cpea or exclude_fibers, we want to null those values out for the final calculations:
 	if (estimate.materials_excluded == "exclude_cpea") {
@@ -525,26 +526,26 @@ export default function useCalculateProjectCost(estimate, options) {
 		(primxCpeaTransportationCostPlusMaterialCostPerUnit * parseFloat(primxCpeaDosageRateInfo.dosage_rate))
 	);
 
-	// console.log(`Ryan Here 7: \n `, {
-	// 	dollar_self_cost_per_unit: {
-	// 		dollarSelfCostPerUnit_75_50,
-	// 		dollarSelfCostPerUnit_90_60,
-	// 	},
-	// 	transportation_costs: {
-	// 		primxDcTransportationCostPlusMaterialCostPerUnit,
-	// 		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
-	// 		primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
-	// 		primxFlowTransportationCostPlusMaterialCostPerUnit,
-	// 		primxCpeaTransportationCostPlusMaterialCostPerUnit,
-	// 	},
-	// 	dosage_rates: {
-	// 		primxDcDosageRateInfo,
-	// 		primxSteelFiberDosageRateInfo_75_50,
-	// 		primxSteelFiberDosageRateInfo_90_60,
-	// 		primxFlowDosageRateInfo,
-	// 		primxCpeaDosageRateInfo
-	// 	},
-	// });
+	console.log(`Ryan Here 7: \n `, {
+		dollar_self_cost_per_unit: {
+			dollarSelfCostPerUnit_75_50,
+			dollarSelfCostPerUnit_90_60,
+		},
+		transportation_costs: {
+			primxDcTransportationCostPlusMaterialCostPerUnit,
+			primxSteelFiberTransportationCostPlusMaterialCostPerUnit_75_50,
+			primxSteelFiberTransportationCostPlusMaterialCostPerUnit_90_60,
+			primxFlowTransportationCostPlusMaterialCostPerUnit,
+			primxCpeaTransportationCostPlusMaterialCostPerUnit,
+		},
+		dosage_rates: {
+			primxDcDosageRateInfo,
+			primxSteelFiberDosageRateInfo_75_50,
+			primxSteelFiberDosageRateInfo_90_60,
+			primxFlowDosageRateInfo,
+			primxCpeaDosageRateInfo
+		},
+	});
 	//#endregion - Step 7.
 
 
@@ -559,17 +560,17 @@ export default function useCalculateProjectCost(estimate, options) {
 	const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(regionalMarkup.margin_applied));
 	const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(regionalMarkup.margin_applied));
 
-	// console.log(`Ryan Here 8: \n `, {
-	// 	'01_suggested_formula': {
-	// 		dollarSalesCostPerUnit_75_50: dollarSelfCostPerUnit_75_50 * (1 + parseFloat(regionalMarkup.margin_applied)), 
-	// 		dollarSalesCostPerUnit_90_60: dollarSelfCostPerUnit_90_60 * (1 + parseFloat(regionalMarkup.margin_applied)),
-	// 	},
-	// 	'02_their_formula': {
-	// 		dollarSalesCostPerUnit_75_50: dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(regionalMarkup.margin_applied)),
-	// 		dollarSalesCostPerUnit_90_60: dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(regionalMarkup.margin_applied)),
-	// 	},
-	// 	'03_regional_markup': regionalMarkup,
-	// });
+	console.log(`Ryan Here 8: \n `, {
+		'01_suggested_formula': {
+			dollarSalesCostPerUnit_75_50: dollarSelfCostPerUnit_75_50 * (1 + parseFloat(regionalMarkup.margin_applied)), 
+			dollarSalesCostPerUnit_90_60: dollarSelfCostPerUnit_90_60 * (1 + parseFloat(regionalMarkup.margin_applied)),
+		},
+		'02_their_formula': {
+			dollarSalesCostPerUnit_75_50: dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(regionalMarkup.margin_applied)),
+			dollarSalesCostPerUnit_90_60: dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(regionalMarkup.margin_applied)),
+		},
+		'03_regional_markup': regionalMarkup,
+	});
 
 	// Corrected calculation for sales cost
 	// const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 * (1 + parseFloat(regionalMarkup.margin_applied));
@@ -599,18 +600,19 @@ export default function useCalculateProjectCost(estimate, options) {
 	estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
 	estimate.total_project_volume = parseFloat(estimate.total_project_volume);
 
-	// console.log(`Ryan Here 9: \n `, {
-	// 	total_project_cost_75_50: estimate.total_project_cost_75_50,
-	// 	total_project_cost_90_60: estimate.total_project_cost_90_60,
-	// 	total_project_volume: estimate.total_project_volume,
-	// } );
+	console.log(`Ryan Here 9: \n `, {
+		total_project_cost_75_50: estimate.total_project_cost_75_50,
+		total_project_cost_90_60: estimate.total_project_cost_90_60,
+		total_project_volume: estimate.total_project_volume,
+	} );
 
 	//#endregion - Step 9.
 	// const dollarSalesCostPerUnit_75_50 = dollarSelfCostPerUnit_75_50 / (1.00 - parseFloat(regionalMarkup.margin_applied));
 	// const dollarSalesCostPerUnit_90_60 = dollarSelfCostPerUnit_90_60 / (1.00 - parseFloat(regionalMarkup.margin_applied));
-	// const testingDestinations = ["Arizona", "California", "Colorado", "Florida"]
+
 	// if (estimate.destination_name && testingDestinations.includes(estimate.destination_name)) {
-	// 	console.log(`Ryan Here: End of useCalculateProjectCost.js`,
+	//  const testingDestinations = ["Arizona", "California", "Colorado", "Florida"]
+	// 	console.log(`Ryan Here 10, Unused: End of useCalculateProjectCost.js`,
 	// 		`\n ${estimate.destination_name} `,
 	// 		`\n Self Cost:  `,
 	// 		`\n    PPU 75-50: ${dollarSelfCostPerUnit_75_50} `,

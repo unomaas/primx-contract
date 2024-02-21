@@ -6,6 +6,8 @@ const format = require('pg-format');
 
 
 router.get('/fetch-dosage-rates', async (req, res) => {
+	let activeClause = '';
+	if (req.query.active === 'true') activeClause = 'WHERE is_active = true';
 	try {
 		const sql = `
 			SELECT

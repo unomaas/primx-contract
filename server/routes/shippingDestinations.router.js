@@ -19,6 +19,7 @@ router.get('/active', async (req, res) => {
 			JOIN regions AS r 
 				ON r.region_id = sd.region_id
 			WHERE sd.destination_active = TRUE
+				AND r.is_active = true
 			ORDER BY 
 				r.region_code DESC,
 				sd.destination_name ASC;

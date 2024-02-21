@@ -6,21 +6,24 @@ const format = require('pg-format');
 
 
 router.get('/fetch-customs-duties', rejectUnauthenticated, async (req, res) => {
+	let activeClause = '';
+	if (req.query.active === 'true') activeClause = 'WHERE r.is_active = true';
+	const sql = `
+		SELECT
+			cd.custom_duty_id, cd.duty_label,
+			r.region_id, r.region_code AS destination_country,
+			cdr.customs_duties_regions_id, cdr.duty_percentage::REAL, (cdr.duty_percentage * 100)::REAL AS duty_percentage_label
+		FROM customs_duties_regions AS cdr
+		JOIN regions AS r
+			ON cdr.region_id = r.region_id
+		JOIN customs_duties AS cd
+			ON cdr.custom_duty_id = cd.custom_duty_id
+		${activeClause}
+		ORDER BY 
+			r.region_code DESC, 
+			cd.duty_label;
+	`; // End sql
 	try {
-		const sql = `
-			SELECT
-				cd.custom_duty_id, cd.duty_label,
-				r.region_id, r.region_code AS destination_country,
-				cdr.customs_duties_regions_id, cdr.duty_percentage::REAL, (cdr.duty_percentage * 100)::REAL AS duty_percentage_label
-			FROM customs_duties_regions AS cdr
-			JOIN regions AS r
-				ON cdr.region_id = r.region_id
-			JOIN customs_duties AS cd
-				ON cdr.custom_duty_id = cd.custom_duty_id
-			ORDER BY 
-				r.region_code DESC, 
-				cd.duty_label;
-		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
 	} catch (error) {

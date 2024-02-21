@@ -11,6 +11,8 @@ const format = require('pg-format');
  * GET route template
  */
 router.get('/get-current-products', rejectUnauthenticated, (req, res) => {
+	let activeClause = '';
+	if (req.query.active === 'true') activeClause = 'WHERE r.is_active = true';
 	// GET route code here
 	const queryText = `
 		SELECT 
@@ -22,6 +24,7 @@ router.get('/get-current-products', rejectUnauthenticated, (req, res) => {
 			ON p.product_id = prc.product_id
 		JOIN regions AS r 
 			ON prc.region_id = r.region_id
+		${activeClause}
 		ORDER BY r.region_code DESC, p.product_id;
 	`;
 	pool.query(queryText)
@@ -238,18 +241,20 @@ router.get('/get-one-year-of-product-cost-history', rejectNonAdmin, async (req, 
 
 //#region - Markup routes below: 
 router.get('/get-markup-margin', rejectUnauthenticated, async (req, res) => {
+	let activeClause = '';
+	if (req.query.active === 'true') activeClause = 'WHERE r.is_active = true';
+	const sql = `
+		SELECT 
+			m.markup_id, 
+			m.margin_applied::REAL, 
+			(m.margin_applied * 100)::REAL AS margin_applied_label,
+			r.region_id, 
+			r.region_code AS destination_country
+		FROM markup AS m
+		JOIN regions AS r
+			ON m.region_id = r.region_id;
+	`;
 	try {
-		const sql = `
-			SELECT 
-				m.markup_id, 
-				m.margin_applied::REAL, 
-				(m.margin_applied * 100)::REAL AS margin_applied_label,
-				r.region_id, 
-				r.region_code AS destination_country
-			FROM markup AS m
-			JOIN regions AS r
-				ON m.region_id = r.region_id;
-		`;
 		const { rows } = await pool.query(sql);
 		res.send(rows);
 	} catch (error) {
