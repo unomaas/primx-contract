@@ -266,13 +266,13 @@ function* pricingLogInitialLoad() {
 
 function* updatePricingInitialLoad() {
 	try {
-		const currentShippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs');
-		const currentProductCosts = yield axios.get('/api/products/get-current-products');
-		const currentCustomsDuties = yield axios.get('/api/customsduties/fetch-customs-duties');
-		const currentMarkup = yield axios.get('/api/products/get-markup-margin');
+		const currentShippingCosts = yield axios.get('/api/shippingcosts/get-current-shipping-costs', { params: { active: true } });
+		const currentProductCosts = yield axios.get('/api/products/get-current-products', { params: { active: true } });
+		const currentCustomsDuties = yield axios.get('/api/customsduties/fetch-customs-duties', { params: { active: true } });
+		const currentMarkup = yield axios.get('/api/products/get-markup-margin', { params: { active: true } });
 		const activeRegions = yield axios.get(`/api/regions/get-regions`, { params: { active: true } });
 		const shippingDestinations = yield axios.get('/api/shippingdestinations/active');
-		const productContainers = yield axios.get('/api/productContainer/fetch-product-container');
+		const productContainers = yield axios.get('/api/productContainer/fetch-product-container', { params: { active: true } });
 		const dosageRates = yield axios.get('/api/dosageRates/fetch-dosage-rates');
 
 		const markupHistory12Months = yield axios.get(`/api/products/get-one-year-of-markup-history`);

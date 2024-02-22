@@ -6,28 +6,31 @@ const format = require('pg-format');
 
 
 router.get('/fetch-product-container', async (req, res) => {
+	let activeClause = '';
+	if (req.query.active === 'true') activeClause = 'WHERE r.is_active = true';
+	const sql = `
+		SELECT 
+			"pc".product_container_id,
+			"pc".product_id,
+			"p".product_label,
+			"c".container_length_ft,
+			r.region_code AS container_destination,
+			r.default_measurement,
+			"pc".max_pallets_per_container,
+			"pc".max_weight_of_container,
+			"pc".gross_weight_of_pallet,
+			"pc".net_weight_of_pallet
+		FROM "product_containers" AS "pc"
+		JOIN "products" AS "p" 
+			ON "p".product_id = "pc".product_id
+		JOIN "containers" AS "c"
+			ON "c".container_id = "pc".container_id
+		JOIN regions AS r 
+			ON r.region_id = c.region_id
+		${activeClause}
+		ORDER BY "pc".product_container_id ASC;
+	`; // End sql
 	try {
-		const sql = `
-			SELECT 
-				"pc".product_container_id,
-				"pc".product_id,
-				"p".product_label,
-				"c".container_length_ft,
-				r.region_code AS container_destination,
-				r.default_measurement,
-				"pc".max_pallets_per_container,
-				"pc".max_weight_of_container,
-				"pc".gross_weight_of_pallet,
-				"pc".net_weight_of_pallet
-			FROM "product_containers" AS "pc"
-			JOIN "products" AS "p" 
-				ON "p".product_id = "pc".product_id
-			JOIN "containers" AS "c"
-				ON "c".container_id = "pc".container_id
-			JOIN regions AS r 
-				ON r.region_id = c.region_id
-			ORDER BY "pc".product_container_id ASC;
-		`; // End sql
 		const { rows } = await pool.query(sql);
 		res.send(rows);
 	} catch (error) {
