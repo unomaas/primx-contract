@@ -472,10 +472,11 @@ function* submitNewPricingChanges(action) {
 
 		// ⬇ Submit the new pricing changes:
 		const result = yield axios.post(`/api/pricingLog/submit-new-pricing-changes`, action.payload);
+		// yield put({ type: 'CLEAR_ALL_STALE_DATA' });
 
 		yield put({
 			type: 'SET_PRICING_LOG_VIEW', payload: {
-				updatePricingIsLoading: true,
+				updatePricingIsLoading: true,	
 				updatePricingStep: 1,
 			}
 		});

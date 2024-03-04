@@ -16,19 +16,25 @@ const viewState = (state = { ...defaultViewState }, action) => {
 				...state,
 				...action.payload,
 			};
+		case 'CLEAR_PRICING_LOG_DATA': {
+			return { ...defaultViewState, };
+		};
 		default: return state;
 	}
 }
 
 const defaultDataState = {};
 
-const dataState = (state = {...defaultDataState}, action) => {
+const dataState = (state = { ...defaultDataState }, action) => {
 	switch (action.type) {
 		case 'SET_PRICING_LOG_DATA':
 			return {
 				...state,
 				...action.payload,
 			};
+		case 'CLEAR_PRICING_LOG_DATA': {
+			return { ...defaultViewState, };
+		};
 		default: return state;
 	}
 }
