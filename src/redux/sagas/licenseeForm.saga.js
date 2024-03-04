@@ -154,12 +154,11 @@ function* recalculateEstimate(action) {
 		}
 
 		yield put({ type: 'GET_RECALCULATE_INFO' });
-
-		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 	} catch (error) {
 		console.error('recalculate estimate failed', error);
-		yield put({ type: 'HIDE_TOP_LOADING_DIV' });
 		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' })
+	} finally {
+		yield put({ type: 'HIDE_TOP_LOADING_DIV' });	
 	}; // End try/catch
 }; // End recalculateEstimate
 

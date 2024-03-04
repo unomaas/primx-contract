@@ -603,6 +603,7 @@ export default function useCalculateProjectCost(estimate, options) {
 	estimate.total_project_cost_75_50 = dollarSalesCostPerUnit_75_50 * parseFloat(estimate.total_project_volume);
 	estimate.total_project_cost_90_60 = dollarSalesCostPerUnit_90_60 * parseFloat(estimate.total_project_volume);
 	estimate.total_project_volume = parseFloat(estimate.total_project_volume);
+	
 
 	// console.log(`Ryan Here 9: \n `, {
 	// 	total_project_cost_75_50: estimate.total_project_cost_75_50,

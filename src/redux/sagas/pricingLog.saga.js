@@ -18,7 +18,7 @@ const errorText = 'Error in Pricing Log Saga: ';
 function* pricingLogSaga() {
 	yield takeLatest('PRICING_LOG_INITIAL_LOAD', pricingLogInitialLoad);
 	yield takeLatest('UPDATE_PRICING_INITIAL_LOAD', updatePricingInitialLoad);
-	yield takeLatest('MARKUP_SAVE_HISTORY_LOG', saveMarkupHistoryLog);
+	// yield takeLatest('MARKUP_SAVE_HISTORY_LOG', saveMarkupHistoryLog);
 	yield takeLatest('SUBMIT_NEW_PRICING_CHANGES', submitNewPricingChanges);
 }
 
@@ -433,27 +433,27 @@ function* updatePricingInitialLoad() {
 
 		yield put({
 			type: 'SET_PRICING_LOG_DATA', payload: {
-				currentShippingCosts: currentShippingCosts.data,
-				currentProductCosts: currentProductCosts.data,
-				currentCustomsDuties: currentCustomsDuties.data,
-				currentMarkup: currentMarkup.data,
-				shippingDestinations: shippingDestinations.data,
-				productContainers: productContainers.data,
-				dosageRates: dosageRates.data,
-				pricingData12Months: monthHolderObject,
-				activeRegions: activeRegions.data,
+				currentShippingCosts: JSON.parse(JSON.stringify(currentShippingCosts.data)),
+				currentProductCosts: JSON.parse(JSON.stringify(currentProductCosts.data)),
+				currentCustomsDuties: JSON.parse(JSON.stringify(currentCustomsDuties.data)),
+				currentMarkup: JSON.parse(JSON.stringify(currentMarkup.data)),
+				shippingDestinations: JSON.parse(JSON.stringify(shippingDestinations.data)),
+				productContainers: JSON.parse(JSON.stringify(productContainers.data)),
+				dosageRates: JSON.parse(JSON.stringify(dosageRates.data)),
+				pricingData12Months: JSON.parse(JSON.stringify(monthHolderObject)),
+				activeRegions: JSON.parse(JSON.stringify(activeRegions.data)),
 			}, // End payload
 		}); // End yield put
 
 		yield put({
 			type: 'SET_PRICING_LOG_VIEW', payload: {
 				updatePricingIsLoading: false,
-				newShippingCosts: currentShippingCosts.data,
-				newProductCosts: currentProductCosts.data,
-				newCustomsDuties: currentCustomsDuties.data,
-				newMarkup: currentMarkup.data,
-				monthOptions: monthOptions,
-				saveMonthOptions: saveMonthOptions,
+				newShippingCosts: JSON.parse(JSON.stringify(currentShippingCosts.data)),
+				newProductCosts: JSON.parse(JSON.stringify(currentProductCosts.data)),
+				newCustomsDuties: JSON.parse(JSON.stringify(currentCustomsDuties.data)),
+				newMarkup: JSON.parse(JSON.stringify(currentMarkup.data)),
+				monthOptions: JSON.parse(JSON.stringify(monthOptions)),
+				saveMonthOptions: JSON.parse(JSON.stringify(saveMonthOptions)),
 				monthToSaveTo: saveMonthOptions[0].value,
 				// nextMonthToSave: nextMonthToSave,
 			}, // End payload
@@ -479,14 +479,13 @@ function* submitNewPricingChanges(action) {
 				updatePricingStep: 1,
 			}
 		});
-		yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
-		yield put({ type: "HIDE_TOP_LOADING_DIV" });
 		yield put({ type: 'UPDATE_PRICING_INITIAL_LOAD' });
-
+		yield put({ type: 'SNACK_GENERIC_REQUEST_SUCCESS' });
 	} catch (error) {
 		console.error(errorText, error);
-		yield put({ type: "HIDE_TOP_LOADING_DIV" });
 		yield put({ type: 'SNACK_GENERIC_REQUEST_ERROR' });
+	} finally {
+		yield put({ type: "HIDE_TOP_LOADING_DIV" });
 	}; // End try/catch
 } // End submitNewPricingChanges
 

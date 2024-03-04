@@ -16,8 +16,14 @@ router.get('/get-current-products', rejectUnauthenticated, (req, res) => {
 	// GET route code here
 	const queryText = `
 		SELECT 
-			p.product_id, p.product_label, 
-			prc.product_region_cost_id, prc.region_id, prc.product_self_cost AS product_self_cost,
+			-- Products: 
+			p.product_id, 
+			p.product_label, 
+			-- Product Region Costs: 
+			prc.product_region_cost_id, 
+			prc.region_id, 
+			prc.product_self_cost AS product_self_cost,
+			-- Regions: 
 			r.region_code AS destination_country
 		FROM products AS p
 		JOIN product_region_cost AS prc 
@@ -82,7 +88,7 @@ router.get('/get-all-product-cost-history', rejectNonAdmin, async (req, res) => 
 				r.region_code AS destination_country,
 				r.region_id,
 				p.product_label,
-				prc.product_self_cost AS product_self_cost,
+				pch.product_self_cost AS product_self_cost,
 				TO_CHAR(pch.date_saved, 'YYYY-MM') AS "date_saved",
 				TO_CHAR(pch.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM product_cost_history AS pch
@@ -116,7 +122,7 @@ router.get('/get-one-year-of-product-cost-history', rejectNonAdmin, async (req, 
 				r.region_code AS destination_country,
 				r.region_id,
 				p.product_label,
-				prc.product_self_cost AS product_self_cost,
+				pch.product_self_cost AS product_self_cost,
 				TO_CHAR(pch.date_saved, 'YYYY-MM') AS "date_saved",
 				TO_CHAR(pch.date_saved, 'YYYY-MM-DD') AS date_saved_full
 			FROM product_cost_history AS pch

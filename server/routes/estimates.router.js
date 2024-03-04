@@ -642,8 +642,8 @@ router.put('/edit-estimate/:estimate_id', async (req, res) => {
 			estimate_number_combined_3,
 
 			// ⬇ Final Cost Numbers:
-			price_per_unit_75_50,
-			price_per_unit_90_60,
+			// price_per_unit_75_50,
+			// price_per_unit_90_60,
 			total_project_cost_75_50,
 			total_project_cost_90_60,
 
@@ -696,8 +696,6 @@ router.put('/edit-estimate/:estimate_id', async (req, res) => {
 				"estimate_number_combined_1" = ${format('%L', estimate_number_combined_1)},
 				"estimate_number_combined_2" = ${format('%L', estimate_number_combined_2)},
 				"estimate_number_combined_3" = ${format('%L', estimate_number_combined_3)},
-				"price_per_unit_75_50" = ${format('%L', price_per_unit_75_50)},
-				"price_per_unit_90_60" = ${format('%L', price_per_unit_90_60)},
 				"total_project_cost_75_50" = ${format('%L', total_project_cost_75_50)},
 				"total_project_cost_90_60" = ${format('%L', total_project_cost_90_60)},
 				"total_number_of_pallets" = ${format('%L', parseInt(total_number_of_pallets))},
